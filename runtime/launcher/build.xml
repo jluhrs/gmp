@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<project name="launcher" default="all">
+	<import file="../build.xml"/>
+
+	<path id="build.source.extra">
+		<pathelement path="../oscar/src"/>
+	</path>
+	
+	<fileset id="jar.extra" dir="src" includes="**/*.txt"/>
+
+	<!-- This overrides what is in common.xml -->
+	<target name="-all" depends="-explode, -compile, -jar-src, -jar" if="ant.project.name"/>
+	
+	<target name="-explode">
+		<unjar dest="bin">
+			<fileset dir="ext" includes="*.jar"/>
+		</unjar>
+		<delete dir="bin/META-INF"/>
+	</target>
+
+</project>
+
+

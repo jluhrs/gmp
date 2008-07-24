@@ -1,0 +1,253 @@
+<?xml version="1.0"?>
+
+<project name="common">
+	<dirname property="osgi.build" file="${ant.file.common}"/>
+	<dirname property="osgi" file="${osgi.build}"/>
+        <dirname property="ocs.root" file="${osgi}"/>
+        
+	<property name="osgi.bundle" value="${osgi}/bundle"/>
+	<property name="osgi.runtime" value="${osgi}/runtime"/>
+	<property name="osgi.runtime.lib" value="${osgi.runtime}/lib"/>
+	<property name="osgi.build.lib" value="${osgi}/build/lib"/>
+
+        <property name="hldg.external.lib" value="${ocs.root}/hldgexternal/java/lib"/>
+
+	<macrodef name="iterate">
+		<attribute name="target"/>
+		<sequential>
+			<subant target="@{target}">
+				<fileset dir=".">
+                                    <include name="*/build.xml"/>
+                                    <exclude name="./build.xml"/>
+                                </fileset>
+                        </subant>
+		</sequential>
+	</macrodef>
+
+	<target name="all" depends="-all" unless="built.project.name">
+		<iterate target="all"/>
+	</target>
+
+	<target name="compile" depends="-compile" unless="ant.project.name">
+		<iterate target="compile"/>
+	</target>
+
+	<target name="clean" depends="-clean" unless="ant.project.name">
+		<iterate target="clean"/>
+	</target>
+
+	<target name="doc" depends="-doc" unless="ant.project.name">
+		<iterate target="doc"/>
+	</target>
+
+	<target name="test" depends="-test" unless="ant.project.name">
+		<iterate target="test"/>
+	</target>
+
+	<target name="jar" depends="-jar" unless="ant.project.name">
+		<iterate target="jar"/>
+	</target>
+
+	<target name="jar-src" depends="-jar-src" unless="ant.project.name">
+		<iterate target="jar-src"/>
+	</target>
+
+	<target name="-all" depends="-compile, -jar-src, -jar" if="ant.project.name"/>
+
+	<target name="-clean" if="ant.project.name">
+		<delete dir="bin"/>
+		<delete dir="bin-test"/>
+		<delete dir="doc/api"/>
+		<delete file="${ant.project.name}.jar"/>
+		<delete file="${ant.project.name}-src.jar"/>
+	</target>
+
+	<target name="-doc" if="ant.project.name">
+		<javadoc 
+			packagenames="*"
+			sourcepath="src" 
+			sourcepathref="build.source.extra"
+			destdir="doc/api"
+		/>
+	</target>
+
+	<target name="-test" depends="-tests-exist,-testRun" unless="tests.exist">
+		<echo message="(no tests for ${ant.project.name})"/>
+	</target>
+	
+	<target name="-testRun" if="tests.exist">
+		
+		<!-- setup classpath -->
+		<mkdir dir="lib"/>
+		<mkdir dir="src"/>
+		<path id="build.classpath">
+			<path path="bin"/>
+			<path refid="build.classpath.extra"/>
+			<fileset dir="lib" includes="*.jar"/>
+			<fileset dir="${osgi.runtime.lib}" includes="*.jar"/>	
+			<fileset dir="${osgi.build.lib}" includes="*.jar"/>	
+		</path>
+		
+		<!-- build test classes -->
+		<mkdir dir="bin-test"/>
+		<javac classpathref="build.classpath" destdir="bin-test" debug="on">
+			<src path="src-test"/>
+			<src refid="build.source.extra"/>
+		</javac>
+		
+		<!-- run tests -->
+		<junit printsummary="false">
+			
+			<classpath>
+				<path refid="build.classpath.extra"/>
+				<fileset dir="lib" includes="*.jar"/>
+				<fileset dir="${osgi.runtime.lib}" includes="*.jar"/>	
+				<fileset dir="${osgi.build.lib}" includes="*.jar"/>	
+				<path path="bin-test"/>
+				<path path="bin"/>
+			</classpath>
+		  
+			<formatter type="plain" usefile="false"/>
+		  
+		    <batchtest haltonerror="true">
+			    <fileset dir="src-test">
+			      <include name="**/*Test.java"/>
+			      <exclude name="**/AllTests.java"/>
+			    </fileset>
+			</batchtest>
+		
+		</junit>
+		
+	</target>
+	
+	<target name="-tests-exist" if="ant.project.name">
+		<condition property="tests.exist">
+			<available file="src-test"/>
+		</condition>
+	</target>
+
+        <patternset id="txtfiles"> 
+            <include name="**/*.baseline"/>
+            <include name="**/*.dtd"/>
+            <include name="**/*.properties"/>
+            <include name="**/*.series"/>
+            <include name="**/*.txt"/>
+            <include name="**/*.usage"/>
+            <include name="**/*.words"/>
+            <include name="**/*.xml"/>
+        </patternset>
+
+
+        <target name="setup">
+                <taskdef name="hldgexternal" classname="edu.gemini.osgi.build.HldgExternalTask" classpath="${osgi.build}/bin"/>
+                <taskdef name="liblink" classname="edu.gemini.osgi.build.HldgLibSymlinkTask" classpath="${osgi.build}/bin"/>
+        </target>
+
+	<path id="build.classpath.extra"/>
+	<path id="build.source.extra"/>
+	<target name="-compile" depends="setup" if="ant.project.name">
+		
+		<!-- setup classpath -->
+		<mkdir dir="lib"/>
+		<mkdir dir="src"/>
+		<path id="build.classpath">
+			<path refid="build.classpath.extra"/>
+			<fileset dir="lib" includes="*.jar"/>
+			<fileset dir="${osgi.runtime.lib}" includes="*.jar"/>	
+			<fileset dir="${osgi.build.lib}" includes="*.jar"/>	
+		</path>
+		
+		<!-- build app classes -->
+		<mkdir dir="bin"/>
+		<javac classpathref="build.classpath" destdir="bin" debug="on">
+			<src path="src"/>
+			<src refid="build.source.extra"/>
+		</javac>
+
+                <!-- copy text files -->
+                <copy todir="bin">
+                    <fileset dir="src"><patternset refid="txtfiles"/></fileset>
+                </copy>
+          
+                 <!-- copy resources, if present (required by old nocs build) -->
+                <copy todir="bin/resources" failonerror="false">
+                     <fileset dir="resources"/>
+                </copy>
+	</target>
+
+        <target name="-rmic" if="ant.project.name">
+  	    <path id="build.classpath">
+		<path refid="build.classpath.extra"/>
+		<fileset dir="lib" includes="*.jar"/>
+		<fileset dir="${osgi.runtime.lib}" includes="*.jar"/>	
+		<fileset dir="${osgi.build.lib}" includes="*.jar"/>	
+	    </path>
+            <rmic classpathref="build.classpath" stubversion="1.2" base="bin">
+                <patternset refid="rmi.sources"/>
+            </rmic>
+        </target>
+
+	<fileset dir="." id="jar.extra" excludes="**"/>
+	<fileset dir="." id="jar.meta" excludes="**"/>
+	<target name="-jar" if="ant.project.name">
+		
+		<exec executable="/usr/bin/uuidgen" outputproperty="build.uuid"/>
+		<exec executable="/bin/hostname" outputproperty="build.hostname"/>
+		<exec executable="/bin/date" outputproperty="build.date"/>
+		<exec executable="/sbin/md5" outputproperty="build.md5">
+			<arg value="${ant.project.name}-src.jar"/>
+		</exec>
+		
+		<jar destfile="${ant.project.name}.jar" manifest="manifest.mf">
+			<metainf refid="jar.meta"/>
+			<fileset refid="jar.extra"/>
+			<fileset dir="bin"/>
+			<fileset dir=".">
+                            <include name="lib/*"/>
+                            <include name="resources/**"/>
+                        </fileset>
+			<manifest>
+				<attribute name="Build-UUID" value="${build.uuid}"/>
+				<attribute name="Build-Date" value="${build.date}"/>
+				<attribute name="Build-Host" value="${build.hostname}"/>
+				<attribute name="Build-MD5" value="${build.md5}"/>
+			</manifest>
+		</jar>		
+
+		<!-- archive the jarfile -->
+		<exec executable="/usr/bin/perl" outputproperty="build.version">
+			<arg line="-ne &quot;print $1 if /Bundle-Version:\s*(.*)/&quot; manifest.mf"/>
+		</exec>
+		<property name="build.archive" value="arch/${ant.project.name}-${build.version}.jar"/>		
+		<mkdir dir="arch"/>
+		<copy file="${ant.project.name}.jar" toFile="${build.archive}"/>
+		<exec executable="/usr/bin/gzip">
+			<arg line="-f ${build.archive}"/>
+		</exec>
+		<echo message="Archived ${build.archive}."/>
+		
+	</target>
+
+	<fileset dir="." id="jar-src.extra" excludes="**"/>
+	<target name="-jar-src" if="ant.project.name">		
+		<jar destfile="${ant.project.name}-src.jar">
+			<fileset refid="jar.extra"/>
+			<fileset dir="." includes="meta/** src/** src-test/** doc/** lib/**"/>
+			<fileset file="build.xml"/>
+		</jar>
+		
+		<!-- archive the jarfile -->
+		<exec executable="/usr/bin/perl" outputproperty="build.version">
+			<arg line="-ne &quot;print $1 if /Bundle-Version:\s*(.*)/&quot; manifest.mf"/>
+		</exec>
+		<property name="build.archive2" value="arch/${ant.project.name}-src-${build.version}.jar"/>		
+		<mkdir dir="arch"/>
+		<copy file="${ant.project.name}-src.jar" toFile="${build.archive2}"/>
+		<exec executable="/usr/bin/gzip">
+			<arg line="-f ${build.archive2}"/>
+		</exec>
+		<echo message="Archived ${build.archive2}."/>
+
+	</target>
+</project>
+

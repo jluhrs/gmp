@@ -1,0 +1,71 @@
+
+<html>
+<head><title>Telnet Daemon</title></head>
+<link rel="stylesheet" href="/doc/styles.css"></link>
+<body>
+
+<h1>Telnet Daemon</h1>
+
+The Telnet Daemon bundle provides a simple telnet server that allows users
+to telnet into the Oscar shell, allowing you to shut down the Shell TUI and
+run with all output redirected.
+
+<h2>Quick Start</h2>
+
+<h3>How to use the Telnet Daemon:</h3>
+
+Simply install and start the bundle. You will then be able to telnet into
+Oscar.
+<pre>
+$ <B>telnet manjar 6666</B>
+...
+Connected to localhost.
+Escape character is '^]'.
+
+Welcome to Oscar
+================
+
+Remote connection from localhost
+Local time is Thu Sep 29 14:23:26 CLT 2005
+Be careful. Hit ^D to exit.
+
+manjar -> version
+1.0.5
+manjar -> _
+</pre>
+
+<h2>Provided Services</h2>
+
+None.
+
+<h2>Service Dependencies</h2>
+
+This bundle depends on:
+<ul>
+<li>Shell Service
+</ul>
+
+<h2>Configuration</h2>
+
+<h3>System Properties</h3>
+
+None.
+
+<h3>Bundle Properties</h3>
+
+<dl>
+<dt><code>edu.gemini.util.telnetd.port</code></dt>
+<dd>This property may be set to specify the telnet port. Otherwise it will
+default to <code>6666</code>.
+</dl>
+
+<h3>Logging Properties</h3>
+
+None.
+
+<h3>Policy</h3>
+
+None.
+
+</body>
+</html>

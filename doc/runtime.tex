@@ -1,0 +1,755 @@
+% Preamble
+\documentclass{report}
+\usepackage{textcomp}
+\author{Rob Norris}
+\date{\today}
+\title{Gemini OSGi Environment}
+
+\begin{document}
+\maketitle
+\tableofcontents
+% 
+% \chapter{Deployment Guide}
+% 
+% \section{Introduction}
+% 
+% One of the primary motivations for moving to OSGi is that is makes deployment 
+% considerably easier. Rather than packaging a complete application for deployment, 
+% we can simply prepare a deployment descriptor that describes the application 
+% configuration and desired set of bundles, and the runtime can download components as
+% needed. Application deployment then becomes trivial:
+% 
+% \begin{enumerate}
+%   
+% 	\item Ensure that a Java $1.5$ runtime environment is available, and ensure
+% 	that {\tt launcher.jar} is available. Normally this jarfile would be downloaded
+% 	from the primary bundle server (\S\ref{bundle-server}).
+% 	\begin{quote}\begin{scriptsize}\begin{verbatim}
+% 	wget http://hlservices:9999/runtime/launcher/launcher.jar
+% 	\end{verbatim}\end{scriptsize}\end{quote}
+% 
+% 	\item Install the desired application using the launcher. In this case we are
+% 	installing an application for Gemini South.
+% 	\begin{quote}\begin{scriptsize}\begin{verbatim}
+% 	java -jar launcher.jar -h:hlservices -i:the-application
+% 	\end{verbatim}\end{scriptsize}\end{quote}
+%   
+% 	\item Run the application. A server application with redirected output would be
+% 	launcher as
+% 	\begin{quote}\begin{scriptsize}\begin{verbatim}
+% 	java -jar launcher.jar -a:the-application -n &
+% 	\end{verbatim}\end{scriptsize}\end{quote}
+% 
+% \end{enumerate}
+% 
+% \section{The Problem}
+% 
+% The goal of the deployment model is to address a set of issues that historically 
+% have been common points of fragility.
+% 
+% \begin{description}
+% 
+% \item[Environment Variables.] Environment variables are extremely fragile and 
+% are a very common point of failure. They must be configured for each 
+% \textlangle{}user, host, shell\textrangle{} tuple, and are one of the most 
+% common points of failure when setting things up. They are also very easy to screw
+% up later.
+% 
+% \item[Shared Configuration Files.] Shared configuration files are a good idea 
+% in principle because they reduce data duplication, but they also tend to become 
+% dumping grounds for application-specific properties and are frightening to 
+% clean up because it is not always apparent which applications are using which 
+% values, and how.
+% 
+% \item[Shared Resources.] In our deployment environment it is common for the same
+% Unix user to run the same application multiple times from multiple hosts, using the
+% same shared disk. This makes it difficult to handle user preferences and disk-based
+% application state because any instance can clobber the data of any other instance.
+% 
+% \item[Shell Scripts.] In the Unix world it has become habit to have a shell script
+% for every application. At best these scripts introduce another moving part. At worst
+% they introduce an untestable, environment-bound micro-application with its own set
+% of failure points.
+% 
+% \item[Command-line Arguments.] Beause the Java VM has not historically had access to
+% very much environment information, in an environment-bound environment Java 
+% applications would inevitably require extra command-line arguments or {\tt -D} 
+% variables. The only practical way to launch an application in this environment is to
+% use a shell script.
+% 
+% \item[Runtime Libraries.] Historically it has become habit to have a shared 
+% dumping ground for shared libraries (jarfiles in the case of Java). This can 
+% lead to versioning incompatibilities, but also leads to bloat ue to apathy 
+% about the tidiness of the dump ({\it ``Who cares if I add another jarfile, 
+% there are already so damn many''}\/) and makes it nearly impossible to delete 
+% anything.
+% 
+% \item[Deployment Packaging.] 
+% 
+% \item[Updates.] 
+% 
+% 
+% \end{description}
+% 
+
+
+
+\chapter{Build Environment}
+\section{Overview}
+
+The {\tt osgi} build tree contains a {\tt build.xml} file and the following 
+top-level subtrees.
+\begin{description}
+	
+	\item[\tt app/] contains a top-level directory for each deployable application. 
+	Within each of these directories are the configuration files that define the 
+	application. See \S\ref{build-applications} for more details on this.
+		
+	\item[\tt build/] contains the {\tt common.xml} file that ultimately is 
+	included by most of the {\tt build.xml} files in the tree, along with project 
+	directories for any custom {\it Ant}\/ tasks that may be needed.
+		
+	\item[\tt bundle/] contains a tree of OSGi bundle projects, grouped in 
+	directories simply to keep them organized. A top-level folder called {\tt 
+	external} contains standard and Oscar-specific third-party bundle jarfiles that 
+	we are using in OCS (to eliminate dependencies on external bundle 
+	repositories). See \S\ref{build-bundles} below for details on the structure of 
+	a bundle project.
+		
+	\item[\tt doc/] contains the \LaTeX{} source for this document, as will 
+	probably accumulate more documents in the future.
+		
+	\item[\tt runtime/] contains source code for Oscar, the Gemini application 
+	launcher, and a small number of common runtime libraries that are required for 
+	complation of bundle projects.
+
+\end{description}
+
+The build itself is very much like the old OCS build, in that you should be 
+able to type {\tt ant} anywhere in the tree to build that subtree. Intermediate 
+(non-project) directories simply need to include the following trivial antfile 
+in order to keep everything hooked together.
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+<?xml version="1.0"?>
+<project default="all">
+    <import file="../build.xml"/>
+</project>
+\end{verbatim}\end{scriptsize}\end{quote}
+
+Note that project directories include a {\tt name} attribute in the {\tt project}
+element of their antfile, and intermediate directories do not. The buile looks for
+this property as an indication that there is actually something to build. A 
+consequence of this convention is that all buildable subtrees must be terminal; it
+is not possible to have a project entirely within another project (although they can
+certainly be grouped within the same non-project directory). This is by design. 
+
+\section{Bundles (Buildable Projects)}
+
+\subsection{Overview and Layout}
+\label{build-bundles}
+Ok, first thing is that you need to use Ant $1.6.5$ \ldots{} older versions won't
+work.
+
+Most buildable projects in the tree are OSGi bundles, so this discussion will refer
+to them as bundles. But the rules are the same either way.
+
+Within the {\tt osgi/bundle/} directory there is a collection of bundles, organized
+variously by intermediate directories that contain the trivial {\tt build.xml} 
+described above. Bundles themselves are subtrees containing the following top-level
+elements. 
+
+\begin{description}
+\item[\tt build.xml] contains bundle-specific build information, including at 
+least the bundle's symbolic name. See \S\ref{bundle-ant} below for information 
+on how to customize the build for your bundle.
+\item[\tt manifest.mf] is the bundle's manifest, which will be included 
+verbatim as the bundle's {\tt META-INF/MANIFEST.MF} file. Bundles must specify 
+all necessary OSGi headers here.
+\item[\tt src/] is the default source directory that will be included in the 
+build. See \S\ref{bundle-ant} for information about working with multiple 
+source directories.
+\item[\tt lib/] is the default location where required runtime jars should be 
+placed. Any jarfiles found here will be included in the build classpath, and 
+the entire {\tt lib/} tree will be include verbatim in the bundle jarfile.
+\end{description}
+
+The build produces the following artifacts, which also live in each bundle's top-level
+directory. These elements are all created by the {\tt all} target and are deleted
+by {\tt clean}. None of these items should be checked into CVS.
+
+\begin{description}
+\item[\tt bin/] is where compiled {\tt .class} files go.
+\item[\tt {\it project-name}.jar] is the deployable bundle jarfile, containing by 
+default any code compiled from {\tt src/}, everything in {\tt lib/}, and of 
+course the manifest specified in {\tt manifest.mf}.
+\item[\tt {\it project-name}-src.jar] contains the source code for the bundle, 
+including by default everything in {\tt src/} and {\tt lib}, plus {\tt 
+build.xml} and {\tt manifest.mf}.
+\item[\tt doc/api/] is not being generated yet, but probably will be. It will contain
+the bundle's JavaDoc.
+\end{description}
+
+\subsection{Ant Targets and {\tt build.xml}}
+\label{bundle-ant}
+The minimal {\tt build.xml} file for a bundle must define a project name, must 
+define the default target to be {\tt all}, and must include the parent 
+directory's {\tt build.xml} file. This is all that is required if the default 
+build settings are sufficient for your bundle.
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+<?xml version="1.0"?>
+<project name="my-project" default="all">
+        <import file="../build.xml"/>
+</project>
+\end{verbatim}\end{scriptsize}\end{quote}
+
+The following variables are defined implicitly by inclusion of the parent
+antfile, and may be used as needed in bundle builds. There are actually a few 
+more, but these are the useful ones.
+
+\begin{description}
+\item[\tt osgi] is the absolute filesystem location for the root of the build tree.
+\item[\tt osgi.bundle] is the absolute filesystem location for the root of the {\tt bundle/}
+subtree. It is preferable to use this rather than {\tt \$\{osgi\}/bundle/}
+just in case the subtree moves.
+\end{description}
+
+The following build targets will be defined implicitly by inclusion of the parent
+antfile, which will eventually cause {\tt osgi/build/common.xml} to be included.
+Most targets can be customized to some degree, or can be modified easily to be
+customizable.
+
+\begin{description}
+\item[\tt all] is the default target. It calls {\tt compile}, {\tt jar}, and {\tt jar-src}.
+
+\item[\tt compile] builds the source files in {\tt src/} into {\tt bin/}, 
+including the local {\tt lib/} jarfiles and the {\tt \$\{osgi\}/runtime/lib} jarfiles 
+in the build classpath. Classfiles will be placed in {\tt bin/}. This target is 
+customizable via overriding the following variables:
+	
+	\begin{description}
+	\item[\tt build.classpath.extra] is a path-like structure defining any extra 
+	classes you wish to include in the build classpath. You will need to use this 
+	if you depend on other bundles at build time.
+	\item[\tt build.source.extra] is a path-like structure defining any extra 
+	source trees that should be compiled in.	
+	\end{description}
+
+\item[\tt jar] builds the bundle jar, which will include the contents of {\tt bin}
+and {\tt lib}, and will use {\tt manifest.mf} as the jarfile's manifest. This target is 
+customizable via overriding the following variables:
+	
+	\begin{description}
+	\item[\tt jar.extra] is a fileset specifying any extra files that should be
+	included in the jarfile (but not in {\tt META-INF/}).
+	\item[\tt jar.meta] is a fileset specifying any extra files that should be
+	included in the jarfile's {\tt META-INF/} directory.
+	\end{description}
+
+\item[\tt jar-src] builds the bundle source jar, which will include the contents
+of {\tt src} and {\tt lib},  plus {\tt build.xml} and {\tt manifest.mf}. This target is 
+customizable via overriding the following variables:
+	
+	\begin{description}
+	\item[\tt jar-src.extra] is a fileset specifying any extra files that should be
+	included in the source jarfile.
+	\end{description}
+
+\item[\tt clean] removes the build products, including {\tt bin/} and the two
+jarfiles.
+
+\end{description}
+
+
+\section{Deployable Applications}
+\label{build-applications}
+
+\subsection{Overview and Layout}
+A deployable application is basically just an Oscar runtime with some set of running bundles and
+various other settings like system, security, and logging properties. This is the kind of thing that
+is easy to do by hand, but even easier to do with the Launcher and Bundle Server. It is important
+to understand that there is nothing magical going on; the deployable application infrastructure
+is just a tool to save some typing.
+
+Each deployable application is defined a top-level directory under {\tt app/} containing
+a {\tt system.properties} file and optionally several other configuration files. For
+example, the Weather Station application layout is as follows:
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+osgi/app/weather-station/about.txt
+                         bundle.properties
+                         logging.properties
+                         system.properties
+\end{verbatim}\end{scriptsize}\end{quote}
+\noindent The idea here is to eliminate all environmental dependencies, command-line options, and
+other moving parts that are traditionally required when an app is deployed. The launcher
+uses the configuration files to set up system, logging, and bundle properties before 
+passing control to Oscar, removing the need to set everything up via scripting. And you can just
+download the whole setup by naming the application. For example, to install, view help,
+ and run the sample EPICS weather station for Cerro Pachon:
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+wget http://manjar:9999/runtime/launcher/launcher.jar
+java -jar launcher.jar -h:manjar -i:weather-station
+java -jar launcher.jar -a:weather-station -?
+java -jar launcher.jar -a:weather-station
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\noindent Because configuration files nay be different based on the deployment environment, the Bundle Server
+runs these files through the Velocity template engine as they are retrieved by the launcher. This
+may sound heinous at first, but it actually works quite well and allows you to define all deployments
+in one place. See \S\ref{bundle-server} for details on the template environment.
+
+\subsection{Config Files}
+
+The following config files are supported; anything else will be ignored. Again, please see 
+\S\ref{bundle-server} for details on the template environment, which will allow you to customize
+config files on the fly.
+
+\begin{description}
+\item[\tt about.txt] is a text file that will be shown to the user if the {\tt -?} option is passed
+to Launcher when the application is specified. 
+\item[\tt bundle.properties] defines properties that will be made available at runtime via the {\tt BundleContext}.
+This is the mechanism you should use for passing configuration parameters to bundles at runtime. 
+\item[\tt logging.properties] defines JDK logging properties to be used when control is passed to Oscar.
+\item[\tt system.properties] is {\it required}\/ and must define at least the Oscar-specific properties 
+that specify the bundles to download and start when the application is first launched.
+\end{description}
+
+\noindent Once again, see \S\ref{bundle-server} for some examples of how this works in real life.
+
+\chapter{Reference}
+
+\section{Launcher}
+\label{launcher}
+
+\subsection{Overview}
+
+Launcher manages the installation, launching, and deinstallation of OSGi 
+applications. It is a very thin wrapper for the Oscar OSGi runtime, and simply 
+provides a way to download all the relevant configuration files at runtime 
+rather than passing them on the commandline.
+    
+The following options are available, and may be given in any order:
+    
+\begin{description}    
+
+\item[\tt -?]  Shows the manpage and then exits, or, if {\tt -a} is specified, shows 
+descriptive text about the specified application.
+
+\item[\tt -a:{\it name}] Specifies the target application. If no other 
+arguments are given, Laucher simply runs the application.
+
+\item[\tt -t]  Lists the installed applications.
+  
+\item[\tt -i:{\it name}] Installs the named application from the host specified via 
+the -h option. -a may also be specified if you wish to use a different name for 
+the installed version. This can be useful if you wish to maintain multiple 
+versions of the same application.
+
+\item[\tt -n]  Specifies that the application being launched should run in 
+non-interactive mode, in which all output is redirected. This option should be 
+used for server applications. Note that this option is not compatible with 
+applications using the Shell TUI or any other bundle that reads from standard 
+input. Normally a Telnet Service would be used instead if interaction is 
+required.
+    
+\item[\tt -u]  Uninstalls the application specified by {\tt -a}.
+    
+\item[\tt -h:{\it host}] Specifies the host from which the application 
+definition should be downloaded. Defaults to localhost.
+        
+\item[\tt -p:{\it port}] Specifies the port to connect to for installation. 
+Defaults to 9999.
+            
+\item[\tt -v] Verbose output. This will cause launcher to report on what it is 
+doing, and what paths and files it is using. Note that this can also be used 
+with -n, which will allow you to see where everything is going before output is 
+redirected.
+            
+\item[\tt -b:{\it key}={\it value}] Persistently sets a bundle property to the 
+specified value. This is simply a way to    edit your bundle.properties without 
+having to find the file and open it in an editor. This option may be specified 
+multiple times.
+        
+\item[\tt -s:{\it key}={\it value}] Persistently sets a system property to the 
+specified value. This is similar to {\tt -b} above. Note that you can also pass 
+these values as VM options via {\tt -D}. This option may be specified multiple 
+times.
+    
+\item[\tt -L:{\it startlevel}] Persistently sets the threshold at which bundles 
+stop being auto- started. By default all bundles specified in the application's 
+definition will be installed as needed and started automatically each time the 
+application runs.
+            
+\end{description}            
+            
+\subsection{Examples}
+            
+To install application, you must specify at least {\tt -i} and {\tt -h}.
+    
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+java -jar launcher.jar -h:manjar -i:weather-station
+\end{verbatim}\end{scriptsize}\end{quote}
+        
+If you dont want the local application to be called weather-station, you can 
+specify an alias with {\tt -a}:
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+java -jar launcher.jar -h:manjar -i:weather-station -a:my-app
+\end{verbatim}\end{scriptsize}\end{quote}
+        
+To launch the application:
+    
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+java -jar launcher.jar -a:my-app
+\end{verbatim}\end{scriptsize}\end{quote}
+        
+If you want to see what launcher is doing, add {\tt -v}. If you want to redirect 
+output to files, add {\tt -n}. This redirection is the last thing Launcher does 
+before handing control to Oscar, so you can actually specify both {\tt -n} and 
+{\tt -v}.
+        
+To uninstall the application:
+    
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+java -jar launcher.jar -a:my-app -u
+\end{verbatim}\end{scriptsize}\end{quote}
+        
+To set a bundle property:
+    
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+java -jar launcher.jar -a:my-app -b:org.osgi.service.http.port=8082
+\end{verbatim}\end{scriptsize}\end{quote}
+        
+Note that you can also just run the application with -v, and Launcher will 
+tell you where the config files are, in case you want to edit them by hand.
+
+\subsection{Notes}
+This program is designed specifically for deploying Oscar applications, 
+and does not re-implement anything that you can already do in Oscar. In 
+particular, incremental updates of bundles should be done using the Shell TUI 
+or something equivalent like the Telnet Service.
+
+\subsection{Details}
+Launcher attempts to download application definitions from the 
+specified host/port via http, using the path {\tt /app/{\it appliciation-name}/}. From 
+this path the following files are downloaded and used, if available. Otherwise 
+Oscar defaults are used.
+
+\begin{description}
+\item[\tt policy] - Java security policy. 
+\item[\tt bundle.properties] - BundleContext properties. 
+\item[\tt system.properties]  - Additional system 
+        properties. 
+\item[\tt logging.properties] - Logging properties. Note that a 
+        {\tt logdir} parameter will be passed along with the HTTP request, in case 
+        this value needs to be inserted on the server.
+\end{description}
+
+\noindent Launcher maintains its own bundle cache and logging structure distinct from
+the normal Oscar and JDK locations, to help with complex deployments.
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+~/.ocs/<hostname>/<application-name>/bundle
+                                    /conf
+                                    /log
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\noindent    Most applications can be expected to place their logs in the log directory,
+    but this is not strictly required. The files err.log and out.log will be 
+    written to the log directory in all cases when -n is used.
+
+\subsection{Compatibility}
+    Running an application from the launcher is basically equivalent to running 
+    Oscar with a stack of commandline arguments and some shell redirection.
+    
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+java -jar launcher.jar -a:<app> -n
+\end{verbatim}\end{scriptsize}\end{quote}
+        
+    is roughly equivalent to:
+    
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+java -Djava.security.manager
+     -Dsecurity.policy=~/.ocs/<host>/<app>/conf/policy
+     -Djava.util.logging.config.file=~/.ocs/<host>/<app>/conf/logging.properties
+     -Doscar.system.properties=~/.ocs/<host>/<app>/conf/system.properties
+     -Doscar.bundle.properties=~/.ocs/<host>/<app>/conf/bundle.properties 
+     -Doscar.cache.profiledir=~/.ocs/<host>/<app>/bundle 
+     -jar oscar.jar
+     >~/.ocs/<host>/<app>/log/out.log 
+     2>~/.ocs/<host>/<app>/log/err.log
+\end{verbatim}\end{scriptsize}\end{quote}
+             
+\subsection{Bugs and Limitations}
+    You can use spaces in application names, but it's non-obvious. You need
+    to put the entire option in quotes:
+    
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+java -jar launcher.jar "-a:My Application"
+\end{verbatim}\end{scriptsize}\end{quote}
+
+
+
+\section{Applications}
+
+\subsection{Basic}
+Basic is a mostly-empty runtime that is useful for development and experimenting;
+it is equivalent to the default Oscar runtime more or less. Use aliases to
+install it multiple times.
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+manjar:~ rnorris$ launcher -a:test -i:basic  
+manjar:~ rnorris$ launcher -a:test   
+
+Welcome to Oscar.
+=================
+
+-> ps
+START LEVEL 10
+   ID   State         Level  Name
+[   0] [Active     ] [    0] System Bundle (1.0.5)
+[   1] [Active     ] [    1] Shell Service (1.0.2)
+[   2] [Active     ] [    1] Shell TUI (1.0.0)
+[   3] [Active     ] [    1] Bundle Repository (1.1.2)
+[   4] [Active     ] [    2] OSGi Util (1.0.0)
+[   5] [Active     ] [    2] OSGi Service (1.0.2)
+-> 
+\end{verbatim}\end{scriptsize}\end{quote}
+
+
+\subsection{Bundle Server}
+\label{bundle-server}
+The Bundle Server provides HTTP-based services to support application
+deployment through Launcher and Oscar Bundle Repository (OBR). These services
+are provided by default on port $9999$.
+
+\subsubsection{OBR XML Service}
+The context path {\tt /bundle} returns dynamically-generated content that
+describes every bundle jarfile in the {\tt bundle/} build subtree. Any Oscar
+runtime can use this feature to install bundles that are in the Gemini source
+tree. You just need to have the Bundle Repository installed (this is standard
+unless you turn it off) and use the {\tt obr urls} command to point your Oscar
+at the repository.
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}    
+-> obr urls
+http://oscar-osgi.sf.net/repository.xml
+-> obr urls http://localhost:9999/bundle
+-> obr list
+
+Bundle Repository (1.1.2)
+Email Log Handler (0.1.0)
+EPICS Service (0.0.1)
+...
+
+-> obr install "EPICS Service"
+Installing: EPICS Service
+-> 
+\end{verbatim}\end{scriptsize}\end{quote}
+
+
+\subsubsection{Application Deployment Service}
+
+The Bundle Server also provides facilities for downloading application definitions; 
+this is the server-side support for Launcher. Config files under {\tt app/} are run
+through the Velocity template engine before being returned. For information on
+using Velocity (it's really very easy) see
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+http://jakarta.apache.org/velocity/docs/
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\noindent Ok, so in order for Velocity to be useful, there need to be objects bound to
+Velocity identifiers. The Bundle Server defines the following useful bindings:
+
+\begin{description}
+\item[\tt \$obr.root()] expands to the URL for the OBR XML file where the Bundle
+Server is running.
+\item[\tt \$obr.urls(["Bundle", ...])] expands a list of bundle names to a list of
+URLs for the corresponding bundles. This way you don't have to change URLs if
+the bundles move around.
+\item[\tt \${\it param}\/] expands to the value of {\it param}\/ on the HTTP request;
+so if the URL used when requesting the file includes {\tt ...\&foo=bar} then {\tt \$foo}
+will expand to {\tt bar}. The Launcher uses this feature when requesting {\tt logging.properties},
+passing the desired log directory as {\tt \$logdir}.
+\end{description}
+
+
+\subsubsection{Bundle Launcher Access}
+
+The Bundle Server provides unmodified access to the {\tt bundle/} and {\tt runtime/} trees;
+the former for OBR and the latter so you can download the launcher:
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+wget http://manjar:9999/runtime/launcher/launcher.jar
+\end{verbatim}\end{scriptsize}\end{quote}
+
+
+\subsubsection{Bootstrapping the Bundle Server}
+
+The Bundle Server is itself a deployable application, but getting it to serve
+itself up is a bit of a chicken-and-egg problem. Here is how to set it up.
+
+\begin{enumerate}
+  
+\item I find that it's easiest to set up an alias for launcher that points to
+your  dev tree:
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+alias launcher='java -jar ~/Projects/osgi/runtime/launcher/launcher.jar'
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\item Fetch it from another machine and give it an alias.
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+launcher -h:manjar -i:bundle-server -a:temp
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\item Set the bundle property to point to your local repository (dev) root, and
+then start up the app.
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+launcher -a:temp -b:edu.gemini.util.obr.root=/Users/rnorris/Projects/osgi 
+launcher -a:temp
+\end{verbatim}\end{scriptsize}\end{quote}
+If you type ps -l you will see that everything is running but it's pointed
+to the other machine.
+
+\item In another window, install the app again, this time from your own running
+server. You also need to set the root property.
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+launcher -i:bundle-server 
+launcher -a:bundle-server -b:edu.gemini.util.obr.root=/Users/rnorris/Projects/osgi
+\end{verbatim}\end{scriptsize}\end{quote}
+Start up the server so it will download all its bundles. {\it You will get a bind
+exception because the port is already bound in the other instance}\/. This is
+ok.
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+launcher -a:bundle-server 
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\item Shut down both servers now, by typing "shutdown" at both -> prompts.
+
+\item Uninstall the temp version, and start up the new one.
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+launcher -a:temp -u 
+launcher -a:bundle-server
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\item If you do a ps -l you will see that it's pointed at itself now. Note that
+this means you can't update the OBR Service itself. If this is going to be a
+problem, you can fix this by pointing it at the filesystem location rather than
+the HTTP location, then turning auto-start down to level 3.
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+-> uninstall <number for OBR Service> 
+-> install file:/Users/rnorris/Projects/osgi/bundle/util/obr-server/obr-server.jar 
+-> start <number for new OBR Service> 
+-> shutdown
+
+launcher -a:bundle-server -L:3 
+launcher -a:bundle-server
+\end{verbatim}\end{scriptsize}\end{quote}
+If you do ps -l now, everything should look correct.
+
+\item You should now be able to hit your dev repository from any instance of Oscar
+as follows:
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+-> obr urls http://localhost:9999/bundle 
+-> obr list
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\end{enumerate}
+
+
+\subsection{Weather Station}
+
+
+
+\section{Bundles}
+
+%%%
+%%% BUNDLE: LOG EXTRAS
+%%%
+\subsection{Jini Driver}
+
+%%%
+%%% BUNDLE: LOG EXTRAS
+%%%
+\subsection{Log Extras}
+
+The Log Extras bundle provides extensions to the standard JDK logger.
+
+\subsubsection{Extensions for \tt logging.properties}
+
+\begin{description}
+
+\item[\it com.xyz.foo.\tt xhandlers] is syntactically equivalent to 
+{\tt handlers}, with the following additional properties:
+	\begin{itemize}
+    \item Handlers are installed when the Log Extras bundle is started, and 
+    are uninstalled when the bundle is stopped.
+    \item Handlers need not be available on the system classpath (unlike the
+    standard {\tt handlers} property).
+    \item {\tt xhandlers} supports named handlers (see below).
+    \end{itemize}
+
+\end{description}
+
+\subsubsection{Email Handler}
+
+The Email Handler supports emailing of log messages. It will normally be
+installed via the {\tt xhandlers} syntax:
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+xhandlers = edu.gemini.util.logging.EmailHandler
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\noindent The following configuration values are available and are 
+self-explanatory. You will need to set at least {\tt to}, {\tt from}, and
+{\tt host}. Normally you will want to set {\tt level} as well.
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+edu.gemini.util.logging.EmailHandler.bcc =
+edu.gemini.util.logging.EmailHandler.cc = 
+edu.gemini.util.logging.EmailHandler.debug = false
+edu.gemini.util.logging.EmailHandler.formatter =
+edu.gemini.util.logging.EmailHandler.from = bugs@gemini.edu
+edu.gemini.util.logging.EmailHandler.host = 172.16.5.12
+edu.gemini.util.logging.EmailHandler.level = SEVERE
+edu.gemini.util.logging.EmailHandler.to = rnorris@gemini.edu, swalker@gemini.edu
+\end{verbatim}\end{scriptsize}\end{quote}
+
+
+\noindent Note that the Email Handler supports named handler syntax, so you can have
+multiple instances if you need them.
+
+
+\subsubsection{Named Handlers}
+
+JDK Logging does not allow you to have more than one instance of a given
+handler, which is sometimes useful. So the Log Extras bundle adds this ability.
+This only works for handlers that support naming, which means it only works with 
+Gemini custom handlers like the Email Handler. Anyway, you can name a handler 
+when you declare it:
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+my.special.log.xhandlers = edu.gemini.util.logging.EmailHandler("special")
+\end{verbatim}\end{scriptsize}\end{quote}
+
+\noindent And can specify config stuff for just that instance, which simply overrides the
+config property for the unnamed instance, which will be used by default.
+
+
+\begin{quote}\begin{scriptsize}\begin{verbatim}
+edu.gemini.util.logging.EmailHandler("special").cc = president@whitehouse.gov
+\end{verbatim}\end{scriptsize}\end{quote}
+
+
+
+%%%
+%%% BUNDLE: LOG EXTRAS
+%%%
+\subsection{OBR Server}
+
+
+
+\end{document}

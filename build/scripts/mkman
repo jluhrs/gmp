@@ -1,0 +1,43 @@
+#! /bin/sh
+
+#
+# mkman - create or update a bundle's manifest
+#
+#
+# USAGE
+#	mkman [-export] [bundle dir]
+#
+#       -export if specified, include all packages in jars in the project's
+#               lib dir in the Export-Package manifest attribute
+#
+#       Assumes . if the bundle dir is not specified
+#
+#	
+# DESCRIPTION
+#	Creates or updates a bundle's manifest.  If the file manifest.mf
+#	does not exist in the bundle's root directory, it is created with
+#	initial attributes for Bundle-Classpath, Bundle-Description,
+#	Bundle-Name, Bundle-Vender, Bundle-Version, Export-Package,
+#	Import-Package, and Manifest-Version.
+#
+#	If the manifest.mf file does exist, then the Export-Package and
+#	Import-Package are updated and the other properties are left
+#	unmodified.
+#
+#	Assumes every package defined in Java classes in the src directory
+#	of the bundle should be exported.  Assumes every non-standard Java
+#	classes imported by Java classes in the src directory should be
+#	imported by the bundle (except for those packages defined in jars
+#	in the bundle's lib directory).
+#
+
+cmd=$0
+dir=`dirname ${cmd}`
+tmp=`pwd`
+cd ${dir}/..
+dir=`pwd`/bin
+cd ${tmp}
+
+echo java -classpath ${dir} edu.gemini.osgi.manifest.ManifestMaker ${@+"$@"}
+java -classpath ${dir} edu.gemini.osgi.manifest.ManifestMaker ${@+"$@"}
+

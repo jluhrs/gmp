@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-Activator: edu.gemini.util.obr.osgi.Activator
+Bundle-Description: OBR Server
+Bundle-Name: OBR Server
+Bundle-Version: 0.1.0
+Bundle-ClassPath: .,lib/velocity-1.4.jar,lib/commons-collections-3.1.jar,lib/oro.jar
+Import-Package: org.osgi.framework, org.osgi.util.tracker, org.osgi.service.http, javax.servlet,javax.servlet.http
+

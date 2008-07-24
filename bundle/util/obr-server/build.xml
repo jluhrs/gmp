@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<project name="obr-server" default="all">
+	<import file="../build.xml"/>
+</project>
+
+

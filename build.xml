@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<project default="all-ordered">
+	<import file="build/common.xml"/>
+	
+	<!-- top level clean build must be ordered. -->
+	<target name="all-ordered">
+		<subant target=""><fileset dir="build" includes="build.xml"/></subant>
+		<subant target=""><fileset dir="runtime" includes="build.xml"/></subant>
+		<subant target=""><fileset dir="bundle" includes="build.xml"/></subant>
+	</target>
+	
+</project>
+
+

@@ -1,0 +1,61 @@
+To bootstrap:
+
+0. I find that it's easiest to set up an alias for launcher that points to your
+   dev tree:
+   
+        alias launcher='java -jar ~/Projects/osgi/runtime/launcher/launcher.jar'
+
+1. Fetch it from another machine and give it an alias.
+
+        launcher -h:manjar -i:bundle-server -a:temp
+	
+2. Set the bundle property to point to your local repository (dev) root, and
+   then start up the app.
+
+        launcher -a:temp -b:edu.gemini.util.obr.root=/Users/rnorris/Projects/osgi
+        launcher -a:temp
+        
+   If you type ps -l you will see that everything is running but it's pointed
+   to the other machine.
+        
+3. In another window, install the app again, this time from your own running
+   server. You also need to set the root property.
+   
+        launcher -i:bundle-server
+        launcher -a:bundle-server -b:edu.gemini.util.obr.root=/Users/rnorris/Projects/osgi
+
+   Start up the server so it will download all its bundles. You will get a bind
+   exception because the port is already bound in the other instance. This is ok.
+   
+        launcher -a:bundle-server
+        ... Http2: org.mortbay.util.MultiException[java.net.BindException: Address already in use]
+		
+4. Shut down both servers now, by typing "shutdown" at both -> prompts.
+
+5. Uninstall the temp version, and start up the new one.
+
+		launcher -a:temp -u
+		launcher -a:bundle-server
+		
+6. If you do a ps -l you will see that it's pointed at itself now. Note that
+   this means you can't update the OBR Service itself. If this is going to be
+   a problem, you can fix this by pointing it at the filesystem location rather 
+   than the HTTP location, then turning auto-start down to level 3.
+   
+   		-> uninstall <number for OBR Service>
+   		-> install file:/Users/rnorris/Projects/osgi/bundle/util/obr-server/obr-server.jar
+   		-> start <number for new OBR Service>
+   		-> shutdown
+   		
+   	    launcher -a:bundle-server -L:3
+   	    launcher -a:bundle-server
+   	    
+   If you do ps -l now, everything should look correct. 
+
+7. You should now be able to hit your dev repository from any instance of Oscar
+   as follows:
+   
+        -> obr urls http://localhost:9999/bundle
+        -> obr list
+
+        

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<project name="doc" default="all">
+	
+	<target name="all">
+		
+		<!-- todo: uptodate check -->
+		<apply executable="pdflatex" spawn="true">
+			<fileset dir="." includes="**/*.tex"/>
+		</apply>
+
+	</target>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir=".">
+				<include name="**/*.toc"/>
+				<include name="**/*.log"/>
+				<include name="**/*.aux"/>
+				<include name="**/*.pdf"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="jar"/>
+	<target name="compile"/>
+	<target name="jar-src"/>
+		
+</project>
+
+
+

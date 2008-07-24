@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-Activator: edu.gemini.aspen.gmp.broker.osgi.Activator
+Bundle-Name: GMP Broker
+Bundle-Classpath: .,lib/activemq-all-5.1.0.jar
+Bundle-Description: The GMP Broker Service, based on ActiveMQ
+Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Version: 1.0.1
+Import-Package: edu.gemini.aspen.gmp.broker.api,
+ edu.gemini.aspen.gmp.commands.api,
+ org.osgi.framework

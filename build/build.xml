@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<project name="build" default="compile">
+	<dirname property="osgi.build" file="${ant.file.build}"/>
+	<dirname property="osgi" file="${osgi.build}"/>
+	<property name="osgi.runtime" value="${osgi}/runtime"/>
+	<property name="osgi.runtime.lib" value="${osgi.runtime}/lib"/>
+	<property name="osgi.build.lib" value="${osgi}/build/lib"/>
+
+	<target name="clean">
+		<delete dir="bin"/>
+	</target>
+
+	<target name="compile">
+		<!-- setup classpath -->
+		<path id="build.classpath">
+			<fileset dir="lib" includes="*.jar"/>
+			<fileset dir="${osgi.runtime.lib}" includes="*.jar"/>	
+			<fileset dir="${osgi.build.lib}" includes="*.jar"/>	
+		</path>
+		
+		<!-- build app classes -->
+		<mkdir dir="bin"/>
+		<javac classpathref="build.classpath" destdir="bin" debug="on">
+			<src path="src"/>
+		</javac>
+	</target>
+
+        <target name="all" depends="compile"/>
+</project>
+

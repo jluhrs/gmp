@@ -1,0 +1,76 @@
+
+td {
+	font-family: times new roman, times, serif;
+	font-size: 10pt;
+}
+
+body {
+	font-family: times new roman, times, serif;
+	font-size: 10pt;
+	width: 800px;
+}
+
+code {
+	font-family: andale mono, monaco, courier new, courier, fixed;
+	font-size: 9pt;
+	color: #336699;
+}
+
+pre {
+	font-family: andale mono, monaco, courier new, courier, fixed;
+	font-size: 9pt;
+	color: #336699;
+	padding-left: 10px;
+}
+
+h1 {
+	font-family: lucida grande, arial;
+	font-size: 14pt;
+	color: white;
+	background-color: #336699;
+	padding: 10px;
+}
+
+h2 {
+	font-family: lucida grande, arial;
+	font-size: 12pt;
+	border-top: 1px solid #cccccc;
+	padding-top: 8pt;
+}
+
+h3 {
+	font-family: lucida grande, arial;
+	font-size: 10pt;
+}
+
+dd, li, li p, dd p, dd ul {
+	margin-top: .5em;
+	margin-bottom: .5em;
+}
+
+dt {
+	margin-left: 1em;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+p.figure {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	text-align:center;
+}
+
+div.figure {
+	padding: 1em;
+	margin-top:  1em;
+	margin-top: 1em;
+	margin-left:  5em;
+	margin-right:  5em;
+	margin-bottom: 1em;
+	text-align:center;
+	background-color:  #ddeeff;
+	border:  1px solid #cccccc;
+}
+
+
+
