@@ -36,7 +36,6 @@ public class GmpServlet extends HttpServlet {
 
 
     private void _processRequest(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        LOG.info("Received request " + req);
         HttpCommandRequest request;
         try {
             request = new HttpCommandRequest(req);

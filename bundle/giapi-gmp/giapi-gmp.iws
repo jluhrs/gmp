@@ -77,33 +77,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="JMSSequenceCommandProducer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSSequenceCommandProducer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="97" selection-start="1015" selection-end="1015" vertical-scroll-proportion="0.29419354">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JMSUtil.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="51" selection-start="1404" selection-end="1404" vertical-scroll-proportion="0.5419355">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GMPKeys.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/GMPKeys.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="13" selection-start="67" selection-end="67" vertical-scroll-proportion="0.077419356">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ActiveMQBroker.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/ActiveMQBroker.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -113,55 +86,82 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JMSMessageHandler.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSMessageHandler.java">
+      <file leaf-file-name="manifest.mf" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-servlet/manifest.mf">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="13" selection-start="369" selection-end="369" vertical-scroll-proportion="0.12387097">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Activator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/osgi/Activator.java">
+        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/Activator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="20" selection-start="914" selection-end="914" vertical-scroll-proportion="0.2632258">
+            <state line="10" column="13" selection-start="229" selection-end="229" vertical-scroll-proportion="0.09113924">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GMPService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/broker/api/GMPService.java">
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="0" selection-start="433" selection-end="433" vertical-scroll-proportion="0.20129032">
+            <state line="5" column="0" selection-start="89" selection-end="89" vertical-scroll-proportion="0.07751938">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GMPServiceImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/GMPServiceImpl.java">
+      <file leaf-file-name="GmpServlet.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/GmpServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="490" selection-end="490" vertical-scroll-proportion="0.1083871">
+            <state line="81" column="4" selection-start="2608" selection-end="2608" vertical-scroll-proportion="0.9690323">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestConsumer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-tests/src/edu/gemini/aspen/gmp/jms/test/TestConsumer.java">
+      <file leaf-file-name="HttpCommandRequest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/HttpCommandRequest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="13" selection-start="486" selection-end="486" vertical-scroll-proportion="0.17032258">
+            <state line="9" column="13" selection-start="221" selection-end="221" vertical-scroll-proportion="0.09290323">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestProducer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-tests/src/edu/gemini/aspen/gmp/jms/test/TestProducer.java">
+      <file leaf-file-name="BadRequestException.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/BadRequestException.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="13" selection-start="301" selection-end="301" vertical-scroll-proportion="0.09290323">
+            <state line="4" column="1" selection-start="96" selection-end="96" vertical-scroll-proportion="0.060759492">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServletSupervisor.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/ServletSupervisor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="13" selection-start="204" selection-end="204" vertical-scroll-proportion="0.10632911">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HttpTracker.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/HttpTracker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="13" selection-start="477" selection-end="477" vertical-scroll-proportion="-0.048101265">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GmpTracker.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/GmpTracker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="13" selection-start="338" selection-end="338" vertical-scroll-proportion="0.121518984">
               <folding />
             </state>
           </provider>
@@ -210,7 +210,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-tests" />
+          <option name="myItemId" value="gmp-servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -220,11 +220,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-tests" />
+          <option name="myItemId" value="gmp-servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-tests" />
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -234,19 +234,23 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-tests" />
+          <option name="myItemId" value="gmp-servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-tests" />
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-tests/src" />
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet/src" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-tests/src/edu/gemini/aspen/gmp/jms/test" />
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet/src/edu/gemini/aspen/gmp/servlet" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -256,80 +260,24 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-broker" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-broker" />
+          <option name="myItemId" value="gmp-servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-broker" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-broker" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-broker" />
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-broker/src" />
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet/src" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-broker/src/edu/gemini/aspen/gmp/broker" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-broker" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-broker" />
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet/src/edu/gemini/aspen/gmp/servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-broker/src" />
+          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-broker/src/edu/gemini/aspen/gmp/broker" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-api" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
       </PATH>
     </subPane>
@@ -384,51 +332,6 @@
         <option name="Make" value="true" />
       </method>
     </tempConfiguration>
-    <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
-      <method>
-        <option name="Make" value="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method>
-        <option name="Make" value="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -469,6 +372,51 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method>
+        <option name="Make" value="true" />
+      </method>
     </configuration>
     <list size="1">
       <item index="0" class="java.lang.String" itemvalue="Application.TestProducer" />
@@ -523,13 +471,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1171" y="7" width="1152" height="934" extended-state="0" />
-    <editor active="true" />
+    <frame x="657" y="113" width="1152" height="934" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29918405" order="0" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29918405" order="0" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2811344" order="1" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" order="1" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946634" order="8" />
@@ -612,79 +560,39 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/GmpServlet.java">
+    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSSequenceCommandProducer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="54" selection-start="1631" selection-end="1631" vertical-scroll-proportion="0.39276138">
+        <state line="21" column="13" selection-start="581" selection-end="581" vertical-scroll-proportion="0.1083871">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/commands/api/SequenceCommand.java">
+    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSMessageHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="16" selection-start="16" selection-end="16" vertical-scroll-proportion="0.0">
+        <state line="16" column="13" selection-start="369" selection-end="369" vertical-scroll-proportion="0.12387097">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/commands/api/Activity.java">
+    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/ConfigDefaults.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="18" selection-start="169" selection-end="169" vertical-scroll-proportion="0.18250951">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/commands/HandlerResponseImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="13" selection-start="131" selection-end="131" vertical-scroll-proportion="0.15969582">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/commands/api/RequestHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="17" selection-start="61" selection-end="61" vertical-scroll-proportion="0.045627378">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/commands/api/Command.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="19" selection-start="221" selection-end="228" vertical-scroll-proportion="0.20532319">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="51" selection-start="1404" selection-end="1404" vertical-scroll-proportion="0.5419355">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/GMPKeys.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="67" selection-end="67" vertical-scroll-proportion="0.077419356">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/ActiveMQBroker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="13" selection-start="232" selection-end="232" vertical-scroll-proportion="0.1083871">
+        <state line="8" column="28" selection-start="114" selection-end="114" vertical-scroll-proportion="0.121518984">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/osgi/Activator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="20" selection-start="914" selection-end="914" vertical-scroll-proportion="0.2632258">
-          <folding />
+        <state line="17" column="29" selection-start="493" selection-end="493" vertical-scroll-proportion="0.25822785">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/broker/api/GMPService.java">
+    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/GMPKeys.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="433" selection-end="433" vertical-scroll-proportion="0.20129032">
+        <state line="5" column="13" selection-start="67" selection-end="67" vertical-scroll-proportion="0.077419356">
           <folding />
         </state>
       </provider>
@@ -696,30 +604,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-tests/src/edu/gemini/aspen/gmp/jms/test/TestProducer.java">
+    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/ActiveMQBroker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="13" selection-start="301" selection-end="301" vertical-scroll-proportion="0.09290323">
+        <state line="12" column="13" selection-start="232" selection-end="232" vertical-scroll-proportion="0.1083871">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-tests/src/edu/gemini/aspen/gmp/jms/test/TestConsumer.java">
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/ServletSupervisor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="13" selection-start="486" selection-end="486" vertical-scroll-proportion="0.17032258">
+        <state line="9" column="13" selection-start="204" selection-end="204" vertical-scroll-proportion="0.10632911">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSSequenceCommandProducer.java">
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/HttpTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="97" selection-start="1015" selection-end="1015" vertical-scroll-proportion="0.29419354">
+        <state line="19" column="13" selection-start="477" selection-end="477" vertical-scroll-proportion="-0.048101265">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSMessageHandler.java">
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/GmpTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="13" selection-start="369" selection-end="369" vertical-scroll-proportion="0.12387097">
+        <state line="15" column="13" selection-start="338" selection-end="338" vertical-scroll-proportion="0.121518984">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/manifest.mf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/Activator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="13" selection-start="229" selection-end="229" vertical-scroll-proportion="0.09113924">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="89" selection-end="89" vertical-scroll-proportion="0.07751938">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/GmpServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="4" selection-start="2608" selection-end="2608" vertical-scroll-proportion="0.9690323">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/HttpCommandRequest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="221" selection-end="221" vertical-scroll-proportion="0.09290323">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/BadRequestException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="1" selection-start="96" selection-end="96" vertical-scroll-proportion="0.060759492">
           <folding />
         </state>
       </provider>

@@ -1,16 +1,12 @@
 package edu.gemini.aspen.gmp.broker.impl;
 
 /**
- * Created by IntelliJ IDEA.
- * User: anunez
- * Date: Apr 2, 2008
- * Time: 8:53:25 PM
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class ConfigDefaults {
 
 
-    public static final int    BROKER_PORT = 61616;
+    public static final int BROKER_PORT = 61616;
     public static final String BROKER_URL = "tcp://localhost:" + BROKER_PORT;
 
     public static final String BROKER_NAME = "GMP";
