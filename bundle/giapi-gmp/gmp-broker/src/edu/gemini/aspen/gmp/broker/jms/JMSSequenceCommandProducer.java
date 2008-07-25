@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
+ * The JMSSequenceCommandProducer is in charge of generating JMS messages
+ * that will contain a sequence command and dispatch them to the clients via
+ * JMS
  */
 
 public class JMSSequenceCommandProducer implements ExceptionListener {

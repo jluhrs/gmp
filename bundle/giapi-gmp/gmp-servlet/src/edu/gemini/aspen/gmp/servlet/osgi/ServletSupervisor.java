@@ -5,7 +5,10 @@ import org.osgi.service.http.HttpService;
 import org.osgi.framework.BundleContext;
 
 /**
- *
+ * The supervisor will register the GMP Servlet if and only if
+ * both the HTTP service and the GMP Service are available. Will be in charge
+ * alse of stopping the servlet service in case of any of those services 
+ * dissapear.
  */
 public class ServletSupervisor {
 

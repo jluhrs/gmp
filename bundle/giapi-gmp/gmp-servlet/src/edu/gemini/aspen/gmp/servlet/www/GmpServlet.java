@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 /**
+ * The client servlet that interacts with the GMP Service
  */
 public class GmpServlet extends HttpServlet {
 

@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.commands.api;
 
 /**
- *
+ *  Enumerated type defining the Gemini Sequence Commands
  */
 public enum SequenceCommand {
     TEST("TEST"),

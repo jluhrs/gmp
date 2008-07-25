@@ -9,6 +9,7 @@ import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 
 /**
+ * Just a test producer
  */
 public class TestProducer {
 

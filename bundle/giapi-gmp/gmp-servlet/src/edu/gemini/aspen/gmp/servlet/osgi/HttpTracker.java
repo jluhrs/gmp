@@ -14,8 +14,9 @@ import edu.gemini.aspen.gmp.servlet.www.GmpServlet;
 
 import javax.servlet.ServletException;
 
+
 /**
- *
+ * Service tracker that will get notifications when the HTTP Service is available
  */
 public class HttpTracker extends ServiceTracker {
 

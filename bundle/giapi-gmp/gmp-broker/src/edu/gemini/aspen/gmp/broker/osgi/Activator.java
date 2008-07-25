@@ -10,7 +10,7 @@ import edu.gemini.aspen.gmp.broker.impl.GMPServiceImpl;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 
 /**
- *
+ * The OSGi Activator for the GMP Service
  */
 public class Activator implements BundleActivator {
 

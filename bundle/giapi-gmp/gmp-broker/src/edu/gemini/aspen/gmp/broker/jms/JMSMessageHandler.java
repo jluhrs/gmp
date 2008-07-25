@@ -12,7 +12,7 @@ import edu.gemini.aspen.gmp.commands.api.RequestHandler;
 
 
 /**
- *
+ * A JMS Message listener. For testing at this point
  */
 public class JMSMessageHandler implements MessageListener, ExceptionListener {
 

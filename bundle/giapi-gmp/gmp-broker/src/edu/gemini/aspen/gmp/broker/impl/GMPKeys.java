@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.broker.impl;
 
 /**
- *
+ * Keys to be used to construct messages that will be go to GMP clients. 
  */
 public class GMPKeys {
 

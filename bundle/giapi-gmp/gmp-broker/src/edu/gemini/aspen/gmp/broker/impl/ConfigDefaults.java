@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.broker.impl;
 
 /**
- *
+ * Default configuration options for the broker
  */
 public class ConfigDefaults {
 

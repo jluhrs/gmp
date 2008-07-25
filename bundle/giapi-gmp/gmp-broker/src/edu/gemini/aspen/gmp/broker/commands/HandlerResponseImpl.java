@@ -3,7 +3,8 @@ package edu.gemini.aspen.gmp.broker.commands;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 
 /**
- * 
+ * Implements the Handler Response. Provide factory methods
+ * to instantiate new HandlerResponses
  */
 public class HandlerResponseImpl implements HandlerResponse {
 
@@ -32,18 +33,28 @@ public class HandlerResponseImpl implements HandlerResponse {
         return _message;
     }
 
+    /**
+	 * Static factory initializer. Takes as an argument
+	 * the type of the response
+     * @param response The response type the HandlerResponse to be
+     * returned will have, like ACCEPTED
+     * @return a HandlerResponse with the corresponding response type.
+	 */
     public static HandlerResponse create(Response response) {
         return new HandlerResponseImpl(response);
     }
 
-    public static HandlerResponse create(String errorMsg) {
+    /**
+	 * Static factory initializer for error HandlerResponse.
+	 * The response type is set to ERROR and the message is
+	 * stored.
+     * @param errorMsg The error message that will be associated to the
+     * error HandlerResponse that will be returned.
+     * @return an error HandlerResponse with the corresponding error message
+     * set.
+	 */
+    public static HandlerResponse createError(String errorMsg) {
         return new HandlerResponseImpl(errorMsg);
     }
-
-    public static HandlerResponse create(Response response, String errorMsg) {
-        return new HandlerResponseImpl(response, errorMsg);
-    }
-
-
 
 }

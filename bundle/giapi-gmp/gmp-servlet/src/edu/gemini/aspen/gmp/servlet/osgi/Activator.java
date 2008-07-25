@@ -2,11 +2,11 @@ package edu.gemini.aspen.gmp.servlet.osgi;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
 
 import java.util.logging.Logger;
 
 /**
+ * The OSGi activator for the GMP Servlet service
  */
 public class Activator implements BundleActivator {
 

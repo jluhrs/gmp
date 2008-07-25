@@ -9,11 +9,7 @@ import javax.jms.*;
 import java.util.logging.Logger;
 
 /**
- * Created by IntelliJ IDEA.
- * User: anunez
- * Date: Jul 11, 2008
- * Time: 11:27:25 PM
- * To change this template use File | Settings | File Templates.
+ * Just a test consumer
  */
 public class TestConsumer implements MessageListener, ExceptionListener {
 

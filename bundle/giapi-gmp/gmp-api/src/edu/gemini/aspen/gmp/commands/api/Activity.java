@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.api;
 
 /**
+ *  The different Activities supported by the GIAPI
  */
 public enum Activity {
     PRESET("PRESET"),

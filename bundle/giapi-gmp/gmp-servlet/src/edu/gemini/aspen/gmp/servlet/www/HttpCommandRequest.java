@@ -6,6 +6,8 @@ import edu.gemini.aspen.gmp.commands.api.Activity;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * Process the servlet requests associated to a sequence command, and
+ * gets the important arguments.
  */
 public class HttpCommandRequest {
 

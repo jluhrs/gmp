@@ -7,6 +7,8 @@ import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 
 /**
+ * Collection of utility methods that will help to transform from JMS messages
+ * to GMP data structures and viceversa
  */
 public class JMSUtil {
 
@@ -23,7 +25,7 @@ public class JMSUtil {
         if (response != null) {
             if (response == HandlerResponse.Response.ERROR) {
                 String errorMsg = msg.getString(GMPKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
-                return HandlerResponseImpl.create(response, errorMsg);
+                return HandlerResponseImpl.createError(errorMsg);
             }
             return HandlerResponseImpl.create(response);
         }

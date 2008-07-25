@@ -10,7 +10,7 @@ import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.servlet.www.GmpServlet;
 
 /**
- *
+ * Service tracker that will get notifications when the GMP Service is available
  */
 
 public class GmpTracker extends ServiceTracker {

@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import edu.gemini.aspen.gmp.broker.api.Broker;
 
 /**
- * 
+ *  A Broker implementation, based on the ActiveMQ JMS service
  */
 public class ActiveMQBroker implements Broker {
 
