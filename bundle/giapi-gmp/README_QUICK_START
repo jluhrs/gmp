@@ -19,6 +19,28 @@ look at the detailed instructions in the file BUILD_README located on the
 GIAPI OSGi module source code.
 
 
+Pre-requisites
+--------------------------------------------------------------------------------
+
+The only pre-requisite is to have the Java Runtime Enviroment available. I
+developed this release of the GMP in Java 5, so you need Java 5 at least on your
+computer. 
+
+
+0. Extremely Quick Start up
+--------------------------------------------------------------------------------
+
+If you are in a hurry and don't want to read anything else and just want to
+start up the GMP, just type on the directory where you unpacked the binary
+distribution:
+
+    java -jar launcher.jar -S:. -a:gmp-server
+
+That should start the Gemini Master Process. If it doesn't work, then you might
+need to read the following sections and you may find why. Next sections describe
+a more organized way of setting up things and starting the GMP.
+
+
 1. Set up the Bundle Launcher Access
 --------------------------------------------------------------------------------
 
