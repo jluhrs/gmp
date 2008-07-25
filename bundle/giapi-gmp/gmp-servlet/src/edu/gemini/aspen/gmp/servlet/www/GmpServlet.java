@@ -50,8 +50,11 @@ public class GmpServlet extends HttpServlet {
 
         String data = "Command Sent: " + request.getSequenceCommand().getName() + " Activity : " + request.getActivity().getName();
         if (response != null) {
-            data += "Received answer = " + response.getResponse().getTag();
+            data += "\nReceived answer = " + response.getResponse().getTag();
+        } else {
+            data += "\nNo answer received. Probably not handlers are registered";
         }
+        data += "\n";
         
         sendResponse(res, data);
 

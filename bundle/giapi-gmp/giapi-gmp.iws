@@ -77,37 +77,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ActiveMQBroker.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/ActiveMQBroker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="13" selection-start="232" selection-end="232" vertical-scroll-proportion="0.1083871">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manifest.mf" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-servlet/manifest.mf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Activator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/Activator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="13" selection-start="229" selection-end="229" vertical-scroll-proportion="0.09113924">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="0" selection-start="89" selection-end="89" vertical-scroll-proportion="0.07751938">
+            <state line="1" column="17" selection-start="22" selection-end="22" vertical-scroll-proportion="0.016597511">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README_QUICK_START" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README_QUICK_START">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -116,7 +98,7 @@
       <file leaf-file-name="GmpServlet.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/GmpServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="81" column="4" selection-start="2608" selection-end="2608" vertical-scroll-proportion="0.9690323">
+            <state line="62" column="40" selection-start="2084" selection-end="2084" vertical-scroll-proportion="0.6477901">
               <folding />
             </state>
           </provider>
@@ -125,25 +107,16 @@
       <file leaf-file-name="HttpCommandRequest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/HttpCommandRequest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="221" selection-end="221" vertical-scroll-proportion="0.09290323">
+            <state line="19" column="11" selection-start="471" selection-end="471" vertical-scroll-proportion="0.25981057">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BadRequestException.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="BadRequestException.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/BadRequestException.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="1" selection-start="96" selection-end="96" vertical-scroll-proportion="0.060759492">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServletSupervisor.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/ServletSupervisor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="204" selection-end="204" vertical-scroll-proportion="0.10632911">
+            <state line="4" column="1" selection-start="96" selection-end="96" vertical-scroll-proportion="0.06495264">
               <folding />
             </state>
           </provider>
@@ -152,7 +125,7 @@
       <file leaf-file-name="HttpTracker.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/HttpTracker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="13" selection-start="477" selection-end="477" vertical-scroll-proportion="-0.048101265">
+            <state line="19" column="13" selection-start="477" selection-end="477" vertical-scroll-proportion="-0.020297699">
               <folding />
             </state>
           </provider>
@@ -161,7 +134,34 @@
       <file leaf-file-name="GmpTracker.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/GmpTracker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="338" selection-end="338" vertical-scroll-proportion="0.121518984">
+            <state line="15" column="13" selection-start="338" selection-end="338" vertical-scroll-proportion="0.12990528">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JMSSequenceCommandProducer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSSequenceCommandProducer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="13" selection-start="581" selection-end="581" vertical-scroll-proportion="0.113667116">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Broker.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/broker/api/Broker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="3" selection-start="48" selection-end="48" vertical-scroll-proportion="0.048714478">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JMSUtil.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="34" selection-start="302" selection-end="302" vertical-scroll-proportion="0.12990528">
               <folding />
             </state>
           </provider>
@@ -275,9 +275,25 @@
           <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet/src/edu/gemini/aspen/gmp/servlet" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
+      </PATH>
+      <PATH>
         <PATH_ELEMENT>
-          <option name="myItemId" value="PsiDirectory:/Users/anunez/Projects/aspen/giapi/giapi-osgi/bundle/giapi-gmp/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-broker" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-api" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
       </PATH>
     </subPane>
@@ -471,13 +487,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="657" y="113" width="1152" height="934" extended-state="0" />
-    <editor active="false" />
+    <frame x="225" y="46" width="1466" height="883" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29918405" order="0" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23288637" order="0" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2811344" order="1" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" order="1" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946634" order="8" />
@@ -560,36 +576,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSSequenceCommandProducer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="13" selection-start="581" selection-end="581" vertical-scroll-proportion="0.1083871">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSMessageHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="13" selection-start="369" selection-end="369" vertical-scroll-proportion="0.12387097">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/ConfigDefaults.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="28" selection-start="114" selection-end="114" vertical-scroll-proportion="0.121518984">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/osgi/Activator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="29" selection-start="493" selection-end="493" vertical-scroll-proportion="0.25822785">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/GMPKeys.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="13" selection-start="67" selection-end="67" vertical-scroll-proportion="0.077419356">
@@ -618,23 +604,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/manifest.mf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/BadRequestException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="1" selection-start="96" selection-end="96" vertical-scroll-proportion="0.06495264">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/HttpTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="13" selection-start="477" selection-end="477" vertical-scroll-proportion="-0.048101265">
+        <state line="19" column="13" selection-start="477" selection-end="477" vertical-scroll-proportion="-0.020297699">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="34" selection-start="302" selection-end="302" vertical-scroll-proportion="0.12990528">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/GmpTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="338" selection-end="338" vertical-scroll-proportion="0.121518984">
+        <state line="15" column="13" selection-start="338" selection-end="338" vertical-scroll-proportion="0.12990528">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-servlet/manifest.mf">
+    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSSequenceCommandProducer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="21" column="13" selection-start="581" selection-end="581" vertical-scroll-proportion="0.113667116">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/broker/api/Broker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="3" selection-start="48" selection-end="48" vertical-scroll-proportion="0.048714478">
           <folding />
         </state>
       </provider>
@@ -646,30 +660,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
+    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/HttpCommandRequest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="89" selection-end="89" vertical-scroll-proportion="0.07751938">
+        <state line="19" column="11" selection-start="471" selection-end="471" vertical-scroll-proportion="0.25981057">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/GmpServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="4" selection-start="2608" selection-end="2608" vertical-scroll-proportion="0.9690323">
+        <state line="62" column="40" selection-start="2084" selection-end="2084" vertical-scroll-proportion="0.6477901">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/HttpCommandRequest.java">
+    <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="221" selection-end="221" vertical-scroll-proportion="0.09290323">
+        <state line="1" column="17" selection-start="22" selection-end="22" vertical-scroll-proportion="0.016597511">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/www/BadRequestException.java">
+    <entry file="file://$PROJECT_DIR$/README_QUICK_START">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="1" selection-start="96" selection-end="96" vertical-scroll-proportion="0.060759492">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>

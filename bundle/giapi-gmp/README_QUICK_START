@@ -1,0 +1,171 @@
+--------------------------------------------------------------------------------
+The Gemini Master Process - GMP
+--------------------------------------------------------------------------------
+
+The Gemini Master Process is an OSGi application that provides the communication
+bridge between Gemini and the instrument code.
+
+This binary package is a quick start to have the Gemini Master Process running,
+without having to configure an entire OSGi environment to deploy OSGi
+applications.
+
+This is going to be useful during the first few iterations of the GIAPI
+development. However, in the long term, we want to have a fully configured OSGi
+application environment in the Top Level Computer, where we can take advantage
+of all the benefits of OSGi.
+
+If you are interested on configuring the entire OSGi framework, please have a
+look at the detailed instructions in the file BUILD_README located on the
+GIAPI OSGi module source code.
+
+
+1. Set up the Bundle Launcher Access
+--------------------------------------------------------------------------------
+
+I will use the ${GMP_INSTALL} variable to refer to the directory where the GMP
+binary package was uncompressed.
+
+First, you need the Bundle Launcher Access. This application is a .jar file
+located at ${GMP_INSTALL}/launcher.jar.
+
+To start up the Bundle Launcher Access, it is convenient to set up an alias for
+it, like:
+
+   alias launcher = 'java -jar ${GMP_INSTALL}/launcher.jar'
+
+Now you can type:
+
+   launcher
+
+on your console and you should see a message like:
+
+  Sorry, what application are we talking about? You need -a or -i, or both.
+  Let me help you. Try: java -jar launcher.jar -?
+
+
+2. Starting up the Gemini Master Process
+--------------------------------------------------------------------------------
+
+Now we are ready to start up the Gemini Master Process. Simply type:
+
+  launcher -S:${GMP_INSTALL} -a:gmp-server
+
+If everything goes well, the GMP will start and you should see a bunch of
+messages on the screen, like:
+
+Welcome to Oscar.
+=================
+
+-> 14:45:59.096 EVENT  Starting Jetty/4.2.x
+14:45:59.138 EVENT  Started SocketListener on 0.0.0.0:9091
+14:45:59.139 EVENT  Started org.mortbay.http.HttpServer@96b5c2
+[...]
+INFO: Adding GMP Service
+Jul 25, 2008 2:45:59 PM edu.gemini.aspen.gmp.servlet.osgi.HttpTracker
+registerServlet
+INFO: Registering servlet
+14:45:59.726 EVENT  Started ServletHttpContext[/]
+
+
+3. Checking the GMP is running and Shuting down the application
+--------------------------------------------------------------------------------
+
+Once the application has started, you'll get a prompt to let you know that the
+application is ready to go. Press <ENTER> to get the prompt if you don't see it.
+
+The shell you will get is provided by the OSGi Shell Service. I won't describe
+here all the operations you can do here, but you can take a look at the service
+bundles that form the GMP process by typing:
+
+  ps
+
+on the prompt. You should get something like:
+
+-> ps
+START LEVEL 10
+   ID   State         Level  Name
+[   0] [Active     ] [    0] System Bundle (1.0.5)
+[   1] [Active     ] [    1] Shell Service (1.0.2)
+[   2] [Active     ] [    1] Shell TUI (1.0.0)
+[   3] [Active     ] [    1] Bundle Repository (1.1.2)
+[   4] [Active     ] [    2] OSGi Util (1.0.0)
+[   5] [Active     ] [    2] OSGi Service (1.0.2)
+[   6] [Active     ] [    5] Servlet (1.0.0)
+[   7] [Active     ] [    5] HTTP Service (1.1.2)
+[   8] [Active     ] [    5] GMP API (1.0.0)
+[   9] [Active     ] [    5] GMP Broker (1.0.1)
+[  10] [Active     ] [    6] GMP Servlet (1.0.0)
+
+
+That means all the bundles are ready and the Gemini Master Process is running.
+
+To exit the GMP, simply type:
+
+  shutdown
+
+on the prompt. This will close the GMP service, and will shut down all the
+associated services to it.
+
+
+4. Using the GMP.
+--------------------------------------------------------------------------------
+
+Once the GMP has started, it can be used to communicate with the instrument
+code. Please leave the GMP console running and open a new terminal.
+Message flow will be logged at the GMP console.
+
+The GMP has a Servlet running internally, that allows to communicate to it.
+This is one interface to allow interacting with it, but the GMP architecture
+allows to have many others. We will provide different interfaces in the future.
+
+At this point, there is only one method available used to send Sequence Commands
+down to the instrument code through the GIAPI library.
+
+Here are the list of parameters to use the servlet interface:
+
+Servlet Name: gmp
+
+Argument: sequenceCommand
+          The Sequence Command to send to the instrument
+Argument: activity
+          The Activity associated to the sequence command, like PRESET or START
+
+
+Ok, so in order to send a Sequence Command to an instrument that has registered
+a SequenceCommandHandler with the GIAPI, you can do (using curl, for instance):
+
+  curl http://localhost:9091/gmp?sequenceCommand=INIT\&activity=PRESET_START
+
+Or, using a web browser, just type:
+
+  http://localhost:9091/gmp?sequenceCommand=INIT&activity=PRESET_START
+
+On the GMP console, you will see a message:
+
+  INFO: Pushing sequence command INIT; Activity = PRESET/START
+
+If a C++ client was registered to the REBOOT sequence command and to the
+PRESET/START activities, then you will get back a message on the servlet
+client like:
+
+  Command Sent: INIT Activity : PRESET/START Received answer = ACCEPTED
+
+If there are not handlers registered for a given sequence command, you will get
+a message logged on the GMP console:
+
+Jul 25, 2008 3:10:59 PM edu.gemini.aspen.gmp.broker.jms.JMSSequenceCommandProducer sendSequenceCommand
+WARNING: No answer received to sequence command OBSERVE
+
+And the servlet client will get:
+
+  Command Sent: OBSERVE Activity : PRESET/START
+  No answer received. Probably not handlers are registered
+
+
+NOTE: The messages produced by the servlet are just plain text messages
+wrapped in an HTML response. I plan to change that to something like XML to
+allow parsing the messages. That should help to write automated testing scripts.
+This is TBD however.
+
+Congratulations! You have the first release of the Gemini Master Process up and
+running!

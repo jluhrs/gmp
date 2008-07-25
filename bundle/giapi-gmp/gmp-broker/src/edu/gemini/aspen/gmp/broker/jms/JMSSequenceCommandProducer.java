@@ -103,7 +103,6 @@ public class JMSSequenceCommandProducer implements ExceptionListener {
             Message reply = _replyConsumer.receive(1000); //one sec.
             if (reply instanceof MapMessage) {
                 MapMessage replyMap  =(MapMessage)reply;
-                LOG.info("Received reply " + replyMap);
                 return JMSUtil.buildHandlerResponse(replyMap);
             } else {
                 LOG.warning("No answer received to sequence command " + command.getName());
