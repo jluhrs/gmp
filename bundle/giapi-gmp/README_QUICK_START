@@ -181,7 +181,7 @@ WARNING: No answer received to sequence command OBSERVE
 And the servlet client will get:
 
   Command Sent: OBSERVE Activity : PRESET/START
-  No answer received. Probably not handlers are registered
+  No answer received. Probably no handlers are registered
 
 
 NOTE: The messages produced by the servlet are just plain text messages

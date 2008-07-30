@@ -49,17 +49,22 @@ public class GmpServlet extends HttpServlet {
 
 
 
-        String data = "Command Sent: " + request.getSequenceCommand().getName() + " Activity : " + request.getActivity().getName();
+        StringBuilder data = new StringBuilder("Command Sent: ");
+        data.append(request.getSequenceCommand().getName()).append(" Activity : ").append(request.getActivity().getName());
         if (response != null) {
-            data += "\nReceived answer = " + response.getResponse().getTag();
-        } else {
-            data += "\nNo answer received. Probably not handlers are registered";
-        }
-        data += "\n";
-        
-        sendResponse(res, data);
+            data.append("\nReceived answer = ").append(response.getResponse().getTag());
 
-        
+            if (response.getResponse() == HandlerResponse.Response.ERROR) {
+                if (response.getMessage() != null) {
+                    data.append(" (").append(response.getMessage()).append(")");
+                }
+            }
+
+        } else {
+            data.append("\nNo answer received. Probably no handlers are registered");
+        }
+        data.append("\n");
+        sendResponse(res, data.toString());
     }
 
     public static void sendResponse(HttpServletResponse res, String data) {

@@ -6,6 +6,7 @@ import javax.jms.*;
 
 import edu.gemini.aspen.gmp.broker.impl.ConfigDefaults;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
+import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.api.Activity;
 import edu.gemini.aspen.gmp.commands.api.Configuration;
@@ -114,7 +115,7 @@ public class JMSSequenceCommandProducer implements ExceptionListener {
         } catch (JMSException e) {
             LOG.warning("Exception while sending sequence command " + e);
         }
-        return null;
+        return HandlerResponseImpl.createError("No answer received to sequence command " + command.getName());
     }
 
 
