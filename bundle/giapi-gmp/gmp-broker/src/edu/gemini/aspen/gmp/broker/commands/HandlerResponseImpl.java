@@ -57,4 +57,22 @@ public class HandlerResponseImpl implements HandlerResponse {
         return new HandlerResponseImpl(errorMsg);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (_response != null) {
+            sb.append(_response.getTag());
+
+            if (_response == Response.ERROR) {
+                //we should have a message
+                sb.append("[");
+                if (_message != null) {
+                    sb.append(_message);
+                }
+                sb.append("]");
+            }
+        }
+        return sb.toString();
+    }
+
 }
