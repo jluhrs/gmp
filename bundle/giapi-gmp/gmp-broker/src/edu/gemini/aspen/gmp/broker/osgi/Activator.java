@@ -15,7 +15,8 @@ import edu.gemini.aspen.gmp.broker.jms.JMSCompletionInfoConsumer;
  */
 public class Activator implements BundleActivator {
 
-    private static final Logger LOG = Logger.getLogger(Activator.class.getName());
+    private static final Logger LOG = Logger.getLogger(
+            Activator.class.getName());
     private final GMPService _service = new GMPServiceImpl();
 
 
@@ -25,11 +26,12 @@ public class Activator implements BundleActivator {
         LOG.info("Start GMP service bundle");
         _service.start();
         //advertise the GMP service in the OSGi framework
-        _registration = bundleContext.registerService(GMPService.class.getName(),
+        _registration = bundleContext.registerService(
+                GMPService.class.getName(),
                 _service, null);
 
         //start the Completion Info Consumer
-        new JMSCompletionInfoConsumer();
+        new JMSCompletionInfoConsumer(_service);
     }
 
     public void stop(BundleContext bundleContext) throws Exception {

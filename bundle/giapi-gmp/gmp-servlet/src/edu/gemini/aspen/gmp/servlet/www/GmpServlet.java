@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.servlet.www;
 
 import edu.gemini.aspen.gmp.broker.api.GMPService;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.api.*;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +16,7 @@ import java.util.logging.Level;
 /**
  * The client servlet that interacts with the GMP Service
  */
-public class GmpServlet extends HttpServlet {
+public class GmpServlet extends HttpServlet implements CompletionListener {
 
 
     private static final Logger LOG = Logger.getLogger(GmpServlet.class.getName());
@@ -45,9 +45,7 @@ public class GmpServlet extends HttpServlet {
             return;
         }
 
-        HandlerResponse response = _service.sendSequenceCommand(request.getSequenceCommand(), request.getActivity());
-
-
+        HandlerResponse response = _service.sendSequenceCommand(request.getSequenceCommand(), request.getActivity(), this);
 
         StringBuilder data = new StringBuilder("Command Sent: ");
         data.append(request.getSequenceCommand().getName()).append(" Activity : ").append(request.getActivity().getName());
@@ -87,4 +85,7 @@ public class GmpServlet extends HttpServlet {
         }
     }
 
+    public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
+        LOG.info("Called onHandlerResponse");
+    }
 }

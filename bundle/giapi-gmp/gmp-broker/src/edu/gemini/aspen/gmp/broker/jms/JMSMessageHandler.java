@@ -8,7 +8,6 @@ import java.util.Enumeration;
 
 import edu.gemini.aspen.gmp.broker.impl.ConfigDefaults;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
-import edu.gemini.aspen.gmp.commands.api.RequestHandler;
 
 
 /**
@@ -16,20 +15,20 @@ import edu.gemini.aspen.gmp.commands.api.RequestHandler;
  */
 public class JMSMessageHandler implements MessageListener, ExceptionListener {
 
-    private final static Logger LOG = Logger.getLogger(JMSMessageHandler.class.getName());
+    private final static Logger LOG = Logger.getLogger(
+            JMSMessageHandler.class.getName());
 
-    private RequestHandler _handler;
+    public JMSMessageHandler(String topic) {
 
-    public JMSMessageHandler(String topic, RequestHandler handler) {
-
-        _handler = handler;
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(ConfigDefaults.BROKER_URL);
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
+                ConfigDefaults.BROKER_URL);
         try {
             Connection connection = connectionFactory.createConnection();
             connection.setClientID("JMSMessageHandler:" + topic);
             connection.start();
             connection.setExceptionListener(this);
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            Session session = connection.createSession(false,
+                                                       Session.AUTO_ACKNOWLEDGE);
             Destination destination = session.createTopic(topic);
             MessageConsumer consumer = session.createConsumer(destination);
             consumer.setMessageListener(this);
@@ -42,17 +41,18 @@ public class JMSMessageHandler implements MessageListener, ExceptionListener {
 
     public void onMessage(Message message) {
         LOG.info("A message was received: " + message);
-        
+
         try {
-            LOG.info("Property: " +  message.getStringProperty(GMPKeys.GMP_ACTIVITY_PROP));
+            LOG.info("Property: " + message.getStringProperty(
+                    GMPKeys.GMP_ACTIVITY_PROP));
 
             if (message instanceof MapMessage) {
-                MapMessage m = (MapMessage)message;
+                MapMessage m = (MapMessage) message;
 
                 Enumeration e = m.getMapNames();
                 while (e.hasMoreElements()) {
-                    String key = (String)e.nextElement();
-                    LOG.info("Key = " +  key + " Value = " + m.getString(key));
+                    String key = (String) e.nextElement();
+                    LOG.info("Key = " + key + " Value = " + m.getString(key));
                 }
 
             }
