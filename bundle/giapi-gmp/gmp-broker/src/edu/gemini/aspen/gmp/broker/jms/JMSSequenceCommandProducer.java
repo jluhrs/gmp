@@ -7,9 +7,8 @@ import javax.jms.*;
 import edu.gemini.aspen.gmp.broker.impl.ConfigDefaults;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
+import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.api.Activity;
-import edu.gemini.aspen.gmp.commands.api.Configuration;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 
 import java.util.logging.Logger;
@@ -76,31 +75,37 @@ public class JMSSequenceCommandProducer implements ExceptionListener {
     }
 
 
-    public HandlerResponse sendSequenceCommand(int actionId, SequenceCommand command, Activity activity, Configuration config) {
+    /**
+     * This method takes the given action and converts it into a JMS
+     * message to be dispatched over the network
+     * @param action The action to be sent via JMS
+     * @return HandlerResponse associated to the given action
+     */
+    public HandlerResponse dispatchAction(Action action) {
 
         //first, build a message
         try {
             MapMessage m = _session.createMapMessage();
 
             //activity is a property
-            m.setStringProperty(GMPKeys.GMP_ACTIVITY_PROP, activity.getName());
+            m.setStringProperty(GMPKeys.GMP_ACTIVITY_PROP, action.getActivity().getName());
 
             //action id is stored as a property as well
-            m.setIntProperty(GMPKeys.GMP_ACTIONID_PROP, actionId);
-            if (config != null) {
+            m.setIntProperty(GMPKeys.GMP_ACTIONID_PROP, action.getId());
+            if (action.getConfiguration() != null) {
                 //set all the configuration elements in the map
-                Enumeration<String> e = config.getKeys();
+                Enumeration<String> e = action.getConfiguration().getKeys();
                 while (e.hasMoreElements())  {
                     String key = e.nextElement();
-                    String value = config.getValue(key);
+                    String value = action.getConfiguration().getValue(key);
                     m.setString(key, value);
                 }
             }
             //set the address to reply to this message
             m.setJMSReplyTo(_replyQueue);
             //send the message
-            Destination topic = _session.createTopic(TOPIC_MAP.get(command));
-            LOG.info("Pushing sequence command " + command.getName() + "; Activity = " + activity.getName());
+            Destination topic = _session.createTopic(TOPIC_MAP.get(action.getSequenceCommand()));
+            LOG.info("Pushing sequence command " + action.getSequenceCommand().getName() + "; Activity = " + action.getActivity().getName());
             _producer.send(topic, m);
 
             //now,  We'll receive the answer synchronously
@@ -109,13 +114,13 @@ public class JMSSequenceCommandProducer implements ExceptionListener {
                 MapMessage replyMap  =(MapMessage)reply;
                 return JMSUtil.buildHandlerResponse(replyMap);
             } else {
-                LOG.warning("No answer received to sequence command " + command.getName());
+                LOG.warning("No answer received to sequence command " + action.getSequenceCommand().getName());
             }
 
         } catch (JMSException e) {
             LOG.warning("Exception while sending sequence command " + e);
         }
-        return HandlerResponseImpl.createError("No answer received to sequence command " + command.getName());
+        return HandlerResponseImpl.createError("No answer received to sequence command " + action.getSequenceCommand().getName());
     }
 
 

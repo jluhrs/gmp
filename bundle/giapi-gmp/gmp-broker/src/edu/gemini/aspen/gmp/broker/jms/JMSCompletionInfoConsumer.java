@@ -49,7 +49,6 @@ public class JMSCompletionInfoConsumer implements MessageListener, ExceptionList
     }
 
     public void onMessage(Message message) {
-        LOG.info("Received Message");
         try {
             if (message instanceof MapMessage) {
                 MapMessage m = (MapMessage) message;

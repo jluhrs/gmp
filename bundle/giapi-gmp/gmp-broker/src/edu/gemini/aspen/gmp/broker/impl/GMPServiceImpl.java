@@ -3,8 +3,8 @@ package edu.gemini.aspen.gmp.broker.impl;
 import edu.gemini.aspen.gmp.broker.api.Broker;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.broker.jms.JMSSequenceCommandProducer;
-import edu.gemini.aspen.gmp.broker.commands.ActionIdManager;
-import edu.gemini.aspen.gmp.broker.commands.ActionId;
+import edu.gemini.aspen.gmp.broker.commands.ActionManager;
+import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.*;
 
 import java.util.logging.Logger;
@@ -20,7 +20,7 @@ public class GMPServiceImpl implements GMPService {
 
     private final Broker _broker = new ActiveMQBroker();
 
-    private final ActionIdManager _manager = new ActionIdManager();
+    private final ActionManager _manager = new ActionManager();
 
     private JMSSequenceCommandProducer _producer;
 
@@ -94,14 +94,13 @@ public class GMPServiceImpl implements GMPService {
                                                Activity activity,
                                                Configuration config,
                                                CompletionListener listener) {
-        ActionId id = _manager.registerCommand(command, activity, config,
+        Action action = _manager.registerCommand(command, activity, config,
                                                listener);
 
         //TODO: Probably I want to analize here the handler response. In case it's
         //"STARTED", then I need to keep track of it. Otherwise, I don't care :/
 
-        return _producer.sendSequenceCommand(id.getActionId(), command,
-                                             activity, config);
+        return _producer.dispatchAction(action);
     }
 
 
