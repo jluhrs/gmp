@@ -38,14 +38,9 @@ public class ActionManager {
     }
 
     /**
-     * Constructor. Start up a background thread used to send the completion
-     * information invoking the <code>CompletionListener</code> handlers
-     * registered.
+     * Constructor.
      */
     public ActionManager() {
-        //Start up a new thread to update the actions when completion
-        //information is received.
-        _processorThread.start();
     }
 
 
@@ -192,6 +187,19 @@ public class ActionManager {
                     "Interrupted exception while waiting to register update data",
                     e);
         }
+    }
+
+    /**
+     * Start up a background thread used to send the completion
+     * information invoking the <code>CompletionListener</code> handlers
+     * registered.
+     */
+    public void start() {
+
+        //Start up a new thread to update the actions when completion
+        //information is received.
+        _processorThread.start();
+
     }
 
     /**

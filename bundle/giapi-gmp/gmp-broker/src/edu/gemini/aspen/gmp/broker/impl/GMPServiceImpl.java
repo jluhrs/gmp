@@ -34,6 +34,7 @@ public class GMPServiceImpl implements GMPService {
     public void start() {
         _broker.start();
         _producer = new JMSSequenceCommandProducer();
+        _manager.start();
         LOG.info("GMP started up. Ready to dispatch messages");
     }
 
@@ -42,6 +43,7 @@ public class GMPServiceImpl implements GMPService {
      * Shutdown the Gemini Master Process Service
      */
     public void shutdown() {
+        _manager.stop();
         _producer.shutdown();
         _broker.shutdown();
         LOG.info("GMP shut down.");
