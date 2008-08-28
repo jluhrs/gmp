@@ -5,9 +5,7 @@ import edu.gemini.aspen.gmp.commands.api.*;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 /**
  * This class keeps track of the actions that are being sent to the instruments
@@ -19,14 +17,37 @@ public class ActionManager {
     private static final Logger LOG = Logger.getLogger(
             ActionManager.class.getName());
 
-    private final Queue<Action> _actionQueue = new ConcurrentLinkedQueue<Action>();
+    /**
+     * The Action Queue stores the actions initiated when a sequence command
+     * is received from the OCS and dispatched to the instrument
+     */
+    private final Queue<Action> _actionQueue =
+            new ConcurrentLinkedQueue<Action>();
 
-    private final BlockingQueue<UpdateData> _updateQueue = new LinkedBlockingQueue<UpdateData>();
+    /**
+     * The Update Queue stores the completion information updates that come
+     * from the instrument code, and is used to notify back to the clients that
+     * are awaiting for completion in the action queue.
+     */
+    private final BlockingQueue<UpdateData> _updateQueue =
+            new LinkedBlockingQueue<UpdateData>();
 
+    /**
+     * The update processor is responsible for receiving updates through
+     * the update queue and notify the clients waiting in the action quueue
+     */
     private final UpdateProcessor _processor = new UpdateProcessor();
 
-    private final Thread _processorThread = new Thread(_processor);
+    /**
+     * The executor service provides a separate thread for the UpdateProcessor
+     * to run
+     */
+    private final ExecutorService _executorService =
+            Executors.newSingleThreadExecutor();
 
+    /**
+     * A container for the update information received
+     */
     private class UpdateData {
         int actionId;
         HandlerResponse response;
@@ -196,9 +217,8 @@ public class ActionManager {
      */
     public void start() {
 
-        //Start up a new thread to update the actions when completion
-        //information is received.
-        _processorThread.start();
+        //Submit the processor task for execution in a separate thread
+        _executorService.submit(_processor);
 
     }
 
@@ -207,10 +227,11 @@ public class ActionManager {
      */
     public void stop() {
         _processor.stop();
+        _executorService.shutdown();
         try {
-            _processorThread.join(1000);
+            _executorService.awaitTermination(1000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
-            _processorThread.interrupt();
+            _executorService.shutdownNow(); 
         }
     }
 }
