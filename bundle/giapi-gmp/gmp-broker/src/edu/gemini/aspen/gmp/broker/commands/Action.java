@@ -83,4 +83,18 @@ public class Action implements Comparable<Action> {
         return _actionId - other.getId();
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[").append(_actionId).append(":").
+                append(_sequenceCommand).append("/").
+                append(_activity).append("]");
+        if (_configuration != null) {
+            sb.append(" {").append(_configuration).append("}");
+        }
+        if (_listener != null) {
+            sb.append(" {").append(_listener).append("}");
+        }
+
+        return sb.toString();
+    }
 }

@@ -105,10 +105,8 @@ public class GMPServiceImpl implements GMPService {
 
 
     public void updateOcs(int actionId, HandlerResponse response) {
-        LOG.info(
-                "Updating the OCS for action ID " + actionId + " response " + response);
-
-        //notify all the clients waiting for this action id or lower.
-        _manager.updateAction(actionId, response);
+        //make the completion information available for the Action Manager
+        //to notify the clients.
+        _manager.registerCompletionInformation(actionId, response);
     }
 }
