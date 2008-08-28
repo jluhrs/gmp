@@ -74,7 +74,7 @@ public class ActionManager {
                 Action action = _actionQueue.peek();
 
                 if (action == null) {
-                    LOG.log(Level.SEVERE,
+                    LOG.log(Level.WARNING,
                             "I don't know about action ID " + actionId + ". Usually this means a problem in the instrument code.");
                     return;
                 }
@@ -82,7 +82,7 @@ public class ActionManager {
                 //than the one received, we don't have anything to do. Log this
                 //since it's an indication something weird is happening
                 if (action.getId() > actionId) {
-                    LOG.log(Level.SEVERE,
+                    LOG.log(Level.WARNING,
                             "Action ID received " + actionId +
                                     " but our first action to notify is "
                                     + action.getId() +
@@ -93,7 +93,7 @@ public class ActionManager {
                 }
 
                 while (action != null && action.getId() <= actionId) {
-                    LOG.info("Notifying listeners for action " + action);
+                    LOG.info("Updating clients with action " + action + " response " + response);
                     CompletionListener listener = action.getCompletionListener();
                     if (listener != null) {
                         listener.onHandlerResponse(response,

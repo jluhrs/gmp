@@ -61,15 +61,15 @@ public class HandlerResponseImpl implements HandlerResponse {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if (_response != null) {
-            sb.append(_response.getTag());
+            sb.append("[").append(_response.getTag());
 
             if (_response == Response.ERROR) {
                 //we should have a message
-                sb.append("[");
+                sb.append(" {");
                 if (_message != null) {
                     sb.append(_message);
                 }
-                sb.append("]");
+                sb.append("}]");
             }
         }
         return sb.toString();
