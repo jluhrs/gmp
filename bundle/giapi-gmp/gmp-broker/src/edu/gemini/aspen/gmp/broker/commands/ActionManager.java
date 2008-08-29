@@ -164,10 +164,20 @@ public class ActionManager {
     }
 
     /**
-     * Register this sequence command as an outstanding sequence command. When
-     * the completion information of this sequence command is received, the
-     * listener provided will be invoked.
-     *
+     * Register this Action to keep track its progress internally. When
+     * the completion information associated to this action is available, the
+     * listener contained in it will be invoked.
+     * @param action the action to register
+     */
+    public void registerAction(Action action) {
+        LOG.info("Start monitoring progress for Action " + action);
+        _actionQueue.add(action);
+    }
+
+    /**
+     * Create a new Action with the correspondign sequence command/activity,
+     * the (optional) configuration and the (optional) listener handler that
+     * will be invoked if the action does not complete immediately
      * @param command  Sequence command that will be registered
      * @param activity Activiy associated to the sequence command
      * @param config   Configuration, if any, associated to the sequence
@@ -177,15 +187,13 @@ public class ActionManager {
      *                 <code>null</code>
      *
      * @return The Action associated to this sequence command.
-     */
-    public Action registerCommand(SequenceCommand command,
+     *
+     * */
+    public Action newAction(SequenceCommand command,
                                   Activity activity,
                                   Configuration config,
                                   CompletionListener listener) {
-        Action action = new Action(command, activity, config, listener);
-        _actionQueue.add(action);
-        LOG.info("Registering new action " + action);
-        return action;
+        return new Action(command, activity, config, listener);
     }
 
     /**

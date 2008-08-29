@@ -62,6 +62,10 @@ public class GMPServiceImpl implements GMPService {
      * @param command  The Sequence command to send, like INIT or REBOOT
      * @param activity The associated activities to be executed for the
      *                 specified sequence command, like PRESET or START
+     * @param listener Completion listener that will be invoked if the
+     *                 HandlerResponse is STARTED. The listener will be invoked
+     *                 whenever the completion information for this on-going
+     *                 action is available. Otherwise this listener is ignored.
      *
      * @return a HandlerResponse, used to decide if the command was accepted by
      *         the client.
@@ -88,6 +92,10 @@ public class GMPServiceImpl implements GMPService {
      *                 specified sequence command, like PRESET or START
      * @param config   the configuration that will be send along with the
      *                 sequence command
+     * @param listener Completion listener that will be invoked if the
+     *                 HandlerResponse is STARTED. The listener will be invoked
+     *                 whenever the completion information for this on-going
+     *                 action is available. Otherwise this listener is ignored.
      *
      * @return a HandlerResponse, used to decide if the command was accepted by
      *         the client.
@@ -96,13 +104,22 @@ public class GMPServiceImpl implements GMPService {
                                                Activity activity,
                                                Configuration config,
                                                CompletionListener listener) {
-        Action action = _manager.registerCommand(command, activity, config,
-                                               listener);
+        Action action = _manager.newAction(command, activity, config,
+                                           listener);
+        HandlerResponse response = _producer.dispatchAction(action);
 
-        //TODO: Probably I want to analize here the handler response. In case it's
-        //"STARTED", then I need to keep track of it. Otherwise, I don't care :/
-
-        return _producer.dispatchAction(action);
+        //The only response that indicates actions have started is
+        //STARTED. The other three do not result in any ongoing actions
+        //that must be completed at a later time, therefore the
+        //Completion listener is ignored in this case. See GIAPI design
+        //and use, section 10.6
+        if (response != null &&
+                response.getResponse() == HandlerResponse.Response.STARTED) {
+            //register this action as one that we need to provide completion
+            //information later.
+            _manager.registerAction(action);
+        } 
+        return response;
     }
 
 

@@ -87,14 +87,14 @@ public class Action implements Comparable<Action> {
         StringBuilder sb = new StringBuilder();
         sb.append("[").append(_actionId).append(":").
                 append(_sequenceCommand).append("/").
-                append(_activity).append("]");
+                append(_activity);
         if (_configuration != null) {
             sb.append(" {").append(_configuration).append("}");
         }
         if (_listener != null) {
             sb.append(" {").append(_listener).append("}");
         }
-
+        sb.append("]");
         return sb.toString();
     }
 }

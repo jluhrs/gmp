@@ -69,8 +69,9 @@ public class HandlerResponseImpl implements HandlerResponse {
                 if (_message != null) {
                     sb.append(_message);
                 }
-                sb.append("}]");
+                sb.append("}");
             }
+            sb.append("]");
         }
         return sb.toString();
     }

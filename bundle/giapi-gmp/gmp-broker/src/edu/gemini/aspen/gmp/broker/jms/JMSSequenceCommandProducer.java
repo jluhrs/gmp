@@ -119,19 +119,18 @@ public class JMSSequenceCommandProducer implements ExceptionListener {
             Message reply = _replyConsumer.receive(1000); //one sec.
             if (reply instanceof MapMessage) {
                 MapMessage replyMap = (MapMessage) reply;
-                return JMSUtil.buildHandlerResponse(replyMap);
+                HandlerResponse response = JMSUtil.buildHandlerResponse(replyMap);
+                LOG.info("Answer for action " + action + ": " + response);
+                return response;
             } else {
-                LOG.warning(
-                        "No answer received to sequence command " + action.getSequenceCommand()
-                                .getName());
+                LOG.warning("No answer received for action " + action);
             }
 
         } catch (JMSException e) {
             LOG.warning("Exception while sending sequence command " + e);
         }
         return HandlerResponseImpl.createError(
-                "No answer received to sequence command " + action.getSequenceCommand()
-                        .getName());
+                "No answer received to action " + action);
     }
 
 
