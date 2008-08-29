@@ -86,6 +86,10 @@ public class GmpServlet extends HttpServlet implements CompletionListener {
     }
 
     public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
-        LOG.info("Called onHandlerResponse");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Received response :").append(response);
+        sb.append(" for command ").append(command).append("/");
+        sb.append(activity);
+        LOG.info(sb.toString());
     }
 }
