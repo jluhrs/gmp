@@ -1,10 +1,8 @@
 package edu.gemini.aspen.gmp.broker.jms;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-import edu.gemini.aspen.gmp.broker.impl.ConfigDefaults;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
@@ -27,8 +25,7 @@ public class JMSCompletionInfoConsumer implements MessageListener, ExceptionList
 
     public JMSCompletionInfoConsumer(GMPService service) {
         _service = service;
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                ConfigDefaults.BROKER_URL);
+        ConnectionFactory connectionFactory = JMSProvider.getConnectionFactory();
         try {
             Connection connection = connectionFactory.createConnection();
             connection.setClientID("JMS Completion Info Consumer");

@@ -1,12 +1,9 @@
 package edu.gemini.aspen.gmp.broker.jms;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.*;
 import java.util.logging.Logger;
 import java.util.Enumeration;
 
-import edu.gemini.aspen.gmp.broker.impl.ConfigDefaults;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 
 
@@ -20,8 +17,7 @@ public class JMSMessageHandler implements MessageListener, ExceptionListener {
 
     public JMSMessageHandler(String topic) {
 
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                ConfigDefaults.BROKER_URL);
+        ConnectionFactory connectionFactory = JMSProvider.getConnectionFactory();
         try {
             Connection connection = connectionFactory.createConnection();
             connection.setClientID("JMSMessageHandler:" + topic);

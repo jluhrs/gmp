@@ -1,10 +1,7 @@
 package edu.gemini.aspen.gmp.broker.jms;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.*;
 
-import edu.gemini.aspen.gmp.broker.impl.ConfigDefaults;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.broker.commands.Action;
@@ -44,8 +41,7 @@ public class JMSSequenceCommandProducer implements ExceptionListener {
     private Queue _replyQueue;
 
     public JMSSequenceCommandProducer() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                ConfigDefaults.BROKER_URL);
+        ConnectionFactory connectionFactory = JMSProvider.getConnectionFactory();
         try {
             _connection = connectionFactory.createConnection();
             _connection.setClientID("Sequence Command Producer");
