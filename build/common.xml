@@ -194,7 +194,7 @@
 		<exec executable="/usr/bin/uuidgen" outputproperty="build.uuid"/>
 		<exec executable="/bin/hostname" outputproperty="build.hostname"/>
 		<exec executable="/bin/date" outputproperty="build.date"/>
-		<exec executable="/sbin/md5" outputproperty="build.md5">
+		<exec executable="/usr/bin/md5sum" outputproperty="build.md5">
 			<arg value="${ant.project.name}-src.jar"/>
 		</exec>
 		
