@@ -22,22 +22,25 @@ public class JMSCompletionInfoConsumer implements MessageListener, ExceptionList
             JMSCompletionInfoConsumer.class.getName());
 
     private GMPService _service;
+    private Connection _connection;
+    private Session _session;
+    private MessageConsumer _consumer;
 
     public JMSCompletionInfoConsumer(GMPService service) {
         _service = service;
         ConnectionFactory connectionFactory = JMSProvider.getConnectionFactory();
         try {
-            Connection connection = connectionFactory.createConnection();
-            connection.setClientID("JMS Completion Info Consumer");
-            connection.start();
-            connection.setExceptionListener(this);
-            Session session = connection.createSession(false,
+            _connection = connectionFactory.createConnection();
+            _connection.setClientID("JMS Completion Info Consumer");
+            _connection.start();
+            _connection.setExceptionListener(this);
+            _session = _connection.createSession(false,
                                                        Session.AUTO_ACKNOWLEDGE);
             //Completion info comes from a queue
-            Destination destination = session.createQueue(
+            Destination destination = _session.createQueue(
                     GMPKeys.GMP_COMPLETION_INFO);
-            MessageConsumer consumer = session.createConsumer(destination);
-            consumer.setMessageListener(this);
+            _consumer = _session.createConsumer(destination);
+            _consumer.setMessageListener(this);
             LOG.info(
                     "Message Listener started to receive completion information");
         } catch (JMSException e) {
@@ -66,5 +69,15 @@ public class JMSCompletionInfoConsumer implements MessageListener, ExceptionList
     public void onException(JMSException e) {
         LOG.warning("onException: " + e);
         e.printStackTrace();
+    }
+
+    public void close() {
+        try {
+            _consumer.close();
+            _session.close();
+            _connection.close();
+        } catch (JMSException e) {
+            LOG.warning("exception : " + e);
+        }
     }
 }
