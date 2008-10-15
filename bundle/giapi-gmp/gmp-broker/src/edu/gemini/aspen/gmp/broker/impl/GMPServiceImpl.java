@@ -2,7 +2,8 @@ package edu.gemini.aspen.gmp.broker.impl;
 
 import edu.gemini.aspen.gmp.broker.api.Broker;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
-import edu.gemini.aspen.gmp.broker.jms.JMSSequenceCommandProducer;
+import edu.gemini.aspen.gmp.broker.commands.ActionSender;
+import edu.gemini.aspen.gmp.broker.jms.ActionSenderStrategy;
 import edu.gemini.aspen.gmp.broker.commands.ActionManager;
 import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.*;
@@ -22,7 +23,6 @@ public class GMPServiceImpl implements GMPService {
 
     private final ActionManager _manager = new ActionManager();
 
-    private JMSSequenceCommandProducer _producer;
 
     public GMPServiceImpl() {
     }
@@ -33,7 +33,6 @@ public class GMPServiceImpl implements GMPService {
      */
     public void start() {
         _broker.start();
-        _producer = new JMSSequenceCommandProducer();
         _manager.start();
         LOG.info("GMP started up. Ready to dispatch messages");
     }
@@ -44,7 +43,6 @@ public class GMPServiceImpl implements GMPService {
      */
     public void shutdown() {
         _manager.stop();
-        _producer.shutdown();
         _broker.shutdown();
         LOG.info("GMP shut down.");
     }
@@ -106,7 +104,10 @@ public class GMPServiceImpl implements GMPService {
                                                CompletionListener listener) {
         Action action = _manager.newAction(command, activity, config,
                                            listener);
-        HandlerResponse response = _producer.dispatchAction(action);
+
+        ActionSender sender = ActionSenderStrategy.getActionSender(action);
+
+        HandlerResponse response = sender.send(action);
 
         //The only response that indicates actions have started is
         //STARTED. The other three do not result in any ongoing actions

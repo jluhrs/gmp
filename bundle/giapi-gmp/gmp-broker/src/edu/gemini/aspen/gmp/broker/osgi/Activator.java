@@ -19,6 +19,7 @@ public class Activator implements BundleActivator {
             Activator.class.getName());
     private final GMPService _service = new GMPServiceImpl();
 
+    private JMSCompletionInfoConsumer _completionConsumer;
 
     ServiceRegistration _registration;
 
@@ -31,11 +32,13 @@ public class Activator implements BundleActivator {
                 _service, null);
 
         //start the Completion Info Consumer
-        new JMSCompletionInfoConsumer(_service);
+        _completionConsumer = new JMSCompletionInfoConsumer(_service);
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
         LOG.info("Stop GMP service bundle");
+
+        _completionConsumer.close();
 
         _service.shutdown();
 
