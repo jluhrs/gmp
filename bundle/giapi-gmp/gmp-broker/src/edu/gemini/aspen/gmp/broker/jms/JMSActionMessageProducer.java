@@ -14,12 +14,25 @@ import java.util.logging.Logger;
 /**
  * The JMSSequenceCommandProducer is in charge of generating JMS messages that
  * will contain an Action and dispatch them to the clients via JMS
+ *
+ * This class is a singleton, using the enum singleton pattern.
  */
-public class JMSActionMessageProducer implements ExceptionListener {
+public enum JMSActionMessageProducer implements ExceptionListener {
 
-    private final static Logger LOG = Logger.getLogger(JMSActionMessageProducer.class.getName());
+    /**
+     * The singleton
+     */
+    INSTANCE;
+
+    private final Logger LOG = Logger.getLogger(JMSActionMessageProducer.class.getName());
+
+    /**
+     * Map to store topics associtated to each sequence command
+     */
     private static final Map<SequenceCommand, String> TOPIC_MAP = new HashMap<SequenceCommand, String>();
-
+    /**
+     * Topic map static initialization
+     */
     static {
         for (SequenceCommand sc : SequenceCommand.values()) {
             TOPIC_MAP.put(sc,
@@ -34,7 +47,7 @@ public class JMSActionMessageProducer implements ExceptionListener {
     private Queue _replyQueue;
 
 
-    public JMSActionMessageProducer() {
+    private JMSActionMessageProducer() {
         ConnectionFactory connectionFactory = JMSProvider.getConnectionFactory();
         try {
             _connection = connectionFactory.createConnection();
@@ -51,34 +64,43 @@ public class JMSActionMessageProducer implements ExceptionListener {
         } catch (JMSException e) {
             LOG.warning("exception : " + e);
         }
-        LOG.info("Message Producer started");
-
+        LOG.info("Action Message Producer started");
     }
 
 
-    public ActionMessage createActionMessage(Action action) throws JMSException {
-
+    /**
+     * Creates a Map Message to be used by this producer
+     * @return a new Map Message created by this Session
+     * @throws JMSException if there is an error creating the Map Message
+     */
+    public MapMessage createMapMessage() throws JMSException {
         MapMessage m = _session.createMapMessage();
         m.setJMSReplyTo(_replyQueue);
-
-        //activity is a property
-        m.setStringProperty(GMPKeys.GMP_ACTIVITY_PROP,
-                            action.getActivity().getName());
-
-        //action id is stored as a property as well
-        m.setIntProperty(GMPKeys.GMP_ACTIONID_PROP, action.getId());
-
-
-        return new ActionMessage(m);
+        return m;
     }
 
-    public Destination createTopic(SequenceCommand sequenceCommand) throws JMSException {
-        return _session.createTopic(TOPIC_MAP.get(sequenceCommand));
+
+    /**
+     * Create a destination for the given Action.
+     * @param action The destination is specific to the given action
+     * @return a new destination for the given action.
+     * @throws JMSException if it is not possible to create
+     *         a destination for the specified action.
+     */
+    public Destination createDestination(Action action) throws JMSException {
+        return _session.createTopic(TOPIC_MAP.get(action.getSequenceCommand()));
     }
 
-    public HandlerResponse send(Destination topic, ActionMessage m) throws JMSException {
-        _producer.send(topic, m.getJmsMessage());
-        //now,  We'll receive the answer synchronously
+
+    /**
+     * Send the given message to the specified destination.
+     * @param destination Destination where the message should be sent
+     * @param message Message to be sent
+     * @return A HandlerResponse containing the ack info
+     * @throws JMSException if there was a problem while sending the message
+     */
+    public HandlerResponse send(Destination destination, Message message) throws JMSException {
+        _producer.send(destination, message);
         Message reply = _replyConsumer.receive(1000); //one sec.
         if (reply instanceof MapMessage) {
             MapMessage replyMap = (MapMessage) reply;
@@ -89,6 +111,9 @@ public class JMSActionMessageProducer implements ExceptionListener {
         return HandlerResponseImpl.createError("No answer received to action ");
     }
 
+    /**
+     * Close all the resources allocated by this producer
+     */
     public void close() {
         try {
             _replyConsumer.close();
@@ -105,5 +130,6 @@ public class JMSActionMessageProducer implements ExceptionListener {
         e.printStackTrace();
 
     }
+
 
 }
