@@ -23,7 +23,13 @@ public interface HandlerResponse {
         /**
 		 * Request ended with error.
 		 */
-        ERROR("ERROR");
+        ERROR("ERROR"),
+        /**
+         * Special error handler response. Created internally
+         * by the system when for a given command, there is no
+         * reply
+         */
+        NOANSWER("NOANSWER");
 
         Response(String tag) {
             _tag = tag;

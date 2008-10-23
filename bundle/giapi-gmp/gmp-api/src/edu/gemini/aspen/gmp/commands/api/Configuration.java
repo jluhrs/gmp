@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.commands.api;
 
-import java.util.Enumeration;
-import java.io.Serializable;
+import java.util.Set;
 
 /**
  * Configuration interface.
@@ -26,16 +25,25 @@ public interface Configuration {
 	 *         if there is no value associated for the key in the current
 	 *         configuration.
 	 */
-    String getValue(String key);
+    String getValue(ConfigPath key);
 
     /**
 	 * Return the keys contained in the configuration. If the configuration
-	 * does not contain any key, an empty enumeration is returned.
+	 * does not contain any key, an empty set is returned.
 	 *
-	 * @return Enumeration of strings representing the keys
-	 *         contained in the configuration. An empty enmeration is returned
+	 * @return Set of strings representing the keys
+	 *         contained in the configuration. An empty set is returned
 	 *         if no keys are present.
 	 */
-	Enumeration<String> getKeys();
+	Set<ConfigPath> getKeys();
+
+
+    /**
+     * Get the Configuration items that match the given path. The returned
+     * object is a new Configuration instance.
+     * @param path ConfigPath used to filter the configuration items
+     * @return a new Configuration whose items match the given path
+     */
+    Configuration getSubConfiguration(ConfigPath path);
 
 }

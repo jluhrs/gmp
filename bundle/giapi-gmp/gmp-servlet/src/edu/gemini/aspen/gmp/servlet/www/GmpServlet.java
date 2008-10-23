@@ -45,7 +45,7 @@ public class GmpServlet extends HttpServlet implements CompletionListener {
             return;
         }
 
-        HandlerResponse response = _service.sendSequenceCommand(request.getSequenceCommand(), request.getActivity(), this);
+        HandlerResponse response = _service.sendSequenceCommand(request.getSequenceCommand(), request.getActivity(), request.getConfiguration(), this);
 
         StringBuilder data = new StringBuilder("Command Sent: ");
         data.append(request.getSequenceCommand().getName()).append(" Activity : ").append(request.getActivity().getName());

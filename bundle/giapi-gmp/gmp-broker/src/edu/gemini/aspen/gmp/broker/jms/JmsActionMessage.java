@@ -5,12 +5,13 @@ import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.broker.commands.ActionMessage;
+import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 
 import javax.jms.MapMessage;
 import javax.jms.JMSException;
 import javax.jms.Destination;
-import java.util.Enumeration;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -37,7 +38,20 @@ public class JmsActionMessage implements ActionMessage {
      * @param action the Action representd by this messsage
      */
     public JmsActionMessage(Action action) {
+        this(action, null);
+    }
 
+
+    //TODO: ConfigPath is not the right object to pass here. It should be
+    //a different interface that provides the name of the destination for the
+    //apply sequence command.
+    /**
+     * Constructor. Creates an Action message for the given action
+     * and the path. The path influences the recipients of this message
+     * @param action Action to be sent over the network
+     * @param path Path to be used to define where to send this message
+     */
+    public JmsActionMessage(Action action, ConfigPath path) {
         try {
             _message = _jmsProducer.createMapMessage();
 
@@ -49,12 +63,11 @@ public class JmsActionMessage implements ActionMessage {
             _message.setIntProperty(GMPKeys.GMP_ACTIONID_PROP, action.getId());
 
             //destination is based on the action
-            _destination = _jmsProducer.createDestination(action);
+            _destination = _jmsProducer.createDestination(action, path);
 
         } catch (JMSException e) {
             LOG.warning("Exception while creating action message: " + e);
         }
-
     }
 
     /**
@@ -65,11 +78,12 @@ public class JmsActionMessage implements ActionMessage {
         try {
             if (config != null) {
                 //set all the configuration elements in the map
-                Enumeration<String> e = config.getKeys();
-                while (e.hasMoreElements()) {
-                    String key = e.nextElement();
-                    String value = config.getValue(key);
-                    _message.setString(key, value);
+                Set<ConfigPath> set = config.getKeys();
+                if (set != null) {
+                    for (ConfigPath key: set) {
+                        String value = config.getValue(key);
+                        _message.setString(key.toString(), value);
+                    }
                 }
             }
         } catch (JMSException e) {

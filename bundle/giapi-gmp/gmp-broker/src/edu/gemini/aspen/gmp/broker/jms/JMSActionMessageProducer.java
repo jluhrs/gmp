@@ -5,6 +5,7 @@ import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.broker.commands.Action;
+import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 
 import javax.jms.*;
 import java.util.Map;
@@ -46,7 +47,10 @@ public enum JMSActionMessageProducer implements ExceptionListener {
     private MessageConsumer _replyConsumer;
     private Queue _replyQueue;
 
-
+    /**
+     * Private constructor, initialize the connection, session, consumers and producers
+     * to be used when sending Action Messages 
+     */
     private JMSActionMessageProducer() {
         ConnectionFactory connectionFactory = JMSProvider.getConnectionFactory();
         try {
@@ -88,7 +92,16 @@ public enum JMSActionMessageProducer implements ExceptionListener {
      *         a destination for the specified action.
      */
     public Destination createDestination(Action action) throws JMSException {
-        return _session.createTopic(TOPIC_MAP.get(action.getSequenceCommand()));
+        return createDestination(action, null);
+    }
+
+    public Destination createDestination(Action action, ConfigPath path) throws JMSException {
+        StringBuilder sb = new StringBuilder(TOPIC_MAP.get(action.getSequenceCommand()));
+        if (path != null) {
+            sb.append(GMPKeys.GMP_SEPARATOR);
+            sb.append(path.toString());
+        }
+        return _session.createTopic(sb.toString());
     }
 
 
@@ -108,7 +121,7 @@ public enum JMSActionMessageProducer implements ExceptionListener {
         } else {
             LOG.warning("No answer received for action ");
         }
-        return HandlerResponseImpl.createError("No answer received to action ");
+        return HandlerResponseImpl.create(HandlerResponse.Response.NOANSWER);
     }
 
     /**
