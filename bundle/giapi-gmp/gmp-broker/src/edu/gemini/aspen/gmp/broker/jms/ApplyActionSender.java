@@ -44,6 +44,15 @@ public class ApplyActionSender implements ActionSender {
          * @return a HandlerResponse that summarizes all the responses in this collection
          */
         public HandlerResponse getSummaryResponse() {
+
+            //if there is a non-answer, means one part of the configuration couldn't get handled.
+            //Return NOANSWE
+            //TODO: Fix this code. The list of responses should be sorted and getting the summary
+            //should be straightforward.
+            for (HandlerResponse response : _responses) {
+                if (response.getResponse() == HandlerResponse.Response.NOANSWER) return response;
+            }
+
             //if there is an error, the entire stuff is an error
             for (HandlerResponse response : _responses) {
                 if (response.getResponse() == HandlerResponse.Response.ERROR) return response;
