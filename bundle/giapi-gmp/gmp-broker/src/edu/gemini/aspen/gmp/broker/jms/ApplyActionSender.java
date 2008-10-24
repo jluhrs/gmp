@@ -95,8 +95,7 @@ public class ApplyActionSender implements ActionSender {
         Set<ConfigPath> configPathSet = navigator.getChildPaths(path);
 
         if (configPathSet.size() <= 0) {
-            //TODO: See what would happen if I return null instead. Or NOANSWER
-            return HandlerResponseImpl.createError("Can't get a reply for this configuration");
+            return HandlerResponseImpl.create(HandlerResponse.Response.NOANSWER);
         }
 
         //this analizer will get the result answer from this part of the configuration
@@ -110,10 +109,16 @@ public class ApplyActionSender implements ActionSender {
             m.setConfiguration(c);
             //send it
             HandlerResponse response = m.send();
-            //if there are no handlers, decompose this config in
+            //if there are no handlers, recursively decompose this config in
             //smaller units if possible, and return the answer.
             if (response.getResponse() == HandlerResponse.Response.NOANSWER) {
                 response = getResponse(action, c, cp);
+            }
+
+            //if the answer is still NOANSWER, return inmediately, there is no one
+            //that can process this part of the configuration. 
+            if (response.getResponse() == HandlerResponse.Response.NOANSWER) {
+                return response;
             }
             analizer.addResponse(response);
         }

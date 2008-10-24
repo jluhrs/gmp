@@ -114,7 +114,7 @@ public enum JMSActionMessageProducer implements ExceptionListener {
      */
     public HandlerResponse send(Destination destination, Message message) throws JMSException {
         _producer.send(destination, message);
-        Message reply = _replyConsumer.receive(1000); //one sec.
+        Message reply = _replyConsumer.receive(500); //500 msec to answer.
         if (reply instanceof MapMessage) {
             MapMessage replyMap = (MapMessage) reply;
             return JMSUtil.buildHandlerResponse(replyMap);
