@@ -16,7 +16,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.ipr" afterPath="$PROJECT_DIR$/giapi-gmp.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.iws" afterPath="$PROJECT_DIR$/giapi-gmp.iws" />
     </list>
     <ignored path="giapi-gmp.iws" />
@@ -80,15 +79,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DefaultConfiguration.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/commands/api/DefaultConfiguration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="0" selection-start="916" selection-end="976" vertical-scroll-proportion="0.7973422">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="JMSActionMessageProducer.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSActionMessageProducer.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -134,10 +124,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JMSCompletionInfoConsumer.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="JMSCompletionInfoConsumer.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSCompletionInfoConsumer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="61" column="25" selection-start="2446" selection-end="2446" vertical-scroll-proportion="1.3704319">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manifest.mf" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/gmp-api/manifest.mf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -808,13 +807,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/impl/GMPKeys.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="138" selection-end="138" vertical-scroll-proportion="0.08680555">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gmp-servlet/src/edu/gemini/aspen/gmp/servlet/osgi/GmpTracker.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="13" selection-start="416" selection-end="416" vertical-scroll-proportion="0.0625">
@@ -916,6 +908,13 @@
     <entry file="file://$PROJECT_DIR$/gmp-broker/src/edu/gemini/aspen/gmp/broker/jms/JMSCompletionInfoConsumer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="61" column="25" selection-start="2446" selection-end="2446" vertical-scroll-proportion="1.3704319">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-api/manifest.mf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
