@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import java.util.Enumeration;
 
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
+import edu.gemini.jms.activemq.broker.JMSProvider;
 
 
 /**

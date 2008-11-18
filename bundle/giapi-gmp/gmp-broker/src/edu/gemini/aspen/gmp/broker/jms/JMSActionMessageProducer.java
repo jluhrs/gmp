@@ -6,6 +6,7 @@ import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
+import edu.gemini.jms.activemq.broker.JMSProvider;
 
 import javax.jms.*;
 import java.util.Map;

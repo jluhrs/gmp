@@ -17,32 +17,19 @@ public class Activator implements BundleActivator {
 
     private static final Logger LOG = Logger.getLogger(
             Activator.class.getName());
-    private final GMPService _service = new GMPServiceImpl();
-
-    private JMSCompletionInfoConsumer _completionConsumer;
-
-    ServiceRegistration _registration;
+    private JmsProviderTracker _jmsTracker;
 
     public void start(BundleContext bundleContext) throws Exception {
-        LOG.info("Start GMP service bundle");
-        _service.start();
-        //advertise the GMP service in the OSGi framework
-        _registration = bundleContext.registerService(
-                GMPService.class.getName(),
-                _service, null);
+        LOG.info("Start tracking for JMS Provider");
+        _jmsTracker = new JmsProviderTracker(bundleContext);
+        _jmsTracker.open();
 
-        //start the Completion Info Consumer
-        _completionConsumer = new JMSCompletionInfoConsumer(_service);
+
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
-        LOG.info("Stop GMP service bundle");
-
-        _completionConsumer.close();
-
-        _service.shutdown();
-
-        //notify the OSGi framework this service is not longer available
-        _registration.unregister();
+        LOG.info("Stop tracking for JMS Provider");
+        _jmsTracker.close();
+        _jmsTracker = null;
     }
 }

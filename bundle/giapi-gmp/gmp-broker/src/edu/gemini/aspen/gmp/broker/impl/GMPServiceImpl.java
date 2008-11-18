@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.broker.impl;
 
-import edu.gemini.aspen.gmp.broker.api.Broker;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.broker.commands.ActionSender;
 import edu.gemini.aspen.gmp.broker.jms.ActionSenderStrategy;
@@ -11,7 +10,7 @@ import edu.gemini.aspen.gmp.commands.api.*;
 import java.util.logging.Logger;
 
 /**
- * Implementatin of the GMP Service.
+ * Implementation of the GMP Service.
  */
 public class GMPServiceImpl implements GMPService {
 
@@ -19,10 +18,7 @@ public class GMPServiceImpl implements GMPService {
     private static final Logger LOG = Logger.getLogger(
             GMPServiceImpl.class.getName());
 
-    private final Broker _broker = new ActiveMQBroker();
-
     private final ActionManager _manager = new ActionManager();
-
 
     public GMPServiceImpl() {
     }
@@ -32,7 +28,6 @@ public class GMPServiceImpl implements GMPService {
      * Start the Gemini Master Process Service
      */
     public void start() {
-        _broker.start();
         _manager.start();
         LOG.info("GMP started up. Ready to dispatch messages");
     }
@@ -43,7 +38,6 @@ public class GMPServiceImpl implements GMPService {
      */
     public void shutdown() {
         _manager.stop();
-        _broker.shutdown();
         LOG.info("GMP shut down.");
     }
 

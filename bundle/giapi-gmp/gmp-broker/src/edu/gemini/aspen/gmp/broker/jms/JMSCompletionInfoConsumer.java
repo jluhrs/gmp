@@ -6,6 +6,7 @@ import javax.jms.*;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+import edu.gemini.jms.activemq.broker.JMSProvider;
 
 import java.util.logging.Logger;
 

@@ -8,6 +8,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="gmp-api" />
+    <orderEntry type="module" module-name="jms-api" />
+    <orderEntry type="module" module-name="activemq" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -38,7 +40,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/activemq-all-5.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../runtime/lib/servlet.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -47,13 +49,12 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/servlet.jar!/" />
+          <root url="jar://$MODULE_DIR$/../active-mq/lib/activemq-all-5.1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntryProperties />
   </component>
 </module>
 
