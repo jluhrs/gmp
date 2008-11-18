@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-Name: JMS API
+Bundle-Classpath: .
+Bundle-Description: The Gemini Broker JMS-based API
+Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Version: 1.0.0
+Export-Package: edu.gemini.jms.api
