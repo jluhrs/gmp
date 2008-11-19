@@ -10,10 +10,7 @@ import edu.gemini.jms.api.Broker;
 /**
  *  A Broker implementation, based on the ActiveMQ JMS service
  */
-public class
-
-
-        ActiveMQBroker implements Broker {
+public class ActiveMQBroker implements Broker {
 
     private static final Logger LOG = Logger.getLogger(ActiveMQBroker.class.getName());
 
