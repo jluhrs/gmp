@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="active-mq" default="all" basedir=".">
+<project name="jms-activemq" default="all" basedir=".">
     <import file="../build.xml"/>
 
     <path id="build.classpath.extra">
