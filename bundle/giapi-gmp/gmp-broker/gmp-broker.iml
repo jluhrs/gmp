@@ -9,7 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="gmp-api" />
     <orderEntry type="module" module-name="jms-api" />
-    <orderEntry type="module" module-name="activemq" />
+    <orderEntry type="module" module-name="jms-activemq" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
