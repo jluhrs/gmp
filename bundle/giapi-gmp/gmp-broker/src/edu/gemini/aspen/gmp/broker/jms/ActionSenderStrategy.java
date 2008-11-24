@@ -9,15 +9,22 @@ import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
  */
 public class ActionSenderStrategy {
 
-    private final static ActionSender DEFAULT = new DefaultActionSender();
-    private final static ActionSender APPLY   = new ApplyActionSender();
+
+    private ActionSender _default;
+    private ActionSender _apply;
+
+    public ActionSenderStrategy(JMSActionMessageProducer producer) {
+
+        ActionMessageFactory factory = new ActionMessageFactory(producer);
+        _default = new DefaultActionSender(factory);
+        _apply   = new ApplyActionSender(factory);
+    }
 
 
-    public static ActionSender getActionSender(Action action) {
+    public ActionSender getActionSender(Action action) {
 
-        if (action.getSequenceCommand() == SequenceCommand.APPLY) return APPLY;
-
-        return DEFAULT;
+        if (action.getSequenceCommand() == SequenceCommand.APPLY) return _apply;
+        return _default;
 
     }
 

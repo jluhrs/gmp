@@ -66,6 +66,21 @@ public class ApplyActionSender implements ActionSender {
     }
 
     /**
+     * The factory to produce action messages.
+     */
+    private ActionMessageFactory _factory;
+
+    /**
+     * Constructor. Takes as an argument the factory to create action messages
+     *
+     * @param factory the factory to create action messages.
+     */
+    public ApplyActionSender(ActionMessageFactory factory) {
+        _factory = factory;
+    }
+
+
+    /**
      * This method takes the given action and converts it into a message to
      * be dispatched over the network
      *
@@ -114,7 +129,7 @@ public class ApplyActionSender implements ActionSender {
             //get the subconfiguration
             Configuration c = config.getSubConfiguration(cp);
             //create an action message to dispatch this configuration over the network
-            ActionMessage m = ActionMessageFactory.create(action, cp);
+            ActionMessage m = _factory.create(action, cp);
             m.setConfiguration(c);
             //send it
             HandlerResponse response = m.send();

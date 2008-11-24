@@ -6,7 +6,7 @@ import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
-import edu.gemini.jms.activemq.broker.JMSProvider;
+import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.*;
 import java.util.Map;
@@ -17,14 +17,8 @@ import java.util.logging.Logger;
  * The JMSSequenceCommandProducer is in charge of generating JMS messages that
  * will contain an Action and dispatch them to the clients via JMS
  *
- * This class is a singleton, using the enum singleton pattern.
  */
-public enum JMSActionMessageProducer implements ExceptionListener {
-
-    /**
-     * The singleton
-     */
-    INSTANCE;
+public class JMSActionMessageProducer implements ExceptionListener {
 
     private final Logger LOG = Logger.getLogger(JMSActionMessageProducer.class.getName());
 
@@ -50,10 +44,12 @@ public enum JMSActionMessageProducer implements ExceptionListener {
 
     /**
      * Private constructor, initialize the connection, session, consumers and producers
-     * to be used when sending Action Messages 
+     * to be used when sending Action Messages
+     *
+     * @param provider The JMS Provider to be used by this message producer. 
      */
-    private JMSActionMessageProducer() {
-        ConnectionFactory connectionFactory = JMSProvider.getConnectionFactory();
+    public JMSActionMessageProducer(JmsProvider provider) {
+        ConnectionFactory connectionFactory = provider.getConnectionFactory();
         try {
             _connection = connectionFactory.createConnection();
             _connection.setClientID("Sequence Command Producer");

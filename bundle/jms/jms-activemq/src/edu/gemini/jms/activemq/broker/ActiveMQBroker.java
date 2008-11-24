@@ -16,7 +16,6 @@ public class ActiveMQBroker implements Broker {
 
     private final BrokerService _broker;
 
-
     public ActiveMQBroker() {
         _broker = new BrokerService();
     }

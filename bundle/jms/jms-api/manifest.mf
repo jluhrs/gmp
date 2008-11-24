@@ -1,7 +1,10 @@
 Manifest-Version: 1.0
 Bundle-Name: JMS API
-Bundle-Classpath: .
+Bundle-Classpath: ., lib/geronimo-jms_1.1_spec-1.1.1.jar, lib/geronimo-j2ee-management_1.0_spec-1.0.jar
 Bundle-Description: The Gemini Broker JMS-based API
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 1.0.0
-Export-Package: edu.gemini.jms.api
+Export-Package: edu.gemini.jms.api,
+ javax.jms,
+ javax.management.j2ee.statistics
+ 

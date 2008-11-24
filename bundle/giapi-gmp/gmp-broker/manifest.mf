@@ -7,7 +7,6 @@ Bundle-Version: 1.0.1
 Import-Package: edu.gemini.aspen.gmp.broker.api,
  edu.gemini.aspen.gmp.commands.api,
  edu.gemini.jms.api,
- edu.gemini.jms.activemq.broker,
  javax.jms,
  org.osgi.util.tracker,
  org.osgi.framework

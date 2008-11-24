@@ -4,9 +4,11 @@ import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import edu.gemini.jms.api.Broker;
+import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.broker.jms.JMSCompletionInfoConsumer;
+import edu.gemini.aspen.gmp.broker.jms.JMSActionMessageProducer;
+import edu.gemini.aspen.gmp.broker.jms.ActionSenderStrategy;
 import edu.gemini.aspen.gmp.broker.impl.GMPServiceImpl;
 
 import java.util.logging.Logger;
@@ -22,32 +24,36 @@ public class JmsProviderTracker extends ServiceTracker {
 
 
     private JMSCompletionInfoConsumer _completionConsumer;
+    private JMSActionMessageProducer _actionMessageProducer;
 
     private GMPService _service = null;
 
     ServiceRegistration _registration;
 
     public JmsProviderTracker(BundleContext ctx) {
-        super(ctx, Broker.class.getName(), null);
+        super(ctx, JmsProvider.class.getName(), null);
     }
 
     @Override
     public Object addingService(ServiceReference serviceReference) {
         LOG.info("Adding JMS Service provider");
-        Broker service = (Broker)context.getService(serviceReference);
+        JmsProvider provider = (JmsProvider) context.getService(serviceReference);
+        //start the action Message producer
+        _actionMessageProducer = new JMSActionMessageProducer(provider);
 
         LOG.info("Starting GMP service bundle");
-        _service =  new GMPServiceImpl();
+        _service = new GMPServiceImpl(new ActionSenderStrategy(_actionMessageProducer));
         _service.start();
+
+        //start the Completion Info Consumer
+        _completionConsumer = new JMSCompletionInfoConsumer(_service, provider);
+
         //advertise the GMP service in the OSGi framework
         _registration = context.registerService(
                 GMPService.class.getName(),
                 _service, null);
 
-        //start the Completion Info Consumer
-        _completionConsumer = new JMSCompletionInfoConsumer(_service);
-
-        return service;
+        return provider;
     }
 
     @Override
@@ -55,6 +61,7 @@ public class JmsProviderTracker extends ServiceTracker {
 
         LOG.info("Stopping GMP service bundle");
 
+        _actionMessageProducer.close();
         _completionConsumer.close();
 
         _service.shutdown();
@@ -64,6 +71,9 @@ public class JmsProviderTracker extends ServiceTracker {
 
         LOG.info("Removing JMS Service provider");
         context.ungetService(serviceReference);
+
+        _actionMessageProducer = null;
+        _completionConsumer = null;
     }
 
 

@@ -14,8 +14,10 @@ public class DefaultActionSender implements ActionSender {
 
     private static final Logger LOG = Logger.getLogger(DefaultActionSender.class.getName());
 
+    private ActionMessageFactory _factory;
 
-    public DefaultActionSender() {
+    public DefaultActionSender(ActionMessageFactory factory) {
+        _factory = factory;
         LOG.info("Initializing Default Action Sender");
     }
 
@@ -29,7 +31,7 @@ public class DefaultActionSender implements ActionSender {
      */
     public HandlerResponse send(Action action) {
 
-        ActionMessage m = ActionMessageFactory.create(action);
+        ActionMessage m = _factory.create(action);
 
         m.setConfiguration(action.getConfiguration());
 

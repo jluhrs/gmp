@@ -31,14 +31,15 @@ public class JmsActionMessage implements ActionMessage {
     private Destination _destination;
 
 
-    private JMSActionMessageProducer _jmsProducer = JMSActionMessageProducer.INSTANCE;
+    private JMSActionMessageProducer _jmsProducer;
 
     /**
      * Constructor. Creates an Action message for the given action
+     * @param producer the JMS Producer to create the underlying messages
      * @param action the Action representd by this messsage
      */
-    public JmsActionMessage(Action action) {
-        this(action, null);
+    public JmsActionMessage(JMSActionMessageProducer producer, Action action) {
+        this(producer, action, null);
     }
 
 
@@ -48,10 +49,13 @@ public class JmsActionMessage implements ActionMessage {
     /**
      * Constructor. Creates an Action message for the given action
      * and the path. The path influences the recipients of this message
+     * @param producer the JMS Producer to create the underlying messages
      * @param action Action to be sent over the network
      * @param path Path to be used to define where to send this message
      */
-    public JmsActionMessage(Action action, ConfigPath path) {
+    public JmsActionMessage(JMSActionMessageProducer producer, Action action, ConfigPath path) {
+
+        _jmsProducer = producer;
         try {
             _message = _jmsProducer.createMapMessage();
 

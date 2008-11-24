@@ -9,6 +9,12 @@ import edu.gemini.aspen.gmp.commands.api.ConfigPath;
  */
 public class ActionMessageFactory {
 
+    JMSActionMessageProducer _producer;
+
+    public ActionMessageFactory(JMSActionMessageProducer producer) {
+        _producer = producer;
+    }
+
     public enum MessagingSystem {
         JMS
     }
@@ -20,7 +26,7 @@ public class ActionMessageFactory {
      * @return a new ActionMessage using the default
      *         messaging system
      */
-    public static ActionMessage create(Action action) {
+    public ActionMessage create(Action action) {
         return create(action, null, MessagingSystem.JMS);
     }
 
@@ -34,7 +40,7 @@ public class ActionMessageFactory {
      * of this message
      * @return a new Action Message using the default MessagingSystem
      */
-    public static ActionMessage create(Action action, ConfigPath path) {
+    public ActionMessage create(Action action, ConfigPath path) {
         return create(action, path, MessagingSystem.JMS);
     }
 
@@ -47,12 +53,14 @@ public class ActionMessageFactory {
      *        the underlying communication system
      * @return a new Action Message for this action. 
      */
-    public static ActionMessage create(Action action, ConfigPath path, MessagingSystem type) {
+    public ActionMessage create(Action action,
+                                       ConfigPath path,
+                                       MessagingSystem type) {
         switch (type) {
             case JMS:
-                return new JmsActionMessage(action, path);
+                return new JmsActionMessage(_producer, action, path);
             default:
-                return new JmsActionMessage(action, path);
+                return new JmsActionMessage(_producer, action, path);
         }
     }
 

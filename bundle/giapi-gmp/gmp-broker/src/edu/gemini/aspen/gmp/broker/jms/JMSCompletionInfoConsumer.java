@@ -6,7 +6,7 @@ import javax.jms.*;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.jms.activemq.broker.JMSProvider;
+import edu.gemini.jms.api.JmsProvider;
 
 import java.util.logging.Logger;
 
@@ -27,9 +27,9 @@ public class JMSCompletionInfoConsumer implements MessageListener, ExceptionList
     private Session _session;
     private MessageConsumer _consumer;
 
-    public JMSCompletionInfoConsumer(GMPService service) {
+    public JMSCompletionInfoConsumer(GMPService service, JmsProvider provider) {
         _service = service;
-        ConnectionFactory connectionFactory = JMSProvider.getConnectionFactory();
+        ConnectionFactory connectionFactory = provider.getConnectionFactory();
         try {
             _connection = connectionFactory.createConnection();
             _connection.setClientID("JMS Completion Info Consumer");

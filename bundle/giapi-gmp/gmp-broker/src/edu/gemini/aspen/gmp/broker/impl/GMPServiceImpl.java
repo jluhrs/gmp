@@ -20,7 +20,9 @@ public class GMPServiceImpl implements GMPService {
 
     private final ActionManager _manager = new ActionManager();
 
-    public GMPServiceImpl() {
+    private ActionSenderStrategy _strategy = null;
+    public GMPServiceImpl(ActionSenderStrategy strategy) {
+        _strategy = strategy;
     }
 
 
@@ -38,6 +40,7 @@ public class GMPServiceImpl implements GMPService {
      */
     public void shutdown() {
         _manager.stop();
+        _strategy = null;
         LOG.info("GMP shut down.");
     }
 
@@ -99,7 +102,7 @@ public class GMPServiceImpl implements GMPService {
         Action action = _manager.newAction(command, activity, config,
                                            listener);
 
-        ActionSender sender = ActionSenderStrategy.getActionSender(action);
+        ActionSender sender = _strategy.getActionSender(action);
 
         HandlerResponse response = sender.send(action);
 
