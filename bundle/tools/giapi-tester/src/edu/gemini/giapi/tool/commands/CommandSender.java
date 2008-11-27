@@ -1,14 +1,13 @@
 package edu.gemini.giapi.tool.commands;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.*;
 
 import edu.gemini.aspen.gmp.gw.jms.GatewayKeys;
-import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.api.Activity;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.broker.jms.JMSUtil;
+import edu.gemini.aspen.gmp.commands.api.*;
+import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
+import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.giapi.tool.jms.BrokerConnection;
+import edu.gemini.giapi.tool.TesterException;
 
 /**
  *
@@ -16,48 +15,70 @@ import edu.gemini.aspen.gmp.broker.jms.JMSUtil;
 public class CommandSender {
 
 
-       public CommandSender(String url) {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
+    private Session _session;
+    private Destination _destination;
+    private MessageProducer _producer;
+
+    private Queue _replyQueue;
+    private MessageConsumer _replyConsumer;
+
+    public CommandSender(BrokerConnection connection) throws TesterException {
         try {
-            Connection connection = connectionFactory.createConnection();
-            connection.start();
-
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Destination destination = session.createTopic(GatewayKeys.COMMAND_TOPIC);
-            MessageProducer producer = session.createProducer(destination);
-
-            MapMessage m = session.createMapMessage();
-
-            m.setStringProperty(GatewayKeys.SEQUENCE_COMMAND_KEY, SequenceCommand.INIT.name());
-            m.setStringProperty(GatewayKeys.ACTIVITY_KEY, Activity.PRESET_START.name());
-
-            Queue queue = session.createTemporaryQueue();
-            m.setJMSReplyTo(queue);
-
-            MessageConsumer consumer = session.createConsumer(queue);
-
-            System.out.println("Sending message "+ m);
-
-            producer.send(destination, m);
-
-            MapMessage reply = (MapMessage)consumer.receive();
-
-            HandlerResponse response = JMSUtil.buildHandlerResponse(reply);
-            System.out.println("Reply: " + response);
-
-            producer.close();
-            consumer.close();
-            session.close();
-            connection.stop();
-            connection.close();
-
-
-
+            _session = connection.getSession();
+            _destination = _session.createTopic(GatewayKeys.COMMAND_TOPIC);
+            _producer = _session.createProducer(_destination);
+            _replyQueue = _session.createTemporaryQueue();
+            _replyConsumer = _session.createConsumer(_replyQueue);
 
         } catch (JMSException ex) {
-            ex.printStackTrace();
+            throw new TesterException(ex);
+        }
+    }
+
+
+    public HandlerResponse send(SequenceCommand command,
+                     Activity activity,
+                     Configuration config
+                     ) throws TesterException {
+        try {
+            MapMessage m = _session.createMapMessage();
+            m.setStringProperty(GmpKeys.GMP_SEQUENCE_COMMAND_KEY, command.name());
+            m.setStringProperty(GmpKeys.GMP_ACTIVITY_KEY, activity.name());
+
+            if (config != null && config.getKeys() != null) {
+                for (ConfigPath path : config.getKeys()) {
+                    m.setString(path.getName(), config.getValue(path));
+                }
+            }
+
+            m.setJMSReplyTo(_replyQueue);
+            _producer.send(_destination, m);
+
+            //synchronously get the reply
+            MapMessage reply = (MapMessage) _replyConsumer.receive();
+            return GmpJmsUtil.buildHandlerResponse(reply);
+        } catch (JMSException e) {
+            throw new TesterException(e);
+        }
+    }
+
+
+
+    public CompletionInformation receiveCompletionInformation() throws TesterException {
+
+        try {
+            Message m = _replyConsumer.receive();
+            System.out.println("Received completion Information..." + m);
+
+            return GmpJmsUtil.buildCompletionInformation(m);
+
+            
+        } catch (JMSException e) {
+            throw new TesterException(e);
         }
 
-       }
+
+    }
+
 
 }
