@@ -3,10 +3,10 @@ package edu.gemini.aspen.gmp.broker.jms;
 import edu.gemini.aspen.gmp.commands.api.Configuration;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.broker.commands.Action;
-import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.broker.commands.ActionMessage;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
+import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import javax.jms.MapMessage;
 import javax.jms.JMSException;

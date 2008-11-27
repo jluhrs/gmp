@@ -3,9 +3,10 @@ package edu.gemini.aspen.gmp.broker.jms;
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
-import edu.gemini.aspen.gmp.broker.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
+import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
+import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.*;
@@ -114,7 +115,7 @@ public class JMSActionMessageProducer implements ExceptionListener {
         Message reply = _replyConsumer.receive(500); //500 msec to answer.
         if (reply instanceof MapMessage) {
             MapMessage replyMap = (MapMessage) reply;
-            return JMSUtil.buildHandlerResponse(replyMap);
+            return GmpJmsUtil.buildHandlerResponse(replyMap);
         } else {
             LOG.warning("No answer received for action ");
         }

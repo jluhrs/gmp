@@ -6,6 +6,7 @@ import javax.jms.*;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.jms.api.JmsProvider;
 
 import java.util.logging.Logger;
@@ -55,7 +56,7 @@ public class JMSCompletionInfoConsumer implements MessageListener, ExceptionList
                 MapMessage m = (MapMessage) message;
 
                 int actionId = m.getIntProperty(GMPKeys.GMP_ACTIONID_PROP);
-                HandlerResponse response = JMSUtil.buildHandlerResponse(m);
+                HandlerResponse response = GmpJmsUtil.buildHandlerResponse(m);
                 LOG.info(
                         "Received Completion info for action ID " + actionId + " : " + response
                                 .toString());
