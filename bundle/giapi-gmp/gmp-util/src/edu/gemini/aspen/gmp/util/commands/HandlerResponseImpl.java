@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.broker.commands;
+package edu.gemini.aspen.gmp.util.commands;
 
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 
