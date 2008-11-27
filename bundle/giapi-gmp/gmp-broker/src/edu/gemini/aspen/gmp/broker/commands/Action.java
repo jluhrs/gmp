@@ -28,6 +28,10 @@ public class Action implements Comparable<Action> {
         _listener = listener;
     }
 
+    public static int getCurrentId() {
+        return ID;
+    }
+
     public Activity getActivity() {
         return _activity;
     }

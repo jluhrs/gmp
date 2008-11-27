@@ -108,6 +108,17 @@ public class ActionManager {
                     return;
                 }
 
+                //if the action received hasn't been issued yet
+                //by the system, that's an indication of a problem
+                if (actionId > Action.getCurrentId())  {
+                    LOG.log(Level.WARNING,
+                            "Action ID received " + actionId +
+                            " but the last ID generated is " + Action.getCurrentId() +
+                            ". This usually is a problem in the instrument code");
+                    return;
+                }
+
+
                 while (action != null && action.getId() <= actionId) {
                     LOG.info("Updating clients with action " + action + " response " + response);
                     CompletionListener listener = action.getCompletionListener();
