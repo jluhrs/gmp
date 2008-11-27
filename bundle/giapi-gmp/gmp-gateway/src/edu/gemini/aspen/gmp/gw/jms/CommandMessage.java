@@ -1,10 +1,10 @@
 package edu.gemini.aspen.gmp.gw.jms;
 
 import edu.gemini.aspen.gmp.commands.api.*;
+import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 
 import javax.jms.MapMessage;
 import javax.jms.JMSException;
-import javax.jms.Destination;
 import java.util.Enumeration;
 
 /**
@@ -16,21 +16,16 @@ public class CommandMessage {
     private SequenceCommand _sequenceCommand;
     private Activity _activity;
     private Configuration _configuration;
-    private CompletionListener _completionListener;
-
-    private Destination _replyDestination;
 
 
     public CommandMessage(MapMessage msg) throws FormatException {
-
         _sequenceCommand = parseSequenceCommand(msg);
 
         _activity = parseActivity(msg);
 
         _configuration = parseConfiguration(msg);
 
-        _completionListener = parseCompletionListener(msg);
-
+        parseCompletionListener(msg);
     }
 
 
@@ -47,14 +42,10 @@ public class CommandMessage {
         return _configuration;
     }
 
-    public CompletionListener getCompletionListener() {
-        return _completionListener;
-    }
-
 
     private SequenceCommand parseSequenceCommand(MapMessage msg) throws FormatException {
         try {
-            String sequenceCommand = msg.getStringProperty(GatewayKeys.SEQUENCE_COMMAND_KEY);
+            String sequenceCommand = msg.getStringProperty(GmpKeys.GMP_SEQUENCE_COMMAND_KEY);
             return SequenceCommand.valueOf(sequenceCommand);
         } catch (JMSException e) {
             throw new FormatException("Message didn't contain a sequence command");
@@ -67,7 +58,7 @@ public class CommandMessage {
 
     private Activity parseActivity(MapMessage msg) throws FormatException {
         try {
-            String activity = msg.getStringProperty(GatewayKeys.ACTIVITY_KEY);
+            String activity = msg.getStringProperty(GmpKeys.GMP_ACTIVITY_KEY);
             return Activity.valueOf(activity);
         } catch (JMSException e) {
             throw new FormatException("Message didn't contain an activity");
@@ -98,23 +89,12 @@ public class CommandMessage {
         }
     }
 
-    private CompletionListener parseCompletionListener(MapMessage msg) throws FormatException {
+    private void parseCompletionListener(MapMessage msg) throws FormatException {
         try {
-            _replyDestination = msg.getJMSReplyTo();
-
-            if (_replyDestination == null) throw
+            if (msg.getJMSReplyTo() == null) throw
                     new FormatException("Completion information incomplete in message");
-
-            return new GatewayCompletionListener(_replyDestination);
         } catch (JMSException e) {
             throw new FormatException("Message doesn't contain completion listener information");
         }
-
-
-    }
-
-
-    public Destination getReplyDestination() {
-        return _replyDestination;
     }
 }

@@ -2,6 +2,8 @@ package edu.gemini.aspen.gmp.gw.jms;
 
 import edu.gemini.aspen.gmp.broker.api.GMPService;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.api.CompletionListener;
+import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.*;
@@ -58,20 +60,25 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
             try {
                 CommandMessage commandMessage =
                         new CommandMessage((MapMessage)message);
+
+                CompletionListener completionListener =
+                        new GatewayCompletionListener(_session,
+                                message.getJMSReplyTo());
+
                 HandlerResponse response = _service.sendSequenceCommand(
                         commandMessage.getSequenceCommand(),
                         commandMessage.getActivity(),
                         commandMessage.getConfiguration(),
-                        commandMessage.getCompletionListener()
+                        completionListener
                 );
 
                 //send response back to the client
-                sendResponse(commandMessage.getReplyDestination(), response);
+                sendResponse(message.getJMSReplyTo(), response);
             } catch (FormatException e) {
                 LOG.log(Level.WARNING, "Message did not contain a command message: " + e.getMessage());
             } catch (JMSException e) {
                 //this is produced when sending reply back to the client
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();  
             }
         }
     }
@@ -80,16 +87,10 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
     private void sendResponse(Destination destination, HandlerResponse response) throws JMSException {
 
         MessageProducer producer = _session.createProducer(destination);
-        MapMessage reply = _session.createMapMessage();
-        //fill in the message
-        reply.setString(GatewayKeys.HANDLER_RESPONSE_KEY, response.getResponse().name());
-
-        if (response.getResponse() == HandlerResponse.Response.ERROR)  {
-            if (response.getMessage() != null) {
-                reply.setString(GatewayKeys.HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
-            }
-        }
+        Message reply = GmpJmsUtil.buildHandlerResponseMessage(_session, response);
         producer.send(reply);
+        //TODO: Do I need to close this?
+        //producer.close();
     }
 
     public void close() {
