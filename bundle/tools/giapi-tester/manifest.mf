@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: edu.gemini.giapi.tool.GiapiTester
+Import-Package: edu.gemini.aspen.gmp.commands.api,
+ edu.gemini.jms.api,
+ edu.gemini.aspen.gmp.gw.jms,
+ javax.jms,
+ edu.gemini.jms.activemq.broker

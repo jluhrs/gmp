@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<project name="giapi-tester" default="all">
+	<import file="../build.xml"/>
+
+	<!--<path id="build.source.extra">-->
+		<!--<pathelement path="../oscar/src"/>-->
+	<!--</path>-->
+
+
+     <path id="build.classpath.extra">
+        <fileset dir="../../jms/jms-activemq/lib" includes="*.jar"/>
+        <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
+        <pathelement path="../../giapi-gmp/gmp-gateway/bin"/>
+        <pathelement path="../../giapi-gmp/gmp-api/bin"/>
+        <pathelement path="../../giapi-gmp/gmp-broker/bin"/>
+
+    </path>
+
+	<!--<fileset id="jar.extra" dir="src" includes="**/*.txt"/>-->
+    <fileset id="jar.extra" dir="../../giapi-gmp/gmp-api/bin" includes="*"/>
+
+	<!-- This overrides what is in common.xml -->
+	<target name="-all" depends="-explode, -compile, -jar-src, -jar" if="ant.project.name"/>
+
+    <target name="-explode">
+        <unjar dest="bin">
+           <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
+           <fileset dir="../../jms/jms-activemq/lib" includes="*.jar"/>
+        </unjar>
+
+        <copy todir="bin">
+           <fileset dir="../../giapi-gmp/gmp-api/bin"/>
+            <!--Broker is only needed because of the JMSUtil class.... -->
+            <fileset dir="../../giapi-gmp/gmp-broker/bin"/>
+        </copy>
+        <!--<delete dir="bin/META-INF"/>-->
+    </target>
+
+</project>
+
+
