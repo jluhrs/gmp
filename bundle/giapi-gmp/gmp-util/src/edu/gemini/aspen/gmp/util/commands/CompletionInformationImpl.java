@@ -1,14 +1,11 @@
 package edu.gemini.aspen.gmp.util.commands;
 
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.api.Activity;
-import edu.gemini.aspen.gmp.commands.api.Configuration;
+import edu.gemini.aspen.gmp.commands.api.*;
 
 /**
  *
  */
-public class CompletionInformationImpl {
+public class CompletionInformationImpl implements CompletionInformation {
 
 
     private HandlerResponse _handlerResponse;
@@ -33,7 +30,7 @@ public class CompletionInformationImpl {
         return _handlerResponse;
     }
 
-    public SequenceCommand getCommand() {
+    public SequenceCommand getSequenceCommand() {
         return _command;
     }
 
@@ -70,4 +67,34 @@ public class CompletionInformationImpl {
         result = 31 * result + (_configuration != null ? _configuration.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("[");
+        if (_handlerResponse != null) {
+            sb.append("[response=").append(_handlerResponse);
+            sb.append("]");
+        }
+
+        if (_command != null) {
+            sb.append("[command=").append(_command.name());
+            sb.append("]");
+        }
+
+        if (_activity != null) {
+            sb.append("[activity=").append(_activity.name());
+            sb.append("]");
+        }
+
+        if (_configuration != null) {
+            sb.append("[").append(_configuration);
+            sb.append("]");
+        }
+        sb.append("]");
+
+        return sb.toString();
+    }
+   
 }

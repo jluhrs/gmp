@@ -1,13 +1,11 @@
 package edu.gemini.aspen.gmp.util.jms;
 
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.api.CompletionInformation;
+import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
+import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
 
-import javax.jms.MapMessage;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
+import javax.jms.*;
+import java.util.Enumeration;
 
 /**
  * Collection of utility methods that will help to transform from JMS messages
@@ -54,8 +52,108 @@ public class GmpJmsUtil {
         return message;
     }
 
+    public static Message buildCompletionInformationMessage(Session session, CompletionInformation info) throws JMSException {
+
+        MapMessage reply = session.createMapMessage();
+
+        HandlerResponse response = info.getHandlerResponse();
+        if (response != null) {
+            reply.setStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
+            if (response.getResponse() == HandlerResponse.Response.ERROR) {
+                if (response.getMessage() != null) {
+                    reply.setStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
+                }
+            }
+        }
+
+        SequenceCommand command = info.getSequenceCommand();
+        if (command != null) {
+            reply.setStringProperty(GmpKeys.GMP_SEQUENCE_COMMAND_KEY, command.name());
+        }
+
+        Activity activity = info.getActivity();
+        if (activity != null) {
+            reply.setStringProperty(GmpKeys.GMP_ACTIVITY_KEY, activity.name());
+        }
+
+        Configuration config = info.getConfiguration();
+        if (config != null) {
+            for (ConfigPath path : config.getKeys()) {
+                reply.setString(path.toString(), config.getValue(path));
+            }
+        }
+        return reply;
+    }
+
     public static CompletionInformation buildCompletionInformation(Message m) throws JMSException {
-        return null;
+        //reconstruct CompletionInfo based on the message
+
+        if (!(m instanceof MapMessage)) {
+            throw new JMSException("Invalid Message to construct Completion Information");
+        }
+
+        MapMessage msg = (MapMessage)m;
+
+        //get the Handler Response.
+        String key = msg.getStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_KEY);
+        HandlerResponse handlerResponse = null;
+        if (key != null) {
+            HandlerResponse.Response response;
+            try {
+                response = HandlerResponse.Response.valueOf(key);
+            } catch(IllegalArgumentException ex) {
+                throw new JMSException("Invalid response type contained in the reply: " + key);
+            }
+
+            if (response == HandlerResponse.Response.ERROR) {
+                String errMsg = msg.getStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
+                handlerResponse = HandlerResponseImpl.createError(errMsg);
+            } else {
+                handlerResponse = HandlerResponseImpl.create(response);
+            }
+        }
+
+        //get the sequence command
+        SequenceCommand sc = null;
+        key = msg.getStringProperty(GmpKeys.GMP_SEQUENCE_COMMAND_KEY);
+        if (key != null) {
+            try {
+                sc = SequenceCommand.valueOf(key);
+            } catch (IllegalArgumentException ex) {
+                throw new JMSException("Invalid sequence command: " + key);
+            }
+        }
+
+        //get the activity
+        Activity activity = null;
+        key = msg.getStringProperty(GmpKeys.GMP_ACTIVITY_KEY);
+        if (key != null) {
+            try {
+                activity = Activity.valueOf(key);
+            } catch (IllegalArgumentException ex) {
+                throw new JMSException("Invalid Activity: " + key);
+            }
+        }
+
+        //get configuration
+        DefaultConfiguration config = null;
+        Enumeration names = msg.getMapNames();
+
+        if (names.hasMoreElements()) {
+            config = new DefaultConfiguration();
+        }
+
+        while (names.hasMoreElements()) {
+            Object o = names.nextElement();
+            if (!(o instanceof String)) {
+                throw new JMSException("Invalid configuration received");
+            }
+            String path = (String)o;
+            String value = msg.getString(path);
+            config.put(new ConfigPath(path), value);
+        }
+
+        return new CompletionInformationImpl(handlerResponse, sc, activity, config) ;
    }
 
 }

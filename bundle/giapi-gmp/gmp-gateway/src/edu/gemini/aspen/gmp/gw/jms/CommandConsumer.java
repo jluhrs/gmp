@@ -53,7 +53,6 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
     }
 
     public void onMessage(Message message) {
-        LOG.info("A meesage was received by the gateway: " + message);
 
         if (message instanceof MapMessage) {
 
@@ -89,8 +88,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
         MessageProducer producer = _session.createProducer(destination);
         Message reply = GmpJmsUtil.buildHandlerResponseMessage(_session, response);
         producer.send(reply);
-        //TODO: Do I need to close this?
-        //producer.close();
+        producer.close();
     }
 
     public void close() {

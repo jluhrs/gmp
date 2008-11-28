@@ -68,16 +68,10 @@ public class CommandSender {
 
         try {
             Message m = _replyConsumer.receive();
-            System.out.println("Received completion Information..." + m);
-
             return GmpJmsUtil.buildCompletionInformation(m);
-
-            
         } catch (JMSException e) {
             throw new TesterException(e);
         }
-
-
     }
 
 

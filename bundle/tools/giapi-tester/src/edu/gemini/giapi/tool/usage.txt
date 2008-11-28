@@ -1,0 +1,122 @@
+
+NAME
+    giapi-tester -- Gemini GIAPI tester application.
+    
+SYNOPSIS
+    java -jar giapi-tester.jar option...
+
+DESCRIPTION
+    The GIAPI tester applications is a command line tool that allows
+    sending commands to the Gemini Master Process.
+    It uses the GIAPI internal protocols to communicate with an Aspen
+    conforming instrument, allowing to test the operation of it. 
+    
+    The following options are available, and may be given in any order:
+    
+    -?  Shows this message and then exits.
+
+    -sc <sequence command>
+        Specifies a sequence command to send
+        Available sequence command options are TEST, REBOOT, INIT, DATUM,
+        PARK, VERIFY, END_VERIFY, GUIDE, END_GUIDE, APPLY, OBSERVE,
+        END_OBSERVE, PAUSE, CONTINUE, STOP, ABORT
+
+    -activity <activity>
+        Specifies the activity. An activity only can be specified with
+        an associated sequence command, using the -sc flag.
+        Available activity options are PRESET, START, PRESET_START, CANCEL
+
+    -config <configuration>
+        Specifies a configuration for a sequence command.
+        A configuration can be specified by a (key,value) pair in the form
+        key=value. It is allowed to use several -config commands to construct
+        a multiple item configuration. Alternatively, you can quote a multiple
+        item configuration using a single -config flag. See the examples
+        below.
+
+    -r <repetitions>
+        Specifies the number of repetitions the requested operation will
+        be executed.
+
+EXAMPLES
+    To specify a configuration you can use:
+    
+        java -jar giapi-tester.jar -config gpi:cc:filter=A
+
+    Probably your configuration contains more than one item though. In that
+    case, you can specify multipl -config options, as in:
+
+        java -jar giapi-tester.jar -config gpi:cc:filter.name=A
+             -config gpi:cc:mirror.pos=closed
+             -config gpi:dc:exposureTime=40
+
+    Alternatively, you can specify all the configuration items using just
+    one -config if you enclose the configuration in quotes, and separate
+    each configuration item with spaces, as in:
+
+        java -jar giapi-tester.jar -config "gpi:cc:filter.name=A
+                 gpi:cc:mirror.pos=closed gpi:dc:exposureTime=40"
+
+
+NOTES
+
+    This program is designed specifically for deploying Oscar applications, and
+    does not re-implement anything that you can already do in Oscar. In
+    particular, incremental updates of bundles should be done using the Shell
+    TUI or something equivalent like the Telnet Service. 
+    
+DETAILS
+    Launcher attempts to download application definitions from the specified 
+    host/port via http, using the path /app/<appliciation-name>/. From this path 
+    the following files are downloaded and used, if available. Otherwise Oscar 
+    defaults are used.
+    
+        policy             - Java security policy.
+        bundle.properties  - BundleContext properties.
+        system.properties  - Additional system properties.        
+        logging.properties - Logging properties. Note that a "logdir" parameter
+                             will be passed along with the HTTP request, in case 
+                             this value needs to be inserted on the server.
+
+    Launcher maintains its own bundle cache and logging structure distinct from
+    the normal Oscar and JDK locations, to help with complex deployments.
+
+        ~/.ocs/<hostname>/<application-name>/bundle
+                                            /conf
+                                            /log
+
+    Most applications can be expected to place their logs in the log directory,
+    but this is not strictly required. The files err.log and out.log will be 
+    written to the log directory in all cases when -n is used.
+    
+COMPATIBILITY
+    Running an application from the launcher is basically equivalent to running 
+    Oscar with a stack of commandline arguments and some shell redirection.
+    
+        java -jar launcher.jar -a:<app> -n
+        
+    is roughly equivalent to:
+    
+        java -Djava.security.manager -Dsecurity.policy=~/.ocs/<host>/<app>/conf/policy \
+             -Djava.util.logging.config.file=~/.ocs/<host>/<app>/conf/logging.properties \        
+             -Doscar.system.properties=~/.ocs/<host>/<app>/conf/system.properties \
+             -Doscar.bundle.properties=~/.ocs/<host>/<app>/conf/bundle.properties \
+             -Doscar.cache.profiledir=~/.ocs/<host>/<app>/bundle \
+             -jar oscar.jar \
+             >~/.ocs/<host>/<app>/log/out.log 2>~/.ocs/<host>/<app>/log/err.log
+             
+REFERENCES
+    [1] The OSGi Service Platform - Dynamic services for networked devices
+        http://www.osgi.org
+    [2] Oscar - An OSGi framerwork implementation
+        http://oscar.objectweb.org/
+
+BUGS AND LIMITATIONS
+    You can use spaces in application names, but it's non-obvious. You need
+    to put the entire option in quotes:
+    
+        java -jar launcher.jar "-a:My Application"
+
+GRIPES
+    to anunez@gemini.edu
+                 

@@ -45,4 +45,9 @@ public class DefaultConfiguration implements Configuration {
 
         return new DefaultConfiguration(map);
     }
+
+    @Override
+    public String toString() {
+        return "{config=" + _config +'}';
+    }
 }
