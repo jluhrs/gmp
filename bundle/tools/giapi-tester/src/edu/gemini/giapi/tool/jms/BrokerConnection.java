@@ -43,8 +43,8 @@ public class BrokerConnection {
     public void stop() throws TesterException {
         LOG.log(Level.FINE, "Stopping Broker Connection");
         try {
-            _session.close();
-            _connection.close();
+            if (_session != null) _session.close();
+            if (_connection != null) _connection.close();
         } catch (JMSException ex) {
             throw new TesterException(ex.getMessage());
         }

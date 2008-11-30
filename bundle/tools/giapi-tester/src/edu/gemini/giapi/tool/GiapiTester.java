@@ -27,9 +27,11 @@ public class GiapiTester {
         Operation operation = null;
         int repetitions = 1;
 
+        String host = "localhost";
         SequenceCommand sc = null;
         Activity activity = null;
         Configuration config = null;
+        long timeout = 0;  //Timeout 0 = indefinite
 
         int i = 0, j;
         String opt;
@@ -101,8 +103,34 @@ public class GiapiTester {
                                 die("You have to tell me how many repetitions you want. Try -r <repetitions>");
                             }
 
-                        }
-                        //now we process here the flag arguments
+                        } else
+                            //host
+                            if (key.equals("h")) {
+                                if (i < args.length) {
+                                    host = args[i++];
+                                } else {
+                                    die("What host? Try -h <hostname>");
+                                }
+                            } else
+                                //timeout
+                                if (key.equals("timeout")) {
+                                    if (i < args.length) {
+                                        String val = args[i++];
+                                        try {
+                                            timeout = Long.parseLong(val);
+                                        } catch (NumberFormatException ex) {
+                                            die ("Timeout is a long integer number. Try -timeout <timeout>");
+                                        }
+                                        if (timeout <=0) {
+                                            die ("The timeout must be zero or a positive number. Please try again");
+                                        }
+
+                                    } else {
+                                        die("What is the timeout? Try -timeout <timeout>");
+                                    }
+
+                                }
+                            //now we process here the flag arguments
                         else {
                             char flag;
                             for (j = 0; j < key.length(); j++) {
@@ -134,7 +162,7 @@ public class GiapiTester {
 
         switch (operation) {
             case SEQUENCE_COMMAND:
-                BrokerConnection connection = new BrokerConnection("tcp://localhost:61616");
+                BrokerConnection connection = new BrokerConnection("tcp://" + host + ":61616");
                 try {
 
                     connection.start();
@@ -148,13 +176,12 @@ public class GiapiTester {
 
                         if (response.getResponse() == HandlerResponse.Response.STARTED) {
                             //now, wait for the answer, synchronously
-                            CompletionInformation info = sender.receiveCompletionInformation();
+                            CompletionInformation info = sender.receiveCompletionInformation(timeout);
                             System.out.println("Completion Information: " + info);
                         }
                     }
                 } catch (TesterException ex) {
                     LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-                    ex.printStackTrace();
                     break;
                 } finally {
                     connection.stop();

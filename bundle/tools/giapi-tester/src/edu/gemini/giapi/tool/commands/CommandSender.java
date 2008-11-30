@@ -64,10 +64,11 @@ public class CommandSender {
 
 
 
-    public CompletionInformation receiveCompletionInformation() throws TesterException {
+    public CompletionInformation receiveCompletionInformation(long timeout)
+            throws TesterException {
 
         try {
-            Message m = _replyConsumer.receive();
+            Message m = _replyConsumer.receive(timeout);
             return GmpJmsUtil.buildCompletionInformation(m);
         } catch (JMSException e) {
             throw new TesterException(e);
