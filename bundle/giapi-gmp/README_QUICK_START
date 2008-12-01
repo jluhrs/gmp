@@ -136,58 +136,27 @@ Once the GMP has started, it can be used to communicate with the instrument
 code. Please leave the GMP console running and open a new terminal.
 Message flow will be logged at the GMP console.
 
-The GMP has a Servlet running internally, that allows to communicate to it.
-This is one interface to allow interacting with it, but the GMP architecture
-allows to have many others. We will provide different interfaces in the future.
+We have a client tester application that allows to send commands to the
+instrument. In order to use the application, just type:
 
-At this point, there is only one method available used to send Sequence Commands
-down to the instrument code through the GIAPI library.
+       java -jar ${GMP_INSTALL}/giapi-tester.jar
 
-Here are the list of parameters to use the servlet interface:
+There are several arguments that can be used in this application. See the
+full documentation of this tool typing:
 
-Servlet Name: gmp
+       java -jar ${GMP_INSTALL}/giapi-tester.jar -?
 
-Argument: sequenceCommand
-          The Sequence Command to send to the instrument
-Argument: activity
-          The Activity associated to the sequence command, like PRESET or START
+Obviously you can create an alias for this, as you did for the launcher
+application.
 
+       alias giapi-tester= 'java -jar ${GMP_INSTALL}/giapi-tester.jar'
 
-Ok, so in order to send a Sequence Command to an instrument that has registered
-a SequenceCommandHandler with the GIAPI, you can do (using curl, for instance):
+So you can invoke this tool just by typing
 
-  curl http://localhost:9091/gmp?sequenceCommand=INIT\&activity=PRESET_START
+       giapi-tester -?
 
-Or, using a web browser, just type:
+A small example, to send an INIT sequence command, using the PRESET_START
+activity to a GMP running on the localhost, you can just type:
 
-  http://localhost:9091/gmp?sequenceCommand=INIT&activity=PRESET_START
+       giapi-tester -sc INIT -activity PRESET_START
 
-On the GMP console, you will see a message:
-
-  INFO: Pushing sequence command INIT; Activity = PRESET/START
-
-If a C++ client was registered to the REBOOT sequence command and to the
-PRESET/START activities, then you will get back a message on the servlet
-client like:
-
-  Command Sent: INIT Activity : PRESET/START Received answer = ACCEPTED
-
-If there are not handlers registered for a given sequence command, you will get
-a message logged on the GMP console:
-
-Jul 25, 2008 3:10:59 PM edu.gemini.aspen.gmp.broker.jms.JMSSequenceCommandProducer sendSequenceCommand
-WARNING: No answer received to sequence command OBSERVE
-
-And the servlet client will get:
-
-  Command Sent: OBSERVE Activity : PRESET/START
-  No answer received. Probably no handlers are registered
-
-
-NOTE: The messages produced by the servlet are just plain text messages
-wrapped in an HTML response. I plan to change that to something like XML to
-allow parsing the messages. That should help to write automated testing scripts.
-This is TBD however.
-
-Congratulations! You have the first release of the Gemini Master Process up and
-running!
