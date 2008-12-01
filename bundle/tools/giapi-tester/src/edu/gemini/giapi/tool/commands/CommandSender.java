@@ -10,7 +10,8 @@ import edu.gemini.giapi.tool.jms.BrokerConnection;
 import edu.gemini.giapi.tool.TesterException;
 
 /**
- *
+ * This class sends sequence commands to the GMP using the gateway
+ * interface.
  */
 public class CommandSender {
 
@@ -47,7 +48,7 @@ public class CommandSender {
 
             if (config != null && config.getKeys() != null) {
                 for (ConfigPath path : config.getKeys()) {
-                    m.setString(path.getName(), config.getValue(path));
+                    m.setString(path.toString(), config.getValue(path));
                 }
             }
 

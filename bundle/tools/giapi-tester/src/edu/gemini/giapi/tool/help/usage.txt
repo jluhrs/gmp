@@ -1,0 +1,143 @@
+
+NAME
+    giapi-tester -- Gemini GIAPI tester application.
+    
+SYNOPSIS
+    java -jar giapi-tester.jar option...
+
+DESCRIPTION
+    The GIAPI tester applications is a command line tool that allows
+    sending commands to the Gemini Master Process (GMP).
+    It uses the GIAPI internal protocols to communicate with an Aspen
+    conforming instrument, allowing to test the operation of it. 
+    
+    The following options are available, and may be given in any order:
+    
+    -?  Shows this message and then exits.
+
+    -sc <sequence command>
+        Specifies a sequence command to send
+        Available sequence command options are TEST, REBOOT, INIT, DATUM,
+        PARK, VERIFY, END_VERIFY, GUIDE, END_GUIDE, APPLY, OBSERVE,
+        END_OBSERVE, PAUSE, CONTINUE, STOP, ABORT
+        A Sequence command must be specified along with an activity, using
+        the -activity option.
+
+    -activity <activity>
+        Specifies the activity. An activity only can be specified with
+        an associated sequence command, using the -sc flag.
+        Available activity options are PRESET, START, PRESET_START, CANCEL
+        An activity only makes sense if a sequence command was specified,
+        using the -sc option.
+
+    -config <configuration>
+        Specifies a configuration for a sequence command/activity.
+        A configuration can be specified by a (key,value) pair in the form
+        key=value. It is allowed to use several -config commands to construct
+        a multiple item configuration. Alternatively, you can quote a multiple
+        item configuration using a single -config flag. See the examples
+        below.
+        A configuration only makes sense if a sequence command and activity
+        are specified, using the -sc and -activity arguments respectively.
+
+    -r <repetitions>
+        Specifies the number of repetitions the requested operation will
+        be executed. Default is one.
+
+    -h <host>
+        Specifies the host where the Gemini Master Process (GMP) is running.
+        If not specified, it will try to connect to the localhost.
+
+    -timeout <timeout>
+        Specifies a timeout (in milliseconds) for an operation to complete.
+        For instance, if a command is sent down to an instrument and the
+        response from the instrument is STARTED, using this argument allows to
+        define a maximum amount of time to wait for completion information
+        regarding that command.
+        If a timeout is not specified, the operation will block
+        indefinitely until a response is received or the application is
+        killed. 
+
+EXAMPLES
+
+    To send a simple sequence command you can use:
+
+        java -jar giapi-tester.jar -sc INIT -activity PRESET
+
+    Notice is a sequence command always requires to specify an activity.
+
+    If a configuration is needed for a sequence command, you need to
+    use the -config option.
+
+    To specify a configuration for an apply command, you can use:
+    
+        java -jar giapi-tester.jar -sc APPLY -activity PRESET
+             -config gpi:cc:filter=A
+
+    Probably your configuration contains more than one item though. In that
+    case, you can specify multiple -config options, as in:
+
+        java -jar giapi-tester.jar -sc APPLY -activity PRESET
+             -config gpi:cc:filter.name=A
+             -config gpi:cc:mirror.pos=closed
+             -config gpi:dc:exposureTime=40
+
+    Alternatively, you can specify all the configuration items using just
+    one -config if you enclose the configuration in quotes, and separate
+    each configuration item with spaces, as in:
+
+        java -jar giapi-tester.jar -sc APPLY -activity PRESET
+                 -config "gpi:cc:filter.name=A
+                 gpi:cc:mirror.pos=closed gpi:dc:exposureTime=40"
+
+    To specify a timeout for an operation to complete, you can use the
+    timeout flag. For instance, if you want to send the INIT sequence command,
+    but you only want to wait for 10 seconds for it to complete, you can use:
+
+        java -jar -jar giapi-tester.jar -sc INIT -activity START -timeout 10000
+
+    Notice the timeout is expressed in milliseconds.
+
+    You can use the -r option to execute an operation several times,
+    sequentially. For instance, to send the INIT sequence command ten times,
+    you can do:
+
+        java -jar -jar giapi-tester.jar -sc INIT -activity START -r 10
+
+    This is usually useful for stress testing.
+
+    If the GIAPI tester application is running on a machine different to where
+    the GMP is located, you have to specify the hostname or IP address of the
+    remote machine using the -h option. For instance, to send the PARK command
+    to a system running on walle.cl.gemini.edu, use:
+
+        java -jar -jar giapi-tester.jar -sc PARK -activity START
+             -h walle.cl.gemini.edu
+
+
+NOTES
+
+    This application uses the same software interface that will be provided
+    to other high-level applications that will require to interact with
+    an Aspen conforming instrument. This application will be expanded
+    to allow further testing possible.    
+
+    This application is designed to be used by automated testing environments.
+    This should allow to automate the execution of tests suites for a given
+    instrument.
+
+DETAILS
+
+    GIAPI tester attempts to connect to a Gemini Master Process running on
+    the Top Level Computer (TLC) of an Aspen conforming instrument. The
+    GMP must be running on the TLC for this application to work.
+    
+
+REFERENCES
+
+    [1] Aspen GIAPI Design and Use, GIAPIUse-08292006/02. Kim Gillies,
+        Arturo Nunez.
+
+GRIPES
+    to anunez@gemini.edu
+                 

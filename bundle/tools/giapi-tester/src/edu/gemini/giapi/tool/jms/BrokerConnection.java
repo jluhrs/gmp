@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 /**
- *
+ * Encapsulation of the JMS connection to the GMP
  */
 public class BrokerConnection {
 
