@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-Activator: edu.gemini.aspen.gmp.services.osgi.Activator
+Bundle-Name: GMP Services
+Bundle-Description: Services provided by the GMP
+Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Version: 1.0.0
+Import-Package: edu.gemini.jms.api, 
+ edu.gemini.aspen.gmp.util.jms,
+ javax.jms,
+ org.osgi.util.tracker,
+ org.osgi.framework
