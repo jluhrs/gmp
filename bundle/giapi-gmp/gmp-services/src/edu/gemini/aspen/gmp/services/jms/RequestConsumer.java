@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.services.jms;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.aspen.gmp.services.properties.PropertyService;
+import edu.gemini.aspen.gmp.services.properties.PropertyConfig;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
     private PropertyService _propertyService;
 
 
-    public RequestConsumer(JmsProvider provider) {
+    public RequestConsumer(JmsProvider provider, PropertyConfig config) {
 
         ConnectionFactory factory = provider.getConnectionFactory();
         try {
@@ -38,7 +39,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
             _consumer = _session.createConsumer(destination);
             _consumer.setMessageListener(this);
 
-            _propertyService = new PropertyService();
+            _propertyService = new PropertyService(config);
             LOG.info(
                     "Message Consumer started to receive service requests");
         } catch (JMSException e) {
@@ -49,9 +50,12 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
 
     public void close() {
         try {
-            _consumer.close();
-            _session.close();
-            _connection.close();
+            if (_consumer != null)
+                _consumer.close();
+            if (_session != null)
+                _session.close();
+            if (_connection != null)
+                _connection.close();
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Exception closing Service Request Consumer: ", e);
         }

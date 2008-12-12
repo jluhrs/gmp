@@ -5,6 +5,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.services.jms.RequestConsumer;
+import edu.gemini.aspen.gmp.services.properties.PropertyConfig;
 
 import java.util.logging.Logger;
 
@@ -17,6 +18,7 @@ public class JmsProviderTracker extends ServiceTracker {
 
     private RequestConsumer _requestConsumer = null;
 
+    
     public JmsProviderTracker(BundleContext ctx) {
         super(ctx, JmsProvider.class.getName(), null);
     }
@@ -27,7 +29,7 @@ public class JmsProviderTracker extends ServiceTracker {
         LOG.info("JMS Provider found. Starting Services bundle");
         JmsProvider provider = (JmsProvider)context.getService(serviceReference);
 
-        _requestConsumer = new RequestConsumer(provider);
+        _requestConsumer = new RequestConsumer(provider, new OsgiPropertyConfig(context));
 
         return provider;
 

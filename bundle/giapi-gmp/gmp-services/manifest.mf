@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
 Bundle-Activator: edu.gemini.aspen.gmp.services.osgi.Activator
+Bundle-Classpath: ., lib/dom4j.jar
 Bundle-Name: GMP Services
 Bundle-Description: Services provided by the GMP
 Bundle-Vendor: Gemini 8m Observatories, HLDG
