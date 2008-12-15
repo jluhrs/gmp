@@ -1,0 +1,7 @@
+<properties>
+   <property key="GMP_HOST_NAME">localhost</property>
+   <property key="DHS_ANCILLARY_DATA_PATH">/home/anunez/tmp</property>
+   <property key="DHS_SCIENCE_DATA_PATH">/home/anunez/tmp</property>
+   <property key="DHS_INTERMEDIATE_DATA_PATH">/home/anunez/tmp</property>
+   <property key="DEFAULT"></property>
+</properties>
