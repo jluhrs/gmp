@@ -2,10 +2,9 @@ package edu.gemini.aspen.gmp.services.osgi;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import edu.gemini.aspen.gmp.services.properties.PropertyConfig;
 
 /**
-
+ * OSGi Activator for the Services bundle
  */
 public class Activator implements BundleActivator {
 

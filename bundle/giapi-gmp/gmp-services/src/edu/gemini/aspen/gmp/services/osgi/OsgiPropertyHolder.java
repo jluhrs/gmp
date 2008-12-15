@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.services.osgi;
 
-import edu.gemini.aspen.gmp.services.properties.PropertyConfig;
+import edu.gemini.aspen.gmp.services.properties.PropertyHolder;
 
 import java.util.*;
 import java.io.File;
@@ -13,9 +13,11 @@ import org.dom4j.Attribute;
 import org.dom4j.io.SAXReader;
 
 /**
- *
+ * A property holder that will get the properties 
+ * from an XML configuration stored in the OSGi
+ * bundle configuration.
  */
-public class OsgiPropertyConfig implements PropertyConfig {
+public class OsgiPropertyHolder implements PropertyHolder {
 
     private static final String CONF_FILE = "gmp.properties.conf";
     private static final String PROPERTY_TAG = "property";
@@ -23,17 +25,15 @@ public class OsgiPropertyConfig implements PropertyConfig {
 
     private Map<String, String> _properties;
 
-    public OsgiPropertyConfig(BundleContext ctx) {
+    public OsgiPropertyHolder(BundleContext ctx) {
         Document doc = getPropertiesDocument(ctx);
         _properties = parseProperties(doc);
     }
 
-    public Map<String, String> getProperties() {
 
-        return Collections.unmodifiableMap(_properties);
-
+    public String getProperty(String key) {
+        return _properties.get(key);
     }
-
 
     private Map<String, String> parseProperties(Document doc) {
 
@@ -51,7 +51,7 @@ public class OsgiPropertyConfig implements PropertyConfig {
             prop.put(key, value);
         }
 
-        return prop;
+        return Collections.unmodifiableMap(prop);
 
     }
 
