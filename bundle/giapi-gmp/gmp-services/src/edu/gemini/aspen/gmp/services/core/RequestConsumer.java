@@ -1,16 +1,16 @@
-package edu.gemini.aspen.gmp.services.jms;
+package edu.gemini.aspen.gmp.services.core;
 
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
-import edu.gemini.aspen.gmp.services.properties.PropertyService;
-import edu.gemini.aspen.gmp.services.properties.PropertyConfig;
 
 import javax.jms.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
- *
+ * A JMS consumer of service requests.
  */
 public class RequestConsumer implements MessageListener, ExceptionListener {
 
@@ -20,13 +20,14 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
     private Session _session;
     private MessageConsumer _consumer;
 
-    private PropertyService _propertyService;
+    private Map<ServiceType, Service> _services;
 
-
-    public RequestConsumer(JmsProvider provider, PropertyConfig config) {
+    public RequestConsumer(JmsProvider provider) {
 
         ConnectionFactory factory = provider.getConnectionFactory();
         try {
+            _services = new HashMap<ServiceType, Service>();
+
             _connection = factory.createConnection();
             _connection.setClientID("Service Request Consumer");
             _connection.start();
@@ -39,12 +40,24 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
             _consumer = _session.createConsumer(destination);
             _consumer.setMessageListener(this);
 
-            _propertyService = new PropertyService(config);
             LOG.info(
                     "Message Consumer started to receive service requests");
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Exception starting up Service Request Consumer", e);
         }
+    }
+
+    /**
+     * Register services to handle specific requests
+     * @param service A service to register
+     */
+    public void registerService(Service service) {
+
+        if (service instanceof JmsService) {
+            JmsService jmsService = (JmsService)service;
+            jmsService.setJmsSession(_session);
+        }
+        _services.put(service.getType(), service);
     }
 
 
@@ -74,28 +87,19 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
 
                 switch (requestType) {
                     case GmpKeys.GMP_UTIL_REQUEST_PROPERTY:
-                        String key = mm.getString(GmpKeys.GMP_UTIL_PROPERTY);
-                        
-                        String reply = _propertyService.getProperty(key);
-
-                        Destination destination = message.getJMSReplyTo();
-                        if (destination == null) {
-                            LOG.info("Invalid destination received. Can't reply to request");
-                            return;
+                        Service service = _services.get(ServiceType.PROPERTY_SERVICE);
+                        if (service != null) {
+                            service.process(mm);
+                        } else {
+                            LOG.warning("No registered service to answer for properties");
                         }
-
-                        MessageProducer replyProducer = _session.createProducer(destination);
-
-                        Message replyMessage = _session.createTextMessage(reply);
-
-                        replyProducer.send(replyMessage);
                         break;
 
                     default:
-                        LOG.info("Invalid request received: " + requestType);
+                        LOG.warning("Invalid request received: " + requestType);
                 }
             } else {
-                LOG.info("Unexpected message received by Services Request Consumer");
+                LOG.warning("Unexpected message received by Services Request Consumer");
             }
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Exception receiving Service Request", e);
