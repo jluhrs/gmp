@@ -1,8 +1,5 @@
 package edu.gemini.aspen.gmp.services.core;
 
-import javax.jms.MapMessage;
-import javax.jms.JMSException;
-
 /**
  * A Service definition interface.
  *
@@ -12,8 +9,18 @@ import javax.jms.JMSException;
  */
 public interface Service {
 
-    public void process(MapMessage message) throws JMSException;
+    /**
+     * Process the given request
+     * @param request Contains the details about the specific request
+     * @throws ServiceException in case the service can not process the
+     * request
+     */
+    public void process(ServiceRequest request) throws ServiceException;
 
+    /**
+     * The service type
+     * @return enumerated type to describe the service
+     */
     public ServiceType getType();
 
 }

@@ -1,7 +1,8 @@
 package edu.gemini.aspen.gmp.services.properties;
 
-import edu.gemini.aspen.gmp.services.core.JmsService;
-import edu.gemini.aspen.gmp.services.core.ServiceType;
+import edu.gemini.aspen.gmp.services.core.*;
+import edu.gemini.aspen.gmp.services.jms.JmsService;
+import edu.gemini.aspen.gmp.services.jms.JmsServiceRequest;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 
 import javax.jms.*;
@@ -20,24 +21,30 @@ public class PropertyService extends JmsService {
         _properties = holder;
     }
 
-    public void process(MapMessage message) throws JMSException {
+    public void process(JmsServiceRequest jmsRequest) throws ServiceException {
 
-        if (message == null) return;
+        MapMessage msg = jmsRequest.getMessage();
+        if (msg == null) return;
 
-        String key = message.getString(GmpKeys.GMP_UTIL_PROPERTY);
+        try {
+            String key = msg.getString(GmpKeys.GMP_UTIL_PROPERTY);
+            String reply = _properties.getProperty(key);
 
-        String reply = _properties.getProperty(key);
+            Destination destination = msg.getJMSReplyTo();
+            if (destination == null) {
+                LOG.info("Invalid destination received. Can't reply to request");
+                return;
+            }
 
-        Destination destination = message.getJMSReplyTo();
-        if (destination == null) {
-            LOG.info("Invalid destination received. Can't reply to request");
-            return;
+            MessageProducer replyProducer = session.createProducer(destination);
+
+            Message replyMessage = session.createTextMessage(reply);
+            replyProducer.send(replyMessage);
+        } catch (JMSException e) {
+            throw new ServiceException(e);
         }
 
-        MessageProducer replyProducer = session.createProducer(destination);
 
-        Message replyMessage = session.createTextMessage(reply);
-        replyProducer.send(replyMessage);
     }
 
     public ServiceType getType() {

@@ -1,13 +1,12 @@
-package edu.gemini.aspen.gmp.services.core;
+package edu.gemini.aspen.gmp.services.jms;
 
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.gmp.services.core.*;
 
 import javax.jms.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * A JMS consumer of service requests.
@@ -20,13 +19,13 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
     private Session _session;
     private MessageConsumer _consumer;
 
-    private Map<ServiceType, Service> _services;
+    private ServiceProcessor _serviceProcessor;
 
     public RequestConsumer(JmsProvider provider) {
 
         ConnectionFactory factory = provider.getConnectionFactory();
         try {
-            _services = new HashMap<ServiceType, Service>();
+            _serviceProcessor = new ServiceProcessorImpl();
 
             _connection = factory.createConnection();
             _connection.setClientID("Service Request Consumer");
@@ -49,15 +48,16 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
 
     /**
      * Register services to handle specific requests
+     *
      * @param service A service to register
      */
     public void registerService(Service service) {
 
         if (service instanceof JmsService) {
-            JmsService jmsService = (JmsService)service;
+            JmsService jmsService = (JmsService) service;
             jmsService.setJmsSession(_session);
         }
-        _services.put(service.getType(), service);
+        _serviceProcessor.registerService(service);
     }
 
 
@@ -87,12 +87,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
 
                 switch (requestType) {
                     case GmpKeys.GMP_UTIL_REQUEST_PROPERTY:
-                        Service service = _services.get(ServiceType.PROPERTY_SERVICE);
-                        if (service != null) {
-                            service.process(mm);
-                        } else {
-                            LOG.warning("No registered service to answer for properties");
-                        }
+                        _serviceProcessor.process(ServiceType.PROPERTY_SERVICE, new JmsServiceRequest(mm));
                         break;
 
                     default:
@@ -102,7 +97,10 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
                 LOG.warning("Unexpected message received by Services Request Consumer");
             }
         } catch (JMSException e) {
-            LOG.log(Level.WARNING, "Exception receiving Service Request", e);
+            LOG.log(Level.WARNING, "Exception parsing Service Request", e);
+        } catch (ServiceException e) {
+            LOG.log(Level.WARNING, "Exception processing Service Request", e);
         }
     }
+
 }
