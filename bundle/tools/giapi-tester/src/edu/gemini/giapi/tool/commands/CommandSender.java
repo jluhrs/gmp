@@ -70,6 +70,9 @@ public class CommandSender {
 
         try {
             Message m = _replyConsumer.receive(timeout);
+            if (m == null) {
+                throw new TesterException("Timed out while waiting for completion information");
+            }
             return GmpJmsUtil.buildCompletionInformation(m);
         } catch (JMSException e) {
             throw new TesterException(e);
