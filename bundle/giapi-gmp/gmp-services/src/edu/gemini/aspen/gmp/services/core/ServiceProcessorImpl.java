@@ -24,11 +24,12 @@ public class ServiceProcessorImpl implements ServiceProcessor {
     }
 
     public void process(ServiceType type, ServiceRequest request) throws ServiceException {
+        if (type == null) return;
         Service service = _services.get(type);
         if (service != null) {
             service.process(request);
         } else {
-            LOG.warning("No registered service to answer for properties");
+            LOG.warning("No registered service to handle request (" + type.getName() +")");
         }
     }
 }

@@ -5,22 +5,22 @@ package edu.gemini.aspen.gmp.services.core;
  */
 public enum ServiceType {
 
-    PROPERTY_SERVICE(0),
-    LOGGING_SERVICE(1);
+    PROPERTY_SERVICE("Property Service"),
+    LOGGING_SERVICE("Logging Service");
     
-    private int _code;
+    private String _name;
 
-    ServiceType(int code) {
-        _code = code;
+    ServiceType(String name) {
+        _name = name;
     }
 
     /**
-     * Returns the integer code associated
+     * Returns the diaplaly name associated
      * to the type.
-     * @return the integer code associated to the given service type
+     * @return the display name for the given service.
      */
-    public int getCode() {
-        return _code;
+    public String getName() {
+        return _name;
     }
 
 }
