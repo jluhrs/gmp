@@ -40,8 +40,6 @@ public class JMSActionMessageProducer implements ExceptionListener {
     private Connection _connection;
     private Session _session;
     private MessageProducer _producer;
-    private MessageConsumer _replyConsumer;
-    private Queue _replyQueue;
 
     /**
      * Private constructor, initialize the connection, session, consumers and producers
@@ -61,8 +59,6 @@ public class JMSActionMessageProducer implements ExceptionListener {
             _producer = _session.createProducer(null);
             //this improves performance by avoiding to store the messages
             //_producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            _replyQueue = _session.createTemporaryQueue();
-            _replyConsumer = _session.createConsumer(_replyQueue);
         } catch (JMSException e) {
             LOG.warning("exception : " + e);
         }
@@ -77,7 +73,7 @@ public class JMSActionMessageProducer implements ExceptionListener {
      */
     public MapMessage createMapMessage() throws JMSException {
         MapMessage m = _session.createMapMessage();
-        m.setJMSReplyTo(_replyQueue);
+        m.setJMSReplyTo(_session.createTemporaryQueue());
         return m;
     }
 
@@ -112,7 +108,12 @@ public class JMSActionMessageProducer implements ExceptionListener {
      */
     public HandlerResponse send(Destination destination, Message message) throws JMSException {
         _producer.send(destination, message);
-        Message reply = _replyConsumer.receive(500); //500 msec to answer.
+
+        MessageConsumer tempConsumer = _session.createConsumer(message.getJMSReplyTo());
+
+        Message reply = tempConsumer.receive(500); //500 msec to answer.
+
+        tempConsumer.close();
         if (reply instanceof MapMessage) {
             MapMessage replyMap = (MapMessage) reply;
             return GmpJmsUtil.buildHandlerResponse(replyMap);
@@ -127,7 +128,6 @@ public class JMSActionMessageProducer implements ExceptionListener {
      */
     public void close() {
         try {
-            _replyConsumer.close();
             _producer.close();
             _session.close();
             _connection.close();
