@@ -26,6 +26,7 @@ public class GiapiTester {
         parser.registerArgument(new TimeoutArgument());
         parser.registerArgument(new HostArgument());
         parser.registerArgument(new HelpArgument());
+        parser.registerArgument(new RepetitionArgument());
 
         //possible operations
         parser.registerOperation(new HelpOperation());
