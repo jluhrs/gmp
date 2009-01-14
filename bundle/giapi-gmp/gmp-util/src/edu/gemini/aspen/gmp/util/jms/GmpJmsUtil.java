@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.util.jms;
 import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
+import edu.gemini.aspen.gmp.status.api.StatusItem;
 
 import javax.jms.*;
 import java.util.Enumeration;
@@ -155,5 +156,15 @@ public class GmpJmsUtil {
 
         return new CompletionInformationImpl(handlerResponse, sc, activity, config) ;
    }
+
+
+    public static StatusItem buildStatusItem(Message m) throws JMSException {
+        if (!(m instanceof BytesMessage)) return null;
+
+        //BytesMessage bm = (BytesMessage)m;
+
+
+        return null;
+    }
 
 }

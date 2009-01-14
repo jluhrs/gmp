@@ -23,7 +23,10 @@ public class GmpKeys {
     public final static String GMP_UTIL_REQUEST_TYPE = "REQUEST_TYPE";
     public final static int GMP_UTIL_REQUEST_PROPERTY = 0;
     public final static String GMP_UTIL_PROPERTY = "PROPERTY";
-    
+
+
+    //Status Keys
+    public final static String GMP_STATUS_DESTINATION =  GMP_PREFIX + GMP_SEPARATOR + "STATUS_DESTINATION";
 
 
 }

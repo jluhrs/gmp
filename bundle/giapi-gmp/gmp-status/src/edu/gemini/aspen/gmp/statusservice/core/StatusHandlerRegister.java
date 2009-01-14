@@ -1,0 +1,21 @@
+package edu.gemini.aspen.gmp.statusservice.core;
+
+import edu.gemini.aspen.gmp.status.api.StatusHandler;
+
+/**
+ * Interface for services that will keep track of status handlers
+ */
+public interface StatusHandlerRegister {
+
+    /**
+     * Register a new Status Handler in the system
+     * @param handler the StatusHandler to register
+     */
+    void addStatusHandler(StatusHandler handler);
+
+    /**
+     * Removes the status handler from the system
+     * @param handler the StatusHandler to be removed
+     */
+    void removeStatusHandler(StatusHandler handler);
+}
