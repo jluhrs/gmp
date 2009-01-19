@@ -4,8 +4,6 @@ import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import java.util.logging.Logger;
-
 import edu.gemini.aspen.gmp.statusservice.core.StatusHandlerRegister;
 import edu.gemini.aspen.gmp.status.api.StatusHandler;
 
@@ -15,8 +13,6 @@ import edu.gemini.aspen.gmp.status.api.StatusHandler;
  * <code>StatusHandlerRegister</code>
  */
 public class StatusHandlerTracker extends ServiceTracker {
-
-    private static final Logger LOG = Logger.getLogger(StatusHandlerTracker.class.getName());
 
     private StatusHandlerRegister _statusHandlerRegister;
 
@@ -29,8 +25,6 @@ public class StatusHandlerTracker extends ServiceTracker {
     public Object addingService(ServiceReference serviceReference) {
         StatusHandler handler = (StatusHandler) context.getService(serviceReference);
 
-        LOG.info("Status handler added: " + handler);
-
         _statusHandlerRegister.addStatusHandler(handler);
 
         return handler;
@@ -41,7 +35,6 @@ public class StatusHandlerTracker extends ServiceTracker {
 
         StatusHandler handler = (StatusHandler)context.getService(serviceReference);
 
-        LOG.info("Status handler removed: " + handler);
         _statusHandlerRegister.removeStatusHandler(handler);
 
         context.ungetService(serviceReference);

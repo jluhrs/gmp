@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-Activator: edu.gemini.aspen.gmp.statusdb.osgi.Activator
+Bundle-Name: GMP Status Database
+Bundle-Description: Status Database in the GMP
+Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Version: 0.0.1
+Import-Package: edu.gemini.aspen.gmp.status.api,
+ edu.gemini.aspen.gmp.status.impl,
+ org.osgi.framework

@@ -3,7 +3,7 @@ Bundle-Name: GMP API
 Bundle-Classpath: .
 Bundle-Description: The GMP API Definition
 Bundle-Vendor: Gemini 8m Observatories, HLDG
-Bundle-Version: 1.0.1
+Bundle-Version: 0.0.3
 Export-Package: edu.gemini.aspen.gmp.broker.api,
  edu.gemini.aspen.gmp.status.api,
  edu.gemini.aspen.gmp.status.impl,

@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.status.api;
 /**
  * Common interface for all the status items supported in the GIAPI
  */
-public interface StatusItem {
+public interface StatusItem<T> {
 
     /**
      * Returns the unique name for this status item
@@ -15,6 +15,6 @@ public interface StatusItem {
      * Returns the value associated to this status item
      * @return the value of this status item
      */
-    Object getValue();
+    T getValue();
 
 }

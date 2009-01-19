@@ -38,13 +38,14 @@ public class StatusService implements StatusUpdater, StatusHandlerRegister {
     }
 
     public void addStatusHandler(StatusHandler handler) {
-        LOG.info("Adding status handler to status service");
         _statusHandlers.add(handler);
+        LOG.info("Status Handler Registered: " + handler);
     }
 
     public void removeStatusHandler(StatusHandler handler) {
-        LOG.info("Removing status handler from status service");
         _statusHandlers.remove(handler);
+        LOG.info("Removed Status Handler: " + handler);
+
     }
 
 

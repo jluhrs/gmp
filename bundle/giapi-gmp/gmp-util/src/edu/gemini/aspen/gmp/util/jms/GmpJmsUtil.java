@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.util.jms;
 import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
+import edu.gemini.aspen.gmp.util.jms.status.StatusItemParser;
 import edu.gemini.aspen.gmp.status.api.StatusItem;
 
 import javax.jms.*;
@@ -19,13 +20,13 @@ public class GmpJmsUtil {
         if (!(m instanceof MapMessage))
             throw new JMSException("Invalid Message type to build HandlerResponse object");
 
-        MapMessage msg = (MapMessage)m;
-        
+        MapMessage msg = (MapMessage) m;
+
         String responseType = msg.getString(GmpKeys.GMP_HANDLER_RESPONSE_KEY);
         HandlerResponse.Response response;
         try {
             response = HandlerResponse.Response.valueOf(responseType);
-        } catch(IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             throw new JMSException("Invalid response type contained in the reply");
         }
 
@@ -45,7 +46,7 @@ public class GmpJmsUtil {
         //fill in the message
         message.setString(GmpKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
 
-        if (response.getResponse() == HandlerResponse.Response.ERROR)  {
+        if (response.getResponse() == HandlerResponse.Response.ERROR) {
             if (response.getMessage() != null) {
                 message.setString(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
             }
@@ -93,7 +94,7 @@ public class GmpJmsUtil {
             throw new JMSException("Invalid Message to construct Completion Information");
         }
 
-        MapMessage msg = (MapMessage)m;
+        MapMessage msg = (MapMessage) m;
 
         //get the Handler Response.
         String key = msg.getStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_KEY);
@@ -102,7 +103,7 @@ public class GmpJmsUtil {
             HandlerResponse.Response response;
             try {
                 response = HandlerResponse.Response.valueOf(key);
-            } catch(IllegalArgumentException ex) {
+            } catch (IllegalArgumentException ex) {
                 throw new JMSException("Invalid response type contained in the reply: " + key);
             }
 
@@ -149,22 +150,24 @@ public class GmpJmsUtil {
             if (!(o instanceof String)) {
                 throw new JMSException("Invalid configuration received");
             }
-            String path = (String)o;
+            String path = (String) o;
             String value = msg.getString(path);
             config.put(new ConfigPath(path), value);
         }
 
-        return new CompletionInformationImpl(handlerResponse, sc, activity, config) ;
-   }
+        return new CompletionInformationImpl(handlerResponse, sc, activity, config);
+    }
 
 
     public static StatusItem buildStatusItem(Message m) throws JMSException {
         if (!(m instanceof BytesMessage)) return null;
 
-        //BytesMessage bm = (BytesMessage)m;
-
-
-        return null;
+        BytesMessage bm = (BytesMessage) m;
+        try {
+            return StatusItemParser.parse(bm);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 
 }
