@@ -56,7 +56,10 @@ DESCRIPTION
         regarding that command.
         If a timeout is not specified, the operation will block
         indefinitely until a response is received or the application is
-        killed. 
+        killed.
+
+     -monitor <status-name>
+        Starts a monitor for a status item with the given name. 
 
 EXAMPLES
 
