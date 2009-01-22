@@ -4,16 +4,22 @@ import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
 import edu.gemini.aspen.gmp.util.jms.status.StatusItemParser;
+import edu.gemini.aspen.gmp.util.jms.status.StatusSerializerVisitor;
 import edu.gemini.aspen.gmp.status.api.StatusItem;
+import edu.gemini.aspen.gmp.status.api.StatusVisitor;
 
 import javax.jms.*;
 import java.util.Enumeration;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * Collection of utility methods that will help to transform from JMS messages
  * to GMP data structures and viceversa
  */
 public class GmpJmsUtil {
+
+    private static final Logger LOG = Logger.getLogger(GmpJmsUtil.class.getName());
 
     public static HandlerResponse buildHandlerResponse(Message m) throws JMSException {
 
@@ -168,6 +174,25 @@ public class GmpJmsUtil {
         } catch (IllegalArgumentException ex) {
             return null;
         }
+    }
+
+
+    public static Message buildStatusItemMessage(Session session, StatusItem item) throws JMSException {
+
+        BytesMessage bm = session.createBytesMessage();
+
+        StatusVisitor serializer = new StatusSerializerVisitor(bm);
+
+        try {
+            item.accept(serializer);
+        } catch (JMSException e) {
+            throw e;
+        } catch (Exception e) {
+            //this shouldn't happen, since the serializer only throws JMS Exceptions.
+            LOG.log(Level.SEVERE, "Received unexpected exception ", e);
+        }
+
+        return bm;
     }
 
 }
