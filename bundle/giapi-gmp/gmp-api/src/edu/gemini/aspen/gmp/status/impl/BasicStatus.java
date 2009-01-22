@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.status.impl;
 
 import edu.gemini.aspen.gmp.status.api.StatusItem;
+import edu.gemini.aspen.gmp.status.api.StatusVisitor;
 
 /**
  * The most simple kind of Status Item. It has a name and a value.
@@ -51,5 +52,10 @@ public class BasicStatus<T> implements StatusItem<T> {
                 "name='" + _name + '\'' +
                 ", value=" + _value +
                 '}';
+    }
+
+    public void accept(StatusVisitor visitor) throws Exception {
+        if (visitor != null)
+            visitor.visitStatusItem(this);
     }
 }

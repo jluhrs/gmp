@@ -17,4 +17,11 @@ public interface StatusItem<T> {
      */
     T getValue();
 
+	/**
+	 * The accept interface for the visitor pattern
+     * @param visitor The Visitor to be used
+     * @throws Exception in case a problem is found processing the request
+	 */
+    void accept(StatusVisitor visitor) throws Exception;
+
 }

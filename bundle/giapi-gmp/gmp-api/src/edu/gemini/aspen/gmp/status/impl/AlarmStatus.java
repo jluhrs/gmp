@@ -1,9 +1,6 @@
 package edu.gemini.aspen.gmp.status.impl;
 
-import edu.gemini.aspen.gmp.status.api.AlarmState;
-import edu.gemini.aspen.gmp.status.api.AlarmSeverity;
-import edu.gemini.aspen.gmp.status.api.AlarmCause;
-import edu.gemini.aspen.gmp.status.api.AlarmStatusItem;
+import edu.gemini.aspen.gmp.status.api.*;
 
 /**
  * Implementation of an Alarm Status Item.
@@ -53,5 +50,12 @@ public class AlarmStatus<T> extends BasicStatus<T> implements AlarmStatusItem<T>
         return super.toString() + " AlarmStatus{" +
                 "state=" + _state +
                 '}';
+    }
+
+    @Override
+    public void accept(StatusVisitor visitor) throws Exception {
+        if (visitor != null) {
+            visitor.visitAlarmItem(this);
+        }
     }
 }
