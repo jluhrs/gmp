@@ -248,7 +248,9 @@ public class ActionManager {
         _processor.stop();
         _executorService.shutdown();
         try {
-            _executorService.awaitTermination(1000, TimeUnit.MILLISECONDS);
+            if (!_executorService.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
+                _executorService.shutdownNow();
+            }
         } catch (InterruptedException e) {
             _executorService.shutdownNow(); 
         }
