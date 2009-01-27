@@ -98,10 +98,5 @@ public class StatusConsumer implements Runnable {
      */
     void stop() {
         _isRunning = false;
-//        for (StatusProcessor processor : _processors) {
-//            LOG.info("Stopping processor " + processor.getName());
-//            processor.stop();
-//        }
-
     }
 }
