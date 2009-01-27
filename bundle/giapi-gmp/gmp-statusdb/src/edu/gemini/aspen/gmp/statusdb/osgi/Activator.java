@@ -7,30 +7,42 @@ import edu.gemini.aspen.gmp.statusdb.StatusDatabase;
 import edu.gemini.aspen.gmp.status.api.StatusHandler;
 
 /**
- *
+ * Activator class for the Status Database bundle
  */
 public class Activator implements BundleActivator {
-    
-    private StatusDatabase _db;
+
+    private StatusProcessorTracker _tracker;
+    private StatusDatabase _database;
 
     private ServiceRegistration _registration;
 
     public void start(BundleContext bundleContext) throws Exception {
-        _db = new StatusDatabase();
-        _db.start();
-        //advertise the status database (a Status Handler) in OSGi
 
+        _database = new StatusDatabase();
+        _database.start();
+
+        //advertise the Status Database into OSGi
         _registration = bundleContext.registerService(
                 StatusHandler.class.getName(),
-                _db, null);
+                _database, null);
+
+        //watch for status processors to be registered in this database
+        _tracker = new StatusProcessorTracker(bundleContext, _database);
+        _tracker.open();
 
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
-        //notify the OSGi framework this service is not longer available
+
+        _tracker.close();
+        _tracker = null;
+
+        _database.shutdown();
+
+        _database = null;
+
         _registration.unregister();
-        _db.shutdown();
-        _db = null;
-        
+
+
     }
 }
