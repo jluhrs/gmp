@@ -5,6 +5,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import edu.gemini.aspen.gmp.statusdb.StatusDatabase;
 import edu.gemini.aspen.gmp.status.api.StatusHandler;
+import edu.gemini.aspen.gmp.status.api.StatusDatabaseService;
 
 /**
  * Activator class for the Status Database bundle
@@ -14,7 +15,8 @@ public class Activator implements BundleActivator {
     private StatusProcessorTracker _tracker;
     private StatusDatabase _database;
 
-    private ServiceRegistration _registration;
+    private ServiceRegistration _shRegistration;
+    private ServiceRegistration _dbRegistration;
 
     public void start(BundleContext bundleContext) throws Exception {
 
@@ -22,8 +24,13 @@ public class Activator implements BundleActivator {
         _database.start();
 
         //advertise the Status Database into OSGi
-        _registration = bundleContext.registerService(
+        _shRegistration = bundleContext.registerService(
                 StatusHandler.class.getName(),
+                _database, null);
+
+        //and advertise it as a Database Service as well.
+        _dbRegistration = bundleContext.registerService(
+                StatusDatabaseService.class.getName(),
                 _database, null);
 
         //watch for status processors to be registered in this database
@@ -41,7 +48,8 @@ public class Activator implements BundleActivator {
 
         _database = null;
 
-        _registration.unregister();
+        _shRegistration.unregister();
+        _dbRegistration.unregister();
 
 
     }

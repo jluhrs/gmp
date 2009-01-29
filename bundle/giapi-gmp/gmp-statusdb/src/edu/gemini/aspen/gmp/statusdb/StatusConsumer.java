@@ -67,9 +67,7 @@ public class StatusConsumer implements Runnable {
     }
 
     /**
-     * Registers and start a new status processor. The <code>start</code>
-     * method in the <code>StatusProcessor</code> is invoked once the
-     * processor is registered.
+     * Registers a new status processor in the consumer thread
      *
      * @param processor the status processor to be registered
      */

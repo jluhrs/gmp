@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.statusdb;
 import edu.gemini.aspen.gmp.status.api.StatusHandler;
 import edu.gemini.aspen.gmp.status.api.StatusItem;
 import edu.gemini.aspen.gmp.status.api.StatusProcessor;
+import edu.gemini.aspen.gmp.status.api.StatusDatabaseService;
 
 import java.util.logging.Logger;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * the status items. All the status items received by the GMP are recorded here
  * and then dispatched for further processing in a separate thread.
  */
-public class StatusDatabase implements StatusHandler {
+public class StatusDatabase implements StatusHandler, StatusDatabaseService {
 
     private static final Logger LOG = Logger.getLogger(StatusDatabase.class.getName());
 
@@ -49,15 +50,15 @@ public class StatusDatabase implements StatusHandler {
     }
 
 
-    public StatusItem getValue(String name) {
+    public StatusItem getStatusItem(String name) {
         return _db.get(name);
     }
 
     public void update(StatusItem item) {
         //store this new value in the database
         _db.put(item.getName(), item);
-        //now tell the consumer thread to process
-        //this item
+        //now put this status item in the consumer thread
+        //for further processing
         _statusConsumer.putStatusItem(item);
     }
 
@@ -73,7 +74,7 @@ public class StatusDatabase implements StatusHandler {
         _statusConsumer.stop();
         _executorService.shutdown();
         try {
-            if (!_executorService.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
+            if (!_executorService.awaitTermination(1, TimeUnit.SECONDS)) {
                 _executorService.shutdownNow();   
             }
         } catch (InterruptedException e) {
