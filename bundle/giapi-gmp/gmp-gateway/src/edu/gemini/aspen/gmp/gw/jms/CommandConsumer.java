@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 /**
- *
+ *  This class receives and processes command requests from clients.  
  */
 public class CommandConsumer implements ExceptionListener, MessageListener {
 
@@ -49,7 +49,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
     }
 
     public void onException(JMSException e) {
-        LOG.info("Exception: " + e);
+        LOG.log(Level.WARNING, "Exception on Gateway Command Consumer: ", e);
     }
 
     public void onMessage(Message message) {
@@ -77,7 +77,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
                 LOG.log(Level.WARNING, "Message did not contain a command message: " + e.getMessage());
             } catch (JMSException e) {
                 //this is produced when sending reply back to the client
-                e.printStackTrace();  
+                LOG.log(Level.WARNING, "Problem sending response back to client ", e);
             }
         }
     }
@@ -97,7 +97,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
             _session.close();
             _connection.close();
         } catch (JMSException e) {
-            LOG.warning("exception : " + e);
+            LOG.log(Level.WARNING, "Problem closing command consumer ", e);
         }
     }
 
