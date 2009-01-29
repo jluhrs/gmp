@@ -59,7 +59,10 @@ DESCRIPTION
         killed.
 
      -monitor <status-name>
-        Starts a monitor for a status item with the given name. 
+        Starts a monitor for a status item with the given name.
+
+     -get <status-name>
+        Gets the most recent value for the status item specified. 
 
 EXAMPLES
 
@@ -117,6 +120,33 @@ EXAMPLES
         java -jar -jar giapi-tester.jar -sc PARK -activity START
              -h walle.cl.gemini.edu
 
+    You can monitor for changes any value using the -monitor option. For
+    instance:
+
+        java -jar giapi-tester.jar -monitor gpi:cc:filter.X
+
+    will print to the screen any changes to the value of the status
+    item gpi:cc:filter.X like:
+
+        Status value: StatusItem{name='gpi:cc:filter.X', value=9}
+        Status value: StatusItem{name='gpi:cc:filter.X', value=10}
+        ...
+
+    In addition, you can use the giapi-tester application to get the most
+    up to date value of any specific status item using the -get flag. For
+    instance
+
+        java -jar giapi-tester.jar -get gpi:cc:filter.X
+
+    will return, for instance:
+
+        Status Value: StatusItem{name='gpi:cc:filter.X', value=10}
+
+   if the status item 'gpi:cc:filter.X' exists in the GMP. Otherwise,
+   the application will return a message like:
+
+        No information found for gpi:cc:filter.X
+
 
 NOTES
 
@@ -133,7 +163,8 @@ DETAILS
 
     GIAPI tester attempts to connect to a Gemini Master Process running on
     the Top Level Computer (TLC) of an Aspen conforming instrument. The
-    GMP must be running on the TLC for this application to work.
+    GMP must be running on the TLC for this application to work.  You can
+    specify the IP or hostname of the TLC machine using the -h flag. 
     
 
 REFERENCES

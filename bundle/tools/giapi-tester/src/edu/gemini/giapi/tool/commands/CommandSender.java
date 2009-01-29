@@ -2,7 +2,6 @@ package edu.gemini.giapi.tool.commands;
 
 import javax.jms.*;
 
-import edu.gemini.aspen.gmp.gw.jms.GatewayKeys;
 import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
@@ -26,7 +25,7 @@ public class CommandSender {
     public CommandSender(BrokerConnection connection) throws TesterException {
         try {
             _session = connection.getSession();
-            _destination = _session.createTopic(GatewayKeys.COMMAND_TOPIC);
+            _destination = _session.createTopic(GmpKeys.GW_COMMAND_TOPIC);
             _producer = _session.createProducer(_destination);
             _replyQueue = _session.createTemporaryQueue();
             _replyConsumer = _session.createConsumer(_replyQueue);

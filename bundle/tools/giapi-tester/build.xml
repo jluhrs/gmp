@@ -3,15 +3,10 @@
 <project name="giapi-tester" default="all">
 	<import file="../build.xml"/>
 
-	<!--<path id="build.source.extra">-->
-		<!--<pathelement path="../oscar/src"/>-->
-	<!--</path>-->
-
 
      <path id="build.classpath.extra">
         <fileset dir="../../jms/jms-activemq/lib" includes="*.jar"/>
         <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
-        <pathelement path="../../giapi-gmp/gmp-gateway/bin"/>
         <pathelement path="../../giapi-gmp/gmp-api/bin"/>
         <pathelement path="../../giapi-gmp/gmp-util/bin"/>
 
