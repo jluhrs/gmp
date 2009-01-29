@@ -52,6 +52,7 @@ public class Supervisor {
         if (_gateway != null) {
             LOG.info("Stopping Gateway Service");
             _gateway.stop();
+            _gateway = null;
         }
     }
 

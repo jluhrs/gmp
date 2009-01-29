@@ -181,6 +181,8 @@ public class GmpJmsUtil {
 
         BytesMessage bm = session.createBytesMessage();
 
+        if (item == null) return bm; //an empty message. 
+
         StatusVisitor serializer = new StatusSerializerVisitor(bm);
 
         try {

@@ -29,4 +29,17 @@ public class GmpKeys {
     public final static String GMP_STATUS_DESTINATION =  GMP_PREFIX + GMP_SEPARATOR + "STATUS_DESTINATION";
 
 
+    //Gateway Keys
+
+    private final static String GW_PREFIX  = "GW";
+
+    //Gateway Status Keys
+    public final static String GW_STATUS_REQUEST_DESTINATION = GW_PREFIX + GMP_SEPARATOR + "STATUS_REQUEST";
+    public final static String GW_STATUS_NAME_PROPERTY = "STATUS_NAME";
+
+
+    //Gateway Command Keys
+    public final static String GW_COMMAND_TOPIC = GW_PREFIX + GMP_SEPARATOR + "SC";
+
+
 }
