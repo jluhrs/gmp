@@ -149,9 +149,8 @@ public class ActionManager {
                 try {
                     updateClients(_updateQueue.take());
                 } catch (InterruptedException e) {
-                    LOG.log(Level.WARNING,
-                            "Interrupted exception while waiting for new update requests",
-                            e);
+                    LOG.info("Update Processor Thread interrupted. Exiting");
+                    return;
                 }
             }
         }
