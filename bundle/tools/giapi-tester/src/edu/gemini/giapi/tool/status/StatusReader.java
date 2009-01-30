@@ -28,13 +28,13 @@ public class StatusReader implements ExceptionListener {
 
         _handler = handler;
 
-        Session _session = connection.getSession();
+        Session session = connection.getSession();
 
         try {
             //read the status from the topic with the same name as the item
-            Destination destination = _session.createTopic(
+            Destination destination = session.createTopic(
                     statusName);
-            _consumer = _session.createConsumer(destination);
+            _consumer = session.createConsumer(destination);
 
         } catch (JMSException ex) {
             throw new TesterException(ex);
@@ -50,17 +50,24 @@ public class StatusReader implements ExceptionListener {
     /**
      * Monitor loop. Wait forever for messages to come in and update
      * the handler as they arrive.
-     * @throws JMSException if there is a problem receiving messages
+     *
+     * @throws TesterException if there is a problem receiving messages
      */
-    public void start() throws JMSException {
+    public void start() throws TesterException {
+
 
         while (true) {
-            Message m = _consumer.receive(); //blocking method
-            StatusItem item = GmpJmsUtil.buildStatusItem(m);
+            try {
+                Message m = _consumer.receive(); //blocking method
+                StatusItem item = GmpJmsUtil.buildStatusItem(m);
 
-            if (item != null) {
-                _handler.update(item);
+                if (item != null) {
+                    _handler.update(item);
+                }
+            } catch (JMSException e) {
+                throw new TesterException(e);
             }
+
 
         }
     }
