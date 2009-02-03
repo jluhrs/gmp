@@ -160,3 +160,7 @@ activity to a GMP running on the localhost, you can just type:
 
        giapi-tester -sc INIT -activity PRESET_START
 
+To monitor an status item called myinst:mystatus, you can type:
+
+       giapi-tester -monitor myinst:mystatus
+
