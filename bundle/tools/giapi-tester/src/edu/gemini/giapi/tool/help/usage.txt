@@ -140,7 +140,7 @@ EXAMPLES
 
     will return, for instance:
 
-        Status Value: StatusItem{name='gpi:cc:filter.X', value=10}
+        Status value: StatusItem{name='gpi:cc:filter.X', value=10}
 
    if the status item 'gpi:cc:filter.X' exists in the GMP. Otherwise,
    the application will return a message like:
@@ -169,7 +169,7 @@ DETAILS
 
 REFERENCES
 
-    [1] Aspen GIAPI Design and Use, GIAPIUse-08292006/02. Kim Gillies,
+    [1] Aspen GIAPI Design and Use, GIAPIUse-08292006/03. Kim Gillies,
         Arturo Nunez.
 
 GRIPES
