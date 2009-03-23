@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<project name="gmp-epics-access" default="all" basedir=".">
+    <import file="../build.xml"/>
+
+    <path id="build.classpath.extra">
+        <!--<pathelement path="../gmp-api/bin"/>-->
+        <pathelement path="../gmp-util/bin"/>
+        <pathelement path="../../jms/jms-api/bin"/>
+        <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
+    </path>
+
+</project>
