@@ -1,0 +1,9 @@
+<!--
+ This file contains the list of authorized EPICS channels
+ that can be monitored through the GIAPI.
+-->
+
+<channels>
+   <channel>tcs:health</channel>
+   <channel>ws:temp</channel>
+</channels>
