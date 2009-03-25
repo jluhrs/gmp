@@ -42,4 +42,9 @@ public class GmpKeys {
     public final static String GW_COMMAND_TOPIC = GW_PREFIX + GMP_SEPARATOR + "SC";
 
 
+    //EPICS Interface Keys
+    public final static String GMP_GEMINI_EPICS_REQUEST_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "EPICS_REQUEST_DESTINATION";
+    public final static String GMP_GEMINI_EPICS_CHANNEL_PROPERTY = "EPICS_CHANNEL";
+
+
 }
