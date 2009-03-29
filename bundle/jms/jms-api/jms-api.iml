@@ -19,16 +19,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/geronimo-j2ee-management_1.0_spec-1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/geronimo-jta_1.0.1B_spec-1.0.1.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-service.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
