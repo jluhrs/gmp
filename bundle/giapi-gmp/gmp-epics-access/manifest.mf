@@ -7,6 +7,7 @@ Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 0.1.0
 Import-Package: edu.gemini.jms.api, 
  edu.gemini.aspen.gmp.util.jms,
+ edu.gemini.epics,
  javax.jms,
  org.osgi.util.tracker,
  org.osgi.framework

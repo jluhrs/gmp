@@ -95,7 +95,7 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
                 _connection.close();
             
         } catch (JMSException e) {
-            LOG.log(Level.WARNING, "Exception closing Service Request Consumer: ", e);
+            LOG.log(Level.WARNING, "Exception closing Epics Config Request Consumer: ", e);
         }
     }
 }

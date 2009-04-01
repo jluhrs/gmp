@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.epics.jms.EpicsConfigRequestConsumer;
+import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
 
 /**
  * Tracks for the JMS provider and instantiate the epics request consumer once
@@ -20,8 +21,10 @@ public class JmsProviderTracker extends ServiceTracker {
 
     private EpicsConfigRequestConsumer _epicsRequestConsumer;
 
-    public JmsProviderTracker(BundleContext ctx) {
+    private EpicsConfiguration _epicsConfig;
+    public JmsProviderTracker(BundleContext ctx, EpicsConfiguration config) {
         super(ctx, JmsProvider.class.getName(), null);
+        _epicsConfig = config;
     }
 
     @Override
@@ -30,9 +33,7 @@ public class JmsProviderTracker extends ServiceTracker {
         LOG.info("JMS Provider found. Starting Epics Access bundle");
         JmsProvider provider = (JmsProvider)context.getService(serviceReference);
         _epicsRequestConsumer =
-                new EpicsConfigRequestConsumer(provider,
-                        new OsgiEpicsConfiguration(context));
-
+                new EpicsConfigRequestConsumer(provider, _epicsConfig);
         return provider;
 
     }

@@ -45,6 +45,6 @@ public class GmpKeys {
     //EPICS Interface Keys
     public final static String GMP_GEMINI_EPICS_REQUEST_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "EPICS_REQUEST_DESTINATION";
     public final static String GMP_GEMINI_EPICS_CHANNEL_PROPERTY = "EPICS_CHANNEL";
-
+    public final static String GMP_GEMINI_EPICS_TOPIC_PREFIX = GMP_PREFIX + GMP_SEPARATOR + "EPICS" + GMP_SEPARATOR;
 
 }
