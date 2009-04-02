@@ -2,8 +2,8 @@ package edu.gemini.aspen.gmp.epics.jms;
 
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateListener;
-import edu.gemini.aspen.gmp.epics.EpicsUpdate;
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
+import edu.gemini.aspen.gmp.epics.EpicsUpdate;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 
 import javax.jms.*;
@@ -11,10 +11,12 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.*;
 
 /**
- *
+ * This EPICS Update listener will receive Epics Updates and will dispatch
+ * them via JMS asynchronously. Basically, every update will be put in a
+ * dispatch queue, where an internal thread will be taking the updates and
+ * dispatching them via JMS.
  */
 public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListener {
 
@@ -28,22 +30,6 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
 
     private Map<String, Destination> _destinationMap = new TreeMap<String, Destination>();
 
-    private final BlockingQueue<EpicsUpdate> _updateQueue =
-            new LinkedBlockingQueue<EpicsUpdate>();
-
-
-    /**
-     * The executor service provides a separate thread for the Updater thread
-     * to run
-     */
-    private final ExecutorService _executorService =
-            Executors.newSingleThreadExecutor();
-
-    /* The update task is responsible for receiving updates through
-    * the update queue and notify the clients waiting in the action quueue
-    */
-    private final UpdaterTask _updaterTask = new UpdaterTask();
-
 
     public EpicsStatusUpdater(JmsProvider provider, EpicsConfiguration config) {
 
@@ -56,8 +42,6 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
             _session = _connection.createSession(false,
                     Session.AUTO_ACKNOWLEDGE);
             _producer = _session.createProducer(null);
-            //this improves performance by avoiding to store the messages
-//            _producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
             //Create destinations for all the channels to be broadcasted to the instrument
 
             for (String channelName : config.getValidChannelsNames()) {
@@ -72,33 +56,7 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
     }
 
 
-    /**
-     * Start up a background thread used to send the completion
-     * information invoking the <code>CompletionListener</code> handlers
-     * registered.
-     */
-    public void start() {
-        //Submit the processor task for execution in a separate thread
-        _executorService.submit(_updaterTask);
-    }
-
-    /*
-     ** Stop the processing thread of this action manager.
-    */
-    public void stop() {
-        _updaterTask.stop();
-        _executorService.shutdown();
-        try {
-            if (!_executorService.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
-                _executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            _executorService.shutdownNow();
-        }
-    }
-
-
-     public void close() {
+    public void close() {
         try {
             if (_producer != null)
                 _producer.close();
@@ -117,57 +75,23 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
     }
 
     public void onEpicsUpdate(EpicsUpdate update) {
-        //put the update on the queue, and keep waiting for more updates
+
         try {
-            _updateQueue.put(update);
-        } catch (InterruptedException e) {
-            //nothing to do. The operation was interrupted
-        }
-    }
+            //send the update via JMS
+            Destination d = _destinationMap.get(update.getChannelName());
 
-    private class UpdaterTask implements Runnable {
-        private boolean isRunning;
-
-
-        public void run() {
-            isRunning = true;
-            while (isRunning()) {
-                try {
-                    EpicsUpdate update = _updateQueue.take();
-                    //send the update via JMS
-                    Destination d = _destinationMap.get(update.getChannelName());
-                    
-                    if (d != null) {
-                        Message m = EpicsJmsFactory.createMessage(_session, update);
-                        if (m != null) {
-                            LOG.info("Updating channel: " + update.getChannelName() + " to " + d);
-                            _producer.send(d, m);
-                        }
-                    }
-
-
-                } catch (InterruptedException e) {
-                    LOG.info("Updater Task Thread interrupted. Exiting");
-                    isRunning = false;
-                    return;
-                } catch (JMSException e) {
-                    LOG.log(Level.WARNING, "Problem sending Epics Status Update via JMS: ", e);
+            if (d != null) {
+                Message m = EpicsJmsFactory.createMessage(_session, update);
+                if (m != null) {
+                    LOG.info("Updating channel: " + update.getChannelName() + " to " + d);
+                    _producer.send(d, m);
                 }
             }
         }
-
-        private synchronized boolean isRunning() {
-
-            return isRunning;
-
-        }
-
-        /**
-         * Stop the current processing thread.
-         */
-        public synchronized void stop() {
-            isRunning = false;
+        catch (JMSException e) {
+            LOG.log(Level.WARNING, "Problem sending Epics Status Update via JMS: ", e);
         }
 
     }
+
 }
