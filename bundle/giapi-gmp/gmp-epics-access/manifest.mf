@@ -11,3 +11,4 @@ Import-Package: edu.gemini.jms.api,
  javax.jms,
  org.osgi.util.tracker,
  org.osgi.framework
+Export-Package: edu.gemini.aspen.gmp.epics
