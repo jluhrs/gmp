@@ -318,13 +318,24 @@
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/conf/conf.iml" filepath="$PROJECT_DIR$/conf/conf.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-api/gmp-api.iml" filepath="$PROJECT_DIR$/gmp-api/gmp-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-broker/gmp-broker.iml" filepath="$PROJECT_DIR$/gmp-broker/gmp-broker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-epics-access/gmp-epics-access.iml" filepath="$PROJECT_DIR$/gmp-epics-access/gmp-epics-access.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-epics-simulator/gmp-epics-simulator.iml" filepath="$PROJECT_DIR$/gmp-epics-simulator/gmp-epics-simulator.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" filepath="$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-services/gmp-services.iml" filepath="$PROJECT_DIR$/gmp-services/gmp-services.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-servlet/gmp-servlet.iml" filepath="$PROJECT_DIR$/gmp-servlet/gmp-servlet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-status/gmp-status.iml" filepath="$PROJECT_DIR$/gmp-status/gmp-status.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-status-gateway/gmp-status-gateway.iml" filepath="$PROJECT_DIR$/gmp-status-gateway/gmp-status-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-statusdb/gmp-statusdb.iml" filepath="$PROJECT_DIR$/gmp-statusdb/gmp-statusdb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-jms-statusproc/gmp-statusproc-jms.iml" filepath="$PROJECT_DIR$/gmp-jms-statusproc/gmp-statusproc-jms.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-tests/gmp-tests.iml" filepath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
-      <module fileurl="file:///home/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" filepath="/home/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" />
-      <module fileurl="file:///home/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-api/jms-api.iml" filepath="/home/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-api/jms-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-util/gmp-util.iml" filepath="$PROJECT_DIR$/gmp-util/gmp-util.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
@@ -367,12 +378,12 @@
             <SvnBranchConfiguration />
           </value>
         </entry>
-        <entry key="/home/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq">
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq">
           <value>
             <SvnBranchConfiguration />
           </value>
         </entry>
-        <entry key="/home/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-api">
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api">
           <value>
             <SvnBranchConfiguration />
           </value>
@@ -416,5 +427,8 @@
   <component name="com.intellij.profile.ui.ErrorOptionsConfigurable" proportions="" version="1">
     <option name="myLastEditedConfigurable" />
   </component>
+  <UsedPathMacros>
+    <macro name="GIAPI_BASE" />
+  </UsedPathMacros>
 </project>
 
