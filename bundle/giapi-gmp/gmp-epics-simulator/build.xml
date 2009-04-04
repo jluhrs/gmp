@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<project name="gmp-epics-simulator" default="all" basedir=".">
+    <import file="../build.xml"/>
+
+    <path id="build.classpath.extra">
+        <pathelement path="../gmp-epics-access/bin"/>
+        <!--<pathelement path="../gmp-util/bin"/>-->
+        <!--<pathelement path="../../jms/jms-api/bin"/>-->
+        <!--<pathelement path="../../epics/epics-service/bin"/>-->
+        <!--<fileset dir="../../jms/jms-api/lib" includes="*.jar"/>-->
+    </path>
+
+</project>

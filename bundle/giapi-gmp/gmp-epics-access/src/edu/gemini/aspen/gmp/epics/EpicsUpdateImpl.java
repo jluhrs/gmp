@@ -1,10 +1,7 @@
-package edu.gemini.aspen.gmp.epics.impl;
-
-import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+package edu.gemini.aspen.gmp.epics;
 
 /**
- * Storage class that contains the  information associated to
- * an EPICS update.
+ * A simple implementation for an Epics Update.
  */
 public class EpicsUpdateImpl implements EpicsUpdate {
 

@@ -83,7 +83,7 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
             if (d != null) {
                 Message m = EpicsJmsFactory.createMessage(_session, update);
                 if (m != null) {
-                    LOG.info("Updating channel: " + update.getChannelName() + " to " + d);
+                    LOG.fine("Updating channel: " + update.getChannelName() + " to " + d);
                     _producer.send(d, m);
                 }
             }

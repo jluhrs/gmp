@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import edu.gemini.epics.IEpicsClient;
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
+import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
 
 /**
  * This class monitors the EPICS channels acting as an IEpicsClient.
