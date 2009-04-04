@@ -10,8 +10,8 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi-util.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi-service.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-util.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-service.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -21,7 +21,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jms/jms-api/lib/geronimo-jms_1.1_spec-1.1.1.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/lib/geronimo-jms_1.1_spec-1.1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
