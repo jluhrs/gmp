@@ -28,8 +28,8 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi-util.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi-service.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-util.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-service.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
