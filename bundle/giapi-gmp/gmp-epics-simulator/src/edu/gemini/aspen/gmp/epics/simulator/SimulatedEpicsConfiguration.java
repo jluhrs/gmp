@@ -23,5 +23,5 @@ public interface SimulatedEpicsConfiguration {
      * simulated in the GMP
      */
 
-    Set<SimulatedEpicsChannel> getSimulataedChannels();
+    Set<SimulatedEpicsChannel> getSimulatedChannels();
 }

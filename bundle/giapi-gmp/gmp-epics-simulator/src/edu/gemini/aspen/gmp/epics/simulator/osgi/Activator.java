@@ -56,7 +56,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
         _simulator = new Simulator(registrar);
 
-        Set<SimulatedEpicsChannel> channels = conf.getSimulataedChannels();
+        Set<SimulatedEpicsChannel> channels = conf.getSimulatedChannels();
 
         if (channels != null) {
             for (SimulatedEpicsChannel channel : channels) {

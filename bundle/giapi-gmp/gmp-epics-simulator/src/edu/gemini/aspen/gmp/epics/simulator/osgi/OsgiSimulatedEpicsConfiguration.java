@@ -36,7 +36,7 @@ public class OsgiSimulatedEpicsConfiguration implements SimulatedEpicsConfigurat
 
     }
 
-    public Set<SimulatedEpicsChannel> getSimulataedChannels() {
+    public Set<SimulatedEpicsChannel> getSimulatedChannels() {
         return Collections.unmodifiableSet(_simChannels);
     }
 
