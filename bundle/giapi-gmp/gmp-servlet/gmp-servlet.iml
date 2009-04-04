@@ -10,10 +10,10 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi-util.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi-service.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/servlet.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-util.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-service.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/servlet.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -22,7 +22,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi-util.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-util.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -31,7 +31,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/osgi.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -40,7 +40,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../runtime/lib/servlet.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/servlet.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

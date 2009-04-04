@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module relativePaths="false" version="4">
+<module relativePaths="false" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///home/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-api/lib/geronimo-jms_1.1_spec-1.1.1.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/lib/geronimo-jms_1.1_spec-1.1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -22,7 +22,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///home/anunez/Projects/giapi/giapi-osgi/runtime/lib/osgi.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -31,7 +31,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///home/anunez/Projects/giapi/giapi-osgi/runtime/lib/osgi-util.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-util.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

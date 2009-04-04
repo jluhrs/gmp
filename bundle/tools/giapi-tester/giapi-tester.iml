@@ -13,8 +13,8 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jms/jms-activemq/lib/commons-logging-1.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../jms/jms-activemq/lib/activemq-core-5.1.0.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/commons-logging-1.1.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/activemq-core-5.1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -23,7 +23,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jms/jms-activemq/lib/activemq-core-5.1.0.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/activemq-core-5.1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -32,7 +32,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../jms/jms-api/lib/geronimo-jms_1.1_spec-1.1.1.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/lib/geronimo-jms_1.1_spec-1.1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
