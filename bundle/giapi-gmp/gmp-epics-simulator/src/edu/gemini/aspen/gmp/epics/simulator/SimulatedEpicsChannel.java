@@ -115,6 +115,11 @@ public class SimulatedEpicsChannel {
 
                 break;
             case STRING:
+                String[] string = (String[])data;
+                for (int i = 0; i < string.length; i++) {
+                    string[i] = "Random text " + ran.nextInt();
+                }
+
                 break;
         }
         return data;
