@@ -27,7 +27,7 @@ developed this release of the GMP in Java 5, so you need Java 5 at least on your
 computer. 
 
 
-0. Extremely Quick Start up
+0. Quick Start up
 --------------------------------------------------------------------------------
 
 If you are in a hurry and don't want to read anything else and just want to
@@ -109,7 +109,7 @@ xml configuration files.
                             type and update rate of the channels that will be
                             simulated.
 
-2. Starting up the Gemini Master Process
+3. Starting up the Gemini Master Process
 --------------------------------------------------------------------------------
 
 Now we are ready to start up the Gemini Master Process. Simply type:
@@ -133,7 +133,7 @@ INFO: Registering servlet
 14:45:59.726 EVENT  Started ServletHttpContext[/]
 
 
-3. Checking the GMP is running and Shuting down the application
+4. Checking the GMP is running and Shuting down the application
 --------------------------------------------------------------------------------
 
 Once the application has started, you'll get a prompt to let you know that the
@@ -173,7 +173,7 @@ on the prompt. This will close the GMP service, and will shut down all the
 associated services to it.
 
 
-4. Using the GMP.
+5. Using the GMP.
 --------------------------------------------------------------------------------
 
 Once the GMP has started, it can be used to communicate with the instrument
