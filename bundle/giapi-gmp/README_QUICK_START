@@ -31,8 +31,11 @@ computer.
 --------------------------------------------------------------------------------
 
 If you are in a hurry and don't want to read anything else and just want to
-start up the GMP, just type on the directory where you unpacked the binary
-distribution:
+start up the GMP, there is a couple of configuration files you need to set up
+first. Please read section 2 if you haven't done this, and then come back here.
+
+Once the configuration files have been updated, just type on the directory where
+you unpacked the binary distribution:
 
     java -jar launcher.jar -S:. -a:gmp-server
 
@@ -64,6 +67,47 @@ on your console and you should see a message like:
   Sorry, what application are we talking about? You need -a or -i, or both.
   Let me help you. Try: java -jar launcher.jar -?
 
+
+2. Configuring the Gemini Master Process
+
+On the directory where you unpacked the binary distribution, edit the following
+file:
+            ${GMP_INSTALL}/gmp-server/conf/bundle.properties
+
+The following properties need to be set up properly in that file:
+
+    gmp.properties.conf= ${GMP_INSTALL}/gmp-server/conf/gmp-properties.xml
+    gmp.epics.conf=${GMP_INSTALL}/gmp-server/conf/epics-channels.xml
+    gmp.epics.simulation.conf=${GMP_INSTALL}/gmp-server/conf/simulated-epics-channels.xml
+
+IMPORTANT: The configuration files DO NOT accept the use of environment
+variables, so you can't use ${GMP_INSTALL} for instance; you need to type
+the complete route to the required files.
+
+Here is a quick description of each one of those properties and the associated
+xml configuration files.
+
+ gmp.properties.conf: Contains the xml file that describes the properties and
+                      values that the GMP will be able to retrieve to the
+                      applications.
+
+ gmp.epics.conf : Contains the EPICS channels the GMP will monitor and will
+                  be availabe in case the instrument code wants to get
+                  notifications when these channels change. The names here
+                  defines the authorized channels the instrument code can
+                  monitor. If the EPICS service bundle is available, the
+                  real EPICS channels will be read and propagated to the
+                  instrument code provided an appropriate handler had been
+                  registered with the GIAPI.
+
+ gmp.epics.simulation.conf: Defines the EPICS channels that will be simulated.
+                            The names of the channels listed here should be
+                            a subset of the ones listed in the gmp.epics.conf
+                            file, otherwise the instrument code won't be
+                            authorized to access the simulated values. In this
+                            file, it is necessary to describe the name, data
+                            type and update rate of the channels that will be
+                            simulated.
 
 2. Starting up the Gemini Master Process
 --------------------------------------------------------------------------------
