@@ -1,0 +1,6 @@
+org.osgi.service.http.port=9091
+oscar.repository.url: http://localhost:9999/bundle
+
+gmp.properties.conf= /data/daoinsw/tools/giapi/gmp/gmp-server/conf/gmp-properties.xml
+gmp.epics.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/epics-channels.xml
+gmp.epics.simulation.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/simulated-epics-channels.xml

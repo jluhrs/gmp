@@ -1,0 +1,46 @@
+<project name="dist" basedir="." default="dist">
+
+    <property  name="osgi.dir" value="${user.home}/osgiApps"/>
+    <property  name="dist.dir" value="dist"/>
+    <property  name="gmp-dist.dir" value="${dist.dir}/gmp"/>
+    <property  name="gmp-server.dir" value="${gmp-dist.dir}/gmp-server"/>
+    <property  name="gmp.dir" value="${osgi.dir}/gmp-server"/>
+
+    <property name="README.file" value="bundle/giapi-gmp/README_QUICK_START"/>
+    <property name="launcher.file" value="runtime/launcher/launcher.jar"/>
+    <property name="tester.file" value="bundle/tools/giapi-tester/giapi-tester.jar"/>
+    <property name="bundle-conf.file" value="app/gmp-server/bundle.properties.gpi"/>
+
+    <property name="dist-package.file" value="gmp-dist.tar.gz"/>
+
+    <target name="dist">
+        
+        <delete dir="dist"/>
+        <echo>Making distributions</echo>
+        <mkdir dir="${gmp-dist.dir}"/>
+
+        <echo>Copying data from ${gmp.dir} to ${gmp-dist.dir}</echo>
+        <copy todir="${gmp-server.dir}">
+            <fileset dir="${gmp.dir}"/>
+        </copy>
+
+        <echo>Copying README</echo>
+        <copy file="${README.file}" todir="${gmp-dist.dir}"/>
+
+        <echo>Copying launcher</echo>
+        <copy file="${launcher.file}" todir="${gmp-dist.dir}"/>
+
+        <echo>Copying tester application</echo>
+        <copy file="${tester.file}" todir="${gmp-dist.dir}"/>
+
+        <echo>Copying configuration for GPI</echo>
+        <copy file="${bundle-conf.file}" tofile="${gmp-server.dir}/conf/bundle.properties"/>
+
+        <echo>Taring up the distribution</echo>
+        <tar destfile="${dist-package.file}" basedir="${dist.dir}" compression="gzip"/>
+
+        <move file="${dist-package.file}" todir="${dist.dir}"/>
+
+    </target>
+
+</project>
