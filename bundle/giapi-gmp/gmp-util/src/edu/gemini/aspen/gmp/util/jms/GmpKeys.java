@@ -47,4 +47,11 @@ public class GmpKeys {
     public final static String GMP_GEMINI_EPICS_CHANNEL_PROPERTY = "EPICS_CHANNEL";
     public final static String GMP_GEMINI_EPICS_TOPIC_PREFIX = GMP_PREFIX + GMP_SEPARATOR + "EPICS" + GMP_SEPARATOR;
 
+    //Observation Events Keys
+    public final static String GMP_DATA_OBSEVENT_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "OBSEVENT_DESTINATION";
+    public final static String GMP_DATA_OBSEVENT_NAME = "OBSEVENT_NAME";
+    public final static String GMP_DATA_OBSEVENT_FILENAME = "OBSEVENT_FILENAME";
+
+
+
 }

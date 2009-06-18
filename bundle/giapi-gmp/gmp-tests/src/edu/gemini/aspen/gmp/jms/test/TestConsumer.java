@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.jms.test;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import edu.gemini.aspen.gmp.broker.impl.ConfigDefaults;
 import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
+import edu.gemini.jms.activemq.broker.ConfigDefaults;
 
 import javax.jms.*;
 import java.util.logging.Logger;

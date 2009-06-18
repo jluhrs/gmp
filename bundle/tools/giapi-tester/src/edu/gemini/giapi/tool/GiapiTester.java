@@ -6,6 +6,7 @@ import edu.gemini.giapi.tool.commands.CommandOperation;
 import edu.gemini.giapi.tool.help.HelpOperation;
 import edu.gemini.giapi.tool.status.MonitorStatusOperation;
 import edu.gemini.giapi.tool.status.GetStatusOperation;
+import edu.gemini.giapi.tool.obsevents.MonitorObsEventOperation;
 
 
 /**
@@ -31,12 +32,14 @@ public class GiapiTester {
         parser.registerArgument(new RepetitionArgument());
         parser.registerArgument(new MonitorStatusArgument());
         parser.registerArgument(new GetStatusArgument());
+        parser.registerArgument(new MonitorObsEventArgument());
 
         //possible operations
         parser.registerOperation(new HelpOperation());
         parser.registerOperation(new CommandOperation());
         parser.registerOperation(new MonitorStatusOperation());
         parser.registerOperation(new GetStatusOperation());
+        parser.registerOperation(new MonitorObsEventOperation());
 
         //get the Operation the parser found
         Operation op = parser.parse();
