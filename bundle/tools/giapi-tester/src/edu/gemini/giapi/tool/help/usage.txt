@@ -7,7 +7,7 @@ SYNOPSIS
 
 DESCRIPTION
     The GIAPI tester applications is a command line tool that allows
-    sending commands to the Gemini Master Process (GMP).
+    to command operations to the Gemini Master Process (GMP).
     It uses the GIAPI internal protocols to communicate with an Aspen
     conforming instrument, allowing to test the operation of it. 
     
@@ -16,7 +16,7 @@ DESCRIPTION
     -?  Shows this message and then exits.
 
     -sc <sequence command>
-        Specifies a sequence command to send
+        Specifies a sequence command to send to the GMP
         Available sequence command options are TEST, REBOOT, INIT, DATUM,
         PARK, VERIFY, END_VERIFY, GUIDE, END_GUIDE, APPLY, OBSERVE,
         END_OBSERVE, PAUSE, CONTINUE, STOP, ABORT
@@ -62,7 +62,11 @@ DESCRIPTION
         Starts a monitor for a status item with the given name.
 
      -get <status-name>
-        Gets the most recent value for the status item specified. 
+        Gets the most recent value for the status item specified.
+
+     -obsEvents
+        Starts listening for observation events coming through the GMP.
+        Each observation event received is printed out to the screen.
 
 EXAMPLES
 
