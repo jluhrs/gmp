@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-Activator: edu.gemini.aspen.giapi.data.obsevents.osgi.Activator
+Bundle-Name: GIAPI Observation Event Monitor
+Bundle-Description: Monitor service to listen for Observation Events and dispatch it to interested clients.
+Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Version: 0.1.0
+Import-Package: edu.gemini.aspen.gmp.data,
+ edu.gemini.aspen.gmp.util.jms,
+ edu.gemini.jms.api,
+ javax.jms,
+ org.osgi.util.tracker,
+ org.osgi.framework

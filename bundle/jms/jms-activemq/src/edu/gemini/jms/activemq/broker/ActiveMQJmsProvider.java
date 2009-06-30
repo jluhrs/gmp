@@ -20,6 +20,11 @@ public final class ActiveMQJmsProvider implements JmsProvider {
         _factory = new ActiveMQConnectionFactory(ConfigDefaults.BROKER_URL);
     }
 
+
+    public ActiveMQJmsProvider(String url) {
+        _factory = new ActiveMQConnectionFactory(url);
+    }
+
     /**
      * Return a JMS Connection factory.
      * @return the ConnectionFactory implemented by the JMS Provider

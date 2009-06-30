@@ -4,13 +4,18 @@ import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.MonitorObsEventArgument;
-import edu.gemini.giapi.tool.jms.BrokerConnection;
-import edu.gemini.giapi.tool.TesterException;
+import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventMonitor;
+import edu.gemini.aspen.gmp.data.ObservationEventHandler;
+import edu.gemini.aspen.gmp.data.ObservationEvent;
+import edu.gemini.aspen.gmp.data.Dataset;
+import edu.gemini.jms.api.JmsProvider;
+import edu.gemini.jms.activemq.broker.ActiveMQJmsProvider;
 
+import javax.jms.JMSException;
 import java.util.logging.Logger;
 
 /**
- * An operation to receive Observation Events. 
+ * An operation to receive Observation Events.
  */
 public class MonitorObsEventOperation implements Operation {
 
@@ -25,7 +30,7 @@ public class MonitorObsEventOperation implements Operation {
         if (arg instanceof MonitorObsEventArgument) {
             isReady = true;
         } else if (arg instanceof HostArgument) {
-            _host = ((HostArgument)arg).getHost();
+            _host = ((HostArgument) arg).getHost();
         }
     }
 
@@ -34,24 +39,22 @@ public class MonitorObsEventOperation implements Operation {
     }
 
     public void execute() throws Exception {
-        BrokerConnection connection = new BrokerConnection(
-                "tcp://" + _host + ":61616");
 
-        ObsEventMonitor monitor= null;
+        JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
+        JmsObservationEventMonitor monitor = new JmsObservationEventMonitor();
+
+        monitor.registerHandler(new TestObsEventHandler());
         try {
-            connection.start();
-            monitor = new ObsEventMonitor(connection);
-            monitor.start();
-        } catch (TesterException ex) {
-            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-        } finally {
-            connection.stop();
-            if (monitor != null) monitor.stop();
+            monitor.startJms(provider);
+        } catch (JMSException e) {
+            LOG.warning("Problem on GIAPI tester: " + e.getMessage());   
         }
+    }
 
-        
-
-
+    public class TestObsEventHandler implements ObservationEventHandler {
+        public void onObservationEvent(ObservationEvent event, Dataset dataset) {
+            System.out.println(event + " received for dataset " + dataset.getName());
+        }
     }
 }

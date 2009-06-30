@@ -7,10 +7,11 @@
      <path id="build.classpath.extra">
         <fileset dir="../../jms/jms-activemq/lib" includes="*.jar"/>
         <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
+        <pathelement path="../../jms/jms-api/bin"/>
+        <pathelement path="../../jms/jms-activemq/bin"/>
         <pathelement path="../../giapi-gmp/gmp-api/bin"/>
         <pathelement path="../../giapi-gmp/gmp-util/bin"/>
-
-
+        <pathelement path="../../giapi-gmp/giapi-obsevents/bin"/>
     </path>
 
 	<!--<fileset id="jar.extra" dir="src" includes="**/*.txt"/>-->
@@ -26,8 +27,11 @@
         </unjar>
 
         <copy todir="bin">
+           <fileset dir="../../jms/jms-api/bin"/>
+           <fileset dir="../../jms/jms-activemq/bin"/>
            <fileset dir="../../giapi-gmp/gmp-api/bin"/>
            <fileset dir="../../giapi-gmp/gmp-util/bin"/>
+           <fileset dir="../../giapi-gmp/giapi-obsevents/bin"/>
         </copy>
         <!--<delete dir="bin/META-INF"/>-->
     </target>

@@ -4,7 +4,7 @@ Bundle-Name: ActiveMQ Service
 Bundle-Classpath: ., lib/commons-logging-1.1.jar, lib/activemq-core-5.1.0.jar
 Bundle-Description: A JMS Provider based on the Apache ActiveMQ
 Bundle-Vendor: Gemini 8m Observatories, HLDG
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Export-Package: edu.gemini.jms.activemq.broker
 Import-Package: edu.gemini.jms.api,
  org.osgi.framework,
