@@ -54,7 +54,7 @@ public class MonitorObsEventOperation implements Operation {
 
     public class TestObsEventHandler implements ObservationEventHandler {
         public void onObservationEvent(ObservationEvent event, Dataset dataset) {
-            System.out.println(event + " received for dataset " + dataset.getName());
+            System.out.println("[" + dataset.getName() + "/" + event + "]");
         }
     }
 }

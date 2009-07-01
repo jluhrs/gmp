@@ -55,11 +55,11 @@ public enum ObservationEvent {
         }
     }
 
-    ObservationEvent(String name) {
+    private ObservationEvent(String name) {
         eventName = name;
     }
 
-    String getObservationEventName() {
+    public String getObservationEventName() {
         return eventName;
     }
 
