@@ -10,4 +10,8 @@
         <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
     </path>
 
+   <path id="build.classpath.test">
+        <fileset dir="../../jms/jms-activemq/lib" includes="*.jar"/>
+   </path>
+
 </project>
