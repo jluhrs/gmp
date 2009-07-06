@@ -83,6 +83,7 @@
 		<path id="build.classpath">
 			<path path="bin"/>
 			<path refid="build.classpath.extra"/>
+            <path refid="build.classpath.test"/>
 			<fileset dir="lib" includes="*.jar"/>
 			<fileset dir="${osgi.runtime.lib}" includes="*.jar"/>	
 			<fileset dir="${osgi.build.lib}" includes="*.jar"/>	
@@ -100,6 +101,7 @@
 			
 			<classpath>
 				<path refid="build.classpath.extra"/>
+                <path refid="build.classpath.test"/>
 				<fileset dir="lib" includes="*.jar"/>
 				<fileset dir="${osgi.runtime.lib}" includes="*.jar"/>	
 				<fileset dir="${osgi.build.lib}" includes="*.jar"/>	
@@ -145,6 +147,7 @@
 
 	<path id="build.classpath.extra"/>
 	<path id="build.source.extra"/>
+    <path id="build.classpath.test"/>
 	<target name="-compile" depends="setup" if="ant.project.name">
 		
 		<!-- setup classpath -->
@@ -152,6 +155,7 @@
 		<mkdir dir="src"/>
 		<path id="build.classpath">
 			<path refid="build.classpath.extra"/>
+            
 			<fileset dir="lib" includes="*.jar"/>
 			<fileset dir="${osgi.runtime.lib}" includes="*.jar"/>	
 			<fileset dir="${osgi.build.lib}" includes="*.jar"/>	
