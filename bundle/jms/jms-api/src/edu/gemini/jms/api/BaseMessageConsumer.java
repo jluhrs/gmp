@@ -11,9 +11,9 @@ import java.util.logging.Level;
  * several message consumers, you need manually to create your consumers.
  */
 
-public abstract class AbstractMessageConsumer implements MessageListener, ExceptionListener {
+public class BaseMessageConsumer implements ExceptionListener {
 
-    private static final Logger LOG = Logger.getLogger(AbstractMessageConsumer.class.getName());
+    private static final Logger LOG = Logger.getLogger(BaseMessageConsumer.class.getName());
 
 
     private Connection _connection;
@@ -22,12 +22,14 @@ public abstract class AbstractMessageConsumer implements MessageListener, Except
 
     private MessageConsumer _consumer;
 
+    private MessageListener _listener;
 
     private String _clientName, _topicName;
 
-    public AbstractMessageConsumer(String clientName, String topicName) {
+    public BaseMessageConsumer(String clientName, String topicName, MessageListener listener) {
         _clientName = clientName;
         _topicName = topicName;
+        _listener = listener;
     }
 
 
@@ -44,7 +46,7 @@ public abstract class AbstractMessageConsumer implements MessageListener, Except
         //Completion info comes from a topic
         Destination destination = _session.createTopic(_topicName);
         _consumer = _session.createConsumer(destination);
-        _consumer.setMessageListener(this);
+        _consumer.setMessageListener(_listener);
 
 
     }
@@ -61,9 +63,6 @@ public abstract class AbstractMessageConsumer implements MessageListener, Except
             LOG.log(Level.WARNING, "Exception while stopping Message Consumer ", e);
         }
     }
-
-    public abstract void onMessage(Message message);
-
 
     public void onException(JMSException e) {
         LOG.log(Level.WARNING, "Exception on Message Consumer: ", e);

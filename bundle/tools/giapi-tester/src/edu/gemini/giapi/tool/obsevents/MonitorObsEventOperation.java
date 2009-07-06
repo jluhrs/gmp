@@ -4,11 +4,12 @@ import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.MonitorObsEventArgument;
-import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventMonitor;
+import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
 import edu.gemini.aspen.gmp.data.ObservationEventHandler;
 import edu.gemini.aspen.gmp.data.ObservationEvent;
 import edu.gemini.aspen.gmp.data.Dataset;
 import edu.gemini.jms.api.JmsProvider;
+import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.activemq.broker.ActiveMQJmsProvider;
 
 import javax.jms.JMSException;
@@ -42,11 +43,16 @@ public class MonitorObsEventOperation implements Operation {
 
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
-        JmsObservationEventMonitor monitor = new JmsObservationEventMonitor();
+        JmsObservationEventListener listener = new JmsObservationEventListener(new TestObsEventHandler());
 
-        monitor.registerHandler(new TestObsEventHandler());
+        BaseMessageConsumer consumer = new BaseMessageConsumer(
+                "Observation Event Test Client",
+                JmsObservationEventListener.TOPIC_NAME,
+                listener
+        );
+
         try {
-            monitor.startJms(provider);
+            consumer.startJms(provider);
         } catch (JMSException e) {
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());   
         }

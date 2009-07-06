@@ -101,7 +101,7 @@
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/src/edu/gemini/jms/api/AbstractMessageConsumer.java" charset="x-MacRoman" />
+    <file url="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/src/edu/gemini/jms/api/BaseMessageConsumer.java" charset="x-MacRoman" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
@@ -327,6 +327,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/giapi-obsevent-handler/giapi-obsevent-handler.iml" filepath="$PROJECT_DIR$/giapi-obsevent-handler/giapi-obsevent-handler.iml" />
       <module fileurl="file://$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" filepath="$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-api/gmp-api.iml" filepath="$PROJECT_DIR$/gmp-api/gmp-api.iml" />

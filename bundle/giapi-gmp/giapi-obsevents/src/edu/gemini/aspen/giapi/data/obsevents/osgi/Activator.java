@@ -9,9 +9,10 @@ import org.osgi.util.tracker.ServiceTracker;
 import java.util.logging.Logger;
 
 import edu.gemini.aspen.gmp.data.ObservationEventHandler;
-import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventMonitor;
-import edu.gemini.aspen.giapi.data.obsevents.ObservationEventMonitor;
-import edu.gemini.jms.api.AbstractMessageConsumer;
+import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
+import edu.gemini.aspen.giapi.data.obsevents.ObservationEventHandlerComposite;
+import edu.gemini.aspen.giapi.data.obsevents.ObservationEventAction;
+import edu.gemini.jms.api.BaseMessageConsumer;
 
 /**
  *
@@ -25,18 +26,24 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     private ServiceTracker _tracker = null;
 
-    private ObservationEventMonitor monitor = null;
+    private ObservationEventHandlerComposite handlerComposite = null;
 
     private BundleContext context = null;
 
     public void start(BundleContext bundleContext) throws Exception {
         context = bundleContext;
 
-        monitor = new JmsObservationEventMonitor();
+        handlerComposite = new ObservationEventAction();
+
+        BaseMessageConsumer consumer = new BaseMessageConsumer(
+               "JMS Observation Event Monitor",
+                JmsObservationEventListener.TOPIC_NAME,
+                new JmsObservationEventListener(handlerComposite)
+        );
 
         LOG.info("Start tracking for JMS Provider");
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, (AbstractMessageConsumer)monitor);
+        _jmsTracker = new JmsProviderTracker(bundleContext, consumer);
         _jmsTracker.open();
 
         //and start tracking for observation event handlers as well...
@@ -54,20 +61,20 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         _tracker.close();
         _tracker = null;
 
-        monitor = null;
+        handlerComposite = null;
     }
 
     public void removedService(ServiceReference serviceReference, Object o) {
-        LOG.info("Observation Handler removed. Removing from monitor");
+        LOG.info("Observation Handler removed.");
         ObservationEventHandler handler = (ObservationEventHandler) context.getService(serviceReference);
-        monitor.unregisterHandler(handler);
+        handlerComposite.unregisterHandler(handler);
     }
 
     public Object addingService(ServiceReference serviceReference) {
 
-        LOG.info("Observation Event Handler found. Registering with monitor");
+        LOG.info("Observation Event Handler added.");
         ObservationEventHandler handler = (ObservationEventHandler) context.getService(serviceReference);
-        monitor.registerHandler(handler);
+        handlerComposite.registerHandler(handler);
 
         return handler;
 

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.jms.api.AbstractMessageConsumer;
+import edu.gemini.jms.api.BaseMessageConsumer;
 
 import javax.jms.JMSException;
 
@@ -19,9 +19,9 @@ public class JmsProviderTracker extends ServiceTracker {
 
     private static final Logger LOG = Logger.getLogger(JmsProviderTracker.class.getName());
 
-    private AbstractMessageConsumer _consumer;
+    private BaseMessageConsumer _consumer;
 
-    public JmsProviderTracker(BundleContext ctx, AbstractMessageConsumer consumer) {
+    public JmsProviderTracker(BundleContext ctx, BaseMessageConsumer consumer) {
         super(ctx, JmsProvider.class.getName(), null);
         _consumer = consumer;
     }
@@ -30,8 +30,8 @@ public class JmsProviderTracker extends ServiceTracker {
     public Object addingService(ServiceReference serviceReference) {
         LOG.info("Adding JMS Service provider");
         JmsProvider provider = (JmsProvider) context.getService(serviceReference);
-        //start receiving observation event messages.
 
+        //start receiving observation event messages.
         try {
             _consumer.startJms(provider);
         } catch (JMSException e) {
