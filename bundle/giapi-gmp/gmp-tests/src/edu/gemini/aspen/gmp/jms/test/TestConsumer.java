@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.jms.test;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
+import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.activemq.broker.ConfigDefaults;
 
 import javax.jms.*;
@@ -25,7 +25,7 @@ public class TestConsumer implements MessageListener, ExceptionListener {
             connection.start();
 
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Destination destination = session.createTopic(GMPKeys.GMP_SEQUENCE_COMMAND_PREFIX + SequenceCommand.INIT.getName());
+            Destination destination = session.createTopic(GmpKeys.GMP_SEQUENCE_COMMAND_PREFIX + SequenceCommand.INIT.getName());
 
             MessageConsumer consumer = session.createConsumer(destination);
             consumer.setMessageListener(tc);
@@ -33,7 +33,7 @@ public class TestConsumer implements MessageListener, ExceptionListener {
 //            connection.stop();
 //            connection.close();
         } catch (JMSException ex) {
-
+              //do nothing
         }
 
 

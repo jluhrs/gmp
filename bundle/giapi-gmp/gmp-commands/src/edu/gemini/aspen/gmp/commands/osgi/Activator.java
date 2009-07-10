@@ -1,11 +1,11 @@
-package edu.gemini.aspen.gmp.broker.osgi;
+package edu.gemini.aspen.gmp.commands.osgi;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import java.util.logging.Logger;
 
-import edu.gemini.aspen.gmp.broker.commands.ActionManager;
+import edu.gemini.aspen.gmp.commands.ActionManager;
 
 /**
  * The OSGi Activator for the GMP Service

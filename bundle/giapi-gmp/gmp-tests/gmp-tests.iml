@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="gmp-broker" />
+    <orderEntry type="module" module-name="gmp-commands" />
     <orderEntry type="module" module-name="gmp-api" />
     <orderEntry type="module-library">
       <library>
@@ -38,6 +38,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="gmp-util" />
   </component>
 </module>
 

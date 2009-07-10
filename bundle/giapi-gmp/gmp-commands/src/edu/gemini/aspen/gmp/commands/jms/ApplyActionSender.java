@@ -1,12 +1,12 @@
-package edu.gemini.aspen.gmp.broker.jms;
+package edu.gemini.aspen.gmp.commands.jms;
 
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.api.Configuration;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 import edu.gemini.aspen.gmp.commands.api.ConfigPathNavigator;
-import edu.gemini.aspen.gmp.broker.commands.Action;
-import edu.gemini.aspen.gmp.broker.commands.ActionSender;
-import edu.gemini.aspen.gmp.broker.commands.ActionMessage;
+import edu.gemini.aspen.gmp.commands.Action;
+import edu.gemini.aspen.gmp.commands.ActionSender;
+import edu.gemini.aspen.gmp.commands.ActionMessage;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.List;

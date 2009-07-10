@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Bundle-Activator: edu.gemini.aspen.gmp.broker.osgi.Activator
-Bundle-Name: GMP Broker
-Bundle-Description: The GMP Broker Service, based on ActiveMQ
+Bundle-Activator: edu.gemini.aspen.gmp.commands.osgi.Activator
+Bundle-Name: GMP Sequence Commands Service
+Bundle-Description: Sequence Command Processor service
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 0.7.0
 Import-Package: edu.gemini.aspen.gmp.commands.api,

@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.broker.jms;
+package edu.gemini.aspen.gmp.commands.jms;
 
 
 import javax.jms.*;

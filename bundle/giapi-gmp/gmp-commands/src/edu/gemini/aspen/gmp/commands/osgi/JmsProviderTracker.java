@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.broker.osgi;
+package edu.gemini.aspen.gmp.commands.osgi;
 
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.BundleContext;
@@ -10,12 +10,12 @@ import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
-import edu.gemini.aspen.gmp.broker.jms.JMSCompletionInfoListener;
-import edu.gemini.aspen.gmp.broker.jms.JMSActionMessageProducer;
-import edu.gemini.aspen.gmp.broker.jms.ActionSenderStrategy;
-import edu.gemini.aspen.gmp.broker.impl.CommandSenderImpl;
-import edu.gemini.aspen.gmp.broker.impl.CommandUpdaterImpl;
-import edu.gemini.aspen.gmp.broker.commands.ActionManager;
+import edu.gemini.aspen.gmp.commands.jms.JMSCompletionInfoListener;
+import edu.gemini.aspen.gmp.commands.jms.JMSActionMessageProducer;
+import edu.gemini.aspen.gmp.commands.jms.ActionSenderStrategy;
+import edu.gemini.aspen.gmp.commands.impl.CommandSenderImpl;
+import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
+import edu.gemini.aspen.gmp.commands.ActionManager;
 
 import javax.jms.JMSException;
 import java.util.logging.Logger;

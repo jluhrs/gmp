@@ -1,8 +1,8 @@
-package edu.gemini.aspen.gmp.broker.impl;
+package edu.gemini.aspen.gmp.commands.impl;
 
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
-import edu.gemini.aspen.gmp.broker.commands.ActionManager;
+import edu.gemini.aspen.gmp.commands.ActionManager;
 
 /**
  *

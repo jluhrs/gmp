@@ -1,8 +1,8 @@
-package edu.gemini.aspen.gmp.broker.jms;
+package edu.gemini.aspen.gmp.commands.jms;
 
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.broker.commands.Action;
+import edu.gemini.aspen.gmp.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;

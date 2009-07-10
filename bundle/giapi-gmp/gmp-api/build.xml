@@ -4,7 +4,7 @@
     <import file="../build.xml"/>
 
     <!--<path id="build.classpath.extra">-->
-        <!--<pathelement path="../broker-api/bin"/>-->
+        <!--<pathelement path="../commands-api/bin"/>-->
     <!--</path>-->
 
 </project>
