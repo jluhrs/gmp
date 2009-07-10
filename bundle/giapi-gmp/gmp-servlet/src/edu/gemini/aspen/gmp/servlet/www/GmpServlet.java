@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.servlet.www;
 
-import edu.gemini.aspen.gmp.broker.api.GMPService;
+import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.commands.api.*;
 
 import javax.servlet.http.HttpServlet;
@@ -21,9 +21,9 @@ public class GmpServlet extends HttpServlet implements CompletionListener {
 
     private static final Logger LOG = Logger.getLogger(GmpServlet.class.getName());
 
-    private GMPService _service;
+    private CommandSender _service;
 
-    public GmpServlet(GMPService service) {
+    public GmpServlet(CommandSender service) {
         _service = service;
     }
 

@@ -10,6 +10,8 @@ import edu.gemini.aspen.gmp.data.ObservationEvent;
 import edu.gemini.aspen.gmp.data.Dataset;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.BaseMessageConsumer;
+import edu.gemini.jms.api.DestinationData;
+import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.activemq.broker.ActiveMQJmsProvider;
 
 import javax.jms.JMSException;
@@ -47,7 +49,8 @@ public class MonitorObsEventOperation implements Operation {
 
         BaseMessageConsumer consumer = new BaseMessageConsumer(
                 "Observation Event Test Client",
-                JmsObservationEventListener.TOPIC_NAME,
+                new DestinationData(JmsObservationEventListener.TOPIC_NAME,
+                        DestinationType.TOPIC),
                 listener
         );
 

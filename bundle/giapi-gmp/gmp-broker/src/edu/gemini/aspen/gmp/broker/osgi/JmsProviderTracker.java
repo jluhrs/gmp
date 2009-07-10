@@ -5,13 +5,21 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.aspen.gmp.broker.api.GMPService;
-import edu.gemini.aspen.gmp.broker.jms.JMSCompletionInfoConsumer;
+import edu.gemini.jms.api.BaseMessageConsumer;
+import edu.gemini.jms.api.DestinationData;
+import edu.gemini.jms.api.DestinationType;
+import edu.gemini.aspen.gmp.commands.api.CommandSender;
+import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
+import edu.gemini.aspen.gmp.broker.jms.JMSCompletionInfoListener;
 import edu.gemini.aspen.gmp.broker.jms.JMSActionMessageProducer;
 import edu.gemini.aspen.gmp.broker.jms.ActionSenderStrategy;
-import edu.gemini.aspen.gmp.broker.impl.GMPServiceImpl;
+import edu.gemini.aspen.gmp.broker.impl.CommandSenderImpl;
+import edu.gemini.aspen.gmp.broker.impl.CommandUpdaterImpl;
+import edu.gemini.aspen.gmp.broker.commands.ActionManager;
 
+import javax.jms.JMSException;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * This class tracks for the presence of a JMS Provider service in the
@@ -23,15 +31,17 @@ public class JmsProviderTracker extends ServiceTracker {
     private static final Logger LOG = Logger.getLogger(JmsProviderTracker.class.getName());
 
 
-    private JMSCompletionInfoConsumer _completionConsumer;
+    BaseMessageConsumer _messageConsumer;
+
     private JMSActionMessageProducer _actionMessageProducer;
 
-    private GMPService _service = null;
+    private ActionManager _actionManager = null;
 
     ServiceRegistration _registration;
 
-    public JmsProviderTracker(BundleContext ctx) {
+    public JmsProviderTracker(BundleContext ctx, ActionManager manager) {
         super(ctx, JmsProvider.class.getName(), null);
+        _actionManager = manager;
     }
 
     @Override
@@ -41,17 +51,32 @@ public class JmsProviderTracker extends ServiceTracker {
         //start the action Message producer
         _actionMessageProducer = new JMSActionMessageProducer(provider);
 
-        LOG.info("Starting GMP service bundle");
-        _service = new GMPServiceImpl(new ActionSenderStrategy(_actionMessageProducer));
-        _service.start();
+        LOG.info("Starting Command Sender bundle");
+        CommandSender commandSender = new CommandSenderImpl(
+                new ActionSenderStrategy(_actionMessageProducer), _actionManager);
+
+        //and the Command updater
+        CommandUpdater commandUpdater = new CommandUpdaterImpl(_actionManager);
 
         //start the Completion Info Consumer
-        _completionConsumer = new JMSCompletionInfoConsumer(_service, provider);
+         _messageConsumer = new BaseMessageConsumer(
+               "JMS Completion Info Consumer",
+                new DestinationData(JMSCompletionInfoListener.QUEUE_NAME,
+                        DestinationType.QUEUE),
+                new JMSCompletionInfoListener(commandUpdater)
+        );
+
+        try {
+            _messageConsumer.startJms(provider);
+        } catch (JMSException e) {
+            LOG.log(Level.WARNING, "Problem starting message consumer", e);
+        }
+
 
         //advertise the GMP service in the OSGi framework
         _registration = context.registerService(
-                GMPService.class.getName(),
-                _service, null);
+                CommandSender.class.getName(),
+                commandSender, null);
 
         return provider;
     }
@@ -59,13 +84,11 @@ public class JmsProviderTracker extends ServiceTracker {
     @Override
     public void removedService(ServiceReference serviceReference, Object o) {
 
-        LOG.info("Stopping GMP service bundle");
+        LOG.info("Stopping Command Sender service bundle");
 
         _actionMessageProducer.close();
-        _completionConsumer.close();
 
-        _service.shutdown();
-
+        _messageConsumer.stopJms();
         //notify the OSGi framework this service is not longer available
         _registration.unregister();
 
@@ -73,7 +96,6 @@ public class JmsProviderTracker extends ServiceTracker {
         context.ungetService(serviceReference);
 
         _actionMessageProducer = null;
-        _completionConsumer = null;
     }
 
 

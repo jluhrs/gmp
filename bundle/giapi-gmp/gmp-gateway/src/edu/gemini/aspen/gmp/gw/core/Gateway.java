@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.gw.core;
 
-import edu.gemini.aspen.gmp.broker.api.GMPService;
+import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.gw.jms.CommandConsumer;
 import edu.gemini.jms.api.JmsProvider;
 
@@ -16,7 +16,7 @@ public class Gateway {
     private CommandConsumer _commandConsumer;
 
 
-    public Gateway(GMPService service, JmsProvider provider) {
+    public Gateway(CommandSender service, JmsProvider provider) {
         _commandConsumer = new CommandConsumer(provider, service);
     }
 

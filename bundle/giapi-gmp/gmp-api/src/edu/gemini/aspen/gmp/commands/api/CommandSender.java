@@ -1,22 +1,9 @@
-package edu.gemini.aspen.gmp.broker.api;
-
-import edu.gemini.aspen.gmp.commands.api.*;
+package edu.gemini.aspen.gmp.commands.api;
 
 /**
- * Defines the operations supported by the GMP Service
+ * Specify how to send sequence commands down to an instrument
  */
-public interface GMPService {
-
-    /**
-     * Start the Gemini Master Process Service
-     */
-    void start();
-
-    /**
-     * Shutdown the Gemini Master Process Service
-     */
-    void shutdown();
-
+public interface CommandSender {
 
     /**
      * Send a SequenceCommand with the specified activity to the registered
@@ -68,12 +55,5 @@ public interface GMPService {
                                         Configuration config,
                                         CompletionListener listener);
 
-    /**
-     * Updates the OCS with completion information for the given action Id.
-     *
-     * @param actionId the action id being updated
-     * @param response completion information associated to the action Id.
-     */
-    void updateOcs(int actionId, HandlerResponse response);
 
 }

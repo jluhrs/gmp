@@ -5,8 +5,8 @@ import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.broker.commands.ActionMessage;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
-import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
+import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 
 import javax.jms.MapMessage;
 import javax.jms.JMSException;
@@ -60,11 +60,11 @@ public class JmsActionMessage implements ActionMessage {
             _message = _jmsProducer.createMapMessage();
 
             //activity is a property
-            _message.setStringProperty(GMPKeys.GMP_ACTIVITY_PROP,
+            _message.setStringProperty(GmpKeys.GMP_ACTIVITY_PROP,
                     action.getActivity().getName());
 
             //action id is stored as a property as well
-            _message.setIntProperty(GMPKeys.GMP_ACTIONID_PROP, action.getId());
+            _message.setIntProperty(GmpKeys.GMP_ACTIONID_PROP, action.getId());
 
             //destination is based on the action
             _destination = _jmsProducer.createDestination(action, path);

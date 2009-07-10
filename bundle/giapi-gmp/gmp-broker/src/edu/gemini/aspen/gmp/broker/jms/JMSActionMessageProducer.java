@@ -2,11 +2,11 @@ package edu.gemini.aspen.gmp.broker.jms;
 
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.broker.impl.GMPKeys;
 import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
+import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.*;
@@ -33,7 +33,7 @@ public class JMSActionMessageProducer implements ExceptionListener {
     static {
         for (SequenceCommand sc : SequenceCommand.values()) {
             TOPIC_MAP.put(sc,
-                    GMPKeys.GMP_SEQUENCE_COMMAND_PREFIX + sc.getName());
+                    GmpKeys.GMP_SEQUENCE_COMMAND_PREFIX + sc.getName());
         }
     }
 
@@ -92,7 +92,7 @@ public class JMSActionMessageProducer implements ExceptionListener {
     public Destination createDestination(Action action, ConfigPath path) throws JMSException {
         StringBuilder sb = new StringBuilder(TOPIC_MAP.get(action.getSequenceCommand()));
         if (path != null) {
-            sb.append(GMPKeys.GMP_SEPARATOR);
+            sb.append(GmpKeys.GMP_SEPARATOR);
             sb.append(path.toString());
         }
         return _session.createTopic(sb.toString());

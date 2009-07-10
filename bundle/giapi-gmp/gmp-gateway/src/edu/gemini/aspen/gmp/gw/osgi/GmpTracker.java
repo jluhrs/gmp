@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.gw.osgi;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.BundleContext;
-import edu.gemini.aspen.gmp.broker.api.GMPService;
+import edu.gemini.aspen.gmp.commands.api.CommandSender;
 
 import java.util.logging.Logger;
 
@@ -17,7 +17,7 @@ public class GmpTracker extends ServiceTracker {
     private Supervisor _supervisor;
 
     public GmpTracker(BundleContext ctx, Supervisor supervisor) {
-        super(ctx, GMPService.class.getName(), null);
+        super(ctx, CommandSender.class.getName(), null);
         _supervisor = supervisor;
     }
     
@@ -25,7 +25,7 @@ public class GmpTracker extends ServiceTracker {
     public Object addingService(ServiceReference serviceReference) {
 
         LOG.info("GMP Gateway has found GMP Service");
-        GMPService service = (GMPService)context.getService(serviceReference);
+        CommandSender service = (CommandSender)context.getService(serviceReference);
 
         _supervisor.registerGmpService(service);
         _supervisor.start();

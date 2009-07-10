@@ -6,7 +6,7 @@ import org.osgi.framework.ServiceReference;
 
 import java.util.logging.Logger;
 
-import edu.gemini.aspen.gmp.broker.api.GMPService;
+import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.servlet.www.GmpServlet;
 
 /**
@@ -23,7 +23,7 @@ public class GmpTracker extends ServiceTracker {
     private ServletSupervisor _supervisor;
 
     public GmpTracker(BundleContext ctx) {
-        super(ctx, GMPService.class.getName(), null);
+        super(ctx, CommandSender.class.getName(), null);
     }
 
     public void registerSupervisor(ServletSupervisor supervisor) {
@@ -34,7 +34,7 @@ public class GmpTracker extends ServiceTracker {
 
         LOG.info("Adding GMP Service");
 
-        GMPService service = (GMPService)context.getService(serviceReference);
+        CommandSender service = (CommandSender)context.getService(serviceReference);
 
         _servlet = new GmpServlet(service);
 
@@ -55,6 +55,7 @@ public class GmpTracker extends ServiceTracker {
     /**
      * Returns a reference to the servlet. Don't hold references to this servlet for
      * too long, since this object can disappear.
+     * @return Servlet reference
      */
 
     public GmpServlet getGmpServlet() {

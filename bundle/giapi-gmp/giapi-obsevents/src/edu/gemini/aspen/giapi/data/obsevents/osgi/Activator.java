@@ -13,6 +13,8 @@ import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
 import edu.gemini.aspen.giapi.data.obsevents.ObservationEventHandlerComposite;
 import edu.gemini.aspen.giapi.data.obsevents.ObservationEventAction;
 import edu.gemini.jms.api.BaseMessageConsumer;
+import edu.gemini.jms.api.DestinationData;
+import edu.gemini.jms.api.DestinationType;
 
 /**
  *
@@ -37,7 +39,8 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
         BaseMessageConsumer consumer = new BaseMessageConsumer(
                "JMS Observation Event Monitor",
-                JmsObservationEventListener.TOPIC_NAME,
+                new DestinationData(JmsObservationEventListener.TOPIC_NAME,
+                        DestinationType.TOPIC),
                 new JmsObservationEventListener(handlerComposite)
         );
 

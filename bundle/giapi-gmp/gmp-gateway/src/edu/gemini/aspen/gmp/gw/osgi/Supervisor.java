@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.gw.osgi;
 
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.aspen.gmp.broker.api.GMPService;
+import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.gw.core.Gateway;
 
 import java.util.logging.Logger;
@@ -13,7 +13,7 @@ public class Supervisor {
 
     private static final Logger LOG = Logger.getLogger(Supervisor.class.getName());
     private JmsProvider _provider;
-    private GMPService _service;
+    private CommandSender _service;
 
     private Gateway _gateway;
 
@@ -30,7 +30,7 @@ public class Supervisor {
         _provider = null;
     }
 
-    public void registerGmpService(GMPService service) {
+    public void registerGmpService(CommandSender service) {
         _service = service;
     }
 

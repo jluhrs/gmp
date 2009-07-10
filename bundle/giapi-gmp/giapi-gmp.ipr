@@ -322,7 +322,7 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk/bundle/giapi-gmp/giapi-gmp.ipr" />
+    <option name="state" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk/bundle/giapi-gmp/giapi-gmp.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -385,51 +385,6 @@
         <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service">
           <value>
             <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/tags">
-                    <value>
-                      <list>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1239316670075" />
-                          <option name="revision" value="19327" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R6" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1233700240462" />
-                          <option name="revision" value="17635" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R5" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1228168587999" />
-                          <option name="revision" value="15682" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R4.1" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1224872786885" />
-                          <option name="revision" value="15259" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R4" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1220315863879" />
-                          <option name="revision" value="12966" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R2" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1217014180138" />
-                          <option name="revision" value="12934" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R1" />
-                        </SvnBranchItem>
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
               <option name="branchUrls">
                 <list>
                   <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
@@ -458,51 +413,6 @@
         <entry key="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester">
           <value>
             <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/tags">
-                    <value>
-                      <list>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1239316670075" />
-                          <option name="revision" value="19327" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R6" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1233700240462" />
-                          <option name="revision" value="17635" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R5" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1228168587999" />
-                          <option name="revision" value="15682" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R4.1" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1224872786885" />
-                          <option name="revision" value="15259" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R4" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1220315863879" />
-                          <option name="revision" value="12966" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R2" />
-                        </SvnBranchItem>
-                        <SvnBranchItem>
-                          <option name="creationDateMillis" value="1217014180138" />
-                          <option name="revision" value="12934" />
-                          <option name="url" value="http://sbfsvn01/software/giapi/giapi-osgi/tags/GMP-R1" />
-                        </SvnBranchItem>
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
               <option name="branchUrls">
                 <list>
                   <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
@@ -516,6 +426,7 @@
       </map>
     </option>
     <option name="myVersion" value="124" />
+    <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="SvnChangesBrowserSettings">
     <option name="USE_AUTHOR_FIELD" value="true" />

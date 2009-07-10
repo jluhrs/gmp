@@ -1,48 +1,26 @@
 package edu.gemini.aspen.gmp.broker.impl;
 
-import edu.gemini.aspen.gmp.broker.api.GMPService;
+import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.broker.commands.ActionSender;
 import edu.gemini.aspen.gmp.broker.jms.ActionSenderStrategy;
 import edu.gemini.aspen.gmp.broker.commands.ActionManager;
 import edu.gemini.aspen.gmp.broker.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.*;
 
-import java.util.logging.Logger;
-
 /**
- * Implementation of the GMP Service.
+ * Command Sender implementation
  */
-public class GMPServiceImpl implements GMPService {
+public class CommandSenderImpl implements CommandSender {
 
 
-    private static final Logger LOG = Logger.getLogger(
-            GMPServiceImpl.class.getName());
-
-    private final ActionManager _manager = new ActionManager();
+    private final ActionManager _manager; // = new ActionManager();
 
     private ActionSenderStrategy _strategy = null;
-    public GMPServiceImpl(ActionSenderStrategy strategy) {
+    public CommandSenderImpl(ActionSenderStrategy strategy, ActionManager manager) {
         _strategy = strategy;
+        _manager = manager;
     }
 
-
-    /**
-     * Start the Gemini Master Process Service
-     */
-    public void start() {
-        _manager.start();
-        LOG.info("GMP started up. Ready to dispatch messages");
-    }
-
-
-    /**
-     * Shutdown the Gemini Master Process Service
-     */
-    public void shutdown() {
-        _manager.stop();
-        _strategy = null;
-        LOG.info("GMP shut down.");
-    }
 
     /**
      * Send a SequenceCommand with the specified activity to the registered
@@ -99,7 +77,7 @@ public class GMPServiceImpl implements GMPService {
                                                Activity activity,
                                                Configuration config,
                                                CompletionListener listener) {
-        Action action = _manager.newAction(command, activity, config,
+        Action action = new Action(command, activity, config,
                                            listener);
 
         ActionSender sender = _strategy.getActionSender(action);
@@ -118,12 +96,5 @@ public class GMPServiceImpl implements GMPService {
             _manager.registerAction(action);
         } 
         return response;
-    }
-
-
-    public void updateOcs(int actionId, HandlerResponse response) {
-        //make the completion information available for the Action Manager
-        //to notify the clients.
-        _manager.registerCompletionInformation(actionId, response);
     }
 }

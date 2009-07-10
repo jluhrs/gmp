@@ -74,7 +74,7 @@ EXAMPLES
 
         java -jar giapi-tester.jar -sc INIT -activity PRESET
 
-    Notice is a sequence command always requires to specify an activity.
+    Notice that a sequence command always requires to specify an activity.
 
     If a configuration is needed for a sequence command, you need to
     use the -config option.

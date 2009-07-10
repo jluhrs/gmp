@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.gw.jms;
 
-import edu.gemini.aspen.gmp.broker.api.GMPService;
+import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.api.CompletionListener;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
@@ -18,7 +18,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
 
     private static final Logger LOG = Logger.getLogger(CommandConsumer.class.getName());
 
-    private GMPService _service;
+    private CommandSender _service;
 
     private Connection _connection;
 
@@ -27,7 +27,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
     private MessageConsumer _consumer;
 
 
-    public CommandConsumer(JmsProvider provider, GMPService service) {
+    public CommandConsumer(JmsProvider provider, CommandSender service) {
 
         _service = service;
         try {

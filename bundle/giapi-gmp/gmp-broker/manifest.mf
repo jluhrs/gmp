@@ -3,9 +3,8 @@ Bundle-Activator: edu.gemini.aspen.gmp.broker.osgi.Activator
 Bundle-Name: GMP Broker
 Bundle-Description: The GMP Broker Service, based on ActiveMQ
 Bundle-Vendor: Gemini 8m Observatories, HLDG
-Bundle-Version: 0.6.0
-Import-Package: edu.gemini.aspen.gmp.broker.api,
- edu.gemini.aspen.gmp.commands.api,
+Bundle-Version: 0.7.0
+Import-Package: edu.gemini.aspen.gmp.commands.api,
  edu.gemini.aspen.gmp.util.jms,
  edu.gemini.aspen.gmp.util.commands,
  edu.gemini.jms.api,

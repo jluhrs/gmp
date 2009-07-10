@@ -10,6 +10,12 @@ public class GmpKeys {
     public final static String GMP_SEPARATOR = ":";
 
 
+    //Sequence Command Keys
+    public final static String GMP_COMPLETION_INFO = GMP_PREFIX + GMP_SEPARATOR + "COMPLETION_INFO";
+    public final static String GMP_SEQUENCE_COMMAND_PREFIX = GMP_PREFIX + GMP_SEPARATOR + "SC" + GMP_SEPARATOR;
+    public final static String GMP_ACTIVITY_PROP = "GMP_ACTIVITY_PROP";
+    public final static String GMP_ACTIONID_PROP = "GMP_ACTIONID";
+
     //Handler Response Keys
     public final static String GMP_HANDLER_RESPONSE_KEY = "GMP_HANDLER_RESPONSE";
     public final static String GMP_HANDLER_RESPONSE_ERROR_KEY = "GMP_HANDLER_RESPONSE_ERROR";

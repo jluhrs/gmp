@@ -24,11 +24,13 @@ public class BaseMessageConsumer implements ExceptionListener {
 
     private MessageListener _listener;
 
-    private String _clientName, _topicName;
+    private String _clientName;
 
-    public BaseMessageConsumer(String clientName, String topicName, MessageListener listener) {
+    private DestinationData _destinationData;
+
+    public BaseMessageConsumer(String clientName, DestinationData data, MessageListener listener) {
         _clientName = clientName;
-        _topicName = topicName;
+        _destinationData = data;
         _listener = listener;
     }
 
@@ -43,10 +45,24 @@ public class BaseMessageConsumer implements ExceptionListener {
         _connection.setExceptionListener(this);
         _session = _connection.createSession(false,
                 Session.AUTO_ACKNOWLEDGE);
-        //Completion info comes from a topic
-        Destination destination = _session.createTopic(_topicName);
-        _consumer = _session.createConsumer(destination);
-        _consumer.setMessageListener(_listener);
+
+        Destination destination = null;
+
+        switch (_destinationData.getType()) {
+            case QUEUE:
+                destination = _session.createQueue(_destinationData.getName());
+                break;
+            case TOPIC:
+                destination = _session.createTopic(_destinationData.getName());
+                break;
+        }
+
+        if (destination != null) {
+            _consumer = _session.createConsumer(destination);
+            _consumer.setMessageListener(_listener);
+        } else {
+            LOG.warning("Problem setting consumer for Destination: " + destination);
+        }
 
 
     }
