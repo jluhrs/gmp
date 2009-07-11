@@ -1,0 +1,95 @@
+package edu.gemini.jms.api;
+
+import javax.jms.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Base class to create Message Producers and Consumers in JMS.
+ * Every message consumer/producer has its own connection and session
+ * to the server, so if you want/need to share connections and sessions among
+ * several message consumers, you need manually to create your artifacts
+ */
+
+public abstract class BaseJmsArtifact implements ExceptionListener {
+
+    protected static final Logger LOG = Logger.getLogger(BaseJmsArtifact.class.getName());
+    private Connection _connection;
+
+    protected Session _session;
+    protected String _clientName;
+    protected DestinationData _destinationData;
+
+    public BaseJmsArtifact(DestinationData data, String clientName) {
+        _destinationData = data;
+        _clientName = clientName;
+    }
+
+    /**
+     * Start the connection to the given JMS Provider.
+     * @param provider the JMS Provider to connect to
+     * @throws JMSException in case there is a problem initializing
+     * the JMS artifact
+     */
+    public void startJms(JmsProvider provider) throws JMSException {
+
+        ConnectionFactory factory = provider.getConnectionFactory();
+
+        _connection = factory.createConnection();
+        _connection.setClientID(_clientName);
+        _connection.start();
+        _connection.setExceptionListener(this);
+        _session = _connection.createSession(false,
+                Session.AUTO_ACKNOWLEDGE);
+
+        Destination destination = null;
+
+        if (_destinationData.getName() != null) {
+            switch (_destinationData.getType()) {
+                case QUEUE:
+                    destination = _session.createQueue(_destinationData.getName());
+                    break;
+                case TOPIC:
+                    destination = _session.createTopic(_destinationData.getName());
+                    break;
+            }
+        }
+
+        constructJmsObject(destination);
+
+    }
+
+    /**
+     * Used to create the actual consumer or producer.
+     * @param d Destination to be used by the consumer or producer.
+     * @throws JMSException in case there is a problem constructing the consumer or producer
+     */
+    protected abstract void constructJmsObject(Destination d) throws JMSException;
+
+    /**
+     * Destroy the consumer or producer
+     * @throws JMSException in case there is a problem destroying the consumer or producer
+     */
+    protected abstract void destroyJmsObject() throws JMSException;
+
+
+    /**
+     * Stop this JMS artifact. 
+     */
+    public void stopJms() {
+        try {
+            destroyJmsObject();
+
+            if (_session != null)
+                _session.close();
+            if (_connection != null)
+                _connection.close();
+        } catch (JMSException e) {
+            LOG.log(Level.WARNING, "Exception while stopping JMS Artifact", e);
+        }
+    }
+
+    public void onException(JMSException e) {
+        LOG.log(Level.WARNING, "Exception on JMS Artifact", e);
+    }
+}
