@@ -5,7 +5,7 @@ import javax.jms.*;
 
 import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.SequenceCommandException;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 

@@ -1,7 +1,7 @@
-package edu.gemini.aspen.gmp.commands.impl;
+package edu.gemini.aspen.gmp.commands.model.messaging;
 
-import edu.gemini.aspen.gmp.commands.Action;
-import edu.gemini.aspen.gmp.commands.ActionMessage;
+import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.api.Configuration;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Helper class to construct {@link edu.gemini.aspen.gmp.commands.ActionMessage}
+ * Helper class to construct {@link edu.gemini.aspen.gmp.commands.model.ActionMessage}
  * objects based on a given Action.
  */
 public class ActionMessageBuilder {

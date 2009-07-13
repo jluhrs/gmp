@@ -6,9 +6,9 @@ import org.osgi.framework.ServiceRegistration;
 
 import java.util.logging.Logger;
 
-import edu.gemini.aspen.gmp.commands.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutorStrategy;
 import edu.gemini.aspen.gmp.commands.impl.CommandSenderImpl;
-import edu.gemini.aspen.gmp.commands.impl.SequenceCommandExecutorStrategy;
 import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
 import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.commands.api.CommandUpdater;

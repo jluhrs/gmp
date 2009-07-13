@@ -1,11 +1,10 @@
 package edu.gemini.aspen.gmp.commands.impl;
 
-import edu.gemini.aspen.gmp.commands.api.CommandSender;
-import edu.gemini.aspen.gmp.commands.ActionManager;
-import edu.gemini.aspen.gmp.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.*;
-import edu.gemini.aspen.gmp.commands.ActionSender;
-import edu.gemini.aspen.gmp.commands.SequenceCommandExecutor;
+import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 
 /**
  * Command Sender implementation

@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands;
+package edu.gemini.aspen.gmp.commands.model;
 
 /**
  * Exception associated to operations with Sequence Commands.

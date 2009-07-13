@@ -1,10 +1,10 @@
-package edu.gemini.aspen.gmp.commands.impl;
+package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.Action;
-import edu.gemini.aspen.gmp.commands.ActionSender;
-import edu.gemini.aspen.gmp.commands.SequenceCommandExecutor;
-import edu.gemini.aspen.gmp.commands.SequenceCommandException;
+import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 
 /**
  * This is a high order Sequence Commnad Executor. It will delegate
@@ -13,8 +13,8 @@ import edu.gemini.aspen.gmp.commands.SequenceCommandException;
 public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor{
 
 
-    private SequenceCommandExecutor defaultExecutor = new DefaultSenderCommand();
-    private SequenceCommandExecutor applyExecutor = new ApplySenderCommand();
+    private SequenceCommandExecutor defaultExecutor = new DefaultSenderExecutor();
+    private SequenceCommandExecutor applyExecutor = new ApplySenderExecutor();
 
     public HandlerResponse execute(Action action, ActionSender sender) {
 
