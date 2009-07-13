@@ -19,10 +19,15 @@ public abstract class BaseJmsArtifact implements ExceptionListener {
     protected Session _session;
     protected String _clientName;
     protected DestinationData _destinationData;
+    protected DestinationBuilder _destinationBuilder;
+
+    private boolean _isConnected;
 
     public BaseJmsArtifact(DestinationData data, String clientName) {
         _destinationData = data;
         _clientName = clientName;
+        _destinationBuilder = new DestinationBuilder();
+        _isConnected = false;
     }
 
     /**
@@ -42,21 +47,12 @@ public abstract class BaseJmsArtifact implements ExceptionListener {
         _session = _connection.createSession(false,
                 Session.AUTO_ACKNOWLEDGE);
 
-        Destination destination = null;
-
-        if (_destinationData.getName() != null) {
-            switch (_destinationData.getType()) {
-                case QUEUE:
-                    destination = _session.createQueue(_destinationData.getName());
-                    break;
-                case TOPIC:
-                    destination = _session.createTopic(_destinationData.getName());
-                    break;
-            }
-        }
+        Destination destination = _destinationBuilder.newDestination(
+                _destinationData, _session
+        );
 
         constructJmsObject(destination);
-
+        _isConnected = true;
     }
 
     /**
@@ -77,6 +73,7 @@ public abstract class BaseJmsArtifact implements ExceptionListener {
      * Stop this JMS artifact. 
      */
     public void stopJms() {
+        _isConnected = false;
         try {
             destroyJmsObject();
 
@@ -92,4 +89,9 @@ public abstract class BaseJmsArtifact implements ExceptionListener {
     public void onException(JMSException e) {
         LOG.log(Level.WARNING, "Exception on JMS Artifact", e);
     }
+
+    public boolean isConnected() {
+        return _isConnected;
+    }
+
 }

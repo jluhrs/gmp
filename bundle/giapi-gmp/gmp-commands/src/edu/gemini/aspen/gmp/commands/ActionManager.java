@@ -184,28 +184,6 @@ public class ActionManager {
         _actionQueue.add(action);
     }
 
-//    /**
-//     * Create a new Action with the correspondign sequence command/activity,
-//     * the (optional) configuration and the (optional) listener handler that
-//     * will be invoked if the action does not complete immediately
-//     * @param command  Sequence command that will be registered
-//     * @param activity Activiy associated to the sequence command
-//     * @param config   Configuration, if any, associated to the sequence
-//     *                 command. Can be <code>null</code>
-//     * @param listener handler that will be invoked when completion information
-//     *                 is received for this sequence command. Can be
-//     *                 <code>null</code>
-//     *
-//     * @return The Action associated to this sequence command.
-//     *
-//     * */
-//    public Action newAction(SequenceCommand command,
-//                                  Activity activity,
-//                                  Configuration config,
-//                                  CompletionListener listener) {
-//        return new Action(command, activity, config, listener);
-//    }
-
     /**
      * Register the completion information to be sent to the clients identified
      * by the given action Id. This information is queued and used by the

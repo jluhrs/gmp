@@ -5,6 +5,7 @@ import javax.jms.*;
 
 import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.SequenceCommandException;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 
@@ -17,16 +18,16 @@ import java.util.logging.Logger;
  * the GMP with their completion information. Completion information can be
  * either COMPLETED or ERROR.
  */
-public class JMSCompletionInfoListener implements MessageListener {
+public class CompletionInfoListener implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(
-            JMSCompletionInfoListener.class.getName());
+            CompletionInfoListener.class.getName());
 
     public final static String QUEUE_NAME = GmpKeys.GMP_COMPLETION_INFO;
 
     private CommandUpdater _commandUpdater;
 
-    public JMSCompletionInfoListener(CommandUpdater updater) {
+    public CompletionInfoListener(CommandUpdater updater) {
         _commandUpdater = updater;
     }
 
@@ -38,13 +39,14 @@ public class JMSCompletionInfoListener implements MessageListener {
                 int actionId = m.getIntProperty(GmpKeys.GMP_ACTIONID_PROP);
                 HandlerResponse response = GmpJmsUtil.buildHandlerResponse(m);
                 LOG.info(
-                        "Received Completion info for action ID " + actionId + " : " + response
-                                .toString());
+                        "Received Completion info for action ID " +
+                                actionId + " : " + response.toString());
                 //Notify the OCS. Based on the action ID, we know who to notify
                 _commandUpdater.updateOcs(actionId, response);
             }
         } catch (JMSException e) {
-            LOG.warning("onMessage exception : " + e);
+            throw new SequenceCommandException(
+                    "Unable to update OCS with completion information", e);
         }
     }
 }

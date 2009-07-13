@@ -1,24 +1,29 @@
-package edu.gemini.aspen.gmp.commands.jms;
+package edu.gemini.aspen.gmp.commands.impl;
 
+import edu.gemini.aspen.gmp.commands.*;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.api.Configuration;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 import edu.gemini.aspen.gmp.commands.api.ConfigPathNavigator;
-import edu.gemini.aspen.gmp.commands.Action;
-import edu.gemini.aspen.gmp.commands.ActionSender;
-import edu.gemini.aspen.gmp.commands.ActionMessage;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
+import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
- * An Action Sender specific to handle the complexity of the Apply Sequence Command.
+ * Sequence Command executor for the APPLY Sequence Command. It's job
+ * APPLY is more complex than normal sequence commands since an instrument can
+ * have more than one handler to deal with a particular APPLY configuration.
+ * <p/>
+ * This executor attempts to decompose the APPLY configuration to find
+ * the handler(s) that will process it. 
+ *
  */
-public class ApplyActionSender implements ActionSender {
+public class ApplySenderCommand implements SequenceCommandExecutor {
 
-    /**
+
+/**
      * A class to analize handler responses and return a single representation when
      * multiple responses are obtained.
      */
@@ -65,52 +70,36 @@ public class ApplyActionSender implements ActionSender {
         }
     }
 
-    /**
-     * The factory to produce action messages.
-     */
-    private ActionMessageFactory _factory;
-
-    /**
-     * Constructor. Takes as an argument the factory to create action messages
-     *
-     * @param factory the factory to create action messages.
-     */
-    public ApplyActionSender(ActionMessageFactory factory) {
-        _factory = factory;
-    }
 
 
-    /**
-     * This method takes the given action and converts it into a message to
-     * be dispatched over the network
-     *
-     * @param action The action to be sent via the network, it should be
-     *               an Apply Sequence command action.
-     * @return HandlerResponse associated to the given action. If no response is
-     *         received, an NOANSWER HandlerResponse is returned. If the action
-     *         is not an Apply Sequence command, an ERROR HandlerResponse is
-     *         received
-     */
-    public HandlerResponse send(Action action) {
+    private ActionMessageBuilder _actionMessageBuilder = new ActionMessageBuilder();
+
+
+    public HandlerResponse execute(Action action, ActionSender sender) {
+
         Configuration config = action.getConfiguration();
-        if (config == null)
+        if (config == null || config.getKeys().size() == 0)
             return HandlerResponseImpl.createError("No configuration present for Apply Sequence command");
-
-        return getResponse(action, config, ConfigPath.EMPTY_PATH);
+        return getResponse(action, config, ConfigPath.EMPTY_PATH, sender);
     }
 
+
     /**
-     * Auxiliary method to recursively decompose a Configuration to be sent to the appropriate
-     * handlers.
+     * Auxiliary method to recursively decompose a Configuration to be sent to
+     * the appropriate handlers.
      * @param action The action to be sent
      * @param config current configuration being analized
      * @param path current path level in the configuration
-     * @return a HandlerResponse representing the result of sending the configuration. If
-     * the configuration is not handled, this call will try to decompose the configuration
-     * in smaller units in an attempt to see if it can be handled by smaller handlers.
+     * @param sender A Map Sender object that will send this message and will
+     *               get an answer.
+     *
+     * @return a HandlerResponse representing the result of sending the
+     * configuration. If there are no handlers for this configuration,
+     * this call will try to decompose the configuration in smaller units
+     * in an attempt to see if it can be handled by other handlers.
      */
 
-    private HandlerResponse getResponse(Action action, Configuration config, ConfigPath path) {
+    private HandlerResponse getResponse(Action action, Configuration config, ConfigPath path, ActionSender sender) {
 
         if (config == null) return HandlerResponseImpl.createError("Can't get a reply");
 
@@ -128,19 +117,19 @@ public class ApplyActionSender implements ActionSender {
         for (ConfigPath cp : configPathSet) {
             //get the subconfiguration
             Configuration c = config.getSubConfiguration(cp);
-            //create an action message to dispatch this configuration over the network
-            ActionMessage m = _factory.create(action, cp);
-            m.setConfiguration(c);
-            //send it
-            HandlerResponse response = m.send();
+
+            ActionMessage am = _actionMessageBuilder.buildActionMessage(action, cp);
+
+            HandlerResponse response = sender.send(am);
+
             //if there are no handlers, recursively decompose this config in
             //smaller units if possible, and return the answer.
             if (response.getResponse() == HandlerResponse.Response.NOANSWER) {
-                response = getResponse(action, c, cp);
+                response = getResponse(action, c, cp, sender);
             }
 
             //if the answer is still NOANSWER, return inmediately, there is no one
-            //that can process this part of the configuration. 
+            //that can process this part of the configuration.
             if (response.getResponse() == HandlerResponse.Response.NOANSWER) {
                 return response;
             }
@@ -148,4 +137,5 @@ public class ApplyActionSender implements ActionSender {
         }
         return analizer.getSummaryResponse();
     }
+
 }

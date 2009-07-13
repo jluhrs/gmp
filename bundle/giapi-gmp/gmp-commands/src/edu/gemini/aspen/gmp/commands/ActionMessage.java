@@ -1,30 +1,37 @@
 package edu.gemini.aspen.gmp.commands;
 
-import edu.gemini.aspen.gmp.commands.api.Configuration;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+import edu.gemini.jms.api.DestinationData;
+
+import java.util.Map;
 
 /**
- * A message representation of an Action. Implementers of
+ * A message representing an Action. Implementers of
  * this interface can use different communication mechanism
  * to perform the actual communication.
  */
 public interface ActionMessage {
 
     /**
-     * Set configuration information in the message
-     * @param config The configuration information to be set
+     * Return the destination data associated to this action message
+     * @return the destination data
      */
-    void setConfiguration(Configuration config);
+    DestinationData getDestinationData();
 
     /**
-     * Send this action using the underlying communication
-     * mechanisms. This method returns the acknowledge
-     * from the client that the message was received.
-     * The acknowledge is received synchronously by this
-     * call.
-     *  
-     * @return A HandlerResponse containing the acknowledge
-     * information for this message.
+     * Get the message properties to be used in this message.
+     * The Action ID and the activity of the action are encoded
+     * as properties. 
+     * @return Map representing the properties of this message
      */
-    HandlerResponse send();
+    Map<String, Object> getProperties();
+
+    /**
+     * The data elements for an action message are modeled as a
+     * map. The data elements are the configuration associated
+     * to the sequence command. If the sequence command does not
+     * have a configuration associated, this method
+     * returns <code>null</code>
+     * @return Map with the configuration elements of the action
+     */
+    Map<String, Object> getDataElements();
 }

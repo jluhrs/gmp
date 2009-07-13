@@ -5,7 +5,9 @@ import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
 import edu.gemini.aspen.gmp.commands.ActionManager;
 
 /**
- *
+ * Implementation of the {@link edu.gemini.aspen.gmp.commands.api.CommandUpdater}
+ * interface. It notifies {@link edu.gemini.aspen.gmp.commands.ActionManager}
+ * whenever new updates are available to process. 
  */
 public class CommandUpdaterImpl implements CommandUpdater {
 

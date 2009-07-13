@@ -1,24 +1,49 @@
 package edu.gemini.aspen.gmp.commands.impl;
 
 import edu.gemini.aspen.gmp.commands.api.CommandSender;
-import edu.gemini.aspen.gmp.commands.ActionSender;
-import edu.gemini.aspen.gmp.commands.jms.ActionSenderStrategy;
 import edu.gemini.aspen.gmp.commands.ActionManager;
 import edu.gemini.aspen.gmp.commands.Action;
 import edu.gemini.aspen.gmp.commands.api.*;
+import edu.gemini.aspen.gmp.commands.ActionSender;
+import edu.gemini.aspen.gmp.commands.SequenceCommandExecutor;
 
 /**
  * Command Sender implementation
  */
 public class CommandSenderImpl implements CommandSender {
 
+    /**
+     * Holds state of the actions being tracked in the system
+     */
+    private final ActionManager _manager;
 
-    private final ActionManager _manager; // = new ActionManager();
+    /**
+     * Process the actions received by the system using
+     * the also provided ActionSender
+     */
+    private final SequenceCommandExecutor _executor;
 
-    private ActionSenderStrategy _strategy = null;
-    public CommandSenderImpl(ActionSenderStrategy strategy, ActionManager manager) {
-        _strategy = strategy;
+    /**
+     * Defines the mechanism to dispatch actions over the
+     * available communication mechanism. 
+     */
+    private final ActionSender _sender;
+
+    /**
+     * Constructor
+     * @param manager The action manager that holds information
+     * about the actions that are being executed
+     * @param sender sender to use to dispatch actions with the
+     * given executor
+     * @param executor the executor that will be in charge
+     * of processing the actions using the given sender.
+     */
+    public CommandSenderImpl(ActionManager manager,
+                             ActionSender sender,
+                             SequenceCommandExecutor executor) {
         _manager = manager;
+        _executor = executor;
+        _sender = sender;
     }
 
 
@@ -80,9 +105,7 @@ public class CommandSenderImpl implements CommandSender {
         Action action = new Action(command, activity, config,
                                            listener);
 
-        ActionSender sender = _strategy.getActionSender(action);
-
-        HandlerResponse response = sender.send(action);
+        HandlerResponse response = _executor.execute(action, _sender);
 
         //The only response that indicates actions have started is
         //STARTED. The other three do not result in any ongoing actions
