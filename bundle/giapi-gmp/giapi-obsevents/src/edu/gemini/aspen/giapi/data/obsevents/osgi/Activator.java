@@ -15,9 +15,10 @@ import edu.gemini.aspen.giapi.data.obsevents.ObservationEventAction;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.osgi.JmsProviderTracker;
 
 /**
- *
+ * Activator for the Observation Event Monitor
  */
 public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
@@ -44,9 +45,8 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
                 new JmsObservationEventListener(handlerComposite)
         );
 
-        LOG.info("Start tracking for JMS Provider");
-
-        _jmsTracker = new JmsProviderTracker(bundleContext, consumer);
+        _jmsTracker = new JmsProviderTracker(bundleContext, "Observation Event Consumer");
+        _jmsTracker.registerJmsArtifact(consumer);
         _jmsTracker.open();
 
         //and start tracking for observation event handlers as well...

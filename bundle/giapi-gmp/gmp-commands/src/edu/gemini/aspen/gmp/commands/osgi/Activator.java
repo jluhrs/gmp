@@ -17,6 +17,7 @@ import edu.gemini.aspen.gmp.commands.jms.CompletionInfoListener;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.osgi.JmsProviderTracker;
 
 /**
  * The OSGi Activator for the Sequence Command Service
@@ -64,8 +65,9 @@ public class Activator implements BundleActivator {
                 _sequenceCommandSenderReply,
                 new SequenceCommandExecutorStrategy());
 
-        _jmsTracker = new JmsProviderTracker(bundleContext,
-                _sequenceCommandSenderReply, _messageConsumer);
+        _jmsTracker = new JmsProviderTracker(bundleContext, "Sequence Command Sender/Completion Information Receiver");
+        _jmsTracker.registerJmsArtifact(_messageConsumer);
+        _jmsTracker.registerJmsArtifact(_sequenceCommandSenderReply);
 
         _jmsTracker.open();
 

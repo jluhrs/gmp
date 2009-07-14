@@ -5,6 +5,9 @@ Bundle-Description: The Gemini Broker JMS-based API
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 1.2.0
 Export-Package: edu.gemini.jms.api,
+ edu.gemini.jms.api.osgi,
  javax.jms,
  javax.management.j2ee.statistics
+Import-Package: org.osgi.util.tracker
+ 
  
