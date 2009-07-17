@@ -56,7 +56,22 @@ public class CommandSender {
 
             //synchronously get the reply
             MapMessage reply = (MapMessage) _replyConsumer.receive();
-            return GmpJmsUtil.buildHandlerResponse(reply);
+
+            //There is a trick case when the completion listener finishes
+            //before the first request. In that case, rather than
+            //receiving a handler response, we get completion information.
+            //In such case, we return the handler response that is
+            //contained in the completion information
+            if (reply.getString(GmpKeys.GMP_HANDLER_RESPONSE_KEY) != null) {
+                //is a Handler Response message, normal case
+                return GmpJmsUtil.buildHandlerResponse(reply);
+            } else {
+                //it's a completion listener message, this means the
+                //completion info finished before the actual send call. Extract the Handler
+                //out of it.
+                CompletionInformation info = GmpJmsUtil.buildCompletionInformation(reply);
+                return info.getHandlerResponse();
+            }
         } catch (JMSException e) {
             throw new TesterException(e);
         }

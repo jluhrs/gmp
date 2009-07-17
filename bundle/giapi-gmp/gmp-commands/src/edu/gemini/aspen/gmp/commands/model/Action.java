@@ -8,7 +8,7 @@ import edu.gemini.aspen.gmp.commands.api.CompletionListener;
 /**
  * Actions are used to keep track of sequence command progress.
  */
-public class Action implements Comparable<Action> {
+public final class Action implements Comparable<Action> {
 
     private static int ID = 0;
     private int _actionId;

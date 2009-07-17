@@ -6,11 +6,13 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This class keeps track of the actions that are being sent to the instruments
  * and notifies back the clients with completion information whenever that is
- * available. 
+ * available.
  */
 public class ActionManager {
 
@@ -44,6 +46,12 @@ public class ActionManager {
      */
     private final ExecutorService _executorService =
             Executors.newSingleThreadExecutor();
+
+
+    /**
+     * A Lock to synchronize the action manager with the command sender.
+     */
+    private Lock _lock = new ReentrantLock();
 
     /**
      * A container for the update information received
@@ -110,30 +118,35 @@ public class ActionManager {
 
                 //if the action received hasn't been issued yet
                 //by the system, that's an indication of a problem
-                if (actionId > Action.getCurrentId())  {
+                if (actionId > Action.getCurrentId()) {
                     LOG.log(Level.WARNING,
                             "Action ID received " + actionId +
-                            " but the last ID generated is " + Action.getCurrentId() +
-                            ". This usually is a problem in the instrument code");
+                                    " but the last ID generated is " + Action.getCurrentId() +
+                                    ". This usually is a problem in the instrument code");
                     return;
                 }
 
+                _lock.lock(); //acquire the lock before start updating
 
-                while (action != null && action.getId() <= actionId) {
-                    LOG.info("Updating clients with action " + action + " response " + response);
-                    CompletionListener listener = action.getCompletionListener();
-                    if (listener != null) {
-                        listener.onHandlerResponse(response,
-                                                   action.getSequenceCommand(),
-                                                   action.getActivity(),
-                                                   action.getConfiguration());
-                    } else {
-                        LOG.info("No interested listener on action " + action);
+                try {
+                    while (action != null && action.getId() <= actionId) {
+                        LOG.info("Updating clients with action " + action + " response " + response);
+                        CompletionListener listener = action.getCompletionListener();
+                        if (listener != null) {
+                            listener.onHandlerResponse(response,
+                                    action.getSequenceCommand(),
+                                    action.getActivity(),
+                                    action.getConfiguration());
+                        } else {
+                            LOG.info("No interested listener on action " + action);
+                        }
+                        //now, remove the element from the queue
+                        _actionQueue.poll();
+                        //iterate to the next element
+                        action = _actionQueue.peek();
                     }
-                    //now, remove the element from the queue
-                    _actionQueue.poll();
-                    //iterate to the next element
-                    action = _actionQueue.peek();
+                } finally {
+                    _lock.unlock();
                 }
             }
         }
@@ -177,11 +190,40 @@ public class ActionManager {
      * Register this Action to keep track its progress internally. When
      * the completion information associated to this action is available, the
      * listener contained in it will be invoked.
+     *
      * @param action the action to register
      */
     public void registerAction(Action action) {
         LOG.info("Start monitoring progress for Action " + action);
         _actionQueue.add(action);
+    }
+
+    /**
+     * Deregister the given action from the monitored actions. This
+     * is done so the system don't attempt to update with completion
+     * information those actions that complete immediately.
+     * @param action the action to deregister. 
+     */
+    public void unregisterAction(Action action) {
+        LOG.info("Stopped monitoring progress for Action " + action + ". Action Completed Immediately");
+        _actionQueue.remove(action);
+    }
+
+    /**
+     * Acquire the updater processor lock. This way, the update processor
+     * can't notify handler until the lock is released
+     */
+    public void lock() {
+        _lock.lock();
+    }
+
+    /**
+     * Release the lock of the update processor thread. The update
+     * processor thread will resume execution as soon as reacquires the
+     * lock. 
+     */
+    public void unlock() {
+        _lock.unlock();
     }
 
     /**
@@ -229,7 +271,7 @@ public class ActionManager {
                 _executorService.shutdownNow();
             }
         } catch (InterruptedException e) {
-            _executorService.shutdownNow(); 
+            _executorService.shutdownNow();
         }
     }
 }

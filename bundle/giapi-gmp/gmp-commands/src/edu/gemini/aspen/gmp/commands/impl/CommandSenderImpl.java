@@ -24,18 +24,19 @@ public class CommandSenderImpl implements CommandSender {
 
     /**
      * Defines the mechanism to dispatch actions over the
-     * available communication mechanism. 
+     * available communication mechanism.
      */
     private final ActionSender _sender;
 
     /**
      * Constructor
-     * @param manager The action manager that holds information
-     * about the actions that are being executed
-     * @param sender sender to use to dispatch actions with the
-     * given executor
+     *
+     * @param manager  The action manager that holds information
+     *                 about the actions that are being executed
+     * @param sender   sender to use to dispatch actions with the
+     *                 given executor
      * @param executor the executor that will be in charge
-     * of processing the actions using the given sender.
+     *                 of processing the actions using the given sender.
      */
     public CommandSenderImpl(ActionManager manager,
                              ActionSender sender,
@@ -63,7 +64,6 @@ public class CommandSenderImpl implements CommandSender {
      *                 HandlerResponse is STARTED. The listener will be invoked
      *                 whenever the completion information for this on-going
      *                 action is available. Otherwise this listener is ignored.
-     *
      * @return a HandlerResponse, used to decide if the command was accepted by
      *         the client.
      */
@@ -72,6 +72,33 @@ public class CommandSenderImpl implements CommandSender {
                                                CompletionListener listener) {
         return sendSequenceCommand(command, activity, null, listener);
 
+    }
+
+
+    /**
+     * A decorator for the Completion Listener that will be used. This
+     * provides a mechanism to recover the response provided
+     * for and action, in case that answer arrives _before_ we
+     * provide an answer to the system
+     */
+    public class CompletionListenerDecorator implements CompletionListener {
+
+        private CompletionListener _listener;
+        private HandlerResponse _response;
+
+        public CompletionListenerDecorator(CompletionListener l) {
+            _listener = l;
+        }
+
+        HandlerResponse getResponse() {
+            return _response;
+        }
+
+        public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
+            _listener.onHandlerResponse(response, command, activity, config);
+            //register the response received. 
+            _response = response;
+        }
     }
 
     /**
@@ -93,7 +120,6 @@ public class CommandSenderImpl implements CommandSender {
      *                 HandlerResponse is STARTED. The listener will be invoked
      *                 whenever the completion information for this on-going
      *                 action is available. Otherwise this listener is ignored.
-     *
      * @return a HandlerResponse, used to decide if the command was accepted by
      *         the client.
      */
@@ -101,8 +127,16 @@ public class CommandSenderImpl implements CommandSender {
                                                Activity activity,
                                                Configuration config,
                                                CompletionListener listener) {
+
+        CompletionListenerDecorator decoratorListener =
+                new CompletionListenerDecorator(listener);
+
         Action action = new Action(command, activity, config,
-                                           listener);
+                decoratorListener);
+
+        //first, register the action even if it's something that
+        //will complete immediately.
+        _manager.registerAction(action);
 
         HandlerResponse response = _executor.execute(action, _sender);
 
@@ -111,12 +145,30 @@ public class CommandSenderImpl implements CommandSender {
         //that must be completed at a later time, therefore the
         //Completion listener is ignored in this case. See GIAPI design
         //and use, section 10.6
-        if (response != null &&
-                response.getResponse() == HandlerResponse.Response.STARTED) {
-            //register this action as one that we need to provide completion
-            //information later.
-            _manager.registerAction(action);
-        } 
+        if (response != null) {
+            if (response.getResponse() == HandlerResponse.Response.STARTED) {
+                //now, it is possible the action has completed _while_ we were
+                //here.... let's take care of that case and if so, use the
+                //answer from the listener to cover that case
+
+                //acquires a lock on the manager, so
+                //we ensure we are not
+                //processing handlers while we validate the
+                //action has finished
+                _manager.lock();  
+                try {
+                    if (decoratorListener.getResponse() != null) {
+                        response = decoratorListener.getResponse();
+                    }
+                } finally {
+                    _manager.unlock(); //release the lock on the manager.
+                }
+            } else {
+                //since we don't expect the action to complete later, we
+                //will remove it from the ones currently being monitored.
+                _manager.unregisterAction(action);
+            }
+        }
         return response;
     }
 }

@@ -1,8 +1,6 @@
 package edu.gemini.aspen.gmp.gw.jms;
 
-import edu.gemini.aspen.gmp.commands.api.CommandSender;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.api.CompletionListener;
+import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.JmsProvider;
@@ -12,7 +10,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 /**
- *  This class receives and processes command requests from clients.  
+ * This class receives and processes command requests from clients.
  */
 public class CommandConsumer implements ExceptionListener, MessageListener {
 
@@ -31,7 +29,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
 
         _service = service;
         try {
-            ConnectionFactory  factory = provider.getConnectionFactory();
+            ConnectionFactory factory = provider.getConnectionFactory();
             _connection = factory.createConnection();
             _connection.setClientID("Gateway Command Consumer");
             _connection.start();
@@ -86,10 +84,19 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
 
     private void sendResponse(Destination destination, HandlerResponse response) throws JMSException {
 
-        MessageProducer producer = _session.createProducer(destination);
-        Message reply = GmpJmsUtil.buildHandlerResponseMessage(_session, response);
-        producer.send(reply);
-        producer.close();
+        //catch Invalid Destination Exception as it is possible that the
+        //client has been closed when we send this response to it. This
+        //is normal when the client received the CompletionInformation first,
+        //which happens for very fast handlers. 
+        try {
+            MessageProducer producer = _session.createProducer(destination);
+            Message reply = GmpJmsUtil.buildHandlerResponseMessage(_session, response);
+            producer.send(reply);
+            producer.close();
+        } catch (InvalidDestinationException e) {
+            LOG.log(Level.FINEST, "Destination already closed by the client.");
+        }
+        
     }
 
     public void close() {
