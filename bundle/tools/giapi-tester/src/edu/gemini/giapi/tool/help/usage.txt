@@ -100,6 +100,30 @@ EXAMPLES
                  -config "gpi:cc:filter.name=A
                  gpi:cc:mirror.pos=closed gpi:dc:exposureTime=40"
 
+
+     Using the same technique, special sequence commands can be tested.
+     For instance, the REBOOT sequence command can take an optional
+     argument that defines how the reboot operation will be handled. The
+     name of the argument is "REBOOT_OPT", and the accepted values are
+     "GMP", "NONE" and "REBOOT". See the GIAPI Design and Use for details
+     about the semantic of these arguments.
+
+     For instance, to send a sequence command with the GMP option, we can
+     do:
+
+         java -jar giapi-tester.jar -sc REBOOT -activity START
+            -config "REBOOT_OPT=GMP"
+
+     The default argument for the REBOOT sequence command is NONE. So, using
+     the following command:
+
+         java -jar giapi-tester.jar -sc REBOOT -activity START
+
+     is equivalent to:
+
+         java -jar giapi-tester.jar -sc REBOOT -activity START
+            -config "REBOOT_OPT=NONE"
+
     To specify a timeout for an operation to complete, you can use the
     timeout flag. For instance, if you want to send the INIT sequence command,
     but you only want to wait for 10 seconds for it to complete, you can use:
