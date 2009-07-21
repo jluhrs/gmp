@@ -1,6 +1,10 @@
 org.osgi.service.http.port=9091
 oscar.repository.url: http://localhost:9999/bundle
 
+edu.gemini.util.ua.id= 737a8f80-b90a-4abd-af76-dcf036bbe7eb
+edu.gemini.util.telnetd.port=15001
+
+
 gmp.properties.conf= /data/daoinsw/tools/giapi/gmp/gmp-server/conf/gmp-properties.xml
 gmp.epics.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/epics-channels.xml
 gmp.epics.simulation.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/simulated-epics-channels.xml
