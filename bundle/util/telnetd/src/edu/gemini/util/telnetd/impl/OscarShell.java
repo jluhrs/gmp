@@ -95,7 +95,7 @@ public class OscarShell extends AbstractShell {
 		
 		LOGGER.info("Remote access shell shutting down.");
 		if (getState().isIOAvailable()) {
-			getPrintStream().println("Chao hue'on.");
+			getPrintStream().println("Good Bye.");
 		}
 		
 	}

@@ -15,11 +15,7 @@
 #
 
 OSGI_APP_NAME=gmp-server
-REBOOT_CMD="/usr/bin/time --version"
-
-
-
-#set -x
+REBOOT_CMD="/sbin/shutdown -r now"
 
 # Source function library.
 . /etc/init.d/functions
@@ -41,10 +37,16 @@ missing() {
 [ -z "$OSGI_HOME"         ] && OSGI_HOME=/home/$OCS_USER/osgiApps
 [ -z "$OSGI_LAUNCHER_JAR" ] && OSGI_LAUNCHER_JAR=$OSGI_HOME/launcher.jar
 [ -z "$OSGI_MC_ADMIN_JAR" ] && OSGI_MC_ADMIN_JAR=$OSGI_HOME/mc-admin.jar
-[ -z "$TLC_STARTUP_SCRIPT"] && TLC_STARTUP_SCRIPT=/etc/rc.d/init.d/gpi.sh
+[ -z "$TLC_STARTUP_SCRIPT"] && TLC_STARTUP_SCRIPT=/etc/rc.d/init.d/gpi
+
+FULL_START_SCRIPT=/etc/rc.d/init.d/gmp-full-start
+GMP_ONLY_START_SCRIPT=/etc/rc.d/init.d/gmp-only-start
+TEMP_REBOOT_SCRIPT=/etc/rc.d/rc5.d/S99gmp
 
 
 LOCK="/var/lock/subsys/$OSGI_APP_NAME"
+
+
 
 PS_OPTS=auxww
 pid() {
@@ -134,15 +136,27 @@ reboot() {
     if [ -n "$REBOOT_OPTION" ]; then
         case "$REBOOT_OPTION" in
             reboot)
-                echo "Reboot mode"
-                $TLC_STARTUP_SCRIPT reboot
-                $REBOOT_CMD
+                echo "Rebooting using REBOOT mode"
+                if [ -x $TLC_STARTUP_SCRIPT ]; then
+                    $TLC_STARTUP_SCRIPT reboot
+                    stop
+                    $REBOOT_CMD
+                else
+                    echo "Can't execute instrument startup script: $TLC_STARTUP_SCRIPT"
+                fi
                 ;;
             gmp)
-                echo "GMP mode"
+                echo "Rebooting using GMP mode"
                 #After reboot, the GMP will be started automatically
-                $TLC_STARTUP_SCRIPT reboot
-                $REBOOT_CMD
+                if [ -x $TLC_STARTUP_SCRIPT ]; then
+                    $TLC_STARTUP_SCRIPT reboot
+                    stop
+                    cp $GMP_ONLY_START_SCRIPT $TEMP_REBOOT_SCRIPT
+                    chmod a+x $TEMP_REBOOT_SCRIPT
+                    $REBOOT_CMD
+                else
+                    echo "Can't execute instrument startup script: $TLC_STARTUP_SCRIPT"
+                fi
                 ;;
             *)
                 echo "Unknown argument for reboot: $REBOOT_OPTION"
@@ -150,10 +164,16 @@ reboot() {
                 ;;
         esac
     else
-        echo "Reboot without arguments - default reboot"
-         #After reboot, the GMP will be started automatically and also the TLC
-        $TLC_STARTUP_SCRIPT reboot
-        $REBOOT_CMD
+        #After reboot, the GMP will be started automatically and also the instrument
+        if [ -x $TLC_STARTUP_SCRIPT ]; then
+            $TLC_STARTUP_SCRIPT reboot
+            stop
+            cp $FULL_START_SCRIPT $TEMP_REBOOT_SCRIPT
+            chmod a+x $TEMP_REBOOT_SCRIPT
+            $REBOOT_CMD
+        else
+            echo "Can't execute instrument startup script: $TLC_STARTUP_SCRIPT"
+        fi
     fi
 
     echo

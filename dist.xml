@@ -5,7 +5,9 @@
     <property  name="gmp-dist.dir" value="${dist.dir}/gmp"/>
     <property  name="gmp-server.dir" value="${gmp-dist.dir}/gmp-server"/>
     <property  name="gmp.dir" value="${osgi.dir}/gmp-server"/>
+    <property  name="gmp-init.dir" value="${gmp-dist.dir}/init.d"/>
 
+    <property  name="init.dir" value="runtime/init.d"/>	
     <property name="README.file" value="bundle/giapi-gmp/README_QUICK_START"/>
     <property name="launcher.file" value="runtime/launcher/launcher.jar"/>
     <property name="tester.file" value="bundle/tools/giapi-tester/giapi-tester.jar"/>
@@ -18,11 +20,17 @@
         <delete dir="dist"/>
         <echo>Making distributions</echo>
         <mkdir dir="${gmp-dist.dir}"/>
+	<mkdir dir="${gmp-init.dir}"/>
 
         <echo>Copying data from ${gmp.dir} to ${gmp-dist.dir}</echo>
         <copy todir="${gmp-server.dir}">
             <fileset dir="${gmp.dir}"/>
         </copy>
+
+	<echo>Copying init.d scripts</echo>
+	<copy todir="${gmp-init.dir}">
+	    <fileset dir="${init.dir}"/>
+	</copy>
 
         <echo>Copying README</echo>
         <copy file="${README.file}" todir="${gmp-dist.dir}"/>

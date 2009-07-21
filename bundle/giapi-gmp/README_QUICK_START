@@ -133,44 +133,92 @@ INFO: Registering servlet
 14:45:59.726 EVENT  Started ServletHttpContext[/]
 
 
+To start up the GMP in the background, you can simply type:
+
+  launcher -S:${GMP_INSTALL} -a:gmp-server -n &
+
+This will redirect the logs to a couple of files in the /tmp directory.
+
+In addition, there is an init.d script available, that would allow to simply
+start the GMP by:
+
+    /etc/rc.d/init.d/gmp start
+
+
 4. Checking the GMP is running and Shuting down the application
 --------------------------------------------------------------------------------
 
-Once the application has started, you'll get a prompt to let you know that the
-application is ready to go. Press <ENTER> to get the prompt if you don't see it.
+To facilitate the access to the console in the GMP, I have added
+a telnet interface to it. Once the GMP has started, you can login into
+the GMP by doing a telnet to the port 15001, for example:
 
-The shell you will get is provided by the OSGi Shell Service. I won't describe
-here all the operations you can do here, but you can take a look at the service
-bundles that form the GMP process by typing:
+     telnet localhost 15001
 
-  ps
+This should return something like:
 
-on the prompt. You should get something like:
+Trying 127.0.0.1...
+Connected to localhost.localdomain (127.0.0.1).
+Escape character is '^]'.
 
--> ps
+Welcome to Oscar
+================
+
+Remote connection from localhost.localdomain
+Local time is Tue Jul 21 18:33:03 CLT 2009
+Be careful. Hit ^D to exit.
+
+walle ->
+
+In this prompt, you can interact with the GMP OSGi services, for instance:
+
+walle -> ps
+
 START LEVEL 10
    ID   State         Level  Name
 [   0] [Active     ] [    0] System Bundle (1.0.5)
 [   1] [Active     ] [    1] Shell Service (1.0.2)
-[   2] [Active     ] [    1] Shell TUI (1.0.0)
+[   2] [Installed  ] [    1] Shell TUI (1.0.0)
 [   3] [Active     ] [    1] Bundle Repository (1.1.2)
 [   4] [Active     ] [    2] OSGi Util (1.0.0)
 [   5] [Active     ] [    2] OSGi Service (1.0.2)
-[   6] [Active     ] [    5] Servlet (1.0.0)
-[   7] [Active     ] [    5] HTTP Service (1.1.2)
-[   8] [Active     ] [    5] GMP API (1.0.0)
-[   9] [Active     ] [    5] GMP Broker (1.0.1)
-[  10] [Active     ] [    6] GMP Servlet (1.0.0)
+[   6] [Active     ] [    3] Telnet Daemon (0.1.0)
+[   7] [Active     ] [    3] Servlet (1.0.0)
+[   8] [Active     ] [    3] HTTP Service (1.1.2)
+[   9] [Active     ] [    3] Multicast Admin (0.1.0)
+[  10] [Installed  ] [    3] EPICS Service (0.1.0)
+[  11] [Active     ] [    4] JMS API (1.2.0)
+[  12] [Active     ] [    4] ActiveMQ Service (1.1.0)
+[  13] [Active     ] [    5] GMP API (0.8.0)
+[  14] [Active     ] [    5] GMP JMS Util (0.8.0)
+[  15] [Active     ] [    6] GMP GIAPI Services (0.1.0)
+[  16] [Active     ] [    6] GMP Sequence Commands Service (0.8.0)
+[  17] [Active     ] [    6] GMP Status Service (0.1.0)
+[  18] [Active     ] [    7] GMP Status Database (0.1.0)
+[  19] [Active     ] [    8] GMP JMS Status Processor (0.1.0)
+[  20] [Active     ] [    8] GMP Status Gateway (0.1.0)
+[  21] [Active     ] [    8] GMP Gateway (0.8.0)
+[  22] [Installed  ] [    9] GMP Epics Access Service (0.1.0)
+[  23] [Installed  ] [    9] GMP Epics Simulator (0.1.0)
+[  24] [Active     ] [    9] GMP Servlet (1.1.0)
+
 
 
 That means all the bundles are ready and the Gemini Master Process is running.
 
-To exit the GMP, simply type:
+To exit the GMP console, simply hit ^D.
+
+If you want to shutdown the GMP, type:
 
   shutdown
 
 on the prompt. This will close the GMP service, and will shut down all the
-associated services to it.
+associated services.
+
+Alternatively, there is an init.d script available, that would allow to simply
+shutdown the GMP by:
+
+    /etc/rc.d/init.d/gmp stop
+
 
 
 5. Using the GMP.
