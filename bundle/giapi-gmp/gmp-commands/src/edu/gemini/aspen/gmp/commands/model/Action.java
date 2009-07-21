@@ -101,4 +101,25 @@ public final class Action implements Comparable<Action> {
         sb.append("]");
         return sb.toString();
     }
+
+    /**
+     * A mechanism to mutate an action to a different sequence command. This
+     * is useful for actions that are partially handled by the instrument and
+     * partially handled by the GMP, like the REBOOT.
+     * @param newSequenceCommand new sequence command t
+     * @param activity new activity definition
+     * @param config new configuration
+     * @param completionListener new completion listener
+     * @return an action with the same ID but with different content. 
+     */
+    public Action mutate(SequenceCommand newSequenceCommand,
+                         Activity activity,
+                         Configuration config,
+                         CompletionListener completionListener) {
+        _sequenceCommand = newSequenceCommand;
+        _activity = activity;
+        _configuration = config;
+        _listener = completionListener;
+        return this;
+    }
 }

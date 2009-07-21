@@ -5,6 +5,7 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
+import com.gargoylesoftware.base.testing.EqualsTester;
 
 
 /**
@@ -13,7 +14,7 @@ import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
 public class ActionTest {
 
 
-    private Action a1, a2, a3;
+    private Action a1, a2, a3, a4;
 
 
 
@@ -37,6 +38,13 @@ public class ActionTest {
                 config1,
                 listener1);
 
+        a4 = a1.mutate(a1.getSequenceCommand(), a1.getActivity(), a1.getConfiguration(), a1.getCompletionListener());
+
+    }
+
+    @Test
+    public void testEquals() {
+        new EqualsTester(a1, a4, a2, null);
     }
 
     @Test
@@ -49,6 +57,22 @@ public class ActionTest {
         assertTrue(a1.compareTo(a2) < 0);
         assertTrue(a2.compareTo(a3) < 0);
         assertTrue(a1.compareTo(a3) < 0);
+    }
+
+    @Test
+    public void testMutate() {
+
+        Action a = a1.mutate(SequenceCommand.DATUM, Activity.START, null, a1.getCompletionListener());
+
+        assertEquals(SequenceCommand.DATUM, a.getSequenceCommand());
+        assertEquals(Activity.START, a.getActivity());
+        assertEquals(null, a.getConfiguration());
+        assertEquals(a1.getCompletionListener(), a.getCompletionListener());
+
+        //finally check that both objects are equals now
+        assertEquals(a1, a);
+
+
     }
 
 
