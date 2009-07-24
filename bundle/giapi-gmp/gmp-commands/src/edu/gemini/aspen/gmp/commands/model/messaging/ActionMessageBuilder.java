@@ -17,7 +17,7 @@ import java.util.HashMap;
  * objects based on a given Action.
  */
 public class ActionMessageBuilder {
-     /**
+    /**
      * Map to store topics associtated to each sequence command
      */
     private static final Map<SequenceCommand, String> TOPIC_MAP = new HashMap<SequenceCommand, String>();
@@ -41,7 +41,15 @@ public class ActionMessageBuilder {
         private Map<String, Object> props;
         private Map<String, Object> data;
 
-
+        /**
+         * Constructs an Action Message that contains only the
+         * sub set configuration that matches the given
+         * ConfigPath
+         *
+         * @param action the action to be converted in a message
+         * @param path   used as a filter, only those configurations
+         *               that match the given path will be considered.
+         */
         public ActionMessageImpl(Action action, ConfigPath path) {
 
             dd = new DestinationData(getTopicName(action, path), DestinationType.TOPIC);
@@ -70,9 +78,13 @@ public class ActionMessageBuilder {
 
         }
 
-
+        /**
+         * Constructor.
+         *
+         * @param action The action to be used to build this action message
+         */
         public ActionMessageImpl(Action action) {
-              this(action, null);
+            this(action, null);
         }
 
         private String getTopicName(Action action, ConfigPath path) {
@@ -125,11 +137,28 @@ public class ActionMessageBuilder {
 
     }
 
+    /**
+     * Builds an ActionMessage for the specified action
+     *
+     * @param action the action to be used to construct the message
+     * @return a new ActionMessage
+     */
     public ActionMessage buildActionMessage(Action action) {
         return new ActionMessageImpl(action);
     }
 
 
+    /**
+     * Builds an action message for the specified action, but
+     * only containing the configurarion information that
+     * matches the provided ConfigPath
+     *
+     * @param action the action to be used to construct the message
+     * @param path   used to filter the configuration. Only the configuration
+     *               that matches the given path will be encoded in the message
+     * @return a new ActionMessage containing the sub-configuration defined
+     *         by the ConfigPath
+     */
     public ActionMessage buildActionMessage(Action action, ConfigPath path) {
         return new ActionMessageImpl(action, path);
     }

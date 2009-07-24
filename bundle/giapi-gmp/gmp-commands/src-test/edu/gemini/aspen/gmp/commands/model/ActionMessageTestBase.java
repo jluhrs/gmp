@@ -59,7 +59,7 @@ public abstract class ActionMessageTestBase {
     }
 
     @Test
-    public void testCorrectActionIdAndActivity() {
+    public void testActionMessageProperties() {
 
         for (Action a: _action) {
             ActionMessage am = getActionMessage(a);
