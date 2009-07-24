@@ -87,7 +87,7 @@ public class GmpJmsUtil {
         Configuration config = info.getConfiguration();
         if (config != null) {
             for (ConfigPath path : config.getKeys()) {
-                reply.setString(path.toString(), config.getValue(path));
+                reply.setString(path.getName(), config.getValue(path));
             }
         }
         return reply;

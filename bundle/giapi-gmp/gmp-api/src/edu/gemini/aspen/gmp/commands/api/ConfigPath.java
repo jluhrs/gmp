@@ -68,7 +68,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * @param child child of the config path
      */
     public ConfigPath(ConfigPath parent, String child) {
-        this(parent.toString(), child);
+        this(parent.getName(), child);
     }
 
 
@@ -96,7 +96,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * @return name of the element denoted bu this path, or the
      * empty string if this path's name sequence is empty
      */
-    public String getName() {
+    public String getReferencedName() {
         if (_prefixLenght < 0) return _path;
         return _path.substring(_prefixLenght + 1);
     }
@@ -122,7 +122,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
         if (_path == null) return false;
         if (path == null) return false;
         //check if the path starts with the given path
-        return _path.startsWith(path.toString());
+        return _path.startsWith(path.getName());
 
     }
 
@@ -178,8 +178,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * Returns the ConfigPath as a String
      * @return string representation of this ConfigPath
      */
-    @Override
-    public String toString() {
+    public String getName() {
         return _path;
     }
 
@@ -202,6 +201,11 @@ public class ConfigPath implements Comparable<ConfigPath> {
         result = (_path != null ? _path.hashCode() : 0);
         result = 31 * result + _prefixLenght;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 
     /**

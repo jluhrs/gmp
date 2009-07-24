@@ -225,10 +225,9 @@ shutdown the GMP by:
 --------------------------------------------------------------------------------
 
 Once the GMP has started, it can be used to communicate with the instrument
-code. Please leave the GMP console running and open a new terminal.
-Message flow will be logged at the GMP console.
+code.
 
-We have a client tester application that allows to send commands to the
+We have a client tester application that allows sending commands to the
 instrument. In order to use the application, just type:
 
        java -jar ${GMP_INSTALL}/giapi-tester.jar

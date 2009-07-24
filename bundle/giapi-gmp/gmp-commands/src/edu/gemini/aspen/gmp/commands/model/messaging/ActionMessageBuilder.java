@@ -80,7 +80,7 @@ public class ActionMessageBuilder {
             StringBuilder sb = new StringBuilder(TOPIC_MAP.get(action.getSequenceCommand()));
             if (path != null) {
                 sb.append(GmpKeys.GMP_SEPARATOR);
-                sb.append(path.toString());
+                sb.append(path.getName());
             }
             return sb.toString();
         }

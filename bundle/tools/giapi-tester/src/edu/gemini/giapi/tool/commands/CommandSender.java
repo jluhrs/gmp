@@ -47,7 +47,7 @@ public class CommandSender {
 
             if (config != null && config.getKeys() != null) {
                 for (ConfigPath path : config.getKeys()) {
-                    m.setString(path.toString(), config.getValue(path));
+                    m.setString(path.getName(), config.getValue(path));
                 }
             }
 

@@ -17,6 +17,19 @@ public enum Activity {
         return _name;
     }
 
+    /**
+     * Returns the activity associated to the given name, if it exists
+     * @param name string name of the activity
+     * @return Activity associated to the name
+     */
+    public static Activity toActivity(String name) {
+
+        if (name != null && name.equals("PRESET/START")) {
+            return PRESET_START;
+        }
+        return Activity.valueOf(name);
+    }
+
     private final String _name;
 
 
