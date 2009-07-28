@@ -6,7 +6,7 @@ import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
  * Implements the Handler Response. Provide factory methods
  * to instantiate new HandlerResponses
  */
-public class HandlerResponseImpl implements HandlerResponse {
+public final class HandlerResponseImpl implements HandlerResponse {
 
     private HandlerResponseImpl(Response response, String message) {
         _response = response;
@@ -76,4 +76,24 @@ public class HandlerResponseImpl implements HandlerResponse {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HandlerResponseImpl that = (HandlerResponseImpl) o;
+
+        if (_message != null ? !_message.equals(that._message) : that._message != null)
+            return false;
+        if (_response != that._response) return false;
+        //nothing to be done
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = _message != null ? _message.hashCode() : 0;
+        result = 31 * result + _response.hashCode();
+        return result;
+    }
 }

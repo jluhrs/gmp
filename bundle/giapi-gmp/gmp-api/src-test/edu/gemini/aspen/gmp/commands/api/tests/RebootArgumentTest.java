@@ -64,6 +64,13 @@ public class RebootArgumentTest {
         RebootArgument arg = RebootArgument.parse(config);
         assertEquals(null, arg);
 
+        config = new DefaultConfiguration();
+        config.put(new ConfigPath("INVALID_KEY"), "REBOOT");
+
+        arg = RebootArgument.parse(config);
+        assertEquals(null, arg);
+
+
     }
 
      @Test

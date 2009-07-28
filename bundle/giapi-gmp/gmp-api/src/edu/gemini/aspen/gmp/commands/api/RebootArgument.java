@@ -25,9 +25,12 @@ public enum RebootArgument {
 
         if (config == null) return NONE;
 
+        //if the config is empty, return NONE
+        if (config.getKeys().size() == 0) return NONE;
+
         String value = config.getValue(REBOOT_OPT);
 
-        if (value == null) return NONE;
+        if (value == null) return null;
 
         RebootArgument arg;
         try {
