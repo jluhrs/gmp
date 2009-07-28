@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
-import edu.gemini.aspen.gmp.commands.model.reboot.RebootManager;
+import edu.gemini.aspen.gmp.commands.model.RebootManager;
 import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
@@ -16,7 +16,11 @@ public class RebootSenderExecutor implements SequenceCommandExecutor {
 
     private static final Logger LOG = Logger.getLogger(RebootSenderExecutor.class.getName());
 
-    private RebootManager _rebootManager = new RebootManager();
+    private RebootManager _rebootManager;
+
+    public RebootSenderExecutor(RebootManager rebootManager) {
+        _rebootManager = rebootManager;
+    }
 
     private DefaultSenderExecutor _defaultExecutor = new DefaultSenderExecutor();
 

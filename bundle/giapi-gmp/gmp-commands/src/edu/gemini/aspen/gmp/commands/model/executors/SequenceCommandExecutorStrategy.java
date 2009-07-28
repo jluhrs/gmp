@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.*;
+import edu.gemini.aspen.gmp.commands.model.reboot.LogRebootManager;
 
 /**
  * This is a high order Sequence Commnad Executor. It will delegate
@@ -12,7 +13,9 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
 
     private SequenceCommandExecutor _defaultExecutor = new DefaultSenderExecutor();
     private SequenceCommandExecutor _applyExecutor = new ApplySenderExecutor();
-    private SequenceCommandExecutor _rebootExecutor = new RebootSenderExecutor();
+    private SequenceCommandExecutor _rebootExecutor = new RebootSenderExecutor(
+            new LogRebootManager()
+    );
 
     public HandlerResponse execute(Action action, ActionSender sender) {
 
