@@ -14,6 +14,7 @@ import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
 import edu.gemini.aspen.gmp.commands.jms.SequenceCommandSenderReply;
 import edu.gemini.aspen.gmp.commands.jms.CompletionInfoListener;
+import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
@@ -63,7 +64,9 @@ public class Activator implements BundleActivator {
 
         CommandSender commandSender = new CommandSenderImpl(_actionManager,
                 _sequenceCommandSenderReply,
-                new SequenceCommandExecutorStrategy());
+                new SequenceCommandExecutorStrategy(
+                        new JmsActionMessageBuilder()
+                ));
 
         _jmsTracker = new JmsProviderTracker(bundleContext, "Sequence Command Sender/Completion Information Receiver");
         _jmsTracker.registerJmsArtifact(_messageConsumer);
