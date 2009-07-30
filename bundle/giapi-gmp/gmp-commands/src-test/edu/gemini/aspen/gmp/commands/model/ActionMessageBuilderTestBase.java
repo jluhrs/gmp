@@ -1,12 +1,8 @@
-package edu.gemini.aspen.gmp.commands.messaging;
+package edu.gemini.aspen.gmp.commands.model;
 
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import edu.gemini.aspen.gmp.commands.model.messaging.ActionMessageBuilder;
-import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.ActionMessage;
-import edu.gemini.aspen.gmp.commands.model.ActionMessageTestBase;
+import edu.gemini.aspen.gmp.commands.messaging.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.api.*;
 
 import java.util.*;
@@ -14,16 +10,11 @@ import java.util.*;
 /**
  * Test class for the ActionMessageBuilder
  */
-public class ActionMessageBuilderTest extends ActionMessageTestBase {
+public abstract class ActionMessageBuilderTestBase extends ActionMessageTestBase {
 
 
-    private ActionMessageBuilder _builder;
 
-
-    @Before
-    public void initMessageBuilder() {
-        _builder = new ActionMessageBuilder();
-    }
+    protected abstract ActionMessageBuilder getActionMessageBuilder();
 
     /**
      * Test the action messages produced by this builder
@@ -32,7 +23,7 @@ public class ActionMessageBuilderTest extends ActionMessageTestBase {
      * @return an action Message produced by this builder
      */
     protected ActionMessage getActionMessage(Action a) {
-        return _builder.buildActionMessage(a);
+        return getActionMessageBuilder().buildActionMessage(a);
     }
 
     /**
@@ -74,7 +65,7 @@ public class ActionMessageBuilderTest extends ActionMessageTestBase {
         testConfigPaths(action, configuration, Collections.singletonList(new ConfigPath("X")), 12);
 
         //finally, test with a null Config Path.
-        ActionMessage am = _builder.buildActionMessage(action, null);
+        ActionMessage am = getActionMessageBuilder().buildActionMessage(action, null);
         Map<String, Object> data = am.getDataElements();
         //null should be interpreted as no-filter, so all the stuff should be there
         assertEquals(12, data.keySet().size());
@@ -94,7 +85,7 @@ public class ActionMessageBuilderTest extends ActionMessageTestBase {
                                  List<ConfigPath> configPaths,
                                  int expectedMatches) {
         for (ConfigPath cp : configPaths) {
-            ActionMessage am = _builder.buildActionMessage(a, cp);
+            ActionMessage am = getActionMessageBuilder().buildActionMessage(a, cp);
             Map<String, Object> data = am.getDataElements();
             assertEquals(expectedMatches, data.keySet().size());
             for (String keys : data.keySet()) {

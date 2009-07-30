@@ -9,6 +9,7 @@ import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.api.Activity;
 import edu.gemini.aspen.gmp.commands.api.DefaultConfiguration;
 import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 /**
@@ -24,7 +25,7 @@ public class DefaultSenderExecutorTest {
 
     @Before
     public void setUp() {
-        _executor = new DefaultSenderExecutor();
+        _executor = new DefaultSenderExecutor(new JmsActionMessageBuilder());
         _sender = new TestActionSender();
 
         _responses = new HandlerResponse[] {

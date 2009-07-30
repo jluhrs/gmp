@@ -10,6 +10,7 @@ import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import edu.gemini.aspen.gmp.commands.test.TestRebootManager;
 import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
+import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 /**
@@ -55,7 +56,7 @@ public class RebootSenderExecutorTest {
         configNone = new DefaultConfiguration();
         configNone.put(new ConfigPath("REBOOT_OPT"), "NONE");
 
-        executor = new RebootSenderExecutor(rebootManager);
+        executor = new RebootSenderExecutor(new JmsActionMessageBuilder(), rebootManager);
 
         sender = new TestActionSender();
 
