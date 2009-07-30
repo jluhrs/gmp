@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.gmp.commands.model.*;
-import edu.gemini.aspen.gmp.commands.messaging.ActionMessageBuilder;
+import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.api.Configuration;
 import edu.gemini.aspen.gmp.commands.api.ConfigPath;

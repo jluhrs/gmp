@@ -5,7 +5,7 @@ import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.messaging.ActionMessageBuilder;
+import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 
 /**
  * The default sequence command executor. It will just send the

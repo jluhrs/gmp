@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.reboot.LogRebootManager;
-import edu.gemini.aspen.gmp.commands.messaging.ActionMessageBuilder;
+import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 
 /**
  * This is a high order Sequence Commnad Executor. It will delegate

@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.api.*;
-import edu.gemini.aspen.gmp.commands.messaging.ActionMessageBuilder;
+import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.logging.Logger;
