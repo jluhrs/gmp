@@ -2,7 +2,6 @@ package edu.gemini.aspen.gmp.commands.model;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import edu.gemini.aspen.gmp.commands.messaging.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.api.*;
 
 import java.util.*;
