@@ -5,7 +5,7 @@ import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.messaging.ActionMessageBuilder;
+import edu.gemini.aspen.gmp.commands.messaging.ActionMessageBuilder;
 
 /**
  * The default sequence command executor. It will just send the
@@ -13,7 +13,11 @@ import edu.gemini.aspen.gmp.commands.model.messaging.ActionMessageBuilder;
  */
 public class DefaultSenderExecutor implements SequenceCommandExecutor {
 
-    private ActionMessageBuilder _actionMessageBuilder = new ActionMessageBuilder();
+    ActionMessageBuilder _actionMessageBuilder;
+
+    public DefaultSenderExecutor(ActionMessageBuilder builder) {
+        _actionMessageBuilder = builder;
+    }
 
     public HandlerResponse execute(Action action, ActionSender sender) {
 
