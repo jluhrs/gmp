@@ -69,6 +69,13 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
                 if (response.getResponse() == HandlerResponse.Response.STARTED)
                     return response;
             }
+
+            //no errors, and no started....let's see if we got an "accepted"
+            for (HandlerResponse response : _responses) {
+                if (response.getResponse() == HandlerResponse.Response.ACCEPTED)
+                    return response;
+            }
+
             return HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED);
         }
     }
