@@ -18,12 +18,14 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
 
     /**
      * Construct the executor specifying the ActionMessageBuilder to use.
-     * @param builder ActionMessageBuilder to be used. 
+     * @param builder ActionMessageBuilder to be used.
+     * @param manager the Action Manager that keeps track of the actions
      */
-    public SequenceCommandExecutorStrategy(ActionMessageBuilder builder) {
+    public SequenceCommandExecutorStrategy(ActionMessageBuilder builder,
+                                           ActionManager manager) {
 
         _defaultExecutor = new DefaultSenderExecutor(builder);
-        _applyExecutor = new ApplySenderExecutor(builder);
+        _applyExecutor = new ApplySenderExecutor(builder, manager);
         _rebootExecutor = new RebootSenderExecutor(
                 builder,
                 new LogRebootManager()

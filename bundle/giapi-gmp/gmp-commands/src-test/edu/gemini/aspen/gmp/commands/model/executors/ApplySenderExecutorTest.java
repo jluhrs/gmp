@@ -4,6 +4,7 @@ import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,9 @@ public class ApplySenderExecutorTest {
 
     @Before
     public void setUp() {
-        _executor = new ApplySenderExecutor(new JmsActionMessageBuilder());
+        ActionManager actionManager = new ActionManager();
+        actionManager.start();
+        _executor = new ApplySenderExecutor(new JmsActionMessageBuilder(), actionManager);
         _sender = new TestActionSender();
         _responses = new HandlerResponse[] {
                 HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED),

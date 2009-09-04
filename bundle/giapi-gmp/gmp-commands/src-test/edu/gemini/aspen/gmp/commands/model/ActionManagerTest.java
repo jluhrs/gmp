@@ -257,14 +257,104 @@ public class ActionManagerTest {
         //since otherwise the null listener should have caused a NPE that
         //would have stopped the execution loop
 
-        setUp();
         testOneActionOneCompletion();
         tearDown();
 
         setUp();
         testMultiplePendingActions();
-        tearDown();
     }
 
 
+    /**
+     * This test verifies the handling of completion information
+     * for the APPLY sequence command, which is slightly different
+     * from all the other sequence commands in the sense it
+     * can be handled by multiple handler, hence the action manager
+     * can receive multiple responses. This test verifies the simpler
+     * case when only one handler replies.
+     */
+
+    @Test
+    public void testCompletionForApplySequenceCommand() {
+        TestCompletionListener cl = new TestCompletionListener();
+
+        Action a = new Action(SequenceCommand.APPLY,
+                Activity.PRESET_START,
+                new DefaultConfiguration(),
+                cl);
+
+        manager.registerAction(a);
+
+        //An action started has been registered.
+        manager.increaseRequiredResponses(a);
+
+        manager.registerCompletionInformation(a.getId(),
+                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+
+        //the completion listener should have been called.
+        synchronized (a.getCompletionListener()) {
+            try {
+                a.getCompletionListener().wait(5000);
+            } catch (InterruptedException e) {
+                fail("Thread interrupted");
+            }
+        }
+        assertTrue(cl.wasInvoked());
+    }
+
+    /**
+     * Test the handling of multiple completion information for the same
+     * action ID. This happens for the APPLY sequence command. If an
+     * APPLY configuration is handled by multiple handlers, then
+     * the configuration will be split and the several handlers
+     * will reply completion information to the SAME action ID.
+     */
+    @Test
+    public void testMultipleCompletionForApplySequenceCommand() {
+
+
+        TestCompletionListener cl = new TestCompletionListener();
+
+        Action a = new Action(SequenceCommand.APPLY,
+                Activity.PRESET_START,
+                new DefaultConfiguration(),
+                cl);
+
+        manager.registerAction(a);
+
+        //two handlers will be expected..
+        manager.increaseRequiredResponses(a); manager.increaseRequiredResponses(a);
+
+
+        cl.reset();
+        manager.registerCompletionInformation(a.getId(),
+                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+
+        //the completion listener should not have been called.
+
+        synchronized (a.getCompletionListener()) {
+            try {
+                a.getCompletionListener().wait(5000);
+            } catch (InterruptedException e) {
+                fail("Thread interrupted");
+            }
+        }
+
+        assertFalse(cl.wasInvoked());
+
+        cl.reset();
+
+        manager.registerCompletionInformation(a.getId(),
+                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+
+        synchronized (a.getCompletionListener()) {
+            try {
+                a.getCompletionListener().wait(5000);
+            } catch (InterruptedException e) {
+                fail("Thread interrupted");
+            }
+        }
+
+        assertTrue(cl.wasInvoked());
+    }
 }

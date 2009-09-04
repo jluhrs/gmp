@@ -65,7 +65,8 @@ public class Activator implements BundleActivator {
         CommandSender commandSender = new CommandSenderImpl(_actionManager,
                 _sequenceCommandSenderReply,
                 new SequenceCommandExecutorStrategy(
-                        new JmsActionMessageBuilder()
+                        new JmsActionMessageBuilder(),
+                        _actionManager
                 ));
 
         _jmsTracker = new JmsProviderTracker(bundleContext, "Sequence Command Sender/Completion Information Receiver");

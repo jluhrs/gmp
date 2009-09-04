@@ -29,7 +29,7 @@ public class SequenceCommandTest {
 
     private TestSequenceCommandExecutor executor; //a simplified executor, that don't take into account the type of action.
 
-    final TestCompletionListener completionListener = new TestCompletionListener();
+    private final TestCompletionListener completionListener = new TestCompletionListener();
 
     @Before
     public void setUp() {
@@ -113,6 +113,7 @@ public class SequenceCommandTest {
     /**
      * Test a command that takes time to complete. So the first answer is
      * STARTED and then we receive completion information as "COMPLETED".
+     * 
      * 
      */
     @Test

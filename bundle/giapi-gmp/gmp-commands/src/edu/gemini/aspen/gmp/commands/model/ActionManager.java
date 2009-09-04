@@ -54,6 +54,11 @@ public class ActionManager {
     private Lock _lock = new ReentrantLock();
 
     /**
+     * Tracks the responses received for the tracked actions
+     */
+    private HandlerResponseTracker _handlerResponseTracker = new HandlerResponseTracker();
+
+    /**
      * A container for the update information received
      */
     private class UpdateData {
@@ -63,6 +68,18 @@ public class ActionManager {
         private UpdateData(int actionId, HandlerResponse response) {
             this.actionId = actionId;
             this.response = response;
+        }
+    }
+
+    /**
+     * Register that there is a future {@link edu.gemini.aspen.gmp.commands.api.HandlerResponse}
+     * to be received for the given APPLY action. If the action is not an APPLY, this method does nothing.
+     *
+     * @param action the APPLY action that will get a future response later.
+     */
+    public void increaseRequiredResponses(Action action) {
+        if (action != null && action.getSequenceCommand() == SequenceCommand.APPLY) {
+            _handlerResponseTracker.increaseRequiredResponses(action);
         }
     }
 
@@ -130,20 +147,33 @@ public class ActionManager {
 
                 try {
                     while (action != null && action.getId() <= actionId) {
-                        LOG.info("Updating clients with action " + action + " response " + response);
-                        CompletionListener listener = action.getCompletionListener();
-                        if (listener != null) {
-                            listener.onHandlerResponse(response,
-                                    action.getSequenceCommand(),
-                                    action.getActivity(),
-                                    action.getConfiguration());
+                        //store this response to combine it with the other answers we might receive for the same action
+                        _handlerResponseTracker.storeResponse(action, response);
+                        if (_handlerResponseTracker.isComplete(action)) {
+                            LOG.info("Updating clients with action " + action + " response " + response);
+                            CompletionListener listener = action.getCompletionListener();
+                            if (listener != null) {
+                                listener.onHandlerResponse(_handlerResponseTracker.getResponse(action),
+                                        action.getSequenceCommand(),
+                                        action.getActivity(),
+                                        action.getConfiguration());
+                            } else {
+                                LOG.info("No interested listener on action " + action);
+                            }
+                            //remove the action from the list of tracked actions
+                            _handlerResponseTracker.removeTrackedAction(action);
+                            
+                            //now, remove the element from the queue
+                            _actionQueue.poll();
+                            //iterate to the next element
+                            action = _actionQueue.peek();
                         } else {
-                            LOG.info("No interested listener on action " + action);
+                            LOG.info("Received update for action " + action + " response " +
+                                     response + ". Waiting for the other parts of the action to complete...");
+                            //in this case, the loop is aborted, since this action is not completed yet,
+                            //so we have to keep waiting.
+                            action = null;
                         }
-                        //now, remove the element from the queue
-                        _actionQueue.poll();
-                        //iterate to the next element
-                        action = _actionQueue.peek();
                     }
                 } finally {
                     _lock.unlock();
