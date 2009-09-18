@@ -73,7 +73,8 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
             }
 
             replyProducer.send(replyMessage);
-
+        } catch (InvalidDestinationException ex) {
+            LOG.log(Level.WARNING, "Destination has been destroyed", ex);
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Exception parsing Epics Request", e);
         }

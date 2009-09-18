@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-Activator: edu.gemini.aspen.gmp.pcs.osgi.Activator
+Bundle-Name: GMP PCS Updater Service
+Bundle-Description: PCS Updater service
+Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Version: 0.1.0
+Import-Package: edu.gemini.aspen.gmp.util.jms,
+ edu.gemini.jms.api,
+ edu.gemini.jms.api.osgi,
+ edu.gemini.epics,
+ javax.jms,
+ org.osgi.framework,
+ org.osgi.util.tracker

@@ -59,5 +59,8 @@ public class GmpKeys {
     public final static String GMP_DATA_OBSEVENT_FILENAME = "OBSEVENT_FILENAME";
 
 
+    //PCS Updates Keys
+    public final static String GMP_PCS_UPDATE_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "PCS_UPDATE_DESTINATION";
+
 
 }
