@@ -19,7 +19,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/caj-1.1.5.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/caj-1.1.5b.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
