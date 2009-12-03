@@ -10,7 +10,9 @@
     <property  name="init.dir" value="runtime/init.d"/>	
     <property name="README.file" value="bundle/giapi-gmp/README_QUICK_START"/>
     <property name="launcher.file" value="runtime/launcher/launcher.jar"/>
+    <property name="mcadmin.file" value="bundle/external/gemini-ocs/mc-admin.jar"/>
     <property name="tester.file" value="bundle/tools/giapi-tester/giapi-tester.jar"/>
+    <property name="dev-conf.file" value="${gmp-server.dir}/conf/bundle.properties"/>
     <property name="bundle-conf.file" value="app/gmp-server/bundle.properties.gpi"/>
 
     <property name="dist-package.file" value="gmp-dist.tar.gz"/>
@@ -26,6 +28,10 @@
         <copy todir="${gmp-server.dir}">
             <fileset dir="${gmp.dir}"/>
         </copy>
+	
+	<echo>Delete development configuration ${dev-conf.file}</echo>
+	<delete file="${dev-conf.file}"/>
+
 
 	<echo>Copying init.d scripts</echo>
 	<copy todir="${gmp-init.dir}">
@@ -37,6 +43,9 @@
 
         <echo>Copying launcher</echo>
         <copy file="${launcher.file}" todir="${gmp-dist.dir}"/>
+
+	<echo>Copying mcadmin</echo>
+	<copy file="${mcadmin.file}" todir="${gmp-dist.dir}"/>
 
         <echo>Copying tester application</echo>
         <copy file="${tester.file}" todir="${gmp-dist.dir}"/>
