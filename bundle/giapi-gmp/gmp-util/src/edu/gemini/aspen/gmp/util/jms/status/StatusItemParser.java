@@ -26,9 +26,9 @@ public enum StatusItemParser {
             return bm.readDouble();
         }
     }),
-    BOOLEAN(2, new SimpleStatusParser<Boolean>() {
-        public Boolean getValue(BytesMessage bm) throws JMSException {
-            return bm.readBoolean();
+    FLOAT(2, new SimpleStatusParser<Float>() {
+        public Float getValue(BytesMessage bm) throws JMSException {
+            return bm.readFloat();
         }
     }),
     STRING(3, new SimpleStatusParser<String>() {
@@ -51,9 +51,9 @@ public enum StatusItemParser {
             return bm.readDouble();
         }
     }),
-    ALARM_BOOLEAN(12, new AlarmStatusParser<Boolean>() {
-        public Boolean getValue(BytesMessage bm) throws JMSException {
-            return bm.readBoolean();
+    ALARM_FLOAT(12, new AlarmStatusParser<Float>() {
+        public Float getValue(BytesMessage bm) throws JMSException {
+            return bm.readFloat();
         }
     }),
     ALARM_STRING(13, new AlarmStatusParser<String>() {

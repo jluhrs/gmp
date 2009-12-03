@@ -157,6 +157,10 @@ public class StatusSerializerVisitor implements StatusVisitor {
             _msg.writeByte((byte) (offset.getOffset() + 1));
             _msg.writeUTF(item.getName());
             _msg.writeDouble((Double) o);
+        } else if (o instanceof Float) {
+            _msg.writeByte((byte) (offset.getOffset() + 2));
+            _msg.writeUTF(item.getName());
+            _msg.writeFloat((Float)o);
         } else if (o instanceof String) {
             _msg.writeByte((byte) (offset.getOffset() + 3));
             _msg.writeUTF(item.getName());
