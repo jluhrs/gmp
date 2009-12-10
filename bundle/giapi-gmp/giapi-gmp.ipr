@@ -335,6 +335,7 @@
       <module fileurl="file://$PROJECT_DIR$/gmp-epics-access/gmp-epics-access.iml" filepath="$PROJECT_DIR$/gmp-epics-access/gmp-epics-access.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-epics-simulator/gmp-epics-simulator.iml" filepath="$PROJECT_DIR$/gmp-epics-simulator/gmp-epics-simulator.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" filepath="$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-pcs-updater/gmp-pcs-updater.iml" filepath="$PROJECT_DIR$/gmp-pcs-updater/gmp-pcs-updater.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-services/gmp-services.iml" filepath="$PROJECT_DIR$/gmp-services/gmp-services.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-servlet/gmp-servlet.iml" filepath="$PROJECT_DIR$/gmp-servlet/gmp-servlet.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-status/gmp-status.iml" filepath="$PROJECT_DIR$/gmp-status/gmp-status.iml" />

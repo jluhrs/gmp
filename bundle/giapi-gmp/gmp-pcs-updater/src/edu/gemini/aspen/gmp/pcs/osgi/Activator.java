@@ -56,7 +56,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
     }
 
 
-    @Override
     public void start(BundleContext bundleContext) throws Exception {
 
         _context = bundleContext;
@@ -72,7 +71,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         LOG.info("PCS Updater bundle started");
     }
 
-    @Override
     public void stop(BundleContext bundleContext) throws Exception {
 
         _epicsTracker.close();
@@ -84,7 +82,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         LOG.info("PCS Updater bundle stopped");
     }
 
-    @Override
     public Object addingService(ServiceReference serviceReference) {
         
         IEpicsWriter writter = (IEpicsWriter)_context.getService(serviceReference);
@@ -100,7 +97,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         return updater;
     }
 
-    @Override
     public void modifiedService(ServiceReference serviceReference, Object o) {
         PcsUpdater updater = (PcsUpdater)o;
         if (updater != null) {
@@ -120,7 +116,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     }
 
-    @Override
     public void removedService(ServiceReference serviceReference, Object o) {
 
         PcsUpdater updater = (PcsUpdater)o;
