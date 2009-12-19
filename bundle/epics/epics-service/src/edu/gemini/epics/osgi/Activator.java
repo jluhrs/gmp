@@ -12,14 +12,16 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 import edu.gemini.epics.IEpicsClient;
 import edu.gemini.epics.IEpicsWriter;
+import edu.gemini.epics.IEpicsReader;
 import edu.gemini.epics.impl.ChannelBindingSupport;
 import edu.gemini.epics.impl.EpicsWriter;
+import edu.gemini.epics.impl.EpicsReader;
 import gov.aps.jca.CAException;
 
 public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
 	static {
-		System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "172.16.2.24");
+		System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "172.16.2.22");
 		System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");		
 	}
 	
@@ -27,26 +29,36 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 	private ServiceTracker tracker = null;
 	private BundleContext context = null;
 
-    private ServiceRegistration _registration;
+    private ServiceRegistration _writterRegistration;
+    private ServiceRegistration _readerRegistration;
 
-	
-	public void start(BundleContext context) throws Exception {
+
+    public void start(BundleContext context) throws Exception {
 		this.context = context;
 		tracker = new ServiceTracker(context, IEpicsClient.class.getName(), this);
 		tracker.open();
-        IEpicsWriter epicsWritter = new EpicsWriter();
-        _registration = context.registerService(
+        IEpicsWriter epicsWriter = new EpicsWriter();
+        //Register the EpicsWriter service
+        _writterRegistration = context.registerService(
                 IEpicsWriter.class.getName(),
-                epicsWritter, null);
+                epicsWriter, null);
+        //Register the EpicsReader service
+        IEpicsReader epicsReader = new EpicsReader();
+        _readerRegistration = context.registerService(
+                IEpicsReader.class.getName(),
+                epicsReader, null
+        );
 	}
 
 	public void stop(BundleContext context) throws Exception {
 		tracker.close();
 		tracker = null;
 		this.context = null;
-        _registration.unregister();
+        _writterRegistration.unregister();
+        _readerRegistration.unregister();
 		ChannelBindingSupport.destroy();
         EpicsWriter.destroy();
+        EpicsReader.destroy();
 	}
 
 	public Object addingService(ServiceReference ref) {

@@ -19,18 +19,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" afterPath="$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/IEpicsReader.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.ipr" afterPath="$PROJECT_DIR$/giapi-gmp.ipr" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/activemq-core-5.3.0.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-pcs-updater/gmp-pcs-updater.iml" afterPath="$PROJECT_DIR$/gmp-pcs-updater/gmp-pcs-updater.iml" />
-      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/osgi/Activator.java" afterPath="$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/osgi/Activator.java" />
-      <change type="DELETED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/activemq-core-5.1.0.jar" afterPath="" />
-      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/model/updaters/EpicsPcsUpdater.java" afterPath="$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/model/updaters/EpicsPcsUpdater.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" afterPath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/IEpicsBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-util/src/edu/gemini/aspen/gmp/util/jms/GmpKeys.java" afterPath="$PROJECT_DIR$/gmp-util/src/edu/gemini/aspen/gmp/util/jms/GmpKeys.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.iws" afterPath="$PROJECT_DIR$/giapi-gmp.iws" />
-      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/manifest.mf" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/manifest.mf" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/impl/EpicsReader.java" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/osgi/Activator.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/osgi/Activator.java" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/test/GetTest.java" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/impl/EpicsWriter.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/impl/EpicsWriter.java" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/IEpicsWriter.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/IEpicsWriter.java" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/impl/EpicsBase.java" />
     </list>
     <list name="Failed commit: Default" comment="Introduced Service interface, and some extra refactoring to the Service Bundle" />
     <list name="Failed commit: Default (2)" comment="Refactored ActionMessageBuilder to an interface and a JMS implementation." />
@@ -91,92 +90,98 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TestConsumer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-tests/src/edu/gemini/aspen/gmp/jms/test/TestConsumer.java">
+      <file leaf-file-name="TcsContextFetcher.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/TcsContextFetcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="13" selection-start="352" selection-end="352" vertical-scroll-proportion="0.0">
+            <state line="6" column="17" selection-start="147" selection-end="147" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.xml">
+      <file leaf-file-name="EpicsReaderMockup.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/EpicsReaderMockup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
-              <folding />
+            <state line="29" column="33" selection-start="664" selection-end="664" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="system.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
+      <file leaf-file-name="EpicsBase.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/impl/EpicsBase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MonitorObsEventOperation.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/obsevents/MonitorObsEventOperation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="13" selection-start="846" selection-end="846" vertical-scroll-proportion="0.10714286">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JmsObservationEventListener.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/giapi-obsevents/src/edu/gemini/aspen/giapi/data/obsevents/jms/JmsObservationEventListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="11" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0">
+            <state line="16" column="13" selection-start="337" selection-end="337" vertical-scroll-proportion="0.16304348">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Activator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/giapi-obsevents/src/edu/gemini/aspen/giapi/data/obsevents/osgi/Activator.java">
+        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/osgi/Activator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="13" selection-start="853" selection-end="853" vertical-scroll-proportion="0.0">
+            <state line="29" column="6" selection-start="1179" selection-end="1179" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Activator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/osgi/Activator.java">
+      <file leaf-file-name="TcsContextException.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/TcsContextException.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="118" column="4" selection-start="3954" selection-end="3954" vertical-scroll-proportion="0.0">
+            <state line="5" column="13" selection-start="87" selection-end="87" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EpicsPcsUpdater.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/model/updaters/EpicsPcsUpdater.java">
+      <file leaf-file-name="EpicsTcsContextFetcher.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/EpicsTcsContextFetcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="0" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.0">
+            <state line="9" column="13" selection-start="255" selection-end="255" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestHandler.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/giapi-obsevent-handler/src/edu/gemini/giapi/data/obsevent/handler/TestHandler.java">
+      <file leaf-file-name="EpicsTcsContextFetcherTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/EpicsTcsContextFetcherTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="408" selection-end="408" vertical-scroll-proportion="0.0">
+            <state line="12" column="13" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TcsContextRequestListener.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/jms/TcsContextRequestListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="13" selection-start="458" selection-end="458" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ObservationEventAction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/giapi-obsevents/src/edu/gemini/aspen/giapi/data/obsevents/ObservationEventAction.java">
+      <file leaf-file-name="JmsTcsContextDispatcher.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/jms/JmsTcsContextDispatcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="13" selection-start="1156" selection-end="1156" vertical-scroll-proportion="0.0">
+            <state line="5" column="0" selection-start="117" selection-end="117" vertical-scroll-proportion="0.0">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EpicsWriter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/impl/EpicsWriter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="0" selection-start="132" selection-end="132" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -224,7 +229,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="jms-activemq" />
+          <option name="myItemId" value="gmp-util" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -234,11 +239,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="jms-activemq" />
+          <option name="myItemId" value="gmp-util" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="jms-activemq" />
+          <option name="myItemId" value="gmp-util" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -248,53 +253,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="jms-activemq" />
+          <option name="myItemId" value="gmp-util" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="jms-activemq" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="lib" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
+          <option name="myItemId" value="gmp-util" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -302,7 +265,239 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="pcs" />
+          <option name="myItemId" value="util" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-tcs-context" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-tcs-context" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-tcs-context" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-tcs-context" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-tcs-context" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src-test" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="model" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-tcs-context" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="gmp-tcs-context" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tcs" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Libraries" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Libraries" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="osgi-util.jar" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="util" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Libraries" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="osgi-util.jar" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="util" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tracker" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Libraries" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="osgi-util.jar" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="test" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="giapi-gmp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics-service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="epics" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -316,11 +511,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
+          <option name="myItemId" value="epics-service" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
+          <option name="myItemId" value="epics-service" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -328,135 +523,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="pcs" />
+          <option name="myItemId" value="epics" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="model" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pcs" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="model" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="updaters" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="gmp-pcs-updater" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pcs" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-tester" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-tester" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-tester" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-tester" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-tester" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="tool" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-gmp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-tester" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="giapi-tester" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="tool" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="obsevents" />
+          <option name="myItemId" value="impl" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -529,19 +600,19 @@
       <recent name="edu.gemini.aspen.gmp.broker" />
     </key>
   </component>
-  <component name="RunManager" selected="Remote.GMP-Debug">
-    <tempConfiguration default="false" name="ApplySenderExecutorTest.testXX" type="JUnit" factoryName="JUnit" enabled="false" merge="false" runner="emma">
+  <component name="RunManager" selected="JUnit.EpicsTcsContextFetcherTest">
+    <tempConfiguration default="false" name="EpicsTcsContextFetcherTest" type="JUnit" factoryName="JUnit" enabled="false" merge="false" runner="emma">
       <pattern>
-        <option name="PATTERN" value="edu.gemini.aspen.gmp.commands.model.executors.*" />
+        <option name="PATTERN" value="edu.gemini.aspen.gmp.tcs.model.*" />
         <option name="ENABLED" value="true" />
       </pattern>
-      <module name="gmp-commands" />
+      <module name="gmp-tcs-context" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="edu.gemini.aspen.gmp.commands.model.executors" />
-      <option name="MAIN_CLASS_NAME" value="edu.gemini.aspen.gmp.commands.model.executors.ApplySenderExecutorTest" />
-      <option name="METHOD_NAME" value="testXX" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="edu.gemini.aspen.gmp.tcs.model" />
+      <option name="MAIN_CLASS_NAME" value="edu.gemini.aspen.gmp.tcs.model.EpicsTcsContextFetcherTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -552,13 +623,7 @@
         <value defaultName="wholeProject" />
       </option>
       <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="36015" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method>
         <option name="Make" value="true" />
@@ -695,9 +760,9 @@
       </method>
     </configuration>
     <list size="3">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.ApplySenderExecutorTest.testXX" />
-      <item index="1" class="java.lang.String" itemvalue="Remote.GMP-Debug" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.ApplySenderExecutorTest" />
+      <item index="0" class="java.lang.String" itemvalue="Remote.GMP-Debug" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.ApplySenderExecutorTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.EpicsTcsContextFetcherTest" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -756,22 +821,22 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1995" y="3" width="1790" height="1149" extended-state="0" />
+    <frame x="1951" y="0" width="1790" height="1149" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32125834" sideWeight="0.5" order="1" side_tool="false" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3209756" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40195122" sideWeight="0.9993122" order="4" side_tool="false" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297561" sideWeight="0.5" order="8" side_tool="false" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3209756" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3209756" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2482806" sideWeight="0.58965516" order="1" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23685731" sideWeight="0.6712195" order="0" side_tool="false" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27094164" sideWeight="0.67219514" order="0" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25365853" sideWeight="0.5" order="2" side_tool="false" />
@@ -800,7 +865,7 @@
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[GIAPI-113] Added support for float values in status items" />
+    <option name="LAST_COMMIT_MESSAGE" value="[GIAPI-59] Added support to GMP to provide TCS Context" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -811,7 +876,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="[GIAPI-83] Improved interfaces to help construction of an epics channel simulator. Several code refactorings" />
     <MESSAGE value="Exporting GMP Epics interface" />
     <MESSAGE value="[GIAPI-21] A simulator of EPICS channels data to be used for testing the GIAPI" />
     <MESSAGE value="[GIAPI-21] Configuration files and properties to enable simulation of EPICS channels." />
@@ -836,6 +900,7 @@
     <MESSAGE value="Refactored ActionMessageBuilder to an interface and a JMS implementation." />
     <MESSAGE value="Added test case for the Apply Executor" />
     <MESSAGE value="[GIAPI-113] Added support for float values in status items" />
+    <MESSAGE value="[GIAPI-59] Added support to GMP to provide TCS Context" />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -883,114 +948,120 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/model/PcsUpdate.java">
+    <entry file="jar://$GIAPI_BASE$/giapi-osgi/runtime/lib/osgi-util.jar!/org/osgi/util/tracker/ServiceTracker.class">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-tests/src/edu/gemini/aspen/gmp/jms/test/TestConsumer.java">
+    <entry file="file://$PROJECT_DIR$/gmp-pcs-updater/src-test/edu/gemini/aspen/gmp/pcs/model/PcsUpdaterCompositeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="352" selection-end="352" vertical-scroll-proportion="0.0">
+        <state line="12" column="13" selection-start="291" selection-end="291" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/bundle.properties.gpi">
+    <entry file="file://$PROJECT_DIR$/gmp-pcs-updater/src-test/edu/gemini/aspen/gmp/pcs/model/PcsUpdateTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="10" column="13" selection-start="238" selection-end="238" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/bundle.properties">
+    <entry file="file://$PROJECT_DIR$/gmp-commands/src-test/edu/gemini/aspen/gmp/commands/model/ActionMessageTestBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="16" column="22" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
+    <entry file="file://$PROJECT_DIR$/gmp-commands/src-test/edu/gemini/aspen/gmp/commands/model/ActionMessageBuilderTestBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="4" column="0" selection-start="46" selection-end="114" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/giapi-obsevents/src/edu/gemini/aspen/giapi/data/obsevents/ObservationEventAction.java">
+    <entry file="file://$PROJECT_DIR$/gmp-commands/src-test/edu/gemini/aspen/gmp/commands/model/ActionManagerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="13" selection-start="1156" selection-end="1156" vertical-scroll-proportion="0.0">
+        <state line="64" column="44" selection-start="1684" selection-end="1711" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/giapi-obsevents/manifest.mf">
+    <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/EpicsTcsContextFetcherTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="12" column="13" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/TcsContextFetcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="17" selection-start="147" selection-end="147" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-api/src/edu/gemini/aspen/gmp/data/ObservationEventHandler.java">
+    <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/TcsContextException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="169" selection-end="169" vertical-scroll-proportion="0.0">
+        <state line="5" column="13" selection-start="87" selection-end="87" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
+    <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/EpicsTcsContextFetcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="9" column="13" selection-start="255" selection-end="255" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/src/edu/gemini/jms/api/BaseMessageConsumer.java">
+    <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/jms/TcsContextRequestListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="16" column="13" selection-start="458" selection-end="458" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/giapi-obsevents/src/edu/gemini/aspen/giapi/data/obsevents/jms/JmsObservationEventListener.java">
+    <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/jms/JmsTcsContextDispatcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="11" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0">
+        <state line="5" column="0" selection-start="117" selection-end="117" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/giapi-obsevents/src/edu/gemini/aspen/giapi/data/obsevents/osgi/Activator.java">
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/impl/EpicsWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="13" selection-start="853" selection-end="853" vertical-scroll-proportion="0.0">
+        <state line="5" column="0" selection-start="132" selection-end="132" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/EpicsReaderMockup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="33" selection-start="664" selection-end="664" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/osgi/Activator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="6" selection-start="1179" selection-end="1179" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/osgi/Activator.java">
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/src/edu/gemini/epics/impl/EpicsBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="4" selection-start="3954" selection-end="3954" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmp-pcs-updater/src/edu/gemini/aspen/gmp/pcs/model/updaters/EpicsPcsUpdater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="0" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/giapi-obsevent-handler/src/edu/gemini/giapi/data/obsevent/handler/TestHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="408" selection-end="408" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/obsevents/MonitorObsEventOperation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="13" selection-start="846" selection-end="846" vertical-scroll-proportion="0.10714286">
+        <state line="16" column="13" selection-start="337" selection-end="337" vertical-scroll-proportion="0.16304348">
           <folding />
         </state>
       </provider>

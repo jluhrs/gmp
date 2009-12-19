@@ -5,17 +5,7 @@ package edu.gemini.epics;
  * Before attempting to write, the channels must be
  * connected using the {@link #bindChannel(String)} method.
  */
-public interface IEpicsWriter {
-
-    /**
-     * Makes the connection of the specified channel name with an actual
-     * EPICS channel.
-     * @param channel the channel to connect to
-     * @throws EpicsException in case there is a problem connecting to the
-     * given channel.
-     */
-    public void bindChannel(String channel) throws EpicsException;
-
+public interface IEpicsWriter extends IEpicsBase {
 
     /**
      * Synchronously writes a double to the specified channel. The channel

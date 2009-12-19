@@ -62,5 +62,8 @@ public class GmpKeys {
     //PCS Updates Keys
     public final static String GMP_PCS_UPDATE_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "PCS_UPDATE_DESTINATION";
 
+    //TCS Context Keys
+    public final static String GMP_TCS_CONTEXT_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "TCS_CONTEXT_DESTINATION";
+
 
 }
