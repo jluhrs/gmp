@@ -14,6 +14,7 @@ import edu.gemini.aspen.gmp.tcs.jms.JmsTcsContextDispatcher;
 import edu.gemini.aspen.gmp.tcs.model.TcsContextFetcher;
 import edu.gemini.aspen.gmp.tcs.model.EpicsTcsContextFetcher;
 import edu.gemini.aspen.gmp.tcs.model.TcsContextException;
+import edu.gemini.aspen.gmp.tcs.model.SimTcsContextFetcher;
 import edu.gemini.epics.IEpicsReader;
 
 import java.util.logging.Logger;
@@ -27,7 +28,8 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
     private static final Logger LOG = Logger.getLogger(Activator.class.getName());
 
     private static final String TCS_CTX_CHANNEL_PROP = "edu.gemini.aspen.gmp.tcs.epicsChannel";
-    //private static final String TCS_CTX_SIMULATION_PROP = "edu.gemini.aspen.gmp.tcs.simulation";
+    private static final String TCS_CTX_SIMULATION_PROP = "edu.gemini.aspen.gmp.tcs.simulation";
+    private static final String TCS_CTX_SIMULATION_DATA_PROP = "edu.gemini.aspen.gmp.tcs.simulationData";
 
     /**
      * Message consumer used to receive TCS Context requests
@@ -68,22 +70,35 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         _messageConsumer = new BaseMessageConsumer(
                 "JMS TCS Context Request Consumer",
                 new DestinationData(TcsContextRequestListener.DESTINATION_NAME,
-                                    DestinationType.TOPIC),
+                        DestinationType.TOPIC),
                 _listener
         );
     }
 
     public void start(BundleContext bundleContext) throws Exception {
 
-         _context = bundleContext;
+        _context = bundleContext;
 
         _jmsTracker = new JmsProviderTracker(bundleContext, "TCS Context Request Receiver");
         _jmsTracker.registerJmsArtifact(_dispatcher);
         _jmsTracker.registerJmsArtifact(_messageConsumer);
         _jmsTracker.open();
 
-        _epicsTracker = new ServiceTracker(bundleContext, IEpicsReader.class.getName(), this);
-        _epicsTracker.open();
+
+        String sim = _context.getProperty(TCS_CTX_SIMULATION_PROP);
+
+        if ("yes".equalsIgnoreCase(sim)) {
+            String file = _context.getProperty(TCS_CTX_SIMULATION_DATA_PROP);
+            LOG.info("Simulating data for TCS Context from " + file);
+            _listener.registerTcsContextFetcher(new SimTcsContextFetcher(file));
+            
+        } else {
+            //Start the EPICS tracker, so we can get the TCS context from
+            //EPICS
+            _epicsTracker = new ServiceTracker(bundleContext, IEpicsReader.class.getName(), this);
+            _epicsTracker.open();
+        }
+
 
         LOG.info("TCS Context Service started");
 
@@ -101,7 +116,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     public Object addingService(ServiceReference serviceReference) {
 
-        IEpicsReader reader = (IEpicsReader)_context.getService(serviceReference);
+        IEpicsReader reader = (IEpicsReader) _context.getService(serviceReference);
 
         TcsContextFetcher fetcher = null;
         try {
@@ -119,13 +134,13 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     public void modifiedService(ServiceReference serviceReference, Object o) {
 
-        TcsContextFetcher fetcher = (TcsContextFetcher)o;
+        TcsContextFetcher fetcher = (TcsContextFetcher) o;
         if (fetcher != null) {
             _listener.registerTcsContextFetcher(null);
             LOG.info("Removed old instance of EPICS writter");
         }
 
-        IEpicsReader reader = (IEpicsReader)_context.getService(serviceReference);
+        IEpicsReader reader = (IEpicsReader) _context.getService(serviceReference);
 
         try {
             fetcher = new EpicsTcsContextFetcher(reader);

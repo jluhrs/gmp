@@ -8,3 +8,11 @@ edu.gemini.util.telnetd.port=15001
 gmp.properties.conf= /data/daoinsw/tools/giapi/gmp/gmp-server/conf/gmp-properties.xml
 gmp.epics.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/epics-channels.xml
 gmp.epics.simulation.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/simulated-epics-channels.xml
+
+#General Configuration Properties
+
+#TCS Context Properties
+edu.gemini.aspen.gmp.tcs.epicsChannel=tc1:sad:astCtx
+edu.gemini.aspen.gmp.tcs.simulation=yes
+edu.gemini.aspen.gmp.tcs.simulationData=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/tcsCtx.data
+

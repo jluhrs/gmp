@@ -75,6 +75,7 @@
       <entry name="?*.html" />
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
+      <entry name="?*.data" />
     </wildcardResourcePatterns>
   </component>
   <component name="CopyrightManager" default="">
@@ -349,7 +350,7 @@
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ResourceManagerContainer">
