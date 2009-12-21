@@ -19,16 +19,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="[GIAPI-59] Added support to GMP to provide TCS Context">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/tcsCtx.data" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.ipr" afterPath="$PROJECT_DIR$/giapi-gmp.ipr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/SimTcsContextFetcherTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/tcsCtxSomeInvalidData.data" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/osgi/Activator.java" afterPath="$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/osgi/Activator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.iws" afterPath="$PROJECT_DIR$/giapi-gmp.iws" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/SimTcsContextFetcher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" afterPath="$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/tcsCtxNoData.data" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/tcsCtxInvalidData.data" />
     </list>
     <list name="Failed commit: Default" comment="Introduced Service interface, and some extra refactoring to the Service Bundle" />
     <list name="Failed commit: Default (2)" comment="Refactored ActionMessageBuilder to an interface and a JMS implementation." />
@@ -154,15 +145,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tcsCtxNoData.data" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src-test/edu/gemini/aspen/gmp/tcs/model/tcsCtxNoData.data">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="0" selection-start="130" selection-end="130" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="EpicsTcsContextFetcher.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/EpicsTcsContextFetcher.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -172,13 +154,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimTcsContextFetcher.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SimTcsContextFetcher.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/SimTcsContextFetcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="143" selection-end="143" vertical-scroll-proportion="-0.8513324">
+            <state line="6" column="0" selection-start="143" selection-end="143" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="system.properties" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="32" selection-start="1027" selection-end="1027" vertical-scroll-proportion="0.35764375">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -994,13 +985,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/build/common.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="40" selection-start="3562" selection-end="3562" vertical-scroll-proportion="-12.446809">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/TcsContextFetcher.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="16" column="0" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0">
@@ -1103,10 +1087,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gmp-tcs-context/src/edu/gemini/aspen/gmp/tcs/model/SimTcsContextFetcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="143" selection-end="143" vertical-scroll-proportion="-0.8513324">
+        <state line="6" column="0" selection-start="143" selection-end="143" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="32" selection-start="1027" selection-end="1027" vertical-scroll-proportion="0.35764375">
+          <folding />
         </state>
       </provider>
     </entry>
