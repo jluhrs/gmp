@@ -159,6 +159,8 @@ public class CommandSenderImpl implements CommandSender {
                 try {
                     if (decoratorListener.getResponse() != null) {
                         response = decoratorListener.getResponse();
+                        //this action is no longer valid.
+                        _manager.unregisterAction(action);
                     }
                 } finally {
                     _manager.unlock(); //release the lock on the manager.
