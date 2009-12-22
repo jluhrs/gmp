@@ -41,7 +41,6 @@ public class PcsUpdateListener implements MessageListener {
         _updater = updater;
     }
 
-    @Override
     public void onMessage(Message message) {
 
         //if the message is not a ByteMessage, we got an invalid message

@@ -143,7 +143,9 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         IEpicsReader reader = (IEpicsReader) _context.getService(serviceReference);
 
         try {
-            fetcher = new EpicsTcsContextFetcher(reader);
+            String tcsCtxChannel = _context.getProperty(TCS_CTX_CHANNEL_PROP);
+            fetcher = new EpicsTcsContextFetcher(reader, tcsCtxChannel);
+
             _listener.registerTcsContextFetcher(fetcher);
             LOG.info("New instance of EPICS reader registered");
         } catch (TcsContextException ex) {

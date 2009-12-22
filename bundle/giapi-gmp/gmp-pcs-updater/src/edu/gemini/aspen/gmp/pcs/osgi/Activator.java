@@ -27,6 +27,9 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     private static final Logger LOG = Logger.getLogger(Activator.class.getName());
 
+    private static final String PCS_SIMULATION_PROP = "edu.gemini.aspen.gmp.pcs.simulation";
+    private static final String PCS_CHANNEL_PROP = "edu.gemini.aspen.gmp.pcs.epicsChannel";
+
     private JmsProviderTracker _jmsTracker;
 
     private BaseMessageConsumer _messageConsumer;
@@ -64,17 +67,24 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         _jmsTracker.registerJmsArtifact(_messageConsumer);
         _jmsTracker.open();
 
-
-        _epicsTracker = new ServiceTracker(bundleContext, IEpicsWriter.class.getName(), this);
-        _epicsTracker.open();
+        String sim = _context.getProperty(PCS_SIMULATION_PROP);
+        if ("yes".equalsIgnoreCase(sim)) {
+            LOG.info("PCS Updates in simulation mode. No updates to the PCS will be attempted");
+        } else {
+            //Start the EPICS tracker, so we can update the PCS via EPICS
+            _epicsTracker = new ServiceTracker(bundleContext, IEpicsWriter.class.getName(), this);
+            _epicsTracker.open();
+        }
 
         LOG.info("PCS Updater bundle started");
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
 
-        _epicsTracker.close();
-        _epicsTracker = null;
+        if (_epicsTracker != null) {
+            _epicsTracker.close();
+            _epicsTracker = null;
+        }
 
         _jmsTracker.close();
         _jmsTracker = null;
@@ -88,7 +98,8 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
         PcsUpdater updater = null;
         try {
-            updater = new EpicsPcsUpdater(writter);
+            String pcschannel = _context.getProperty(PCS_CHANNEL_PROP);
+            updater = new EpicsPcsUpdater(writter, pcschannel);
             _pcsUpdaterComposite.registerUpdater(updater);
             LOG.info("EPICS Connection established");
         } catch (PcsUpdaterException ex) {
@@ -107,7 +118,8 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         IEpicsWriter writter = (IEpicsWriter)_context.getService(serviceReference);
 
         try {
-            updater = new EpicsPcsUpdater(writter);
+            String pcschannel = _context.getProperty(PCS_CHANNEL_PROP);
+            updater = new EpicsPcsUpdater(writter, pcschannel);
             _pcsUpdaterComposite.registerUpdater(updater);
             LOG.info("New instance of EPICS writter registered");
         } catch (PcsUpdaterException ex) {

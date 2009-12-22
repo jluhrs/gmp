@@ -3,7 +3,7 @@ Bundle-Activator: edu.gemini.aspen.gmp.pcs.osgi.Activator
 Bundle-Name: GMP PCS Updater Service
 Bundle-Description: PCS Updater service
 Bundle-Vendor: Gemini 8m Observatories, HLDG
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0
 Import-Package: edu.gemini.aspen.gmp.util.jms,
  edu.gemini.jms.api,
  edu.gemini.jms.api.osgi,

@@ -13,7 +13,6 @@ public class LogPcsUpdater implements PcsUpdater {
 
     private static final Logger LOG = Logger.getLogger(LogPcsUpdater.class.getName());
 
-    @Override
     public void update(PcsUpdate update) throws PcsUpdaterException {
 
         LOG.info("PCS Update received " + update);

@@ -22,13 +22,25 @@ public class EpicsPcsUpdater implements PcsUpdater {
 
     private static final String TCS_ZERNIZES_CHANNEL = "tst:array.VALJ";
 
-    public EpicsPcsUpdater(IEpicsWriter writter) throws PcsUpdaterException {
+    private String _channel;
+
+    public EpicsPcsUpdater(IEpicsWriter writter, String channel) throws PcsUpdaterException {
+
+        _channel = channel;
         _writter = writter;
+
+        /**
+         * If the channel is not specified, use the default one
+         */
+        if (_channel == null) {
+            _channel = TCS_ZERNIZES_CHANNEL;
+        }
+
         try {
-            _writter.bindChannel(TCS_ZERNIZES_CHANNEL);
+            _writter.bindChannel(_channel);
         } catch (EpicsException e) {
             throw new PcsUpdaterException("Problem binding " +
-                                   TCS_ZERNIZES_CHANNEL +
+                                   _channel +
                                    " channel. Check the EPICS configuration and your network settings", e);
         }
     }
@@ -41,8 +53,8 @@ public class EpicsPcsUpdater implements PcsUpdater {
         }
         //attempt to write the values to EPICS
         try {
-            LOG.fine("Post Zernikes updates to EPICS Channel: " + TCS_ZERNIZES_CHANNEL);
-            _writter.write(TCS_ZERNIZES_CHANNEL, update.getZernikes());
+            LOG.fine("Post Zernikes updates to EPICS Channel: " + _channel);
+            _writter.write(_channel, update.getZernikes());
         } catch (EpicsException e) {
             throw new PcsUpdaterException("Trouble writting zernikes coefficients", e);
         }

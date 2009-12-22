@@ -15,7 +15,6 @@ public final class TestPcsUpdater implements PcsUpdater {
         lastUpdate = null;
     }
 
-    @Override
     public void update(PcsUpdate update) throws PcsUpdaterException {
         synchronized (this) {
             lastUpdate = update;

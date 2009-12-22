@@ -11,6 +11,10 @@ gmp.epics.simulation.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/simulate
 
 #General Configuration Properties
 
+#PCS Zernikes Updates
+edu.gemini.aspen.gmp.pcs.epicsChannel=tst:array.VALJ
+edu.gemini.aspen.gmp.pcs.simulation=yes
+
 #TCS Context Properties
 edu.gemini.aspen.gmp.tcs.epicsChannel=tc1:sad:astCtx
 edu.gemini.aspen.gmp.tcs.simulation=yes
