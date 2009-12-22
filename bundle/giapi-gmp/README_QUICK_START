@@ -80,6 +80,14 @@ The following properties need to be set up properly in that file:
     gmp.epics.conf=${GMP_INSTALL}/gmp-server/conf/epics-channels.xml
     gmp.epics.simulation.conf=${GMP_INSTALL}/gmp-server/conf/simulated-epics-channels.xml
 
+    edu.gemini.aspen.gmp.pcs.epicsChannel=tst:array.VALJ
+    edu.gemini.aspen.gmp.pcs.simulation=yes
+
+    edu.gemini.aspen.gmp.tcs.epicsChannel=tc1:sad:astCtx
+    edu.gemini.aspen.gmp.tcs.simulation=yes
+    edu.gemini.aspen.gmp.tcs.simulationData=${GMP_INSTALL}/gmp/gmp-server/conf/tcsCtx.data
+
+
 IMPORTANT: The configuration files DO NOT accept the use of environment
 variables, so you can't use ${GMP_INSTALL} for instance; you need to type
 the complete route to the required files.
@@ -108,6 +116,40 @@ xml configuration files.
                             file, it is necessary to describe the name, data
                             type and update rate of the channels that will be
                             simulated.
+
+
+ edu.gemini.aspen.gmp.pcs.epicsChannel: The EPICS channel to use to write
+                                        zernikes. Used only when configured in
+                                        non-simulation mode
+
+ edu.gemini.aspen.gmp.pcs.simulation: If 'yes', the PCS Updater bundle will
+                                      work in simulation, meaning all the
+                                      updates to the PCS will be just logged
+                                      into the GMP
+
+ edu.gemini.aspen.gmp.tcs.epicsChannel: The EPICS channel where the TCS context
+                                        will be obtained. Only used when
+                                        configured in non-simulation mode.
+
+ edu.gemini.aspen.gmp.tcs.simulation: If 'yes', set the TCS Context bundle to
+                                      work in simulation mode. For simulation
+                                      purposes, it uses the data from the file
+                                      specified in the next property.
+
+ edu.gemini.aspen.gmp.tcs.simulationData: Defines the text data file that
+                                          contains the data to be used for TCS
+                                          context simulation purposes.
+                                          The format of thefile is simple.
+                                          Each line contains
+                                          a space separated list of double
+                                          values, each one of them corresponding
+                                          to a value in the TCS context EPICS
+                                          channel. 38 elements are required.
+                                          The first element, representing the
+                                          date, is not included in the data file
+                                          since it's simulated using the local
+                                          time. An example is provided in the
+                                          tcsCtx.data file.
 
 3. Starting up the Gemini Master Process
 --------------------------------------------------------------------------------
@@ -173,35 +215,33 @@ In this prompt, you can interact with the GMP OSGi services, for instance:
 
 walle -> ps
 
-START LEVEL 10
+ START LEVEL 10
    ID   State         Level  Name
 [   0] [Active     ] [    0] System Bundle (1.0.5)
 [   1] [Active     ] [    1] Shell Service (1.0.2)
-[   2] [Installed  ] [    1] Shell TUI (1.0.0)
-[   3] [Active     ] [    1] Bundle Repository (1.1.2)
-[   4] [Active     ] [    2] OSGi Util (1.0.0)
-[   5] [Active     ] [    2] OSGi Service (1.0.2)
-[   6] [Active     ] [    3] Telnet Daemon (0.1.0)
-[   7] [Active     ] [    3] Servlet (1.0.0)
-[   8] [Active     ] [    3] HTTP Service (1.1.2)
-[   9] [Active     ] [    3] Multicast Admin (0.1.0)
-[  10] [Installed  ] [    3] EPICS Service (0.1.0)
-[  11] [Active     ] [    4] JMS API (1.2.0)
-[  12] [Active     ] [    4] ActiveMQ Service (1.1.0)
-[  13] [Active     ] [    5] GMP API (0.8.0)
-[  14] [Active     ] [    5] GMP JMS Util (0.8.0)
-[  15] [Active     ] [    6] GMP GIAPI Services (0.1.0)
-[  16] [Active     ] [    6] GMP Sequence Commands Service (0.8.0)
-[  17] [Active     ] [    6] GMP Status Service (0.1.0)
-[  18] [Active     ] [    7] GMP Status Database (0.1.0)
-[  19] [Active     ] [    8] GMP JMS Status Processor (0.1.0)
-[  20] [Active     ] [    8] GMP Status Gateway (0.1.0)
-[  21] [Active     ] [    8] GMP Gateway (0.8.0)
-[  22] [Installed  ] [    9] GMP Epics Access Service (0.1.0)
-[  23] [Installed  ] [    9] GMP Epics Simulator (0.1.0)
-[  24] [Active     ] [    9] GMP Servlet (1.1.0)
-
-
+[   2] [Active     ] [    1] Bundle Repository (1.1.2)
+[   3] [Active     ] [    2] OSGi Util (1.0.0)
+[   4] [Active     ] [    2] OSGi Service (1.0.2)
+[   5] [Active     ] [    3] Telnet Daemon (0.1.0)
+[   6] [Active     ] [    3] Servlet (1.0.0)
+[   7] [Active     ] [    3] HTTP Service (1.1.2)
+[   8] [Active     ] [    3] Multicast Admin (0.1.0)
+[   9] [Resolved   ] [    3] EPICS Service (0.2.0)
+[  10] [Active     ] [    4] JMS API (1.2.0)
+[  11] [Active     ] [    4] ActiveMQ Service (1.1.0)
+[  12] [Active     ] [    5] GMP API (0.8.0)
+[  13] [Active     ] [    5] GMP JMS Util (0.10.0)
+[  14] [Active     ] [    6] GMP GIAPI Services (0.1.0)
+[  15] [Active     ] [    6] GMP Sequence Commands Service (0.9.0)
+[  16] [Active     ] [    6] GMP Status Service (0.1.0)
+[  17] [Active     ] [    6] GMP PCS Updater Service (0.2.0)
+[  18] [Active     ] [    6] GMP TCS Context Service (0.1.0)
+[  19] [Active     ] [    7] GMP Status Database (0.1.0)
+[  20] [Active     ] [    8] GMP JMS Status Processor (0.1.0)
+[  21] [Active     ] [    8] GMP Status Gateway (0.1.0)
+[  22] [Active     ] [    8] GMP Gateway (0.8.0)
+[  23] [Active     ] [    9] GMP Epics Access Service (0.1.0)
+[  24] [Active     ] [    9] GMP Epics Simulator (0.1.0)
 
 That means all the bundles are ready and the Gemini Master Process is running.
 
