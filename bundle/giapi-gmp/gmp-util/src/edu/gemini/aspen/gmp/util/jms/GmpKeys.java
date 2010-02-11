@@ -30,6 +30,9 @@ public class GmpKeys {
     public final static int GMP_UTIL_REQUEST_PROPERTY = 0;
     public final static String GMP_UTIL_PROPERTY = "PROPERTY";
 
+    //Logging Keys
+    public final static String GMP_SERVICES_LOG_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "LOGGING_DESTINATION";
+    public final static String GMP_SERVICES_LOG_LEVEL = "LEVEL";
 
     //Status Keys
     public final static String GMP_STATUS_DESTINATION =  GMP_PREFIX + GMP_SEPARATOR + "STATUS_DESTINATION";

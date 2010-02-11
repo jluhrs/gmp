@@ -6,7 +6,7 @@ package edu.gemini.aspen.gmp.services.core;
 public enum ServiceType {
 
     PROPERTY_SERVICE("Property Service"),
-    LOGGING_SERVICE("Logging Service");
+    TIME_SERVICE("Time Service");
     
     private String _name;
 

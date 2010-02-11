@@ -336,6 +336,7 @@
       <module fileurl="file://$PROJECT_DIR$/gmp-epics-access/gmp-epics-access.iml" filepath="$PROJECT_DIR$/gmp-epics-access/gmp-epics-access.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-epics-simulator/gmp-epics-simulator.iml" filepath="$PROJECT_DIR$/gmp-epics-simulator/gmp-epics-simulator.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" filepath="$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmp-logging/gmp-logging.iml" filepath="$PROJECT_DIR$/gmp-logging/gmp-logging.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-pcs-updater/gmp-pcs-updater.iml" filepath="$PROJECT_DIR$/gmp-pcs-updater/gmp-pcs-updater.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-services/gmp-services.iml" filepath="$PROJECT_DIR$/gmp-services/gmp-services.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-servlet/gmp-servlet.iml" filepath="$PROJECT_DIR$/gmp-servlet/gmp-servlet.iml" />
@@ -348,6 +349,7 @@
       <module fileurl="file://$PROJECT_DIR$/gmp-util/gmp-util.iml" filepath="$PROJECT_DIR$/gmp-util/gmp-util.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/summer/summer.iml" filepath="$PROJECT_DIR$/summer/summer.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">

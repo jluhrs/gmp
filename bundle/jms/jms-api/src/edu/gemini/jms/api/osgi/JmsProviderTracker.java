@@ -47,7 +47,7 @@ public class JmsProviderTracker extends ServiceTracker {
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Problem starting JMS Artifacts", e);
         }
-        LOG.info("Started JMS Artifacts [" + _name + ']');
+        LOG.info("Started JMS Artifact [" + _name + ']');
         return provider;
     }
 
@@ -57,7 +57,7 @@ public class JmsProviderTracker extends ServiceTracker {
         for (BaseJmsArtifact jmsArtifact: _jmsArtifacts) {
             jmsArtifact.stopJms();
         }
-        LOG.info("Stopped JMS Artifacts (" + _name + ')');
+        LOG.info("Stopped JMS Artifact (" + _name + ')');
         context.ungetService(serviceReference);
 
     }
