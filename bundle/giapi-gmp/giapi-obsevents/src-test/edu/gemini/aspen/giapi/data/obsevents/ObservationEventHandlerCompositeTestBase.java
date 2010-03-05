@@ -12,7 +12,7 @@ import edu.gemini.aspen.gmp.data.Dataset;
 import java.util.*;
 
 /**
- * Base test class for testing the ObservationEventMonitor interface
+ * Base test class for testing the ObservationEventHandlerComposite interface
  */
 public abstract class ObservationEventHandlerCompositeTestBase {
 

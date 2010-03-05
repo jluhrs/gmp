@@ -6,6 +6,7 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 import edu.gemini.aspen.gmp.data.ObservationEvent;
 
 /**
+ * Unit tests for the Observation Event class.
  */
 public class ObservationEventTest {
 

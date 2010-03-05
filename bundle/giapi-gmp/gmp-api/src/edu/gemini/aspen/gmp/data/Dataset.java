@@ -34,4 +34,9 @@ public final class Dataset {
     public int hashCode() {
         return _name.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return _name;
+    }
 }

@@ -7,7 +7,7 @@ import edu.gemini.aspen.gmp.data.Dataset;
 import com.gargoylesoftware.base.testing.EqualsTester;
 
 /**
- *
+ * Unit tests for the Dataset class
  */
 public class DatasetTest {
 

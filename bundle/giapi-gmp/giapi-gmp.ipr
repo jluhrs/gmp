@@ -328,6 +328,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/giapi-fileevent-handler/giapi-fileevent-handler.iml" filepath="$PROJECT_DIR$/giapi-fileevent-handler/giapi-fileevent-handler.iml" />
+      <module fileurl="file:///data/anunez/Projects/giapi/giapi-osgi/bundle/giapi-gmp/gmp-fileevents/giapi-fileevents.iml" filepath="/data/anunez/Projects/giapi/giapi-osgi/bundle/giapi-gmp/gmp-fileevents/giapi-fileevents.iml" />
       <module fileurl="file://$PROJECT_DIR$/giapi-obsevent-handler/giapi-obsevent-handler.iml" filepath="$PROJECT_DIR$/giapi-obsevent-handler/giapi-obsevent-handler.iml" />
       <module fileurl="file://$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" filepath="$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />

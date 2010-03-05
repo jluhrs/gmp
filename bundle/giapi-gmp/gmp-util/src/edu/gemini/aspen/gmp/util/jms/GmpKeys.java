@@ -60,6 +60,12 @@ public class GmpKeys {
     public final static String GMP_DATA_OBSEVENT_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "OBSEVENT_DESTINATION";
     public final static String GMP_DATA_OBSEVENT_NAME = "OBSEVENT_NAME";
     public final static String GMP_DATA_OBSEVENT_FILENAME = "OBSEVENT_FILENAME";
+    //File Events Keys
+    public final static String GMP_DATA_FILEEVENT_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "FILEEVENT_DESTINATION";
+    public final static String GMP_DATA_FILEEVENT_TYPE = "TYPE";
+    public final static String GMP_DATA_FILEEVENT_FILENAME = "FILENAME";
+    public final static String GMP_DATA_FILEEVENT_DATALABEL = "DATALABEL";
+    public final static String GMP_DATA_FILEEVENT_HINT = "HINT";
 
 
     //PCS Updates Keys
