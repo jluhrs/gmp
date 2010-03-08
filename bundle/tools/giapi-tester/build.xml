@@ -5,7 +5,7 @@
 
 
      <path id="build.classpath.extra">
-        <fileset dir="../../jms/jms-activemq-provider/lib" includes="*.jar"/>
+        <fileset dir="../../jms/jms-activemq-lib/lib" includes="*.jar"/>
         <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
         <pathelement path="../../jms/jms-api/bin"/>
         <pathelement path="../../jms/jms-activemq-provider/bin"/>
@@ -23,7 +23,7 @@
     <target name="-explode">
         <unjar dest="bin">
            <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
-           <fileset dir="../../jms/jms-activemq-provider/lib" includes="*.jar"/>
+           <fileset dir="../../jms/jms-activemq-lib/lib" includes="*.jar"/>
         </unjar>
 
         <copy todir="bin">
