@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-Activator: edu.gemini.jms.activemq.provider.osgi.Activator
 Bundle-Name: ActiveMQ JMS Service Provider
-Bundle-Classpath: ., lib/commons-logging-1.1.jar, lib/activemq-core-5.3.0.jar
 Bundle-Description: A JMS Service Provider based on the Apache ActiveMQ
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 1.1.0
 Export-Package: edu.gemini.jms.activemq.provider
 Import-Package: edu.gemini.jms.api,
+ org.apache.activemq,
  org.osgi.framework,
  javax.jms,
  javax.management.j2ee.statistics

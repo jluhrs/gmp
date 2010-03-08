@@ -16,49 +16,28 @@
   </component>
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="c1f6acaf-27bf-4cb3-a50c-ba30bc181162" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/build.xml" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/manifest.mf" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/lib/commons-logging-1.1.jar" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.ipr" afterPath="$PROJECT_DIR$/giapi-gmp.ipr" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/osgi" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/manifest.mf" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/osgi/Activator.java" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini/jms/activemq/osgi/Activator.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/osgi/Activator.java" />
-      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/obsevents/MonitorObsEventOperation.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/obsevents/MonitorObsEventOperation.java" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini/jms" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu" />
-      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini/jms/activemq/broker" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker" />
-      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/build.xml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/build.xml" />
-      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/manifest.mf" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/manifest.mf" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" afterPath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src" />
+      <change type="DELETED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/lib/commons-logging-1.1.jar" afterPath="" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/build.xml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/build.xml" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/src" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/build.xml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/build.xml" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/lib/activemq-core-5.3.0.jar" />
+      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/osgi" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/osgi" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/manifest.mf" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/manifest.mf" />
+      <change type="DELETED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/lib/commons-logging-1.1.jar" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/lib" />
+      <change type="DELETED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/lib/activemq-core-5.3.0.jar" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/jms-activemq-lib.iml" />
+      <change type="DELETED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/lib/activemq-core-5.3.0.jar" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.iws" afterPath="$PROJECT_DIR$/giapi-gmp.iws" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/build.xml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/build.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-obsevent-handler/src/edu/gemini/giapi/data/obsevent/handler/TestHandler.java" afterPath="$PROJECT_DIR$/giapi-obsevent-handler/src/edu/gemini/giapi/data/obsevent/handler/TestHandler.java" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/lib/commons-logging-1.1.jar" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/commons-logging-1.1.jar" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/lib/commons-logging-1.1.jar" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider" />
-      <change type="DELETED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/jms-activemq.iml" afterPath="" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini/jms/activemq/broker/ConfigDefaults.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/ConfigDefaults.java" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/build.xml" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/activemq-core-5.3.0.jar" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/lib/activemq-core-5.3.0.jar" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini/jms/activemq/osgi" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/osgi" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/lib" />
-      <change type="DELETED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/ActiveMQJmsProvider.java" afterPath="" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/jms-activemq-broker.iml" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/lib" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/lib/activemq-core-5.3.0.jar" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/manifest.mf" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/manifest.mf" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini/jms/activemq/broker/ActiveMQBroker.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/ActiveMQBroker.java" />
-      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini/jms/activemq" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini" />
-      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/ActiveMQJmsProvider.java" />
+      <change type="NEW" beforePath="" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/manifest.mf" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/manifest.mf" />
+      <change type="MOVED" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/osgi/Activator.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/osgi/Activator.java" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/osgi/Activator.java" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/osgi/Activator.java" />
     </list>
     <list id="4a7f7010-b7f5-4ba2-b352-9d946af67700" name="Failed commit: Default" comment="Introduced Service interface, and some extra refactoring to the Service Bundle" />
     <list id="6f092305-c330-41c5-8e52-5316dea9687a" name="Failed commit: Default (2)" comment="Refactored ActionMessageBuilder to an interface and a JMS implementation." />
@@ -125,94 +104,96 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="manifest.mf" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/manifest.mf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="0" selection-start="384" selection-end="384" vertical-scroll-proportion="0.2354788">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manifest.mf" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/manifest.mf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="7" selection-start="405" selection-end="405" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ActiveMQJmsProvider.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/ActiveMQJmsProvider.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="19" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/build.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="0" selection-start="117" selection-end="117" vertical-scroll-proportion="-2.7272727">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manifest.mf" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/manifest.mf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="33" selection-start="367" selection-end="367" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/build.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="0" selection-start="341" selection-end="341" vertical-scroll-proportion="-6.1363635">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/build.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="17" selection-start="223" selection-end="298" vertical-scroll-proportion="-4.7727275">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ActiveMQBroker.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/ActiveMQBroker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="28" selection-start="429" selection-end="429" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manifest.mf" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/manifest.mf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="19" selection-start="319" selection-end="320" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MonitorObsEventOperation.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/obsevents/MonitorObsEventOperation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="45" selection-start="1473" selection-end="1473" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BrokerConnection.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/jms/BrokerConnection.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="13" selection-start="398" selection-end="398" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manifest.mf" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/manifest.mf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="giapi-tester.iml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/build.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="4" selection-start="785" selection-end="785" vertical-scroll-proportion="0.48076922">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestHandler.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/giapi-obsevent-handler/src/edu/gemini/giapi/data/obsevent/handler/TestHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="13" selection-start="336" selection-end="336" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="system.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="106" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="12" column="13" selection-start="276" selection-end="276" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Activator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/osgi/Activator.java">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/osgi/Activator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="13" selection-start="328" selection-end="328" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="13" column="13" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BrokerService.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/lib/activemq-core-5.3.0.jar!/org/apache/activemq/broker/BrokerService.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="58" selection-start="190" selection-end="209" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -232,19 +213,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/ActiveMQJmsProvider.java" />
-        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/osgi/Activator.java" />
-        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/build.xml" />
-        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/manifest.mf" />
-        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/manifest.mf" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/obsevents/MonitorObsEventOperation.java" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/manifest.mf" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/src/edu/gemini/jms/activemq/osgi/Activator.java" />
-        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/manifest.mf" />
         <option value="$PROJECT_DIR$/giapi-obsevent-handler/src/edu/gemini/giapi/data/obsevent/handler/TestHandler.java" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/build.xml" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/build.xml" />
         <option value="$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/build.xml" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/build.xml" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/manifest.mf" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/osgi/Activator.java" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/osgi/Activator.java" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/manifest.mf" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/manifest.mf" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/build.xml" />
+        <option value="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/osgi/Activator.java" />
       </list>
     </option>
   </component>
@@ -320,17 +304,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-tester" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-gmp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-tester" />
+              <option name="myItemId" value="jms-activemq-provider" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -338,7 +312,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="tool" />
+              <option name="myItemId" value="provider" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -348,69 +322,31 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-tester" />
+              <option name="myItemId" value="jms-activemq-lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="giapi-gmp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jms-activemq-broker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="giapi-gmp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jms-activemq-broker" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tool" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-gmp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-obsevent-handler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-gmp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-obsevent-handler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="handler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-gmp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-obsevent-handler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="handler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="osgi" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -786,17 +722,17 @@
     <frame x="1977" y="8" width="1790" height="1149" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32911393" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31937683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40195122" sideWeight="0.9993122" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297561" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32035053" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035053" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24783362" sideWeight="0.58965516" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24783362" sideWeight="0.6640701" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44540727" sideWeight="0.6728335" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44540727" sideWeight="0.6640701" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25365853" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -914,13 +850,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/giapi-obsevent-handler/src/edu/gemini/giapi/data/obsevent/handler/osgi/Activator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="13" selection-start="328" selection-end="328" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/ConfigDefaults.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="13" selection-start="110" selection-end="110" vertical-scroll-proportion="0.0">
@@ -928,102 +857,111 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/osgi/Activator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="40" selection-start="1168" selection-end="1168" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/src/edu/gemini/jms/api/BaseJmsArtifact.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="22" selection-start="431" selection-end="431" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/manifest.mf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="56" selection-start="68" selection-end="99" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/lib/geronimo-jms_1.1_spec-1.1.1.jar!/javax/jms/IllegalStateException.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="147" selection-end="147" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/lib/activemq-core-5.3.0.jar!/org/apache/activemq/broker/BrokerService.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="58" selection-start="190" selection-end="209" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="17" selection-start="223" selection-end="298" vertical-scroll-proportion="-4.7727275">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/manifest.mf">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="50" selection-start="181" selection-end="181" vertical-scroll-proportion="0.0">
+        <state line="10" column="7" selection-start="405" selection-end="405" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/build.xml">
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/manifest.mf">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="34" selection-start="57" selection-end="57" vertical-scroll-proportion="-1.3636364">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/manifest.mf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="19" selection-start="319" selection-end="320" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/osgi/Activator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="328" selection-end="328" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/ActiveMQBroker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="28" selection-start="429" selection-end="429" vertical-scroll-proportion="0.0">
+        <state line="9" column="33" selection-start="367" selection-end="367" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/src/edu/gemini/jms/activemq/provider/ActiveMQJmsProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="11" selection-start="753" selection-end="753" vertical-scroll-proportion="0.305499">
+        <state line="14" column="19" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="117" selection-end="117" vertical-scroll-proportion="-2.7272727">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/obsevents/MonitorObsEventOperation.java">
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/ActiveMQBroker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="45" selection-start="1473" selection-end="1473" vertical-scroll-proportion="0.0">
+        <state line="12" column="13" selection-start="276" selection-end="276" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/src/edu/gemini/jms/activemq/broker/osgi/Activator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="13" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/jms/BrokerConnection.java">
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="13" selection-start="398" selection-end="398" vertical-scroll-proportion="0.0">
+        <state line="9" column="0" selection-start="341" selection-end="341" vertical-scroll-proportion="-6.1363635">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/manifest.mf">
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/manifest.mf">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/bundle.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/giapi-obsevent-handler/src/edu/gemini/giapi/data/obsevent/handler/TestHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="13" selection-start="336" selection-end="336" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="106" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="4" selection-start="785" selection-end="785" vertical-scroll-proportion="0.48076922">
+        <state line="10" column="0" selection-start="384" selection-end="384" vertical-scroll-proportion="0.2354788">
           <folding />
         </state>
       </provider>

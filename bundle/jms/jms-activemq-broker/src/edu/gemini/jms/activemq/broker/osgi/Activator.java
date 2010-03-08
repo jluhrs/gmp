@@ -1,4 +1,4 @@
-package edu.gemini.jms.activemq.osgi;
+package edu.gemini.jms.activemq.broker.osgi;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -18,13 +18,13 @@ public class Activator implements BundleActivator {
     private Broker _broker = null;
 
     public void start(BundleContext bundleContext) throws Exception {
-        LOG.info("Starting ActiveMQ JMS Provider");
+        LOG.info("Starting ActiveMQ JMS Broker");
         _broker = new ActiveMQBroker();
         _broker.start();
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
-        LOG.info("Stopping ActiveMQ JMS Provider");
+        LOG.info("Stopping ActiveMQ JMS Broker");
         _broker.shutdown();
         _broker = null;
     }

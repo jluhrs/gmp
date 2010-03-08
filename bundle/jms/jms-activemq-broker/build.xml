@@ -6,6 +6,7 @@
     <path id="build.classpath.extra">
         <pathelement path="../jms-api/bin"/>
         <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
+        <fileset dir="../../jms/jms-activemq-lib/lib" includes="*.jar"/>
     </path>
 
 </project>
