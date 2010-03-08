@@ -8,11 +8,11 @@ import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
 import edu.gemini.aspen.gmp.data.ObservationEventHandler;
 import edu.gemini.aspen.gmp.data.ObservationEvent;
 import edu.gemini.aspen.gmp.data.Dataset;
+import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.activemq.broker.ActiveMQJmsProvider;
 
 import javax.jms.JMSException;
 import java.util.logging.Logger;

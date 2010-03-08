@@ -4,14 +4,11 @@ import edu.gemini.aspen.gmp.data.ObservationEventHandler;
 import edu.gemini.aspen.gmp.data.ObservationEvent;
 import edu.gemini.aspen.gmp.data.Dataset;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by IntelliJ IDEA.
- * User: anunez
- * Date: Jun 29, 2009
- * Time: 6:24:06 PM
- * To change this template use File | Settings | File Templates.
+ * A simple test handler for observation events
  */
 public class TestHandler implements ObservationEventHandler {
 
@@ -22,8 +19,8 @@ public class TestHandler implements ObservationEventHandler {
         try {
             Thread.sleep(Thread.currentThread().getId() * 10);
         } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOG.log(Level.WARNING, "Thread interrupted", e);
         }
-        LOG.info("Terminating..." + Thread.currentThread().getId());
+        LOG.info("Terminating thread " + Thread.currentThread().getId());
     }
 }

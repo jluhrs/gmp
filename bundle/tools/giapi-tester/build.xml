@@ -5,10 +5,10 @@
 
 
      <path id="build.classpath.extra">
-        <fileset dir="../../jms/jms-activemq/lib" includes="*.jar"/>
+        <fileset dir="../../jms/jms-activemq-provider/lib" includes="*.jar"/>
         <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
         <pathelement path="../../jms/jms-api/bin"/>
-        <pathelement path="../../jms/jms-activemq/bin"/>
+        <pathelement path="../../jms/jms-activemq-provider/bin"/>
         <pathelement path="../../giapi-gmp/gmp-api/bin"/>
         <pathelement path="../../giapi-gmp/gmp-util/bin"/>
         <pathelement path="../../giapi-gmp/giapi-obsevents/bin"/>
@@ -23,12 +23,12 @@
     <target name="-explode">
         <unjar dest="bin">
            <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
-           <fileset dir="../../jms/jms-activemq/lib" includes="*.jar"/>
+           <fileset dir="../../jms/jms-activemq-provider/lib" includes="*.jar"/>
         </unjar>
 
         <copy todir="bin">
            <fileset dir="../../jms/jms-api/bin"/>
-           <fileset dir="../../jms/jms-activemq/bin"/>
+           <fileset dir="../../jms/jms-activemq-provider/bin"/>
            <fileset dir="../../giapi-gmp/gmp-api/bin"/>
            <fileset dir="../../giapi-gmp/gmp-util/bin"/>
            <fileset dir="../../giapi-gmp/giapi-obsevents/bin"/>

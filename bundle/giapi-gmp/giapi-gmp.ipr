@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="false" version="4">
+<project version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
   </component>
@@ -56,11 +56,9 @@
         </ADDITIONAL_INDENT_OPTIONS>
       </value>
     </option>
-    <option name="USE_PER_PROJECT_SETTINGS" value="false" />
   </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <option name="DEPLOY_AFTER_MAKE" value="0" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -77,6 +75,7 @@
       <entry name="?*.tld" />
       <entry name="?*.data" />
     </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -88,11 +87,8 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="EclipseCompilerSettings">
-    <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="true" />
     <option name="DEPRECATION" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="EclipseEmbeddedCompilerSettings">
     <option name="DEBUGGING_INFO" value="true" />
@@ -101,9 +97,7 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/src/edu/gemini/jms/api/BaseMessageConsumer.java" charset="x-MacRoman" />
-  </component>
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
@@ -114,14 +108,12 @@
   </component>
   <component name="IdProvider" IDEtalkID="3DF4A62DE493C403DA0B60F73ADABEDB" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
-    <scopes />
     <profiles>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
         <option name="myLocal" value="false" />
-        <inspection_tool class="JavaDoc" level="WARNING" enabled="true">
+        <inspection_tool class="EqualsAndHashcode" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="TOP_LEVEL_CLASS_OPTIONS">
             <value>
               <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
@@ -148,19 +140,14 @@
           </option>
           <option name="IGNORE_DEPRECATED" value="false" />
           <option name="IGNORE_JAVADOC_PERIOD" value="true" />
+          <option name="IGNORE_DUPLICATED_THROWS" value="false" />
           <option name="myAdditionalJavadocTags" value="retuns" />
         </inspection_tool>
-        <inspection_tool class="EqualsAndHashcode" level="WARNING" enabled="true" />
       </profile>
     </profiles>
-    <list size="0" />
-  </component>
-  <component name="JavacSettings">
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -178,14 +165,6 @@
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
-  </component>
-  <component name="JikesSettings">
-    <option name="JIKES_PATH" value="" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="DEPRECATION" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="IS_EMACS_ERRORS_MODE" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="LogConsolePreferences">
     <option name="FILTER_ERRORS" value="false" />
@@ -321,7 +300,9 @@
   <component name="ProjectDetails">
     <option name="projectName" value="giapi-gmp" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
+  <component name="ProjectDictionaryState">
+    <dictionary name="anunez" />
+  </component>
   <component name="ProjectKey">
     <option name="state" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk/bundle/giapi-gmp/giapi-gmp.ipr" />
   </component>
@@ -329,7 +310,7 @@
     <modules>
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/giapi-fileevent-handler/giapi-fileevent-handler.iml" filepath="$PROJECT_DIR$/giapi-fileevent-handler/giapi-fileevent-handler.iml" />
-      <module fileurl="file:///data/anunez/Projects/giapi/giapi-osgi/bundle/giapi-gmp/gmp-fileevents/giapi-fileevents.iml" filepath="/data/anunez/Projects/giapi/giapi-osgi/bundle/giapi-gmp/gmp-fileevents/giapi-fileevents.iml" />
+      <module fileurl="file://$PROJECT_DIR$/giapi-fileevents/giapi-fileevents.iml" filepath="$PROJECT_DIR$/giapi-fileevents/giapi-fileevents.iml" />
       <module fileurl="file://$PROJECT_DIR$/giapi-obsevent-handler/giapi-obsevent-handler.iml" filepath="$PROJECT_DIR$/giapi-obsevent-handler/giapi-obsevent-handler.iml" />
       <module fileurl="file://$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" filepath="$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
@@ -349,7 +330,8 @@
       <module fileurl="file://$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" filepath="$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-tests/gmp-tests.iml" filepath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-util/gmp-util.iml" filepath="$PROJECT_DIR$/gmp-util/gmp-util.iml" />
-      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/jms-activemq.iml" />
+      <module fileurl="file:///data/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq/jms-activemq-broker.iml" filepath="/data/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq/jms-activemq-broker.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/summer/summer.iml" filepath="$PROJECT_DIR$/summer/summer.iml" />
     </modules>
@@ -363,13 +345,6 @@
         <list size="0" />
       </value>
     </option>
-  </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="Struts Assistant">
     <option name="showInputs" value="true" />
@@ -389,45 +364,9 @@
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
-        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
-                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$">
           <value>
             <SvnBranchConfiguration />
-          </value>
-        </entry>
-        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq">
-          <value>
-            <SvnBranchConfiguration />
-          </value>
-        </entry>
-        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api">
-          <value>
-            <SvnBranchConfiguration />
-          </value>
-        </entry>
-        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
-                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk" />
-            </SvnBranchConfiguration>
           </value>
         </entry>
       </map>
@@ -470,8 +409,5 @@
   <component name="com.intellij.profile.ui.ErrorOptionsConfigurable" proportions="" version="1">
     <option name="myLastEditedConfigurable" />
   </component>
-  <UsedPathMacros>
-    <macro name="GIAPI_BASE" />
-  </UsedPathMacros>
 </project>
 
