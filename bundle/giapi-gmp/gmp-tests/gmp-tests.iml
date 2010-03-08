@@ -20,20 +20,11 @@
     </orderEntry>
     <orderEntry type="module" module-name="jms-activemq-broker" />
     <orderEntry type="module" module-name="gmp-gateway" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/commons-logging-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="module" module-name="gmp-util" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq/lib/activemq-core-5.3.0.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/lib/activemq-core-5.3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
