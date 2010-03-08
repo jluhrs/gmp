@@ -1,5 +1,6 @@
 package edu.gemini.aspen.giapi.data.fileevents.jms;
 
+import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.aspen.gmp.data.FileEvent;
 import edu.gemini.aspen.gmp.data.Dataset;
@@ -28,13 +29,12 @@ public class JmsFileEventsListener implements MessageListener {
         _action = action;
     }
 
-    public void onMessage(Message message) {
+    public void onMessage(Message message) throws FileEventException {
 
         try {
             if (!(message instanceof MapMessage)) {
                 //invalid type of message, log and exit
-                LOG.warning("Invalid JMS messagetype received by File Event Listener:  " + message);
-                return;
+                throw new FileEventException("Invalid JMS message type received by File Event Listener: " + message);
             }
 
             //We get the type, and use that to determine the handler to
@@ -43,15 +43,23 @@ public class JmsFileEventsListener implements MessageListener {
             FileEvent fileEvent = FileEvent.getByCode(type);
 
             if (fileEvent == null) {
-                LOG.warning("Invalid File Event type in message : " + type);
-                return;
+                throw new FileEventException("Invalid File Event type in message : " + type);
             }
 
             MapMessage mmsg = (MapMessage)message;
 
             //filename and dataset are common parts of all the file events
             String filename = mmsg.getString(GmpKeys.GMP_DATA_FILEEVENT_FILENAME);
-            Dataset dataset = new Dataset(mmsg.getString(GmpKeys.GMP_DATA_FILEEVENT_DATALABEL));
+            if (filename == null) {
+                throw new FileEventException("Filename cannot be null for a file event");
+            }
+            Dataset dataset;
+
+            try {
+                dataset = new Dataset(mmsg.getString(GmpKeys.GMP_DATA_FILEEVENT_DATALABEL));
+            } catch (IllegalArgumentException ex) {
+                throw new FileEventException("Invalid dataset in file event", ex);
+            }
 
             switch (fileEvent) {
                 case ANCILLARY_FILE:
