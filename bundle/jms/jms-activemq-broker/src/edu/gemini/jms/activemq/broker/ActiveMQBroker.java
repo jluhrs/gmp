@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import edu.gemini.jms.api.Broker;
 
 /**
- *  A Broker implementation, based on the ActiveMQ JMS service
+ * A JMS Broker implementation, based on the ActiveMQ JMS service
  */
 public class ActiveMQBroker implements Broker {
 
@@ -16,20 +16,71 @@ public class ActiveMQBroker implements Broker {
 
     private final BrokerService _broker;
 
-    public ActiveMQBroker() {
+    private String _url;
+    private String _name;
+    private boolean _useJmx;
+    private boolean _isPersistent;
+    private boolean _deleteMsgOnStartup;
+
+
+    public ActiveMQBroker(Builder builder) {
+        _url = builder.url;
+        _useJmx = builder.useJmx;
+        _name = builder.brokerName;
+        _isPersistent = builder.isPersistent;
+        _deleteMsgOnStartup = builder.deleteMsgOnStartup;
         _broker = new BrokerService();
+    }
+
+    /**
+     * A Builder class for the ActiveMQ Broker
+     */
+    public static class Builder {
+        private boolean useJmx = ConfigDefaults.BROKER_USE_JMX;
+        private boolean isPersistent = ConfigDefaults.BROKER_PERSISTENT;
+        private String brokerName = ConfigDefaults.BROKER_NAME;
+        private String url = ConfigDefaults.BROKER_URL;
+        private boolean deleteMsgOnStartup = ConfigDefaults.BROKER_DELETE_MESSAGES_ON_STARTUP;
+
+        public Builder useJmx(boolean useJmx) {
+            this.useJmx = useJmx;
+            return this;
+        }
+
+        public Builder name(String name) {
+            brokerName = name;
+            return this;
+        }
+
+        public Builder persistent(boolean persistent) {
+            isPersistent = persistent;
+            return this;
+        }
+
+        public Builder deleteMsgOnStartup(boolean delete) {
+            deleteMsgOnStartup = delete;
+            return this;
+        }
+
+        public Builder url(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public ActiveMQBroker build() {
+            return new ActiveMQBroker(this);
+        }
     }
 
 
     public void start() {
         LOG.info("Starting up ActiveMQ Broker");
         try {
-            _broker.setUseJmx(ConfigDefaults.BROKER_USE_JMX);
-            // TODO: should possibly be an option
-            _broker.setPersistent(ConfigDefaults.BROKER_PERSISTENT);
-            _broker.setBrokerName(ConfigDefaults.BROKER_NAME);
-            _broker.addConnector(ConfigDefaults.BROKER_URL);
-            _broker.setDeleteAllMessagesOnStartup(ConfigDefaults.BROKER_DELETE_MESSAGES_ON_STARTUP);
+            _broker.setUseJmx(_useJmx);
+            _broker.setPersistent(_isPersistent);
+            _broker.setBrokerName(_name);
+            _broker.addConnector(_url);
+            _broker.setDeleteAllMessagesOnStartup(_deleteMsgOnStartup);
             _broker.start();
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "Exception while starting broker", e);
@@ -44,14 +95,4 @@ public class ActiveMQBroker implements Broker {
             LOG.log(Level.SEVERE, "Exception while stopping broker", e);
         }
     }
-
-
-    public static void main(String[] args) {
-
-        Broker broker = new ActiveMQBroker();
-        broker.start();
-
-    }
-
-
 }
