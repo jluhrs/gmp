@@ -10,6 +10,8 @@ gmp.epics.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/epics-channels.xml
 gmp.epics.simulation.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/simulated-epics-channels.xml
 
 #General Configuration Properties
+#URL for the JMS Broker Service. Use the internal VM for faster access
+edu.gemini.jms.activemq.provider.url=vm://gmp
 
 #PCS Zernikes Updates
 edu.gemini.aspen.gmp.pcs.epicsChannel=tst:array.VALJ
