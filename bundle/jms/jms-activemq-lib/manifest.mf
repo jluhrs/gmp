@@ -5,6 +5,7 @@ Bundle-Description: ActiveMQ JMS Libraries
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 0.1.0
 Export-Package: org.apache.activemq,
- org.apache.activemq.broker
+ org.apache.activemq.broker,
+ org.apache.activemq.network
 Import-Package: javax.jms,
  javax.management.j2ee.statistics

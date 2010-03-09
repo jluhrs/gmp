@@ -15,7 +15,7 @@ import edu.gemini.jms.api.JmsProvider;
 public final class ActiveMQJmsProvider implements JmsProvider {
 
     private ConnectionFactory _factory;
-    private static final String DEFAULT_BROKER_URL =  "tcp://localhost:61616";
+    private static final String DEFAULT_BROKER_URL =  "failover:(tcp://localhost:61616)";
 
     public ActiveMQJmsProvider() {
         _factory = new ActiveMQConnectionFactory(DEFAULT_BROKER_URL);

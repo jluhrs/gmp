@@ -7,4 +7,5 @@ Bundle-Version: 1.1.0
 Export-Package: edu.gemini.jms.activemq.broker
 Import-Package: edu.gemini.jms.api,
  org.apache.activemq.broker,
+ org.apache.activemq.network,
  org.osgi.framework

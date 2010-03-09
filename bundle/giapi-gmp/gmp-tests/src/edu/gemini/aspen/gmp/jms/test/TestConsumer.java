@@ -3,7 +3,6 @@ package edu.gemini.aspen.gmp.jms.test;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
-import edu.gemini.jms.activemq.broker.ConfigDefaults;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -19,7 +18,7 @@ public class TestConsumer implements MessageListener, ExceptionListener {
 
 
         TestConsumer tc = new TestConsumer();
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(ConfigDefaults.BROKER_URL);
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
         try {
             Connection connection = connectionFactory.createConnection();
             connection.start();
