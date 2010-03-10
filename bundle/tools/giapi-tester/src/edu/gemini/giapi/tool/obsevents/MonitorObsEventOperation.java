@@ -27,18 +27,18 @@ public class MonitorObsEventOperation implements Operation {
 
     private String _host = "localhost";
 
-    public boolean isReady = false;
+    private boolean _isReady = false;
 
     public void setArgument(Argument arg) {
         if (arg instanceof MonitorObsEventArgument) {
-            isReady = true;
+            _isReady = true;
         } else if (arg instanceof HostArgument) {
             _host = ((HostArgument) arg).getHost();
         }
     }
 
     public boolean isReady() {
-        return isReady;
+        return _isReady;
     }
 
     public void execute() throws Exception {

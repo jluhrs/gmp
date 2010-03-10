@@ -1,5 +1,6 @@
 package edu.gemini.giapi.tool;
 
+import edu.gemini.giapi.tool.fileevents.MonitorFileEventsOperation;
 import edu.gemini.giapi.tool.parser.*;
 import edu.gemini.giapi.tool.arguments.*;
 import edu.gemini.giapi.tool.commands.CommandOperation;
@@ -33,6 +34,7 @@ public class GiapiTester {
         parser.registerArgument(new MonitorStatusArgument());
         parser.registerArgument(new GetStatusArgument());
         parser.registerArgument(new MonitorObsEventArgument());
+        parser.registerArgument(new MonitorFileEventsArgument());
 
         //possible operations
         parser.registerOperation(new HelpOperation());
@@ -40,6 +42,7 @@ public class GiapiTester {
         parser.registerOperation(new MonitorStatusOperation());
         parser.registerOperation(new GetStatusOperation());
         parser.registerOperation(new MonitorObsEventOperation());
+        parser.registerOperation(new MonitorFileEventsOperation());
 
         //get the Operation the parser found
         Operation op = parser.parse();

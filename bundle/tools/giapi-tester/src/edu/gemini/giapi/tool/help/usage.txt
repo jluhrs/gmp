@@ -68,6 +68,11 @@ DESCRIPTION
         Starts listening for observation events coming through the GMP.
         Each observation event received is printed out to the screen.
 
+     -fileEvents
+        Starts listening for file events coming through the GMP.
+        Each file event received is printed out to the screen with its
+        corresponding details. 
+
 EXAMPLES
 
     To send a simple sequence command you can use:
@@ -128,7 +133,7 @@ EXAMPLES
     timeout flag. For instance, if you want to send the INIT sequence command,
     but you only want to wait for 10 seconds for it to complete, you can use:
 
-        java -jar -jar giapi-tester.jar -sc INIT -activity START -timeout 10000
+        java -jar giapi-tester.jar -sc INIT -activity START -timeout 10000
 
     Notice the timeout is expressed in milliseconds.
 
@@ -136,7 +141,7 @@ EXAMPLES
     sequentially. For instance, to send the INIT sequence command ten times,
     you can do:
 
-        java -jar -jar giapi-tester.jar -sc INIT -activity START -r 10
+        java -jar giapi-tester.jar -sc INIT -activity START -r 10
 
     This is usually useful for stress testing.
 
@@ -145,7 +150,7 @@ EXAMPLES
     remote machine using the -h option. For instance, to send the PARK command
     to a system running on walle.cl.gemini.edu, use:
 
-        java -jar -jar giapi-tester.jar -sc PARK -activity START
+        java -jar giapi-tester.jar -sc PARK -activity START
              -h walle.cl.gemini.edu
 
     You can monitor for changes any value using the -monitor option. For
