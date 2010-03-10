@@ -1,8 +1,7 @@
-package edu.gemini.aspen.gmp.data.test;
+package edu.gemini.aspen.gmp.data;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import edu.gemini.aspen.gmp.data.FileEvent;
 
 
 public class FileEventTest {

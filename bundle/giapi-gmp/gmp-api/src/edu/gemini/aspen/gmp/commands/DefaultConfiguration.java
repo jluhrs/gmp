@@ -1,8 +1,8 @@
-package edu.gemini.aspen.gmp.commands.api;
+package edu.gemini.aspen.gmp.commands;
 import java.util.*;
 
 /**
- * A straightforward implementation of {@link edu.gemini.aspen.gmp.commands.api.Configuration}
+ * A straightforward implementation of {@link Configuration}
  *
  */
 public class DefaultConfiguration implements Configuration {

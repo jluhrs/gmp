@@ -1,9 +1,8 @@
-package edu.gemini.aspen.gmp.data.test;
+package edu.gemini.aspen.gmp.data;
 
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
-import edu.gemini.aspen.gmp.data.Dataset;
 import com.gargoylesoftware.base.testing.EqualsTester;
 
 /**

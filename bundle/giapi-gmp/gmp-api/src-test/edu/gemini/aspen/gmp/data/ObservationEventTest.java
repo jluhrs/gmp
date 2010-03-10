@@ -1,9 +1,8 @@
-package edu.gemini.aspen.gmp.data.test;
+package edu.gemini.aspen.gmp.data;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import com.gargoylesoftware.base.testing.EqualsTester;
-import edu.gemini.aspen.gmp.data.ObservationEvent;
 
 /**
  * Unit tests for the Observation Event class.

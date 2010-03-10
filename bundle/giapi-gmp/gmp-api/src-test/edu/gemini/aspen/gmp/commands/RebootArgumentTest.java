@@ -1,10 +1,7 @@
-package edu.gemini.aspen.gmp.commands.api.tests;
+package edu.gemini.aspen.gmp.commands;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import edu.gemini.aspen.gmp.commands.api.RebootArgument;
-import edu.gemini.aspen.gmp.commands.api.DefaultConfiguration;
-import edu.gemini.aspen.gmp.commands.api.ConfigPath;
 
 /**
  * Test class for the Reboot Argument

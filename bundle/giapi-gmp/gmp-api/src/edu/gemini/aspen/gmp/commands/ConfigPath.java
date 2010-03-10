@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.api;
+package edu.gemini.aspen.gmp.commands;
 
 /**
  *  A ConfigPath can be used to refer to a set of items

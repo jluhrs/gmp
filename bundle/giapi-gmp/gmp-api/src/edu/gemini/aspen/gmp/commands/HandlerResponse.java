@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.api;
+package edu.gemini.aspen.gmp.commands;
 
 /**
  * Handler response interface. Contains an enumerated response type

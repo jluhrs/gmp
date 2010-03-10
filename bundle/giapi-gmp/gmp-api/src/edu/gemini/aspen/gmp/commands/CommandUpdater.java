@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.api;
+package edu.gemini.aspen.gmp.commands;
 
 /**
  * Defines a handler to update the OCS with completion information
