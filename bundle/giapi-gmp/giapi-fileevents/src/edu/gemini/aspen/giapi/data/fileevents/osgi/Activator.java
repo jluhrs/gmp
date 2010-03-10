@@ -10,7 +10,7 @@ import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 import edu.gemini.aspen.giapi.data.fileevents.jms.JmsFileEventsListener;
-import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
+import edu.gemini.aspen.giapi.data.fileevents.FileEventActionRunner;
 import edu.gemini.aspen.gmp.data.IntermediateFileEventHandler;
 import edu.gemini.aspen.gmp.data.AncillaryFileEventHandler;
 
@@ -27,14 +27,14 @@ public class Activator implements BundleActivator {
 
     private BundleContext context = null;
 
-    private FileEventAction _action;
+    private FileEventActionRunner _action;
 
     private ServiceTracker _intermediateFileHandlerTracker;
     private ServiceTracker _ancillaryFileHandlerTracker;
 
     public void start(BundleContext bundleContext) throws Exception {
         context = bundleContext;
-        _action = new FileEventAction();
+        _action = new FileEventActionRunner();
         BaseMessageConsumer consumer = new BaseMessageConsumer(
                 "JMS File Event Monitor",
                 new DestinationData(JmsFileEventsListener.TOPIC_NAME,

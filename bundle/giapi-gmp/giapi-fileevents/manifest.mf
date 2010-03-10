@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Activator: edu.gemini.aspen.giapi.data.fileevents.osgi.Activator
 Bundle-Name: GIAPI File Event Monitor
-Bundle-Description: Monitor service to listen for File Events and dispatch it to interested clients.
+Bundle-Description: Monitor service to listen for File Events over JMS and dispatch them to interested clients.
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 0.1.0
 Import-Package: edu.gemini.aspen.gmp.data,

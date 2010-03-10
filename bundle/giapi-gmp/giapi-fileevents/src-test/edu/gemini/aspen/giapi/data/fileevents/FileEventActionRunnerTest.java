@@ -13,15 +13,15 @@ import org.junit.Test;
 import java.util.concurrent.*;
 
 /**
- * Unit Test code for the FileEventAction class
+ * Unit Test code for the FileEventActionRunner class
  */
-public class FileEventActionTest {
+public class FileEventActionRunnerTest {
 
 
     private int _intermediateCount = 0;
     private int _ancillaryCount = 0;
 
-    private FileEventAction _action;
+    private FileEventActionRunner _action;
 
     /**
      * A test Ancillary File Handler
@@ -50,7 +50,7 @@ public class FileEventActionTest {
 
     @Before
     public void setUp() {
-        _action = new FileEventAction();
+        _action = new FileEventActionRunner();
         _intermediateCount = 0;
         _ancillaryCount = 0;
     }

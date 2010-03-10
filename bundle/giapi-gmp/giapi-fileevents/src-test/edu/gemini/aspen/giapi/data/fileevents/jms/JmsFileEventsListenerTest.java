@@ -1,10 +1,8 @@
 package edu.gemini.aspen.giapi.data.fileevents.jms;
 
+import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
-import edu.gemini.aspen.giapi.data.fileevents.FileEventHandlerComposite;
-import edu.gemini.aspen.gmp.data.AncillaryFileEventHandler;
 import edu.gemini.aspen.gmp.data.Dataset;
-import edu.gemini.aspen.gmp.data.IntermediateFileEventHandler;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import org.apache.activemq.command.ActiveMQMapMessage;
 import org.apache.activemq.command.ActiveMQMessage;
@@ -34,24 +32,11 @@ public class JmsFileEventsListenerTest {
     /**
      * A test action class. 
      */
-    private class TestAction implements FileEventHandlerComposite {
+    private class TestAction implements FileEventAction {
 
         private String filename = null;
         private Dataset dataset = null;
         private String hint = null;
-
-
-        public void addAncillaryFileEventHandler(AncillaryFileEventHandler handler) {
-        }
-
-        public void removeAncillaryFileEventHandler(AncillaryFileEventHandler handler) {
-        }
-
-        public void addIntermediateFileEventHandler(IntermediateFileEventHandler handler) {
-        }
-
-        public void removeIntermediateFileEventHandler(IntermediateFileEventHandler handler) {
-        }
 
         public void onAncillaryFileEvent(String filename, Dataset dataset) {
             this.filename = filename;

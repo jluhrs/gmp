@@ -4,7 +4,7 @@ import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.aspen.gmp.data.FileEvent;
 import edu.gemini.aspen.gmp.data.Dataset;
-import edu.gemini.aspen.giapi.data.fileevents.FileEventHandlerComposite;
+import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 
 import javax.jms.MessageListener;
 import javax.jms.Message;
@@ -23,9 +23,9 @@ public class JmsFileEventsListener implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(JmsFileEventsListener.class.getName());
 
-    private FileEventHandlerComposite _action;
+    private FileEventAction _action;
 
-    public JmsFileEventsListener(FileEventHandlerComposite action) {
+    public JmsFileEventsListener(FileEventAction action) {
         _action = action;
     }
 
