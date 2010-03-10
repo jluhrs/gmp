@@ -1,13 +1,13 @@
 package edu.gemini.giapi.tool.status;
 
+import edu.gemini.aspen.gmp.status.StatusHandler;
+import edu.gemini.aspen.gmp.status.StatusItem;
 import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.arguments.MonitorStatusArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.jms.BrokerConnection;
 import edu.gemini.giapi.tool.TesterException;
-import edu.gemini.aspen.gmp.status.api.StatusHandler;
-import edu.gemini.aspen.gmp.status.api.StatusItem;
 
 import java.util.logging.Logger;
 

@@ -4,6 +4,6 @@ Bundle-Name: GMP Status Database
 Bundle-Description: Status Database in the GMP
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 0.1.0
-Import-Package: edu.gemini.aspen.gmp.status.api,
+Import-Package: edu.gemini.aspen.gmp.status,
  org.osgi.util.tracker,
  org.osgi.framework

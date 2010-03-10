@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.statusgw.jms;
 
 
-import edu.gemini.aspen.gmp.status.api.StatusDatabaseService;
-import edu.gemini.aspen.gmp.status.api.StatusItem;
+import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.gmp.status.StatusDatabaseService;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.JmsProvider;

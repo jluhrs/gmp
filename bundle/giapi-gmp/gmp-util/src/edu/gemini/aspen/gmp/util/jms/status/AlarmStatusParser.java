@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.util.jms.status;
 
-import edu.gemini.aspen.gmp.status.api.AlarmSeverity;
-import edu.gemini.aspen.gmp.status.api.AlarmCause;
-import edu.gemini.aspen.gmp.status.api.StatusItem;
-import edu.gemini.aspen.gmp.status.api.AlarmState;
+import edu.gemini.aspen.gmp.status.AlarmSeverity;
+import edu.gemini.aspen.gmp.status.AlarmCause;
+import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.gmp.status.AlarmState;
 import edu.gemini.aspen.gmp.status.impl.AlarmStatus;
 
 import javax.jms.BytesMessage;

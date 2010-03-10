@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.status.api;
+package edu.gemini.aspen.gmp.status;
 
 /**
  * Common interface for all the status items supported in the GIAPI

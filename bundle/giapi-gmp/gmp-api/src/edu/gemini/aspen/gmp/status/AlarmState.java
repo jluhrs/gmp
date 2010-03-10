@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.status.api;
+package edu.gemini.aspen.gmp.status;
 
 /**
  * The Alarm State definition. Contains a Cause and Severity. 

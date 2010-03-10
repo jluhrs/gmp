@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.statusgw.osgi;
 
+import edu.gemini.aspen.gmp.status.StatusDatabaseService;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.BundleContext;
-import edu.gemini.aspen.gmp.status.api.StatusDatabaseService;
 
 import java.util.logging.Logger;
 

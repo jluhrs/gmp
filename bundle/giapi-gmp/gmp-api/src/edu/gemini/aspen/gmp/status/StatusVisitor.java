@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.status.api;
+package edu.gemini.aspen.gmp.status;
 
 /**
  * Visitor interface for status items

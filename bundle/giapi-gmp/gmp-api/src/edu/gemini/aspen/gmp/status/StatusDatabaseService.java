@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.status.api;
+package edu.gemini.aspen.gmp.status;
 
 /**
  * The public interface of a database service for Status Items

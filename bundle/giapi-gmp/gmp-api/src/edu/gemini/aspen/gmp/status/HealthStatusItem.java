@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.status.api;
+package edu.gemini.aspen.gmp.status;
 
 /**
  * Interface for status items representing system's health

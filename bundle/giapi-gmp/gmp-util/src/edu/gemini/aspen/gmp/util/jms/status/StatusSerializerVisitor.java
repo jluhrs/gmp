@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.util.jms.status;
 
-import edu.gemini.aspen.gmp.status.api.*;
+import edu.gemini.aspen.gmp.status.*;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;

@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.status.impl;
 
-import edu.gemini.aspen.gmp.status.api.Health;
-import edu.gemini.aspen.gmp.status.api.HealthStatusItem;
-import edu.gemini.aspen.gmp.status.api.StatusVisitor;
+import edu.gemini.aspen.gmp.status.Health;
+import edu.gemini.aspen.gmp.status.HealthStatusItem;
+import edu.gemini.aspen.gmp.status.StatusVisitor;
 
 /**
  * A Health Status Item

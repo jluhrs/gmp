@@ -1,12 +1,12 @@
 package edu.gemini.aspen.gmp.util.jms;
 
 import edu.gemini.aspen.gmp.commands.api.*;
+import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.gmp.status.StatusVisitor;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
 import edu.gemini.aspen.gmp.util.jms.status.StatusItemParser;
 import edu.gemini.aspen.gmp.util.jms.status.StatusSerializerVisitor;
-import edu.gemini.aspen.gmp.status.api.StatusItem;
-import edu.gemini.aspen.gmp.status.api.StatusVisitor;
 
 import javax.jms.*;
 import java.util.Enumeration;

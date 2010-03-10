@@ -6,7 +6,7 @@ import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.GetStatusArgument;
 import edu.gemini.giapi.tool.jms.BrokerConnection;
 import edu.gemini.giapi.tool.TesterException;
-import edu.gemini.aspen.gmp.status.api.StatusItem;
+import edu.gemini.aspen.gmp.status.StatusItem;
 
 import java.util.logging.Logger;
 

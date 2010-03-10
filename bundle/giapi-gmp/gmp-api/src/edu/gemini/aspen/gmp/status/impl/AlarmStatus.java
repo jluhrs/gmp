@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.status.impl;
 
-import edu.gemini.aspen.gmp.status.api.*;
+import edu.gemini.aspen.gmp.status.*;
 
 /**
  * Implementation of an Alarm Status Item.

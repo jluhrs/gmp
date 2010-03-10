@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.statusproc.jms.osgi;
 
+import edu.gemini.aspen.gmp.status.StatusProcessor;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -9,7 +10,6 @@ import java.util.logging.Logger;
 
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.statusproc.jms.JmsStatusProcessor;
-import edu.gemini.aspen.gmp.status.api.StatusProcessor;
 
 /**
  */

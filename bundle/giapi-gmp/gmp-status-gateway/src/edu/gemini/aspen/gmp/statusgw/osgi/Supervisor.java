@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.statusgw.osgi;
 
+import edu.gemini.aspen.gmp.status.StatusDatabaseService;
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.aspen.gmp.status.api.StatusDatabaseService;
 import edu.gemini.aspen.gmp.statusgw.jms.StatusRequestProcessor;
 
 import java.util.logging.Logger;

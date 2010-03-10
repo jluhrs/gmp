@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.statusdb;
 
-import edu.gemini.aspen.gmp.status.api.StatusItem;
-import edu.gemini.aspen.gmp.status.api.StatusProcessor;
+import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.gmp.status.StatusProcessor;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
