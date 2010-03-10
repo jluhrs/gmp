@@ -16,11 +16,11 @@ public class ActiveMQBroker implements Broker {
 
     private final BrokerService _broker;
 
-    private String _url;
-    private String _name;
-    private boolean _useJmx;
-    private boolean _isPersistent;
-    private boolean _deleteMsgOnStartup;
+    private final String _url;
+    private final String _name;
+    private final boolean _useJmx;
+    private final boolean _isPersistent;
+    private final boolean _deleteMsgOnStartup;
 
 
     public ActiveMQBroker(Builder builder) {
