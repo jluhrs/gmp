@@ -1,10 +1,11 @@
 package edu.gemini.aspen.gmp.commands.model;
 
+import edu.gemini.aspen.gmp.commands.*;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 import static org.junit.Assert.*;
-import edu.gemini.aspen.gmp.commands.api.*;
+
 import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 

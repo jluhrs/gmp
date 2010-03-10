@@ -1,12 +1,12 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
+import edu.gemini.aspen.gmp.commands.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
-import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import edu.gemini.aspen.gmp.commands.test.TestRebootManager;
 import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;

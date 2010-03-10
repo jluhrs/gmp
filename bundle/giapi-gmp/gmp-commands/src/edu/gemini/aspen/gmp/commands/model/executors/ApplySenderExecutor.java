@@ -1,11 +1,11 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
+import edu.gemini.aspen.gmp.commands.ConfigPathNavigator;
+import edu.gemini.aspen.gmp.commands.Configuration;
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.api.Configuration;
-import edu.gemini.aspen.gmp.commands.api.ConfigPath;
-import edu.gemini.aspen.gmp.commands.api.ConfigPathNavigator;
+import edu.gemini.aspen.gmp.commands.ConfigPath;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.Set;

@@ -1,6 +1,6 @@
 package edu.gemini.giapi.tool.arguments;
 
-import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.SequenceCommand;
 import edu.gemini.giapi.tool.parser.AbstractArgument;
 import edu.gemini.giapi.tool.parser.Util;
 

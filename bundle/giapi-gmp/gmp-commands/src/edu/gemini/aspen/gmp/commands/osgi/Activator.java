@@ -1,5 +1,7 @@
 package edu.gemini.aspen.gmp.commands.osgi;
 
+import edu.gemini.aspen.gmp.commands.CommandSender;
+import edu.gemini.aspen.gmp.commands.CommandUpdater;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -10,8 +12,6 @@ import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutorStrategy;
 import edu.gemini.aspen.gmp.commands.impl.CommandSenderImpl;
 import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
-import edu.gemini.aspen.gmp.commands.api.CommandSender;
-import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
 import edu.gemini.aspen.gmp.commands.jms.SequenceCommandSenderReply;
 import edu.gemini.aspen.gmp.commands.jms.CompletionInfoListener;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;

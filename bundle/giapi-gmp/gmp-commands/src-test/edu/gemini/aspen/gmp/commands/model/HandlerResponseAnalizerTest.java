@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gmp.commands.model;
 
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.Map;

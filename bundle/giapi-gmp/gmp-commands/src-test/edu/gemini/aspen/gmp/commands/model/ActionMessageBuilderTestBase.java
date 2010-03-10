@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.commands.model;
 
+import edu.gemini.aspen.gmp.commands.*;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import edu.gemini.aspen.gmp.commands.api.*;
 
 import java.util.*;
 

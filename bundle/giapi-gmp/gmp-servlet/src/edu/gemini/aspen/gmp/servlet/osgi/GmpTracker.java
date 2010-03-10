@@ -1,12 +1,12 @@
 package edu.gemini.aspen.gmp.servlet.osgi;
 
+import edu.gemini.aspen.gmp.commands.CommandSender;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import java.util.logging.Logger;
 
-import edu.gemini.aspen.gmp.commands.api.CommandSender;
 import edu.gemini.aspen.gmp.servlet.www.GmpServlet;
 
 /**

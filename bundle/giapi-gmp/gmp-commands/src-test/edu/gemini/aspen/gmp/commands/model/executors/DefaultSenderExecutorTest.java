@@ -1,13 +1,13 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import edu.gemini.aspen.gmp.commands.test.TestActionSender;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.api.Activity;
-import edu.gemini.aspen.gmp.commands.api.DefaultConfiguration;
+import edu.gemini.aspen.gmp.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.Activity;
+import edu.gemini.aspen.gmp.commands.DefaultConfiguration;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;

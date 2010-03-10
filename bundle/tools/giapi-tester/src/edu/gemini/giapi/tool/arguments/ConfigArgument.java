@@ -1,8 +1,8 @@
 package edu.gemini.giapi.tool.arguments;
 
-import edu.gemini.aspen.gmp.commands.api.Configuration;
-import edu.gemini.aspen.gmp.commands.api.DefaultConfiguration;
-import edu.gemini.aspen.gmp.commands.api.ConfigPath;
+import edu.gemini.aspen.gmp.commands.ConfigPath;
+import edu.gemini.aspen.gmp.commands.Configuration;
+import edu.gemini.aspen.gmp.commands.DefaultConfiguration;
 import edu.gemini.giapi.tool.parser.AbstractArgument;
 import edu.gemini.giapi.tool.parser.Util;
 

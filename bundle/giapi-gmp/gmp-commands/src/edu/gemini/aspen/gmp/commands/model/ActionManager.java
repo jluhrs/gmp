@@ -1,6 +1,8 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.gmp.commands.api.*;
+import edu.gemini.aspen.gmp.commands.CompletionListener;
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.SequenceCommand;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -72,7 +74,7 @@ public class ActionManager {
     }
 
     /**
-     * Register that there is a future {@link edu.gemini.aspen.gmp.commands.api.HandlerResponse}
+     * Register that there is a future {@link edu.gemini.aspen.gmp.commands.HandlerResponse}
      * to be received for the given APPLY action. If the action is not an APPLY, this method does nothing.
      *
      * @param action the APPLY action that will get a future response later.

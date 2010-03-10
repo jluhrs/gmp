@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.commands.jms;
 
 import edu.gemini.jms.api.JmsMapMessageSenderReply;
 import edu.gemini.jms.api.MessagingException;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;

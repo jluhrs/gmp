@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.jms.test;
 
+import edu.gemini.aspen.gmp.commands.SequenceCommand;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 
 import javax.jms.*;

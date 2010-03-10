@@ -1,11 +1,11 @@
 package edu.gemini.aspen.gmp.commands.messaging;
 
+import edu.gemini.aspen.gmp.commands.ConfigPath;
+import edu.gemini.aspen.gmp.commands.Configuration;
+import edu.gemini.aspen.gmp.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
-import edu.gemini.aspen.gmp.commands.api.Configuration;
-import edu.gemini.aspen.gmp.commands.api.ConfigPath;
-import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;

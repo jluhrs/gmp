@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.gw.osgi;
 
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.aspen.gmp.commands.api.CommandSender;
+import edu.gemini.aspen.gmp.commands.CommandSender;
 import edu.gemini.aspen.gmp.gw.core.Gateway;
 
 import java.util.logging.Logger;

@@ -1,6 +1,8 @@
 package edu.gemini.aspen.gmp.gw.jms;
 
-import edu.gemini.aspen.gmp.commands.api.*;
+import edu.gemini.aspen.gmp.commands.CommandSender;
+import edu.gemini.aspen.gmp.commands.CompletionListener;
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.JmsProvider;

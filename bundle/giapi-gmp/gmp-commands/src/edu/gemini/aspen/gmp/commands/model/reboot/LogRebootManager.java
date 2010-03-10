@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model.reboot;
 
-import edu.gemini.aspen.gmp.commands.api.RebootArgument;
+import edu.gemini.aspen.gmp.commands.RebootArgument;
 import edu.gemini.aspen.gmp.commands.model.RebootManager;
 
 import java.util.logging.Logger;

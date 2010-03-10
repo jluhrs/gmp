@@ -1,11 +1,11 @@
 package edu.gemini.aspen.gmp.commands.impl;
 
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
+import edu.gemini.aspen.gmp.commands.CommandUpdater;
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
 
 /**
- * Implementation of the {@link edu.gemini.aspen.gmp.commands.api.CommandUpdater}
+ * Implementation of the {@link edu.gemini.aspen.gmp.commands.CommandUpdater}
  * interface. It notifies {@link edu.gemini.aspen.gmp.commands.model.ActionManager}
  * whenever new updates are available to process. 
  */

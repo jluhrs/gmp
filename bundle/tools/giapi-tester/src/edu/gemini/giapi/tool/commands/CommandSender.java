@@ -2,7 +2,7 @@ package edu.gemini.giapi.tool.commands;
 
 import javax.jms.*;
 
-import edu.gemini.aspen.gmp.commands.api.*;
+import edu.gemini.aspen.gmp.commands.*;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.giapi.tool.jms.BrokerConnection;

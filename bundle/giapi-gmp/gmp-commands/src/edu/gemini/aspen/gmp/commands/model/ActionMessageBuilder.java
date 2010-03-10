@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.gmp.commands.api.ConfigPath;
+import edu.gemini.aspen.gmp.commands.ConfigPath;
 
 /**
  * Interface defininig a builder of action messages

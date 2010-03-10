@@ -1,11 +1,12 @@
 package edu.gemini.aspen.gmp.commands.test;
 
+import edu.gemini.aspen.gmp.commands.CommandUpdater;
+import edu.gemini.aspen.gmp.commands.CompletionListener;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.api.CommandUpdater;
-import edu.gemini.aspen.gmp.commands.api.CompletionListener;
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
+
 import static org.junit.Assert.fail;
 
 /**

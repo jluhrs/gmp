@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.servlet.www;
 
-import edu.gemini.aspen.gmp.commands.api.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.api.Activity;
-import edu.gemini.aspen.gmp.commands.api.Configuration;
+import edu.gemini.aspen.gmp.commands.Activity;
+import edu.gemini.aspen.gmp.commands.Configuration;
+import edu.gemini.aspen.gmp.commands.SequenceCommand;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -17,8 +17,7 @@ public class HttpCommandRequest {
 
     public static final String SEQUENCE_COMMAND_PARAM = "sequenceCommand";
     public static final String ACTIVITY_PARAM = "activity";
-    public static final String CONFIG_PARAM="configuration";
-
+    
 
     private SequenceCommand _sequenceCommand;
     private Activity _activity;

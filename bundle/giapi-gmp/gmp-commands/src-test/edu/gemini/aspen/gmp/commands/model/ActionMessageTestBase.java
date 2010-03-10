@@ -1,12 +1,12 @@
 package edu.gemini.aspen.gmp.commands.model;
 
+import edu.gemini.aspen.gmp.commands.*;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
 import java.util.*;
 
-import edu.gemini.aspen.gmp.commands.api.*;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;

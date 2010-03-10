@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.servlet.www;
 
-import edu.gemini.aspen.gmp.commands.api.Configuration;
-import edu.gemini.aspen.gmp.commands.api.ConfigPath;
-import edu.gemini.aspen.gmp.commands.api.ConfigPathNavigator;
-import edu.gemini.aspen.gmp.commands.api.DefaultConfiguration;
+import edu.gemini.aspen.gmp.commands.ConfigPath;
+import edu.gemini.aspen.gmp.commands.ConfigPathNavigator;
+import edu.gemini.aspen.gmp.commands.Configuration;
+import edu.gemini.aspen.gmp.commands.DefaultConfiguration;
 
 import java.util.logging.Logger;
 import java.util.Map;

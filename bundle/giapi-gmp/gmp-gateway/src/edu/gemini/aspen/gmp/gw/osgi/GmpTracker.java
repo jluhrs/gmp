@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.gw.osgi;
 
+import edu.gemini.aspen.gmp.commands.CommandSender;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.BundleContext;
-import edu.gemini.aspen.gmp.commands.api.CommandSender;
 
 import java.util.logging.Logger;
 

@@ -5,7 +5,7 @@ Bundle-Classpath: .
 Bundle-Description: The GMP Servlet Interface
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 1.1.0
-Import-Package: edu.gemini.aspen.gmp.commands.api,
+Import-Package: edu.gemini.aspen.gmp.commands,
  org.osgi.framework,
  org.osgi.service.http,
  javax.servlet,

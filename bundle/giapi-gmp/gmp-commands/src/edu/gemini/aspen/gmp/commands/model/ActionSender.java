@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.gmp.commands.api.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.HandlerResponse;
 
 /**
  *  An Action Sender is in charge of sending a given action message over

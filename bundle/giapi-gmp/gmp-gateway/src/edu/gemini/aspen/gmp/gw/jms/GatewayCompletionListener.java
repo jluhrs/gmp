@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.gw.jms;
 
-import edu.gemini.aspen.gmp.commands.api.*;
+import edu.gemini.aspen.gmp.commands.*;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
 
