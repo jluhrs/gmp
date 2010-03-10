@@ -10,8 +10,8 @@ import java.util.concurrent.*;
 
 /**
  * This file event action allows processing file events in separate threads.
- * This class implements a composite pattern for both the
- * intermediate file event handlers and the ancillary file event handlers.
+ * This class holds a list of ancillary file event handlers and
+ * a list of intermediate file event handlers.
  */
 public class FileEventActionRunner implements FileEventAction {
 
@@ -33,6 +33,9 @@ public class FileEventActionRunner implements FileEventAction {
 
     public void onAncillaryFileEvent(final String filename, final Dataset dataset) {
 
+        /**
+         * For each handler available, invoke it in a separate thread
+         */
         for (final AncillaryFileEventHandler handler: _ancillaryFileHandlers) {
             _threadPool.submit(new Runnable() {
                 public void run() {
@@ -43,6 +46,10 @@ public class FileEventActionRunner implements FileEventAction {
     }
 
     public void onIntermediateFileEvent(final String filename, final Dataset dataset, final String hint) {
+
+        /**
+         * For each handler available, invoke it in a separate thread
+         */
         for (final IntermediateFileEventHandler handler: _intermediateFileHandlers) {
             _threadPool.submit(new Runnable() {
                 public void run() {
@@ -52,18 +59,35 @@ public class FileEventActionRunner implements FileEventAction {
         }
     }
 
+    /**
+     * Remove the intermediate file handler from this action
+     * @param handler the handler to remove
+     */
     public void removeIntermediateFileEventHandler(IntermediateFileEventHandler handler) {
         _intermediateFileHandlers.remove(handler);
     }
 
+    /**
+     * Add the intermediate file handler to this action
+     * @param handler the handler to add
+     */
     public void addIntermediateFileEventHandler(IntermediateFileEventHandler handler) {
         _intermediateFileHandlers.add(handler);
     }
 
+
+    /**
+     * Remove the intermediate ancillary file handler from this action
+     * @param handler the handler to remove
+     */
     public void removeAncillaryFileEventHandler(AncillaryFileEventHandler handler) {
         _ancillaryFileHandlers.remove(handler);
     }
 
+    /**
+     * Add the ancillary file handler to this action. 
+     * @param handler the handler to add
+     */
     public void addAncillaryFileEventHandler(AncillaryFileEventHandler handler) {
         _ancillaryFileHandlers.add(handler);
     }
