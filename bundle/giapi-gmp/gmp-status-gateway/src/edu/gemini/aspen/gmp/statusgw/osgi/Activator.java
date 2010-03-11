@@ -1,5 +1,12 @@
 package edu.gemini.aspen.gmp.statusgw.osgi;
 
+import edu.gemini.aspen.gmp.statusgw.StatusDatabaseServiceDecorator;
+import edu.gemini.aspen.gmp.statusgw.jms.JmsStatusItemDispatcher;
+import edu.gemini.aspen.gmp.statusgw.jms.StatusRequestListener;
+import edu.gemini.jms.api.BaseMessageConsumer;
+import edu.gemini.jms.api.DestinationData;
+import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.osgi.JmsProviderTracker;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -8,33 +15,42 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator implements BundleActivator {
 
-    private Supervisor _supervisor;
+//    private Supervisor _supervisor;
 
-    private StatusDatabaseTracker _tracker;
-    private JmsProviderTracker _providerTracker;
-
+    private StatusDatabaseTracker _dbTracker;
+    private JmsProviderTracker _jmsTracker;
 
     public void start(BundleContext bundleContext) throws Exception {
 
-        _supervisor = new Supervisor();
-        //Look for the status database
-        _tracker = new StatusDatabaseTracker(bundleContext, _supervisor);
-        _tracker.open();
+        StatusDatabaseServiceDecorator decorator = new StatusDatabaseServiceDecorator();
 
-        _providerTracker = new JmsProviderTracker(bundleContext, _supervisor);
-        _providerTracker.open();
+        JmsStatusItemDispatcher dispatcher = new JmsStatusItemDispatcher("Gateway Status Dispatcher");
 
+        //Create the message consumer for status items requests
+        BaseMessageConsumer consumer = new BaseMessageConsumer(
+               "Gateway Status Consumer",
+                new DestinationData(StatusRequestListener.TOPIC_NAME,
+                        DestinationType.TOPIC),
+                new StatusRequestListener(decorator, dispatcher)
+        );
+
+
+        _jmsTracker = new JmsProviderTracker(bundleContext, "Gateway Status Consumer");
+        _jmsTracker.registerJmsArtifact(consumer);
+        _jmsTracker.registerJmsArtifact(dispatcher);
+        _jmsTracker.open();
+
+        _dbTracker = new StatusDatabaseTracker(bundleContext, decorator);
+        _dbTracker.open();
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
 
 
-        _providerTracker.close();
-        _providerTracker = null;
+        _dbTracker.close();
+        _dbTracker = null;
 
-        _tracker.close();
-        _tracker = null;
-
-        _supervisor = null;
+        _jmsTracker.close();
+        _jmsTracker = null;
     }
 }

@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.statusgw.osgi;
 
 import edu.gemini.aspen.gmp.status.StatusDatabaseService;
+import edu.gemini.aspen.gmp.statusgw.StatusDatabaseServiceDecorator;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.BundleContext;
@@ -14,11 +15,11 @@ public class StatusDatabaseTracker extends ServiceTracker {
 
     private static final Logger LOG = Logger.getLogger(StatusDatabaseTracker.class.getName());
 
-    private Supervisor _supervisor;
+    private final StatusDatabaseServiceDecorator _serviceDecorator;
 
-    public StatusDatabaseTracker(BundleContext bundleContext, Supervisor supervisor) {
+    public StatusDatabaseTracker(BundleContext bundleContext, StatusDatabaseServiceDecorator decorator) {
         super(bundleContext, StatusDatabaseService.class.getName(), null);
-        _supervisor = supervisor;
+        _serviceDecorator = decorator;
     }
 
     @Override
@@ -26,16 +27,14 @@ public class StatusDatabaseTracker extends ServiceTracker {
 
         LOG.info("Status Gateway has found a Status Database Service");
         StatusDatabaseService databaseService = (StatusDatabaseService) context.getService(serviceReference);
-        _supervisor.registerDatabase(databaseService);
-        _supervisor.start();
+        _serviceDecorator.setDatabaseService(databaseService);
         return databaseService;
     }
 
     @Override
     public void removedService(ServiceReference serviceReference, Object o) {
         LOG.info("Status Gateway has lost a Status Database Service");
-        _supervisor.stop();
-        _supervisor.unregisterDatabase();
+        _serviceDecorator.removeDatabaseService();
         context.ungetService(serviceReference);
     }
 

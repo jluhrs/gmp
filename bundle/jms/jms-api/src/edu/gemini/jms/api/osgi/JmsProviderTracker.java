@@ -57,7 +57,7 @@ public class JmsProviderTracker extends ServiceTracker {
         for (BaseJmsArtifact jmsArtifact: _jmsArtifacts) {
             jmsArtifact.stopJms();
         }
-        LOG.info("Stopped JMS Artifact (" + _name + ')');
+        LOG.info("Stopped JMS Artifact [" + _name + ']');
         context.ungetService(serviceReference);
 
     }
