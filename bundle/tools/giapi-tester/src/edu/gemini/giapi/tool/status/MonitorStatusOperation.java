@@ -2,13 +2,19 @@ package edu.gemini.giapi.tool.status;
 
 import edu.gemini.aspen.gmp.status.StatusHandler;
 import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.gmp.statusservice.jms.JmsStatusListener;
+import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.arguments.MonitorStatusArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
-import edu.gemini.giapi.tool.jms.BrokerConnection;
-import edu.gemini.giapi.tool.TesterException;
+import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
+import edu.gemini.jms.api.BaseMessageConsumer;
+import edu.gemini.jms.api.DestinationData;
+import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.JmsProvider;
 
+import javax.jms.JMSException;
 import java.util.logging.Logger;
 
 /**
@@ -45,38 +51,39 @@ public class MonitorStatusOperation implements Operation {
     }
 
     public void execute() throws Exception {
-        //instantiate the status reader, and register the handler
 
-        BrokerConnection connection = new BrokerConnection(
-                "tcp://" + _host + ":61616");
+        JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
-        StatusGetter getter = null;
+        StatusGetter getter = new StatusGetter();
+
+        StatusMonitor monitor = new StatusMonitor();
+
+        JmsStatusListener listener = new JmsStatusListener(monitor);
+
+        BaseMessageConsumer consumer = new BaseMessageConsumer(
+                "Status Test Client",
+                new DestinationData(GmpKeys.GMP_STATUS_DESTINATION_PREFIX + _statusName,
+                        DestinationType.TOPIC),
+                listener
+        );
+
         try {
-            connection.start();
-
-            getter = new StatusGetter(connection);
-
-            StatusItem item = getter.getStatusItem(_statusName);
-
-            if (item == null) {
-                System.out.println("No information found for " + _statusName);
-                return;
-            }
-
-            StatusMonitor monitor = new StatusMonitor();
-
-            monitor.update(item);
-            //now we know the item exists in the GMP database. Keeps monitoring
-
-            StatusReader reader = new StatusReader(connection, monitor, _statusName);
-            reader.start();
             
-        }  catch (TesterException ex) {
-            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-        } finally {
-            connection.stop();
-            if (getter != null) getter.stop();
+            getter.startJms(provider);
+            
+            StatusItem item = getter.getStatusItem(_statusName);
+            
+            monitor.update(item);
+
+            getter.stopJms();
+
+            consumer.startJms(provider);
+            
+        } catch (JMSException e) {
+            LOG.warning("Problem on GIAPI tester: " + e.getMessage());
         }
+
+
         
     }
 }

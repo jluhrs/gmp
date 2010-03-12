@@ -4,10 +4,11 @@ import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.GetStatusArgument;
-import edu.gemini.giapi.tool.jms.BrokerConnection;
-import edu.gemini.giapi.tool.TesterException;
 import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
+import edu.gemini.jms.api.JmsProvider;
 
+import javax.jms.JMSException;
 import java.util.logging.Logger;
 
 /**
@@ -34,14 +35,12 @@ public class GetStatusOperation implements Operation {
     }
 
     public void execute() throws Exception {
-        BrokerConnection connection = new BrokerConnection(
-                "tcp://" + _host + ":61616");
+        JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
-        StatusGetter getter = null;
+        StatusGetter getter = new StatusGetter();
+
         try {
-            connection.start();
-
-            getter = new StatusGetter(connection);
+            getter.startJms(provider);
 
             StatusItem item = getter.getStatusItem(_statusName);
 
@@ -51,12 +50,10 @@ public class GetStatusOperation implements Operation {
                 System.out.println("No information found for " + _statusName);
             }
 
-        }  catch (TesterException ex) {
-            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-        } finally {
-            connection.stop();
-            if (getter != null) getter.stop();
-        }
+            getter.stopJms();
 
+        }  catch (JMSException ex) {
+            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
+        } 
     }
 }

@@ -14,6 +14,7 @@
     <orderEntry type="module" module-name="giapi-fileevents" />
     <orderEntry type="module" module-name="jms-api" />
     <orderEntry type="module" module-name="jms-activemq-provider" />
+    <orderEntry type="module" module-name="gmp-status" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
