@@ -16,7 +16,7 @@ public class JmsStatusListener implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(JmsStatusListener.class.getName());
 
-    public static final String TOPIC_NAME = GmpKeys.GMP_STATUS_DESTINATION;
+    public static final String TOPIC_NAME = GmpKeys.GMP_STATUS_DESTINATION_PREFIX + ">"; //defaults to listen for all the status items.
 
     private final StatusHandler _updater;
 

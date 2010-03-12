@@ -326,7 +326,6 @@
       <module fileurl="file://$PROJECT_DIR$/gmp-status/gmp-status.iml" filepath="$PROJECT_DIR$/gmp-status/gmp-status.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-status-gateway/gmp-status-gateway.iml" filepath="$PROJECT_DIR$/gmp-status-gateway/gmp-status-gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-statusdb/gmp-statusdb.iml" filepath="$PROJECT_DIR$/gmp-statusdb/gmp-statusdb.iml" />
-      <module fileurl="file://$PROJECT_DIR$/gmp-jms-statusproc/gmp-statusproc-jms.iml" filepath="$PROJECT_DIR$/gmp-jms-statusproc/gmp-statusproc-jms.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" filepath="$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-tests/gmp-tests.iml" filepath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-util/gmp-util.iml" filepath="$PROJECT_DIR$/gmp-util/gmp-util.iml" />
@@ -365,9 +364,144 @@
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$">
           <value>
             <SvnBranchConfiguration />
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
           </value>
         </entry>
       </map>

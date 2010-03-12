@@ -7,7 +7,7 @@ public class GmpKeys {
 
     //Common keys
     public final static String GMP_PREFIX  = "GMP";
-    public final static String GMP_SEPARATOR = ":";
+    public final static String GMP_SEPARATOR = ".";
 
 
     //Sequence Command Keys
@@ -35,7 +35,7 @@ public class GmpKeys {
     public final static String GMP_SERVICES_LOG_LEVEL = "LEVEL";
 
     //Status Keys
-    public final static String GMP_STATUS_DESTINATION =  GMP_PREFIX + GMP_SEPARATOR + "STATUS_DESTINATION";
+    public final static String GMP_STATUS_DESTINATION_PREFIX =  GMP_PREFIX + GMP_SEPARATOR + "STATUS" + GMP_SEPARATOR;
 
 
     //Gateway Keys

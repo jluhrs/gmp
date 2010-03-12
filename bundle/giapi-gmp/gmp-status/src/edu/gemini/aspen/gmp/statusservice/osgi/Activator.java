@@ -21,18 +21,26 @@ public class Activator implements BundleActivator {
 
     private JmsProviderTracker _jmsTracker;
 
+    private static final String TOPIC_PROP = "edu.gemini.aspen.gmp.statusservice.jms.destination";
+
     private StatusHandlerTracker _statusHandlerTracker;
 
     private StatusService _statusService;
 
     public void start(BundleContext bundleContext) throws Exception {
 
+        String destination = bundleContext.getProperty(TOPIC_PROP);
+
+        if (destination == null) {
+            destination = JmsStatusListener.TOPIC_NAME;
+        }
+
         LOG.info("Starting Status Consumer Service");
         _statusService = new StatusService();
 
         BaseMessageConsumer consumer = new BaseMessageConsumer(
                "JMS Status Consumer",
-                new DestinationData(JmsStatusListener.TOPIC_NAME,
+                new DestinationData(destination,
                         DestinationType.TOPIC),
                 new JmsStatusListener(_statusService)
         );
