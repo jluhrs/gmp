@@ -23,7 +23,7 @@ Pre-requisites
 --------------------------------------------------------------------------------
 
 The only pre-requisite is to have the Java Runtime Enviroment available. I
-developed this release of the GMP in Java 5, so you need Java 5 at least on your
+developed this release of the GMP in Java 6, so you need Java 6 at least in your
 computer. 
 
 
@@ -78,11 +78,14 @@ The following properties need to be set up properly in that file:
 
     #Defines the values for the GIAPI properties available
     gmp.properties.conf= ${GMP_INSTALL}/gmp-server/conf/gmp-properties.xml
+
     #Defines the epics channels available from the GMP
     gmp.epics.conf=${GMP_INSTALL}/gmp-server/conf/epics-channels.xml
+
     #Defines the epics channels to simulate. The channels names must match
     #the ones in the epics-channels.xml file so they can be accessed by
     #clients
+
     gmp.epics.simulation.conf=${GMP_INSTALL}/gmp-server/conf/simulated-epics-channels.xml
 
     #Properties to configure PCS Updater service options
@@ -98,7 +101,7 @@ The following properties need to be set up properly in that file:
     edu.gemini.jms.activemq.provider.url=vm://gmp
 
 The following properties can also be added to the bundle.properties to
-configure the internal JMS broke:
+configure the internal JMS broker:
 
     #URL for the broker. Use 0.0.0.0 to allow access from both local and
     #remote connections. 61616 is the default port
@@ -321,7 +324,16 @@ activity to a GMP running on the localhost, you can just type:
 
        giapi-tester -sc INIT -activity PRESET_START
 
-To monitor an status item called myinst:mystatus, you can type:
+To monitor a status item called myinst:mystatus, you can type:
 
        giapi-tester -monitor myinst:mystatus
 
+You can monitor all the status items the GMP is receiving using the
+following command:
+
+       giapi-tester -monitor \>
+
+To get the most recent value of a status item called myinst:mystatus, 
+you can use:
+
+       giapi-tester -get myinst:mystatus
