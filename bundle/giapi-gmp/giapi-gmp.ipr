@@ -316,9 +316,9 @@
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-api/gmp-api.iml" filepath="$PROJECT_DIR$/gmp-api/gmp-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-commands/gmp-commands.iml" filepath="$PROJECT_DIR$/gmp-commands/gmp-commands.iml" />
+      <module fileurl="file:///data/anunez/Projects/giapi/giapi-osgi/bundle/giapi-gmp/gmp-gateway/gmp-commands-gateway.iml" filepath="/data/anunez/Projects/giapi/giapi-osgi/bundle/giapi-gmp/gmp-gateway/gmp-commands-gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-epics-access/gmp-epics-access.iml" filepath="$PROJECT_DIR$/gmp-epics-access/gmp-epics-access.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-epics-simulator/gmp-epics-simulator.iml" filepath="$PROJECT_DIR$/gmp-epics-simulator/gmp-epics-simulator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" filepath="$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-logging/gmp-logging.iml" filepath="$PROJECT_DIR$/gmp-logging/gmp-logging.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-pcs-updater/gmp-pcs-updater.iml" filepath="$PROJECT_DIR$/gmp-pcs-updater/gmp-pcs-updater.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-services/gmp-services.iml" filepath="$PROJECT_DIR$/gmp-services/gmp-services.iml" />

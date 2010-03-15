@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Activator: edu.gemini.aspen.gmp.gw.osgi.Activator
-Bundle-Name: GMP Gateway
-Bundle-Description: The GMP Gatway, access point to the GMP from Gemini
+Bundle-Name: GMP Commands Gateway
+Bundle-Description: The GMP Command Gateway offers an entry point for the OCS to send sequence commands to the GMP 
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 0.8.0
 Import-Package: edu.gemini.aspen.gmp.commands,

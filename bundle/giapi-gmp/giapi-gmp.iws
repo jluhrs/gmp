@@ -16,7 +16,32 @@
   </component>
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="c1f6acaf-27bf-4cb3-a50c-ba30bc181162" name="Default" comment="remove unnecesary dependency from manifes">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/jms/CommandMessage.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/jms/CommandMessage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.ipr" afterPath="$PROJECT_DIR$/giapi-gmp.ipr" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src" />
+      <change type="MODIFICATION" beforePath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" afterPath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/osgi/Activator.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/osgi/Activator.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway" afterPath="$PROJECT_DIR$/gmp-commands-gateway" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/build.xml" afterPath="$PROJECT_DIR$/gmp-commands-gateway/build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" afterPath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/core" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/core" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/jms/FormatException.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/jms/FormatException.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/giapi-gmp.iws" afterPath="$PROJECT_DIR$/giapi-gmp.iws" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/osgi/Supervisor.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/osgi/Supervisor.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/osgi/JmsProviderTracker.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/osgi/JmsProviderTracker.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/jms/GatewayCompletionListener.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/jms/GatewayCompletionListener.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/jms" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/jms" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/jms/CommandConsumer.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/jms/CommandConsumer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/osgi/GmpTracker.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/osgi/GmpTracker.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/gmp-gateway.iml" afterPath="$PROJECT_DIR$/gmp-commands-gateway/gmp-gateway.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/osgi" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/osgi" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/manifest.mf" afterPath="$PROJECT_DIR$/gmp-commands-gateway/manifest.mf" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/gmp-gateway/src/edu/gemini/aspen/gmp/gw/core/Gateway.java" afterPath="$PROJECT_DIR$/gmp-commands-gateway/src/edu/gemini/aspen/gmp/gw/core/Gateway.java" />
     </list>
     <list id="4a7f7010-b7f5-4ba2-b352-9d946af67700" name="Failed commit: Default" comment="Introduced Service interface, and some extra refactoring to the Service Bundle" />
     <list id="6f092305-c330-41c5-8e52-5316dea9687a" name="Failed commit: Default (2)" comment="Refactored ActionMessageBuilder to an interface and a JMS implementation." />
@@ -83,24 +108,6 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GetStatusOperation.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/status/GetStatusOperation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="0" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/build.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="4" selection-start="908" selection-end="908" vertical-scroll-proportion="-10.181818">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="manifest.mf" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmp-statusdb/manifest.mf">
           <provider selected="true" editor-type-id="text-editor">
@@ -130,19 +137,55 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommandOperation.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CommandOperation.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/commands/CommandOperation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="8" selection-start="982" selection-end="982" vertical-scroll-proportion="0.5718475">
+            <state line="35" column="8" selection-start="982" selection-end="982" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bundle.properties" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/bundle.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-commands-gateway/build.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="28" selection-start="51" selection-end="51" vertical-scroll-proportion="-1.3636364">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="manifest.mf" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-status-gateway/manifest.mf">
+        <entry file="file://$PROJECT_DIR$/gmp-commands-gateway/manifest.mf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="114" selection-start="227" selection-end="227" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="gmp-gateway.iml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmp-commands-gateway/gmp-gateway.iml">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="system.properties" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="67" selection-start="1055" selection-end="1055" vertical-scroll-proportion="0.36090225">
               <folding />
             </state>
           </provider>
@@ -152,15 +195,6 @@
         <entry file="file://$PROJECT_DIR$/gmp-statusdb/src/edu/gemini/aspen/gmp/statusdb/StatusDatabase.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="12" column="13" selection-start="420" selection-end="420" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Activator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gmp-statusdb/src/edu/gemini/aspen/gmp/statusdb/osgi/Activator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="13" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -181,8 +215,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/gmp-status/src/edu/gemini/aspen/gmp/statusservice/osgi/Activator.java" />
-        <option value="$GIAPI_BASE$/giapi-osgi/app/gmp-server/bundle.properties" />
         <option value="$GIAPI_BASE$/giapi-osgi/app/gmp-server/bundle.properties.gpi" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/status/StatusReader.java" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/build.xml" />
@@ -193,10 +225,12 @@
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/status/MonitorStatusOperation.java" />
         <option value="$PROJECT_DIR$/gmp-status/src/edu/gemini/aspen/gmp/statusservice/jms/JmsStatusListener.java" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/manifest.mf" />
-        <option value="$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties" />
         <option value="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/status/GetStatusOperation.java" />
         <option value="$PROJECT_DIR$/gmp-statusdb/manifest.mf" />
         <option value="$PROJECT_DIR$/giapi-gmp.iws" />
+        <option value="$PROJECT_DIR$/gmp-commands-gateway/build.xml" />
+        <option value="$PROJECT_DIR$/gmp-commands-gateway/manifest.mf" />
+        <option value="$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties" />
       </list>
     </option>
   </component>
@@ -264,91 +298,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-tester" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-gmp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-tester" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tool" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-gmp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-tester" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tool" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="obsevents" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-gmp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-tester" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tool" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-gmp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="giapi-tester" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tool" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="commands" />
+              <option name="myItemId" value="gmp-commands-gateway" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -801,7 +751,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1920" height="1200" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3135436" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -813,7 +763,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24783362" sideWeight="0.6640701" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30091348" sideWeight="0.67439705" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30091348" sideWeight="0.67439705" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2523191" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -931,43 +881,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/src/edu/gemini/jms/api/BaseJmsArtifact.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="22" selection-start="431" selection-end="431" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/src/edu/gemini/jms/api/osgi/JmsProviderTracker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="13" selection-start="486" selection-end="486" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="80" selection-start="1137" selection-end="1137" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/status/MonitorStatusOperation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="13" selection-start="801" selection-end="801" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/fileevents/MonitorFileEventsOperation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="13" selection-start="790" selection-end="790" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/status/GetStatusOperation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="0" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
@@ -1035,7 +948,7 @@
     </entry>
     <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/commands/CommandOperation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="8" selection-start="982" selection-end="982" vertical-scroll-proportion="0.5718475">
+        <state line="35" column="8" selection-start="982" selection-end="982" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1043,6 +956,41 @@
     <entry file="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/src/edu/gemini/giapi/tool/commands/CommandSender.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="13" selection-start="397" selection-end="397" vertical-scroll-proportion="0.17595308">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/bundle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-commands-gateway/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="28" selection-start="51" selection-end="51" vertical-scroll-proportion="-1.3636364">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-commands-gateway/manifest.mf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="114" selection-start="227" selection-end="227" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmp-commands-gateway/gmp-gateway.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$GIAPI_BASE$/giapi-osgi/app/gmp-server/system.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="67" selection-start="1055" selection-end="1055" vertical-scroll-proportion="0.36090225">
           <folding />
         </state>
       </provider>

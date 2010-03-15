@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="gmp-gateway" default="all" basedir=".">
+<project name="gmp-commands-gateway" default="all" basedir=".">
     <import file="../build.xml"/>
 
     <path id="build.classpath.extra">

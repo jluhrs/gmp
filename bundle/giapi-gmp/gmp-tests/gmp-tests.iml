@@ -19,7 +19,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="jms-activemq-broker" />
-    <orderEntry type="module" module-name="gmp-gateway" />
+    <orderEntry type="module" module-name="gmp-commands-gateway" />
     <orderEntry type="module" module-name="gmp-util" />
     <orderEntry type="module-library">
       <library>
