@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model;
 
 import edu.gemini.aspen.gmp.commands.HandlerResponse;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class HandlerResponseAnalizer {
         //if there is a non-answer, means one part of the configuration couldn't get handled.
         //Return NOANSWER
         for (HandlerResponse response : _responses) {
-            if (response.getResponse() == HandlerResponse.Response.NOANSWER)
+            if (response == HandlerResponse.NOANSWER)
                 return response;
         }
 
@@ -51,16 +50,16 @@ public class HandlerResponseAnalizer {
         }
         //no errors, so next option is at least one started, the entire thing is started
         for (HandlerResponse response : _responses) {
-            if (response.getResponse() == HandlerResponse.Response.STARTED)
+            if (response == HandlerResponse.STARTED)
                 return response;
         }
 
         //no errors, and no started....let's see if we got an "accepted"
         for (HandlerResponse response : _responses) {
-            if (response.getResponse() == HandlerResponse.Response.ACCEPTED)
+            if (response == HandlerResponse.ACCEPTED)
                 return response;
         }
 
-        return HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED);
+        return HandlerResponse.COMPLETED;
     }
 }

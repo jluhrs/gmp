@@ -1,15 +1,10 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.gmp.commands.Activity;
-import edu.gemini.aspen.gmp.commands.DefaultConfiguration;
-import edu.gemini.aspen.gmp.commands.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.*;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 import static org.junit.Assert.*;
-
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 /**
  * Test suite for the HandlerResponseTracker
@@ -71,13 +66,11 @@ public class HandlerResponseTrackerTest {
 
         assertFalse(handlerResponseTracker.isComplete(a));
 
-        handlerResponseTracker.storeResponse(a,
-                                             HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+        handlerResponseTracker.storeResponse(a,HandlerResponse.COMPLETED);
 
         assertFalse(handlerResponseTracker.isComplete(a));
 
-        handlerResponseTracker.storeResponse(a,
-                                             HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+        handlerResponseTracker.storeResponse(a, HandlerResponse.COMPLETED);
 
         assertTrue(handlerResponseTracker.isComplete(a));
     }
@@ -130,7 +123,7 @@ public class HandlerResponseTrackerTest {
         handlerResponseTracker.increaseRequiredResponses(a);
 
         handlerResponseTracker.storeResponse(a,
-                                             HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                                             HandlerResponse.COMPLETED);
 
         assertEquals(HandlerResponse.Response.COMPLETED,
                      handlerResponseTracker.getResponse(a).getResponse());
@@ -146,14 +139,11 @@ public class HandlerResponseTrackerTest {
         handlerResponseTracker.increaseRequiredResponses(a);
         handlerResponseTracker.increaseRequiredResponses(a);
 
-        handlerResponseTracker.storeResponse(a,
-                                             HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+        handlerResponseTracker.storeResponse(a, HandlerResponse.COMPLETED);
 
-        handlerResponseTracker.storeResponse(a,
-                                                     HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+        handlerResponseTracker.storeResponse(a, HandlerResponse.COMPLETED);
 
-        handlerResponseTracker.storeResponse(a,
-                                                     HandlerResponseImpl.createError("Error message"));
+        handlerResponseTracker.storeResponse(a, HandlerResponse.createError("Error message"));
 
         assertEquals(HandlerResponse.Response.ERROR,
                      handlerResponseTracker.getResponse(a).getResponse());
@@ -176,14 +166,12 @@ public class HandlerResponseTrackerTest {
         assertFalse(handlerResponseTracker.isComplete(a));
         assertFalse(handlerResponseTracker.isComplete(b));
 
-        handlerResponseTracker.storeResponse(a,
-                                             HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+        handlerResponseTracker.storeResponse(a, HandlerResponse.COMPLETED);
 
         assertTrue(handlerResponseTracker.isComplete(a));
         assertFalse(handlerResponseTracker.isComplete(b));
 
-        handlerResponseTracker.storeResponse(b,
-                                             HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+        handlerResponseTracker.storeResponse(b, HandlerResponse.COMPLETED);
 
         assertTrue(handlerResponseTracker.isComplete(a));
         assertTrue(handlerResponseTracker.isComplete(b));

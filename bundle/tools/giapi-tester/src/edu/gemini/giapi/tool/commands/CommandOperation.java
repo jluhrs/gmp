@@ -49,7 +49,7 @@ public class CommandOperation implements Operation {
 
                 System.out.println("Response Received: " + response);
 
-                if (response.getResponse() == HandlerResponse.Response.STARTED) {
+                if (response == HandlerResponse.STARTED) {
                     //now, wait for the answer, synchronously
                     CompletionInformation info = sender.receiveCompletionInformation(
                             timeout);

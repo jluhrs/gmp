@@ -11,7 +11,6 @@ import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import edu.gemini.aspen.gmp.commands.test.TestRebootManager;
 import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 /**
  * Test class for the REBOOT sender executor
@@ -72,12 +71,12 @@ public class RebootSenderExecutorTest {
 
 
         //set the sender to anything but ACCEPTED
-        sender.defineAnswer(HandlerResponseImpl.createError("error"));
+        sender.defineAnswer(HandlerResponse.createError("error"));
 
         HandlerResponse response = executor.execute(action, sender);
 
         //and make sure the response is ACCEPTED, regardless
-        assertEquals(HandlerResponseImpl.create(HandlerResponse.Response.ACCEPTED), response);
+        assertEquals(HandlerResponse.ACCEPTED, response);
 
     }
 
@@ -90,13 +89,13 @@ public class RebootSenderExecutorTest {
 
 
         //set the sender to anything but ERROR
-        sender.defineAnswer(HandlerResponseImpl.create(HandlerResponse.Response.ACCEPTED));
+        sender.defineAnswer(HandlerResponse.ACCEPTED);
 
         HandlerResponse response = executor.execute(action, sender);
 
         //and make sure the response is the right ERROR message, regardless
 
-        assertEquals(HandlerResponseImpl.createError("Can't cancel a REBOOT sequence command"), response);
+        assertEquals(HandlerResponse.createError("Can't cancel a REBOOT sequence command"), response);
 
     }
 
@@ -110,10 +109,10 @@ public class RebootSenderExecutorTest {
         //it's like a NONE argument
 
         HandlerResponse[] responses = new HandlerResponse[]{
-                HandlerResponseImpl.create(HandlerResponse.Response.ACCEPTED),
-                HandlerResponseImpl.create(HandlerResponse.Response.STARTED),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED),
-                HandlerResponseImpl.createError("error")
+                HandlerResponse.ACCEPTED,
+                HandlerResponse.STARTED,
+                HandlerResponse.COMPLETED,
+                HandlerResponse.createError("error")
         };
 
         for (HandlerResponse response : responses) {
@@ -146,11 +145,11 @@ public class RebootSenderExecutorTest {
         Action action = new Action(SequenceCommand.REBOOT,
                 Activity.START, c, null);
 
-        sender.defineAnswer(HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+        sender.defineAnswer(HandlerResponse.COMPLETED);
 
         HandlerResponse response = executor.execute(action, sender);
 
-        assertEquals(HandlerResponseImpl.createError("Invalid argument for the REBOOT sequence command: " + c), response);
+        assertEquals(HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + c), response);
 
 
         c = new DefaultConfiguration();
@@ -159,7 +158,7 @@ public class RebootSenderExecutorTest {
                 Activity.START, c, null);
         response = executor.execute(action, sender);
 
-        assertEquals(HandlerResponseImpl.createError("Invalid argument for the REBOOT sequence command: " + c), response);
+        assertEquals(HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + c), response);
 
     }
 
@@ -198,7 +197,7 @@ public class RebootSenderExecutorTest {
             //if the sender returns COMPLETED, this means the instrument
             //will execute the reboot with the supplied argument.
 
-            sender.defineAnswer(HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+            sender.defineAnswer(HandlerResponse.COMPLETED);
             HandlerResponse response = executor.execute(action, sender);
 
             synchronized (rebootManager) {
@@ -211,7 +210,7 @@ public class RebootSenderExecutorTest {
             //make sure the reboot manager got the right arg
             assertEquals(expectedArg, rebootManager.getReceivedArgument());
             //and verify the response is also COMPLETED
-            assertEquals(HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED), response);
+            assertEquals(HandlerResponse.COMPLETED, response);
         }
     }
 
@@ -236,15 +235,15 @@ public class RebootSenderExecutorTest {
 
             actionManager.registerAction(action);
 
-            sender.defineAnswer(HandlerResponseImpl.create(HandlerResponse.Response.STARTED));
+            sender.defineAnswer(HandlerResponse.STARTED);
 
             HandlerResponse response = executor.execute(action, sender);
 
-            assertEquals(HandlerResponseImpl.create(HandlerResponse.Response.STARTED), response);
+            assertEquals(HandlerResponse.STARTED, response);
 
 
             //simulate a completion listener from the PARK sequene command...
-            HandlerResponse r1 = HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED);
+            HandlerResponse r1 = HandlerResponse.COMPLETED;
             cu.updateOcs(Action.getCurrentId(), r1);
 
             //now, we wait for the reboot completion listener to be invoked...

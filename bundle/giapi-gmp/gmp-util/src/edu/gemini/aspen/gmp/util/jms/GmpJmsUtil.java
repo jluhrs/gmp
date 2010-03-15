@@ -3,7 +3,6 @@ package edu.gemini.aspen.gmp.util.jms;
 import edu.gemini.aspen.gmp.commands.*;
 import edu.gemini.aspen.gmp.status.StatusItem;
 import edu.gemini.aspen.gmp.status.StatusVisitor;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
 import edu.gemini.aspen.gmp.util.jms.status.StatusItemParser;
 import edu.gemini.aspen.gmp.util.jms.status.StatusSerializerVisitor;
@@ -39,9 +38,9 @@ public class GmpJmsUtil {
         if (response != null) {
             if (response == HandlerResponse.Response.ERROR) {
                 String errorMsg = msg.getString(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
-                return HandlerResponseImpl.createError(errorMsg);
+                return HandlerResponse.createError(errorMsg);
             }
-            return HandlerResponseImpl.create(response);
+            return HandlerResponse.get(response);
         }
         return null;
     }
@@ -115,9 +114,9 @@ public class GmpJmsUtil {
 
             if (response == HandlerResponse.Response.ERROR) {
                 String errMsg = msg.getStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
-                handlerResponse = HandlerResponseImpl.createError(errMsg);
+                handlerResponse = HandlerResponse.createError(errMsg);
             } else {
-                handlerResponse = HandlerResponseImpl.create(response);
+                handlerResponse = HandlerResponse.get(response);
             }
         }
 

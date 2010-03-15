@@ -1,16 +1,12 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
-import edu.gemini.aspen.gmp.commands.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.*;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import edu.gemini.aspen.gmp.commands.test.TestActionSender;
-import edu.gemini.aspen.gmp.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.Activity;
-import edu.gemini.aspen.gmp.commands.DefaultConfiguration;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 /**
  * The default sender executor is trivial. Just use the sender
@@ -29,11 +25,11 @@ public class DefaultSenderExecutorTest {
         _sender = new TestActionSender();
 
         _responses = new HandlerResponse[] {
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED),
-                HandlerResponseImpl.create(HandlerResponse.Response.STARTED),
-                HandlerResponseImpl.create(HandlerResponse.Response.ACCEPTED),
-                HandlerResponseImpl.create(HandlerResponse.Response.NOANSWER),
-                HandlerResponseImpl.createError("Error message")
+                HandlerResponse.COMPLETED,
+                HandlerResponse.STARTED,
+                HandlerResponse.ACCEPTED,
+                HandlerResponse.NOANSWER,
+                HandlerResponse.createError("Error message")
         };
 
     }

@@ -1,12 +1,8 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
-import edu.gemini.aspen.gmp.commands.ConfigPathNavigator;
-import edu.gemini.aspen.gmp.commands.Configuration;
-import edu.gemini.aspen.gmp.commands.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.*;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
-import edu.gemini.aspen.gmp.commands.ConfigPath;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.Set;
 
@@ -33,7 +29,7 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
 
         Configuration config = action.getConfiguration();
         if (config == null || config.getKeys().size() == 0)
-            return HandlerResponseImpl.createError("No configuration present for Apply Sequence command");
+            return HandlerResponse.createError("No configuration present for Apply Sequence command");
         return getResponse(action, config, ConfigPath.EMPTY_PATH, sender);
     }
 
@@ -57,14 +53,14 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
                                         ConfigPath path, ActionSender sender) {
 
         if (config == null)
-            return HandlerResponseImpl.createError("Can't get a reply");
+            return HandlerResponse.createError("Can't get a reply");
 
         ConfigPathNavigator navigator = new ConfigPathNavigator(config);
 
         Set<ConfigPath> configPathSet = navigator.getChildPaths(path);
 
         if (configPathSet.size() <= 0) {
-            return HandlerResponseImpl.create(HandlerResponse.Response.NOANSWER);
+            return HandlerResponse.NOANSWER;
         }
 
         //this analizer will get the result answer from this part of the configuration
@@ -81,19 +77,19 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
             //if the response is started, there is one handler that will
             //provide answer to this action later. Notify the action
             //manager about this
-            if (response.getResponse() == HandlerResponse.Response.STARTED) {
+            if (response == HandlerResponse.STARTED) {
                 _actionManager.increaseRequiredResponses(action);
             }
 
             //if there are no handlers, recursively decompose this config in
             //smaller units if possible, and return the answer.
-            if (response.getResponse() == HandlerResponse.Response.NOANSWER) {
+            if (response == HandlerResponse.NOANSWER) {
                 response = getResponse(action, c, cp, sender);
             }
 
             //if the answer is still NOANSWER, return inmediately, there is no one
             //that can process this part of the configuration.
-            if (response.getResponse() == HandlerResponse.Response.NOANSWER) {
+            if (response == HandlerResponse.NOANSWER) {
                 return response;
             }
             analizer.addResponse(response);

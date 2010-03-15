@@ -5,8 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
-
 import java.util.Map;
 import java.util.HashMap;
 
@@ -25,11 +23,11 @@ public class HandlerResponseAnalizerTest {
     public void setUp() {
         _analizer = new HandlerResponseAnalizer();
         _responses = new HandlerResponse[] {
-                HandlerResponseImpl.create(HandlerResponse.Response.ACCEPTED),
-                HandlerResponseImpl.create(HandlerResponse.Response.STARTED),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED),
-                HandlerResponseImpl.create(HandlerResponse.Response.NOANSWER),
-                HandlerResponseImpl.createError("Error")
+                HandlerResponse.ACCEPTED,
+                HandlerResponse.STARTED,
+                HandlerResponse.COMPLETED,
+                HandlerResponse.NOANSWER,
+                HandlerResponse.createError("Error")
         };
 
         _responseMap = new HashMap<HandlerResponse.Response, HandlerResponse>();

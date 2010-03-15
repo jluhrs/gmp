@@ -7,7 +7,6 @@ import org.junit.After;
 import static org.junit.Assert.*;
 
 import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ public class ActionManagerTest {
         manager.registerAction(a1);
 
         manager.registerCompletionInformation(a1.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
 
         synchronized (a1.getCompletionListener()) {
@@ -84,7 +83,7 @@ public class ActionManagerTest {
         manager.lock();
 
         manager.registerCompletionInformation(a1.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
 
         synchronized (a1.getCompletionListener()) {
@@ -127,7 +126,7 @@ public class ActionManagerTest {
 
         //trigger the last to one action...
         manager.registerCompletionInformation(actions.get(TOTAL_ACTIONS - 1 - 1).getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
         //and give the listeners a chance to run...
 
@@ -158,7 +157,7 @@ public class ActionManagerTest {
         Action a1 = actions.get(0);
 
         manager.registerCompletionInformation(a1.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
         synchronized (a1.getCompletionListener()) {
             try {
@@ -184,7 +183,7 @@ public class ActionManagerTest {
         manager.registerAction(a1);
 
         manager.registerCompletionInformation(a1.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
         synchronized (a1.getCompletionListener()) {
             try {
@@ -201,7 +200,7 @@ public class ActionManagerTest {
         ((TestCompletionListener) ((a1.getCompletionListener()))).reset();
 
         manager.registerCompletionInformation(a1.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
         synchronized (a1.getCompletionListener()) {
             try {
                 a1.getCompletionListener().wait(1000);
@@ -226,7 +225,7 @@ public class ActionManagerTest {
 
         //receive completion info for an ID we haven't produced..
         manager.registerCompletionInformation(actions.get(TOTAL_ACTIONS - 1).getId() + 1,
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
         //see if this triggers action #1.
         synchronized (a1.getCompletionListener()) {
@@ -252,7 +251,7 @@ public class ActionManagerTest {
         manager.registerAction(a);
 
         manager.registerCompletionInformation(a.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
         //if everything went fine, we should be able to process other actions..
         //since otherwise the null listener should have caused a NPE that
@@ -290,7 +289,7 @@ public class ActionManagerTest {
         manager.increaseRequiredResponses(a);
 
         manager.registerCompletionInformation(a.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
         //the completion listener should have been called.
         synchronized (a.getCompletionListener()) {
@@ -329,7 +328,7 @@ public class ActionManagerTest {
 
         cl.reset();
         manager.registerCompletionInformation(a.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
         //the completion listener should not have been called.
 
@@ -346,7 +345,7 @@ public class ActionManagerTest {
         cl.reset();
 
         manager.registerCompletionInformation(a.getId(),
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED));
+                HandlerResponse.COMPLETED);
 
         synchronized (a.getCompletionListener()) {
             try {

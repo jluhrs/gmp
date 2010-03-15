@@ -11,7 +11,6 @@ import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import edu.gemini.aspen.gmp.commands.test.TestSequenceCommandExecutor;
 import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 
 /**
@@ -67,9 +66,9 @@ public class SequenceCommandTest {
 
 
         HandlerResponse[] answers = new HandlerResponse[]{
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED),
-                HandlerResponseImpl.create(HandlerResponse.Response.ERROR),
-                HandlerResponseImpl.create(HandlerResponse.Response.ACCEPTED),
+                HandlerResponse.COMPLETED,
+                HandlerResponse.createError(""),
+                HandlerResponse.ACCEPTED,
         };
 
         for (HandlerResponse r : answers) {
@@ -90,7 +89,7 @@ public class SequenceCommandTest {
             //wrong in the instrument code since it's  sending completion
             //info for actions that did not "STARTED".
             //The code will generate WARNING Messages, but that's okay
-            HandlerResponse r1 = HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED);
+            HandlerResponse r1 = HandlerResponse.COMPLETED;
             cu.updateOcs(Action.getCurrentId(), r1);
 
 
@@ -119,7 +118,7 @@ public class SequenceCommandTest {
      */
     @Test
     public void testLongCommand() {
-        HandlerResponse r = HandlerResponseImpl.create(HandlerResponse.Response.STARTED);
+        HandlerResponse r = HandlerResponse.STARTED;
         sender.defineAnswer(r);
         HandlerResponse response = cs.sendSequenceCommand(
                 SequenceCommand.ABORT,
@@ -129,7 +128,7 @@ public class SequenceCommandTest {
 
         assertEquals(response, r);
 
-        HandlerResponse r1 = HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED);
+        HandlerResponse r1 = HandlerResponse.COMPLETED;
         cu.updateOcs(Action.getCurrentId(), r1);
 
         synchronized (completionListener) {
@@ -152,13 +151,13 @@ public class SequenceCommandTest {
     public void testFasterHandler() {
 
         //the answer to the command will be Started
-        HandlerResponse r = HandlerResponseImpl.create(HandlerResponse.Response.STARTED);
+        HandlerResponse r = HandlerResponse.STARTED;
         sender.defineAnswer(r);
 
         //let's configure the ActionSender to reply completion information
 
         //we will simulate the situation when a fast handler returns first...
-        HandlerResponse r1 = HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED);
+        HandlerResponse r1 = HandlerResponse.COMPLETED;
 
         //configure the executor in the command sender to send completion
         //information BEFORE answering the command.

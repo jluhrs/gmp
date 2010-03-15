@@ -7,7 +7,6 @@ import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import javax.jms.Message;
 import javax.jms.JMSException;
@@ -33,7 +32,7 @@ public class SequenceCommandSenderReply extends JmsMapMessageSenderReply
             MapMessage replyMap = (MapMessage) reply;
             return GmpJmsUtil.buildHandlerResponse(replyMap);
         } 
-        return HandlerResponseImpl.create(HandlerResponse.Response.NOANSWER);
+        return HandlerResponse.NOANSWER;
 
     }
 

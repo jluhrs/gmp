@@ -5,7 +5,6 @@ import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -33,11 +32,11 @@ public class ApplySenderExecutorTest {
         _executor = new ApplySenderExecutor(new JmsActionMessageBuilder(), actionManager);
         _sender = new TestActionSender();
         _responses = new HandlerResponse[] {
-                HandlerResponseImpl.create(HandlerResponse.Response.COMPLETED),
-                HandlerResponseImpl.create(HandlerResponse.Response.STARTED),
-                HandlerResponseImpl.create(HandlerResponse.Response.ACCEPTED),
-                HandlerResponseImpl.create(HandlerResponse.Response.NOANSWER),
-                HandlerResponseImpl.createError("Error message")
+                HandlerResponse.COMPLETED,
+                HandlerResponse.STARTED,
+                HandlerResponse.ACCEPTED,
+                HandlerResponse.NOANSWER,
+                HandlerResponse.createError("Error message")
         };
 
 
@@ -65,7 +64,7 @@ public class ApplySenderExecutorTest {
                 Activity.START,
                 null, null);
         HandlerResponse response = _executor.execute(action, _sender);
-        assertEquals(HandlerResponseImpl.createError("No configuration present for Apply Sequence command"), response);
+        assertEquals(HandlerResponse.createError("No configuration present for Apply Sequence command"), response);
     }
 
     @Test
@@ -74,7 +73,7 @@ public class ApplySenderExecutorTest {
                 Activity.START,
                 new DefaultConfiguration(), null);
         HandlerResponse response = _executor.execute(action, _sender);
-        assertEquals(HandlerResponseImpl.createError("No configuration present for Apply Sequence command"), response);
+        assertEquals(HandlerResponse.createError("No configuration present for Apply Sequence command"), response);
     }
 
     /**

@@ -3,7 +3,6 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 import edu.gemini.aspen.gmp.commands.*;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.logging.Logger;
 
@@ -28,13 +27,13 @@ public class RebootSenderExecutor implements SequenceCommandExecutor {
 
         final RebootArgument arg = RebootArgument.parse(action.getConfiguration());
         if (arg == null) {
-            return HandlerResponseImpl.createError("Invalid argument for the REBOOT sequence command: " + action.getConfiguration());
+            return HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + action.getConfiguration());
         }
 
         if (action.getActivity() == Activity.PRESET)
-            return HandlerResponseImpl.create(HandlerResponse.Response.ACCEPTED);
+            return HandlerResponse.ACCEPTED;
         if (action.getActivity() == Activity.CANCEL) {
-            return HandlerResponseImpl.createError("Can't cancel a REBOOT sequence command");
+            return HandlerResponse.createError("Can't cancel a REBOOT sequence command");
         }
 
         //So we have an start. Let's perform a PARK on the instrument, catching

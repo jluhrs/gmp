@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model;
 
 import edu.gemini.aspen.gmp.commands.HandlerResponse;
-import edu.gemini.aspen.gmp.util.commands.HandlerResponseImpl;
 
 import java.util.Map;
 import java.util.Collections;
@@ -67,7 +66,7 @@ class HandlerResponseTracker {
                 return analizer.getSummaryResponse();
             }
             else {
-                return HandlerResponseImpl.createError(
+                return HandlerResponse.createError(
                         String.format(ERROR_MSG, pendingResponses, pendingResponses > 1 ? "s":""));
             }
         }
