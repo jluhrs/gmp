@@ -21,8 +21,8 @@ public final class HandlerResponseImpl implements HandlerResponse {
         this(Response.ERROR, message);
     }
 
-    private String _message;
-    private Response _response;
+    private final String _message;
+    private final Response _response;
 
 
     public Response getResponse() {
