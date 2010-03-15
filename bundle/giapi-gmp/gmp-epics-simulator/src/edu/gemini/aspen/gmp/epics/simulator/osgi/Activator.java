@@ -75,7 +75,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     public void removedService(ServiceReference serviceReference, Object o) {
 
-        LOG.info("GMP Epics Registrar lost. Simmulation stopped");
+        LOG.info("GMP Epics Registrar lost. Simulation stopped");
         _simulator.stopSimulation();
         _simulator = null;
 
