@@ -50,7 +50,7 @@ public class EpicsTcsContextFetcher implements TcsContextFetcher {
             _reader.bindChannel(_tcsCtxChannel);
         } catch (EpicsException e) {
             throw new TcsContextException("Problem binding " +
-                    TCS_CONTEXT_CHANNEL +
+                    _tcsCtxChannel +
                     " channel. Check the EPICS configuration and your network settings", e);
         }
     }

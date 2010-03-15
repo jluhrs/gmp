@@ -26,6 +26,10 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 	}
 	
 	private static final Logger LOGGER = Logger.getLogger(Activator.class.getName());
+
+    private static final String ADDR_LIST_PROP = "edu.gemini.epics.addr_list";
+    private static final String AUTO_ADDR_LIST_PROP = "edu.gemini.epics.auto_addr_list";
+
 	private ServiceTracker tracker = null;
 	private BundleContext context = null;
 
@@ -35,6 +39,22 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     public void start(BundleContext context) throws Exception {
 		this.context = context;
+
+        String addrList = context.getProperty(ADDR_LIST_PROP);
+        if (addrList != null) {
+            System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", addrList);
+        }
+
+        String autoAddrList = context.getProperty(AUTO_ADDR_LIST_PROP);
+        if (autoAddrList != null) {
+            if ("true".equalsIgnoreCase(autoAddrList.trim())) {
+                autoAddrList = "true";
+            } else {
+                autoAddrList = "false";
+            }
+            System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", autoAddrList);
+        }
+
 		tracker = new ServiceTracker(context, IEpicsClient.class.getName(), this);
 		tracker.open();
         IEpicsWriter epicsWriter = new EpicsWriter();
