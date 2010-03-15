@@ -3,7 +3,6 @@ package edu.gemini.aspen.gmp.util.jms;
 import edu.gemini.aspen.gmp.commands.*;
 import edu.gemini.aspen.gmp.status.StatusItem;
 import edu.gemini.aspen.gmp.status.StatusVisitor;
-import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
 import edu.gemini.aspen.gmp.util.jms.status.StatusItemParser;
 import edu.gemini.aspen.gmp.util.jms.status.StatusSerializerVisitor;
 
@@ -160,7 +159,7 @@ public class GmpJmsUtil {
             config.put(new ConfigPath(path), value);
         }
 
-        return new CompletionInformationImpl(handlerResponse, sc, activity, config);
+        return new CompletionInformation(handlerResponse, sc, activity, config);
     }
 
 

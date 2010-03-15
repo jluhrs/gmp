@@ -2,7 +2,6 @@ package edu.gemini.aspen.gmp.gw.jms;
 
 import edu.gemini.aspen.gmp.commands.*;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
-import edu.gemini.aspen.gmp.util.commands.CompletionInformationImpl;
 
 import javax.jms.*;
 import javax.jms.IllegalStateException;
@@ -29,7 +28,7 @@ public class GatewayCompletionListener implements CompletionListener {
         try {
             MessageProducer producer = _session.createProducer(_destination);
 
-            CompletionInformation info = new CompletionInformationImpl(
+            CompletionInformation info = new CompletionInformation(
                     response,
                     command,
                     activity,
