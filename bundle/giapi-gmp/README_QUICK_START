@@ -247,8 +247,7 @@ walle ->
 In this prompt, you can interact with the GMP OSGi services, for instance:
 
 walle -> ps
-
- START LEVEL 10
+START LEVEL 10
    ID   State         Level  Name
 [   0] [Active     ] [    0] System Bundle (1.0.5)
 [   1] [Active     ] [    1] Shell Service (1.0.2)
@@ -261,20 +260,24 @@ walle -> ps
 [   8] [Active     ] [    3] Multicast Admin (0.1.0)
 [   9] [Resolved   ] [    3] EPICS Service (0.2.0)
 [  10] [Active     ] [    4] JMS API (1.2.0)
-[  11] [Active     ] [    4] ActiveMQ Service (1.1.0)
-[  12] [Active     ] [    5] GMP API (0.8.0)
-[  13] [Active     ] [    5] GMP JMS Util (0.10.0)
-[  14] [Active     ] [    6] GMP GIAPI Services (0.1.0)
-[  15] [Active     ] [    6] GMP Sequence Commands Service (0.9.0)
-[  16] [Active     ] [    6] GMP Status Service (0.1.0)
-[  17] [Active     ] [    6] GMP PCS Updater Service (0.2.0)
-[  18] [Active     ] [    6] GMP TCS Context Service (0.1.0)
-[  19] [Active     ] [    7] GMP Status Database (0.1.0)
-[  20] [Active     ] [    8] GMP JMS Status Processor (0.1.0)
-[  21] [Active     ] [    8] GMP Status Gateway (0.1.0)
-[  22] [Active     ] [    8] GMP Gateway (0.8.0)
-[  23] [Active     ] [    9] GMP Epics Access Service (0.1.0)
-[  24] [Active     ] [    9] GMP Epics Simulator (0.1.0)
+[  11] [Active     ] [    4] ActiveMQ Libraries (0.1.0)
+[  12] [Active     ] [    4] ActiveMQ Broker Service (1.1.0)
+[  13] [Active     ] [    4] ActiveMQ JMS Service Provider (1.1.0)
+[  14] [Active     ] [    5] GMP API (0.9.0)
+[  15] [Active     ] [    5] GMP JMS Util (0.10.0)
+[  16] [Active     ] [    6] GMP GIAPI Services (0.1.0)
+[  17] [Active     ] [    6] GMP Sequence Commands Service (0.9.0)
+[  18] [Active     ] [    6] GMP Status Service (0.1.0)
+[  19] [Active     ] [    6] GMP PCS Updater Service (0.2.0)
+[  20] [Active     ] [    6] GMP TCS Context Service (0.1.0)
+[  21] [Active     ] [    6] GMP Logging Service (0.1.0)
+[  22] [Active     ] [    7] GMP Status Database (0.1.0)
+[  23] [Active     ] [    8] GMP Status Gateway (0.1.0)
+[  24] [Active     ] [    8] GMP Commands Gateway (0.8.0)
+[  25] [Active     ] [    9] GMP Epics Access Service (0.1.0)
+[  26] [Active     ] [    9] GMP Epics Simulator (0.1.0)
+walle ->
+
 
 That means all the bundles are ready and the Gemini Master Process is running.
 
