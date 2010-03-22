@@ -100,6 +100,14 @@ The following properties need to be set up properly in that file:
     #Defines the internal protocol for JMS access within the GMP.
     edu.gemini.jms.activemq.provider.url=vm://gmp
 
+    #Status Service configuration
+    #Defines the channels the status service will listen for. Default is set
+    #to all (GMP.STATUS.>)
+    #edu.gemini.aspen.gmp.statusservice.jms.destination=GMP.STATUS.>
+    #The name of the Status Service. This name must be unique in the JMS Broker
+    edu.gemini.aspen.gmp.statusservice.jms.name=GMP Status Service
+
+
 The following properties can also be added to the bundle.properties to
 configure the internal JMS broker:
 

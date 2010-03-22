@@ -13,7 +13,7 @@ import org.osgi.framework.ServiceReference;
  */
 public class StatusHandlerTracker extends ServiceTracker {
 
-    private StatusHandlerRegister _statusHandlerRegister;
+    private final StatusHandlerRegister _statusHandlerRegister;
 
     public StatusHandlerTracker(BundleContext ctx, StatusHandlerRegister shr) {
         super(ctx, StatusHandler.class.getName(), null);

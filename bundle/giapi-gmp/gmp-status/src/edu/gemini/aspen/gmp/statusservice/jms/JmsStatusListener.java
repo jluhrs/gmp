@@ -24,6 +24,7 @@ public class JmsStatusListener implements MessageListener {
         _updater = updater;
     }
 
+    @Override
     public void onMessage(Message message) {
         try {
             //reconstruct the StatusItem from the JMS Message

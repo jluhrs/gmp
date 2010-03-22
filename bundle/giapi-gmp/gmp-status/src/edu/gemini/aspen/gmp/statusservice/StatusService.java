@@ -16,7 +16,7 @@ public class StatusService implements StatusHandler, StatusHandlerRegister {
 
     private static final Logger LOG = Logger.getLogger(StatusService.class.getName());
 
-    private List<StatusHandler> _statusHandlers = new CopyOnWriteArrayList<StatusHandler>();
+    private final List<StatusHandler> _statusHandlers = new CopyOnWriteArrayList<StatusHandler>();
     private static final String STATUS_SERVICE_NAME = "Status Service Handler";
 
     public StatusService() {

@@ -329,6 +329,7 @@
       <module fileurl="file://$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" filepath="$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-tests/gmp-tests.iml" filepath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-util/gmp-util.iml" filepath="$PROJECT_DIR$/gmp-util/gmp-util.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/jms-activemq-broker.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/jms-activemq-broker.iml" />
       <module fileurl="file:///data/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq/jms-activemq-broker.iml" filepath="/data/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq/jms-activemq-broker.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/jms-activemq-lib.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/jms-activemq-lib.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" />
@@ -336,7 +337,7 @@
       <module fileurl="file://$PROJECT_DIR$/summer/summer.iml" filepath="$PROJECT_DIR$/summer/summer.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ResourceManagerContainer">
@@ -525,6 +526,7 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="svn" />
+    <mapping directory="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker" vcs="svn" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="com.intellij.ide.util.scopeChooser.ScopeChooserConfigurable" proportions="" version="1">
