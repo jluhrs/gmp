@@ -330,7 +330,6 @@
       <module fileurl="file://$PROJECT_DIR$/gmp-tests/gmp-tests.iml" filepath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-util/gmp-util.iml" filepath="$PROJECT_DIR$/gmp-util/gmp-util.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/jms-activemq-broker.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/jms-activemq-broker.iml" />
-      <module fileurl="file:///data/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq/jms-activemq-broker.iml" filepath="/data/anunez/Projects/giapi/giapi-osgi/bundle/jms/jms-activemq/jms-activemq-broker.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/jms-activemq-lib.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/jms-activemq-lib.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api/jms-api.iml" />
