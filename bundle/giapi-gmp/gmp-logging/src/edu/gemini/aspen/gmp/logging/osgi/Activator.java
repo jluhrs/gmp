@@ -16,8 +16,7 @@ public class Activator implements BundleActivator {
 
     private JmsProviderTracker _providerTracker;
 
-    private BaseMessageConsumer _messageConsumer;
-
+    private final BaseMessageConsumer _messageConsumer;
 
     public Activator() {
 

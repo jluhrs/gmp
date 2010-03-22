@@ -24,7 +24,7 @@ public class LoggingListener implements MessageListener {
     /**
      * The log processor
      */
-    private LogProcessor _logProcessor;
+    private final LogProcessor _logProcessor;
 
     public LoggingListener(LogProcessor logProcessor) {
         _logProcessor = logProcessor;

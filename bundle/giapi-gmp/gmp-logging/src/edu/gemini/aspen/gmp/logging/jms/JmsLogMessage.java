@@ -15,9 +15,9 @@ import javax.jms.JMSException;
  */
 public class JmsLogMessage implements LogMessage {
 
-    private Severity _severity;
+    private final Severity _severity;
 
-    private String _message;
+    private final String _message;
 
     public JmsLogMessage(Message message) throws LoggingException {
 

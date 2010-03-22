@@ -5,7 +5,7 @@ import java.util.logging.Level;
 
 /**
  * The Default Log Processor simply takes the message and uses
- * the standard java logging infraestructure to log the information
+ * the standard java logging infrastructure to log the information
  * using the appropriate log level.
  */
 public class DefaultLogProcessor implements LogProcessor {
