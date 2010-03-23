@@ -23,6 +23,7 @@ public class Activator implements BundleActivator {
 
     private static final String TOPIC_PROP = "edu.gemini.aspen.gmp.statusservice.jms.destination";
     private static final String NAME_PROP =  "edu.gemini.aspen.gmp.statusservice.jms.name";
+    private static final String DEFAULT_NAME = "Status Service";
 
     private StatusHandlerTracker _statusHandlerTracker;
 
@@ -37,6 +38,9 @@ public class Activator implements BundleActivator {
         }
 
         String name = bundleContext.getProperty(NAME_PROP);
+        if (name == null) {
+            name = DEFAULT_NAME;
+        }
 
         LOG.info("Starting Status Consumer Service");
         _statusService = new StatusService();
