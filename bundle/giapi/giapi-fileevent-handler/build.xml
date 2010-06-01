@@ -4,7 +4,7 @@
     <import file="../build.xml"/>
 
     <path id="build.classpath.extra">
-        <pathelement path="../gmp-api/bin"/>
+        <pathelement path="../../giapi-gmp/gmp-api/bin"/>
         <!--<pathelement path="../giapi-obsevents/bin"/>-->
     </path>
 

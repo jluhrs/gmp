@@ -313,6 +313,7 @@
       <module fileurl="file://$PROJECT_DIR$/giapi-fileevents/giapi-fileevents.iml" filepath="$PROJECT_DIR$/giapi-fileevents/giapi-fileevents.iml" />
       <module fileurl="file://$PROJECT_DIR$/giapi-obsevent-handler/giapi-obsevent-handler.iml" filepath="$PROJECT_DIR$/giapi-obsevent-handler/giapi-obsevent-handler.iml" />
       <module fileurl="file://$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" filepath="$PROJECT_DIR$/giapi-obsevents/giapi-obsevents.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status/giapi-status.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status/giapi-status.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-api/gmp-api.iml" filepath="$PROJECT_DIR$/gmp-api/gmp-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-commands/gmp-commands.iml" filepath="$PROJECT_DIR$/gmp-commands/gmp-commands.iml" />
@@ -329,6 +330,7 @@
       <module fileurl="file://$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" filepath="$PROJECT_DIR$/gmp-tcs-context/gmp-tcs-context.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-tests/gmp-tests.iml" filepath="$PROJECT_DIR$/gmp-tests/gmp-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmp-util/gmp-util.iml" filepath="$PROJECT_DIR$/gmp-util/gmp-util.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/gpi-bean/gpi-bean.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/gpi-bean/gpi-bean.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/jms-activemq-broker.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker/jms-activemq-broker.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/jms-activemq-lib.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib/jms-activemq-lib.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider/jms-activemq-provider.iml" />
@@ -393,6 +395,33 @@
         <entry key="$PROJECT_DIR$">
           <value>
             <SvnBranchConfiguration />
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://sbfsvn01/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/branches" />
+                  <option value="http://sbfsvn01/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://sbfsvn01/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
           </value>
         </entry>
         <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib">
