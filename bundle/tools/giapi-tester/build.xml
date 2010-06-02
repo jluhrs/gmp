@@ -9,15 +9,15 @@
         <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
         <pathelement path="../../jms/jms-api/bin"/>
         <pathelement path="../../jms/jms-activemq-provider/bin"/>
-        <pathelement path="../../giapi-gmp/gmp-api/bin"/>
         <pathelement path="../../giapi-gmp/gmp-util/bin"/>
+        <pathelement path="../../giapi/giapi/bin"/>
         <pathelement path="../../giapi/giapi-obsevents/bin"/>
         <pathelement path="../../giapi/giapi-fileevents/bin"/>
         <pathelement path="../../giapi-gmp/gmp-status/bin"/>
     </path>
 
 	<!--<fileset id="jar.extra" dir="src" includes="**/*.txt"/>-->
-    <fileset id="jar.extra" dir="../../giapi-gmp/gmp-api/bin" includes="*"/>
+    <fileset id="jar.extra" dir="../../giapi/giapi/bin" includes="*"/>
 
 	<!-- This overrides what is in common.xml -->
 	<target name="-all" depends="-explode, -compile, -jar-src, -jar" if="ant.project.name"/>
@@ -31,8 +31,8 @@
         <copy todir="bin">
            <fileset dir="../../jms/jms-api/bin"/>
            <fileset dir="../../jms/jms-activemq-provider/bin"/>
-           <fileset dir="../../giapi-gmp/gmp-api/bin"/>
            <fileset dir="../../giapi-gmp/gmp-util/bin"/>
+           <fileset dir="../../giapi/giapi/bin"/>
            <fileset dir="../../giapi/giapi-obsevents/bin"/>
            <fileset dir="../../giapi/giapi-fileevents/bin"/>
            <fileset dir="../../giapi-gmp/gmp-status/bin"/>

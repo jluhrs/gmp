@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Bundle-Name: GMP API
+Bundle-Name: GIAPI
 Bundle-Classpath: .
-Bundle-Description: The GMP API Definition
+Bundle-Description: The GIAPI main interface
 Bundle-Vendor: Gemini 8m Observatories, HLDG
 Bundle-Version: 0.9.0
 Export-Package: edu.gemini.aspen.gmp.status,

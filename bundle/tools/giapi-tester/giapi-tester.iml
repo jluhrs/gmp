@@ -7,14 +7,13 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="gmp-api" />
-    <orderEntry type="module" module-name="gmp-commands-gateway" />
     <orderEntry type="module" module-name="gmp-util" />
     <orderEntry type="module" module-name="giapi-obsevents" />
     <orderEntry type="module" module-name="giapi-fileevents" />
     <orderEntry type="module" module-name="jms-api" />
     <orderEntry type="module" module-name="jms-activemq-provider" />
     <orderEntry type="module" module-name="gmp-status" />
+    <orderEntry type="module" module-name="gmp-status-gateway" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

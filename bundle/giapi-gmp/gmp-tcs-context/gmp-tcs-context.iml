@@ -29,7 +29,6 @@
     </orderEntry>
     <orderEntry type="module" module-name="jms-api" />
     <orderEntry type="module" module-name="gmp-util" />
-    <orderEntry type="module" module-name="gmp-api" />
     <orderEntry type="module" module-name="epics-service" />
     <orderEntry type="module-library">
       <library>
