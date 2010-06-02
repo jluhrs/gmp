@@ -2,9 +2,9 @@
 <module relativePaths="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-api">
-      <sourceFolder url="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-api/src" isTestSource="false" />
-      <sourceFolder url="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-api/src-test" isTestSource="true" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src-test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

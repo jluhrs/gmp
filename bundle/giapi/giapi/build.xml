@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="gmp-api" default="all" basedir=".">
+<project name="giapi" default="all" basedir=".">
     <import file="../build.xml"/>
 
     <!--<path id="build.classpath.extra">-->
