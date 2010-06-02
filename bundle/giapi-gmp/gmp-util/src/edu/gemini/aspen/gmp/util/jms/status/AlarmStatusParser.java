@@ -1,10 +1,10 @@
 package edu.gemini.aspen.gmp.util.jms.status;
 
-import edu.gemini.aspen.gmp.status.AlarmSeverity;
-import edu.gemini.aspen.gmp.status.AlarmCause;
-import edu.gemini.aspen.gmp.status.StatusItem;
-import edu.gemini.aspen.gmp.status.AlarmState;
-import edu.gemini.aspen.gmp.status.impl.AlarmStatus;
+import edu.gemini.aspen.giapi.status.AlarmSeverity;
+import edu.gemini.aspen.giapi.status.AlarmCause;
+import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.giapi.status.AlarmState;
+import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;

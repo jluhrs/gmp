@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.commands.osgi;
 
-import edu.gemini.aspen.gmp.commands.CommandSender;
-import edu.gemini.aspen.gmp.commands.CommandUpdater;
+import edu.gemini.aspen.giapi.commands.CommandSender;
+import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

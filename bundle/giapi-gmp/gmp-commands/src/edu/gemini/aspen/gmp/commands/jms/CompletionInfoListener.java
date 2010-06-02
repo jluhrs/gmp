@@ -3,8 +3,8 @@ package edu.gemini.aspen.gmp.commands.jms;
 
 import javax.jms.*;
 
-import edu.gemini.aspen.gmp.commands.CommandUpdater;
-import edu.gemini.aspen.gmp.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.CommandUpdater;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;

@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.util.jms;
 
-import edu.gemini.aspen.gmp.commands.*;
-import edu.gemini.aspen.gmp.status.StatusItem;
-import edu.gemini.aspen.gmp.status.StatusVisitor;
+import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.giapi.status.StatusVisitor;
 import edu.gemini.aspen.gmp.util.jms.status.StatusItemParser;
 import edu.gemini.aspen.gmp.util.jms.status.StatusSerializerVisitor;
 

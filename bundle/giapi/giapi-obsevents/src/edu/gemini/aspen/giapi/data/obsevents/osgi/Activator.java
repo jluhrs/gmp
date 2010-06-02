@@ -8,7 +8,7 @@ import org.osgi.util.tracker.ServiceTracker;
 
 import java.util.logging.Logger;
 
-import edu.gemini.aspen.gmp.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
 import edu.gemini.aspen.giapi.data.obsevents.ObservationEventHandlerComposite;
 import edu.gemini.aspen.giapi.data.obsevents.ObservationEventAction;

@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.statusservice;
 
-import edu.gemini.aspen.gmp.status.StatusHandler;
+import edu.gemini.aspen.giapi.status.StatusHandler;
 
 /**
  * Interface for services that will keep track of status handlers

@@ -3,9 +3,9 @@ Bundle-Activator: edu.gemini.aspen.gmp.servlet.osgi.Activator
 Bundle-Name: GMP Servlet
 Bundle-Classpath: .
 Bundle-Description: The GMP Servlet Interface
-Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Vendor: Gemini 8m Observatories, Software Group
 Bundle-Version: 1.1.0
-Import-Package: edu.gemini.aspen.gmp.commands,
+Import-Package: edu.gemini.aspen.giapi.commands,
  org.osgi.framework,
  org.osgi.service.http,
  javax.servlet,

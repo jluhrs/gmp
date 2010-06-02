@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.statusservice.core;
 
-import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.giapi.status.StatusItem;
 
 /**
  * This is an internal interface for services that will get a

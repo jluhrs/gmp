@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.commands.test;
 
 import edu.gemini.aspen.gmp.commands.model.RebootManager;
-import edu.gemini.aspen.gmp.commands.RebootArgument;
+import edu.gemini.aspen.giapi.commands.RebootArgument;
 
 /**
  * A dummy test reboot manager for testing purposes.

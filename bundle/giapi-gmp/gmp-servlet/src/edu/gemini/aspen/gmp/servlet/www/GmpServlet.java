@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.servlet.www;
 
-import edu.gemini.aspen.gmp.commands.*;
-import edu.gemini.aspen.gmp.commands.CommandSender;
+import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.commands.CommandSender;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

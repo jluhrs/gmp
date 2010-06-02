@@ -1,9 +1,9 @@
 package edu.gemini.aspen.giapi.data.obsevents.jms;
 
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
-import edu.gemini.aspen.gmp.data.ObservationEvent;
-import edu.gemini.aspen.gmp.data.Dataset;
-import edu.gemini.aspen.gmp.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.data.ObservationEvent;
+import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 
 import javax.jms.*;
 import java.util.logging.Logger;

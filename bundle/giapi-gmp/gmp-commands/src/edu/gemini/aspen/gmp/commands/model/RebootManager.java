@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.gmp.commands.RebootArgument;
+import edu.gemini.aspen.giapi.commands.RebootArgument;
 
 /**
  * Reboot Manager interface. This interfaces defines how to

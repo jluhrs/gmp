@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.gmp.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
 
 import java.util.Map;
 import java.util.Collections;

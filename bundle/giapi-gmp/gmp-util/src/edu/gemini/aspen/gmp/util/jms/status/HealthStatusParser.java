@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.util.jms.status;
 
-import edu.gemini.aspen.gmp.status.Health;
-import edu.gemini.aspen.gmp.status.StatusItem;
-import edu.gemini.aspen.gmp.status.impl.HealthStatus;
+import edu.gemini.aspen.giapi.status.Health;
+import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;

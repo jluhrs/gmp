@@ -2,7 +2,7 @@ package edu.gemini.aspen.giapi.data.fileevents.jms;
 
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
-import edu.gemini.aspen.gmp.data.Dataset;
+import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import org.apache.activemq.command.ActiveMQMapMessage;
 import org.apache.activemq.command.ActiveMQMessage;

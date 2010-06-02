@@ -1,10 +1,10 @@
 package edu.gemini.giapi.data.obsevent.handler.osgi;
 
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import edu.gemini.giapi.data.obsevent.handler.TestHandler;
-import edu.gemini.aspen.gmp.data.ObservationEventHandler;
 
 /**
  * 

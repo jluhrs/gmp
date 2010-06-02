@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.statusdb;
 
-import edu.gemini.aspen.gmp.status.StatusHandler;
-import edu.gemini.aspen.gmp.status.StatusItem;
-import edu.gemini.aspen.gmp.status.StatusDatabaseService;
+import edu.gemini.aspen.giapi.status.StatusHandler;
+import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.giapi.status.StatusDatabaseService;
 
 import java.util.concurrent.ConcurrentHashMap;
 

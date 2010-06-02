@@ -5,9 +5,9 @@ import org.junit.Before;
 import org.junit.After;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-import edu.gemini.aspen.gmp.data.ObservationEventHandler;
-import edu.gemini.aspen.gmp.data.ObservationEvent;
-import edu.gemini.aspen.gmp.data.Dataset;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.data.ObservationEvent;
+import edu.gemini.aspen.giapi.data.Dataset;
 
 import java.util.*;
 

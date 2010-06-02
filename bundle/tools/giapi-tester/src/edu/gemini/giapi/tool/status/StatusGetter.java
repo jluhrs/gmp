@@ -1,6 +1,6 @@
 package edu.gemini.giapi.tool.status;
 
-import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.giapi.tool.TesterException;
 import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;

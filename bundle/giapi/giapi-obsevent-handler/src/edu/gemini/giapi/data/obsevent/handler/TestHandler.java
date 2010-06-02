@@ -1,8 +1,8 @@
 package edu.gemini.giapi.data.obsevent.handler;
 
-import edu.gemini.aspen.gmp.data.ObservationEventHandler;
-import edu.gemini.aspen.gmp.data.ObservationEvent;
-import edu.gemini.aspen.gmp.data.Dataset;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.data.ObservationEvent;
+import edu.gemini.aspen.giapi.data.Dataset;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

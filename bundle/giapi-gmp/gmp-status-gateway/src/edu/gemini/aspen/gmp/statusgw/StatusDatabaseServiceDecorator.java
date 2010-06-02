@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.statusgw;
 
-import edu.gemini.aspen.gmp.status.StatusDatabaseService;
-import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.giapi.status.StatusDatabaseService;
+import edu.gemini.aspen.giapi.status.StatusItem;
 
 /**
  * This Status Database decorator simply allows having a long-lived

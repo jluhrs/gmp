@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
-import edu.gemini.aspen.gmp.commands.*;
+import edu.gemini.aspen.giapi.commands.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

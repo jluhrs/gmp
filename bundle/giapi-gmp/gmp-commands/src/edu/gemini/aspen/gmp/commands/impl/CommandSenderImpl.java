@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.impl;
 
-import edu.gemini.aspen.gmp.commands.*;
+import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;

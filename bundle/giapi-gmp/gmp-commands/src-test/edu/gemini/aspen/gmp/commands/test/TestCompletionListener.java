@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.test;
 
-import edu.gemini.aspen.gmp.commands.*;
+import edu.gemini.aspen.giapi.commands.*;
 
 
 /**

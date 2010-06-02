@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.commands.messaging;
 
-import edu.gemini.aspen.gmp.commands.ConfigPath;
-import edu.gemini.aspen.gmp.commands.Configuration;
-import edu.gemini.aspen.gmp.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.commands.ConfigPath;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;

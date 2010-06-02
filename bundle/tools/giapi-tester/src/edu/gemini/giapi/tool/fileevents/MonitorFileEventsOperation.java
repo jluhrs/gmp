@@ -2,7 +2,7 @@ package edu.gemini.giapi.tool.fileevents;
 
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 import edu.gemini.aspen.giapi.data.fileevents.jms.JmsFileEventsListener;
-import edu.gemini.aspen.gmp.data.Dataset;
+import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.MonitorFileEventsArgument;
 import edu.gemini.giapi.tool.parser.Argument;

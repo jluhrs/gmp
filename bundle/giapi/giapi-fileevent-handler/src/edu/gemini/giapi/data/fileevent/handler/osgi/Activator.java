@@ -4,8 +4,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import edu.gemini.giapi.data.fileevent.handler.TestHandler;
-import edu.gemini.aspen.gmp.data.AncillaryFileEventHandler;
-import edu.gemini.aspen.gmp.data.IntermediateFileEventHandler;
+import edu.gemini.aspen.giapi.data.AncillaryFileEventHandler;
+import edu.gemini.aspen.giapi.data.IntermediateFileEventHandler;
 
 /**
  * Simple activator class to advertise the handler in the OSGi framework

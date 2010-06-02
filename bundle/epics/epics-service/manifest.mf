@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-Activator: edu.gemini.epics.osgi.Activator
 Bundle-Name: EPICS Service
 Bundle-Description: Easy interface to watch EPICS values.
-Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Vendor: Gemini 8m Observatories, Software Group
 Bundle-Classpath: .,lib/jca-2.3.2.jar, lib/caj-1.1.5b.jar
 Bundle-Version: 0.2.0
 Export-Package: edu.gemini.epics

@@ -2,8 +2,8 @@ package edu.gemini.aspen.giapi.data.fileevents.jms;
 
 import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
-import edu.gemini.aspen.gmp.data.FileEvent;
-import edu.gemini.aspen.gmp.data.Dataset;
+import edu.gemini.aspen.giapi.data.FileEvent;
+import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 
 import javax.jms.MessageListener;

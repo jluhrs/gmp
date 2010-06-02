@@ -3,7 +3,7 @@ Bundle-Activator: edu.gemini.aspen.gmp.services.osgi.Activator
 Bundle-Classpath: ., lib/dom4j.jar
 Bundle-Name: GMP GIAPI Services
 Bundle-Description: Services provided by the GMP
-Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Vendor: Gemini 8m Observatories, Software Group
 Bundle-Version: 0.1.0
 Import-Package: edu.gemini.jms.api, 
  edu.gemini.aspen.gmp.util.jms,

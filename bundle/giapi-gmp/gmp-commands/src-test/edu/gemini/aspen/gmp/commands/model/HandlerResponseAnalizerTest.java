@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.gmp.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

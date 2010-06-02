@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.gmp.commands.*;
-import edu.gemini.aspen.gmp.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.Configuration;
-import edu.gemini.aspen.gmp.commands.CompletionListener;
+import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.CompletionListener;
 
 /**
  * Actions are used to keep track of sequence command progress.

@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.statusservice.core;
 
-import edu.gemini.aspen.gmp.status.StatusHandler;
-import edu.gemini.aspen.gmp.status.StatusItem;
+import edu.gemini.aspen.giapi.status.StatusHandler;
+import edu.gemini.aspen.giapi.status.StatusItem;
 
 import java.util.logging.Logger;
 import java.util.List;

@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.servlet.www;
 
-import edu.gemini.aspen.gmp.commands.Activity;
-import edu.gemini.aspen.gmp.commands.Configuration;
-import edu.gemini.aspen.gmp.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

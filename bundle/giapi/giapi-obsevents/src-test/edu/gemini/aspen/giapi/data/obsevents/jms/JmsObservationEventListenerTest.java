@@ -8,9 +8,9 @@ import static org.junit.Assert.*;
 import org.apache.activemq.command.ActiveMQMessage;
 
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
-import edu.gemini.aspen.gmp.data.ObservationEventHandler;
-import edu.gemini.aspen.gmp.data.ObservationEvent;
-import edu.gemini.aspen.gmp.data.Dataset;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.data.ObservationEvent;
+import edu.gemini.aspen.giapi.data.Dataset;
 
 import javax.jms.Message;
 import javax.jms.JMSException;

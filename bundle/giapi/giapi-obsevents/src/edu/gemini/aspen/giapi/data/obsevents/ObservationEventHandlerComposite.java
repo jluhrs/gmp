@@ -1,13 +1,13 @@
 package edu.gemini.aspen.giapi.data.obsevents;
 
-import edu.gemini.aspen.gmp.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 
 import java.util.Set;
 
 /**
  * This interface defines a composite for {@link ObservationEventHandler}s.
  * When an Observation Event occurs, the method
- * {@link #onObservationEvent(edu.gemini.aspen.gmp.data.ObservationEvent, edu.gemini.aspen.gmp.data.Dataset)}
+ * {@link #onObservationEvent(edu.gemini.aspen.giapi.data.ObservationEvent, edu.gemini.aspen.giapi.data.Dataset)}
  * will invoke all the registerd handlers, so they get and process the
  * received event.
  */

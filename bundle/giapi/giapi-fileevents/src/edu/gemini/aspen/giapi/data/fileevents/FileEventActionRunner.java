@@ -1,8 +1,8 @@
 package edu.gemini.aspen.giapi.data.fileevents;
 
-import edu.gemini.aspen.gmp.data.Dataset;
-import edu.gemini.aspen.gmp.data.AncillaryFileEventHandler;
-import edu.gemini.aspen.gmp.data.IntermediateFileEventHandler;
+import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.AncillaryFileEventHandler;
+import edu.gemini.aspen.giapi.data.IntermediateFileEventHandler;
 
 import java.util.List;
 import java.util.logging.Logger;

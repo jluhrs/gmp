@@ -11,8 +11,8 @@ import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 import edu.gemini.aspen.giapi.data.fileevents.jms.JmsFileEventsListener;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventActionRunner;
-import edu.gemini.aspen.gmp.data.IntermediateFileEventHandler;
-import edu.gemini.aspen.gmp.data.AncillaryFileEventHandler;
+import edu.gemini.aspen.giapi.data.IntermediateFileEventHandler;
+import edu.gemini.aspen.giapi.data.AncillaryFileEventHandler;
 
 import java.util.logging.Logger;
 

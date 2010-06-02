@@ -1,8 +1,8 @@
 package edu.gemini.aspen.giapi.data.obsevents;
 
-import edu.gemini.aspen.gmp.data.ObservationEvent;
-import edu.gemini.aspen.gmp.data.Dataset;
-import edu.gemini.aspen.gmp.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.data.ObservationEvent;
+import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -18,8 +18,8 @@ import java.util.Collections;
  * This is the action that is going to be executed whenever a new Observation
  * Event appears in the system. This action is implemented as an
  * {@link edu.gemini.aspen.giapi.data.obsevents.ObservationEventHandlerComposite}
- * allowing the registration of multipple handlers to be invoked whenever
- * a new {@link edu.gemini.aspen.gmp.data.ObservationEvent} is received.
+ * allowing the registration of multiple handlers to be invoked whenever
+ * a new {@link edu.gemini.aspen.giapi.data.ObservationEvent} is received.
  * <p/>
  * The registered handlers are invoked in their own threads, allowing parallel
  * execution of different handlers. This class also makes sure the events are

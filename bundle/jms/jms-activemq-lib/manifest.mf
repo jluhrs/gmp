@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-Name: ActiveMQ Libraries
 Bundle-Classpath: ., lib/commons-logging-1.1.jar, lib/activemq-core-5.3.0.jar
 Bundle-Description: ActiveMQ JMS Libraries
-Bundle-Vendor: Gemini 8m Observatories, HLDG
+Bundle-Vendor: Gemini 8m Observatories, Software Group
 Bundle-Version: 0.1.0
 Export-Package: org.apache.activemq,
  org.apache.activemq.broker,

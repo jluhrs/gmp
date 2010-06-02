@@ -1,6 +1,6 @@
 package edu.gemini.giapi.tool.arguments;
 
-import edu.gemini.aspen.gmp.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.giapi.tool.parser.AbstractArgument;
 import edu.gemini.giapi.tool.parser.Util;
 
