@@ -13,7 +13,7 @@
         <pathelement path="../../giapi/giapi/bin"/>
         <pathelement path="../../giapi/giapi-obsevents/bin"/>
         <pathelement path="../../giapi/giapi-fileevents/bin"/>
-        <pathelement path="../../giapi-gmp/gmp-status/bin"/>
+        <pathelement path="../../giapi/giapi-jms-status-service/bin"/>
     </path>
 
 	<!--<fileset id="jar.extra" dir="src" includes="**/*.txt"/>-->
@@ -35,7 +35,7 @@
            <fileset dir="../../giapi/giapi/bin"/>
            <fileset dir="../../giapi/giapi-obsevents/bin"/>
            <fileset dir="../../giapi/giapi-fileevents/bin"/>
-           <fileset dir="../../giapi-gmp/gmp-status/bin"/>
+           <fileset dir="../../giapi/giapi-jms-status-service/bin"/>
         </copy>
         <!--<delete dir="bin/META-INF"/>-->
     </target>

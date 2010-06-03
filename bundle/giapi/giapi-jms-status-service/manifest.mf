@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Activator: edu.gemini.aspen.gmp.statusservice.osgi.Activator
-Bundle-Name: GMP Status Service
-Bundle-Description: Status Service provider in the GMP
+Bundle-Name: GIAPI JMS Status Service
+Bundle-Description: The Status Service listen for Status Items via JMS and notifies registered Status Handlers
 Bundle-Vendor: Gemini 8m Observatories, Software Group
 Bundle-Version: 0.1.0
 Import-Package: edu.gemini.aspen.giapi.status,
