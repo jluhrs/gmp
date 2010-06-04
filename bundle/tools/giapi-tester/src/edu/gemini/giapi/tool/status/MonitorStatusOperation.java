@@ -2,7 +2,7 @@ package edu.gemini.giapi.tool.status;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.gmp.statusservice.jms.JmsStatusListener;
+import edu.gemini.aspen.giapi.statusservice.jms.JmsStatusListener;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
