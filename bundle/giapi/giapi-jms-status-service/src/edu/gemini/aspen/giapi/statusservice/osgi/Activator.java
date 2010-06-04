@@ -1,6 +1,6 @@
-package edu.gemini.aspen.gmp.statusservice.osgi;
+package edu.gemini.aspen.giapi.statusservice.osgi;
 
-import edu.gemini.aspen.gmp.statusservice.jms.JmsStatusListener;
+import edu.gemini.aspen.giapi.statusservice.jms.JmsStatusListener;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
@@ -10,7 +10,7 @@ import org.osgi.framework.BundleContext;
 
 import java.util.logging.Logger;
 
-import edu.gemini.aspen.gmp.statusservice.StatusService;
+import edu.gemini.aspen.giapi.statusservice.StatusService;
 
 /**
  * The OSGi Activator class for the Status Service
@@ -21,8 +21,8 @@ public class Activator implements BundleActivator {
 
     private JmsProviderTracker _jmsTracker;
 
-    private static final String TOPIC_PROP = "edu.gemini.aspen.gmp.statusservice.jms.destination";
-    private static final String NAME_PROP =  "edu.gemini.aspen.gmp.statusservice.jms.name";
+    private static final String TOPIC_PROP = "edu.gemini.aspen.giapi.statusservice.jms.destination";
+    private static final String NAME_PROP =  "edu.gemini.aspen.giapi.statusservice.jms.name";
     private static final String DEFAULT_NAME = "Status Service";
 
     private StatusHandlerTracker _statusHandlerTracker;

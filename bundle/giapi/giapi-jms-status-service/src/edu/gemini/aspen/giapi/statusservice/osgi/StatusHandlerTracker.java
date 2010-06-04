@@ -1,7 +1,7 @@
-package edu.gemini.aspen.gmp.statusservice.osgi;
+package edu.gemini.aspen.giapi.statusservice.osgi;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
-import edu.gemini.aspen.gmp.statusservice.StatusHandlerRegister;
+import edu.gemini.aspen.giapi.statusservice.StatusHandlerRegister;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
