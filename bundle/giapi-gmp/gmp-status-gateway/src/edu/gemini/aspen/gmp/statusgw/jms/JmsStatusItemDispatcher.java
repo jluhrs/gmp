@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.statusgw.jms;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
+import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
 import edu.gemini.jms.api.BaseMessageProducer;
 
 import javax.jms.Destination;
@@ -21,7 +21,7 @@ public class JmsStatusItemDispatcher extends BaseMessageProducer {
      * Sends a status item via JMS
      */
     public void send(StatusItem item, Destination destination) throws JMSException {
-        Message replyMessage = GmpJmsUtil.buildStatusItemMessage(_session, item);
+        Message replyMessage = MessageBuilder.buildStatusItemMessage(_session, item);
         _producer.send(destination, replyMessage);
     }
 

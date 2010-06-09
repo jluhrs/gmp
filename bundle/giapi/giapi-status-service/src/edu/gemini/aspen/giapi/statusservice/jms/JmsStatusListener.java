@@ -3,7 +3,7 @@ package edu.gemini.aspen.giapi.statusservice.jms;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
-import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
+import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -28,7 +28,7 @@ public class JmsStatusListener implements MessageListener {
     public void onMessage(Message message) {
         try {
             //reconstruct the StatusItem from the JMS Message
-            StatusItem item = GmpJmsUtil.buildStatusItem(message);
+            StatusItem item = MessageBuilder.buildStatusItem(message);
             if (item != null) {
                 _updater.update(item);
             }

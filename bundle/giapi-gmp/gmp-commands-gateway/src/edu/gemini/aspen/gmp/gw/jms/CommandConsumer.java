@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.gw.jms;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
+import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.JmsProvider;
 
@@ -92,7 +92,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
         //which happens for very fast handlers. 
         try {
             MessageProducer producer = _session.createProducer(destination);
-            Message reply = GmpJmsUtil.buildHandlerResponseMessage(_session, response);
+            Message reply = MessageBuilder.buildHandlerResponseMessage(_session, response);
             producer.send(reply);
             producer.close();
         } catch (InvalidDestinationException e) {

@@ -1,8 +1,8 @@
 package edu.gemini.giapi.tool.status;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
 import edu.gemini.giapi.tool.TesterException;
-import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.BaseMessageProducer;
 import edu.gemini.jms.api.DestinationData;
@@ -38,7 +38,7 @@ public class StatusGetter extends BaseMessageProducer {
 
             tempConsumer.close();
 
-            return GmpJmsUtil.buildStatusItem(reply);
+            return MessageBuilder.buildStatusItem(reply);
         } catch (JMSException e) {
             throw new TesterException(e);
         }

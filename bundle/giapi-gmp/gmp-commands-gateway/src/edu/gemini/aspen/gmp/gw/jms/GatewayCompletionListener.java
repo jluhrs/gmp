@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.gw.jms;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
+import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
 
 import javax.jms.*;
 import javax.jms.IllegalStateException;
@@ -35,7 +35,7 @@ public class GatewayCompletionListener implements CompletionListener {
                     config
             );
 
-            Message reply = GmpJmsUtil.buildCompletionInformationMessage(_session, info);
+            Message reply = MessageBuilder.buildCompletionInformationMessage(_session, info);
             producer.send(reply);
             producer.close();
         } catch (InvalidDestinationException ex) {

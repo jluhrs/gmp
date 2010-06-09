@@ -3,7 +3,7 @@ package edu.gemini.giapi.tool.commands;
 import javax.jms.*;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.util.jms.GmpJmsUtil;
+import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
 import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.giapi.tool.jms.BrokerConnection;
 import edu.gemini.giapi.tool.TesterException;
@@ -64,12 +64,12 @@ public class CommandSender {
             //contained in the completion information
             if (reply.getString(GmpKeys.GMP_HANDLER_RESPONSE_KEY) != null) {
                 //is a Handler Response message, normal case
-                return GmpJmsUtil.buildHandlerResponse(reply);
+                return MessageBuilder.buildHandlerResponse(reply);
             } else {
                 //it's a completion listener message, this means the
                 //completion info finished before the actual send call. Extract the Handler
                 //out of it.
-                CompletionInformation info = GmpJmsUtil.buildCompletionInformation(reply);
+                CompletionInformation info = MessageBuilder.buildCompletionInformation(reply);
                 return info.getHandlerResponse();
             }
         } catch (JMSException e) {
@@ -87,7 +87,7 @@ public class CommandSender {
             if (m == null) {
                 throw new TesterException("Timed out while waiting for completion information");
             }
-            return GmpJmsUtil.buildCompletionInformation(m);
+            return MessageBuilder.buildCompletionInformation(m);
         } catch (JMSException e) {
             throw new TesterException(e);
         }

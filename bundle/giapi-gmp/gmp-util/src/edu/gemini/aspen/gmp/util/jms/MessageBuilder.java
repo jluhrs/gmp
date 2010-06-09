@@ -13,11 +13,11 @@ import java.util.logging.Level;
 
 /**
  * Collection of utility methods that will help to transform from JMS messages
- * to GMP data structures and viceversa
+ * to GIAPI data structures and vice versa
  */
-public class GmpJmsUtil {
+public class MessageBuilder {
 
-    private static final Logger LOG = Logger.getLogger(GmpJmsUtil.class.getName());
+    private static final Logger LOG = Logger.getLogger(MessageBuilder.class.getName());
 
     public static HandlerResponse buildHandlerResponse(Message m) throws JMSException {
 
