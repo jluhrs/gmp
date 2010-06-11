@@ -1,16 +1,11 @@
 package edu.gemini.aspen.giapi.statusservice.osgi;
 
-import edu.gemini.aspen.giapi.statusservice.jms.JmsStatusListener;
-import edu.gemini.jms.api.BaseMessageConsumer;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
+import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.jms.api.osgi.JmsProviderTracker;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import java.util.logging.Logger;
-
-import edu.gemini.aspen.giapi.statusservice.StatusService;
 
 /**
  * The OSGi Activator class for the Status Service
@@ -21,43 +16,28 @@ public class Activator implements BundleActivator {
 
     private JmsProviderTracker _jmsTracker;
 
-    private static final String TOPIC_PROP = "edu.gemini.aspen.giapi.statusservice.jms.destination";
+    private static final String STATUS_PROP = "edu.gemini.aspen.giapi.statusservice.jms.status";
     private static final String NAME_PROP =  "edu.gemini.aspen.giapi.statusservice.jms.name";
-    private static final String DEFAULT_NAME = "Status Service";
-
-    private StatusHandlerTracker _statusHandlerTracker;
 
     private StatusService _statusService;
 
+    private StatusHandlerTracker _statusHandlerTracker;
+
     public void start(BundleContext bundleContext) throws Exception {
 
-        String destination = bundleContext.getProperty(TOPIC_PROP);
-
-        if (destination == null) {
-            destination = JmsStatusListener.TOPIC_NAME;
-        }
+        String statusName = bundleContext.getProperty(STATUS_PROP);
 
         String name = bundleContext.getProperty(NAME_PROP);
-        if (name == null) {
-            name = DEFAULT_NAME;
-        }
 
-        LOG.info("Starting Status Consumer Service");
-        _statusService = new StatusService();
+        _statusService = new StatusService(name, statusName);
 
-        BaseMessageConsumer consumer = new BaseMessageConsumer(
-                name,
-                new DestinationData(destination,
-                        DestinationType.TOPIC),
-                new JmsStatusListener(_statusService)
-        );
-
-
+        //start tracking for a JMS provider, register the JMS artifact
         _jmsTracker = new JmsProviderTracker(bundleContext, name);
-        _jmsTracker.registerJmsArtifact(consumer);
+        _jmsTracker.registerJmsArtifact(_statusService.getJmsArtifact());
         _jmsTracker.open();
 
-        _statusHandlerTracker = new StatusHandlerTracker(bundleContext, _statusService);
+        //start tracking status handlers
+        _statusHandlerTracker = new StatusHandlerTracker(bundleContext, _statusService.getStatusHandlerRegister());
         _statusHandlerTracker.open();
 
 
@@ -72,8 +52,7 @@ public class Activator implements BundleActivator {
         _statusHandlerTracker.close();
         _statusHandlerTracker = null;
 
-        _statusService.shutdown();
+        _statusService.removeRegisteredHandlers();
         _statusService = null;
-        
     }
 }

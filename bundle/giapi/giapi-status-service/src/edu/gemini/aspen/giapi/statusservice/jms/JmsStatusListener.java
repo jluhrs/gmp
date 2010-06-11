@@ -2,7 +2,6 @@ package edu.gemini.aspen.giapi.statusservice.jms;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 
 import javax.jms.*;
@@ -15,8 +14,6 @@ import java.util.logging.Level;
 public class JmsStatusListener implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(JmsStatusListener.class.getName());
-
-    public static final String TOPIC_NAME = JmsKeys.GMP_STATUS_DESTINATION_PREFIX + ">"; //defaults to listen for all the status items.
 
     private final StatusHandler _updater;
 

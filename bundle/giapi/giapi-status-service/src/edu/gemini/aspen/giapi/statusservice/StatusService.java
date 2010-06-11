@@ -1,56 +1,48 @@
 package edu.gemini.aspen.giapi.statusservice;
 
-import edu.gemini.aspen.giapi.status.StatusHandler;
-import edu.gemini.aspen.giapi.status.StatusItem;
-
-import java.util.logging.Logger;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import edu.gemini.aspen.giapi.statusservice.jms.JmsStatusListener;
+import edu.gemini.aspen.giapi.statusservice.jms.StatusConsumer;
+import edu.gemini.jms.api.BaseJmsArtifact;
 
 /**
- * The Status Service main bundle class. Acts as a register for status handlers
- * and also as a receiver of updates when status items are updated. It will
- * notify the Status Handlers registered in such a case.
+ * The main class for the status service.
  */
-public class StatusService implements StatusHandler, StatusHandlerRegister {
+public class StatusService {
 
-    private static final Logger LOG = Logger.getLogger(StatusService.class.getName());
+    private final StatusHandlerManager _manager;
 
-    private final List<StatusHandler> _statusHandlers = new CopyOnWriteArrayList<StatusHandler>();
-    private static final String STATUS_SERVICE_NAME = "Status Service Handler";
+    private final StatusConsumer _consumer;
 
-    public StatusService() {
+    private static final String DEFAULT_STATUS = ">"; //defaults to listen for all the status items.
 
-    }
 
-    public String getName() {
-        return STATUS_SERVICE_NAME;
-    }
+    public StatusService(String serviceName, String statusName) {
 
-    public void update(StatusItem item) {
-        for (StatusHandler handler: _statusHandlers) {
-            handler.update(item);
+        _manager = new StatusHandlerManager();
+
+        if (statusName == null) {
+            statusName = DEFAULT_STATUS;
         }
-    }
 
-    public void shutdown() {
-        LOG.info("Shutting down Status Service");
-        _removeAllHandlers();
-    }
+        if (serviceName == null) {
+            serviceName = _manager.getName();
+        }
 
-    public void addStatusHandler(StatusHandler handler) {
-        _statusHandlers.add(handler);
-        LOG.info("Status Handler Registered: " + handler);
-    }
-
-    public void removeStatusHandler(StatusHandler handler) {
-        _statusHandlers.remove(handler);
-        LOG.info("Removed Status Handler: " + handler);
+        _consumer = new StatusConsumer(serviceName, statusName);
+        _consumer.setMessageListener(new JmsStatusListener(_manager));
 
     }
 
-
-    private void _removeAllHandlers() {
-        _statusHandlers.clear();
+    public StatusHandlerRegister getStatusHandlerRegister() {
+        return _manager;
     }
+
+    public BaseJmsArtifact getJmsArtifact() {
+        return _consumer;
+    }
+
+    public void removeRegisteredHandlers() {
+        _manager.removeAllHandlers();
+    }
+
 }

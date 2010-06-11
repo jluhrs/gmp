@@ -20,7 +20,7 @@ gmp.epics.simulation.conf=/data/daoinsw/tools/giapi/gmp/gmp-server/conf/simulate
 #edu.gemini.jms.activemq.broker.deleteonstartup = true
 
 #Status Service configuration
-#edu.gemini.aspen.giapi.statusservice.jms.destination=GMP.STATUS.>
+#edu.gemini.aspen.giapi.statusservice.jms.destination = >
 edu.gemini.aspen.giapi.statusservice.jms.name=GMP Status Service
                                       
 

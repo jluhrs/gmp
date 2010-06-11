@@ -2,16 +2,12 @@ package edu.gemini.giapi.tool.status;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.giapi.statusservice.jms.JmsStatusListener;
-import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.arguments.MonitorStatusArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
-import edu.gemini.jms.api.BaseMessageConsumer;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
@@ -58,14 +54,9 @@ public class MonitorStatusOperation implements Operation {
 
         StatusMonitor monitor = new StatusMonitor();
 
-        JmsStatusListener listener = new JmsStatusListener(monitor);
 
-        BaseMessageConsumer consumer = new BaseMessageConsumer(
-                "Status Test Client",
-                new DestinationData(JmsKeys.GMP_STATUS_DESTINATION_PREFIX + _statusName,
-                        DestinationType.TOPIC),
-                listener
-        );
+        StatusService service = new StatusService("Status Test Client", _statusName);
+        service.getStatusHandlerRegister().addStatusHandler(monitor);
 
         try {
             
@@ -77,7 +68,7 @@ public class MonitorStatusOperation implements Operation {
 
             getter.stopJms();
 
-            consumer.startJms(provider);
+            service.getJmsArtifact().startJms(provider);
             
         } catch (JMSException e) {
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());

@@ -14,8 +14,22 @@ public class BaseMessageConsumer extends BaseJmsArtifact {
     private MessageListener _listener;
 
 
+    public BaseMessageConsumer(String clientName, DestinationData data) {
+        super(data, clientName);
+    }
+
     public BaseMessageConsumer(String clientName, DestinationData data, MessageListener listener) {
         super(data, clientName);
+        _listener = listener;
+    }
+
+    /**
+     * Set the listener this consumer will invoke. This method must be called
+     * before the invocation of startJms();
+     * The listener will replace any listener during construction.
+     * @param listener listener to use by this consumer
+     */
+    public void setMessageListener(MessageListener listener) {
         _listener = listener;
     }
 

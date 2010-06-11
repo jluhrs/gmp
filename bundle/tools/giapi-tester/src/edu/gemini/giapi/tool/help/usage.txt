@@ -153,8 +153,8 @@ EXAMPLES
         java -jar giapi-tester.jar -sc PARK -activity START
              -h walle.cl.gemini.edu
 
-    You can monitor for changes any value using the -monitor option. For
-    instance:
+    You can monitor for changes of any status item using the -monitor option.
+    For instance:
 
         java -jar giapi-tester.jar -monitor gpi:cc:filter.X
 
@@ -163,6 +163,18 @@ EXAMPLES
 
         Status value: StatusItem{name='gpi:cc:filter.X', value=9}
         Status value: StatusItem{name='gpi:cc:filter.X', value=10}
+        ...
+
+    You can also monitor all the status items being produced by the instrument
+    by using the ">" wildcard
+    For instance:
+
+        java -jar giapi-tester.jar -monitor ">"
+
+        Status value: StatusItem{name='gpi:status1', value=99990}
+        Status value: StatusItem{name='gpi:status2', value=10}
+        Status value: StatusItem{name='gpi:status1', value=99991}
+        Status value: StatusItem{name='gpi:status2', value=9}
         ...
 
     In addition, you can use the giapi-tester application to get the most
