@@ -10,7 +10,7 @@
         <pathelement path="../../jms/jms-api/bin"/>
         <pathelement path="../../jms/jms-activemq-provider/bin"/>
         <pathelement path="../../giapi/giapi/bin"/>
-        <pathelement path="../../giapi/giapi-util/bin"/>
+        <pathelement path="../../giapi/giapi-jms-util/bin"/>
         <pathelement path="../../giapi/giapi-obsevents/bin"/>
         <pathelement path="../../giapi/giapi-fileevents/bin"/>
         <pathelement path="../../giapi/giapi-status-service/bin"/>
@@ -32,7 +32,7 @@
            <fileset dir="../../jms/jms-api/bin"/>
            <fileset dir="../../jms/jms-activemq-provider/bin"/>
            <fileset dir="../../giapi/giapi/bin"/>
-           <fileset dir="../../giapi/giapi-util/bin"/>
+           <fileset dir="../../giapi/giapi-jms-util/bin"/>
            <fileset dir="../../giapi/giapi-obsevents/bin"/>
            <fileset dir="../../giapi/giapi-fileevents/bin"/>
            <fileset dir="../../giapi/giapi-status-service/bin"/>
