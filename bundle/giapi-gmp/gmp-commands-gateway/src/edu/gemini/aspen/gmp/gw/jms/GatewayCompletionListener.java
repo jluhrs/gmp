@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.gw.jms;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
+import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 
 import javax.jms.*;
 import javax.jms.IllegalStateException;

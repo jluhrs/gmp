@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.services.jms;
 
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.aspen.gmp.services.core.*;
 
 import javax.jms.*;
@@ -35,7 +35,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
                     Session.AUTO_ACKNOWLEDGE);
             //Completion info comes from a queue
             Destination destination = _session.createQueue(
-                    GmpKeys.GMP_UTIL_REQUEST_DESTINATION);
+                    JmsKeys.GMP_UTIL_REQUEST_DESTINATION);
             _consumer = _session.createConsumer(destination);
             _consumer.setMessageListener(this);
 
@@ -83,10 +83,10 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
             if (message instanceof MapMessage) {
                 MapMessage mm = (MapMessage) message;
 
-                int requestType = mm.getIntProperty(GmpKeys.GMP_UTIL_REQUEST_TYPE);
+                int requestType = mm.getIntProperty(JmsKeys.GMP_UTIL_REQUEST_TYPE);
 
                 switch (requestType) {
-                    case GmpKeys.GMP_UTIL_REQUEST_PROPERTY:
+                    case JmsKeys.GMP_UTIL_REQUEST_PROPERTY:
                         _serviceProcessor.process(ServiceType.PROPERTY_SERVICE, new JmsServiceRequest(mm));
                         break;
 

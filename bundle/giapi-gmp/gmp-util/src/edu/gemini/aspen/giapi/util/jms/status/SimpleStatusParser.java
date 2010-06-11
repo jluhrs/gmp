@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.util.jms.status;
+package edu.gemini.aspen.giapi.util.jms.status;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;

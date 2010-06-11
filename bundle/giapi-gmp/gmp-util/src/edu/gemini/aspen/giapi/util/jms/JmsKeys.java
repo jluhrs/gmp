@@ -1,9 +1,9 @@
-package edu.gemini.aspen.gmp.util.jms;
+package edu.gemini.aspen.giapi.util.jms;
 
 /**
  *
  */
-public class GmpKeys {
+public class JmsKeys {
 
     //Common keys
     public final static String GMP_PREFIX  = "GMP";

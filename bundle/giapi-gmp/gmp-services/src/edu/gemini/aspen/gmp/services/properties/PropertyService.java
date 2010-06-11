@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.services.properties;
 import edu.gemini.aspen.gmp.services.core.*;
 import edu.gemini.aspen.gmp.services.jms.JmsService;
 import edu.gemini.aspen.gmp.services.jms.JmsServiceRequest;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -27,7 +27,7 @@ public class PropertyService extends JmsService {
         if (msg == null) return;
 
         try {
-            String key = msg.getString(GmpKeys.GMP_UTIL_PROPERTY);
+            String key = msg.getString(JmsKeys.GMP_UTIL_PROPERTY);
             String reply = _properties.getProperty(key);
 
             Destination destination = msg.getJMSReplyTo();

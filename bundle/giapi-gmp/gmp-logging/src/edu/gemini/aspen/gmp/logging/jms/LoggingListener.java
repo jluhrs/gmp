@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.logging.jms;
 
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.logging.LogMessage;
 import edu.gemini.aspen.gmp.logging.LogProcessor;
 import edu.gemini.aspen.gmp.logging.LoggingException;
@@ -19,7 +19,7 @@ public class LoggingListener implements MessageListener {
     /**
      * The destination from where the messages will come from
      */
-    public static final String DESTINATION_NAME = GmpKeys.GMP_SERVICES_LOG_DESTINATION;
+    public static final String DESTINATION_NAME = JmsKeys.GMP_SERVICES_LOG_DESTINATION;
 
     /**
      * The log processor

@@ -3,8 +3,8 @@ package edu.gemini.aspen.gmp.gw.jms;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.*;
@@ -40,7 +40,7 @@ public class CommandConsumer implements ExceptionListener, MessageListener {
                     Session.AUTO_ACKNOWLEDGE);
             //Commands come from a predefined topic
             Destination destination = _session.createTopic(
-                    GmpKeys.GW_COMMAND_TOPIC);
+                    JmsKeys.GW_COMMAND_TOPIC);
             _consumer = _session.createConsumer(destination);
             _consumer.setMessageListener(this);
             LOG.info("Gateway Command Consumer Started");

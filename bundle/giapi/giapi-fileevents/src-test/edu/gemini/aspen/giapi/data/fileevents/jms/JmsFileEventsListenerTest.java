@@ -3,7 +3,7 @@ package edu.gemini.aspen.giapi.data.fileevents.jms;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
 import edu.gemini.aspen.giapi.data.Dataset;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import org.apache.activemq.command.ActiveMQMapMessage;
 import org.apache.activemq.command.ActiveMQMessage;
 import org.junit.Before;
@@ -86,9 +86,9 @@ public class JmsFileEventsListenerTest {
         MapMessage message = new ActiveMQMapMessage();
         try {
             //type set to Ancillary Files
-            message.setIntProperty(GmpKeys.GMP_DATA_FILEEVENT_TYPE, 0);
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-1");
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_FILENAME, "filename-1");
+            message.setIntProperty(JmsKeys.GMP_DATA_FILEEVENT_TYPE, 0);
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-1");
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_FILENAME, "filename-1");
 
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
@@ -109,9 +109,9 @@ public class JmsFileEventsListenerTest {
         MapMessage message = new ActiveMQMapMessage();
         try {
             //type set to Intermediate Files
-            message.setIntProperty(GmpKeys.GMP_DATA_FILEEVENT_TYPE, 1);
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-2");
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_FILENAME, "filename-2");
+            message.setIntProperty(JmsKeys.GMP_DATA_FILEEVENT_TYPE, 1);
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-2");
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_FILENAME, "filename-2");
 
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
@@ -133,10 +133,10 @@ public class JmsFileEventsListenerTest {
         MapMessage message = new ActiveMQMapMessage();
         try {
             //type set to Intermediate Files
-            message.setIntProperty(GmpKeys.GMP_DATA_FILEEVENT_TYPE, 1);
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-3");
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_FILENAME, "filename-3");
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_HINT, "hint-1");
+            message.setIntProperty(JmsKeys.GMP_DATA_FILEEVENT_TYPE, 1);
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-3");
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_FILENAME, "filename-3");
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_HINT, "hint-1");
 
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
@@ -158,8 +158,8 @@ public class JmsFileEventsListenerTest {
         MapMessage message = new ActiveMQMapMessage();
         try {
             //type set to Ancillary Files
-            message.setIntProperty(GmpKeys.GMP_DATA_FILEEVENT_TYPE, 0);
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-4");
+            message.setIntProperty(JmsKeys.GMP_DATA_FILEEVENT_TYPE, 0);
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-4");
 
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
@@ -174,7 +174,7 @@ public class JmsFileEventsListenerTest {
         MapMessage message = new ActiveMQMapMessage();
         try {
             //type set to Ancillary Files
-            message.setIntProperty(GmpKeys.GMP_DATA_FILEEVENT_TYPE, 0);
+            message.setIntProperty(JmsKeys.GMP_DATA_FILEEVENT_TYPE, 0);
 
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
@@ -190,9 +190,9 @@ public class JmsFileEventsListenerTest {
         MapMessage message = new ActiveMQMapMessage();
         try {
             //type set to a wrong type
-            message.setIntProperty(GmpKeys.GMP_DATA_FILEEVENT_TYPE, 3);
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-1");
-            message.setString(GmpKeys.GMP_DATA_FILEEVENT_FILENAME, "filename-1");
+            message.setIntProperty(JmsKeys.GMP_DATA_FILEEVENT_TYPE, 3);
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_DATALABEL, "datalabel-1");
+            message.setString(JmsKeys.GMP_DATA_FILEEVENT_FILENAME, "filename-1");
 
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
@@ -207,7 +207,7 @@ public class JmsFileEventsListenerTest {
         Message message = new ActiveMQMessage();
         try {
             //type set to Intermediate Files
-            message.setIntProperty(GmpKeys.GMP_DATA_FILEEVENT_TYPE, 1);
+            message.setIntProperty(JmsKeys.GMP_DATA_FILEEVENT_TYPE, 1);
 
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");

@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.pcs.jms;
 
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdater;
@@ -24,7 +24,7 @@ public class PcsUpdateListener implements MessageListener {
     /**
      * The destination name from where we receive PCS Updates messages
      */
-    public static final String DESTINATION_NAME = GmpKeys.GMP_PCS_UPDATE_DESTINATION;
+    public static final String DESTINATION_NAME = JmsKeys.GMP_PCS_UPDATE_DESTINATION;
 
     /**
      * Object that will process the updates.

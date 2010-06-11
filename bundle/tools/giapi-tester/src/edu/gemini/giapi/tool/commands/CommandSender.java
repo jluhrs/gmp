@@ -3,8 +3,8 @@ package edu.gemini.giapi.tool.commands;
 import javax.jms.*;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.giapi.tool.jms.BrokerConnection;
 import edu.gemini.giapi.tool.TesterException;
 
@@ -25,7 +25,7 @@ public class CommandSender {
     public CommandSender(BrokerConnection connection) throws TesterException {
         try {
             _session = connection.getSession();
-            _destination = _session.createTopic(GmpKeys.GW_COMMAND_TOPIC);
+            _destination = _session.createTopic(JmsKeys.GW_COMMAND_TOPIC);
             _producer = _session.createProducer(_destination);
             _replyQueue = _session.createTemporaryQueue();
             _replyConsumer = _session.createConsumer(_replyQueue);
@@ -42,8 +42,8 @@ public class CommandSender {
                      ) throws TesterException {
         try {
             MapMessage m = _session.createMapMessage();
-            m.setStringProperty(GmpKeys.GMP_SEQUENCE_COMMAND_KEY, command.name());
-            m.setStringProperty(GmpKeys.GMP_ACTIVITY_KEY, activity.name());
+            m.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, command.name());
+            m.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, activity.name());
 
             if (config != null && config.getKeys() != null) {
                 for (ConfigPath path : config.getKeys()) {
@@ -62,7 +62,7 @@ public class CommandSender {
             //receiving a handler response, we get completion information.
             //In such case, we return the handler response that is
             //contained in the completion information
-            if (reply.getString(GmpKeys.GMP_HANDLER_RESPONSE_KEY) != null) {
+            if (reply.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY) != null) {
                 //is a Handler Response message, normal case
                 return MessageBuilder.buildHandlerResponse(reply);
             } else {

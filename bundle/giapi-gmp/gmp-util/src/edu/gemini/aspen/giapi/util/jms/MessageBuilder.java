@@ -1,10 +1,10 @@
-package edu.gemini.aspen.gmp.util.jms;
+package edu.gemini.aspen.giapi.util.jms;
 
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.StatusVisitor;
-import edu.gemini.aspen.gmp.util.jms.status.StatusItemParser;
-import edu.gemini.aspen.gmp.util.jms.status.StatusSerializerVisitor;
+import edu.gemini.aspen.giapi.util.jms.status.StatusItemParser;
+import edu.gemini.aspen.giapi.util.jms.status.StatusSerializerVisitor;
 
 import javax.jms.*;
 import java.util.Enumeration;
@@ -26,7 +26,7 @@ public class MessageBuilder {
 
         MapMessage msg = (MapMessage) m;
 
-        String responseType = msg.getString(GmpKeys.GMP_HANDLER_RESPONSE_KEY);
+        String responseType = msg.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY);
         HandlerResponse.Response response;
         try {
             response = HandlerResponse.Response.valueOf(responseType);
@@ -36,7 +36,7 @@ public class MessageBuilder {
 
         if (response != null) {
             if (response == HandlerResponse.Response.ERROR) {
-                String errorMsg = msg.getString(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
+                String errorMsg = msg.getString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
                 return HandlerResponse.createError(errorMsg);
             }
             return HandlerResponse.get(response);
@@ -48,11 +48,11 @@ public class MessageBuilder {
         MapMessage message = session.createMapMessage();
 
         //fill in the message
-        message.setString(GmpKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
+        message.setString(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
 
         if (response.getResponse() == HandlerResponse.Response.ERROR) {
             if (response.getMessage() != null) {
-                message.setString(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
+                message.setString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
             }
         }
         return message;
@@ -64,22 +64,22 @@ public class MessageBuilder {
 
         HandlerResponse response = info.getHandlerResponse();
         if (response != null) {
-            reply.setStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
+            reply.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
             if (response.getResponse() == HandlerResponse.Response.ERROR) {
                 if (response.getMessage() != null) {
-                    reply.setStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
+                    reply.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
                 }
             }
         }
 
         SequenceCommand command = info.getSequenceCommand();
         if (command != null) {
-            reply.setStringProperty(GmpKeys.GMP_SEQUENCE_COMMAND_KEY, command.name());
+            reply.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, command.name());
         }
 
         Activity activity = info.getActivity();
         if (activity != null) {
-            reply.setStringProperty(GmpKeys.GMP_ACTIVITY_KEY, activity.name());
+            reply.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, activity.name());
         }
 
         Configuration config = info.getConfiguration();
@@ -101,7 +101,7 @@ public class MessageBuilder {
         MapMessage msg = (MapMessage) m;
 
         //get the Handler Response.
-        String key = msg.getStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_KEY);
+        String key = msg.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY);
         HandlerResponse handlerResponse = null;
         if (key != null) {
             HandlerResponse.Response response;
@@ -112,7 +112,7 @@ public class MessageBuilder {
             }
 
             if (response == HandlerResponse.Response.ERROR) {
-                String errMsg = msg.getStringProperty(GmpKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
+                String errMsg = msg.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
                 handlerResponse = HandlerResponse.createError(errMsg);
             } else {
                 handlerResponse = HandlerResponse.get(response);
@@ -121,7 +121,7 @@ public class MessageBuilder {
 
         //get the sequence command
         SequenceCommand sc = null;
-        key = msg.getStringProperty(GmpKeys.GMP_SEQUENCE_COMMAND_KEY);
+        key = msg.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY);
         if (key != null) {
             try {
                 sc = SequenceCommand.valueOf(key);
@@ -132,7 +132,7 @@ public class MessageBuilder {
 
         //get the activity
         Activity activity = null;
-        key = msg.getStringProperty(GmpKeys.GMP_ACTIVITY_KEY);
+        key = msg.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY);
         if (key != null) {
             try {
                 activity = Activity.valueOf(key);

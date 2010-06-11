@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.epics.jms;
 
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
 
 import javax.jms.*;
@@ -36,7 +36,7 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
                     Session.AUTO_ACKNOWLEDGE);
             //Requests come from a queue
             Destination destination = _session.createQueue(
-                    GmpKeys.GMP_GEMINI_EPICS_REQUEST_DESTINATION);
+                    JmsKeys.GMP_GEMINI_EPICS_REQUEST_DESTINATION);
             _consumer = _session.createConsumer(destination);
             _consumer.setMessageListener(this);
 
@@ -53,7 +53,7 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
         try {
             //let's see if it contains a valid request
             
-            boolean isEpicsRequest = message.getBooleanProperty(GmpKeys.GMP_GEMINI_EPICS_CHANNEL_PROPERTY);
+            boolean isEpicsRequest = message.getBooleanProperty(JmsKeys.GMP_GEMINI_EPICS_CHANNEL_PROPERTY);
 
             if (!isEpicsRequest) return;
 

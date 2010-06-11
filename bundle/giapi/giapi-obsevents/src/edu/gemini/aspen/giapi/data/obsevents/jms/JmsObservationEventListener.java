@@ -1,6 +1,6 @@
 package edu.gemini.aspen.giapi.data.obsevents.jms;
 
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class JmsObservationEventListener implements MessageListener {
 
-    public static final String TOPIC_NAME = GmpKeys.GMP_DATA_OBSEVENT_DESTINATION;
+    public static final String TOPIC_NAME = JmsKeys.GMP_DATA_OBSEVENT_DESTINATION;
 
     private static final Logger LOG = Logger.getLogger(JmsObservationEventListener.class.getName());
 
@@ -29,8 +29,8 @@ public class JmsObservationEventListener implements MessageListener {
         if (m == null) LOG.warning("A null message was received through the observation event channel");
 
         try {
-            String type = m.getStringProperty(GmpKeys.GMP_DATA_OBSEVENT_NAME);
-            String file = m.getStringProperty(GmpKeys.GMP_DATA_OBSEVENT_FILENAME);
+            String type = m.getStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME);
+            String file = m.getStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME);
             ObservationEvent obsEvent = ObservationEvent.getObservationEvent(type);
             Dataset dataset = new Dataset(file);
             _action.onObservationEvent(obsEvent, dataset);

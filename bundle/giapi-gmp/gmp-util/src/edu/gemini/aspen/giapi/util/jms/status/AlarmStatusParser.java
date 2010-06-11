@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.util.jms.status;
+package edu.gemini.aspen.giapi.util.jms.status;
 
 import edu.gemini.aspen.giapi.status.AlarmSeverity;
 import edu.gemini.aspen.giapi.status.AlarmCause;

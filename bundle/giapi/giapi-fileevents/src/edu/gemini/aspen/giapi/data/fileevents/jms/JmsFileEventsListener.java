@@ -1,7 +1,7 @@
 package edu.gemini.aspen.giapi.data.fileevents.jms;
 
 import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.data.FileEvent;
 import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class JmsFileEventsListener implements MessageListener {
 
-    public static final String TOPIC_NAME = GmpKeys.GMP_DATA_FILEEVENT_DESTINATION;
+    public static final String TOPIC_NAME = JmsKeys.GMP_DATA_FILEEVENT_DESTINATION;
 
     private static final Logger LOG = Logger.getLogger(JmsFileEventsListener.class.getName());
 
@@ -39,7 +39,7 @@ public class JmsFileEventsListener implements MessageListener {
 
             //We get the type, and use that to determine the handler to
             //call
-            int type = message.getIntProperty(GmpKeys.GMP_DATA_FILEEVENT_TYPE);
+            int type = message.getIntProperty(JmsKeys.GMP_DATA_FILEEVENT_TYPE);
             FileEvent fileEvent = FileEvent.getByCode(type);
 
             if (fileEvent == null) {
@@ -49,14 +49,14 @@ public class JmsFileEventsListener implements MessageListener {
             MapMessage mmsg = (MapMessage)message;
 
             //filename and dataset are common parts of all the file events
-            String filename = mmsg.getString(GmpKeys.GMP_DATA_FILEEVENT_FILENAME);
+            String filename = mmsg.getString(JmsKeys.GMP_DATA_FILEEVENT_FILENAME);
             if (filename == null) {
                 throw new FileEventException("Filename cannot be null for a file event");
             }
             Dataset dataset;
 
             try {
-                dataset = new Dataset(mmsg.getString(GmpKeys.GMP_DATA_FILEEVENT_DATALABEL));
+                dataset = new Dataset(mmsg.getString(JmsKeys.GMP_DATA_FILEEVENT_DATALABEL));
             } catch (IllegalArgumentException ex) {
                 throw new FileEventException("Invalid dataset in file event", ex);
             }
@@ -69,8 +69,8 @@ public class JmsFileEventsListener implements MessageListener {
                     String hint = null;
                     //The hint is optional; if it exists, we will get it
                     //from the message
-                    if (mmsg.itemExists(GmpKeys.GMP_DATA_FILEEVENT_HINT)) {
-                        hint = mmsg.getString(GmpKeys.GMP_DATA_FILEEVENT_HINT);
+                    if (mmsg.itemExists(JmsKeys.GMP_DATA_FILEEVENT_HINT)) {
+                        hint = mmsg.getString(JmsKeys.GMP_DATA_FILEEVENT_HINT);
                     }
                     _action.onIntermediateFileEvent(filename, dataset, hint);
                     break;

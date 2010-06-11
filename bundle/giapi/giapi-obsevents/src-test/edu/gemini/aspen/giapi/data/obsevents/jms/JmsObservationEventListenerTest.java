@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 import org.apache.activemq.command.ActiveMQMessage;
 
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.data.Dataset;
@@ -56,8 +56,8 @@ public class JmsObservationEventListenerTest {
     public void testGoodMessage() {
         Message message = new ActiveMQMessage();
         try {
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_NAME, "OBS_START_ACQ");
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_FILENAME, "S20090100101");
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME, "OBS_START_ACQ");
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME, "S20090100101");
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
         }
@@ -71,8 +71,8 @@ public class JmsObservationEventListenerTest {
     public void testInvalidObseventMessage() {
         Message message = new ActiveMQMessage();
         try {
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_NAME, "INVALID_OBSEVENT");
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_FILENAME, "S20090100101");
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME, "INVALID_OBSEVENT");
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME, "S20090100101");
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
         }
@@ -86,8 +86,8 @@ public class JmsObservationEventListenerTest {
     public void testNullObseventMessage() {
         Message message = new ActiveMQMessage();
         try {
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_NAME, null);
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_FILENAME, "S20090100101");
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME, null);
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME, "S20090100101");
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
         }
@@ -101,8 +101,8 @@ public class JmsObservationEventListenerTest {
     public void testNullDatasetMessage() {
         Message message = new ActiveMQMessage();
         try {
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_NAME, "OBS_START_ACQ");
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_FILENAME, null);
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME, "OBS_START_ACQ");
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME, null);
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
         }
@@ -116,8 +116,8 @@ public class JmsObservationEventListenerTest {
     public void testEmptyDatasetMessage() {
         Message message = new ActiveMQMessage();
         try {
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_NAME, "OBS_START_ACQ");
-            message.setStringProperty(GmpKeys.GMP_DATA_OBSEVENT_FILENAME, " ");
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME, "OBS_START_ACQ");
+            message.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME, " ");
         } catch (JMSException e) {
             org.junit.Assert.fail("Exception setting GMP Data Properties into JMS Message");
         }

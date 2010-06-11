@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.statusgw.jms;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.StatusDatabaseService;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -19,7 +19,7 @@ public class StatusRequestListener implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(StatusRequestListener.class.getName());
 
-    public static final String TOPIC_NAME = GmpKeys.GW_STATUS_REQUEST_DESTINATION;
+    public static final String TOPIC_NAME = JmsKeys.GW_STATUS_REQUEST_DESTINATION;
 
     /**
      * The database service to obtain the status item information
@@ -44,7 +44,7 @@ public class StatusRequestListener implements MessageListener {
                 return; //nothing to do since we don't know where to reply
             }
 
-            String statusName = message.getStringProperty(GmpKeys.GW_STATUS_NAME_PROPERTY);
+            String statusName = message.getStringProperty(JmsKeys.GW_STATUS_NAME_PROPERTY);
             StatusItem item = _db.getStatusItem(statusName);
 
             if (item == null) {

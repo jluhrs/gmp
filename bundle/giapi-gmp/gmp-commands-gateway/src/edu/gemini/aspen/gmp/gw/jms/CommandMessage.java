@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.gw.jms;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 
 import javax.jms.MapMessage;
 import javax.jms.JMSException;
@@ -45,7 +45,7 @@ public class CommandMessage {
 
     private SequenceCommand parseSequenceCommand(MapMessage msg) throws FormatException {
         try {
-            String sequenceCommand = msg.getStringProperty(GmpKeys.GMP_SEQUENCE_COMMAND_KEY);
+            String sequenceCommand = msg.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY);
             return SequenceCommand.valueOf(sequenceCommand);
         } catch (JMSException e) {
             throw new FormatException("Message didn't contain a sequence command");
@@ -58,7 +58,7 @@ public class CommandMessage {
 
     private Activity parseActivity(MapMessage msg) throws FormatException {
         try {
-            String activity = msg.getStringProperty(GmpKeys.GMP_ACTIVITY_KEY);
+            String activity = msg.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY);
             return Activity.valueOf(activity);
         } catch (JMSException e) {
             throw new FormatException("Message didn't contain an activity");

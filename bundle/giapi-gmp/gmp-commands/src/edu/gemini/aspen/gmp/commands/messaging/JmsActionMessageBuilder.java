@@ -3,10 +3,10 @@ package edu.gemini.aspen.gmp.commands.messaging;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 
@@ -28,7 +28,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
     static {
         for (SequenceCommand sc : SequenceCommand.values()) {
             TOPIC_MAP.put(sc,
-                    GmpKeys.GMP_SEQUENCE_COMMAND_PREFIX + sc.getName());
+                    JmsKeys.GMP_SEQUENCE_COMMAND_PREFIX + sc.getName());
         }
     }
 
@@ -57,9 +57,9 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
 
             props = new HashMap<String, Object>();
 
-            props.put(GmpKeys.GMP_ACTIVITY_PROP,
+            props.put(JmsKeys.GMP_ACTIVITY_PROP,
                     action.getActivity().getName());
-            props.put(GmpKeys.GMP_ACTIONID_PROP, action.getId());
+            props.put(JmsKeys.GMP_ACTIONID_PROP, action.getId());
 
             data = new HashMap<String, Object>();
 
@@ -92,7 +92,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
             //the destination changes if a config path is specified...
             StringBuilder sb = new StringBuilder(TOPIC_MAP.get(action.getSequenceCommand()));
             if (path != null) {
-                sb.append(GmpKeys.GMP_SEPARATOR);
+                sb.append(JmsKeys.GMP_SEPARATOR);
                 sb.append(path.getName());
             }
             return sb.toString();

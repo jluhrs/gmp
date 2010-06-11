@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.logging.jms;
 
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.logging.LogMessage;
 import edu.gemini.aspen.gmp.logging.Severity;
 import edu.gemini.aspen.gmp.logging.LoggingException;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 
 import javax.jms.Message;
 import javax.jms.TextMessage;
@@ -28,7 +28,7 @@ public class JmsLogMessage implements LogMessage {
         TextMessage txtMsg = (TextMessage)message;
 
         try {
-            int severity = txtMsg.getIntProperty(GmpKeys.GMP_SERVICES_LOG_LEVEL);
+            int severity = txtMsg.getIntProperty(JmsKeys.GMP_SERVICES_LOG_LEVEL);
             _severity = Severity.getSeverityByCode(severity);
             _message = txtMsg.getText();
         } catch (JMSException e) {

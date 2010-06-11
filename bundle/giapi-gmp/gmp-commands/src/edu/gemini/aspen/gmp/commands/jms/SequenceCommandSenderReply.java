@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.commands.jms;
 
-import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
+import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.jms.api.JmsMapMessageSenderReply;
 import edu.gemini.jms.api.MessagingException;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;

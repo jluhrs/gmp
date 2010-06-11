@@ -3,7 +3,7 @@ package edu.gemini.giapi.tool.status;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.statusservice.jms.JmsStatusListener;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.arguments.MonitorStatusArgument;
@@ -62,7 +62,7 @@ public class MonitorStatusOperation implements Operation {
 
         BaseMessageConsumer consumer = new BaseMessageConsumer(
                 "Status Test Client",
-                new DestinationData(GmpKeys.GMP_STATUS_DESTINATION_PREFIX + _statusName,
+                new DestinationData(JmsKeys.GMP_STATUS_DESTINATION_PREFIX + _statusName,
                         DestinationType.TOPIC),
                 listener
         );

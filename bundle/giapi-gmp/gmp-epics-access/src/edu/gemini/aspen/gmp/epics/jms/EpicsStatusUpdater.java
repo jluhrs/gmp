@@ -1,10 +1,10 @@
 package edu.gemini.aspen.gmp.epics.jms;
 
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateListener;
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -45,7 +45,7 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
             //Create destinations for all the channels to be broadcasted to the instrument
 
             for (String channelName : config.getValidChannelsNames()) {
-                String topic = GmpKeys.GMP_GEMINI_EPICS_TOPIC_PREFIX + channelName.toUpperCase();
+                String topic = JmsKeys.GMP_GEMINI_EPICS_TOPIC_PREFIX + channelName.toUpperCase();
                 _destinationMap.put(channelName, _session.createTopic(topic));
             }
 

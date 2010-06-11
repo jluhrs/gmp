@@ -1,12 +1,13 @@
 package edu.gemini.aspen.gmp.logging.jms;
 
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.fail;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.apache.activemq.command.ActiveMQBytesMessage;
 import edu.gemini.aspen.gmp.logging.TestLogProcessor;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+
 import static org.junit.Assert.*;
 
 
@@ -33,7 +34,7 @@ public class LoggingListenerTest {
 
         TextMessage tm = new ActiveMQTextMessage();
         try {
-            tm.setIntProperty(GmpKeys.GMP_SERVICES_LOG_LEVEL, 1);
+            tm.setIntProperty(JmsKeys.GMP_SERVICES_LOG_LEVEL, 1);
         } catch (JMSException e) {
             fail("Unexpected exception");
         }
@@ -50,7 +51,7 @@ public class LoggingListenerTest {
 
         TextMessage tm = new ActiveMQTextMessage();
         try {
-            tm.setIntProperty(GmpKeys.GMP_SERVICES_LOG_LEVEL, 0);
+            tm.setIntProperty(JmsKeys.GMP_SERVICES_LOG_LEVEL, 0);
         } catch (JMSException e) {
             fail("Unexpected exception");
         }
@@ -67,7 +68,7 @@ public class LoggingListenerTest {
 
         Message tm = new ActiveMQBytesMessage();
         try {
-            tm.setIntProperty(GmpKeys.GMP_SERVICES_LOG_LEVEL, 0);
+            tm.setIntProperty(JmsKeys.GMP_SERVICES_LOG_LEVEL, 0);
         } catch (JMSException e) {
             fail("Unexpected exception");
         }

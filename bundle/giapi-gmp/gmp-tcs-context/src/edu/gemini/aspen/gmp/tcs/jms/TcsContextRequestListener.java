@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.tcs.jms;
 
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.tcs.model.TcsContextFetcher;
 import edu.gemini.aspen.gmp.tcs.model.TcsContextException;
 
@@ -19,7 +19,7 @@ public class TcsContextRequestListener implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(TcsContextRequestListener.class.getName());
 
-    public static final String DESTINATION_NAME = GmpKeys.GMP_TCS_CONTEXT_DESTINATION;
+    public static final String DESTINATION_NAME = JmsKeys.GMP_TCS_CONTEXT_DESTINATION;
 
     /**
      * Message producer used to send the TCS Context back to the requester

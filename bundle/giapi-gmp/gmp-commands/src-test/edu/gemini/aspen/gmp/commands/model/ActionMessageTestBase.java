@@ -1,13 +1,13 @@
 package edu.gemini.aspen.gmp.commands.model;
 
 import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
 import java.util.*;
 
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 
@@ -52,7 +52,7 @@ public abstract class ActionMessageTestBase {
             assertEquals(DestinationType.TOPIC, dd.getType());
 
             //name
-            StringBuilder sb = new StringBuilder(GmpKeys.GMP_SEQUENCE_COMMAND_PREFIX);
+            StringBuilder sb = new StringBuilder(JmsKeys.GMP_SEQUENCE_COMMAND_PREFIX);
             sb.append(a.getSequenceCommand().getName());
             assertEquals(sb.toString(), dd.getName());
         }
@@ -67,10 +67,10 @@ public abstract class ActionMessageTestBase {
             int id = a.getId();
             Map<String, Object> props = am.getProperties();
 
-            assertEquals(id, props.get(GmpKeys.GMP_ACTIONID_PROP));
+            assertEquals(id, props.get(JmsKeys.GMP_ACTIONID_PROP));
 
             //activity is also a property
-            String act = (String) props.get(GmpKeys.GMP_ACTIVITY_PROP); 
+            String act = (String) props.get(JmsKeys.GMP_ACTIVITY_PROP);
             assertEquals(a.getActivity(), Activity.toActivity(act));
         }
     }

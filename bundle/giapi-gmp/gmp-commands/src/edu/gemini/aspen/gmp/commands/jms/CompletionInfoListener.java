@@ -5,9 +5,9 @@ import javax.jms.*;
 
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
-import edu.gemini.aspen.gmp.util.jms.MessageBuilder;
-import edu.gemini.aspen.gmp.util.jms.GmpKeys;
+import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 
 import java.util.logging.Logger;
 
@@ -23,7 +23,7 @@ public class CompletionInfoListener implements MessageListener {
     private static final Logger LOG = Logger.getLogger(
             CompletionInfoListener.class.getName());
 
-    public final static String QUEUE_NAME = GmpKeys.GMP_COMPLETION_INFO;
+    public final static String QUEUE_NAME = JmsKeys.GMP_COMPLETION_INFO;
 
     private CommandUpdater _commandUpdater;
 
@@ -36,7 +36,7 @@ public class CompletionInfoListener implements MessageListener {
             if (message instanceof MapMessage) {
                 MapMessage m = (MapMessage) message;
 
-                int actionId = m.getIntProperty(GmpKeys.GMP_ACTIONID_PROP);
+                int actionId = m.getIntProperty(JmsKeys.GMP_ACTIONID_PROP);
                 HandlerResponse response = MessageBuilder.buildHandlerResponse(m);
                 LOG.info(
                         "Received Completion info for action ID " +
