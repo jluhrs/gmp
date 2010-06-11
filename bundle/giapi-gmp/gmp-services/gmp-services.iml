@@ -44,7 +44,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="gmp-util" />
+    <orderEntry type="module" module-name="giapi-jms-util" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

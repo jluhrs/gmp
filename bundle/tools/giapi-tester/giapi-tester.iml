@@ -8,7 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="giapi" />
-    <orderEntry type="module" module-name="gmp-util" />
+    <orderEntry type="module" module-name="giapi-jms-util" />
     <orderEntry type="module" module-name="giapi-obsevents" />
     <orderEntry type="module" module-name="giapi-fileevents" />
     <orderEntry type="module" module-name="giapi-status-service" />

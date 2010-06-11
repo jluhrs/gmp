@@ -5,7 +5,7 @@
 
     <path id="build.classpath.extra">
         <pathelement path="../giapi/bin"/>
-        <pathelement path="../../giapi-gmp/gmp-util/bin"/>
+        <pathelement path="../giapi-util/bin"/>
         <pathelement path="../../jms/jms-api/bin"/>
         <fileset dir="../../jms/jms-api/lib" includes="*.jar"/>
     </path>
