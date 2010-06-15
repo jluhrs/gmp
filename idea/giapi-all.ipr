@@ -196,6 +196,7 @@
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi/giapi.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi/giapi.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevent-handler/giapi-fileevent-handler.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevent-handler/giapi-fileevent-handler.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevents/giapi-fileevents.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevents/giapi-fileevents.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-jms-util/giapi-jms-util.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-jms-util/giapi-jms-util.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-util/giapi-jms-util.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-util/giapi-jms-util.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevent-handler/giapi-obsevent-handler.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevent-handler/giapi-obsevent-handler.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevents/giapi-obsevents.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevents/giapi-obsevents.iml" />
