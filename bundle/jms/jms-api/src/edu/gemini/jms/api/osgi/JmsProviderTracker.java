@@ -1,16 +1,15 @@
 package edu.gemini.jms.api.osgi;
 
+import edu.gemini.jms.api.JmsArtifact;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.jms.api.BaseJmsArtifact;
 
 import javax.jms.JMSException;
 
@@ -21,19 +20,16 @@ public class JmsProviderTracker extends ServiceTracker {
 
     private static final Logger LOG = Logger.getLogger(JmsProviderTracker.class.getName());
 
-    private String _name;
+    private final JmsArtifact[] _jmsArtifacts;
 
-    private List<BaseJmsArtifact> _jmsArtifacts;
-
-    public JmsProviderTracker(BundleContext ctx, String name) {
+    /**
+     * Constructor. Takes as arguments the bundle context, the name of the tracker
+     * @param ctx  The bundle context
+     * @param artifacts JMS Artifacts that will be initiated upon discovery of
+     */
+    public JmsProviderTracker(BundleContext ctx, JmsArtifact... artifacts) {
         super(ctx, JmsProvider.class.getName(), null);
-        _jmsArtifacts = new CopyOnWriteArrayList<BaseJmsArtifact>();
-        _name = name;
-    }
-
-
-    public void registerJmsArtifact(BaseJmsArtifact artifact) {
-        _jmsArtifacts.add(artifact);
+        _jmsArtifacts = Arrays.copyOf(artifacts, artifacts.length);
     }
 
     @Override
@@ -41,24 +37,21 @@ public class JmsProviderTracker extends ServiceTracker {
         JmsProvider provider = (JmsProvider) context.getService(serviceReference);
 
         try {
-            for (BaseJmsArtifact jmsArtifact: _jmsArtifacts) {
+            for (JmsArtifact jmsArtifact: _jmsArtifacts) {
                 jmsArtifact.startJms(provider);
             }
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Problem starting JMS Artifacts", e);
         }
-        LOG.info("Started JMS Artifact [" + _name + ']');
         return provider;
     }
 
     @Override
     public void removedService(ServiceReference serviceReference, Object o) {
 
-        for (BaseJmsArtifact jmsArtifact: _jmsArtifacts) {
+        for (JmsArtifact jmsArtifact: _jmsArtifacts) {
             jmsArtifact.stopJms();
         }
-        LOG.info("Stopped JMS Artifact [" + _name + ']');
         context.ungetService(serviceReference);
-
     }
 }

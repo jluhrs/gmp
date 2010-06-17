@@ -63,8 +63,8 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
         _context = bundleContext;
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, "PCS Updates Information Receiver");
-        _jmsTracker.registerJmsArtifact(_messageConsumer);
+        _jmsTracker = new JmsProviderTracker(bundleContext,
+                _messageConsumer);
         _jmsTracker.open();
 
         String sim = _context.getProperty(PCS_SIMULATION_PROP);

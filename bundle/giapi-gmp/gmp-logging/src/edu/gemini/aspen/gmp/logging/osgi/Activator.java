@@ -30,8 +30,8 @@ public class Activator implements BundleActivator {
     }
     
     public void start(BundleContext bundleContext) throws Exception {
-        _providerTracker = new JmsProviderTracker(bundleContext, "Logging Service");
-        _providerTracker.registerJmsArtifact(_messageConsumer);
+        _providerTracker = new JmsProviderTracker(bundleContext,
+                _messageConsumer);
         _providerTracker.open();
     }
 

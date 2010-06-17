@@ -35,9 +35,8 @@ public class Activator implements BundleActivator {
         );
 
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, "Gateway Status Consumer");
-        _jmsTracker.registerJmsArtifact(consumer);
-        _jmsTracker.registerJmsArtifact(dispatcher);
+        _jmsTracker = new JmsProviderTracker(bundleContext,
+                consumer, dispatcher);
         _jmsTracker.open();
 
         _dbTracker = new StatusDatabaseTracker(bundleContext, decorator);

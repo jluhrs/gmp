@@ -33,13 +33,13 @@ public class Activator implements BundleActivator {
         _registration = bundleContext.registerService(
                 JmsProvider.class.getName(),
                 _provider, null);
-        LOG.info("JMS Provider initialized (" + brokerUrl + ")");
+        LOG.info("ActiveMQ JMS Provider initialized (" + brokerUrl + ")");
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
         _provider = null;
         //notify the OSGi framework this service is not longer available
         _registration.unregister();
-        LOG.info("JMS Provider destroyed");
+        LOG.info("ActiveMQ JMS Provider destroyed");
     }
 }

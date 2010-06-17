@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * several message consumers, you need manually to create your artifacts
  */
 
-public abstract class BaseJmsArtifact implements ExceptionListener {
+public abstract class BaseJmsArtifact implements JmsArtifact, ExceptionListener {
 
     protected static final Logger LOG = Logger.getLogger(BaseJmsArtifact.class.getName());
     private Connection _connection;
@@ -53,6 +53,7 @@ public abstract class BaseJmsArtifact implements ExceptionListener {
 
         constructJmsObject(destination);
         _isConnected = true;
+        LOG.info("Started JMS Artifact [" + _clientName + "]");
     }
 
     /**
@@ -84,6 +85,7 @@ public abstract class BaseJmsArtifact implements ExceptionListener {
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Exception while stopping JMS Artifact", e);
         }
+        LOG.info("Stopped JMS Artifact [" + _clientName + "]");
     }
 
     public void onException(JMSException e) {

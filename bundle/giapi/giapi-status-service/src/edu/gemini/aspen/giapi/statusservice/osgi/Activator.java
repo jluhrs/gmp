@@ -19,8 +19,6 @@ public class Activator implements BundleActivator {
     private static final String STATUS_PROP = "edu.gemini.aspen.giapi.statusservice.jms.status";
     private static final String NAME_PROP =  "edu.gemini.aspen.giapi.statusservice.jms.name";
 
-    private StatusService _statusService;
-
     private StatusHandlerTracker _statusHandlerTracker;
 
     public void start(BundleContext bundleContext) throws Exception {
@@ -29,15 +27,14 @@ public class Activator implements BundleActivator {
 
         String name = bundleContext.getProperty(NAME_PROP);
 
-        _statusService = new StatusService(name, statusName);
+        StatusService statusService = new StatusService(name, statusName);
 
-        //start tracking for a JMS provider, register the JMS artifact
-        _jmsTracker = new JmsProviderTracker(bundleContext, name);
-        _jmsTracker.registerJmsArtifact(_statusService.getJmsArtifact());
+        //start tracking for a JMS provider to activate the status service
+        _jmsTracker = new JmsProviderTracker(bundleContext, statusService);
         _jmsTracker.open();
 
         //start tracking status handlers
-        _statusHandlerTracker = new StatusHandlerTracker(bundleContext, _statusService.getStatusHandlerRegister());
+        _statusHandlerTracker = new StatusHandlerTracker(bundleContext, statusService);
         _statusHandlerTracker.open();
 
 
@@ -51,8 +48,5 @@ public class Activator implements BundleActivator {
 
         _statusHandlerTracker.close();
         _statusHandlerTracker = null;
-
-        _statusService.removeRegisteredHandlers();
-        _statusService = null;
     }
 }

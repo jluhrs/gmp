@@ -9,7 +9,9 @@ import edu.gemini.jms.api.*;
 public class StatusConsumer extends BaseMessageConsumer {
 
     public StatusConsumer(String clientName, String item) {
-        super(clientName, new DestinationData(JmsKeys.GMP_STATUS_DESTINATION_PREFIX + item, DestinationType.TOPIC));
+        super(clientName,
+                new DestinationData(JmsKeys.GMP_STATUS_DESTINATION_PREFIX + item,
+                        DestinationType.TOPIC));
     }
 
 }

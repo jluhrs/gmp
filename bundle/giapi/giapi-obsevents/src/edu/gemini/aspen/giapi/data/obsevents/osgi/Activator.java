@@ -45,8 +45,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
                 new JmsObservationEventListener(handlerComposite)
         );
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, "Observation Event Consumer");
-        _jmsTracker.registerJmsArtifact(consumer);
+        _jmsTracker = new JmsProviderTracker(bundleContext, consumer);
         _jmsTracker.open();
 
         //and start tracking for observation event handlers as well...

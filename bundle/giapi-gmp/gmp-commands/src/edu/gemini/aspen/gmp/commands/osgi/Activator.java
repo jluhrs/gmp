@@ -69,10 +69,8 @@ public class Activator implements BundleActivator {
                         _actionManager
                 ));
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, "Sequence Command Sender/Completion Information Receiver");
-        _jmsTracker.registerJmsArtifact(_messageConsumer);
-        _jmsTracker.registerJmsArtifact(_sequenceCommandSenderReply);
-
+        _jmsTracker = new JmsProviderTracker(bundleContext,
+                _messageConsumer, _sequenceCommandSenderReply);
         _jmsTracker.open();
 
         //advertise the Command Sender service in the OSGi framework

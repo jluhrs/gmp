@@ -8,34 +8,33 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * The Status Handler Tracker acts as a register for status handlers
+ * The Status Handler Manager acts as a register for status handlers
  * and also as a receiver of updates when status items are updated. It will
- * notify the Status Handlers registered in such a case.
+ * notify the Status Handlers registered whenever a new status item is
+ * received. It assumes all the status handlers registered are interested
+ * in all the status items for which the Status Service is registered.
+ * Filtering/processing of status item is delegated to the status handlers
+ * themselves. 
  */
 public class StatusHandlerManager implements StatusHandler, StatusHandlerRegister {
 
     private static final Logger LOG = Logger.getLogger(StatusHandlerManager.class.getName());
 
     private final List<StatusHandler> _statusHandlers = new CopyOnWriteArrayList<StatusHandler>();
-    private static final String STATUS_SERVICE_NAME = "Status Service";
+    private static final String STATUS_HANDLER_NAME = "Status Handler Manager";
 
     public StatusHandlerManager() {
 
     }
 
     public String getName() {
-        return STATUS_SERVICE_NAME;
+        return STATUS_HANDLER_NAME;
     }
 
     public void update(StatusItem item) {
         for (StatusHandler handler: _statusHandlers) {
             handler.update(item);
         }
-    }
-
-    public void removeAllHandlers() {
-        LOG.info("Removing registered handlers from Status Service");
-        _statusHandlers.clear();
     }
 
     public void addStatusHandler(StatusHandler handler) {

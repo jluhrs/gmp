@@ -55,8 +55,8 @@ public class MonitorStatusOperation implements Operation {
         StatusMonitor monitor = new StatusMonitor();
 
 
-        StatusService service = new StatusService("Status Test Client", _statusName);
-        service.getStatusHandlerRegister().addStatusHandler(monitor);
+        StatusService service = new StatusService("Status Monitor Service Client", _statusName);
+        service.addStatusHandler(monitor);
 
         try {
             
@@ -68,7 +68,7 @@ public class MonitorStatusOperation implements Operation {
 
             getter.stopJms();
 
-            service.getJmsArtifact().startJms(provider);
+            service.startJms(provider);
             
         } catch (JMSException e) {
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());

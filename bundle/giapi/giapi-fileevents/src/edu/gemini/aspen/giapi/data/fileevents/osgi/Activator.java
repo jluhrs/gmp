@@ -42,10 +42,9 @@ public class Activator implements BundleActivator {
                 new JmsFileEventsListener(_action)
         );
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, "File Event Consumer");
-        _jmsTracker.registerJmsArtifact(consumer);
+        _jmsTracker = new JmsProviderTracker(bundleContext, consumer);
         _jmsTracker.open();
-        //and start tracking for intermendiate file event handlers as well...
+        //and start tracking for intermediate file event handlers as well...
         _intermediateFileHandlerTracker = new ServiceTracker(bundleContext,
                 IntermediateFileEventHandler.class.getName(),
                 new IntermediateFileEventServiceTracker());

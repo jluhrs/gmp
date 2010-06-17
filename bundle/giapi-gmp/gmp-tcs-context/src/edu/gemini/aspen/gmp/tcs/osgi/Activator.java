@@ -79,9 +79,9 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
         _context = bundleContext;
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, "TCS Context Request Receiver");
-        _jmsTracker.registerJmsArtifact(_dispatcher);
-        _jmsTracker.registerJmsArtifact(_messageConsumer);
+        _jmsTracker = new JmsProviderTracker(bundleContext,
+                _dispatcher, _messageConsumer
+        );
         _jmsTracker.open();
 
 
