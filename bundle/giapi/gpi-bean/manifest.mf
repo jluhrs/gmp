@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-Activator: edu.gemini.aspen.gpi.osgi.Activator
+Bundle-Name: GPI Bean
+Bundle-Description: GPI Bean Demo
+Bundle-Vendor: Gemini 8m Observatories, Software Group
+Bundle-Version: 0.1.0
+Import-Package: edu.gemini.aspen.giapi.status,
+ edu.gemini.aspen.giapi.status.dispatcher,
+ edu.gemini.aspen.giapi.status.mappers,
+ org.osgi.framework

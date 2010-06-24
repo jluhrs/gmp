@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<project name="gpi-bean" default="all" basedir=".">
+    <import file="../build.xml"/>
+
+    <path id="build.classpath.extra">
+        <pathelement path="../giapi/bin"/>
+        <pathelement path="../giapi-status-dispatcher/bin"/>
+    </path>
+
+</project>
