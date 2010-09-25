@@ -9,7 +9,7 @@
     <property name="osgi.runtime" value="${osgi}/runtime"/>
     <property name="osgi.runtime.lib" value="${osgi.runtime}/lib"/>
     <property name="osgi.build.lib" value="${osgi}/build/lib"/>
-    <property name="test.data.dir" value="test-results"/>
+    <property name="test.data.dir" value="${osgi}/test-results"/>
 
     <property name="hldg.external.lib"
               value="${ocs.root}/hldgexternal/java/lib"/>
@@ -114,7 +114,7 @@
 
         <!-- run tests -->
         <mkdir dir="${test.data.dir}"/>
-        <junit printsummary="false">
+        <junit printsummary="true">
             <classpath>
                 <path refid="build.classpath.extra"/>
                 <path refid="build.classpath.test"/>
@@ -127,7 +127,7 @@
 
             <formatter type="brief" usefile="false"/>
             <formatter type="xml"/>
-            <batchtest todir="${test.data.dir}" haltonerror="true"> 
+            <batchtest todir="${test.data.dir}"> 
                 <fileset dir="src-test">
                     <include name="**/*Test.java"/>
                     <exclude name="**/AllTests.java"/>
