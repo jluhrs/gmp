@@ -155,19 +155,10 @@
     </patternset>
 
 
-    <target name="setup">
-        <taskdef name="hldgexternal"
-                 classname="edu.gemini.osgi.build.HldgExternalTask"
-                 classpath="${osgi.build}/bin"/>
-        <taskdef name="liblink"
-                 classname="edu.gemini.osgi.build.HldgLibSymlinkTask"
-                 classpath="${osgi.build}/bin"/>
-    </target>
-
     <path id="build.classpath.extra"/>
     <path id="build.source.extra"/>
     <path id="build.classpath.test"/>
-    <target name="-compile" depends="setup" if="ant.project.name">
+    <target name="-compile" if="ant.project.name">
 
         <!-- setup classpath -->
         <mkdir dir="lib"/>
