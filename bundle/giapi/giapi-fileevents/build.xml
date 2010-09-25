@@ -11,7 +11,7 @@
     </path>
 
    <path id="build.classpath.test">
-        <fileset dir="../../jms/jms-activemq/lib" includes="*.jar"/>
+        <fileset dir="../../jms/jms-activemq-lib/lib" includes="*.jar"/>
    </path>
 
 </project>

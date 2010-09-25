@@ -27,5 +27,7 @@
 	</target>
 
         <target name="all" depends="compile"/>
+
+        <target name="test"/>
 </project>
 
