@@ -3,6 +3,8 @@ package edu.gemini.aspen.gmp.statusgw;
 import edu.gemini.aspen.giapi.status.StatusDatabaseService;
 import edu.gemini.aspen.giapi.status.StatusItem;
 
+import java.util.Set;
+
 /**
  * This Status Database decorator simply allows having a long-lived
  * StatusDatabaseService in use by the system. The actual operation of this
@@ -18,6 +20,15 @@ public class StatusDatabaseServiceDecorator implements StatusDatabaseService {
             return _service.getStatusItem(name);
         }
         return null;  
+    }
+
+    /**
+     * Gets a Set with all the status names.
+     *
+     * @return status names
+     */
+    public Set<String> getStatusNames(){
+        return _service.getStatusNames();
     }
 
     /**

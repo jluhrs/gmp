@@ -25,7 +25,7 @@ public class ConfigArgument extends AbstractArgument {
         try {
             _config = _parseConfiguration(arg);
         } catch (IllegalArgumentException ex) {
-            Util.die("Illegal confguration: " + arg + " (" + ex.getMessage() + ")");
+            Util.die("Illegal configuration: " + arg + " (" + ex.getMessage() + ")");
         }
     }
 

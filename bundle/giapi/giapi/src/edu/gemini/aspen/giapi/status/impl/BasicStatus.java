@@ -14,7 +14,7 @@ public class BasicStatus<T> implements StatusItem<T> {
 
     public BasicStatus(String name, T value) {
         if (value == null) throw new NullPointerException("Can't initialize status with null value");
-        if (name == null)  throw new NullPointerException("Can't initialize statsu with null name");
+        if (name == null)  throw new NullPointerException("Can't initialize status with null name");
         _value = value;
         _name = name;
     }

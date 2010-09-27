@@ -64,6 +64,12 @@ DESCRIPTION
      -get <status-name>
         Gets the most recent value for the status item specified.
 
+     -set <status-type>=<status-name>=<status-value>
+        Sets the value for the status item specified
+
+     -names
+        Gets a list of all the status items registered in the database
+        
      -obsEvents
         Starts listening for observation events coming through the GMP.
         Each observation event received is printed out to the screen.

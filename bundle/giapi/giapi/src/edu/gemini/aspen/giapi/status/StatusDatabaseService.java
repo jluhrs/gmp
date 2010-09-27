@@ -1,5 +1,7 @@
 package edu.gemini.aspen.giapi.status;
 
+import java.util.Set;
+
 /**
  * The public interface of a database service for Status Items
  */
@@ -16,5 +18,12 @@ public interface StatusDatabaseService {
      * item in the database associated to the given name
      */
     StatusItem getStatusItem(String name);
+
+    /**
+     * Returns a Set containing all the registered status names in the database
+     *
+     * @return the Set of status names
+     */
+    Set<String> getStatusNames();
 
 }

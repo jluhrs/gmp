@@ -8,6 +8,8 @@ import edu.gemini.aspen.giapi.util.jms.status.StatusSerializerVisitor;
 
 import javax.jms.*;
 import java.util.Enumeration;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -162,6 +164,18 @@ public class MessageBuilder {
         return new CompletionInformation(handlerResponse, sc, activity, config);
     }
 
+    public static Set<String> buildStatusNames(Message m) throws JMSException {
+        if (!(m instanceof BytesMessage)) return null;
+
+        BytesMessage bm = (BytesMessage) m;
+
+        Set<String> names = new TreeSet<String>();
+        int numNames = bm.readInt();
+        for (int i = 0; i < numNames; i++) {
+            names.add(bm.readUTF());
+        }
+        return names;
+    }
 
     public static StatusItem buildStatusItem(Message m) throws JMSException {
         if (!(m instanceof BytesMessage)) return null;

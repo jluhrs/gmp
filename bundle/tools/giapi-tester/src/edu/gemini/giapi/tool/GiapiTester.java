@@ -5,9 +5,11 @@ import edu.gemini.giapi.tool.parser.*;
 import edu.gemini.giapi.tool.arguments.*;
 import edu.gemini.giapi.tool.commands.CommandOperation;
 import edu.gemini.giapi.tool.help.HelpOperation;
+import edu.gemini.giapi.tool.status.GetStatusNamesOperation;
 import edu.gemini.giapi.tool.status.MonitorStatusOperation;
 import edu.gemini.giapi.tool.status.GetStatusOperation;
 import edu.gemini.giapi.tool.obsevents.MonitorObsEventOperation;
+import edu.gemini.giapi.tool.status.SetStatusOperation;
 
 
 /**
@@ -33,6 +35,8 @@ public class GiapiTester {
         parser.registerArgument(new RepetitionArgument());
         parser.registerArgument(new MonitorStatusArgument());
         parser.registerArgument(new GetStatusArgument());
+        parser.registerArgument(new SetStatusArgument());
+        parser.registerArgument(new GetStatusNamesArgument());
         parser.registerArgument(new MonitorObsEventArgument());
         parser.registerArgument(new MonitorFileEventsArgument());
 
@@ -41,6 +45,8 @@ public class GiapiTester {
         parser.registerOperation(new CommandOperation());
         parser.registerOperation(new MonitorStatusOperation());
         parser.registerOperation(new GetStatusOperation());
+        parser.registerOperation(new SetStatusOperation());
+        parser.registerOperation(new GetStatusNamesOperation());
         parser.registerOperation(new MonitorObsEventOperation());
         parser.registerOperation(new MonitorFileEventsOperation());
 

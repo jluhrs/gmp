@@ -44,7 +44,9 @@ public class JmsKeys {
 
     //Gateway Status Keys
     public final static String GW_STATUS_REQUEST_DESTINATION = GW_PREFIX + GMP_SEPARATOR + "STATUS_REQUEST";
-    public final static String GW_STATUS_NAME_PROPERTY = "STATUS_NAME";
+    public final static String GW_STATUS_REQUEST_TYPE_PROPERTY = "STATUS_REQUEST_TYPE";
+    public final static String GW_STATUS_REQUEST_TYPE_ITEM = "STATUS_REQUEST_TYPE_ITEM";
+    public final static String GW_STATUS_REQUEST_TYPE_NAMES = "STATUS_REQUEST_TYPE_NAMES";
 
 
     //Gateway Command Keys

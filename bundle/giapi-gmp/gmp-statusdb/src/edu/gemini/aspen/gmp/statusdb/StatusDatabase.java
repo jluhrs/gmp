@@ -4,6 +4,8 @@ import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.StatusDatabaseService;
 
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -29,6 +31,10 @@ public class StatusDatabase implements StatusHandler, StatusDatabaseService {
         return _db.get(name);
     }
 
+    public Set<String> getStatusNames(){
+        return Collections.unmodifiableSet(_db.keySet());
+    }
+    
     public void update(StatusItem item) {
         //store this new value in the database
         _db.put(item.getName(), item);
