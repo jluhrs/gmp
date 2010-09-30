@@ -28,7 +28,10 @@ public class StatusDatabaseServiceDecorator implements StatusDatabaseService {
      * @return status names
      */
     public Set<String> getStatusNames(){
-        return _service.getStatusNames();
+        if (_service != null) {
+            return _service.getStatusNames();
+        }
+        return null;
     }
 
     /**
