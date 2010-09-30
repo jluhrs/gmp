@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-Activator: edu.gemini.aspen.giapi.cas.osgi.Activator
+Bundle-Name: GIAPI Channel Access Server
+Bundle-Description: GIAPI Channel Access Server
+Bundle-Vendor: Gemini 8m Observatories, Software Group
+Bundle-Version: 0.1.0
+Import-Package: org.osgi.framework

@@ -197,6 +197,7 @@
     <modules>
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi/giapi.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi/giapi.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-cas/giapi-cas.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-cas/giapi-cas.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevent-handler/giapi-fileevent-handler.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevent-handler/giapi-fileevent-handler.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevents/giapi-fileevents.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevents/giapi-fileevents.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-jms-util/giapi-jms-util.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-jms-util/giapi-jms-util.iml" />
@@ -204,6 +205,7 @@
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevent-handler/giapi-obsevent-handler.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevent-handler/giapi-obsevent-handler.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevents/giapi-obsevents.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevents/giapi-obsevents.iml" />
       <module fileurl="file:///data/anunez/Projects/giapi/giapi-osgi/bundle/giapi/giapi-status-handler/giapi-status-dispatcher.iml" filepath="/data/anunez/Projects/giapi/giapi-osgi/bundle/giapi/giapi-status-handler/giapi-status-dispatcher.iml" />
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-dispatcher/giapi-status-handler.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-dispatcher/giapi-status-handler.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-service/giapi-status-service.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-service/giapi-status-service.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-commands/gmp-commands.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-commands/gmp-commands.iml" />
@@ -235,6 +237,712 @@
     </option>
   </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-commands">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-commands-gateway">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-epics-access">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-epics-simulator">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-logging">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-pcs-updater">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-services">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-servlet">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-status-gateway">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-statusdb">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-tcs-context">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevent-handler">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevents">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-jms-util">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevent-handler">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevents">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-service">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/gpi-bean">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-broker">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-lib">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-activemq-provider">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/jms/jms-api">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">

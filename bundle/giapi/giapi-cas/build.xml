@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<project name="giapi-cas" default="all" basedir=".">
+    <import file="../build.xml"/>
+
+    <path id="build.classpath.extra">
+        <pathelement path="../../giapi/giapi/bin"/>
+    </path>
+
+</project>
