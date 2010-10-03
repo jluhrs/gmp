@@ -23,7 +23,7 @@ public enum Severity {
      * @throws LoggingException if the code does not match any of the
      *         valid severity values.
      */
-    public static Severity getSeverityByCode(int code) throws LoggingException {
+    public static Severity getSeverityByCode(int code) {
        
         switch (code) {
             case 1:

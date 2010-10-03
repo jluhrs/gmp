@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.logging.jms;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.gmp.logging.LoggingException;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.fail;
@@ -29,6 +30,13 @@ public class LoggingListenerTest {
         _listener = new LoggingListener(_processor);
     }
 
+
+    @Test
+    (expected = IllegalArgumentException.class)
+    public void constructWithNullProcessor() {
+        new LoggingListener(null);
+    }
+
     @Test
     public void invokedListener() {
 
@@ -47,6 +55,7 @@ public class LoggingListenerTest {
 
 
     @Test
+    (expected = LoggingException.class)
     public void notInvokedListenerWrongSeverity() {
 
         TextMessage tm = new ActiveMQTextMessage();
@@ -57,13 +66,11 @@ public class LoggingListenerTest {
         }
 
         _listener.onMessage(tm);
-        //Confirms the processor was not called.
-        assertFalse(_processor.wasInvoked());
-
     }
 
 
     @Test
+    (expected = LoggingException.class)
     public void notInvokedListenerWrongMessage() {
 
         Message tm = new ActiveMQBytesMessage();
@@ -74,9 +81,6 @@ public class LoggingListenerTest {
         }
 
         _listener.onMessage(tm);
-        //Confirms the processor was not called.
-        assertFalse(_processor.wasInvoked());
-
     }
 
 }

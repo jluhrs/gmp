@@ -13,25 +13,30 @@ public class SeverityTest {
     @Test
     public void testGetSeverityByCode() {
 
-        try {
-            assertEquals(Severity.INFO, Severity.getSeverityByCode(1));
-            assertEquals(Severity.WARNING, Severity.getSeverityByCode(2));
-            assertEquals(Severity.SEVERE, Severity.getSeverityByCode(3));
-        } catch (LoggingException e) {
-            fail("Unexpected Exception :" + e.getMessage());
-        }
+        assertEquals(Severity.INFO, Severity.getSeverityByCode(1));
+        assertEquals(Severity.WARNING, Severity.getSeverityByCode(2));
+        assertEquals(Severity.SEVERE, Severity.getSeverityByCode(3));
     }
 
     @Test
     (expected = LoggingException.class)
-    public void testInvalidCodesForSeverity0() throws LoggingException {
+    public void testInvalidCodesForSeverity0() {
         Severity.getSeverityByCode(0);
     }
 
     @Test
     (expected = LoggingException.class)
-    public void testInvalidCodesForSeverity4() throws LoggingException {
+    public void testInvalidCodesForSeverity4()  {
         Severity.getSeverityByCode(4);
+    }
+
+    @Test
+    public void testNames() {
+        assertEquals("INFO", Severity.INFO.toString());
+        assertEquals("SEVERE", Severity.SEVERE.toString());
+        assertEquals("WARNING", Severity.WARNING.toString());
+
+
     }
 
 

@@ -19,7 +19,7 @@ public class JmsLogMessage implements LogMessage {
 
     private final String _message;
 
-    public JmsLogMessage(Message message) throws LoggingException {
+    public JmsLogMessage(Message message) {
 
         if (!(message instanceof TextMessage)) {
             throw new LoggingException("Can't construct a Log Message ");
@@ -32,6 +32,8 @@ public class JmsLogMessage implements LogMessage {
             _severity = Severity.getSeverityByCode(severity);
             _message = txtMsg.getText();
         } catch (JMSException e) {
+            throw new LoggingException("Problem reading logging information from JMS", e);
+        } catch (NumberFormatException e) {
             throw new LoggingException("Problem reading logging information from JMS", e);
         }
 

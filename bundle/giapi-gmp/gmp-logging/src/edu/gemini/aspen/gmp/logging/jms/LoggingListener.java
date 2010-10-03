@@ -3,19 +3,15 @@ package edu.gemini.aspen.gmp.logging.jms;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.logging.LogMessage;
 import edu.gemini.aspen.gmp.logging.LogProcessor;
-import edu.gemini.aspen.gmp.logging.LoggingException;
 
 import javax.jms.MessageListener;
 import javax.jms.Message;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * Listener class for the logging messages
  */
 public class LoggingListener implements MessageListener {
 
-    private static final Logger LOG = Logger.getLogger(LoggingListener.class.getName());
     /**
      * The destination from where the messages will come from
      */
@@ -27,18 +23,12 @@ public class LoggingListener implements MessageListener {
     private final LogProcessor _logProcessor;
 
     public LoggingListener(LogProcessor logProcessor) {
+        if (logProcessor == null) throw new IllegalArgumentException("Can't initialize a Logging Listener with a null Log Processor"); 
         _logProcessor = logProcessor;
     }
 
     public void onMessage(Message message) {
-
-        try {
-            //convert the message into a LogMessage.
-            LogMessage msg = new JmsLogMessage(message);
-            _logProcessor.processLogMessage(msg);
-        } catch (LoggingException e) {
-            LOG.log(Level.WARNING, "Problem processing log message", e);
-        }
-
+        LogMessage msg = new JmsLogMessage(message);
+        _logProcessor.processLogMessage(msg);
     }
 }
