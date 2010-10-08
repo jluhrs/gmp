@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class GiapiCasTest
+ * Class StressTest
  *
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
@@ -23,6 +23,7 @@ public class StressTest extends TestCase {
     private static final Logger LOG = Logger.getLogger(StressTest.class.getName());
     private GiapiCas giapicas;
     private JCALibrary jca;
+
 
     @Before
     public void setUp() {
@@ -37,7 +38,9 @@ public class StressTest extends TestCase {
         giapicas.addVariable("nico:test1", DBR_Int.TYPE, new int[]{-1});
     }
 
-
+    /**
+     * Runs the server indefinitely, creates one channel and writes to it as fast as possible.
+     */
     @Test
     public void testStressPut() {
         try {

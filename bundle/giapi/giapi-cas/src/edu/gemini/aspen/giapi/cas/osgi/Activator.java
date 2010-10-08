@@ -8,7 +8,7 @@ import org.osgi.framework.ServiceRegistration;
 import java.util.logging.Logger;
 
 /**
- * Class Activator
+ * Class Activator. Activates the giapi-cas bundle.
  *
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
@@ -22,8 +22,14 @@ public class Activator  implements BundleActivator {
 
     private ServiceRegistration _registration;
 
+    /**
+     * Called when starting a bundle
+     *
+     * @param bundleContext  needed to register services
+     * @throws Exception if something goes wrong when starting the bundle
+     */
     @Override
-    public void start(BundleContext bundleContext) throws Exception {
+    public void start(BundleContext bundleContext) throws Exception{
         LOG.info("Starting giapi-cas");
         _cas = new GiapiCas();
 
@@ -36,6 +42,12 @@ public class Activator  implements BundleActivator {
 
     }
 
+    /**
+     * Called when stopping the bundle
+     *
+     * @param bundleContext 
+     * @throws Exception if something goes wrong when stopping the bundle
+     */
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
         LOG.info("Stopping giapi-cas");

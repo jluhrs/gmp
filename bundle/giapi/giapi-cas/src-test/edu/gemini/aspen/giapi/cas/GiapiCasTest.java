@@ -29,6 +29,9 @@ public class GiapiCasTest extends TestCase {
         jca = JCALibrary.getInstance();
     }
 
+    /**
+     * Just starts and stops the server
+     */
     @Test
     public void testStartStop() {
 
@@ -45,6 +48,9 @@ public class GiapiCasTest extends TestCase {
         }
     }
 
+    /**
+     * Starts the server, adds a PV, reads from it, removes the PV, checks it is correctly removed and stops the server
+     */
     @Test
     public void testAddRemoveVariable() {
 
@@ -81,6 +87,9 @@ public class GiapiCasTest extends TestCase {
         }
     }
 
+    /**
+     * Starts the server, adds a PV, reads from it, checks the value read is correct and stops the server
+     */
     @Test
     public void testReadVar() {
         try {
@@ -111,6 +120,9 @@ public class GiapiCasTest extends TestCase {
 
     }
 
+    /**
+     * Starts the server, adds a PV, writes a value, reads it back, checks the value read is correct and stops the server
+     */
     @Test
     public void testWriteVar() {
         try {
