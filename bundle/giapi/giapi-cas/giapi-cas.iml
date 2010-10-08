@@ -28,6 +28,19 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jcas">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/caj-1.1.5b.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jca-2.3.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/lib/caj-1.1.5b/src" />
+          <root url="file://$MODULE_DIR$/lib/jca-2.3.2/src/core" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
 

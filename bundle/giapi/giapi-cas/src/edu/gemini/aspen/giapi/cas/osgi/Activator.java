@@ -31,7 +31,7 @@ public class Activator  implements BundleActivator {
         _registration = bundleContext.registerService(
                 GiapiCas.class.getName(),
                 _cas, null);
-
+         _cas.start();
 
 
     }
@@ -39,6 +39,7 @@ public class Activator  implements BundleActivator {
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
         LOG.info("Stopping giapi-cas");
+        _cas.stop();
         _cas = null;
 
         _registration.unregister();
