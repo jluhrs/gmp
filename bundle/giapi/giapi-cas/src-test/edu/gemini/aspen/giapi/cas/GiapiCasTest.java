@@ -145,6 +145,46 @@ public class GiapiCasTest extends TestCase {
 
 
     }
+   /**
+     * Starts the server, adds a PV, writes a value, reads it back, checks the value read is correct and stops the server
+     */
+    @Test
+    public void testWriteWrongType() {
+        try {
+            GiapiCas giapicas = new GiapiCas();
+            giapicas.start();
+            giapicas.addVariable(varname, DBR_Int.TYPE,new int[]{2});
+
+            int exceptions=0;
+
+            try{
+                giapicas.put(varname,(float)3.0);
+            }catch(IllegalArgumentException ex){
+                //correct
+                exceptions++;
+            }
+            try{
+                giapicas.put(varname,new Double(3.0));
+            }catch(IllegalArgumentException ex){
+                //correct
+                exceptions++;
+            }
+            try{
+                giapicas.put(varname,"test");
+            }catch(IllegalArgumentException ex){
+                //correct
+                exceptions++;
+            }
+            assertEquals(3,exceptions);
+            giapicas.stop();
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(),ex);
+            fail();
+        }
+
+
+    }
+
 
     @After
     public void tearDown(){}

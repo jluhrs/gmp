@@ -106,6 +106,9 @@ public class GiapiCas implements Runnable{
         if(ch==null){
             throw new IllegalArgumentException("Process Variable not registered.");
         }
+        if(!ch.getFieldType().isSTRING()){
+            throw new IllegalArgumentException("Trying to write a String value in a "+ ch.getFieldType().getName()+" field.");
+        }
         ch.put(value);
         try{
             ch.getContext().pendIO(1);
@@ -125,6 +128,9 @@ public class GiapiCas implements Runnable{
         Channel ch=channels.get(name);
         if(ch==null){
             throw new IllegalArgumentException("Process Variable not registered.");
+        }
+        if(!ch.getFieldType().isFLOAT()){
+            throw new IllegalArgumentException("Trying to write a float value in a "+ ch.getFieldType().getName()+" field.");
         }
         ch.put(value);
         try{
@@ -146,6 +152,9 @@ public class GiapiCas implements Runnable{
         if(ch==null){
             throw new IllegalArgumentException("Process Variable not registered.");
         }
+        if(!ch.getFieldType().isDOUBLE()){
+            throw new IllegalArgumentException("Trying to write a double value in a "+ ch.getFieldType().getName()+" field.");
+        }
         ch.put(value);
         try{
             ch.getContext().pendIO(1);
@@ -165,6 +174,9 @@ public class GiapiCas implements Runnable{
         Channel ch=channels.get(name);
         if(ch==null){
             throw new IllegalArgumentException("Process Variable not registered.");
+        }
+        if(!ch.getFieldType().isINT()){
+            throw new IllegalArgumentException("Trying to write a int value in a "+ ch.getFieldType().getName()+" field.");
         }
         ch.put(value);
         try{
