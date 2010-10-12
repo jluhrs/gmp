@@ -1,12 +1,14 @@
 package edu.gemini.aspen.giapi.cas;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
-import gov.aps.jca.CAException;
-import gov.aps.jca.JCALibrary;
+import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
 import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_Int;
+import gov.aps.jca.dbr.DBR;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,14 +23,17 @@ import java.util.logging.Logger;
 public class GiapiCas implements Runnable{
     private static final Logger LOG = Logger.getLogger(GiapiCas.class.getName());
     private DefaultServerImpl server;
-    private ServerContext ctxt=null;
+    private ServerContext serverContext =null;
+    private Context clientContext =null;
     private Thread t;
-    JCALibrary jca;
+    private JCALibrary jca;
+    private Map<String, Channel> channels;
 
     /**
      * Constructor. Gets the instance of the JCALibrary singleton
      */
     public GiapiCas() {
+
        jca = JCALibrary.getInstance();
     }
 
@@ -39,11 +44,12 @@ public class GiapiCas implements Runnable{
      * @throws CAException is thrown if the jca context could not be instanciated.
      */
     public void start() throws IllegalStateException, CAException{
+        channels=new HashMap<String,Channel>();
         server = new DefaultServerImpl();
-        if (ctxt != null) {
+        if (serverContext != null) {
             throw new IllegalStateException("Tried to start the GiapiCas more than once");
         }
-        ctxt = jca.createServerContext(JCALibrary.CHANNEL_ACCESS_SERVER_JAVA, server);
+        serverContext = jca.createServerContext(JCALibrary.CHANNEL_ACCESS_SERVER_JAVA, server);
         t = new Thread(this);
         t.start();
         try{
@@ -52,6 +58,7 @@ public class GiapiCas implements Runnable{
         }catch(InterruptedException ex){
             LOG.log(Level.SEVERE, ex.getMessage(),ex);
         }
+        clientContext = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
     }
 
     /**
@@ -60,9 +67,20 @@ public class GiapiCas implements Runnable{
      * @param name of the PV
      * @param type of the PV
      * @param initialValue must be an array of the appropriate type
+     *
+     * @throws CAException is thrown if a Channel Access error occured while creating the channel.
+     * @throws java.lang.IllegalArgumentException is thrown if the channel's name is null or empty.
+     * @throws java.lang.IllegalStateException if the context has been destroyed.
      */
-    public void addVariable(String name, DBRType type, Object initialValue){
-       server.createMemoryProcessVariable(name, type, initialValue);
+    public void addVariable(String name, DBRType type, Object initialValue)throws CAException, IllegalArgumentException, IllegalStateException{
+        server.createMemoryProcessVariable(name, type, initialValue);
+        Channel ch=clientContext.createChannel(name);
+        try{
+            clientContext.pendIO(1);
+        }catch(TimeoutException ex){
+            throw new CAException(ex);
+        }
+        channels.put(name,ch);
     }
 
     /**
@@ -71,9 +89,111 @@ public class GiapiCas implements Runnable{
      * @param name of the PV to remove
      */
     public void removeVariable(String name){
-       server.unregisterProcessVaribale(name);
+        server.unregisterProcessVaribale(name);
+        channels.remove(name);
     }
 
+    /**
+     *
+     * @param name
+     * @param value
+     * @throws CAException if a Channel Exception occured while performing this operation.
+     * @throws IllegalStateException if the channel is in no state to perform this operation (ie destroyed, etc...)
+     * @throws java.lang.IllegalArgumentException if the variable's name is not registered
+     */
+    public void put(String name, String value) throws CAException, IllegalStateException, IllegalArgumentException{
+        Channel ch=channels.get(name);
+        if(ch==null){
+            throw new IllegalArgumentException("Process Variable not registered.");
+        }
+        ch.put(value);
+        try{
+            ch.getContext().pendIO(1);
+        }catch(TimeoutException ex){
+            throw new CAException(ex);
+        }
+    }
+    /**
+     *
+     * @param name
+     * @param value
+     * @throws CAException if a Channel Exception occured while performing this operation.
+     * @throws IllegalStateException if the channel is in no state to perform this operation (ie destroyed, etc...)
+     * @throws java.lang.IllegalArgumentException if the variable's name is not registered
+     */
+    public void put(String name, float value) throws CAException, IllegalStateException, IllegalArgumentException{
+        Channel ch=channels.get(name);
+        if(ch==null){
+            throw new IllegalArgumentException("Process Variable not registered.");
+        }
+        ch.put(value);
+        try{
+            ch.getContext().pendIO(1);
+        }catch(TimeoutException ex){
+            throw new CAException(ex);
+        }
+    }
+    /**
+     *
+     * @param name
+     * @param value
+     * @throws CAException if a Channel Exception occured while performing this operation.
+     * @throws IllegalStateException if the channel is in no state to perform this operation (ie destroyed, etc...)
+     * @throws java.lang.IllegalArgumentException if the variable's name is not registered
+     */
+    public void put(String name, double value) throws CAException, IllegalStateException, IllegalArgumentException{
+        Channel ch=channels.get(name);
+        if(ch==null){
+            throw new IllegalArgumentException("Process Variable not registered.");
+        }
+        ch.put(value);
+        try{
+            ch.getContext().pendIO(1);
+        }catch(TimeoutException ex){
+            throw new CAException(ex);
+        }
+    }
+    /**
+     *
+     * @param name
+     * @param value
+     * @throws CAException if a Channel Exception occured while performing this operation.
+     * @throws IllegalStateException if the channel is in no state to perform this operation (ie destroyed, etc...)
+     * @throws java.lang.IllegalArgumentException if the variable's name is not registered
+     */
+    public void put(String name, int value) throws CAException, IllegalStateException, IllegalArgumentException{
+        Channel ch=channels.get(name);
+        if(ch==null){
+            throw new IllegalArgumentException("Process Variable not registered.");
+        }
+        ch.put(value);
+        try{
+            ch.getContext().pendIO(1);
+        }catch(TimeoutException ex){
+            throw new CAException(ex);
+        }
+    }
+    /**
+     *
+     * @param name
+     * @return
+     * @throws CAException if a Channel Exception occured while performing this operation.
+     * @throws IllegalStateException if the channel is in no state to perform this operation (ie destroyed, etc...)
+     * @throws java.lang.IllegalArgumentException if the variable's name is not registered
+     */
+    public DBR get(String name) throws CAException, IllegalStateException, IllegalArgumentException{
+        Channel ch=channels.get(name);
+        if(ch==null){
+            throw new IllegalArgumentException("Process Variable not registered.");
+        }
+        DBR dbr =ch.get();
+        try{
+            ch.getContext().pendIO(1);
+        }catch(TimeoutException ex){
+            throw new CAException(ex);
+        }
+        return dbr;
+    }
     /**
      * Destroys the jca context and waits for the thread to return.
      *
@@ -81,7 +201,12 @@ public class GiapiCas implements Runnable{
      * @throws IllegalStateException if the context has been destroyed.
      */
     public void stop() throws CAException, IllegalStateException{
-        ctxt.destroy();
+        for(Channel channel:channels.values()){
+            channel.destroy();    
+        }
+        channels=null;
+        serverContext.destroy();
+        clientContext.destroy();
         try{
             t.join();
         }catch(InterruptedException ex){
@@ -89,7 +214,8 @@ public class GiapiCas implements Runnable{
         }
         server=null;
         t=null;
-        ctxt=null;
+        serverContext =null;
+        clientContext =null;
     }
 
     /**
@@ -98,7 +224,7 @@ public class GiapiCas implements Runnable{
     @Override
     public void run() {
         try {
-            ctxt.run(0);
+            serverContext.run(0);
         } catch (IllegalStateException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(),ex);
         } catch (CAException ex){

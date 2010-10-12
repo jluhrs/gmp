@@ -23,7 +23,7 @@ public class StressTest extends TestCase {
     private static final Logger LOG = Logger.getLogger(StressTest.class.getName());
     private GiapiCas giapicas;
     private JCALibrary jca;
-
+    private String varname="nico:test1";
 
     @Before
     public void setUp() {
@@ -31,11 +31,12 @@ public class StressTest extends TestCase {
         giapicas = new GiapiCas();
         try {
             giapicas.start();
+            giapicas.addVariable(varname, DBR_Int.TYPE, new int[]{-1});
         } catch (CAException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
             fail();
         }
-        giapicas.addVariable("nico:test1", DBR_Int.TYPE, new int[]{-1});
+
     }
 
     /**
@@ -45,11 +46,6 @@ public class StressTest extends TestCase {
     public void testStressPut() {
         try {
 
-
-           Context ctxt = giapicas.jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-            Channel channel = ctxt.createChannel("nico:test1");
-
-            ctxt.pendIO(1);
             long first=System.currentTimeMillis();
             long last=first;
             final int iters = Integer.MAX_VALUE;
@@ -60,12 +56,8 @@ public class StressTest extends TestCase {
 
                 for (i = 0; i < iters; i++) {
 
-                    channel.put(i);
-                    //((CAJContext)ctxt).incrementPendingRequests();
-                    channel.getContext().pendIO(1);
-                   // channel.get();
-                    //channel.getContext().pendIO(1);
-                    //((CAJChannel)channel).getTransport().flush();
+                    giapicas.put(varname,i);
+
                     Thread.yield();
 		            if(i%1000==0)Thread.sleep(10);
                     if (i % stepiters == 0) {
@@ -103,9 +95,7 @@ public class StressTest extends TestCase {
             }
             //Thread.sleep(30000);
 
-            channel.destroy();
-            ctxt.pendIO(1);
-            ctxt.destroy();
+
             long after = System.currentTimeMillis();
             long elapsed=after-first;
             double rate= (double)iters/elapsed*1000.0;

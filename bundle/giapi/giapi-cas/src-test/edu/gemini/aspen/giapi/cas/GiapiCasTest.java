@@ -22,11 +22,10 @@ import java.util.logging.Logger;
  */
 public class GiapiCasTest extends TestCase {
     private static final Logger LOG = Logger.getLogger(GiapiCasTest.class.getName());
-    private GiapiCas giapicas;
-    private JCALibrary jca;
+    private String varname="nico:test1";
+
     @Before
     public void setUp() {
-        jca = JCALibrary.getInstance();
     }
 
     /**
@@ -37,9 +36,13 @@ public class GiapiCasTest extends TestCase {
 
         try {
             GiapiCas giapicas = new GiapiCas();
+
+
             giapicas.start();
 
-           // Thread.sleep(500);
+            giapicas.stop();
+
+            giapicas.start();
 
             giapicas.stop();
         } catch (Exception ex) {
@@ -57,12 +60,10 @@ public class GiapiCasTest extends TestCase {
         try {
             GiapiCas giapicas = new GiapiCas();
             giapicas.start();
-            giapicas.addVariable("nico:test1",DBR_Int.TYPE,new int[]{2});
-            Context ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-            Channel channel = ctxt.createChannel("nico:test1");
-            ctxt.pendIO(1);
-            DBR dbr = channel.get();
-            ctxt.pendIO(1);
+
+            giapicas.addVariable(varname,DBR_Int.TYPE,new int[]{2});
+            DBR dbr = giapicas.get(varname);
+
 
 
             int num = dbr.getCount();
@@ -70,13 +71,12 @@ public class GiapiCasTest extends TestCase {
             Object obj = dbr.getValue();
             int[] objarr = (int[]) obj;
             assertEquals(2, objarr[0]);
-            channel.destroy();
 
-            giapicas.removeVariable("nico:test1");
-            channel = ctxt.createChannel("nico:test1");
+            giapicas.removeVariable(varname);
+
             try{
-                ctxt.pendIO(1);
-            }catch(TimeoutException ex){
+                giapicas.get(varname);
+            }catch(IllegalArgumentException ex){
                 //OK   
             }finally{
                 giapicas.stop();
@@ -95,15 +95,10 @@ public class GiapiCasTest extends TestCase {
         try {
             GiapiCas giapicas = new GiapiCas();
             giapicas.start();
-            giapicas.addVariable("nico:test1",DBR_Int.TYPE,new int[]{2});
+            giapicas.addVariable(varname,DBR_Int.TYPE,new int[]{2});
 
 
-
-            Context ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-            Channel channel = ctxt.createChannel("nico:test1");
-            ctxt.pendIO(1);
-            DBR dbr = channel.get();
-            ctxt.pendIO(1);
+            DBR dbr = giapicas.get(varname);
 
 
             int num = dbr.getCount();
@@ -128,21 +123,12 @@ public class GiapiCasTest extends TestCase {
         try {
             GiapiCas giapicas = new GiapiCas();
             giapicas.start();
-            giapicas.addVariable("nico:test1", DBR_Int.TYPE,new int[]{2});
+            giapicas.addVariable(varname, DBR_Int.TYPE,new int[]{2});
 
-            //Thread.sleep(1000);
-            Context ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-            Channel channel = ctxt.createChannel("nico:test1");
+            giapicas.put(varname,3);
 
-            ctxt.pendIO(1);
+            DBR dbr = giapicas.get(varname);
 
-            channel.put(3);
-            channel.getContext().flushIO();
-            ctxt.pendIO(1);
-
-
-            DBR dbr = channel.get();
-            ctxt.pendIO(1);
 
 
             int num = dbr.getCount();
