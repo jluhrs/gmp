@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xs:element name="channels">
+	<xs:complexType>
+		<xs:element name="channel">
+			<xs:complexType>
+				<xs:element name="giapiname" type="xs:string"/>
+				<xs:element name="epicsname" type="xs:string"/>
+				<xs:element name="type" type="xs:string"/>
+				<xs:element name="initial" type="xs:anyType"/>
+			</xs:complexType>
+		</xs:element>
+	</xs:complexType>
+</xs:element>
+</xs:schema>

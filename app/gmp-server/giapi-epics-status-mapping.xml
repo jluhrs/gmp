@@ -1,0 +1,8 @@
+<channels>
+	<channel>
+		<giapiname>giapiname</giapiname>
+		<epicsname>epicsname</epicsname>
+		<type>INT</type>
+		<initial>2</initial>
+	</channel>
+</channels>
