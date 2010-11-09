@@ -11,11 +11,17 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -51,9 +57,41 @@ public class EpicsStatusServiceConfiguration {
         return Collections.unmodifiableSet(_simChannels);
     }
 
+    private boolean validate(String xml, String xsd) {
+        // 1. Lookup a factory for the W3C XML Schema language
+        SchemaFactory factory =
+                SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
 
+        // 2. Compile the schema.
+        // Here the schema is loaded from a java.io.File, but you could use
+        // a java.net.URL or a javax.xml.transform.Source instead.
+        File schemaLocation = new File(xsd);
+        try {
+            Schema schema = factory.newSchema(schemaLocation);
+
+            // 3. Get a validator from the schema.
+            Validator validator = schema.newValidator();
+
+            // 4. Parse the document you want to check.
+            Source source = new StreamSource(xml);
+
+            // 5. Check the document
+
+            validator.validate(source);
+        }
+        catch (Exception ex) {
+            LOG.log(Level.SEVERE,"Validating XML file: '"+xml+"', using XSD: '"+xsd+"' failed.",ex);
+        }
+        return true;
+    }
+    
     private Document getPropertiesDocument(BundleContext ctx) {
         String configFileStr = getProperty(ctx, CONF_FILE);
+
+        //Just log a warning if it doesn't validate.
+        //Eventually we will change this to take action.
+        validate(configFileStr,configFileStr.substring(0,configFileStr.length()-3).concat("xsd"));
+
         File confFile = new File(configFileStr);
         if (!confFile.exists()) {
             throw new RuntimeException("Missing properties config file: " + configFileStr);
