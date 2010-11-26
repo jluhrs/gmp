@@ -12,3 +12,4 @@ Import-Package: edu.gemini.aspen.giapi.status,
  javax.jms,
  org.osgi.util.tracker,
  org.osgi.framework
+Export-Package: edu.gemini.aspen.giapi.statusservice

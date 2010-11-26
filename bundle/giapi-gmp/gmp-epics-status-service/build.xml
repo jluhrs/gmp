@@ -6,6 +6,8 @@
     <path id="build.classpath.extra">
         <pathelement path="../gmp-epics-status-service/bin"/>
         <pathelement path="../../giapi/giapi-cas/bin"/>
+        <pathelement path="../../giapi/giapi/bin"/>
+        <pathelement path="../../giapi/giapi-status-service/bin"/>
         <fileset dir="../../giapi/giapi-cas/lib" includes="*.jar"/>
     </path>
 

@@ -1,10 +1,12 @@
 package edu.gemini.aspen.gmp.statusservice.osgi;
 
-
+import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.cas.GiapiCas;
+import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.aspen.gmp.statusservice.EpicsStatusService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 import java.io.File;
@@ -39,7 +41,12 @@ public class Activator  implements BundleActivator {
     public void start(BundleContext bundleContext) throws Exception{
         LOG.info("Starting gmp-epics-status-service");
 
-        _cas = (GiapiCas)bundleContext.getService(bundleContext.getServiceReference(GiapiCas.class.getName()));
+        ServiceReference ref= bundleContext.getServiceReference(GiapiCas.class.getName());
+        if(ref!=null){
+            _cas = (GiapiCas)bundleContext.getService(ref);
+        }else{
+            _cas=null;
+        }
 
         _epicsSS= new EpicsStatusService(_cas);
 
@@ -52,15 +59,16 @@ public class Activator  implements BundleActivator {
         if (!confFile.exists()) {
             throw new RuntimeException("Missing properties config file: " + confFileName);
         }
-        EpicsStatusServiceConfiguration conf=  new EpicsStatusServiceConfiguration(bundleContext);
+        EpicsStatusServiceConfiguration conf=  new EpicsStatusServiceConfiguration(confFileName);
         for(EpicsStatusServiceConfiguration.StatusConfigItem item: conf.getSimulatedChannels()){
             _epicsSS.addVariable(item.giapiName, item.epicsName, item.type, item.initialValue);
         }
 
-        //advertise the cas into OSGi
+        //advertise the EpicsStatusService into OSGi, as a StatusHandler
         _registration = bundleContext.registerService(
-                EpicsStatusService.class.getName(),
+                StatusHandler.class.getName(),
                 _epicsSS, null);
+
     }
 
     /**

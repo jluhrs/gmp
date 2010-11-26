@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.statusservice.osgi;
 
 import gov.aps.jca.dbr.DBRType;
+import gov.aps.jca.dbr.DBR_Int;
 import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,7 +31,6 @@ import java.util.logging.Logger;
 public class EpicsStatusServiceConfiguration {
 
     private static final Logger LOG = Logger.getLogger(EpicsStatusServiceConfiguration.class.getName());
-    private static final int MSEC_PER_SEC = 1000;
     private static final String CONF_FILE = "gmp.epics.statusservice.conf";
     static final String CHANNEL_TAG = "channel";
     static final String GIAPI_NAME_TAG = "giapiname";
@@ -47,8 +47,8 @@ public class EpicsStatusServiceConfiguration {
         public Object initialValue;
     }
 
-    public EpicsStatusServiceConfiguration(BundleContext context) {
-        Document doc = getPropertiesDocument(context);
+    public EpicsStatusServiceConfiguration(String confFileName) {
+        Document doc = getPropertiesDocument(confFileName);
         _simChannels = parseChannels(doc);
 
     }
@@ -80,21 +80,21 @@ public class EpicsStatusServiceConfiguration {
             validator.validate(source);
         }
         catch (Exception ex) {
-            LOG.log(Level.SEVERE,"Validating XML file: '"+xml+"', using XSD: '"+xsd+"' failed.",ex);
+           // LOG.log(Level.SEVERE,"Validating XML file: '"+xml+"', using XSD: '"+xsd+"' failed.",ex);
+            LOG.log(Level.SEVERE,"Validating XML file: '"+xml+"', using XSD: '"+xsd+"' failed.");
         }
         return true;
     }
     
-    private Document getPropertiesDocument(BundleContext ctx) {
-        String configFileStr = getProperty(ctx, CONF_FILE);
+    private Document getPropertiesDocument(String filename) {
 
         //Just log a warning if it doesn't validate.
         //Eventually we will change this to take action.
-        validate(configFileStr,configFileStr.substring(0,configFileStr.length()-3).concat("xsd"));
+        validate(filename,filename.substring(0,filename.length()-3).concat("xsd"));
 
-        File confFile = new File(configFileStr);
+        File confFile = new File(filename);
         if (!confFile.exists()) {
-            throw new RuntimeException("Missing properties config file: " + configFileStr);
+            throw new RuntimeException("Missing properties config file: " + filename);
         }
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -144,9 +144,9 @@ public class EpicsStatusServiceConfiguration {
                 String typeString = getNodeData(firstElement, TYPE_TAG);
                 if (typeString != null) {
                     try {
-                        LOG.info(typeString);
                         if(typeString.equals("INT")){
-                            type = DBRType.INT;
+                            //type = DBRType.INT;
+                            type = DBR_Int.TYPE;
                         }else{
                             throw new IllegalArgumentException();
                         }

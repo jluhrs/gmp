@@ -54,7 +54,7 @@ public class GiapiCas implements Runnable{
         t.start();
         try{
             //TODO: this is UGLY!! need a way to see that the server is up and running
-            Thread.sleep(100);
+            Thread.sleep(2000);
         }catch(InterruptedException ex){
             LOG.log(Level.SEVERE, ex.getMessage(),ex);
         }
@@ -73,14 +73,23 @@ public class GiapiCas implements Runnable{
      * @throws java.lang.IllegalStateException if the context has been destroyed.
      */
     public void addVariable(String name, DBRType type, Object initialValue)throws CAException, IllegalArgumentException, IllegalStateException{
+        LOG.info("Creating channel "+name);
         server.createMemoryProcessVariable(name, type, initialValue);
+        try{
+            //Just a "debugging" sleep, should go away   
+            Thread.sleep(2000);
+        }catch(InterruptedException ex){
+            LOG.log(Level.SEVERE, ex.getMessage(),ex);
+        }
         Channel ch=clientContext.createChannel(name);
         try{
-            clientContext.pendIO(1);
+            clientContext.pendIO(5);
         }catch(TimeoutException ex){
             throw new CAException(ex);
+            //LOG.log(Level.SEVERE, ex.getMessage(),ex);
         }
         channels.put(name,ch);
+        LOG.info("Created channel "+name);
     }
 
     /**
@@ -89,8 +98,10 @@ public class GiapiCas implements Runnable{
      * @param name of the PV to remove
      */
     public void removeVariable(String name){
+        LOG.info("Deleting channel "+name);
         server.unregisterProcessVaribale(name);
         channels.remove(name);
+        LOG.info("Deleted channel "+name);
     }
 
     /**
@@ -104,7 +115,7 @@ public class GiapiCas implements Runnable{
     public void put(String name, String value) throws CAException, IllegalStateException, IllegalArgumentException{
         Channel ch=channels.get(name);
         if(ch==null){
-            throw new IllegalArgumentException("Process Variable not registered.");
+            throw new IllegalArgumentException("Process Variable "+name+" not registered.");
         }
         if(!ch.getFieldType().isSTRING()){
             throw new IllegalArgumentException("Trying to write a String value in a "+ ch.getFieldType().getName()+" field.");
@@ -127,7 +138,7 @@ public class GiapiCas implements Runnable{
     public void put(String name, float value) throws CAException, IllegalStateException, IllegalArgumentException{
         Channel ch=channels.get(name);
         if(ch==null){
-            throw new IllegalArgumentException("Process Variable not registered.");
+            throw new IllegalArgumentException("Process Variable "+name+" not registered.");
         }
         if(!ch.getFieldType().isFLOAT()){
             throw new IllegalArgumentException("Trying to write a float value in a "+ ch.getFieldType().getName()+" field.");
@@ -150,7 +161,7 @@ public class GiapiCas implements Runnable{
     public void put(String name, double value) throws CAException, IllegalStateException, IllegalArgumentException{
         Channel ch=channels.get(name);
         if(ch==null){
-            throw new IllegalArgumentException("Process Variable not registered.");
+            throw new IllegalArgumentException("Process Variable "+name+" not registered.");
         }
         if(!ch.getFieldType().isDOUBLE()){
             throw new IllegalArgumentException("Trying to write a double value in a "+ ch.getFieldType().getName()+" field.");
@@ -173,7 +184,7 @@ public class GiapiCas implements Runnable{
     public void put(String name, int value) throws CAException, IllegalStateException, IllegalArgumentException{
         Channel ch=channels.get(name);
         if(ch==null){
-            throw new IllegalArgumentException("Process Variable not registered.");
+            throw new IllegalArgumentException("Process Variable "+name+" not registered.");
         }
         if(!ch.getFieldType().isINT()){
             throw new IllegalArgumentException("Trying to write a int value in a "+ ch.getFieldType().getName()+" field.");
@@ -246,7 +257,7 @@ public class GiapiCas implements Runnable{
     }
 
     /**
-     * Main method for starting the server from teh command line.
+     * Main method for starting the server from the command line.
      *
      * @param args number of milliseconds to run the server
      */
@@ -255,7 +266,7 @@ public class GiapiCas implements Runnable{
         try {
 
             giapicas.start();
-            giapicas.addVariable("nico:test1", DBR_Int.TYPE, new int[]{-1});
+            giapicas.addVariable("test", DBR_Int.TYPE, new int[]{-1});
 
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);

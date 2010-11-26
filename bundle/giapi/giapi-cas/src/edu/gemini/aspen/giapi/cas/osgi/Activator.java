@@ -1,6 +1,7 @@
 package edu.gemini.aspen.giapi.cas.osgi;
 
 import edu.gemini.aspen.giapi.cas.GiapiCas;
+import gov.aps.jca.dbr.DBR_Int;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -39,6 +40,8 @@ public class Activator  implements BundleActivator {
                 _cas, null);
          _cas.start();
 
+        //Test code!!!
+        _cas.addVariable("test", DBR_Int.TYPE,new int[]{-1});
 
     }
 

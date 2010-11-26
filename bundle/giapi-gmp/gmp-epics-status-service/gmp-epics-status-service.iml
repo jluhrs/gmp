@@ -36,6 +36,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="giapi" />
+    <orderEntry type="module" module-name="giapi-status-service" />
   </component>
 </module>
 
