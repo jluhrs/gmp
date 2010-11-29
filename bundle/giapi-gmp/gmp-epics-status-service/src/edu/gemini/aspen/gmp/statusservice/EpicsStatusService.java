@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.statusservice;
 
 
 import edu.gemini.aspen.giapi.cas.GiapiCas;
+import edu.gemini.aspen.giapi.cas.IGiapiCas;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import gov.aps.jca.CAException;
@@ -26,16 +27,16 @@ public class EpicsStatusService implements StatusHandler {
      * Structure mapping Giapi Status Item -> Epics PV
      */
     private final Map<String, String> channelMap = new HashMap<String, String>();
-    private GiapiCas _cas=null;
+    private IGiapiCas _cas=null;
     public EpicsStatusService(GiapiCas cas) {
         _cas=cas;
     }
 
-    public void addVariable(String giapiName, String epicsName, DBRType type, Object initialValue)throws CAException, IllegalArgumentException, IllegalStateException{
+    public <T> void addVariable(String giapiName, String epicsName, T firstValue, T... remainingValues)throws CAException, IllegalArgumentException, IllegalStateException{
         LOG.info("Adding variable GIAPI: "+giapiName+" EPICS: "+epicsName);
         channelMap.put(giapiName, epicsName);
         if(_cas!=null){
-            _cas.addVariable(epicsName,type,initialValue);
+            _cas.addVariable(epicsName, firstValue, remainingValues);
         }else{
             throw new IllegalStateException("The giapi-cas service is unavailable");
         }
@@ -85,25 +86,10 @@ public class EpicsStatusService implements StatusHandler {
         if (channelMap.containsKey(item.getName())) {
             if (_cas != null) {
                 try {
-                    T value = item.getValue();
-                    String epicsname=channelMap.get(item.getName());
-                    if (value.getClass() == Integer.class) {
-                        _cas.put(epicsname, (Integer) value);
-                    }else if (value.getClass() == Double.class) {
-                        _cas.put(epicsname, (Double) value);
-                    }else if (value.getClass() == Float.class) {
-                        _cas.put(epicsname, (Float) value);
-                    }else if (value.getClass() == String.class) {
-                        _cas.put(epicsname, (String) value);
-                    }else{
-                        //StatusItem type was not one of the 4 supported types
-                        LOG.warning("Unsupported item type "+value.getClass());
-
-                    }
+                    _cas.put(channelMap.get(item.getName()), item.getValue());
                 } catch (CAException ex) {
                     LOG.log(Level.SEVERE,"",ex);
-                } catch (IllegalStateException ex) {
-                    LOG.log(Level.SEVERE,"",ex);
+
                 } catch (IllegalArgumentException ex) {
                    LOG.log(Level.SEVERE,"",ex);
                 }

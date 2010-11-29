@@ -61,7 +61,7 @@ public class GiapiCasTest extends TestCase {
             GiapiCas giapicas = new GiapiCas();
             giapicas.start();
 
-            giapicas.addVariable(varname,DBR_Int.TYPE,new int[]{2});
+            giapicas.<Integer>addVariable(varname,2);
             DBR dbr = giapicas.get(varname);
 
 
@@ -95,7 +95,7 @@ public class GiapiCasTest extends TestCase {
         try {
             GiapiCas giapicas = new GiapiCas();
             giapicas.start();
-            giapicas.addVariable(varname,DBR_Int.TYPE,new int[]{2});
+            giapicas.<Integer>addVariable(varname,2);
 
 
             DBR dbr = giapicas.get(varname);
@@ -123,9 +123,9 @@ public class GiapiCasTest extends TestCase {
         try {
             GiapiCas giapicas = new GiapiCas();
             giapicas.start();
-            giapicas.addVariable(varname, DBR_Int.TYPE,new int[]{2});
+            giapicas.<Integer>addVariable(varname,2);
 
-            giapicas.put(varname,3);
+            giapicas.<Integer>put(varname,3);
 
             DBR dbr = giapicas.get(varname);
 
@@ -153,8 +153,8 @@ public class GiapiCasTest extends TestCase {
         try {
             GiapiCas giapicas = new GiapiCas();
             giapicas.start();
-            giapicas.addVariable(varname, DBR_Int.TYPE,new int[]{2});
-
+            giapicas.<Integer>addVariable(varname,2);
+            
             int exceptions=0;
 
             try{

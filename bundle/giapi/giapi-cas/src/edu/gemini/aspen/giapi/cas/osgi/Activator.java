@@ -39,10 +39,6 @@ public class Activator  implements BundleActivator {
                 GiapiCas.class.getName(),
                 _cas, null);
          _cas.start();
-
-        //Test code!!!
-        _cas.addVariable("test", DBR_Int.TYPE,new int[]{-1});
-
     }
 
     /**

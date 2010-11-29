@@ -61,7 +61,8 @@ public class Activator  implements BundleActivator {
         }
         EpicsStatusServiceConfiguration conf=  new EpicsStatusServiceConfiguration(confFileName);
         for(EpicsStatusServiceConfiguration.StatusConfigItem item: conf.getSimulatedChannels()){
-            _epicsSS.addVariable(item.giapiName, item.epicsName, item.type, item.initialValue);
+            //TODO:support multiple values (array)
+            _epicsSS.addVariable(item.giapiName, item.epicsName, item.initialValue);
         }
 
         //advertise the EpicsStatusService into OSGi, as a StatusHandler

@@ -162,8 +162,10 @@ public class EpicsStatusServiceConfiguration {
                 String sizeString = getNodeData(firstElement, INITIAL_TAG);
                 if (sizeString != null) {
                     try {
+                        //TODO: support other data types
+                        //TODO: support multiple values (array)
                         if(type.equals(DBRType.INT)){
-                            initial = new int[]{Integer.parseInt(sizeString)};
+                            initial = Integer.parseInt(sizeString);
                         }else{
                             throw new IllegalArgumentException();
                         }

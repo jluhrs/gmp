@@ -29,13 +29,14 @@ public class JcasTest {
 
     public JcasTest() {
         this.jca = JCALibrary.getInstance();
-        executor = Executors.newSingleThreadExecutor();
+        executor = Executors.newCachedThreadPool();
         server = new DefaultServerImpl();
     }
 
     public void start() {
         try {
             serverContext = jca.createServerContext(JCALibrary.CHANNEL_ACCESS_SERVER_JAVA, server);
+            serverContext.printInfo();
             executor.execute(new Runnable() {
                 public void run() {
                     LOG.info("Starting thread");
@@ -54,6 +55,7 @@ public class JcasTest {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
             clientContext = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+            clientContext.printInfo();
         } catch (CAException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -66,33 +68,24 @@ public class JcasTest {
         } catch (InterruptedException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
+
+     executor.execute(new Runnable() {
+                public void run() {
+
         try {
             ch = clientContext.createChannel("test");
-
             clientContext.pendIO(5);
+            ch.printInfo();
+
         } catch (TimeoutException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (CAException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }
-
-    public void stop() {
-        try {
-            ch.destroy();
-            serverContext.destroy();
-            clientContext.destroy();
-            executor.shutdown();
-        } catch (CAException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-
-    }
-
-    public void test() {
         try {
             DBR dbr = ch.get();
             ch.getContext().pendIO(1);
+            dbr.printInfo();
             int num = dbr.getCount();
             if (1 != num) {
                 LOG.severe("Not the expected amount of values");
@@ -108,7 +101,19 @@ public class JcasTest {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         LOG.info("Test OK!");
+    }});
     }
+    public void stop() {
+         try {
+             ch.destroy();
+             serverContext.destroy();
+             clientContext.destroy();
+             executor.shutdown();
+         } catch (CAException ex) {
+             LOG.log(Level.SEVERE, ex.getMessage(), ex);
+         }
+
+     }
 
     public static void main(String args[]) {
         JcasTest jt = new JcasTest();
@@ -118,7 +123,7 @@ public class JcasTest {
         } catch (InterruptedException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        jt.test();
+      //  jt.test();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
