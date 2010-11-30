@@ -84,20 +84,58 @@ public class GiapiCas implements IGiapiCas {
      */
     @Override
     public <T> void addVariable(String name, T value, T... values){
-        int length=1+values.length;
-        if(value instanceof Integer){
-            int[] newValues=new int[length];
-            newValues[0]=(Integer)value;
-            for(int i=1;i<length;i++){
-                if(!(values[i-1] instanceof Integer)){
-                    throw new IllegalArgumentException("All the values must be of the same type.");    
+        LOG.info("Adding variable "+name);
+        int length = 1 + values.length;
+        if (value instanceof Integer) {
+            if (values instanceof Integer[]) {
+                int[] newValues = new int[length];
+                newValues[0] = (Integer) value;
+                for (int i = 1; i < length; i++) {
+                    newValues[i] = (Integer) values[i - 1];
                 }
-                newValues[i]=(Integer)values[i-1];
+                MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Int.TYPE, newValues);
+                pvs.put(name, pv);
+            } else {
+                throw new IllegalArgumentException("All the values must be of the same type as the first " + value.getClass().getName());
             }
-            MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Int.TYPE, newValues);
-            pvs.put(name,pv);
+        } else if (value instanceof Float) {
+            if (values instanceof Float[]) {
+                float[] newValues = new float[length];
+                newValues[0] = (Float) value;
+                for (int i = 1; i < length; i++) {
+                    newValues[i] = (Float) values[i - 1];
+                }
+                MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Float.TYPE, newValues);
+                pvs.put(name, pv);
+            } else {
+                throw new IllegalArgumentException("All the values must be of the same type as the first " + value.getClass().getName());
+            }
+        }else  if (value instanceof Double) {
+            if (values instanceof Double[]) {
+                double[] newValues = new double[length];
+                newValues[0] = (Double) value;
+                for (int i = 1; i < length; i++) {
+                    newValues[i] = (Double) values[i - 1];
+                }
+                MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Double.TYPE, newValues);
+                pvs.put(name, pv);
+            } else {
+                throw new IllegalArgumentException("All the values must be of the same type as the first " + value.getClass().getName());
+            }
+        }else  if (value instanceof String) {
+            if (values instanceof String[]) {
+                String[] newValues = new String[length];
+                newValues[0] = (String) value;
+                for (int i = 1; i < length; i++) {
+                    newValues[i] = (String) values[i - 1];
+                }
+                MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_String.TYPE, newValues);
+                pvs.put(name, pv);
+            } else {
+                throw new IllegalArgumentException("All the values must be of the same type as the first " + value.getClass().getName());
+            }
         }else{
-            throw new IllegalArgumentException("Unsupported class "+value.getClass().getName());
+            throw new IllegalArgumentException("Unsupported class " + value.getClass().getName());
         }
     }
 
@@ -112,38 +150,88 @@ public class GiapiCas implements IGiapiCas {
      *          a wrong data type is passed
      */
     @Override
-    public <T> void put(String name, T value, T... values)throws CAException{
-        LOG.info("Trying to update "+name +" to "+value);
-        int length=1+values.length;
-        MemoryProcessVariable pv=pvs.get(name);
-        if(pv==null){
+    public <T> void put(String name, T value, T... values) throws CAException {
+        //LOG.info("Trying to update " + name + " to " + value);
+        int length = 1 + values.length;
+        MemoryProcessVariable pv = pvs.get(name);
+        if (pv == null) {
             throw new IllegalArgumentException("PV doesn't exist");
         }
-        if(pv.getDimensionSize(0) != length){
+        if (pv.getDimensionSize(0) != length) {
             throw new IllegalArgumentException("Incorrect array length");
         }
-        //TODO:support other data types
-        if(value instanceof Integer){
-            if (!pv.getType().isINT()) {
-                throw new IllegalArgumentException("Trying to write a int value in a " + pv.getType().getName() + " field.");
-            }
-            int[] newValues=new int[length];
-            newValues[0]=(Integer)value;
-            for(int i=1;i<length;i++){
-                if(!(values[i-1] instanceof Integer)){
-                    throw new IllegalArgumentException("All the values must be of the same type.");
+        if (value instanceof Integer) {
+            if (values instanceof Integer[]) {
+                if (!pv.getType().isINT()) {
+                    throw new IllegalArgumentException("Trying to write an" + value.getClass().getName() + " value in a " + pv.getType().getName() + " field.");
                 }
-                newValues[i]=(Integer)values[i-1];
+                int[] newValues = new int[length];
+                newValues[0] = (Integer) value;
+                for (int i = 1; i < length; i++) {
+                    newValues[i] = (Integer) values[i - 1];
+                }
+                CAStatus status = pv.write(new DBR_Int(newValues), null);
+                if (status != CAStatus.NORMAL) {
+                    throw new RuntimeException("MemoryProcessVariable.write(..) returned with abnormal status: " + status);
+                }
+            } else {
+                throw new IllegalArgumentException("All the values must be of the same type as the first " + value.getClass().getName());
             }
-
-            CAStatus status = pv.write(new DBR_Int(newValues), null);
-            if(status != CAStatus.NORMAL) {
-                throw new RuntimeException("MemoryProcessVariable.write(..) returned with abnormal status: "+status);
+        } else if (value instanceof Float) {
+            if (values instanceof Float[]) {
+                if (!pv.getType().isFLOAT()) {
+                    throw new IllegalArgumentException("Trying to write an" + value.getClass().getName() + " value in a " + pv.getType().getName() + " field.");
+                }
+                float[] newValues = new float[length];
+                newValues[0] = (Float) value;
+                for (int i = 1; i < length; i++) {
+                    newValues[i] = (Float) values[i - 1];
+                }
+                CAStatus status = pv.write(new DBR_Float(newValues), null);
+                if (status != CAStatus.NORMAL) {
+                    throw new RuntimeException("MemoryProcessVariable.write(..) returned with abnormal status: " + status);
+                }
+            } else {
+                throw new IllegalArgumentException("All the values must be of the same type as the first " + value.getClass().getName());
             }
-        }else{
-            throw new IllegalArgumentException("Unsupported class "+value.getClass().getName());
+        } else if (value instanceof Double) {
+            if (values instanceof Double[]) {
+                if (!pv.getType().isDOUBLE()) {
+                    throw new IllegalArgumentException("Trying to write an" + value.getClass().getName() + " value in a " + pv.getType().getName() + " field.");
+                }
+                double[] newValues = new double[length];
+                newValues[0] = (Double) value;
+                for (int i = 1; i < length; i++) {
+                    newValues[i] = (Double) values[i - 1];
+                }
+                CAStatus status = pv.write(new DBR_Double(newValues), null);
+                if (status != CAStatus.NORMAL) {
+                    throw new RuntimeException("MemoryProcessVariable.write(..) returned with abnormal status: " + status);
+                }
+            } else {
+                throw new IllegalArgumentException("All the values must be of the same type as the first " + value.getClass().getName());
+            }
+        } else if (value instanceof String) {
+            if (values instanceof String[]) {
+                if (!pv.getType().isSTRING()) {
+                    throw new IllegalArgumentException("Trying to write an" + value.getClass().getName() + " value in a " + pv.getType().getName() + " field.");
+                }
+                String[] newValues = new String[length];
+                newValues[0] = (String) value;
+                for (int i = 1; i < length; i++) {
+                    newValues[i] = (String) values[i - 1];
+                }
+                CAStatus status = pv.write(new DBR_String(newValues), null);
+                if (status != CAStatus.NORMAL) {
+                    throw new RuntimeException("MemoryProcessVariable.write(..) returned with abnormal status: " + status);
+                }
+            } else {
+                throw new IllegalArgumentException("All the values must be of the same type as the first " + value.getClass().getName());
+            }
+        } else {
+            throw new IllegalArgumentException("Unsupported class " + value.getClass().getName());
         }
-        LOG.info("Updated "+name +" to "+value);
+        //LOG.info("Updated " + name + " to " + value);
 
     }
 
@@ -153,10 +241,10 @@ public class GiapiCas implements IGiapiCas {
      * @param name of the PV to remove
      */
     public void removeVariable(String name){
-        LOG.info("Deleting channel "+name);
+        LOG.info("Removing variable "+name);
         server.unregisterProcessVaribale(name);
         pvs.remove(name).destroy();
-        LOG.info("Deleted channel "+name);
+        //LOG.info("Deleted channel "+name);
     }
 
     /**
@@ -173,19 +261,20 @@ public class GiapiCas implements IGiapiCas {
         if(pv==null){
             throw new IllegalArgumentException("Process Variable not registered.");
         }
-
+        //LOG.info("Variable "+name+" of type "+pv.getType());
         DBR dbr=null;
         if(pv.getType().isINT()){
-            dbr=new DBR_TIME_Int();
+            dbr=new DBR_TIME_Int(pv.getDimensionSize(0));
         }else if(pv.getType().isFLOAT()){
-            dbr=new DBR_TIME_Float();
+            dbr=new DBR_TIME_Float(pv.getDimensionSize(0));
         }else if(pv.getType().isDOUBLE()){
-            dbr=new DBR_TIME_Double();
+            dbr=new DBR_TIME_Double(pv.getDimensionSize(0));
         }else if(pv.getType().isSTRING()){
-            dbr=new DBR_TIME_String();
+            dbr=new DBR_TIME_String(pv.getDimensionSize(0));
         }else{
             throw new RuntimeException("Unsupported type");
         }
+        //LOG.info("count "+dbr.getCount());
         CAStatus status =pv.read(dbr,null);
         if(status!= CAStatus.NORMAL){
              throw new RuntimeException("MemoryProcessVariable.read(..) returned with abnormal status: "+status);   
@@ -222,7 +311,7 @@ public class GiapiCas implements IGiapiCas {
         try {
 
             giapicas.start();
-            giapicas.addVariable("test", DBR_Int.TYPE, new int[]{-1});
+            giapicas.addVariable("test", -1);
 
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);

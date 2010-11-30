@@ -144,6 +144,81 @@ public class GiapiCasTest extends TestCase {
      * Starts the server, adds a PV, writes a value, reads it back, checks the value read is correct and stops the server
      */
     @Test
+    public void testWriteArray() {
+        try {
+            GiapiCas giapicas = new GiapiCas();
+            giapicas.start();
+            giapicas.<Integer>addVariable(varname,2,3,4);
+
+            giapicas.<Integer>put(varname,3,4,5);
+
+            DBR dbr = giapicas.get(varname);
+
+
+
+            int num = dbr.getCount();
+            assertEquals(3, num);
+            Object obj = dbr.getValue();
+            int[] objarr = (int[]) obj;
+            assertEquals(3, objarr[0]);
+            assertEquals(4, objarr[1]);
+            assertEquals(5, objarr[2]);
+
+            giapicas.stop();
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(),ex);
+            fail();
+        }
+
+
+    }
+
+    /**
+     * Starts the server, adds one PV of each type, writes a value in each PV, reads it back, checks the value read is correct and stops the server
+     */
+    @Test
+    public void testWriteVarAllTypes() {
+        try {
+            GiapiCas giapicas = new GiapiCas();
+            giapicas.start();
+            giapicas.<Integer>addVariable("nico:int",2);
+            giapicas.<Float>addVariable("nico:float",(float)2.0);
+            giapicas.<Double>addVariable("nico:double",2.0);
+            giapicas.<String>addVariable("nico:string","two");
+
+            giapicas.<Integer>put("nico:int",3);
+            giapicas.<Float>put("nico:float",(float)3);
+            giapicas.<Double>put("nico:double",3.0);
+            giapicas.<String>put("nico:string","three");
+
+            DBR dbr[] = new DBR[4];
+            dbr[0]=giapicas.get("nico:int");
+            dbr[1]=giapicas.get("nico:float");
+            dbr[2]=giapicas.get("nico:double");
+            dbr[3]=giapicas.get("nico:string");
+            Object ret[] = new Object[4];
+
+            for(int i=0;i<4;i++){
+                assertEquals(1, dbr[i].getCount());
+                ret[i]=dbr[i].getValue();
+            }
+            assertEquals(3, ((int[])ret[0])[0]);
+            assertEquals((float)3, ((float[])ret[1])[0]);
+            assertEquals(3.0, ((double[])ret[2])[0]);
+            assertEquals("three", ((String[])ret[3])[0]);
+
+            giapicas.stop();
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(),ex);
+            fail();
+        }
+
+
+    }
+   /**
+     * Starts the server, adds a PV, writes a value, reads it back, checks the value read is correct and stops the server
+     */
+    @Test
     public void testWriteWrongType() {
         try {
             GiapiCas giapicas = new GiapiCas();
