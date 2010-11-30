@@ -244,7 +244,7 @@
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
-        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service">
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/cas">
           <value>
             <SvnBranchConfiguration>
               <option name="branchMap">
@@ -271,7 +271,7 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/giapi-cas">
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service">
           <value>
             <SvnBranchConfiguration>
               <option name="branchMap">
