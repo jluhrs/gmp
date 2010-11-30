@@ -27,17 +27,17 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="giapi" />
+    <orderEntry type="module" module-name="giapi-status-service" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-cas/lib/jca-2.3.2.jar!/" />
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/epics/jca-lib/lib/jca-2.3.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="giapi" />
-    <orderEntry type="module" module-name="giapi-status-service" />
   </component>
 </module>
 

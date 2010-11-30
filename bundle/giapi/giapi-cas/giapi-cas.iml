@@ -41,6 +41,25 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="jca-lib" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/epics/jca-lib/lib/caj-1.1.5b.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$GIAPI_BASE$/giapi-osgi/bundle/epics/jca-lib/lib/jca-2.3.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

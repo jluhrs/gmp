@@ -8,7 +8,7 @@
         <pathelement path="../../giapi/giapi-cas/bin"/>
         <pathelement path="../../giapi/giapi/bin"/>
         <pathelement path="../../giapi/giapi-status-service/bin"/>
-        <fileset dir="../../giapi/giapi-cas/lib" includes="*.jar"/>
+        <fileset dir="../../epics/jca-lib/lib" includes="*.jar"/>
     </path>
 
 </project>

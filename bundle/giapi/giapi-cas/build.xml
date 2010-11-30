@@ -5,6 +5,7 @@
 
     <path id="build.classpath.extra">
         <pathelement path="../../giapi/giapi/bin"/>
+	<fileset dir="../../epics/jca-lib/lib" includes="*.jar"/>
     </path>
 
 </project>
