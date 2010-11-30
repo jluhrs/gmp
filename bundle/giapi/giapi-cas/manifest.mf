@@ -5,7 +5,9 @@ Bundle-Description: Channel Access Server
 Bundle-Vendor: Gemini 8m Observatories, Software Group
 Bundle-Version: 0.1.4
 Bundle-Classpath: .
-Import-Package: org.osgi.framework
-Export-Package: edu.gemini.aspen.giapi.cas,
+Import-Package: org.osgi.framework,
     gov.aps.jca.dbr,
-    gov.aps.jca
+    gov.aps.jca,
+    gov.aps.jca.cas,
+    com.cosylab.epics.caj.cas.util
+Export-Package: edu.gemini.aspen.giapi.cas,
