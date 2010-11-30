@@ -42,7 +42,7 @@ public class ConfigArgument extends AbstractArgument {
         if (val == null)
             throw new IllegalArgumentException("Empty configuration");
 
-        String[] items = val.split("\\s");
+        String[] items = val.split("\\s+");
         for (String item : items) {
             String[] arg = item.split("=");
             if (arg.length != 2)
