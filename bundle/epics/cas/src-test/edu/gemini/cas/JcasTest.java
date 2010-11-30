@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapi.cas;
+package edu.gemini.cas;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import gov.aps.jca.*;

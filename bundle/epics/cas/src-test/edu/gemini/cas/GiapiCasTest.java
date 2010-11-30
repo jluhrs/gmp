@@ -1,11 +1,6 @@
-package edu.gemini.aspen.giapi.cas;
+package edu.gemini.cas;
 
-import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
-import gov.aps.jca.JCALibrary;
-import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.dbr.DBR_Int;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
