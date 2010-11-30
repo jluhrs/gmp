@@ -1,6 +1,9 @@
-package edu.gemini.cas;
+package edu.gemini.aspen.giapi.cas;
 
+import com.cosylab.epics.caj.CAJChannel;
+import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.*;
+import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBR_Int;
 import junit.framework.TestCase;
 import org.junit.After;

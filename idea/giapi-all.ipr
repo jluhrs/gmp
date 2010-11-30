@@ -298,6 +298,33 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/jca-lib">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
         <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi-gmp/gmp-commands">
           <value>
             <SvnBranchConfiguration>
