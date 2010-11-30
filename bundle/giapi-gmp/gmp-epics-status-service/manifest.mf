@@ -6,7 +6,7 @@ Bundle-Vendor: Gemini 8m Observatories, Software Group
 Bundle-Version: 0.1.0
 Bundle-Classpath: .
 Import-Package: org.osgi.framework,
-    edu.gemini.aspen.giapi.cas,
+    edu.gemini.cas,
     gov.aps.jca.dbr,
     gov.aps.jca,
     edu.gemini.aspen.giapi.statusservice,

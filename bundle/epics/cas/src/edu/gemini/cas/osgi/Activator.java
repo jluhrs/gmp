@@ -1,7 +1,6 @@
-package edu.gemini.aspen.giapi.cas.osgi;
+package edu.gemini.cas.osgi;
 
-import edu.gemini.aspen.giapi.cas.GiapiCas;
-import gov.aps.jca.dbr.DBR_Int;
+import edu.gemini.cas.GiapiCas;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

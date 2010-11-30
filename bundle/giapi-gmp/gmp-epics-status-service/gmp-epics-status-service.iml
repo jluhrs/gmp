@@ -8,7 +8,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="giapi-cas" />
+    <orderEntry type="module" module-name="cas" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

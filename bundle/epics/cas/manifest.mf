@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-Activator: edu.gemini.aspen.giapi.cas.osgi.Activator
+Bundle-Activator: edu.gemini.cas.osgi.Activator
 Bundle-Name: Channel Access Server
 Bundle-Description: Channel Access Server
 Bundle-Vendor: Gemini 8m Observatories, Software Group
@@ -10,4 +10,4 @@ Import-Package: org.osgi.framework,
     gov.aps.jca,
     gov.aps.jca.cas,
     com.cosylab.epics.caj.cas.util
-Export-Package: edu.gemini.aspen.giapi.cas,
+Export-Package: edu.gemini.cas,

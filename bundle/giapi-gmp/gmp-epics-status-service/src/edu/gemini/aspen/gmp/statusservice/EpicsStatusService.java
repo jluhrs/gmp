@@ -1,12 +1,11 @@
 package edu.gemini.aspen.gmp.statusservice;
 
 
-import edu.gemini.aspen.giapi.cas.GiapiCas;
-import edu.gemini.aspen.giapi.cas.IGiapiCas;
+import edu.gemini.cas.GiapiCas;
+import edu.gemini.cas.IGiapiCas;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import gov.aps.jca.CAException;
-import gov.aps.jca.dbr.DBRType;
 
 import java.util.Collections;
 import java.util.HashMap;

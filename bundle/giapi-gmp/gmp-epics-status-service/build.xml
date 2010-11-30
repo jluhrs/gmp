@@ -5,7 +5,7 @@
 
     <path id="build.classpath.extra">
         <pathelement path="../gmp-epics-status-service/bin"/>
-        <pathelement path="../../giapi/giapi-cas/bin"/>
+        <pathelement path="../../epics/cas/bin"/>
         <pathelement path="../../giapi/giapi/bin"/>
         <pathelement path="../../giapi/giapi-status-service/bin"/>
         <fileset dir="../../epics/jca-lib/lib" includes="*.jar"/>

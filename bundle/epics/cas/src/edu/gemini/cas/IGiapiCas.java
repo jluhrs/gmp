@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapi.cas;
+package edu.gemini.cas;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;

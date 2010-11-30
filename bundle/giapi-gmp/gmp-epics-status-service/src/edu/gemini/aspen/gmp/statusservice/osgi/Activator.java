@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.statusservice.osgi;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
-import edu.gemini.aspen.giapi.cas.GiapiCas;
+import edu.gemini.cas.GiapiCas;
 import edu.gemini.aspen.gmp.statusservice.EpicsStatusService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

@@ -200,16 +200,14 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/cas/cas.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/epics/cas/cas.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service/epics-service.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi/giapi.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi/giapi.iml" />
-      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-cas/giapi-cas.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-cas/giapi-cas.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevent-handler/giapi-fileevent-handler.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevent-handler/giapi-fileevent-handler.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevents/giapi-fileevents.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-fileevents/giapi-fileevents.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-jms-util/giapi-jms-util.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-jms-util/giapi-jms-util.iml" />
-      <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-util/giapi-jms-util.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-util/giapi-jms-util.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevent-handler/giapi-obsevent-handler.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevent-handler/giapi-obsevent-handler.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevents/giapi-obsevents.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-obsevents/giapi-obsevents.iml" />
-      <module fileurl="file:///data/anunez/Projects/giapi/giapi-osgi/bundle/giapi/giapi-status-handler/giapi-status-dispatcher.iml" filepath="/data/anunez/Projects/giapi/giapi-osgi/bundle/giapi/giapi-status-handler/giapi-status-dispatcher.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-dispatcher/giapi-status-handler.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-dispatcher/giapi-status-handler.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-service/giapi-status-service.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-status-service/giapi-status-service.iml" />
       <module fileurl="file://$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" filepath="$GIAPI_BASE$/giapi-osgi/bundle/tools/giapi-tester/giapi-tester.iml" />
@@ -247,6 +245,33 @@
     <option name="myConfigurationMap">
       <map>
         <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/epics-service">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
+                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/epics/giapi-cas">
           <value>
             <SvnBranchConfiguration>
               <option name="branchMap">
@@ -598,33 +623,6 @@
           </value>
         </entry>
         <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="http://source.gemini.edu/software/giapi/giapi-osgi/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/branches" />
-                  <option value="http://source.gemini.edu/software/giapi/giapi-osgi/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="http://source.gemini.edu/software/giapi/giapi-osgi/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$GIAPI_BASE$/giapi-osgi/bundle/giapi/giapi-cas">
           <value>
             <SvnBranchConfiguration>
               <option name="branchMap">
