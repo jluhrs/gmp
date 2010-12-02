@@ -4,12 +4,12 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 
 /**
- * Interface IGiapiCas
+ * Interface ICas
  *
  * @author Nicolas A. Barriga
  *         Date: Nov 29, 2010
  */
-public interface IGiapiCas {
+public interface ICas {
     /**
      * Adds a new process variable.
      *

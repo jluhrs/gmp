@@ -10,13 +10,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class GiapiCasTest
+ * Class CasTest
  *
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
  */
-public class GiapiCasTest extends TestCase {
-    private static final Logger LOG = Logger.getLogger(GiapiCasTest.class.getName());
+public class CasTest extends TestCase {
+    private static final Logger LOG = Logger.getLogger(CasTest.class.getName());
     private String varname="nico:test1";
 
     @Before
@@ -30,7 +30,7 @@ public class GiapiCasTest extends TestCase {
     public void testStartStop() {
 
         try {
-            GiapiCas giapicas = new GiapiCas();
+            Cas giapicas = new Cas();
 
 
             giapicas.start();
@@ -50,14 +50,14 @@ public class GiapiCasTest extends TestCase {
      * Starts the server, adds a PV, reads from it, removes the PV, checks it is correctly removed and stops the server
      */
     @Test
-    public void testAddRemoveVariable() {
+    public void testAddTwice() {
 
         try {
-            GiapiCas giapicas = new GiapiCas();
+            Cas giapicas = new Cas();
             giapicas.start();
 
-            giapicas.<Integer>addVariable(varname,2);
-            DBR dbr = giapicas.get(varname);
+            Cas.Channel ch= giapicas.createIntegerChannel(varname,1);
+            DBR dbr = ch.getValue();
 
 
 
@@ -65,13 +65,17 @@ public class GiapiCasTest extends TestCase {
             assertEquals(1, num);
             Object obj = dbr.getValue();
             int[] objarr = (int[]) obj;
-            assertEquals(2, objarr[0]);
+            assertEquals(0, objarr[0]);
 
-            giapicas.removeVariable(varname);
+            Cas.Channel ch2= giapicas.createIntegerChannel(varname,1);
+
+            assertEquals(ch,ch2);
+            giapicas.destroyChannel(varname);
 
             try{
-                giapicas.get(varname);
-            }catch(IllegalArgumentException ex){
+                ch.getValue();
+                fail();
+            }catch(RuntimeException ex){
                 //OK   
             }finally{
                 giapicas.stop();
@@ -82,33 +86,6 @@ public class GiapiCasTest extends TestCase {
         }
     }
 
-    /**
-     * Starts the server, adds a PV, reads from it, checks the value read is correct and stops the server
-     */
-    @Test
-    public void testReadVar() {
-        try {
-            GiapiCas giapicas = new GiapiCas();
-            giapicas.start();
-            giapicas.<Integer>addVariable(varname,2);
-
-
-            DBR dbr = giapicas.get(varname);
-
-
-            int num = dbr.getCount();
-            assertEquals(1, num);
-            Object obj = dbr.getValue();
-            int[] objarr = (int[]) obj;
-            assertEquals(2, objarr[0]);
-            giapicas.stop();
-        } catch (Exception ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(),ex);
-            fail();
-        }
-
-
-    }
 
     /**
      * Starts the server, adds a PV, writes a value, reads it back, checks the value read is correct and stops the server
@@ -116,13 +93,12 @@ public class GiapiCasTest extends TestCase {
     @Test
     public void testWriteVar() {
         try {
-            GiapiCas giapicas = new GiapiCas();
+            Cas giapicas = new Cas();
             giapicas.start();
-            giapicas.<Integer>addVariable(varname,2);
+            Cas.Channel ch= giapicas.createIntegerChannel(varname,1);
+            ch.setValue(3);
 
-            giapicas.<Integer>put(varname,3);
-
-            DBR dbr = giapicas.get(varname);
+            DBR dbr = ch.getValue();
 
 
 
@@ -146,13 +122,12 @@ public class GiapiCasTest extends TestCase {
     @Test
     public void testWriteArray() {
         try {
-            GiapiCas giapicas = new GiapiCas();
+            Cas giapicas = new Cas();
             giapicas.start();
-            giapicas.<Integer>addVariable(varname,2,3,4);
+            Cas.Channel ch= giapicas.createIntegerChannel(varname,3);
+            ch.setValue(new Integer[]{3,4,5});
 
-            giapicas.<Integer>put(varname,3,4,5);
-
-            DBR dbr = giapicas.get(varname);
+            DBR dbr = ch.getValue();
 
 
 
@@ -179,23 +154,25 @@ public class GiapiCasTest extends TestCase {
     @Test
     public void testWriteVarAllTypes() {
         try {
-            GiapiCas giapicas = new GiapiCas();
+            Cas giapicas = new Cas();
             giapicas.start();
-            giapicas.<Integer>addVariable("nico:int",2);
-            giapicas.<Float>addVariable("nico:float",(float)2.0);
-            giapicas.<Double>addVariable("nico:double",2.0);
-            giapicas.<String>addVariable("nico:string","two");
+            Cas.Channel chI= giapicas.createIntegerChannel("nico:int",1);
+            Cas.Channel chF= giapicas.createFloatChannel("nico:float",1);
+            Cas.Channel chD= giapicas.createDoubleChannel("nico:double",1);
+            Cas.Channel chS= giapicas.createStringChannel("nico:string",1);
 
-            giapicas.<Integer>put("nico:int",3);
-            giapicas.<Float>put("nico:float",(float)3);
-            giapicas.<Double>put("nico:double",3.0);
-            giapicas.<String>put("nico:string","three");
+
+            chI.setValue(3);
+            chF.setValue(3.0f);
+            chD.setValue(3.0);
+            chS.setValue("three");
+
 
             DBR dbr[] = new DBR[4];
-            dbr[0]=giapicas.get("nico:int");
-            dbr[1]=giapicas.get("nico:float");
-            dbr[2]=giapicas.get("nico:double");
-            dbr[3]=giapicas.get("nico:string");
+            dbr[0]=chI.getValue();
+            dbr[1]=chF.getValue();
+            dbr[2]=chD.getValue();
+            dbr[3]=chS.getValue();
             Object ret[] = new Object[4];
 
             for(int i=0;i<4;i++){
@@ -203,7 +180,7 @@ public class GiapiCasTest extends TestCase {
                 ret[i]=dbr[i].getValue();
             }
             assertEquals(3, ((int[])ret[0])[0]);
-            assertEquals((float)3, ((float[])ret[1])[0]);
+            assertEquals(3f, ((float[])ret[1])[0]);
             assertEquals(3.0, ((double[])ret[2])[0]);
             assertEquals("three", ((String[])ret[3])[0]);
 
@@ -215,32 +192,32 @@ public class GiapiCasTest extends TestCase {
 
 
     }
-   /**
+  /**
      * Starts the server, adds a PV, writes a value, reads it back, checks the value read is correct and stops the server
      */
     @Test
     public void testWriteWrongType() {
         try {
-            GiapiCas giapicas = new GiapiCas();
+            Cas giapicas = new Cas();
             giapicas.start();
-            giapicas.<Integer>addVariable(varname,2);
-            
+            Cas.Channel ch= giapicas.createIntegerChannel(varname,1);
+
             int exceptions=0;
 
             try{
-                giapicas.put(varname,(float)3.0);
+                ch.setValue(3.0f);
             }catch(IllegalArgumentException ex){
                 //correct
                 exceptions++;
             }
             try{
-                giapicas.put(varname,new Double(3.0));
+                ch.setValue(3.0d);
             }catch(IllegalArgumentException ex){
                 //correct
                 exceptions++;
             }
             try{
-                giapicas.put(varname,"test");
+                ch.setValue("three");
             }catch(IllegalArgumentException ex){
                 //correct
                 exceptions++;

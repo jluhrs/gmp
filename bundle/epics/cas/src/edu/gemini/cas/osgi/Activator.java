@@ -1,6 +1,6 @@
 package edu.gemini.cas.osgi;
 
-import edu.gemini.cas.GiapiCas;
+import edu.gemini.cas.Cas;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -18,7 +18,7 @@ public class Activator  implements BundleActivator {
     public static final Logger LOG = Logger.getLogger(Activator.class.getName());
 
 
-    private GiapiCas _cas;
+    private Cas _cas;
 
     private ServiceRegistration _registration;
 
@@ -31,11 +31,11 @@ public class Activator  implements BundleActivator {
     @Override
     public void start(BundleContext bundleContext) throws Exception{
         LOG.info("Starting giapi-cas");
-        _cas = new GiapiCas();
+        _cas = new Cas();
 
         //advertise the cas into OSGi
         _registration = bundleContext.registerService(
-                GiapiCas.class.getName(),
+                Cas.class.getName(),
                 _cas, null);
          _cas.start();
     }

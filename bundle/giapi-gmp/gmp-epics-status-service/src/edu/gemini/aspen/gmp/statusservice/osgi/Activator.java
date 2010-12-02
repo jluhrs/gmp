@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.statusservice.osgi;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
-import edu.gemini.cas.GiapiCas;
+import edu.gemini.cas.Cas;
 import edu.gemini.aspen.gmp.statusservice.EpicsStatusService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -26,7 +26,7 @@ public class Activator  implements BundleActivator {
 
     private ServiceRegistration _registration;
 
-    private GiapiCas _cas;
+    private Cas _cas;
 
     private static final String confFileProperty= "gmp.epics.statusservice.conf";
 
@@ -40,9 +40,9 @@ public class Activator  implements BundleActivator {
     public void start(BundleContext bundleContext) throws Exception{
         LOG.info("Starting gmp-epics-status-service");
 
-        ServiceReference ref= bundleContext.getServiceReference(GiapiCas.class.getName());
+        ServiceReference ref= bundleContext.getServiceReference(Cas.class.getName());
         if(ref!=null){
-            _cas = (GiapiCas)bundleContext.getService(ref);
+            _cas = (Cas)bundleContext.getService(ref);
         }else{
             _cas=null;
         }
