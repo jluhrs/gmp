@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class TestStress {
     private static final Logger LOG = Logger.getLogger(TestStress.class.getName());
-    private Cas giapicas;
+    private ICas giapicas;
     private JCALibrary jca;
     private String varname="nico:test1";
 

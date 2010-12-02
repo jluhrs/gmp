@@ -56,7 +56,7 @@ public class CasTest {
             Cas giapicas = new Cas();
             giapicas.start();
 
-            Cas.Channel ch= giapicas.createIntegerChannel(varname,1);
+            IChannel ch= giapicas.createIntegerChannel(varname,1);
             DBR dbr = ch.getValue();
 
 
@@ -67,7 +67,7 @@ public class CasTest {
             int[] objarr = (int[]) obj;
             assertEquals(0, objarr[0]);
 
-            Cas.Channel ch2= giapicas.createIntegerChannel(varname,1);
+            IChannel ch2= giapicas.createIntegerChannel(varname,1);
 
             assertEquals(ch,ch2);
             giapicas.destroyChannel(varname);
@@ -95,7 +95,7 @@ public class CasTest {
         try {
             Cas giapicas = new Cas();
             giapicas.start();
-            Cas.Channel ch= giapicas.createIntegerChannel(varname,1);
+            IChannel ch= giapicas.createIntegerChannel(varname,1);
             ch.setValue(3);
 
             DBR dbr = ch.getValue();
@@ -124,7 +124,7 @@ public class CasTest {
         try {
             Cas giapicas = new Cas();
             giapicas.start();
-            Cas.Channel ch= giapicas.createIntegerChannel(varname,3);
+            IChannel ch= giapicas.createIntegerChannel(varname,3);
             ch.setValue(new Integer[]{3,4,5});
 
             DBR dbr = ch.getValue();
@@ -156,10 +156,10 @@ public class CasTest {
         try {
             Cas giapicas = new Cas();
             giapicas.start();
-            Cas.Channel chI= giapicas.createIntegerChannel("nico:int",1);
-            Cas.Channel chF= giapicas.createFloatChannel("nico:float",1);
-            Cas.Channel chD= giapicas.createDoubleChannel("nico:double",1);
-            Cas.Channel chS= giapicas.createStringChannel("nico:string",1);
+            IChannel chI= giapicas.createIntegerChannel("nico:int",1);
+            IChannel chF= giapicas.createFloatChannel("nico:float",1);
+            IChannel chD= giapicas.createDoubleChannel("nico:double",1);
+            IChannel chS= giapicas.createStringChannel("nico:string",1);
 
 
             chI.setValue(3);
@@ -180,8 +180,8 @@ public class CasTest {
                 ret[i]=dbr[i].getValue();
             }
             assertEquals(3, ((int[])ret[0])[0]);
-            assertEquals(3f, ((float[])ret[1])[0]);
-            assertEquals(3.0, ((double[])ret[2])[0]);
+            assertEquals(3f, ((float[])ret[1])[0],0.00001);
+            assertEquals(3.0, ((double[])ret[2])[0],0.00001);
             assertEquals("three", ((String[])ret[3])[0]);
 
             giapicas.stop();
@@ -200,7 +200,7 @@ public class CasTest {
         try {
             Cas giapicas = new Cas();
             giapicas.start();
-            Cas.Channel ch= giapicas.createIntegerChannel(varname,1);
+            IChannel ch= giapicas.createIntegerChannel(varname,1);
 
             int exceptions=0;
 

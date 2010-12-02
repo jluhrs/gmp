@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
  */
-public class Cas {
+public class Cas implements ICas {
     private static final Logger LOG = Logger.getLogger(Cas.class.getName());
     private DefaultServerImpl server;
     private ServerContext serverContext = null;
@@ -70,136 +70,14 @@ public class Cas {
         }
     }
 
-    public static final class Channel {
-        private MemoryProcessVariable pv;
-
-        private Channel(MemoryProcessVariable pv) {
-            this.pv = pv;
-        }
-
-        public void setValue(Integer value) throws CAException {
-            setValue(new Integer[]{value});
-        }
-
-        public void setValue(Integer[] values) throws CAException {
-            if (pv.getDimensionSize(0) != values.length) {
-                throw new IllegalArgumentException("Incorrect number of values. Expected: " + pv.getDimensionSize(0) + ", got: " + values.length);
-            }
-
-            if (!pv.getType().isINT()) {
-                throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
-            }
-            int[] newValues = new int[values.length];
-
-            for (int i = 0; i < values.length; i++) {
-                newValues[i] = values[i];
-            }
-            CAStatus status = pv.write(new DBR_Int(newValues), null);
-            if (status != CAStatus.NORMAL) {
-                throw new CAStatusException(status);
-            }
-
-        }
-
-        public void setValue(Float value) throws CAException {
-            setValue(new Float[]{value});
-        }
-
-        public void setValue(Float[] values) throws CAException {
-            if (pv.getDimensionSize(0) != values.length) {
-                throw new IllegalArgumentException("Incorrect number of values. Expected: " + pv.getDimensionSize(0) + ", got: " + values.length);
-            }
-
-            if (!pv.getType().isFLOAT()) {
-                throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
-            }
-            float[] newValues = new float[values.length];
-
-            for (int i = 0; i < values.length; i++) {
-                newValues[i] = values[i];
-            }
-            CAStatus status = pv.write(new DBR_Float(newValues), null);
-            if (status != CAStatus.NORMAL) {
-                throw new CAStatusException(status);
-            }
-
-        }
-
-        public void setValue(Double value) throws CAException {
-            setValue(new Double[]{value});
-        }
-
-        public void setValue(Double[] values) throws CAException {
-            if (pv.getDimensionSize(0) != values.length) {
-                throw new IllegalArgumentException("Incorrect number of values. Expected: " + pv.getDimensionSize(0) + ", got: " + values.length);
-            }
-
-            if (!pv.getType().isDOUBLE()) {
-                throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
-            }
-            double[] newValues = new double[values.length];
-
-            for (int i = 0; i < values.length; i++) {
-                newValues[i] = values[i];
-            }
-            CAStatus status = pv.write(new DBR_Double(newValues), null);
-            if (status != CAStatus.NORMAL) {
-                throw new CAStatusException(status);
-            }
-
-        }
-
-        public void setValue(String value) throws CAException {
-            setValue(new String[]{value});
-        }
-
-        public void setValue(String[] values) throws CAException {
-            if (pv.getDimensionSize(0) != values.length) {
-                throw new IllegalArgumentException("Incorrect number of values. Expected: " + pv.getDimensionSize(0) + ", got: " + values.length);
-            }
-
-            if (!pv.getType().isSTRING()) {
-                throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
-            }
-
-            CAStatus status = pv.write(new DBR_String(values), null);
-            if (status != CAStatus.NORMAL) {
-                throw new CAStatusException(status);
-            }
-
-        }
-
-        public DBR getValue() throws CAException {
-            if (pv == null) {
-                throw new RuntimeException("Channel not initialized");
-            }
-            DBR dbr;
-            if (pv.getType().isINT()) {
-                dbr = new DBR_TIME_Int(pv.getDimensionSize(0));
-            } else if (pv.getType().isFLOAT()) {
-                dbr = new DBR_TIME_Float(pv.getDimensionSize(0));
-            } else if (pv.getType().isDOUBLE()) {
-                dbr = new DBR_TIME_Double(pv.getDimensionSize(0));
-            } else if (pv.getType().isSTRING()) {
-                dbr = new DBR_TIME_String(pv.getDimensionSize(0));
-            } else {
-                throw new RuntimeException("Channel incorrectly initialized");
-            }
-            CAStatus status = pv.read(dbr, null);
-            if (status != CAStatus.NORMAL) {
-                throw new CAStatusException(status);
-            }
-            return dbr;
-        }
-    }
-
-    public Channel createIntegerChannel(String name, int length) {
+    @Override
+    public IChannel createIntegerChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
-            if (ch.pv.getType().isINT()) {
+            if (ch.getType().isINT()) {
                 return ch;
             } else {
-                throw new RuntimeException("Channel " + name + " already exists, but is not of type Integer");
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Integer");
             }
         }
         MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Int.TYPE, new int[length]);
@@ -208,13 +86,14 @@ public class Cas {
         return ch;
     }
 
-    public Channel createFloatChannel(String name, int length) {
+    @Override
+    public IChannel createFloatChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
-            if (ch.pv.getType().isFLOAT()) {
+            if (ch.getType().isFLOAT()) {
                 return ch;
             } else {
-                throw new RuntimeException("Channel " + name + " already exists, but is not of type Float");
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Float");
             }
         }
         MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Float.TYPE, new float[length]);
@@ -223,13 +102,14 @@ public class Cas {
         return ch;
     }
 
-    public Channel createDoubleChannel(String name, int length) {
+    @Override
+    public IChannel createDoubleChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
-            if (ch.pv.getType().isDOUBLE()) {
+            if (ch.getType().isDOUBLE()) {
                 return ch;
             } else {
-                throw new RuntimeException("Channel " + name + " already exists, but is not of type Double");
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Double");
             }
         }
         MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Double.TYPE, new double[length]);
@@ -238,13 +118,14 @@ public class Cas {
         return ch;
     }
 
-    public Channel createStringChannel(String name, int length) {
+    @Override
+    public IChannel createStringChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
-            if (ch.pv.getType().isSTRING()) {
+            if (ch.getType().isSTRING()) {
                 return ch;
             } else {
-                throw new RuntimeException("Channel " + name + " already exists, but is not of type String");
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type String");
             }
         }
         String[] array = new String[length];
@@ -257,16 +138,14 @@ public class Cas {
         return ch;
     }
 
+    @Override
     public void destroyChannel(String name) {
-        destroyChannel(channels.get(name));
+        Channel ch= channels.get(name);
+        channels.remove(ch.getName());
+        server.unregisterProcessVaribale(ch.getName());
+        ch.destroy();
     }
 
-    public void destroyChannel(Channel ch) {
-        channels.remove(ch.pv.getName());
-        server.unregisterProcessVaribale(ch.pv.getName());
-        ch.pv.destroy();
-        ch.pv = null;
-    }
 
     /**
      * Destroys the jca context and waits for the thread to return.
@@ -279,7 +158,7 @@ public class Cas {
         for (String name : channels.keySet()) {
             Channel ch = channels.get(name);
             server.unregisterProcessVaribale(name);
-            ch.pv.destroy();
+            ch.destroy();
         }
         channels.clear();
         executor.shutdown();

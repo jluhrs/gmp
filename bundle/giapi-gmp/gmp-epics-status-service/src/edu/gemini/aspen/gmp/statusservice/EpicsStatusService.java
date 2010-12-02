@@ -1,10 +1,10 @@
 package edu.gemini.aspen.gmp.statusservice;
 
 
-import edu.gemini.cas.Cas;
-import edu.gemini.cas.ICas;
+import edu.gemini.cas.IChannel;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.cas.ICas;
 import gov.aps.jca.CAException;
 
 import java.util.Collections;
@@ -25,27 +25,27 @@ public class EpicsStatusService implements StatusHandler {
     /**
      * Structure mapping Giapi Status Item -> Epics PV
      */
-    private final Map<String, Cas.Channel> channelMap = new HashMap<String, Cas.Channel>();
-    private Cas _cas=null;
-    public EpicsStatusService(Cas cas) {
-        _cas=cas;
+    private final Map<String, IChannel> channelMap = new HashMap<String, IChannel>();
+    private ICas _I_cas =null;
+    public EpicsStatusService(ICas ICas) {
+        _I_cas = ICas;
     }
 
     public <T> void addVariable(String giapiName, String epicsName, T value)throws CAException, IllegalArgumentException, IllegalStateException{
         LOG.info("Adding variable GIAPI: "+giapiName+" EPICS: "+epicsName);
-        if(_cas!=null){
-            Cas.Channel ch = null;
+        if(_I_cas !=null){
+            IChannel ch;
             if(value.getClass() == Integer.class){
-                ch = _cas.createIntegerChannel(epicsName, 1);
+                ch = _I_cas.createIntegerChannel(epicsName, 1);
                 ch.setValue((Integer)value);
             }else if(value.getClass() == Float.class){
-                ch = _cas.createFloatChannel(epicsName, 1);
+                ch = _I_cas.createFloatChannel(epicsName, 1);
                 ch.setValue((Float)value);
             }else if(value.getClass() == Double.class){
-                ch = _cas.createDoubleChannel(epicsName,  1);
+                ch = _I_cas.createDoubleChannel(epicsName,  1);
                 ch.setValue((Double)value);
             }else if(value.getClass() == String.class){
-                ch = _cas.createStringChannel(epicsName,  1);
+                ch = _I_cas.createStringChannel(epicsName,  1);
                 ch.setValue((String)value);
             }else{
                 throw new IllegalArgumentException("Unsupported item type "+value.getClass());
@@ -58,11 +58,11 @@ public class EpicsStatusService implements StatusHandler {
     }
 
     public void removeVariable(String giapiName)throws IllegalStateException{
-        Cas.Channel ch = channelMap.get(giapiName);
+        IChannel ch = channelMap.get(giapiName);
         if(ch != null){
             channelMap.remove(giapiName);
-            if(_cas!=null){
-                _cas.destroyChannel(ch);
+            if(_I_cas !=null){
+                _I_cas.destroyChannel(ch.getName());
             }else{
                 throw new IllegalStateException("The giapi-cas service is unavailable");
             }
@@ -80,7 +80,7 @@ public class EpicsStatusService implements StatusHandler {
      * Just for testing
      * @return unmodifiable map
      */
-    public Map<String, Cas.Channel> getAll(){
+    public Map<String, IChannel> getAll(){
         return Collections.unmodifiableMap(channelMap);
     }
 
@@ -98,7 +98,7 @@ public class EpicsStatusService implements StatusHandler {
     //StatusHandler.update() should be a generic method
     private <T> void updateInternal(StatusItem<T> item) {
         if (channelMap.containsKey(item.getName())) {
-            if (_cas != null) {
+            if (_I_cas != null) {
                 try {
                     if(item.getValue().getClass() == Integer.class){
                         channelMap.get(item.getName()).setValue((Integer)item.getValue());
