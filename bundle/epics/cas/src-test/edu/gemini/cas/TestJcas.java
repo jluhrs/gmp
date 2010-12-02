@@ -22,10 +22,9 @@ public class TestJcas {
     private DefaultServerImpl server;
     private ServerContext serverContext =null;
     private Context clientContext =null;
-    private Thread t;
     private JCALibrary jca;
     private ExecutorService executor;
-    private Channel ch;
+    private gov.aps.jca.Channel ch;
 
     public TestJcas() {
         this.jca = JCALibrary.getInstance();

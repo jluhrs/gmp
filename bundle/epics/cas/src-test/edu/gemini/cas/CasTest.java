@@ -30,7 +30,7 @@ public class CasTest {
     public void testStartStop() {
 
         try {
-            Cas giapicas = new Cas();
+            ChannelAccessServer giapicas = new ChannelAccessServer();
 
 
             giapicas.start();
@@ -53,7 +53,7 @@ public class CasTest {
     public void testAddTwice() {
 
         try {
-            Cas giapicas = new Cas();
+            ChannelAccessServer giapicas = new ChannelAccessServer();
             giapicas.start();
 
             IChannel ch= giapicas.createIntegerChannel(varname,1);
@@ -93,7 +93,7 @@ public class CasTest {
     @Test
     public void testWriteVar() {
         try {
-            Cas giapicas = new Cas();
+            ChannelAccessServer giapicas = new ChannelAccessServer();
             giapicas.start();
             IChannel ch= giapicas.createIntegerChannel(varname,1);
             ch.setValue(3);
@@ -122,7 +122,7 @@ public class CasTest {
     @Test
     public void testWriteArray() {
         try {
-            Cas giapicas = new Cas();
+            ChannelAccessServer giapicas = new ChannelAccessServer();
             giapicas.start();
             IChannel ch= giapicas.createIntegerChannel(varname,3);
             ch.setValue(new Integer[]{3,4,5});
@@ -154,7 +154,7 @@ public class CasTest {
     @Test
     public void testWriteVarAllTypes() {
         try {
-            Cas giapicas = new Cas();
+            ChannelAccessServer giapicas = new ChannelAccessServer();
             giapicas.start();
             IChannel chI= giapicas.createIntegerChannel("nico:int",1);
             IChannel chF= giapicas.createFloatChannel("nico:float",1);
@@ -198,7 +198,7 @@ public class CasTest {
     @Test
     public void testWriteWrongType() {
         try {
-            Cas giapicas = new Cas();
+            ChannelAccessServer giapicas = new ChannelAccessServer();
             giapicas.start();
             IChannel ch= giapicas.createIntegerChannel(varname,1);
 

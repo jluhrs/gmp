@@ -14,15 +14,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class Cas. Implements the bulk of the giapi-cas bundle.
+ * Class ChannelAccessServer. Implements the bulk of the giapi-cas bundle.
  * <p/>
  * It implements the Runnable interface because we need to run the JCA server in another thread.
  *
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
  */
-public class Cas implements ICas {
-    private static final Logger LOG = Logger.getLogger(Cas.class.getName());
+public class ChannelAccessServer implements IChannelFactory {
+    private static final Logger LOG = Logger.getLogger(ChannelAccessServer.class.getName());
     private DefaultServerImpl server;
     private ServerContext serverContext = null;
     private ExecutorService executor;
@@ -32,7 +32,7 @@ public class Cas implements ICas {
     /**
      * Constructor.
      */
-    public Cas() {
+    public ChannelAccessServer() {
     }
 
     /**
@@ -46,7 +46,7 @@ public class Cas implements ICas {
         channels = new HashMap<String, Channel>();
         server = new DefaultServerImpl();
         if (serverContext != null) {
-            throw new IllegalStateException("Tried to start the Cas more than once");
+            throw new IllegalStateException("Tried to start the ChannelAccessServer more than once");
         }
         serverContext = jca.createServerContext(JCALibrary.CHANNEL_ACCESS_SERVER_JAVA, server);
         executor.execute(new Runnable() {
@@ -138,9 +138,8 @@ public class Cas implements ICas {
         return ch;
     }
 
-    @Override
-    public void destroyChannel(String name) {
-        Channel ch= channels.get(name);
+    void destroyChannel(String name) {
+        Channel ch = channels.get(name);
         channels.remove(ch.getName());
         server.unregisterProcessVaribale(ch.getName());
         ch.destroy();
@@ -175,7 +174,7 @@ public class Cas implements ICas {
      * @param args number of milliseconds to run the server
      */
     public static void main(String[] args) {
-        Cas giapicas = new Cas();
+        ChannelAccessServer giapicas = new ChannelAccessServer();
         try {
 
             giapicas.start();

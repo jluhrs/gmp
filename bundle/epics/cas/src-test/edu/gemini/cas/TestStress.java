@@ -12,14 +12,14 @@ import java.util.logging.Logger;
  */
 public class TestStress {
     private static final Logger LOG = Logger.getLogger(TestStress.class.getName());
-    private ICas giapicas;
+    private ChannelAccessServer giapicas;
     private JCALibrary jca;
     private String varname="nico:test1";
 
 //    @Before
 //    public void setUp() {
 //        jca = JCALibrary.getInstance();
-//        giapicas = new Cas();
+//        giapicas = new ChannelAccessServer();
 //        try {
 //            giapicas.start();
 //            giapicas.addVariable(varname, DBR_Int.TYPE, new int[]{-1});

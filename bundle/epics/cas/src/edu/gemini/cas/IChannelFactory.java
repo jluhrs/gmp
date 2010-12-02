@@ -1,12 +1,12 @@
 package edu.gemini.cas;
 
 /**
- * Interface ICas
+ * Interface IChannelFactory
  *
  * @author Nicolas A. Barriga
  *         Date: Dec 2, 2010
  */
-public interface ICas {
+public interface IChannelFactory {
 
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Integer
@@ -52,10 +52,4 @@ public interface ICas {
      */
     IChannel createStringChannel(String name, int length);
 
-    /**
-     * Removes channel from internal Map, unregisters from server and destroys PV
-     *
-     * @param name name of the Channel to remove
-     */
-    void destroyChannel(String name);
 }

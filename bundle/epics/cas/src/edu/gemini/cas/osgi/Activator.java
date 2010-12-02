@@ -1,6 +1,7 @@
 package edu.gemini.cas.osgi;
 
-import edu.gemini.cas.Cas;
+import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.cas.IChannelFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -18,7 +19,7 @@ public class Activator  implements BundleActivator {
     public static final Logger LOG = Logger.getLogger(Activator.class.getName());
 
 
-    private Cas _cas;
+    private ChannelAccessServer _channelAccessServer;
 
     private ServiceRegistration _registration;
 
@@ -31,13 +32,13 @@ public class Activator  implements BundleActivator {
     @Override
     public void start(BundleContext bundleContext) throws Exception{
         LOG.info("Starting giapi-cas");
-        _cas = new Cas();
+        _channelAccessServer = new ChannelAccessServer();
 
         //advertise the cas into OSGi
         _registration = bundleContext.registerService(
-                Cas.class.getName(),
-                _cas, null);
-         _cas.start();
+                IChannelFactory.class.getName(),
+                _channelAccessServer, null);
+         _channelAccessServer.start();
     }
 
     /**
@@ -49,8 +50,8 @@ public class Activator  implements BundleActivator {
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
         LOG.info("Stopping giapi-cas");
-        _cas.stop();
-        _cas = null;
+        _channelAccessServer.stop();
+        _channelAccessServer = null;
 
         _registration.unregister();
     }
