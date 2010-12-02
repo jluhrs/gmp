@@ -3,13 +3,10 @@ package edu.gemini.cas;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.cosylab.epics.caj.cas.util.MemoryProcessVariable;
 import gov.aps.jca.*;
-import gov.aps.jca.cas.Server;
 import gov.aps.jca.cas.ServerContext;
 import gov.aps.jca.dbr.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,37 +15,35 @@ import java.util.logging.Logger;
 
 /**
  * Class Cas. Implements the bulk of the giapi-cas bundle.
- *
+ * <p/>
  * It implements the Runnable interface because we need to run the JCA server in another thread.
  *
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
  */
-public class Cas{
+public class Cas {
     private static final Logger LOG = Logger.getLogger(Cas.class.getName());
     private DefaultServerImpl server;
-    private ServerContext serverContext =null;
+    private ServerContext serverContext = null;
     private ExecutorService executor;
-    private JCALibrary jca;
+    private final JCALibrary jca = JCALibrary.getInstance();
     private Map<String, Channel> channels;
 
     /**
-     * Constructor. Gets the instance of the JCALibrary singleton
+     * Constructor.
      */
     public Cas() {
-
-       jca = JCALibrary.getInstance();
     }
 
     /**
      * Creates a server, a jca context and spawns a new thread to run the server.
      *
      * @throws IllegalStateException if trying to start an already started server
-     * @throws CAException is thrown if the jca context could not be instanciated.
+     * @throws CAException           is thrown if the jca context could not be instanciated.
      */
-    public void start() throws IllegalStateException, CAException{
+    public void start() throws CAException {
         executor = Executors.newSingleThreadExecutor();
-        channels=new HashMap<String,Channel>();
+        channels = new HashMap<String, Channel>();
         server = new DefaultServerImpl();
         if (serverContext != null) {
             throw new IllegalStateException("Tried to start the Cas more than once");
@@ -67,20 +62,15 @@ public class Cas{
             }
         });
 
-        try{
+        try {
             //TODO: this is UGLY!! need a way to see that the server is up and running
             Thread.sleep(2000);
-        }catch(InterruptedException ex){
-            LOG.log(Level.SEVERE, ex.getMessage(),ex);
+        } catch (InterruptedException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
-//    public static interface IChannel<T>{
-//        public void setValue(T value);
-//        public void setValue(T[] value);
-//    }
-
-    public static final class Channel/* implements IChannel<Integer>*/ {
+    public static final class Channel {
         private MemoryProcessVariable pv;
 
         private Channel(MemoryProcessVariable pv) {
@@ -183,7 +173,7 @@ public class Cas{
             if (pv == null) {
                 throw new RuntimeException("Channel not initialized");
             }
-            DBR dbr = null;
+            DBR dbr;
             if (pv.getType().isINT()) {
                 dbr = new DBR_TIME_Int(pv.getDimensionSize(0));
             } else if (pv.getType().isFLOAT()) {
@@ -203,91 +193,100 @@ public class Cas{
         }
     }
 
-    public Channel createIntegerChannel(String name, int length){
-        if(channels.containsKey(name)){
+    public Channel createIntegerChannel(String name, int length) {
+        if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
-            if(ch.pv.getType().isINT()){
+            if (ch.pv.getType().isINT()) {
                 return ch;
-            }else{
-                throw new RuntimeException("Channel "+name+" already exists, bit is not of type Integer");
+            } else {
+                throw new RuntimeException("Channel " + name + " already exists, but is not of type Integer");
             }
         }
         MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Int.TYPE, new int[length]);
         Channel ch = new Channel(pv);
-        channels.put(name,ch);
-        return ch;
-    }
-    public Channel createFloatChannel(String name, int length){
-        if(channels.containsKey(name)){
-            Channel ch = channels.get(name);
-            if(ch.pv.getType().isFLOAT()){
-                return ch;
-            }else{
-                throw new RuntimeException("Channel "+name+" already exists, bit is not of type Float");
-            }
-        }MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Float.TYPE, new float[length]);
-        Channel ch = new Channel(pv);
-        channels.put(name,ch);
-        return ch;
-    }
-    public Channel createDoubleChannel(String name, int length){
-        if(channels.containsKey(name)){
-            Channel ch = channels.get(name);
-            if(ch.pv.getType().isDOUBLE()){
-                return ch;
-            }else{
-                throw new RuntimeException("Channel "+name+" already exists, bit is not of type Double");
-            }
-        }MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Double.TYPE, new double[length]);
-        Channel ch = new Channel(pv);
-        channels.put(name,ch);
-        return ch;
-    }
-    public Channel createStringChannel(String name, int length){
-        if(channels.containsKey(name)){
-            Channel ch = channels.get(name);
-            if(ch.pv.getType().isSTRING()){
-                return ch;
-            }else{
-                throw new RuntimeException("Channel "+name+" already exists, bit is not of type String");
-            }
-        }String[] array= new String[length];
-        for(String str:array){str="";}
-        MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_String.TYPE, array);
-        Channel ch = new Channel(pv);
-        channels.put(name,ch);
+        channels.put(name, ch);
         return ch;
     }
 
-    public void destroyChannel(String name){
+    public Channel createFloatChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            Channel ch = channels.get(name);
+            if (ch.pv.getType().isFLOAT()) {
+                return ch;
+            } else {
+                throw new RuntimeException("Channel " + name + " already exists, but is not of type Float");
+            }
+        }
+        MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Float.TYPE, new float[length]);
+        Channel ch = new Channel(pv);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    public Channel createDoubleChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            Channel ch = channels.get(name);
+            if (ch.pv.getType().isDOUBLE()) {
+                return ch;
+            } else {
+                throw new RuntimeException("Channel " + name + " already exists, but is not of type Double");
+            }
+        }
+        MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Double.TYPE, new double[length]);
+        Channel ch = new Channel(pv);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    public Channel createStringChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            Channel ch = channels.get(name);
+            if (ch.pv.getType().isSTRING()) {
+                return ch;
+            } else {
+                throw new RuntimeException("Channel " + name + " already exists, but is not of type String");
+            }
+        }
+        String[] array = new String[length];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = "";
+        }
+        MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_String.TYPE, array);
+        Channel ch = new Channel(pv);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    public void destroyChannel(String name) {
         destroyChannel(channels.get(name));
     }
 
-    public void destroyChannel(Channel ch){
+    public void destroyChannel(Channel ch) {
         channels.remove(ch.pv.getName());
         server.unregisterProcessVaribale(ch.pv.getName());
         ch.pv.destroy();
-        ch.pv=null;
-        ch=null;
+        ch.pv = null;
     }
 
     /**
      * Destroys the jca context and waits for the thread to return.
      *
      * @throws CAException
-     * @throws java.lang.IllegalStateException if the context has already been destroyed.
+     * @throws java.lang.IllegalStateException
+     *                     if the context has already been destroyed.
      */
-    public void stop() throws CAException{
-        for(String name:channels.keySet()){
+    public void stop() throws CAException {
+        for (String name : channels.keySet()) {
             Channel ch = channels.get(name);
             server.unregisterProcessVaribale(name);
             ch.pv.destroy();
         }
+        channels.clear();
         executor.shutdown();
         serverContext.destroy();
-        channels=null;
-        server=null;
-        serverContext =null;
+        channels = null;
+        server = null;
+        serverContext = null;
     }
 
 
@@ -296,7 +295,7 @@ public class Cas{
      *
      * @param args number of milliseconds to run the server
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Cas giapicas = new Cas();
         try {
 
@@ -307,10 +306,10 @@ public class Cas{
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
-        try{
-            Thread.sleep((args[0]!=null)?Integer.parseInt(args[0]):10);
+        try {
+            Thread.sleep((args[0] != null) ? Integer.parseInt(args[0]) : 10);
             giapicas.stop();
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
