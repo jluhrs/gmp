@@ -12,13 +12,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class JcasTest
+ * Class TestJcas
  *
  * @author Nicolas A. Barriga
  *         Date: Nov 29, 2010
  */
-public class JcasTest {
-    private static final Logger LOG = Logger.getLogger(JcasTest.class.getName());
+public class TestJcas {
+    private static final Logger LOG = Logger.getLogger(TestJcas.class.getName());
     private DefaultServerImpl server;
     private ServerContext serverContext =null;
     private Context clientContext =null;
@@ -27,7 +27,7 @@ public class JcasTest {
     private ExecutorService executor;
     private Channel ch;
 
-    public JcasTest() {
+    public TestJcas() {
         this.jca = JCALibrary.getInstance();
         executor = Executors.newCachedThreadPool();
         server = new DefaultServerImpl();
@@ -116,7 +116,7 @@ public class JcasTest {
      }
 
     public static void main(String args[]) {
-        JcasTest jt = new JcasTest();
+        TestJcas jt = new TestJcas();
         jt.start();
         try {
             Thread.sleep(1000);

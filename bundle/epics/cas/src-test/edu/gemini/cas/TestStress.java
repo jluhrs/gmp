@@ -1,23 +1,17 @@
 package edu.gemini.cas;
 
 import gov.aps.jca.*;
-import gov.aps.jca.dbr.DBR_Int;
-import junit.framework.TestCase;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class StressTest
+ * Class TestStress
  *
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
  */
-public class StressTest extends TestCase {
-    private static final Logger LOG = Logger.getLogger(StressTest.class.getName());
+public class TestStress {
+    private static final Logger LOG = Logger.getLogger(TestStress.class.getName());
     private Cas giapicas;
     private JCALibrary jca;
     private String varname="nico:test1";

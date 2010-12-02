@@ -1,11 +1,11 @@
 package edu.gemini.cas;
 
 import gov.aps.jca.dbr.DBR;
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
  */
-public class CasTest extends TestCase {
+public class CasTest {
     private static final Logger LOG = Logger.getLogger(CasTest.class.getName());
     private String varname="nico:test1";
 
