@@ -79,6 +79,7 @@ public class Activator  implements BundleActivator {
     public void stop(BundleContext bundleContext) throws Exception {
         LOG.info("Stopping gmp-epics-status-service");
 
+        _epicsSS.shutdown();
 
         //_epicsSS.dump();
         _epicsSS = null;

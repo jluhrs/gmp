@@ -145,7 +145,12 @@ public class ChannelAccessServer implements IChannelAccessServer {
      */
     @Override
     public void destroyChannel(IChannel channel) {
-        Channel ch = channels.get(channel.getName());
+        Channel ch=null;
+        try{
+            ch = channels.get(channel.getName());
+        }catch(NullPointerException ex){//if channel was already destroyed
+            return;        
+        }
         channels.remove(ch.getName());
         server.unregisterProcessVaribale(ch.getName());
         ch.destroy();
