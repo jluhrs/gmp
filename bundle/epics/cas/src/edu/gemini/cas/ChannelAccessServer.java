@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
  */
-public class ChannelAccessServer implements IChannelFactory {
+public class ChannelAccessServer implements IChannelAccessServer {
     private static final Logger LOG = Logger.getLogger(ChannelAccessServer.class.getName());
     private DefaultServerImpl server;
     private ServerContext serverContext = null;
@@ -138,8 +138,14 @@ public class ChannelAccessServer implements IChannelFactory {
         return ch;
     }
 
-    void destroyChannel(String name) {
-        Channel ch = channels.get(name);
+    /**
+     * Removes channel from internal Map, unregisters from server and destroys PV
+     *
+     * @param channel the IChannel to remove
+     */
+    @Override
+    public void destroyChannel(IChannel channel) {
+        Channel ch = channels.get(channel.getName());
         channels.remove(ch.getName());
         server.unregisterProcessVaribale(ch.getName());
         ch.destroy();

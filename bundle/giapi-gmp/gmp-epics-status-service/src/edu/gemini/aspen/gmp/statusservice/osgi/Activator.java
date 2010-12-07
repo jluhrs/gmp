@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.statusservice.osgi;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.gmp.statusservice.EpicsStatusService;
-import edu.gemini.cas.IChannelFactory;
+import edu.gemini.cas.IChannelAccessServer;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -26,7 +26,7 @@ public class Activator  implements BundleActivator {
 
     private ServiceRegistration _registration;
 
-    private IChannelFactory _channelFactory;
+    private IChannelAccessServer _channelAccessServer;
 
     private static final String confFileProperty= "gmp.epics.statusservice.conf";
 
@@ -40,14 +40,14 @@ public class Activator  implements BundleActivator {
     public void start(BundleContext bundleContext) throws Exception{
         LOG.info("Starting gmp-epics-status-service");
 
-        ServiceReference ref= bundleContext.getServiceReference(IChannelFactory.class.getName());
+        ServiceReference ref= bundleContext.getServiceReference(IChannelAccessServer.class.getName());
         if(ref!=null){
-            _channelFactory = (IChannelFactory)bundleContext.getService(ref);
+            _channelAccessServer = (IChannelAccessServer)bundleContext.getService(ref);
         }else{
-            _channelFactory =null;
+            _channelAccessServer =null;
         }
 
-        _epicsSS= new EpicsStatusService(_channelFactory);
+        _epicsSS= new EpicsStatusService(_channelAccessServer);
 
         String confFileName = bundleContext.getProperty(confFileProperty);
         if (confFileName == null) {
@@ -59,10 +59,8 @@ public class Activator  implements BundleActivator {
             throw new RuntimeException("Missing properties config file: " + confFileName);
         }
         EpicsStatusServiceConfiguration conf=  new EpicsStatusServiceConfiguration(confFileName);
-        for(EpicsStatusServiceConfiguration.StatusConfigItem item: conf.getSimulatedChannels()){
-            //TODO:support multiple values (array)
-            _epicsSS.addVariable(item.giapiName, item.epicsName, item.initialValue);
-        }
+        _epicsSS.initialize(conf.getSimulatedChannels());
+   
 
         //advertise the EpicsStatusService into OSGi, as a StatusHandler
         _registration = bundleContext.registerService(
@@ -80,7 +78,9 @@ public class Activator  implements BundleActivator {
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
         LOG.info("Stopping gmp-epics-status-service");
-        _epicsSS.dump();
+
+
+        //_epicsSS.dump();
         _epicsSS = null;
 
         _registration.unregister();

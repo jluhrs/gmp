@@ -1,6 +1,7 @@
 package edu.gemini.cas.osgi;
 
 import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.cas.IChannelAccessServer;
 import edu.gemini.cas.IChannelFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -36,7 +37,7 @@ public class Activator  implements BundleActivator {
 
         //advertise the cas into OSGi
         _registration = bundleContext.registerService(
-                IChannelFactory.class.getName(),
+                IChannelAccessServer.class.getName(),
                 _channelAccessServer, null);
          _channelAccessServer.start();
     }
