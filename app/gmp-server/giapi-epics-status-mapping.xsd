@@ -1,15 +1,19 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 <xs:element name="channels">
 	<xs:complexType>
-		<xs:element name="channel">
+	<xs:sequence>
+		<xs:element name="channel" maxOccurs="unbounded">
 			<xs:complexType>
+			<xs:sequence>
 				<xs:element name="giapiname" type="xs:string"/>
 				<xs:element name="epicsname" type="xs:string"/>
 				<xs:element name="type" type="xs:string"/>
 				<xs:element name="initial" type="xs:anyType"/>
+			</xs:sequence>
 			</xs:complexType>
 		</xs:element>
+	</xs:sequence>
 	</xs:complexType>
 </xs:element>
 </xs:schema>

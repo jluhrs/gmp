@@ -1,8 +1,16 @@
-<channels>
+<?xml version="1.0"?>
+<channels xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="giapi-epics-status-mapping.xsd">
 	<channel>
 		<giapiname>giapiname</giapiname>
 		<epicsname>epicsname</epicsname>
 		<type>INT</type>
 		<initial>2</initial>
+	</channel>
+	<channel>
+		<giapiname>giapiname2</giapiname>
+		<epicsname>epicsname2</epicsname>
+		<type>INT</type>
+		<initial>3</initial>
 	</channel>
 </channels>
