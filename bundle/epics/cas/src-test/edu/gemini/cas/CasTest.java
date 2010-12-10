@@ -70,7 +70,7 @@ public class CasTest {
             IChannel ch2= giapicas.createIntegerChannel(varname,1);
 
             assertEquals(ch,ch2);
-            giapicas.destroyChannel(varname);
+            giapicas.destroyChannel(ch2);
 
             try{
                 ch.getValue();
