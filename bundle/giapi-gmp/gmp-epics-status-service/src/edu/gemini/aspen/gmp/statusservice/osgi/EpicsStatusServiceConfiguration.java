@@ -80,8 +80,7 @@ public class EpicsStatusServiceConfiguration {
             validator.validate(source);
         }
         catch (Exception ex) {
-           // LOG.log(Level.SEVERE,"Validating XML file: '"+xml+"', using XSD: '"+xsd+"' failed.",ex);
-            LOG.log(Level.SEVERE,"Validating XML file: '"+xml+"', using XSD: '"+xsd+"' failed.");
+            LOG.log(Level.SEVERE,"Validating XML file: '"+xml+"', using XSD: '"+xsd+"' failed.",ex);
         }
         return true;
     }
@@ -145,8 +144,8 @@ public class EpicsStatusServiceConfiguration {
                 if (typeString != null) {
                     try {
                         if(typeString.equals("INT")){
-                            //type = DBRType.INT;
-                            type = DBR_Int.TYPE;
+                            type = DBRType.INT;
+                            //type = DBR_Int.TYPE;
                         }else{
                             throw new IllegalArgumentException();
                         }
@@ -228,4 +227,10 @@ public class EpicsStatusServiceConfiguration {
         return res;
     }
 
+    public static void main(String[] args){
+        EpicsStatusServiceConfiguration ep=new EpicsStatusServiceConfiguration("/Users/nbarriga/Development/giapi-osgi/app/gmp-server/giapi-epics-status-mapping.xml");
+        for(StatusConfigItem it:ep.getSimulatedChannels()){
+            System.out.println(it.giapiName);
+        }
+    }
 }
