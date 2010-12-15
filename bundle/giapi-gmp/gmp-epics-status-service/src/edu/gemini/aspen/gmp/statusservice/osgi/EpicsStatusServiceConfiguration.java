@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.statusservice.osgi;
 
 import gov.aps.jca.dbr.DBRType;
-import gov.aps.jca.dbr.DBR_Int;
 import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,9 +18,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,16 +28,15 @@ import java.util.logging.Logger;
 public class EpicsStatusServiceConfiguration {
 
     private static final Logger LOG = Logger.getLogger(EpicsStatusServiceConfiguration.class.getName());
-    private static final String CONF_FILE = "gmp.epics.statusservice.conf";
     static final String CHANNEL_TAG = "channel";
     static final String GIAPI_NAME_TAG = "giapiname";
     static final String EPICS_NAME_TAG = "epicsname";
     static final String TYPE_TAG = "type";
     static final String INITIAL_TAG = "initial";
 
-    private Set<StatusConfigItem> _simChannels;
+    private Set<ChannelConfig> _simChannels;
 
-    public class StatusConfigItem{
+    public class ChannelConfig {
         public String giapiName;
         public String epicsName;
         public DBRType type;
@@ -53,7 +49,7 @@ public class EpicsStatusServiceConfiguration {
 
     }
 
-    public Set<StatusConfigItem> getSimulatedChannels() {
+    public Set<ChannelConfig> getSimulatedChannels() {
         return Collections.unmodifiableSet(_simChannels);
     }
 
@@ -113,9 +109,9 @@ public class EpicsStatusServiceConfiguration {
         return doc;
     }
 
-    private Set<StatusConfigItem> parseChannels(Document doc) {
+    private Set<ChannelConfig> parseChannels(Document doc) {
 
-        Set<StatusConfigItem> channels = new HashSet<StatusConfigItem>();
+        Set<ChannelConfig> channels = new HashSet<ChannelConfig>();
 
         NodeList nodeList = doc.getElementsByTagName(CHANNEL_TAG);
 
@@ -145,38 +141,48 @@ public class EpicsStatusServiceConfiguration {
                     try {
                         if(typeString.equals("INT")){
                             type = DBRType.INT;
-                            //type = DBR_Int.TYPE;
+                        }else if(typeString.equals("FLOAT")){
+                            type = DBRType.FLOAT;
+                        }else if(typeString.equals("DOUBLE")){
+                            type = DBRType.DOUBLE;
+                        }else if(typeString.equals("STRING")){
+                            type = DBRType.STRING;
                         }else{
-                            throw new IllegalArgumentException();
+                            throw new IllegalArgumentException("Unsupported data type "+typeString);
                         }
                     } catch (IllegalArgumentException e) {
-                        LOG.warning("No valid data type for simulated EPICS channel: " + giapiName);
+                        LOG.warning("No valid data type for simulated EPICS channel: " + epicsName);
                         continue;
                     }
                 } else {
-                    LOG.warning("No data type specified for simulated EPICS channel " + giapiName);
+                    LOG.warning("No data type specified for simulated EPICS channel " + epicsName);
                     continue;
                 }
 
                 String valueString = getNodeData(firstElement, INITIAL_TAG);
                 if (valueString != null) {
                     try {
-                        //TODO: support other data types
                         //TODO: support multiple values (array)
                         if(type.equals(DBRType.INT)){
                             initial = Integer.parseInt(valueString);
+                        }else if(type.equals(DBRType.FLOAT)){
+                            initial = Float.parseFloat(valueString);
+                        }else if(type.equals(DBRType.DOUBLE)){
+                            initial = Double.parseDouble(valueString);
+                        }else if(type.equals(DBRType.STRING)){
+                            initial = valueString;
                         }else{
-                            throw new IllegalArgumentException();
+                            throw new IllegalArgumentException("Unsupported data type "+type);
                         }
                     } catch (NumberFormatException e) {
-                        LOG.warning("No valid size for simulated EPICS channel " + giapiName);
+                        LOG.warning("No valid size for simulated EPICS channel " + epicsName);
                         continue;
                     }
                 } else {
-                    LOG.warning("No size specified for simulated EPICS channel " + giapiName);
+                    LOG.warning("No size specified for simulated EPICS channel " + epicsName);
                     continue;
                 }
-                StatusConfigItem item=    new StatusConfigItem();
+                ChannelConfig item=    new ChannelConfig();
                 item.giapiName=giapiName;
                 item.epicsName=epicsName;
                 item.type=type;
@@ -217,6 +223,38 @@ public class EpicsStatusServiceConfiguration {
         return nameNode.getNodeValue();
     }
 
+    /**
+     * Just a simple auxiliary method to get the content of
+     * an XML tag
+     * @param element XML node to parse
+     * @param tag Tag to parse
+     * @return the string in the node.
+     */
+
+    private List<String> getMultipleNodeData(Element element, String tag) {
+
+        if (element == null) return null;
+
+        NodeList list = element.getElementsByTagName(tag);
+        if (list == null) return null;
+
+        Element nameElement = (Element) list.item(0);
+        if (nameElement == null) return null;
+
+        NodeList nameList = nameElement.getChildNodes();
+        if (nameList == null) return null;
+
+        Node nameNode = nameList.item(0);
+        if (nameNode == null) return null;
+
+        List<String> values=new ArrayList<String>();
+        for(int i=0;i<nameList.getLength();i++){
+            values.add(nameList.item(i).getNodeValue());
+        }
+
+        return values;
+    }
+
 
     private String getProperty(BundleContext ctx, String key) {
         String res = ctx.getProperty(key);
@@ -229,7 +267,7 @@ public class EpicsStatusServiceConfiguration {
 
     public static void main(String[] args){
         EpicsStatusServiceConfiguration ep=new EpicsStatusServiceConfiguration("/Users/nbarriga/Development/giapi-osgi/app/gmp-server/giapi-epics-status-mapping.xml");
-        for(StatusConfigItem it:ep.getSimulatedChannels()){
+        for(ChannelConfig it:ep.getSimulatedChannels()){
             System.out.println(it.giapiName);
         }
     }

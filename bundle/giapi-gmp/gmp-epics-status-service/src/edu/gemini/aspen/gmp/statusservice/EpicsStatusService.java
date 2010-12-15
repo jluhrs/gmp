@@ -6,22 +6,22 @@ import edu.gemini.cas.IChannel;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.cas.IChannelAccessServer;
-import edu.gemini.cas.IChannelFactory;
 import gov.aps.jca.CAException;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class EpicsStatusService
+ * Class EpicsStatusService, uses an IChannelAccessServer to create channels, listens
+ * to the corresponding StatusItem updates and informs the server.
+ *
  *
  * @author Nicolas A. Barriga
  *         Date: Nov 9, 2010
  */
+//TODO:support multiple values (array)
 public class EpicsStatusService implements StatusHandler {
     public static final Logger LOG = Logger.getLogger(EpicsStatusService.class.getName());
     private static final String NAME = "GMP_EPICS_STATUS_SERVICE";
@@ -34,9 +34,14 @@ public class EpicsStatusService implements StatusHandler {
         _channelAccessServer = ICas;
     }
 
-    //TODO:support multiple values (array)
-    public void initialize(Set<EpicsStatusServiceConfiguration.StatusConfigItem> items){
-        for(EpicsStatusServiceConfiguration.StatusConfigItem item: items){
+    /**
+     * Initialize the EpicsStatusService. Creates appropriate channels in an IChannelAccessServer.
+     *
+     *
+     * @param items channels to create and listen to.
+     */
+    public void initialize(Set<EpicsStatusServiceConfiguration.ChannelConfig> items){
+        for(EpicsStatusServiceConfiguration.ChannelConfig item: items){
             try{
                 addVariable(item.giapiName, item.epicsName, item.initialValue);
             }catch(CAException ex){
@@ -45,14 +50,17 @@ public class EpicsStatusService implements StatusHandler {
         }
     }
 
+    /**
+     * Destroys the registered channels in the IChannelAccessServer
+     */
     public void shutdown(){
-        for(String name:channelMap.keySet()){
+        for(String name: channelMap.keySet().toArray(new String[0])){
             removeVariable(name);
         }
     }
 
     private <T> void addVariable(String giapiName, String epicsName, T value)throws CAException{
-        LOG.info("Adding variable GIAPI: "+giapiName+" EPICS: "+epicsName);
+//        LOG.info("Adding variable GIAPI: "+giapiName+" EPICS: "+epicsName);
         if(_channelAccessServer !=null){
             IChannel ch;
             if(value.getClass() == Integer.class){
@@ -111,7 +119,7 @@ public class EpicsStatusService implements StatusHandler {
 
     @Override
     public void update(StatusItem item) {
-        LOG.info("Update item "+item.getName());
+//        LOG.info("Update item "+item.getName());
         updateInternal(item);
     }
 
