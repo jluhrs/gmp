@@ -42,26 +42,35 @@ development tree:
 
 The -S argument is useful to specify where do we want to have our OSGi
 applications installed. If it's not specified, they will be installed in the
-~/.osgi directory.
+~/.osgi directory. The directory needs to be created manually.
 
 Now, fetch the bundle-server from another machine and give it an alias.
 
-  launcher -h:manjar -i:bundle-server -a:temp
+  launcher -h:build.cl.gemini.edu -i:bundle-server -a:temp
 
 Set the bundle property to point to your local repository development root, and
-then start up the app.
+then start up the app. You can do that by editing the file bundle.properties under
+the folder ~/.osgi/temp/conf/build.properties and change the property 
 
-  launcher -a:temp -b:edu.gemini.util.obr.root=/home/anunez/Projects/giapi-osgi
+  edu.gemini.util.obr.root=/home/anunez/Projects/giapi-osgi
+
+And then launch it
+
   launcher -a:temp
 
 If you type ps -l you will see that everything is running but it's pointed to
 the other machine.
 
 In another window, install the app again, this time from your own running
-server. You also need to set the root property.
+server. You also need to set the root property as before in the bundle.properties
+file
 
   launcher -i:bundle-server
-  launcher -a:bundle-server -b:edu.gemini.util.obr.root=/home/anunez/Projects/giapi-osgi
+
+And like before the set the edu.gemini.util.obr.root property this time in the 
+bundle-server configuration at ~/.osgi/bundle-server/conf/build.properties
+
+  launcher -a:bundle-server
 
 Start up the server so it will download all its bundles. You will get a bind
 exception because the port is already bound in the other instance . This is ok.
