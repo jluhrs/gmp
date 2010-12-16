@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.statusservice;
 
 
-import edu.gemini.aspen.gmp.statusservice.osgi.EpicsStatusServiceConfiguration;
+import edu.gemini.aspen.gmp.statusservice.osgi.Channels;
 import edu.gemini.cas.IChannel;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
@@ -9,7 +9,6 @@ import edu.gemini.cas.IChannelAccessServer;
 import gov.aps.jca.CAException;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +28,7 @@ public class EpicsStatusService implements StatusHandler {
      * Structure mapping Giapi Status Item -> Epics PV
      */
     private final Map<String, IChannel> channelMap = new HashMap<String, IChannel>();
-    private IChannelAccessServer _channelAccessServer =null;
+    private final IChannelAccessServer _channelAccessServer;
     public EpicsStatusService(IChannelAccessServer ICas) {
         _channelAccessServer = ICas;
     }
@@ -40,15 +39,28 @@ public class EpicsStatusService implements StatusHandler {
      *
      * @param items channels to create and listen to.
      */
-    public void initialize(Set<EpicsStatusServiceConfiguration.ChannelConfig> items){
-        for(EpicsStatusServiceConfiguration.ChannelConfig item: items){
+    public void initialize(List<Channels.ChannelConfig> items){
+        for(Channels.ChannelConfig item: items){
             try{
-                addVariable(item.giapiName, item.epicsName, item.initialValue);
+                addVariable(item.getGiapiname(), item.getEpicsname(), item.getInitial());
             }catch(CAException ex){
                 LOG.log(Level.SEVERE,ex.getMessage(),ex);
             }
         }
     }
+
+    /**
+     * Initialize method version for testing only.
+     *
+     *
+     * @param items channels to create and listen to.
+     */
+    public void testInitialize(List<Channels.ChannelConfig> items){
+        for(Channels.ChannelConfig item: items){
+            channelMap.put(item.getGiapiname(), null);
+        }
+    }
+
 
     /**
      * Destroys the registered channels in the IChannelAccessServer
@@ -87,8 +99,8 @@ public class EpicsStatusService implements StatusHandler {
 
     private void removeVariable(String giapiName)throws IllegalStateException{
         IChannel ch = channelMap.get(giapiName);
+        channelMap.remove(giapiName);
         if(ch != null){
-            channelMap.remove(giapiName);
             if(_channelAccessServer !=null){
                 _channelAccessServer.destroyChannel(ch);
             }else{

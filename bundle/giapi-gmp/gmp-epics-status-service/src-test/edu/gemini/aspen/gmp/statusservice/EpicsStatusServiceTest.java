@@ -1,14 +1,11 @@
 package edu.gemini.aspen.gmp.statusservice;
 
 
+import edu.gemini.aspen.gmp.statusservice.osgi.Channels;
 import junit.framework.TestCase;
-import gov.aps.jca.dbr.DBRType;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class EpicsStatusServiceTest
@@ -20,24 +17,31 @@ public class EpicsStatusServiceTest extends TestCase {
 
     @Test
     public void testBasic(){
-//        EpicsStatusService ess=new EpicsStatusService(null);
-//        try{
-//            ess.addVariable("giapiname", "epicsname", DBRType.INT, new int[]{2});
-//        }catch(IllegalStateException ex){
-//
-//        }catch(Exception ex){
-//            fail();
-//        }
-//        Map<String,String> testMap= new HashMap<String,String>();
-//        testMap.put("giapiname","epicsname");
-//        assertEquals(ess.getAll(),testMap);
-//        try{
-//            ess.removeVariable("giapiname");
-//        }catch(IllegalStateException ex){
-//
-//        }catch(Exception ex){
-//            fail();
-//        }
-//        assertEquals(ess.getAll(),new HashMap<String,String>());
+        EpicsStatusService ess=new EpicsStatusService(null);
+        List<Channels.ChannelConfig> lst= new ArrayList<Channels.ChannelConfig>();
+        Channels.ChannelConfig ch= new Channels.ChannelConfig();
+        ch.setGiapiname("name");
+        ch.setEpicsname("other name");
+        ch.setType("INT");
+        ch.setInitial("3");
+        lst.add(ch);
+        try{
+            ess.testInitialize(lst);
+        }catch(IllegalStateException ex){
+
+        }catch(Exception ex){
+            fail();
+        }
+        Set<String> testSet= new HashSet<String>();
+        testSet.add("name");
+        assertEquals(testSet,ess.getAll().keySet());
+        try{
+            ess.shutdown();
+        }catch(IllegalStateException ex){
+
+        }catch(Exception ex){
+            fail();
+        }
+        assertEquals(ess.getAll().keySet(),new HashSet<String>());
     }
 }
