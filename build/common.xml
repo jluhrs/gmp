@@ -10,7 +10,8 @@
     <property name="osgi.runtime.lib" value="${osgi.runtime}/lib"/>
     <property name="osgi.build.lib" value="${osgi}/build/lib"/>
     <property name="test.data.dir" value="${osgi}/test-results"/>
-
+    <property name="clover.data.dir" value="${osgi}/clover"/>
+  
     <property name="hldg.external.lib"
               value="${ocs.root}/hldgexternal/java/lib"/>
 
@@ -114,6 +115,7 @@
 
         <!-- run tests -->
         <mkdir dir="${test.data.dir}"/>
+        <mkdir dir="${clover.data.dir}"/>
         <junit printsummary="true">
             <classpath>
                 <path refid="build.classpath.extra"/>
