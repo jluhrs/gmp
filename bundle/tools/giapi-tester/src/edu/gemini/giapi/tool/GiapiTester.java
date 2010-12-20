@@ -39,6 +39,7 @@ public class GiapiTester {
         parser.registerArgument(new GetStatusNamesArgument());
         parser.registerArgument(new MonitorObsEventArgument());
         parser.registerArgument(new MonitorFileEventsArgument());
+        parser.registerArgument(new ExpectedValueArgument());
 
         //possible operations
         parser.registerOperation(new HelpOperation());

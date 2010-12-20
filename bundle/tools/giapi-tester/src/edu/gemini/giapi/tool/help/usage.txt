@@ -77,7 +77,13 @@ DESCRIPTION
      -fileEvents
         Starts listening for file events coming through the GMP.
         Each file event received is printed out to the screen with its
-        corresponding details. 
+        corresponding details.
+
+    -expected <expected-value>
+        Compares the <expected-value> with the last monitored value returning
+        0 if they match or 1 otherwise. This will only work if a -timeout argument
+        is also passed. The <expected-value> is compared verbatim to the
+        last monitored value.
 
 EXAMPLES
 
@@ -182,6 +188,22 @@ EXAMPLES
         Status value: StatusItem{name='gpi:status1', value=99991}
         Status value: StatusItem{name='gpi:status2', value=9}
         ...
+
+    Additionally a monitor can take a timeout argument that will limit how long
+    the monitor will run in milliseconds
+    For instance to run for 15 seconds:
+
+        java -jar giapi-tester.jar monitor gpi:cc:filter.X -timeout 15000
+
+    Besides timeout, the monitor can take an expected value parameter that will
+    be compared to the last retrieved item and the giapi-tester will exit with a
+    0 code if they match or 1 otherwise.
+    An example of this:
+
+        java -jar giapi-tester.jar monitor gpi:status1 -timeout 15000 -expected 9999
+
+    The expected value only makes sense if the timeout is also set and only
+    one variable is being monitored.
 
     In addition, you can use the giapi-tester application to get the most
     up to date value of any specific status item using the -get flag. For
