@@ -193,14 +193,15 @@ EXAMPLES
     the monitor will run in milliseconds
     For instance to run for 15 seconds:
 
-        java -jar giapi-tester.jar monitor gpi:cc:filter.X -timeout 15000
+        java -jar giapi-tester.jar -monitor gpi:cc:filter.X -timeout 15000
 
     Besides timeout, the monitor can take an expected value parameter that will
     be compared to the last retrieved item and the giapi-tester will exit with a
-    0 code if they match or 1 otherwise.
+    0 code if they match or 1 otherwise. If the expected value is
+    observed the monitor will exit right away. 
     An example of this:
 
-        java -jar giapi-tester.jar monitor gpi:status1 -timeout 15000 -expected 9999
+        java -jar giapi-tester.jar -monitor gpi:status1 -timeout 15000 -expected 9999
 
     The expected value only makes sense if the timeout is also set and only
     one variable is being monitored.
