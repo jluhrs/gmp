@@ -2,6 +2,7 @@ package edu.gemini.cas;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.cosylab.epics.caj.cas.util.MemoryProcessVariable;
+import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
 import gov.aps.jca.dbr.*;
@@ -80,7 +81,8 @@ public class ChannelAccessServer implements IChannelAccessServer {
                 throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Integer");
             }
         }
-        MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Int.TYPE, new int[length]);
+        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Int.TYPE,new int[length]);
+        server.registerProcessVaribale(name, pv);
         Channel ch = new Channel(pv);
         channels.put(name, ch);
         return ch;
@@ -96,7 +98,8 @@ public class ChannelAccessServer implements IChannelAccessServer {
                 throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Float");
             }
         }
-        MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Float.TYPE, new float[length]);
+        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Float.TYPE,new float[length]);
+        server.registerProcessVaribale(name, pv);
         Channel ch = new Channel(pv);
         channels.put(name, ch);
         return ch;
@@ -112,7 +115,8 @@ public class ChannelAccessServer implements IChannelAccessServer {
                 throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Double");
             }
         }
-        MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_Double.TYPE, new double[length]);
+        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Double.TYPE,new double[length]);
+        server.registerProcessVaribale(name, pv);
         Channel ch = new Channel(pv);
         channels.put(name, ch);
         return ch;
@@ -132,7 +136,8 @@ public class ChannelAccessServer implements IChannelAccessServer {
         for (int i = 0; i < array.length; i++) {
             array[i] = "";
         }
-        MemoryProcessVariable pv = server.createMemoryProcessVariable(name, DBR_String.TYPE, array);
+        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_String.TYPE,array);
+        server.registerProcessVaribale(name, pv);
         Channel ch = new Channel(pv);
         channels.put(name, ch);
         return ch;

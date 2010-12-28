@@ -1,16 +1,16 @@
 package edu.gemini.cas;
 
-import com.cosylab.epics.caj.cas.util.MemoryProcessVariable;
+import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
 import gov.aps.jca.dbr.*;
 
 class Channel implements IChannel {
-    private MemoryProcessVariable pv;
+    private AlarmMemoryProcessVariable pv;
 
     /*package private constructor*/
-    Channel(MemoryProcessVariable pv) {
+    Channel(AlarmMemoryProcessVariable pv) {
         this.pv = pv;
     }
 
@@ -47,7 +47,10 @@ class Channel implements IChannel {
         for (int i = 0; i < values.length; i++) {
             newValues[i] = values[i];
         }
-        CAStatus status = pv.write(new DBR_Int(newValues), null);
+        DBR_STS_Int dbr = new DBR_STS_Int(newValues);
+        dbr.setStatus(0);
+        dbr.setSeverity(0);
+        CAStatus status = pv.write(dbr, null);
         if (status != CAStatus.NORMAL) {
             throw new CAStatusException(status);
         }
@@ -73,7 +76,10 @@ class Channel implements IChannel {
         for (int i = 0; i < values.length; i++) {
             newValues[i] = values[i];
         }
-        CAStatus status = pv.write(new DBR_Float(newValues), null);
+        DBR_STS_Float dbr = new DBR_STS_Float(newValues);
+        dbr.setStatus(0);
+        dbr.setSeverity(0);
+        CAStatus status = pv.write(dbr, null);
         if (status != CAStatus.NORMAL) {
             throw new CAStatusException(status);
         }
@@ -99,7 +105,10 @@ class Channel implements IChannel {
         for (int i = 0; i < values.length; i++) {
             newValues[i] = values[i];
         }
-        CAStatus status = pv.write(new DBR_Double(newValues), null);
+        DBR_STS_Double dbr = new DBR_STS_Double(newValues);
+        dbr.setStatus(0);
+        dbr.setSeverity(0);
+        CAStatus status = pv.write(dbr, null);
         if (status != CAStatus.NORMAL) {
             throw new CAStatusException(status);
         }
@@ -120,8 +129,10 @@ class Channel implements IChannel {
         if (!pv.getType().isSTRING()) {
             throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
         }
-
-        CAStatus status = pv.write(new DBR_String(values), null);
+        DBR_STS_String dbr = new DBR_STS_String(values);
+        dbr.setStatus(0);
+        dbr.setSeverity(0);
+        CAStatus status = pv.write(dbr, null);
         if (status != CAStatus.NORMAL) {
             throw new CAStatusException(status);
         }
@@ -135,13 +146,13 @@ class Channel implements IChannel {
         }
         DBR dbr;
         if (pv.getType().isINT()) {
-            dbr = new DBR_TIME_Int(pv.getDimensionSize(0));
+            dbr = new DBR_STS_Int(pv.getDimensionSize(0));
         } else if (pv.getType().isFLOAT()) {
-            dbr = new DBR_TIME_Float(pv.getDimensionSize(0));
+            dbr = new DBR_STS_Float(pv.getDimensionSize(0));
         } else if (pv.getType().isDOUBLE()) {
-            dbr = new DBR_TIME_Double(pv.getDimensionSize(0));
+            dbr = new DBR_STS_Double(pv.getDimensionSize(0));
         } else if (pv.getType().isSTRING()) {
-            dbr = new DBR_TIME_String(pv.getDimensionSize(0));
+            dbr = new DBR_STS_String(pv.getDimensionSize(0));
         } else {
             throw new IllegalStateException("Channel incorrectly initialized");
         }
