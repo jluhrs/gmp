@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.statusservice;
 
 
 import edu.gemini.aspen.gmp.statusservice.osgi.Channels;
+import edu.gemini.aspen.gmp.statusservice.osgi.ChannelsHelper;
 import edu.gemini.cas.IChannel;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
@@ -42,7 +43,7 @@ public class EpicsStatusService implements StatusHandler {
     public void initialize(List<Channels.ChannelConfig> items){
         for(Channels.ChannelConfig item: items){
             try{
-                addVariable(item.getGiapiname(), item.getEpicsname(), item.getInitial());
+                addVariable(item.getGiapiname(), item.getEpicsname(), ChannelsHelper.getInitial(item));
             }catch(CAException ex){
                 LOG.log(Level.SEVERE,ex.getMessage(),ex);
             }

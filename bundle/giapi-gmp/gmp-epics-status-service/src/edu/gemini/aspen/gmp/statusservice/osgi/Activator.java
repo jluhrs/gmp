@@ -58,7 +58,7 @@ public class Activator  implements BundleActivator {
         if (!confFile.exists()) {
             throw new RuntimeException("Missing properties config file: " + confFileName);
         }
-        EpicsStatusServiceConfiguration conf=  new EpicsStatusServiceConfiguration(confFileName);
+        EpicsStatusServiceConfiguration conf=  new EpicsStatusServiceConfiguration(confFileName, confFileName.substring(0, confFileName.length() - 3).concat("xsd"));
         _epicsSS.initialize(conf.getSimulatedChannels());
    
 

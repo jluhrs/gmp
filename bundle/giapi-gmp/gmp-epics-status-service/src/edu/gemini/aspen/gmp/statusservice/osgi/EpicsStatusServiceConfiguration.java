@@ -22,8 +22,8 @@ public class EpicsStatusServiceConfiguration {
     private Channels _simChannels=null;
 
 
-    public EpicsStatusServiceConfiguration(String confFileName) {
-        if (validate(confFileName, confFileName.substring(0, confFileName.length() - 3).concat("xsd"))) {
+    public EpicsStatusServiceConfiguration(String confFileName, String schemaFileName) {
+        if (schemaFileName == null || validate(confFileName, schemaFileName)) {
             try {
                 JAXBContext jc = JAXBContext.newInstance(Channels.class);
                 _simChannels = (Channels) jc.createUnmarshaller().unmarshal(new File(confFileName));
@@ -71,9 +71,9 @@ public class EpicsStatusServiceConfiguration {
     }
 
     public static void main(String[] args){
-        EpicsStatusServiceConfiguration ep=new EpicsStatusServiceConfiguration("/Users/nbarriga/Development/giapi-osgi/app/gmp-server/giapi-epics-status-mapping.xml");
+        EpicsStatusServiceConfiguration ep=new EpicsStatusServiceConfiguration("/Users/nbarriga/Development/giapi-osgi/app/gmp-server/giapi-epics-status-mapping.xml",null);
         for(Channels.ChannelConfig it:ep.getSimulatedChannels()){
-            System.out.println(it.getGiapiname() +" "+ it.getEpicsname() +" "+ it.getType() +" "+ it.getInitial());
+            System.out.println(it.getGiapiname() +" "+ it.getEpicsname() +" "+ it.getType() +" "+ ChannelsHelper.getInitial(it));
         }
     }
 }
