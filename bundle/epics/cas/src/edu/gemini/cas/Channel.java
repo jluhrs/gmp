@@ -146,13 +146,13 @@ class Channel implements IChannel {
         }
         DBR dbr;
         if (pv.getType().isINT()) {
-            dbr = new DBR_STS_Int(pv.getDimensionSize(0));
+            dbr = new DBR_TIME_Int(pv.getDimensionSize(0));
         } else if (pv.getType().isFLOAT()) {
-            dbr = new DBR_STS_Float(pv.getDimensionSize(0));
+            dbr = new DBR_TIME_Float(pv.getDimensionSize(0));
         } else if (pv.getType().isDOUBLE()) {
-            dbr = new DBR_STS_Double(pv.getDimensionSize(0));
+            dbr = new DBR_TIME_Double(pv.getDimensionSize(0));
         } else if (pv.getType().isSTRING()) {
-            dbr = new DBR_STS_String(pv.getDimensionSize(0));
+            dbr = new DBR_TIME_String(pv.getDimensionSize(0));
         } else {
             throw new IllegalStateException("Channel incorrectly initialized");
         }
