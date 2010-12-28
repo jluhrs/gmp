@@ -8,8 +8,6 @@ import junit.framework.TestCase;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class EpicsStatusServiceConfigurationTest
@@ -86,30 +84,18 @@ public class EpicsStatusServiceConfigurationTest extends TestCase{
             xsdWrt.close();
 
             EpicsStatusServiceConfiguration ep = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
-            List<Channels.ChannelConfig> lst = new ArrayList<Channels.ChannelConfig>();
             Channels.ChannelConfig ch = new Channels.ChannelConfig();
             ch.setGiapiname("giapiname");
             ch.setEpicsname("epicsname");
             ch.setType("INT");
             ch.setInitial("2");
-            lst.add(ch);
-            ch.setGiapiname("giapiname2");
-            ch.setEpicsname("epicsname2");
-            ch.setType("FLOAT");
-            ch.setInitial("3.0");
-            lst.add(ch);
-            ch.setGiapiname("giapiname3");
-            ch.setEpicsname("epicsname3");
-            ch.setType("DOUBLE");
-            ch.setInitial("3.0");
-            lst.add(ch);
-            ch.setGiapiname("giapiname4");
-            ch.setEpicsname("epicsname4");
-            ch.setType("STRING");
-            ch.setInitial("hola");
-            lst.add(ch);
 
-            //assertEquals(lst, ep.getSimulatedChannels());
+
+            Channels.ChannelConfig ch2 = ep.getSimulatedChannels().get(0);
+            assertEquals(ch2.getGiapiname(),ch.getGiapiname());
+            assertEquals(ch2.getEpicsname(), ch.getEpicsname());
+            assertEquals(ch2.getType(),ch.getType());
+            assertEquals(ChannelsHelper.getInitial(ch2),ChannelsHelper.getInitial(ch));
 
         } catch (IOException ex) {
             fail();
