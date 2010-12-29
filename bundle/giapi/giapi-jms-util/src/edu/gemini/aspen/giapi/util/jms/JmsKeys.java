@@ -37,6 +37,8 @@ public class JmsKeys {
     //Status Keys
     public final static String GMP_STATUS_DESTINATION_PREFIX =  GMP_PREFIX + GMP_SEPARATOR + "STATUS" + GMP_SEPARATOR;
 
+    //Heartbeat Keys
+    public final static String GMP_HEARTBEAT_DESTINATION =  GMP_PREFIX + GMP_SEPARATOR + "HEARTBEAT";
 
     //Gateway Keys
 
