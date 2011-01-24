@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Channels">
+        <xs:complexType>
+            <xs:choice  minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="SimpleChannel" type="SimpleChannelType"/>
+                <xs:element name="AlarmChannel" type="AlarmChannelType"/>
+                <xs:element name="HealthChannel" type="HealthChannelType"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="dataType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INT"/>
+            <xs:enumeration value="FLOAT"/>
+            <xs:enumeration value="DOUBLE"/>
+            <xs:enumeration value="STRING"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="BaseChannelType">
+        <xs:sequence>
+            <xs:element name="giapiname" type="xs:string"/>
+            <xs:element name="epicsname" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="HealthChannelType">
+        <xs:complexContent>
+            <xs:extension base="BaseChannelType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="SimpleChannelType">
+        <xs:complexContent>
+            <xs:extension base="BaseChannelType">
+                <xs:sequence>
+                    <xs:element name="type" type="dataType"/>
+                    <xs:element name="initial" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AlarmChannelType">
+        <xs:complexContent>
+            <xs:extension base="SimpleChannelType"/>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

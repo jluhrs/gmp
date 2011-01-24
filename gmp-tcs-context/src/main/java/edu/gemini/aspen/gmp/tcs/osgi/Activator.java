@@ -76,7 +76,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
     }
 
     public void start(BundleContext bundleContext) throws Exception {
-
         _context = bundleContext;
 
         _jmsTracker = new JmsProviderTracker(bundleContext,
@@ -87,11 +86,11 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
         String sim = _context.getProperty(TCS_CTX_SIMULATION_PROP);
 
-        if ("yes".equalsIgnoreCase(sim)) {
+        if (sim == null || "yes".equalsIgnoreCase(sim)) {
             String file = _context.getProperty(TCS_CTX_SIMULATION_DATA_PROP);
             LOG.info("Simulating data for TCS Context from " + file);
             _listener.registerTcsContextFetcher(new SimTcsContextFetcher(file));
-            
+
         } else {
             //Start the EPICS tracker, so we can get the TCS context from
             //EPICS

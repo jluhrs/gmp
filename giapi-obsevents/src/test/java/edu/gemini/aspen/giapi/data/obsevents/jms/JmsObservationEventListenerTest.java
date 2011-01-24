@@ -1,19 +1,18 @@
 package edu.gemini.aspen.giapi.data.obsevents.jms;
 
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-import org.apache.activemq.command.ActiveMQMessage;
-
-import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapi.data.ObservationEventHandler;
-import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.ObservationEvent;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import org.apache.activemq.command.ActiveMQMessage;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import javax.jms.Message;
 import javax.jms.JMSException;
+import javax.jms.Message;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for the JMS implementation of the Observation Event Monitor.

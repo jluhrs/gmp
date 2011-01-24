@@ -1,21 +1,68 @@
 package edu.gemini.cas;
 
-import com.cosylab.epics.caj.cas.util.MemoryProcessVariable;
+import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
+import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
 import gov.aps.jca.dbr.*;
 
-class Channel implements IChannel {
-    private MemoryProcessVariable pv;
+/**
+ * Class Channel
+ *
+ * @author Nicolas A. Barriga
+ *         Date: 1/17/11
+ */
+class Channel implements IChannel{
+    protected AlarmMemoryProcessVariable pv;
 
-    /*package private constructor*/
-    Channel(MemoryProcessVariable pv) {
+    Channel(AlarmMemoryProcessVariable pv) {
         this.pv = pv;
     }
 
-    DBRType getType(){
-        return pv.getType();
+    /**
+     * Register this channel's process variable in the given server
+     *
+     * @param server the server to register the pv
+     */
+    public void register(DefaultServerImpl server){
+        server.registerProcessVaribale(pv.getName(),pv);
+    }
+
+    /**
+     * Checks if this channel represents a Double
+     *
+     * @return true if Double, false otherwise
+     */
+    boolean isDouble(){
+        return pv.getType().isDOUBLE();
+    }
+
+    /**
+      * Checks if this channel represents a Float
+      *
+      * @return true if Float, false otherwise
+      */
+    boolean isFloat(){
+        return pv.getType().isFLOAT();
+    }
+
+    /**
+      * Checks if this channel represents an Integer
+      *
+      * @return true if Integer, false otherwise
+      */
+    boolean isInteger(){
+        return pv.getType().isINT();
+    }
+
+    /**
+      * Checks if this channel represents a String
+      *
+      * @return true if String, false otherwise
+      */
+    boolean isString(){
+        return pv.getType().isSTRING();
     }
 
     @Override
@@ -23,7 +70,13 @@ class Channel implements IChannel {
         return pv.getName();
     }
 
-    void destroy(){
+    /**
+     * Unregister this channel's process variable from the given server. Destroy the pv.
+     *
+     * @param server the server to unregister the pv from
+     */
+    void destroy(DefaultServerImpl server){
+        server.unregisterProcessVaribale(getName());
         pv.destroy();
         pv=null;
     }
@@ -39,7 +92,7 @@ class Channel implements IChannel {
             throw new IllegalArgumentException("Incorrect number of values. Expected: " + pv.getDimensionSize(0) + ", got: " + values.length);
         }
 
-        if (!pv.getType().isINT()) {
+        if (!isInteger()) {
             throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
         }
         int[] newValues = new int[values.length];
@@ -47,7 +100,8 @@ class Channel implements IChannel {
         for (int i = 0; i < values.length; i++) {
             newValues[i] = values[i];
         }
-        CAStatus status = pv.write(new DBR_Int(newValues), null);
+        DBR_STS_Int dbr = new DBR_STS_Int(newValues);
+        CAStatus status = pv.write(dbr, null);
         if (status != CAStatus.NORMAL) {
             throw new CAStatusException(status);
         }
@@ -65,7 +119,7 @@ class Channel implements IChannel {
             throw new IllegalArgumentException("Incorrect number of values. Expected: " + pv.getDimensionSize(0) + ", got: " + values.length);
         }
 
-        if (!pv.getType().isFLOAT()) {
+        if (!isFloat()) {
             throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
         }
         float[] newValues = new float[values.length];
@@ -73,7 +127,8 @@ class Channel implements IChannel {
         for (int i = 0; i < values.length; i++) {
             newValues[i] = values[i];
         }
-        CAStatus status = pv.write(new DBR_Float(newValues), null);
+        DBR_STS_Float dbr = new DBR_STS_Float(newValues);
+        CAStatus status = pv.write(dbr, null);
         if (status != CAStatus.NORMAL) {
             throw new CAStatusException(status);
         }
@@ -91,7 +146,7 @@ class Channel implements IChannel {
             throw new IllegalArgumentException("Incorrect number of values. Expected: " + pv.getDimensionSize(0) + ", got: " + values.length);
         }
 
-        if (!pv.getType().isDOUBLE()) {
+        if (!isDouble()) {
             throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
         }
         double[] newValues = new double[values.length];
@@ -99,7 +154,8 @@ class Channel implements IChannel {
         for (int i = 0; i < values.length; i++) {
             newValues[i] = values[i];
         }
-        CAStatus status = pv.write(new DBR_Double(newValues), null);
+        DBR_STS_Double dbr = new DBR_STS_Double(newValues);
+        CAStatus status = pv.write(dbr, null);
         if (status != CAStatus.NORMAL) {
             throw new CAStatusException(status);
         }
@@ -117,11 +173,11 @@ class Channel implements IChannel {
             throw new IllegalArgumentException("Incorrect number of values. Expected: " + pv.getDimensionSize(0) + ", got: " + values.length);
         }
 
-        if (!pv.getType().isSTRING()) {
+        if (!isString()) {
             throw new IllegalArgumentException("Trying to write a " + values[0].getClass().getName() + " value in a " + pv.getType().getName() + " field.");
         }
-
-        CAStatus status = pv.write(new DBR_String(values), null);
+        DBR_STS_String dbr = new DBR_STS_String(values);
+        CAStatus status = pv.write(dbr, null);
         if (status != CAStatus.NORMAL) {
             throw new CAStatusException(status);
         }
@@ -134,13 +190,13 @@ class Channel implements IChannel {
             throw new IllegalStateException("Channel not initialized");
         }
         DBR dbr;
-        if (pv.getType().isINT()) {
+        if (isInteger()) {
             dbr = new DBR_TIME_Int(pv.getDimensionSize(0));
-        } else if (pv.getType().isFLOAT()) {
+        } else if (isFloat()) {
             dbr = new DBR_TIME_Float(pv.getDimensionSize(0));
-        } else if (pv.getType().isDOUBLE()) {
+        } else if (isDouble()) {
             dbr = new DBR_TIME_Double(pv.getDimensionSize(0));
-        } else if (pv.getType().isSTRING()) {
+        } else if (isString()) {
             dbr = new DBR_TIME_String(pv.getDimensionSize(0));
         } else {
             throw new IllegalStateException("Channel incorrectly initialized");

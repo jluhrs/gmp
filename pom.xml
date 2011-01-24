@@ -19,7 +19,7 @@
     -->
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.gemini</groupId>
+  <groupId>edu.gemini.aspen</groupId>
   <artifactId>giapi-osgi</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
@@ -33,13 +33,53 @@
         -->
     <org.osgi.service.http.port>8080</org.osgi.service.http.port>
     <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>
+    <!-- Component versions -->
     <clover.version>3.0.2</clover.version>
+    <org.activemq.core.version>5.4.2</org.activemq.core.version>
+    <!-- Global encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <gmp.properties.conf>gmp.properties.conf</gmp.properties.conf>
   </properties>
 
   <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.atlassian.maven.plugins</groupId>
+        <artifactId>maven-clover2-plugin</artifactId>
+        <version>${clover.version}</version>
+        <configuration>
+          <licenseLocation>${user.home}/.clover/clover.license</licenseLocation>
+          <!--<targetPercentage>30%</targetPercentage>
+		            <methodContexts>
+		                <main>(.* )?public static void main\(String\[\] argv\).*</main>
+		            </methodContexts>
+		            <contextFilters>main</contextFilters>-->
+          <generateHistorical>true</generateHistorical>
+          <historyDir>${project.build.directory}/../history</historyDir>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.ops4j</groupId>
+        <artifactId>maven-pax-plugin</artifactId>
+        <version>1.4</version>
+        <configuration>
+          <provision>
+            <param>--platform=felix</param>
+          </provision>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <modules>
     <module>poms</module>
@@ -61,108 +101,50 @@
     <module>gmp-commands-gateway</module>
     <module>gmp-services</module>
     <module>gmp-pcs-updater</module>
-      <module>gmp-servlet</module>
-      <module>gmp-status-gateway</module>
-      <module>gmp-statusdb</module>
-      <module>jca-lib</module>
-      <module>cas</module>
-      <module>epics-service</module>
-      <module>gmp-epics-access</module>
+    <module>gmp-servlet</module>
+    <module>gmp-status-gateway</module>
+    <module>gmp-statusdb</module>
+    <module>jca-lib</module>
+    <module>cas</module>
+    <module>epics-service</module>
+    <module>gmp-epics-access</module>
     <module>gmp-epics-simulator</module>
     <module>gmp-epics-status-service</module>
     <module>gpi-bean</module>
-    <!--module>giapi-tester</module-->
+    <module>gmp-server</module>
+    <module>gmp-heartbeat</module>
+    <module>giapi-tester</module>
+    <module>gmp-webconsole-branding</module>
   </modules>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-clover2-plugin</artifactId>
-        <version>${clover.version}</version>
-        <configuration>
-          <licenseLocation>${user.home}/.clover/clover.license</licenseLocation>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.googlecode.maven-overview-plugin</groupId>
-        <artifactId>maven-overview-plugin</artifactId>
-        <version>RELEASE</version>
-        <configuration>
-          <width>1920</width>
-          <height>1080</height>
-          <suppressedScopes />
-          <maxDepth>1</maxDepth>
-          <showVersion />
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.ops4j</groupId>
-        <artifactId>maven-pax-plugin</artifactId>
-        <version>1.4</version>
-        <configuration>
-          <provision>
-            <param>--platform=felix</param>
-          </provision>
-        </configuration>
-        <executions>
-          <!--execution>
-                      <id>ide-support</id>
-                      <goals>
-                        <goal>intellij-idea</goal>
-                      </goals>
-                    </execution-->
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <distributionManagement>
+    <!-- releases repo -->
+    <repository>
+      <id>edu.gemini.releases</id>
+      <name>sbfosxdev01.cl.gemini.edu-releases</name>
+      <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+    </repository>
+    <snapshotRepository>
+      <id>edu.gemini.releases</id>
+      <name>sbfosxdev01.cl.gemini.edu-snapshots</name>
+      <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+    </snapshotRepository>
+  </distributionManagement>
 
-        <!-- Clover needs to be downloaded directly from atlassian -->
-    <!--pluginRepositories>
-        <pluginRepository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>atlassian-m2-repository</id>
-            <name>Atlassian Maven 2.x Repository</name>
-            <url>http://repository.atlassian.com/maven2</url>
-        </pluginRepository>
-    </pluginRepositories-->
-
-    <distributionManagement>
-        <repository>
-            <id>edu.gemini.local</id>
-            <name>sbfosxdev01.cl.gemini.edu-releases</name>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>edu.gemini.local</id>
-            <name>sbfosxdev01.cl.gemini.edu-snapshots</name>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>edu.gemini.mirror</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/repo1</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>com.springsource.repository.bundles.external</id>
-            <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
-            <url>http://repository.springsource.com/maven/bundles/external</url>
-        </repository>
-    </repositories>
+  <repositories>
+    <repository>
+      <!-- Maven central mirror -->
+      <id>edu.gemini.mirror</id>
+      <url>http://build.cl.gemini.edu:8081/artifactory/repo1</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <!-- Repository of other local dependencies stored locally -->
+      <id>edu.gemini.ext-releases-local</id>
+      <url>http://build.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
+    </repository>
+  </repositories>
 
 </project>

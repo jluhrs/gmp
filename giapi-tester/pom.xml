@@ -4,7 +4,7 @@
 
     <parent>
         <relativePath>../poms/compiled/</relativePath>
-        <groupId>edu.gemini.giapi-osgi.build</groupId>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>compiled-bundle-settings</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -21,7 +21,34 @@
 
     <name>${bundle.symbolicName} [${bundle.namespace}]</name>
 
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>edu.gemini.giapi.tool.GiapiTester</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jar-with-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!--
@@ -34,7 +61,7 @@
         </dependency>
         -->
         <dependency>
-            <groupId>edu.gemini</groupId>
+            <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
             <version>0.9.0</version>
         </dependency>
@@ -59,28 +86,29 @@
             <version>0.1.0</version>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen</groupId>
+            <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
             <version>1.2.0</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
             <version>0.10.0</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>com.springsource.javax.jms</artifactId>
             <version>1.1.0</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
             <version>5.4.2</version>
-            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo</artifactId>
+            <version>1.6.8</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>

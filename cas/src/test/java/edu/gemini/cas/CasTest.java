@@ -1,6 +1,9 @@
 package edu.gemini.cas;
 
 import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.dbr.STS;
+import gov.aps.jca.dbr.Severity;
+import gov.aps.jca.dbr.Status;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +41,12 @@ public class CasTest {
             giapicas.stop();
 
             giapicas.start();
+            try{
+                giapicas.start();
+                fail();
+            }catch(IllegalStateException ex){
 
+            }
             giapicas.stop();
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, ex.getMessage(),ex);
@@ -70,8 +78,25 @@ public class CasTest {
             IChannel ch2= giapicas.createIntegerChannel(varname,1);
 
             assertEquals(ch,ch2);
-            giapicas.destroyChannel(ch2);
 
+            giapicas.destroyChannel(ch);
+            giapicas.destroyChannel(ch2);
+            ch= giapicas.createFloatChannel(varname,1);
+            ch2= giapicas.createFloatChannel(varname,1);
+            assertEquals(ch,ch2);
+
+            giapicas.destroyChannel(ch);
+            giapicas.destroyChannel(ch2);
+            ch= giapicas.createDoubleChannel(varname,1);
+            ch2= giapicas.createDoubleChannel(varname,1);
+            assertEquals(ch,ch2);
+
+            giapicas.destroyChannel(ch);
+            giapicas.destroyChannel(ch2);
+            ch= giapicas.createStringChannel(varname,1);
+            ch2= giapicas.createStringChannel(varname,1);
+            assertEquals(ch,ch2);
+            giapicas.destroyChannel(ch2);
             try{
                 ch.getValue();
                 fail();
@@ -86,6 +111,52 @@ public class CasTest {
         }
     }
 
+    @Test
+    public void testAddTwiceWrongType() {
+
+        try {
+            ChannelAccessServer giapicas = new ChannelAccessServer();
+            giapicas.start();
+
+            IChannel ch= giapicas.createIntegerChannel(varname,1);
+            DBR dbr = ch.getValue();
+
+
+
+            int num = dbr.getCount();
+            assertEquals(1, num);
+            Object obj = dbr.getValue();
+            int[] objarr = (int[]) obj;
+            assertEquals(0, objarr[0]);
+
+            try{
+                IChannel ch2= giapicas.createFloatChannel(varname,1);
+                fail();
+            }catch(RuntimeException ex){
+                //OK
+            }
+            try{
+                IChannel ch2= giapicas.createDoubleChannel(varname,1);
+                fail();
+            }catch(RuntimeException ex){
+                //OK
+            }
+            try{
+                IChannel ch2= giapicas.createStringChannel(varname,1);
+                fail();
+            }catch(RuntimeException ex){
+                //OK
+            }
+
+            giapicas.destroyChannel(ch);
+
+            giapicas.stop();
+
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(),ex);
+            fail();
+        }
+    }
 
     /**
      * Starts the server, adds a PV, writes a value, reads it back, checks the value read is correct and stops the server
@@ -231,6 +302,82 @@ public class CasTest {
 
 
     }
+
+    @Test
+    public void testCreateAlarmChannels() {
+        try {
+            ChannelAccessServer giapicas = new ChannelAccessServer();
+            giapicas.start();
+            IAlarmChannel ch1 = giapicas.createIntegerAlarmChannel("int", 1);
+            IAlarmChannel ch2 = giapicas.createFloatAlarmChannel("float", 1);
+            IAlarmChannel ch3 = giapicas.createDoubleAlarmChannel("double", 1);
+            IAlarmChannel ch4 = giapicas.createStringAlarmChannel("string", 1);
+            giapicas.stop();
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            fail();
+        }
+    }
+
+    @Test
+    public void testWriteAlarm() {
+        try {
+            ChannelAccessServer giapicas = new ChannelAccessServer();
+            giapicas.start();
+            IAlarmChannel ch= giapicas.createIntegerAlarmChannel(varname, 1);
+            ch.setAlarm(Status.HIHI_ALARM, Severity.MAJOR_ALARM, "alarm message");
+            ch.setValue(3);
+            DBR dbr = ch.getValue();
+
+            assertEquals(Severity.MAJOR_ALARM,((STS)dbr).getSeverity());
+            assertEquals(Status.HIHI_ALARM,((STS)dbr).getStatus());
+            ch.clearAlarm();
+            dbr = ch.getValue();
+            assertEquals(Severity.NO_ALARM,((STS)dbr).getSeverity());
+            assertEquals(Status.NO_ALARM,((STS)dbr).getStatus());
+
+            int num = dbr.getCount();
+            assertEquals(1, num);
+            Object obj = dbr.getValue();
+            int[] objarr = (int[]) obj;
+            assertEquals(3, objarr[0]);
+
+            //test add again
+            {
+                IChannel ch2= giapicas.createIntegerAlarmChannel(varname,1);
+                assertEquals(ch,ch2);
+            }
+
+            //test add with same name, wrong type
+            try{
+                IChannel ch2= giapicas.createFloatAlarmChannel(varname,1);
+                fail();
+            }catch(RuntimeException ex){
+                //OK
+            }
+            try{
+                IChannel ch2= giapicas.createDoubleAlarmChannel(varname,1);
+                fail();
+            }catch(RuntimeException ex){
+                //OK
+            }
+            try{
+                IChannel ch2= giapicas.createStringAlarmChannel(varname,1);
+                fail();
+            }catch(RuntimeException ex){
+                //OK
+            }
+
+
+            giapicas.stop();
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(),ex);
+            fail();
+        }
+
+
+    }
+
 
 
     @After

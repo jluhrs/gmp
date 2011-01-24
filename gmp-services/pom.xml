@@ -4,7 +4,7 @@
 
     <parent>
         <relativePath>../poms/compiled/</relativePath>
-        <groupId>edu.gemini.giapi-osgi.build</groupId>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>compiled-bundle-settings</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -12,6 +12,7 @@
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp.services</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.services</bundle.namespace>
+        <gmp.properties.conf>../src/test/resources/gmp.properties.conf</gmp.properties.conf>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -35,7 +36,7 @@
         </dependency>
         -->
         <dependency>
-            <groupId>edu.gemini.aspen</groupId>
+            <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
             <version>1.2.0</version>
         </dependency>
@@ -48,24 +49,25 @@
             <groupId>org.dom4j</groupId>
             <artifactId>com.springsource.org.dom4j</artifactId>
             <version>1.5.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.xml.stream</groupId>
             <artifactId>com.springsource.javax.xml.stream</artifactId>
             <version>1.0.1</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>com.springsource.javax.jms</artifactId>
             <version>1.1.0</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>edu.gemini</groupId>
+            <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
             <version>0.9.0</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

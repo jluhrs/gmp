@@ -36,6 +36,11 @@ public class GiapiTester {
         parser.registerArgument(new MonitorStatusArgument());
         parser.registerArgument(new GetStatusArgument());
         parser.registerArgument(new SetStatusArgument());
+        parser.registerArgument(new TypeArgument());
+        parser.registerArgument(new ValueArgument());
+        parser.registerArgument(new AlarmSeverityArgument());
+        parser.registerArgument(new AlarmCauseArgument());
+        parser.registerArgument(new AlarmMessageArgument());
         parser.registerArgument(new GetStatusNamesArgument());
         parser.registerArgument(new MonitorObsEventArgument());
         parser.registerArgument(new MonitorFileEventsArgument());

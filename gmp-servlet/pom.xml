@@ -4,7 +4,7 @@
 
     <parent>
         <relativePath>../poms/compiled/</relativePath>
-        <groupId>edu.gemini.giapi-osgi.build</groupId>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>compiled-bundle-settings</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -15,7 +15,7 @@
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.gemini.aspen</groupId>
+    <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-servlet</artifactId>
     <version>1.1.0</version>
 
@@ -35,7 +35,7 @@
         </dependency>
         -->
         <dependency>
-            <groupId>edu.gemini</groupId>
+            <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
             <version>0.9.0</version>
         </dependency>

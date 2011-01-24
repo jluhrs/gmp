@@ -1,8 +1,11 @@
 package edu.gemini.aspen.gmp.statusdb;
 
+import edu.gemini.aspen.giapi.status.StatusDatabaseService;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.giapi.status.StatusDatabaseService;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
 
 import java.util.Collections;
 import java.util.Set;
@@ -11,7 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * The Status Database contains the most up to date information related to
  * the status items. All the status items received by the GMP are recorded here
- */
+*/
+@Component
+@Instantiate(name="statusDB")
+@Provides
 public class StatusDatabase implements StatusHandler, StatusDatabaseService {
 
     //Store the most recent information associated to all the status items

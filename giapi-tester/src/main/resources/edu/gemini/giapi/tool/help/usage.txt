@@ -1,0 +1,272 @@
+
+NAME
+    giapi-tester -- Gemini GIAPI tester application.
+    
+SYNOPSIS
+    java -jar giapi-tester.jar option...
+
+DESCRIPTION
+    The GIAPI tester applications is a command line tool that allows
+    to command operations to the Gemini Master Process (GMP).
+    It uses the GIAPI internal protocols to communicate with an Aspen
+    conforming instrument, allowing to test the operation of it. 
+    
+    The following options are available, and may be given in any order:
+    
+    -?  Shows this message and then exits.
+
+    -sc <sequence command>
+        Specifies a sequence command to send to the GMP
+        Available sequence command options are TEST, REBOOT, INIT, DATUM,
+        PARK, VERIFY, END_VERIFY, GUIDE, END_GUIDE, APPLY, OBSERVE,
+        END_OBSERVE, PAUSE, CONTINUE, STOP, ABORT
+        A Sequence command must be specified along with an activity, using
+        the -activity option.
+
+    -activity <activity>
+        Specifies the activity. An activity only can be specified with
+        an associated sequence command, using the -sc flag.
+        Available activity options are PRESET, START, PRESET_START, CANCEL
+        An activity only makes sense if a sequence command was specified,
+        using the -sc option.
+
+    -config <configuration>
+        Specifies a configuration for a sequence command/activity.
+        A configuration can be specified by a (key,value) pair in the form
+        key=value. It is allowed to use several -config commands to construct
+        a multiple item configuration. Alternatively, you can quote a multiple
+        item configuration using a single -config flag. See the examples
+        below.
+        A configuration only makes sense if a sequence command and activity
+        are specified, using the -sc and -activity arguments respectively.
+
+    -r <repetitions>
+        Specifies the number of repetitions the requested operation will
+        be executed. Default is one.
+
+    -h <host>
+        Specifies the host where the Gemini Master Process (GMP) is running.
+        If not specified, it will try to connect to the localhost.
+
+    -timeout <timeout>
+        Specifies a timeout (in milliseconds) for an operation to complete.
+        For instance, if a command is sent down to an instrument and the
+        response from the instrument is STARTED, using this argument allows to
+        define a maximum amount of time to wait for completion information
+        regarding that command.
+        If a timeout is not specified, the operation will block
+        indefinitely until a response is received or the application is
+        killed.
+
+     -monitor <status-name>
+        Starts a monitor for a status item with the given name.
+
+     -get <status-name>
+        Gets the most recent value for the status item specified.
+
+     -set <status-name>
+        Indicate that you want to change the value of a status item. Must be use
+        together with -type and -value. If the type of this status item is an alarm,
+        you must use -severity and -cause. -message is optional.
+
+     -type <status-type>
+        Type of the status indicated with -set. If the type of this status item is an alarm,
+        you must use -severity and -cause. -message is optional.
+
+     -value <status-value>
+        Value to set the status indicated with -set.
+
+     -severity <alarm-severity>
+        If the status type to be set is an alarm type, you must set the severity.
+
+     -cause <alarm-cause>
+        If the status type to be set is an alarm type, you must set the cause.
+
+     -message <alarm-message>
+        If the status type to be set is an alarm type, you can optionally set a message.
+
+     -set <status-type>=<status-name>=<status-value>=<alarm-severity>=<alarm-cause>[=<alarm-message>]
+             Sets the value and alarm for the status item specified
+
+     -names
+        Gets a list of all the status items registered in the database
+        
+     -obsEvents
+        Starts listening for observation events coming through the GMP.
+        Each observation event received is printed out to the screen.
+
+     -fileEvents
+        Starts listening for file events coming through the GMP.
+        Each file event received is printed out to the screen with its
+        corresponding details.
+
+    -expected <expected-value>
+        Compares the <expected-value> with the last monitored value returning
+        0 if they match or 1 otherwise. This will only work if a -timeout argument
+        is also passed. The <expected-value> is compared verbatim to the
+        last monitored value.
+
+EXAMPLES
+
+    To send a simple sequence command you can use:
+
+        java -jar giapi-tester.jar -sc INIT -activity PRESET
+
+    Notice that a sequence command always requires to specify an activity.
+
+    If a configuration is needed for a sequence command, you need to
+    use the -config option.
+
+    To specify a configuration for an apply command, you can use:
+    
+        java -jar giapi-tester.jar -sc APPLY -activity PRESET
+             -config gpi:cc:filter=A
+
+    Probably your configuration contains more than one item though. In that
+    case, you can specify multiple -config options, as in:
+
+        java -jar giapi-tester.jar -sc APPLY -activity PRESET
+             -config gpi:cc:filter.name=A
+             -config gpi:cc:mirror.pos=closed
+             -config gpi:dc:exposureTime=40
+
+    Alternatively, you can specify all the configuration items using just
+    one -config if you enclose the configuration in quotes, and separate
+    each configuration item with spaces, as in:
+
+        java -jar giapi-tester.jar -sc APPLY -activity PRESET
+                 -config "gpi:cc:filter.name=A
+                 gpi:cc:mirror.pos=closed gpi:dc:exposureTime=40"
+
+
+     Using the same technique, special sequence commands can be tested.
+     For instance, the REBOOT sequence command can take an optional
+     argument that defines how the reboot operation will be handled. The
+     name of the argument is "REBOOT_OPT", and the accepted values are
+     "GMP", "NONE" and "REBOOT". See the GIAPI Design and Use for details
+     about the semantic of these arguments.
+
+     For instance, to send a sequence command with the GMP option, we can
+     do:
+
+         java -jar giapi-tester.jar -sc REBOOT -activity START
+            -config "REBOOT_OPT=GMP"
+
+     The default argument for the REBOOT sequence command is NONE. So, using
+     the following command:
+
+         java -jar giapi-tester.jar -sc REBOOT -activity START
+
+     is equivalent to:
+
+         java -jar giapi-tester.jar -sc REBOOT -activity START
+            -config "REBOOT_OPT=NONE"
+
+    To specify a timeout for an operation to complete, you can use the
+    timeout flag. For instance, if you want to send the INIT sequence command,
+    but you only want to wait for 10 seconds for it to complete, you can use:
+
+        java -jar giapi-tester.jar -sc INIT -activity START -timeout 10000
+
+    Notice the timeout is expressed in milliseconds.
+
+    You can use the -r option to execute an operation several times,
+    sequentially. For instance, to send the INIT sequence command ten times,
+    you can do:
+
+        java -jar giapi-tester.jar -sc INIT -activity START -r 10
+
+    This is usually useful for stress testing.
+
+    If the GIAPI tester application is running on a machine different to where
+    the GMP is located, you have to specify the hostname or IP address of the
+    remote machine using the -h option. For instance, to send the PARK command
+    to a system running on walle.cl.gemini.edu, use:
+
+        java -jar giapi-tester.jar -sc PARK -activity START
+             -h walle.cl.gemini.edu
+
+    You can monitor for changes of any status item using the -monitor option.
+    For instance:
+
+        java -jar giapi-tester.jar -monitor gpi:cc:filter.X
+
+    will print to the screen any changes to the value of the status
+    item gpi:cc:filter.X like:
+
+        Status value: StatusItem{name='gpi:cc:filter.X', value=9}
+        Status value: StatusItem{name='gpi:cc:filter.X', value=10}
+        ...
+
+    You can also monitor all the status items being produced by the instrument
+    by using the ">" wildcard
+    For instance:
+
+        java -jar giapi-tester.jar -monitor ">"
+
+        Status value: StatusItem{name='gpi:status1', value=99990}
+        Status value: StatusItem{name='gpi:status2', value=10}
+        Status value: StatusItem{name='gpi:status1', value=99991}
+        Status value: StatusItem{name='gpi:status2', value=9}
+        ...
+
+    Additionally a monitor can take a timeout argument that will limit how long
+    the monitor will run in milliseconds
+    For instance to run for 15 seconds:
+
+        java -jar giapi-tester.jar -monitor gpi:cc:filter.X -timeout 15000
+
+    Besides timeout, the monitor can take an expected value parameter that will
+    be compared to the last retrieved item and the giapi-tester will exit with a
+    0 code if they match or 1 otherwise. If the expected value is
+    observed the monitor will exit right away. 
+    An example of this:
+
+        java -jar giapi-tester.jar -monitor gpi:status1 -timeout 15000 -expected 9999
+
+    The expected value only makes sense if the timeout is also set and only
+    one variable is being monitored.
+
+    In addition, you can use the giapi-tester application to get the most
+    up to date value of any specific status item using the -get flag. For
+    instance
+
+        java -jar giapi-tester.jar -get gpi:cc:filter.X
+
+    will return, for instance:
+
+        Status value: StatusItem{name='gpi:cc:filter.X', value=10}
+
+   if the status item 'gpi:cc:filter.X' exists in the GMP. Otherwise,
+   the application will return a message like:
+
+        No information found for gpi:cc:filter.X
+
+
+NOTES
+
+    This application uses the same software interface that will be provided
+    to other high-level applications that will require to interact with
+    an Aspen conforming instrument. This application will be expanded
+    to allow further testing possible.    
+
+    This application is designed to be used by automated testing environments.
+    This should allow to automate the execution of tests suites for a given
+    instrument.
+
+DETAILS
+
+    GIAPI tester attempts to connect to a Gemini Master Process running on
+    the Top Level Computer (TLC) of an Aspen conforming instrument. The
+    GMP must be running on the TLC for this application to work.  You can
+    specify the IP or hostname of the TLC machine using the -h flag. 
+    
+
+REFERENCES
+
+    [1] Aspen GIAPI Design and Use, GIAPIUse-08292006/03. Kim Gillies,
+        Arturo Nunez.
+
+GRIPES
+    to anunez@gemini.edu
+                 

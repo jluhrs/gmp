@@ -68,7 +68,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         _jmsTracker.open();
 
         String sim = _context.getProperty(PCS_SIMULATION_PROP);
-        if ("yes".equalsIgnoreCase(sim)) {
+        if (sim == null || "yes".equalsIgnoreCase(sim)) {
             LOG.info("PCS Updates in simulation mode. No updates to the PCS will be attempted");
         } else {
             //Start the EPICS tracker, so we can update the PCS via EPICS

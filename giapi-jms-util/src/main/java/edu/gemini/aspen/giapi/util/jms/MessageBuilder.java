@@ -17,33 +17,71 @@ import java.util.logging.Level;
  * Collection of utility methods that will help to transform from JMS messages
  * to GIAPI data structures and vice versa
  */
-public class MessageBuilder {
+public final class MessageBuilder {
 
     private static final Logger LOG = Logger.getLogger(MessageBuilder.class.getName());
+
+    //the following are a bunch of methods to return error messages.
+
+    static String InvalidHandlerResponseMessage() {
+        return "Invalid Message type to build HandlerResponse object";
+    }
+
+    static String InvalidResponseTypeMessage(String key) {
+        return format("Invalid response type contained in the reply", key);
+    }
+
+    static String InvalidResponseTypeMessage() {
+        return InvalidResponseTypeMessage(null);
+    }
+
+    static String InvalidCompletionInformationMessage() {
+        return "Invalid Message to construct Completion Information";
+    }
+
+    static String InvalidSequenceCommandMessage(String key) {
+        return format("Invalid sequence command ", key);
+    }
+
+    static String InvalidActivityMessage(String key) {
+        return format("Invalid Activity ", key);
+    }
+
+    static String InvalidConfigurationMessage() {
+        return "Invalid configuration received";
+    }
+
+    //a formatter for the error messages
+    private static String format(String message, String key) {
+        StringBuilder sb = new StringBuilder(message);
+        sb.append(" (").append(key).append(")");
+        return sb.toString();
+    }
+
 
     public static HandlerResponse buildHandlerResponse(Message m) throws JMSException {
 
         if (!(m instanceof MapMessage))
-            throw new JMSException("Invalid Message type to build HandlerResponse object");
+            throw new JMSException(InvalidHandlerResponseMessage());
 
         MapMessage msg = (MapMessage) m;
 
         String responseType = msg.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY);
+
+        if (responseType == null) throw new JMSException(InvalidResponseTypeMessage());
+
         HandlerResponse.Response response;
         try {
             response = HandlerResponse.Response.valueOf(responseType);
         } catch (IllegalArgumentException ex) {
-            throw new JMSException("Invalid response type contained in the reply");
+            throw new JMSException(InvalidResponseTypeMessage(responseType));
         }
 
-        if (response != null) {
-            if (response == HandlerResponse.Response.ERROR) {
-                String errorMsg = msg.getString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
-                return HandlerResponse.createError(errorMsg);
-            }
-            return HandlerResponse.get(response);
+        if (response == HandlerResponse.Response.ERROR) {
+            String errorMsg = msg.getString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
+            return HandlerResponse.createError(errorMsg);
         }
-        return null;
+        return HandlerResponse.get(response);
     }
 
     public static Message buildHandlerResponseMessage(Session session, HandlerResponse response) throws JMSException {
@@ -97,7 +135,7 @@ public class MessageBuilder {
         //reconstruct CompletionInfo based on the message
 
         if (!(m instanceof MapMessage)) {
-            throw new JMSException("Invalid Message to construct Completion Information");
+            throw new JMSException(InvalidCompletionInformationMessage());
         }
 
         MapMessage msg = (MapMessage) m;
@@ -110,7 +148,7 @@ public class MessageBuilder {
             try {
                 response = HandlerResponse.Response.valueOf(key);
             } catch (IllegalArgumentException ex) {
-                throw new JMSException("Invalid response type contained in the reply: " + key);
+                throw new JMSException(InvalidResponseTypeMessage(key));
             }
 
             if (response == HandlerResponse.Response.ERROR) {
@@ -128,7 +166,7 @@ public class MessageBuilder {
             try {
                 sc = SequenceCommand.valueOf(key);
             } catch (IllegalArgumentException ex) {
-                throw new JMSException("Invalid sequence command: " + key);
+                throw new JMSException(InvalidSequenceCommandMessage(key));
             }
         }
 
@@ -139,7 +177,7 @@ public class MessageBuilder {
             try {
                 activity = Activity.valueOf(key);
             } catch (IllegalArgumentException ex) {
-                throw new JMSException("Invalid Activity: " + key);
+                throw new JMSException(InvalidActivityMessage(key));
             }
         }
 
@@ -154,7 +192,7 @@ public class MessageBuilder {
         while (names.hasMoreElements()) {
             Object o = names.nextElement();
             if (!(o instanceof String)) {
-                throw new JMSException("Invalid configuration received");
+                throw new JMSException(InvalidConfigurationMessage());
             }
             String path = (String) o;
             String value = msg.getString(path);

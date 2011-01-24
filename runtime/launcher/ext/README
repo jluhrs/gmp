@@ -1,1 +1,0 @@
-These classes need to be in the boot classpath or discovery will not work reliably.

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <relativePath>../provision/</relativePath>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
+        <artifactId>provision</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>edu.gemini.aspen.gmp</groupId>
+    <artifactId>gmp-server</artifactId>
+    <packaging>pom</packaging>
+    <name>GMP Server Application</name>
+    <description>The GMP Server</description>
+
+    <version>1.0.0</version>
+
+    <properties>
+        <bundle.symbolicName>edu.gemini.aspen.gmpserver</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.aspen.gmpserver</bundle.namespace>
+
+        <org.osgi.service.http.port>8888</org.osgi.service.http.port>
+        <org.apache.felix.http.jettyEnabled>true</org.apache.felix.http.jettyEnabled>
+        <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>
+        <bundles.configuration.location>../src/main/etc/conf</bundles.configuration.location>
+        <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
+        <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
+
+        <gmp.properties.conf>../src/main/etc/conf/gmp-properties.xml</gmp.properties.conf>
+        <edu.gemini.aspen.giapi.statusservice.jms.name>GMP Status Service
+        </edu.gemini.aspen.giapi.statusservice.jms.name>
+        <edu.gemini.aspen.gmp.pcs.epicsChannel>tst:array.VALJ</edu.gemini.aspen.gmp.pcs.epicsChannel>
+        <edu.gemini.aspen.gmp.pcs.simulation>yes</edu.gemini.aspen.gmp.pcs.simulation>
+        <edu.gemini.aspen.gmp.tcs.epicsChannel>tc1:sad:astCtx</edu.gemini.aspen.gmp.tcs.epicsChannel>
+        <edu.gemini.aspen.gmp.tcs.simulation>yes</edu.gemini.aspen.gmp.tcs.simulation>
+        <edu.gemini.aspen.gmp.tcs.simulationData>../src/main/etc/conf/tcsCtx.data</edu.gemini.aspen.gmp.tcs.simulationData>
+        <gmp.epics.conf>../src/main/etc/conf/epics-channels.xml</gmp.epics.conf>
+        <gmp.epics.simulation.conf>../src/main/etc/conf/simulated-epics-channels.xml</gmp.epics.simulation.conf>
+        <edu.gemini.jms.activemq.provider.url>vm://gmp</edu.gemini.jms.activemq.provider.url>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <finalName>${artifactId}-${project.version}</finalName>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <!-- Do filtering of files in etc for different environments -->
+        <resources>
+            <resource>
+                <directory>src/main/etc</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-api</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-broker</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- ActiveMQ Provider -->
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-provider</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- JCA Lib -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>jca-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- Epics Service -->
+        <dependency>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-service</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- CAS -->
+        <dependency>
+            <groupId>edu.gemini.cas</groupId>
+            <artifactId>cas</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+        <!-- GIAPI -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <!-- GIAPI JMS-Util -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-jms-util</artifactId>
+            <version>0.10.0</version>
+        </dependency>
+        <!-- GIAPI Status Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-service</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP GIAPI Services -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-services</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Commands Sequence -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <!-- GMP PCS Updater -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-pcs-updater</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- GMP TCS Updater -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-tcs-context</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>com.springsource.javax.servlet</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <!-- GMP Logging Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-logging</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Status Database -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-statusdb</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Status Gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-status-gateway</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Commands Gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands-gateway</artifactId>
+            <version>0.8.0</version>
+        </dependency>
+        <!--- EPICS access gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-access</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- EPICS Simulator -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-simulator</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP EPICS Status Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-status-service</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Web Console branding -->
+        <dependency>
+            <groupId>edu.gemini.giapi.gmp</groupId>
+            <artifactId>gmp-webconsole-branding</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>OPS4J</id>
+            <url>http://repository.ops4j.org/maven2</url>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <external.dir>external</external.dir>
+                <bundle.dir>bundle</bundle.dir>
+                <obr.repository.url>file:///${user.home}/.m2/repository/repository.xml</obr.repository.url>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>environment.type</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <external.dir>external</external.dir>
+                <bundle.dir>external</bundle.dir>
+                <obr.repository.url>file:///${user.home}/.m2/repository/repository.xml</obr.repository.url>
+            </properties>
+        </profile>
+    </profiles>
+</project>

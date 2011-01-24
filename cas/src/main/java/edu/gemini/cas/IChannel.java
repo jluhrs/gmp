@@ -2,6 +2,8 @@ package edu.gemini.cas;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.dbr.Severity;
+import gov.aps.jca.dbr.Status;
 
 /**
  * Interface IChannel
@@ -12,6 +14,7 @@ import gov.aps.jca.dbr.DBR;
 public interface IChannel {
     /**
      * Sets a new value to a PV
+     *
      * @param value the value to set the PV to
      * @throws CAException if write couldn't be completed
      * @throws IllegalArgumentException if wrong data type or incorrect amount of data is passed.

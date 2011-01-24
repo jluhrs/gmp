@@ -2,12 +2,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <!--parent>
+    <parent>
         <relativePath>../poms/wrappers/</relativePath>
-        <groupId>edu.gemini.giapi-osgi.build</groupId>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>wrapper-bundle-settings</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-    </parent-->
+    </parent>
 
     <properties>
         <bundle.symbolicName>com.cosylab.epics.caj</bundle.symbolicName>
@@ -17,7 +17,7 @@
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.gemini.giapi.external</groupId>
+    <groupId>edu.gemini.aspen.giapi.external</groupId>
     <artifactId>caj</artifactId>
     <version>${wrapped.version}</version>
 
@@ -63,7 +63,7 @@
         </dependency>
 
         <dependency>
-            <groupId>edu.gemini.giapi.external</groupId>
+            <groupId>edu.gemini.aspen.giapi.external</groupId>
             <artifactId>jca</artifactId>
             <version>2.3.2</version>
             <scope>runtime</scope>
@@ -72,12 +72,12 @@
 
     <repositories>
         <repository>
-            <id>gemini-maven-external</id>
+            <id>edu.gemini.libs</id>
             <name>sbfosxdev01.cl.gemini.edu-releases</name>
             <url>http://build.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
         </repository>
         <repository>
-            <id>gemini-maven</id>
+            <id>edu.gemini.libs</id>
             <name>sbfosxdev01.cl.gemini.edu-releases</name>
             <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
         </repository>
@@ -85,12 +85,12 @@
 
     <distributionManagement>
         <repository>
-            <id>gemini-maven</id>
+            <id>edu.gemini.libs</id>
             <name>sbfosxdev01.cl.gemini.edu-releases</name>
             <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
         </repository>
         <snapshotRepository>
-            <id>gemini-maven</id>
+            <id>edu.gemini.libs</id>
             <name>sbfosxdev01.cl.gemini.edu-snapshots</name>
             <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
         </snapshotRepository>

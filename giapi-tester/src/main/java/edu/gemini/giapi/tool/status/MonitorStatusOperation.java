@@ -2,6 +2,8 @@ package edu.gemini.giapi.tool.status;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
+import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.giapi.tool.arguments.ExpectedValueArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
@@ -33,6 +35,11 @@ public class MonitorStatusOperation implements Operation {
 
     private class StatusMonitor implements StatusHandler {
         private StatusItem lastItem;
+        private String expectedValue;
+
+        StatusMonitor(String expectedValue) {
+            this.expectedValue = expectedValue;
+        }
 
         public String getName() {
             return "Status Monitor";
@@ -41,25 +48,30 @@ public class MonitorStatusOperation implements Operation {
         public void update(StatusItem item) {
             System.out.println("Status value: " + item);
             lastItem = item;
+            // If value is found exit immediately
+            if (matchesExpectedValue(expectedValue)) {
+                System.out.println("Expected value matched expected=" + expectedValue);
+                System.exit(0);
+            }
         }
 
-        boolean doesLastStatusMatch(String expectedValue) {
-            if (expectedValue == null) {
-                return true;
-            }
-            return lastItem != null?lastItem.getValue().toString().equals(expectedValue):false;
+        private boolean matchesExpectedValue(String expectedValue) {
+            return expectedValue != null && lastItem != null && lastItem.getValue() != null ? lastItem.getValue().toString().equals(expectedValue) : false;
         }
     }
 
     public void setArgument(Argument arg) {
         if (arg instanceof MonitorStatusArgument) {
-            _statusName = ((MonitorStatusArgument)arg).getStatusName();
-        } if (arg instanceof HostArgument) {
-            _host = ((HostArgument)arg).getHost();
-        } if (arg instanceof TimeoutArgument) {
-            _timeout =  ((TimeoutArgument)arg).getTimeout();
-        } if (arg instanceof ExpectedValueArgument) {
-            _expectedValue = ((ExpectedValueArgument)arg).getExpectedValue();
+            _statusName = ((MonitorStatusArgument) arg).getStatusName();
+        }
+        if (arg instanceof HostArgument) {
+            _host = ((HostArgument) arg).getHost();
+        }
+        if (arg instanceof TimeoutArgument) {
+            _timeout = ((TimeoutArgument) arg).getTimeout();
+        }
+        if (arg instanceof ExpectedValueArgument) {
+            _expectedValue = ((ExpectedValueArgument) arg).getExpectedValue();
         }
     }
 
@@ -73,10 +85,12 @@ public class MonitorStatusOperation implements Operation {
 
         StatusGetter getter = new StatusGetter();
 
-        StatusMonitor monitor = new StatusMonitor();
+        StatusMonitor monitor = new StatusMonitor(_expectedValue);
 
-        StatusService service = new StatusService("Status Monitor Service Client", _statusName);
-        service.addStatusHandler(monitor);
+        StatusHandlerAggregate aggregate = new StatusHandlerAggregateImpl();
+        aggregate.bindStatusHandler(monitor);
+
+        StatusService service = new StatusService(aggregate, "Status Monitor Service Client", _statusName, provider);
 
         try {
 
@@ -90,11 +104,9 @@ public class MonitorStatusOperation implements Operation {
 
             ScheduledFuture<Void> timeoutFuture = startTimeoutThread();
 
-            service.startJms(provider);
+            service.initialize();
 
             waitForTimeout(service, timeoutFuture);
-
-            compareWithExpected(monitor);
 
         } catch (JMSException e) {
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());
@@ -102,19 +114,14 @@ public class MonitorStatusOperation implements Operation {
 
     }
 
-    private void compareWithExpected(StatusMonitor monitor) {
-        if (_timeout > 0 && _expectedValue != null) {
-            // Could be nice no to exit this way
-            System.exit(monitor.doesLastStatusMatch(_expectedValue)?0:1);
-        }
-    }
-
     private void waitForTimeout(StatusService service, ScheduledFuture<Void> futureValue) throws InterruptedException, ExecutionException, TimeoutException {
         if (_timeout > 0) {
             futureValue.get(_timeout, TimeUnit.MILLISECONDS);
             service.stopJms();
-            System.out.println("After " + _timeout + " ms it timed out");
-            if (_expectedValue == null) {
+            if (_expectedValue != null) {
+                System.out.println("After " + _timeout + " ms monitor has timed out not reaching the value expected=" + _expectedValue);
+                System.exit(1);
+            } else {
                 System.exit(0);
             }
         }

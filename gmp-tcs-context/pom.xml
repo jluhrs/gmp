@@ -4,7 +4,7 @@
 
     <parent>
         <relativePath>../poms/compiled/</relativePath>
-        <groupId>edu.gemini.giapi-osgi.build</groupId>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>compiled-bundle-settings</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -12,6 +12,9 @@
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp.tcs-context</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.tcs</bundle.namespace>
+        <edu.gemini.aspen.gmp.tcs.epicsChannel>tc1:sad:astCtx</edu.gemini.aspen.gmp.tcs.epicsChannel>
+        <edu.gemini.aspen.gmp.tcs.simulation>yes</edu.gemini.aspen.gmp.tcs.simulation>
+        <edu.gemini.aspen.gmp.tcs.simulationData>../src/main/etc/conf/tcsCtx.data</edu.gemini.aspen.gmp.tcs.simulationData>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -35,7 +38,7 @@
         </dependency>
         -->
         <dependency>
-            <groupId>edu.gemini.aspen</groupId>
+            <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
             <version>1.2.0</version>
         </dependency>
@@ -53,19 +56,19 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>jca-lib</artifactId>
             <version>1.0.0</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>com.springsource.javax.jms</artifactId>
             <version>1.1.0</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>edu.gemini</groupId>
+            <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
             <version>0.9.0</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

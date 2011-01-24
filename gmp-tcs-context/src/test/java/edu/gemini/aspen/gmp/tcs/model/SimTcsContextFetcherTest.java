@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
 
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -10,7 +9,7 @@ import static org.junit.Assert.fail;
 /**
  * Unit test for the TCS Context Simulator
  */
-@Ignore
+
 public class SimTcsContextFetcherTest {
 
 
@@ -28,7 +27,7 @@ public class SimTcsContextFetcherTest {
     @Test
     public void testInvalidData() {
         try {
-            TcsContextFetcher fetcher = new SimTcsContextFetcher(SimTcsContextFetcherTest.class.getResourceAsStream("test/java/edu/gemini/aspen/gmp/tcs/model/tcsCtxInvalidData.data"));
+            TcsContextFetcher fetcher = new SimTcsContextFetcher(SimTcsContextFetcherTest.class.getResourceAsStream("tcsCtxInvalidData.data"));
             assertEquals(null, fetcher.getTcsContext());
         } catch (TcsContextException e) {
             e.printStackTrace();
@@ -50,7 +49,7 @@ public class SimTcsContextFetcherTest {
 
             double time = System.currentTimeMillis() / 1000.0;
             double[] ctx = fetcher.getTcsContext();
-            
+
             assertEquals(time, ctx[0], 1); //tolerance is one second. Just to make sure the value is a time
 
             //reads the data, starting from element at position 1
@@ -76,7 +75,7 @@ public class SimTcsContextFetcherTest {
         }
     }
 
-    
+
 
 
     /**

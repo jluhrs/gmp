@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <relativePath>../../</relativePath>
+        <groupId>edu.gemini.aspen</groupId>
+        <artifactId>giapi-osgi</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>edu.gemini.aspen</groupId>
+    <artifactId>gmp-server</artifactId>
+    <packaging>pom</packaging>
+    <name>gmp-server</name>
+    <description>The GMP Server</description>
+
+    <version>1.0.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.name}-${project.version}</finalName>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!-- Do filtering of files in etc for different environments -->
+        <resources>
+            <resource>
+                <directory>src/main/etc</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <!-- Begin System bundles -->
+        <!-- Felix framework -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.main</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <!-- End System bundles -->
+        <!-- Begin Level 1 -->
+        <!-- Felix Shell and GOGO -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.gogo.command</artifactId>
+            <version>0.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.gogo.runtime</artifactId>
+            <version>0.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.gogo.shell</artifactId>
+            <version>0.6.1</version>
+        </dependency>
+        <!-- Remote shell -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.shell</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.shell.remote</artifactId>
+            <!-- Don't upgrade to 1.1.2 yet -->
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <!-- PAX Logging -->
+        <dependency>
+            <groupId>org.ops4j.pax.logging</groupId>
+            <artifactId>pax-logging-api</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.logging</groupId>
+            <artifactId>pax-logging-service</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <!-- Configuration admin felix service -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.configadmin</artifactId>
+            <version>1.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.confman</groupId>
+            <artifactId>pax-confman-propsloader</artifactId>
+            <version>0.2.2</version>
+        </dependency>
+        <!-- End Level 1 -->
+        <!-- Begin Level 2 -->
+        <!-- Felix web console -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.webconsole</artifactId>
+            <version>3.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.prefs</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.http.jetty</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.http.whiteboard</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.metatype</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <!-- OBR Service -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.bundlerepository</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <!-- End Level 2 -->
+        <!-- Begin Level 4 -->
+        <!-- JMS API -->
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-api</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>com.springsource.javax.jms</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- ActiveMQ Broker -->
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-broker</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>kahadb</artifactId>
+            <version>5.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-annotation_1.0_spec</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!-- End Level 4 -->
+        <!--dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>com.springsource.org.apache.commons.logging</artifactId>
+            <version>1.1.1</version>
+        </dependency-->
+        <!-- ActiveMQ Provider -->
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-provider</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- JCA Lib -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>jca-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- Epics Service -->
+        <dependency>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-service</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- CAS -->
+        <dependency>
+            <groupId>edu.gemini.cas</groupId>
+            <artifactId>cas</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+        <!-- GIAPI -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <!-- GIAPI JMS-Util -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-jms-util</artifactId>
+            <version>0.10.0</version>
+        </dependency>
+        <!-- GIAPI Status Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-service</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP GIAPI Services -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-services</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>com.springsource.org.dom4j</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.stream</groupId>
+            <artifactId>com.springsource.javax.xml.stream</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- GMP Commands Sequence -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <!-- GMP PCS Updater -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-pcs-updater</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!--GMP TCS Updater -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-tcs-context</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>com.springsource.javax.servlet</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <!-- GMP Logging Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-logging</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Status Database -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-statusdb</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Status Gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-status-gateway</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Commands Gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands-gateway</artifactId>
+            <version>0.8.0</version>
+        </dependency>
+        <!-- EPICS access gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-access</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- EPICS Simulator -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-simulator</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP EPICS Status Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-status-service</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>OPS4J</id>
+            <url>http://repository.ops4j.org/maven2</url>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <pax-runner.scanner>scan-file:file:../conf/modules.properties</pax-runner.scanner>
+                <pax-runner.repositories></pax-runner.repositories>
+                <external.dir>external</external.dir>
+                <bundle.dir>bundle</bundle.dir>
+                <obr.repository.url>file:///${user.home}/.m2/repository/repository.xml</obr.repository.url>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>environment.type</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <pax-runner.scanner>scan-dir:../lib</pax-runner.scanner>
+                <pax-runner.repositories>file:../felix</pax-runner.repositories>
+                <external.dir>external</external.dir>
+                <bundle.dir>external</bundle.dir>
+                <obr.repository.url>file:///${user.home}/.m2/repository/repository.xml</obr.repository.url>
+            </properties>
+        </profile>
+    </profiles>
+</project>
