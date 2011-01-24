@@ -5,4 +5,4 @@ Bundle-Description: Java Channel Access Libraries
 Bundle-Vendor: Gemini 8m Observatories, Software Group
 Bundle-Version: 1.0.0
 Export-Package: gov.aps.jca.dbr, gov.aps.jca, gov.aps.jca.cas, gov.aps.jca.event, com.cosylab.epics.caj.cas.util
- 
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <relativePath>../poms/compiled/</relativePath>
+        <groupId>edu.gemini.giapi-osgi.build</groupId>
+        <artifactId>compiled-bundle-settings</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <bundle.symbolicName>edu.gemini.aspen.gpi-bean</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.aspen.gpi</bundle.namespace>
+    </properties>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>edu.gemini.aspen</groupId>
+    <artifactId>gpi-bean</artifactId>
+    <version>0.1.0</version>
+
+    <name>GPI Bean</name>
+    <description>GPI Bean Demo</description>
+
+    <packaging>bundle</packaging>
+
+    <dependencies>
+        <!--
+         | uncomment to add all imported (non-local) bundles to your compilation classpath
+        <dependency>
+          <type>pom</type>
+          <groupId>${parent.groupId}</groupId>
+          <artifactId>provision</artifactId>
+          <optional>true</optional>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>edu.gemini</groupId>
+            <artifactId>giapi</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <relativePath>../poms/compiled/</relativePath>
+        <groupId>edu.gemini.giapi-osgi.build</groupId>
+        <artifactId>compiled-bundle-settings</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <bundle.symbolicName>edu.gemini.aspen.jca-lib</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.aspen.jca</bundle.namespace>
+    </properties>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>edu.gemini.aspen</groupId>
+    <artifactId>jca-lib</artifactId>
+    <version>1.0.0</version>
+
+    <name>JCA Libraries</name>
+    <description>Java Channel Access Libraries</description>
+
+    <packaging>bundle</packaging>
+
+    <dependencies>
+        <!--
+         | uncomment to add all imported (non-local) bundles to your compilation classpath
+        <dependency>
+          <type>pom</type>
+          <groupId>${parent.groupId}</groupId>
+          <artifactId>provision</artifactId>
+          <optional>true</optional>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>edu.gemini.giapi.external</groupId>
+            <artifactId>jca</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.giapi.external</groupId>
+            <artifactId>caj</artifactId>
+            <version>1.1.5b</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>sbfosxdev01.cl.gemini.edu</id>
+            <name>sbfosxdev01.cl.gemini.edu-releases</name>
+            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+        </repository>
+    </repositories>
+
+</project>
