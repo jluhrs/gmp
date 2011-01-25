@@ -64,6 +64,7 @@
 		                <main>(.* )?public static void main\(String\[\] argv\).*</main>
 		            </methodContexts>
 		            <contextFilters>main</contextFilters>-->
+           <historyThreshold>0.5%</historyThreshold>
           <generateHistorical>true</generateHistorical>
           <historyDir>${project.build.directory}/../history</historyDir>
         </configuration>
