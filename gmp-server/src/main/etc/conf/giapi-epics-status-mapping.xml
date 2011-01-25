@@ -2,6 +2,22 @@
 <Channels xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="giapi-epics-status-mapping.xsd">
 	<SimpleChannel>
+		<giapiname>gpi:status1</giapiname>
+		<epicsname>gpi:status1</epicsname>
+		<type>INT</type>
+		<initial>2</initial>
+	</SimpleChannel>
+	<AlarmChannel>
+		<giapiname>gpi:alarm1</giapiname>
+		<epicsname>gpi:alarm1</epicsname>
+		<type>INT</type>
+		<initial>2</initial>
+	</AlarmChannel>
+	<HealthChannel>
+		<giapiname>gpi:health1</giapiname>
+		<epicsname>gpi:health1</epicsname>
+	</HealthChannel>
+	<SimpleChannel>
 		<giapiname>giapinameint</giapiname>
 		<epicsname>epicsnameint</epicsname>
 		<type>INT</type>

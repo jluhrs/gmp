@@ -35,8 +35,6 @@ public class ChannelsHelper {
             }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("No valid value for simulated EPICS channel " + cf.getEpicsname(),e);
-        } catch(IllegalArgumentException e){
-            throw new IllegalArgumentException("No valid value for simulated EPICS channel " + cf.getEpicsname(),e);
         }
         return init;
     }
