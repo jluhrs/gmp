@@ -22,10 +22,10 @@ public class EpicsStatusServiceConfiguration {
 
     private static final Logger LOG = Logger.getLogger(EpicsStatusServiceConfiguration.class.getName());
 
-    private Channels _simChannels=null;
-
+    private final Channels _simChannels;
 
     public EpicsStatusServiceConfiguration(String confFileName, String schemaFileName) {
+        Channels readChannels = new Channels();
         try {
             JAXBContext jc = JAXBContext.newInstance(Channels.class);
             Unmarshaller um = jc.createUnmarshaller();
@@ -33,21 +33,17 @@ public class EpicsStatusServiceConfiguration {
                     SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
             Schema schema = factory.newSchema(new File(schemaFileName));
             um.setSchema(schema); //to enable validation
-            _simChannels = (Channels) um.unmarshal(new File(confFileName));
+            readChannels = (Channels) um.unmarshal(new File(confFileName));
         } catch (JAXBException ex) {
             LOG.log(Level.SEVERE, "Error parsing xml file " + confFileName, ex);
         } catch (SAXException ex) {
             LOG.log(Level.SEVERE, "Error parsing xml file " + confFileName, ex);
         }
-
+        _simChannels = readChannels;
     }
 
     public Channels getSimulatedChannels() {
-        if(_simChannels==null){
-            return new Channels();
-        }else{
-            return _simChannels;
-        }
+        return _simChannels;
     }
 
 }
