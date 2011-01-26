@@ -5,7 +5,6 @@ package edu.gemini.jms.activemq.broker;
  */
 public class ConfigDefaults {
 
-
     public static final int BROKER_PORT = 61616;
     public static final String BROKER_URL = "tcp://0.0.0.0:" + BROKER_PORT;
 
