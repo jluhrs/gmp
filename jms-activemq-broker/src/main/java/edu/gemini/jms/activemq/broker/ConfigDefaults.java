@@ -17,5 +17,9 @@ public class ConfigDefaults {
     public static final boolean BROKER_DELETE_MESSAGES_ON_STARTUP = true;
     // Should use advisory messages
     public static final boolean BROKER_USE_ADVISORY_MESSAGES = false;
+    // Allow setting the JMX ports
+    public static final int BROKER_JMX_RMI_PORT = 1616;
+    // Allow setting the JMX ports
+    public static final int BROKER_JMX_CONNECTOR_PORT = 1099;
 
 }

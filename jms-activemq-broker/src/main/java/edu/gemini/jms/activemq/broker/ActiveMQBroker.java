@@ -1,11 +1,11 @@
 package edu.gemini.jms.activemq.broker;
 
-import org.apache.activemq.broker.BrokerService;
-
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
 import edu.gemini.jms.api.Broker;
+import org.apache.activemq.broker.BrokerService;
+import org.apache.activemq.broker.jmx.ManagementContext;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A JMS Broker implementation, based on the ActiveMQ JMS service
@@ -16,20 +16,37 @@ public class ActiveMQBroker implements Broker {
 
     private final BrokerService _broker;
 
-    private final String _url;
-    private final String _name;
-    private final boolean _useJmx;
-    private final boolean _isPersistent;
-    private final boolean _deleteMsgOnStartup;
-
-
     public ActiveMQBroker(Builder builder) {
-        _url = builder.url;
-        _useJmx = builder.useJmx;
-        _name = builder.brokerName;
-        _isPersistent = builder.isPersistent;
-        _deleteMsgOnStartup = builder.deleteMsgOnStartup;
         _broker = new BrokerService();
+        _broker.setUseJmx(builder.useJmx);
+        _broker.setPersistent(builder.isPersistent);
+        _broker.setBrokerName(builder.brokerName);
+        _broker.setDeleteAllMessagesOnStartup(builder.deleteMsgOnStartup);
+        _broker.setAdvisorySupport(builder.useAdvisoryMessages);
+        if (builder.useJmx) {
+            ManagementContext managementContext = new ManagementContext();
+            managementContext.setCreateMBeanServer(false);
+            managementContext.setFindTigerMbeanServer(true);
+
+            managementContext.setRmiServerPort(builder.jmxRmiServerPort);
+            managementContext.setConnectorPort(builder.jmxConnectorPort);
+            _broker.setManagementContext(managementContext);
+        }
+        try {
+            _broker.addConnector(builder.url);
+        } catch (Exception e) {
+            LOG.severe("URL for ActiveMQ Broker not valid: " + builder.url + " aborting...");
+            throw new IllegalArgumentException("Cannot start a broker with a url " + builder.url);
+        }
+    }
+
+    /**
+     * Utility static method to create a Builder object
+     *
+     * @return a new Builder object
+     */
+    public static Builder activemq() {
+        return new Builder();
     }
 
     /**
@@ -41,9 +58,27 @@ public class ActiveMQBroker implements Broker {
         private String brokerName = ConfigDefaults.BROKER_NAME;
         private String url = ConfigDefaults.BROKER_URL;
         private boolean deleteMsgOnStartup = ConfigDefaults.BROKER_DELETE_MESSAGES_ON_STARTUP;
+        private boolean useAdvisoryMessages = ConfigDefaults.BROKER_USE_ADVISORY_MESSAGES;
+        private int jmxRmiServerPort = ConfigDefaults.BROKER_JMX_RMI_PORT;
+        private int jmxConnectorPort = ConfigDefaults.BROKER_JMX_CONNECTOR_PORT;
 
         public Builder useJmx(boolean useJmx) {
             this.useJmx = useJmx;
+            return this;
+        }
+
+        public Builder useAdvisoryMessages(boolean useAdvisoryMessages) {
+            this.useAdvisoryMessages = useAdvisoryMessages;
+            return this;
+        }
+
+        public Builder jmxRrmiServerPort(int jmxRmiServerPort) {
+            this.jmxRmiServerPort = jmxRmiServerPort;
+            return this;
+        }
+
+        public Builder jmxConnectorPort(int jmxConnectorPort) {
+            this.jmxConnectorPort = jmxConnectorPort;
             return this;
         }
 
@@ -76,11 +111,6 @@ public class ActiveMQBroker implements Broker {
     public void start() {
         LOG.info("Starting up ActiveMQ Broker");
         try {
-            _broker.setUseJmx(_useJmx);
-            _broker.setPersistent(_isPersistent);
-            _broker.setBrokerName(_name);
-            _broker.addConnector(_url);
-            _broker.setDeleteAllMessagesOnStartup(_deleteMsgOnStartup);
             _broker.start();
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "Exception while starting broker", e);
