@@ -22,6 +22,11 @@ public class TestActiveMQBrokerBuilder {
     private final String connectionUrl = "vm://gmp";
     private final String activeMQName = "ActiveMQ";
     private static int startPort = 9100;
+    private final ObjectName amqObjectNamePattern;
+
+    public TestActiveMQBrokerBuilder() throws MalformedObjectNameException {
+        amqObjectNamePattern = new ObjectName("org.apache.activemq:BrokerName=*,Type=Broker");
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testBadUrl() {
@@ -29,7 +34,17 @@ public class TestActiveMQBrokerBuilder {
     }
 
     @Test
-    public void testBuilder() throws MalformedObjectNameException, InstanceNotFoundException, AttributeNotFoundException, ReflectionException, MBeanException, IntrospectionException {
+    public void testWithoutJMX() {       ActiveMQBroker broker = activemq().useJmx(false).url(connectionUrl).build();
+        broker.start();
+        // No MBean for the broker should be available
+        List<MBeanServer> servers = MBeanServerFactory.findMBeanServer(null);
+        // There should be only one broker
+        assertEquals(0, servers.size());
+        broker.shutdown();
+    }
+
+    @Test
+    public void testBuilder() throws InstanceNotFoundException, AttributeNotFoundException, ReflectionException, MBeanException, IntrospectionException {
         ActiveMQBroker broker = startBuildingBroker().build();
         assertNotNull(broker);
         broker.start();
@@ -47,7 +62,7 @@ public class TestActiveMQBrokerBuilder {
     }
 
     @Test
-    public void testBuilderWithName() throws MalformedObjectNameException, InstanceNotFoundException, AttributeNotFoundException, ReflectionException, MBeanException, IntrospectionException {
+    public void testBuilderWithName() throws InstanceNotFoundException, AttributeNotFoundException, ReflectionException, MBeanException, IntrospectionException {
         ActiveMQBroker broker = startBuildingBroker().name(activeMQName).build();
         assertNotNull(broker);
         broker.start();
@@ -58,7 +73,7 @@ public class TestActiveMQBrokerBuilder {
     }
 
     @Test
-    public void testPersistentBuilder() throws MalformedObjectNameException, InstanceNotFoundException, AttributeNotFoundException, ReflectionException, MBeanException, IntrospectionException {
+    public void testPersistentBuilder() throws InstanceNotFoundException, AttributeNotFoundException, ReflectionException, MBeanException, IntrospectionException {
         ActiveMQBroker broker = startBuildingBroker().persistent(true).build();
         assertNotNull(broker);
         broker.start();
@@ -68,8 +83,7 @@ public class TestActiveMQBrokerBuilder {
         broker.shutdown();
     }
 
-    private void findBrokerMBean() throws MalformedObjectNameException, IntrospectionException, InstanceNotFoundException, ReflectionException {
-        ObjectName amqObjectNamePattern = new ObjectName("org.apache.activemq:BrokerName=*,Type=Broker");
+    private void findBrokerMBean() throws IntrospectionException, InstanceNotFoundException, ReflectionException {
         List<MBeanServer> servers = MBeanServerFactory.findMBeanServer(null);
         // There should be only one broker
         assertEquals(1, servers.size());
