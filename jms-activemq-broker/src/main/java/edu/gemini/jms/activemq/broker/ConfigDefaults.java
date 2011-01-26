@@ -15,5 +15,7 @@ public class ConfigDefaults {
     public static final boolean BROKER_PERSISTENT = false;
     // Should all persistent messages be deleted on broker startup
     public static final boolean BROKER_DELETE_MESSAGES_ON_STARTUP = true;
+    // Should use advisory messages
+    public static final boolean BROKER_USE_ADVISORY_MESSAGES = false;
 
 }
