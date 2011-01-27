@@ -50,19 +50,22 @@
         <artifactId>doxygen-maven-plugin</artifactId>
         <version>1.0.1</version>
         <configuration>
-    	  <includeFilePatterns>*.java</includeFilePatterns>
+    	  <filePatterns>*.doxygen *.doxy *.java *.xsd *.xml *.properties</filePatterns>
     	  <recursive>true</recursive>
-    	  <excludePatterns>*/test/*Test*.java</excludePatterns>
+    	  <excludePatterns>*/test/*Test*.java */target/* *pom.xml */bundle/*</excludePatterns>
     	  <optimizeOutputJava>true</optimizeOutputJava>
     	  <haveDot>true</haveDot>
     	  <quiet>false</quiet>
     	  <projectName>"GIAPI - OSGI"</projectName>
-	      <generateLatex>false</generateLatex>
+	      <generateLatex>true</generateLatex>
 	      <generateHtml>true</generateHtml>
             <!-- this needs to be set correctly when generating the official documentation -->
           <stripFromPath>/Users/nbarriga/Development/giapi-osgi-trunk/</stripFromPath>
           <extractAll>true</extractAll>
-        </configuration>
+          <imagePath>gmp-server/src/main/doc/</imagePath>
+         <!--   <latexHideIndices>true</latexHideIndices>
+            <compactLatex>true</compactLatex>
+     -->   </configuration>
       </plugin>
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
