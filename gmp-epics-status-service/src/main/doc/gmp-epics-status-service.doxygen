@@ -1,0 +1,5 @@
+/*!
+ * \page gmp-epics-status-service GMP Epics Status Service
+ *
+ * The \ref edu.gemini.aspen.gmp.statusservice.EpicsStatusService "EpicsStatusService" class provides the main entry point to the \ref gmp-epics-status-service bundle.
+ */

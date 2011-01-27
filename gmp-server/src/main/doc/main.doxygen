@@ -1,0 +1,20 @@
+/*! \mainpage GIAPI/GMP Technical Manual
+ *
+ * \section intro_sec Introduction
+ *
+ * This is the introduction.
+ *
+ * \section install_sec Installation
+ *
+ * Add \b GMP installation instructions here.
+ *
+ * \section usage_sec Usage
+ * Add instructions on how to run the \b GMP here.
+ *
+ * \section bundles_sec Bundles
+ *
+ * The \b GMP is comprised of the following bundles:
+ *
+ * - \subpage cas
+ * - \subpage gmp-epics-status-service
+ */

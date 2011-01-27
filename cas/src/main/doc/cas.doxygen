@@ -1,0 +1,5 @@
+/*!
+ * \page cas Channel Access Server
+ *
+ * The \ref edu.gemini.cas.ChannelAccessServer "ChannelAccessServer" class provides the main entry point to the \ref cas bundle.
+ */
