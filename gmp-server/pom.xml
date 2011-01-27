@@ -31,16 +31,19 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
 
         <gmp.properties.conf>../src/main/etc/conf/gmp-properties.xml</gmp.properties.conf>
-        <edu.gemini.aspen.giapi.statusservice.jms.name>GMP Status Service
-        </edu.gemini.aspen.giapi.statusservice.jms.name>
         <edu.gemini.aspen.gmp.pcs.epicsChannel>tst:array.VALJ</edu.gemini.aspen.gmp.pcs.epicsChannel>
         <edu.gemini.aspen.gmp.pcs.simulation>yes</edu.gemini.aspen.gmp.pcs.simulation>
         <edu.gemini.aspen.gmp.tcs.epicsChannel>tc1:sad:astCtx</edu.gemini.aspen.gmp.tcs.epicsChannel>
         <edu.gemini.aspen.gmp.tcs.simulation>yes</edu.gemini.aspen.gmp.tcs.simulation>
-        <edu.gemini.aspen.gmp.tcs.simulationData>../src/main/etc/conf/tcsCtx.data</edu.gemini.aspen.gmp.tcs.simulationData>
+        <edu.gemini.aspen.gmp.tcs.simulationData>../src/main/etc/conf/tcsCtx.data
+        </edu.gemini.aspen.gmp.tcs.simulationData>
         <gmp.epics.conf>../src/main/etc/conf/epics-channels.xml</gmp.epics.conf>
         <gmp.epics.simulation.conf>../src/main/etc/conf/simulated-epics-channels.xml</gmp.epics.simulation.conf>
         <edu.gemini.jms.activemq.provider.url>vm://gmp</edu.gemini.jms.activemq.provider.url>
+        <felix.cm.loglevel>4</felix.cm.loglevel>
+        <felix.fileinstall.dir>../src/main/etc/conf/services</felix.fileinstall.dir>
+        <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
+        <felix.fileinstall.noInitialDelay>true</felix.fileinstall.noInitialDelay>
     </properties>
 
     <build>
@@ -62,6 +65,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                     <descriptors>
                         <descriptor>src/main/assembly/assembly.xml</descriptor>
                     </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>
@@ -210,9 +214,9 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         </dependency>
         <!-- GMP Web Console branding -->
         <dependency>
-            <groupId>edu.gemini.giapi.gmp</groupId>
+            <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-webconsole-branding</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
     </dependencies>
 
@@ -241,6 +245,46 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 <bundle.dir>external</bundle.dir>
                 <obr.repository.url>file:///${user.home}/.m2/repository/repository.xml</obr.repository.url>
             </properties>
+            <dependencies>
+                <!-- Felix core -->
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.framework</artifactId>
+                    <version>3.0.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.main</artifactId>
+                    <version>3.0.1</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.ops4j.pax.runner</groupId>
+                    <artifactId>pax-runner</artifactId>
+                    <version>1.5.0</version>
+                </dependency>
+                <!-- Felix Shell and GOGO -->
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.command</artifactId>
+                    <version>0.6.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.runtime</artifactId>
+                    <version>0.6.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.shell</artifactId>
+                    <version>0.6.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
+                    <artifactId>provision</artifactId>
+                    <version>1.0.0  </version>
+                    <type>pom</type>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 </project>
