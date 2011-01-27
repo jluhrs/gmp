@@ -2,15 +2,10 @@
 <metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
 
     <OCD description="StatusService" name="GMP Status Service" id="edu.gemini.aspen.giapi.statusservice.StatusService">
-        <AD name="Status Name" id="statusName" required="false"
+        <AD name="Status Name" id="statusName" required="true"
             type="String" default=">"/>
         <AD name="Service Name" id="serviceName" required="false"
-            type="String" default="Status Service">
-            <Option label="Label 1"
-                 value="Value 1"/>
-         <Option label="Label 2"
-                 value="Value 2"/>
-    </AD>
+            type="String" default="Status Service"/>
     </OCD>
 
     <Designate pid="edu.gemini.aspen.giapi.statusservice.StatusService">
