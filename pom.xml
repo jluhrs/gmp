@@ -59,6 +59,9 @@
     	  <projectName>"GIAPI - OSGI"</projectName>
 	      <generateLatex>false</generateLatex>
 	      <generateHtml>true</generateHtml>
+            <!-- this needs to be set correctly when generating the official documentation -->
+          <stripFromPath>/Users/nbarriga/Development/giapi-osgi-trunk/</stripFromPath>
+          <extractAll>true</extractAll>
         </configuration>
       </plugin>
     <plugin>
