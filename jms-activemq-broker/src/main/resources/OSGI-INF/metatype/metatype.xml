@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
+
+    <OCD description="ActiveMQ Broker" name="ActiveMQ Broker" id="edu.gemini.jms.activemq.broker.ActiveMQBroker">
+        <AD name="Broker Name" id="brokerName" required="true"
+            type="String" default="gmp"/>
+        <AD name="Broker URL" id="brokerUrl" required="true"
+            type="String" default="vm://gmp"/>
+        <AD name="Delete Messages On Startup" id="deleteMsgOnStartup" required="true"
+            type="Boolean" default="true"/>
+        <AD name="Persistent" id="persistent" required="true"
+            type="Boolean" default="false"/>
+        <AD name="Use Advisory Messages" id="useAdvisoryMessages" required="true"
+            type="Boolean" default="true"/>
+        <AD name="Use JMX" id="useJmx" required="true"
+            type="Boolean" default="false"/>
+        <AD name="JMX RMI Port" id="jmxRmiServerPort" required="false"
+            type="Integer" default="9000"/>
+        <AD name="JMX Connector Port" id="jmxConnectorPort" required="false"
+            type="Integer" default="9001"/>
+    </OCD>
+
+    <Designate pid="edu.gemini.jms.activemq.broker.ActiveMQBroker">
+        <Object ocdref="edu.gemini.jms.activemq.broker.ActiveMQBroker"/>
+    </Designate>
+
+</metatype:MetaData>
