@@ -35,11 +35,10 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <edu.gemini.aspen.gmp.pcs.simulation>yes</edu.gemini.aspen.gmp.pcs.simulation>
         <edu.gemini.aspen.gmp.tcs.epicsChannel>tc1:sad:astCtx</edu.gemini.aspen.gmp.tcs.epicsChannel>
         <edu.gemini.aspen.gmp.tcs.simulation>yes</edu.gemini.aspen.gmp.tcs.simulation>
-        <edu.gemini.aspen.gmp.tcs.simulationData>../src/main/etc/conf/tcsCtx.data
-        </edu.gemini.aspen.gmp.tcs.simulationData>
+        <edu.gemini.aspen.gmp.tcs.simulationData>../src/main/etc/conf/tcsCtx.data</edu.gemini.aspen.gmp.tcs.simulationData>
         <gmp.epics.conf>../src/main/etc/conf/epics-channels.xml</gmp.epics.conf>
         <gmp.epics.simulation.conf>../src/main/etc/conf/simulated-epics-channels.xml</gmp.epics.simulation.conf>
-        <edu.gemini.jms.activemq.provider.url>vm://gmp</edu.gemini.jms.activemq.provider.url>
+        <edu.gemini.jms.activemq.provider.url>vm://gmp?create=false&amp;waitForStart=5000</edu.gemini.jms.activemq.provider.url>
         <felix.cm.loglevel>4</felix.cm.loglevel>
         <felix.fileinstall.dir>../src/main/etc/conf/services</felix.fileinstall.dir>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
@@ -146,6 +145,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>gmp-services</artifactId>
             <version>0.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-handlers-state-service</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
         <!-- GMP Commands Sequence -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -165,11 +169,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <version>0.1.0</version>
         </dependency>
         <!-- GMP Servlet -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>com.springsource.javax.servlet</artifactId>
-            <version>2.5.0</version>
-        </dependency>
         <!-- GMP Logging Service -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
