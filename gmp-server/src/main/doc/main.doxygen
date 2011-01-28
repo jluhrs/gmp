@@ -9,14 +9,10 @@
  *
  * \section install_sec Installation
  *
- * Add \b GMP installation instructions here.
- *
- * \section usage_sec Usage
- * \subsection usage_intro_sec INTRO
- * This bundle represents the GMP server and it describe the set of bundles that compose the application as well as the
+ * The \ref gmp-server directory contains the GMP server and it describe the set of bundles that compose the application as well as the
  * configurations for them. From here one can build a locally running application or deploy a zip file or assembly in maven
  * parlance.
- * 
+ *
  * \note All the instructions assume that your bundles sit in a GMP_SRC_DIR
  *
  * The list of bundles is contained in its pom the list of GMP bundles that compose it for example GIAPI, etc..
@@ -26,7 +22,7 @@
  * GMP_SRC_DIR/provision/pom.xml
  *
  * Besides the configuration is included in the GMP_SRC_DIR/gmp-server/src/main/etc/conf/services if the bundles are using the ConfigAdmin service
- * 
+ *
  * \subsection usage_adding_app_sec ADDING APP BUNDLES
  * If you need to add an extra bundle to the application you can put it in the local pom as a regular maven dependency and
  * then deploy the pom via a:
@@ -40,7 +36,7 @@
  *    mvn deploy
  * \endverbatim
  * for the global repository
- * 
+ *
  * \subsection usage_adding_external_sec ADDING EXTERNAL BUNDLES
  * If you need to add an extra external bundle like OSGi services, third party bundles, or in general any bundle that is
  * not used at compile time by other bundles should be added to the provision file at giapi-osgi/provision/pom.xml
@@ -55,7 +51,9 @@
  *    mvn deploy
  * \endverbatim
  * for the global repository
- * 
+ *
+ * \section usage_sec Usage
+ * \subsection usage_intro_sec INTRO
  * \subsection usage_run_locally_sec RUN LOCALLY
  * To run the application locally you need to install pax-runner and set it so that pax-run.sh/pax-run.bat is available
  * in your PATH. You can get pax-runner at
