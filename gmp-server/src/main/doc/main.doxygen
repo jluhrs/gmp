@@ -83,7 +83,6 @@
  *     mvn assembly:assembly
  * \endverbatim
  * 
- * 
  * \section bundles_sec Bundles
  *
  * The \b GMP is comprised of the following bundles:
