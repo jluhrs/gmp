@@ -75,6 +75,11 @@
             <version>1.2.0</version>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.giapi-osgi</groupId>
+            <artifactId>guava</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.webconsole</artifactId>
             <version>3.1.6</version>
