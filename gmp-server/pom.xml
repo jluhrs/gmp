@@ -38,7 +38,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <edu.gemini.aspen.gmp.tcs.simulationData>../src/main/etc/conf/tcsCtx.data</edu.gemini.aspen.gmp.tcs.simulationData>
         <gmp.epics.conf>../src/main/etc/conf/epics-channels.xml</gmp.epics.conf>
         <gmp.epics.simulation.conf>../src/main/etc/conf/simulated-epics-channels.xml</gmp.epics.simulation.conf>
-        <edu.gemini.jms.activemq.provider.url>vm://gmp?create=false&amp;waitForStart=5000</edu.gemini.jms.activemq.provider.url>
+        <edu.gemini.jms.activemq.provider.url>failover:(tcp://127.0.0.1:61616)</edu.gemini.jms.activemq.provider.url>
         <felix.cm.loglevel>4</felix.cm.loglevel>
         <felix.fileinstall.dir>../src/main/etc/conf/services</felix.fileinstall.dir>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
