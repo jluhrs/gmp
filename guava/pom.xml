@@ -35,4 +35,17 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>edu.gemini.libs</id>
+            <name>sbfosxdev01.cl.gemini.edu-releases</name>
+            <url>http://build.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>edu.gemini.libs</id>
+            <name>sbfosxdev01.cl.gemini.edu-snapshots</name>
+            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
