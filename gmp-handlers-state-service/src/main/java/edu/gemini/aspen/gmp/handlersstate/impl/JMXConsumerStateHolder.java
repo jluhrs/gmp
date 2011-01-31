@@ -1,5 +1,7 @@
 package edu.gemini.aspen.gmp.handlersstate.impl;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import edu.gemini.aspen.gmp.handlersstate.HandlersStateService;
 
 import javax.management.*;
@@ -11,8 +13,9 @@ import java.util.logging.Logger;
  * @author cquiroz
  */
 class JMXConsumerStateHolder implements ConsumerStateHolder {
-   private static final Logger LOG = Logger.getLogger(HandlersStateService.class.getName());
+    private static final Logger LOG = Logger.getLogger(HandlersStateService.class.getName());
     private MBeanServer mBeanServer;
+    private final List<MessageSubscriber> jmxBasedSubscribers = Lists.newArrayList();
 
     public JMXConsumerStateHolder() {
         try {
@@ -30,23 +33,27 @@ class JMXConsumerStateHolder implements ConsumerStateHolder {
         }
     }
 
+    protected List<MessageSubscriber> getJmxBasedSubscribers() {
+        return ImmutableList.copyOf(jmxBasedSubscribers);
+    }
+
     private void findConsumers() throws MalformedObjectNameException, InstanceNotFoundException, ReflectionException, AttributeNotFoundException, MBeanException {
         ObjectName brokerMBean = findBrokerMBean();
         if (brokerMBean != null) {
             findTopicSubscribers(brokerMBean);
-        } else {
-            LOG.warning("No BrokerBean found, is JMX enabled?");
         }
     }
 
     private void findTopicSubscribers(ObjectName brokerMBean) throws MBeanException, AttributeNotFoundException, InstanceNotFoundException, ReflectionException {
         Object subscribersNames = mBeanServer.getAttribute(brokerMBean, "TopicSubscribers");
         if (subscribersNames instanceof ObjectName[]) {
-            ObjectName[] topicSubscribers = (ObjectName[])subscribersNames;
-            for(ObjectName t:topicSubscribers) {
+            ObjectName[] topicSubscribers = (ObjectName[]) subscribersNames;
+            for (ObjectName t : topicSubscribers) {
                 String clientId = (String) mBeanServer.getAttribute(t, "ClientId");
                 String destinationName = (String) mBeanServer.getAttribute(t, "DestinationName");
-                LOG.info("Found subscriber "+ new MessageSubscriber(clientId, destinationName));
+                MessageSubscriber messageSubscriber = new MessageSubscriber(clientId, destinationName);
+                LOG.info("Found subscriber " + messageSubscriber);
+                jmxBasedSubscribers.add(messageSubscriber);
             }
         }
     }
@@ -55,19 +62,26 @@ class JMXConsumerStateHolder implements ConsumerStateHolder {
         LOG.fine("Attempting to find MBeanServers");
         ObjectName brokerObjectName = null;
         List<MBeanServer> servers = MBeanServerFactory.findMBeanServer(null);
-        if (servers != null && !servers.isEmpty()) {
+        if (isThereAnMBeanServer(servers)) {
             ObjectName amqObjectNamePattern = new ObjectName("org.apache.activemq:BrokerName=*,Type=Broker");
-            for (MBeanServer s:servers) {
+            for (MBeanServer s : servers) {
                 Set<ObjectName> brokersName = s.queryNames(amqObjectNamePattern, null);
-                for (ObjectName n:brokersName) {
+                for (ObjectName n : brokersName) {
                     mBeanServer = s;
                     // There should be only one broker
                     brokerObjectName = n;
                 }
             }
+            if (brokerObjectName == null) {
+                LOG.warning("No Broker MBean found");
+            }
         } else {
-            LOG.warning("No MBean Server found, impossible to find existing subscribers");
+            LOG.warning("No MBean Server found, is JMX enabled?");
         }
         return brokerObjectName;
+    }
+
+    private boolean isThereAnMBeanServer(List<MBeanServer> servers) {
+        return servers != null && !servers.isEmpty();
     }
 }
