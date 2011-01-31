@@ -13,7 +13,7 @@
  * This bundle requires the \ref edu.gemini.cas.IChannelAccessServer "IChannelAccessServer" OSGI service, provided by
  * \ref cas bundle.
  * \section cas_configuration_sec Configuration
- * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.statusservice.EpicsStatusService.properties.
+ * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.statusservice.EpicsStatusService.cfg.
  * There, you can set the name of the file where the EPICS channels to create are defined. The default is
  * \ref giapi-epics-status-mapping.xml and it can be used as an example. The schema file to which said configuration
  * must adhere is \ref giapi-epics-status-mapping.xsd.
