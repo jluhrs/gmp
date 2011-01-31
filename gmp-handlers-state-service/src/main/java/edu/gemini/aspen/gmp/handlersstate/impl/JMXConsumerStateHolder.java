@@ -2,7 +2,6 @@ package edu.gemini.aspen.gmp.handlersstate.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import edu.gemini.aspen.gmp.handlersstate.HandlersStateService;
 
 import javax.management.*;
 import java.util.List;
@@ -10,10 +9,13 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
+ * ConsumerStateHolder that retrieves the set of MessageSubscribers using JMX through
+ * the exposed ActiveMQ MBeans
+ *
  * @author cquiroz
  */
 class JMXConsumerStateHolder implements ConsumerStateHolder {
-    private static final Logger LOG = Logger.getLogger(HandlersStateService.class.getName());
+    private static final Logger LOG = Logger.getLogger(JMXConsumerStateHolder.class.getName());
     private MBeanServer mBeanServer;
     private final List<MessageSubscriber> jmxBasedSubscribers = Lists.newArrayList();
 
