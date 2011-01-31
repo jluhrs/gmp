@@ -1,0 +1,5 @@
+--platform=felix
+--log=trace
+--repositories=file:../felix,file:../bundles
+--localRepository=file:../felix,file:../bundles@snapshots@releases
+scan-composite:file:../conf/module.properties

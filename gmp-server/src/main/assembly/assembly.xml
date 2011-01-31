@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <assembly>
-    <id>server</id>
+    <id>gmp-server</id>
     <formats>
+        <!--format>tar.gz</format>
+        <format>tar.bz2</format-->
         <format>zip</format>
     </formats>
 
     <dependencySets>
-        <dependencySet>
+        <!--dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
             <useTransitiveDependencies>false</useTransitiveDependencies>
             <outputDirectory>/${external.dir}</outputDirectory>
             <includes>
                 <include>*:*</include>
             </includes>
             <excludes>
+                <exclude>org.apache.felix:org.apache.felix.gogo.*</exclude>
+                <exclude>org.apache.felix:org.apache.felix.framework</exclude>
+                <exclude>org.apache.felix:org.apache.felix.main</exclude>
+                
                 <exclude>org.apache.felix:org.apache.felix.configadmin</exclude>
                 <exclude>org.ops4j.pax.logging:*</exclude>
                 <exclude>org.ops4j.pax.confman:*</exclude>
+                <exclude>org.ops4j.pax.runner:*</exclude>
                 <exclude>edu.gemini.aspen:*</exclude>
                 <exclude>edu.gemini.aspen.gmp:*</exclude>
                 <exclude>edu.gemini.jms:*</exclude>
@@ -24,7 +32,8 @@
             </excludes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/felix</outputDirectory>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>/felix2</outputDirectory>
             <includes>
                 <include>org.apache.felix:org.apache.felix.configadmin</include>
                 <include>org.ops4j.pax.logging:*</include>
@@ -32,6 +41,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
             <outputDirectory>/${bundle.dir}</outputDirectory>
             <includes>
                 <include>edu.gemini.aspen:*</include>
@@ -40,32 +50,61 @@
                 <include>edu.gemini.jms:*</include>
                 <include>edu.gemini.cas:*</include>
             </includes>
+        </dependencySet-->
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>/bin</outputDirectory>
+            <fileMode>0644</fileMode>
+            <includes>
+                <include>org.ops4j.pax.runner:*</include>
+            </includes>
         </dependencySet>
     </dependencySets>
-    <!--moduleSets>
-        <moduleSet>
+
+    <repositories>
+        <repository>
+            <outputDirectory>felix</outputDirectory>
             <includes>
-                <include>edu.gemini.aspen:edu.gemini.aspen.gmp.gmp-services</include>
+                <include>org.apache.felix:org.apache.felix.framework</include>
+                <include>org.apache.felix:org.apache.felix.main</include>
+                <include>org.apache.felix:org.apache.felix.gogo.*</include>
             </includes>
-            <binaries>
-                <dependencySets>
-                    <dependencySet>
-                        <excludes>
-                            <exclude>org.apache.felix:org.apache.felix.main</exclude>
-                        </excludes>
-                    </dependencySet>
-                </dependencySets>
-                <outputDirectory>bundlessss</outputDirectory>
-                <unpack>false</unpack>
-                <outputFileNameMapping>${artifact.file.name}</outputFileNameMapping>
-            </binaries>
-        </moduleSet>
-    </moduleSets-->
+        </repository>
+        <repository>
+            <outputDirectory>bundles</outputDirectory>
+            <includeMetadata>true</includeMetadata>
+            <includes>
+                <include>*:*</include>
+            </includes>
+            <excludes>
+                <exclude>org.apache.felix:org.apache.felix.framework</exclude>
+                <exclude>org.apache.felix:org.apache.felix.main</exclude>
+                <exclude>org.apache.felix:org.apache.felix.gogo.*</exclude>
+                <exclude>org.ops4j.pax.runner:*</exclude>
+            </excludes>
+        </repository>
+        <!--repository>
+            <outputDirectory>bundles2</outputDirectory>
+            <includeMetadata>true</includeMetadata>
+            <includes>
+                <include>edu.gemini.aspen.gmp:gmp-server:pom</include>
+            </includes>
+        </repository-->
+    </repositories>
+
     <fileSets>
         <fileSet>
-            <directory>src/main/etc/</directory>
+            <directory>src/main/etc/bin</directory>
+            <outputDirectory>/bin</outputDirectory>
+            <filtered>true</filtered>
+            <includes>
+                <include>runner.args</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/etc/bin</directory>
             <fileMode>0755</fileMode>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/bin</outputDirectory>
             <filtered>true</filtered>
             <includes>
                 <include>start.sh</include>
@@ -79,6 +118,10 @@
         <fileSet>
             <directory>src/main/etc/logs</directory>
             <outputDirectory>/logs</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${user.home}/.m2/repository/edu/gemini/aspen/gmp/gmp-server/</directory>
+            <outputDirectory>bundles/edu/gemini/aspen/gmp/gmp-server/</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
