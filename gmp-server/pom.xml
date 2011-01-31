@@ -43,6 +43,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <felix.fileinstall.dir>../src/main/etc/conf/services</felix.fileinstall.dir>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
         <felix.fileinstall.noInitialDelay>true</felix.fileinstall.noInitialDelay>
+        <!--felix.log.level>4</felix.log.level-->
     </properties>
 
     <build>
@@ -145,11 +146,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>gmp-services</artifactId>
             <version>0.1.0</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-handlers-state-service</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency-->
         <!-- GMP Commands Sequence -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
