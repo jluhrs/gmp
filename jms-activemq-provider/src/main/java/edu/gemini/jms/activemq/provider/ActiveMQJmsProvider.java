@@ -2,8 +2,10 @@ package edu.gemini.jms.activemq.provider;
 
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.ConnectionFactory;
+import java.util.logging.Logger;
 
 /**
  * This class provides methods to interact with the specific JMS Provider, in
@@ -11,18 +13,32 @@ import javax.jms.ConnectionFactory;
  * the ActiveMQ package should be encapsulated here. Other classes just
  * rely on the plain JMS interfaces. 
  */
+@Component(name = "ActiveMQJmsProvider", managedservice = "edu.gemini.jms.activemq.provider.ActiveMQJmsProvider")
+@Instantiate(name = "ActiveMQJmsProvider")
+@Provides
 public final class ActiveMQJmsProvider implements JmsProvider {
+    private static final Logger LOG = Logger.getLogger(ActiveMQJmsProvider.class.getName());
 
     private ConnectionFactory _factory;
     private static final String DEFAULT_BROKER_URL =  "failover:(tcp://localhost:61616)";
 
+    @Property(name = "brokerUrl", value=DEFAULT_BROKER_URL, mandatory = true)
+    private final String brokerUrl;
+
     public ActiveMQJmsProvider() {
-        _factory = new ActiveMQConnectionFactory(DEFAULT_BROKER_URL);
+        this(DEFAULT_BROKER_URL);
     }
 
 
     public ActiveMQJmsProvider(String url) {
-        _factory = new ActiveMQConnectionFactory(url);
+       this.brokerUrl = url;
+    }
+
+    @Validate
+    void validated() {
+        // Setup the connection factory
+        LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
+        _factory = new ActiveMQConnectionFactory(brokerUrl);
     }
 
     /**
@@ -31,6 +47,11 @@ public final class ActiveMQJmsProvider implements JmsProvider {
      */
     public ConnectionFactory getConnectionFactory() {
         return _factory;
+    }
+
+    @Updated
+    public void update() {
+        System.out.println("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ " + brokerUrl);
     }
 
 }
