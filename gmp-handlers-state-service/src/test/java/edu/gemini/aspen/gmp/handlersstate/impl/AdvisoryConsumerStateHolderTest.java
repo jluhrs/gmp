@@ -5,7 +5,6 @@ import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.JmsProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class AdvisoryConsumerStateHolderTest {
     private ActiveMQBroker broker;
-    private JmsProvider provider;
+    private ActiveMQJmsProvider provider;
     private AdvisoriesConsumerStateHolder stateHolder;
     private BaseMessageConsumer consumer;
 

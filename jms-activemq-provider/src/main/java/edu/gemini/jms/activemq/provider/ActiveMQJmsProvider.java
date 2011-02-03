@@ -23,19 +23,18 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     private static final String DEFAULT_BROKER_URL =  "failover:(tcp://localhost:61616)";
 
     @Property(name = "brokerUrl", value=DEFAULT_BROKER_URL, mandatory = true)
-    private final String brokerUrl;
+    private String brokerUrl;
 
-    public ActiveMQJmsProvider() {
-        this(DEFAULT_BROKER_URL);
+    ActiveMQJmsProvider() {
     }
-
 
     public ActiveMQJmsProvider(String url) {
        this.brokerUrl = url;
+       validated();
     }
 
     @Validate
-    void validated() {
+    public void validated() {
         // Setup the connection factory
         LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
         _factory = new ActiveMQConnectionFactory(brokerUrl);
@@ -47,11 +46,6 @@ public final class ActiveMQJmsProvider implements JmsProvider {
      */
     public ConnectionFactory getConnectionFactory() {
         return _factory;
-    }
-
-    @Updated
-    public void update() {
-        System.out.println("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ " + brokerUrl);
     }
 
 }
