@@ -2,55 +2,10 @@
 <assembly>
     <id>gmp-server</id>
     <formats>
-        <!--format>tar.gz</format>
-        <format>tar.bz2</format-->
-        <format>zip</format>
+        <format>tar.gz</format>
     </formats>
 
     <dependencySets>
-        <!--dependencySet>
-            <useProjectArtifact>false</useProjectArtifact>
-            <useTransitiveDependencies>false</useTransitiveDependencies>
-            <outputDirectory>/${external.dir}</outputDirectory>
-            <includes>
-                <include>*:*</include>
-            </includes>
-            <excludes>
-                <exclude>org.apache.felix:org.apache.felix.gogo.*</exclude>
-                <exclude>org.apache.felix:org.apache.felix.framework</exclude>
-                <exclude>org.apache.felix:org.apache.felix.main</exclude>
-                
-                <exclude>org.apache.felix:org.apache.felix.configadmin</exclude>
-                <exclude>org.ops4j.pax.logging:*</exclude>
-                <exclude>org.ops4j.pax.confman:*</exclude>
-                <exclude>org.ops4j.pax.runner:*</exclude>
-                <exclude>edu.gemini.aspen:*</exclude>
-                <exclude>edu.gemini.aspen.gmp:*</exclude>
-                <exclude>edu.gemini.jms:*</exclude>
-                <exclude>edu.gemini.epics:*</exclude>
-                <exclude>edu.gemini.cas:*</exclude>
-            </excludes>
-        </dependencySet>
-        <dependencySet>
-            <useProjectArtifact>false</useProjectArtifact>
-            <outputDirectory>/felix2</outputDirectory>
-            <includes>
-                <include>org.apache.felix:org.apache.felix.configadmin</include>
-                <include>org.ops4j.pax.logging:*</include>
-                <include>org.ops4j.pax.confman:*</include>
-            </includes>
-        </dependencySet>
-        <dependencySet>
-            <useProjectArtifact>false</useProjectArtifact>
-            <outputDirectory>/${bundle.dir}</outputDirectory>
-            <includes>
-                <include>edu.gemini.aspen:*</include>
-                <include>edu.gemini.aspen.gmp:*</include>
-                <include>edu.gemini.epics:*</include>
-                <include>edu.gemini.jms:*</include>
-                <include>edu.gemini.cas:*</include>
-            </includes>
-        </dependencySet-->
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
             <outputDirectory>/bin</outputDirectory>
@@ -83,13 +38,6 @@
                 <exclude>org.ops4j.pax.runner:*</exclude>
             </excludes>
         </repository>
-        <!--repository>
-            <outputDirectory>bundles2</outputDirectory>
-            <includeMetadata>true</includeMetadata>
-            <includes>
-                <include>edu.gemini.aspen.gmp:gmp-server:pom</include>
-            </includes>
-        </repository-->
     </repositories>
 
     <fileSets>
