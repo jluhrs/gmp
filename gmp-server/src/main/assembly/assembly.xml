@@ -68,6 +68,14 @@
             <outputDirectory>/logs</outputDirectory>
         </fileSet>
         <fileSet>
+            <directory>src/main/doc</directory>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>0644</fileMode>
+            <includes>
+                <include>*.txt</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>${user.home}/.m2/repository/edu/gemini/aspen/gmp/gmp-server/</directory>
             <outputDirectory>bundles/edu/gemini/aspen/gmp/gmp-server/</outputDirectory>
         </fileSet>
