@@ -1,5 +1,18 @@
+# This file contains the arguments passed to pax-runner
+
+# Set felix as the platform
 --platform=felix
---log=trace
+
+# Minimal debug from pax-runner
+--log=info
+
+# Use the repositories set in felix and bundles
 --repositories=file:../felix,file:../bundles
---localRepository=file:../felix,file:../bundles@snapshots@releases
+--localRepository=file:../felix,file:../bundles
+
+# Pass System properties for configuration and logs
+--vmOptions=-Dconf.base=../../conf \
+            -Dlogs.dir=../../logs
+
+# Instructions on what bundles to load
 scan-composite:file:../conf/module.properties
