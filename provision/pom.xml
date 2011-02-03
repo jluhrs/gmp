@@ -150,6 +150,12 @@
             <artifactId>org.osgi.compendium</artifactId>
             <version>4.2.0</version>
         </dependency>
+        <!-- Web console plugin to show memory usage -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.webconsole.plugins.memoryusage</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 
 </project>
