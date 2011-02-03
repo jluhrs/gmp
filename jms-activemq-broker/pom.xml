@@ -24,23 +24,6 @@
 
     <packaging>bundle</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-ipojo-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>ipojo-bundle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <!--
          | uncomment to add all imported (non-local) bundles to your compilation classpath
@@ -55,11 +38,6 @@
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
             <version>1.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-            <version>1.6.4</version>
         </dependency>
     </dependencies>
 

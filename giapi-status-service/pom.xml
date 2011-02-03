@@ -28,31 +28,19 @@
 
     <build>
         <plugins>
+            <!-- use pax exam maven plugin -->
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-ipojo-plugin</artifactId>
-                <version>1.6.0</version>
+                <groupId>org.ops4j.pax.exam</groupId>
+                <artifactId>maven-paxexam-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>generate-config</id>
                         <goals>
-                            <goal>ipojo-bundle</goal>
+                            <goal>generate-depends-file</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-            <!-- use pax exam maven plugin -->
-      <plugin>
-        <groupId>org.ops4j.pax.exam</groupId>
-        <artifactId>maven-paxexam-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-config</id>
-            <goals>
-              <goal>generate-depends-file</goal>
-            </goals>
-          </execution>
-        </executions>
-  </plugin>
         </plugins>
     </build>
 
@@ -75,11 +63,6 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
             <version>0.10.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-            <version>1.6.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
