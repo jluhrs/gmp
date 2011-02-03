@@ -25,7 +25,7 @@ public class JMXConsumerStateHolderTest {
 
     private void assertNoSubscribersFoundViaJMX() {
         JMXConsumerStateHolder stateHolder = new JMXConsumerStateHolder();
-        assertTrue(stateHolder.getJmxBasedSubscribers().isEmpty());
+        assertTrue(stateHolder.listSubscribers().isEmpty());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class JMXConsumerStateHolderTest {
         beanServer.registerMBean(topicSubscriberViewMBean, topicSubscribers[1]);
 
         JMXConsumerStateHolder stateHolder = new JMXConsumerStateHolder();
-        assertEquals(2, stateHolder.getJmxBasedSubscribers().size());
+        assertEquals(2, stateHolder.listSubscribers().size());
     }
 
 }

@@ -48,14 +48,14 @@ public class AdvisoryConsumerStateHolderTest {
      */
     @Test
     public void testAddedConsumer() throws JMSException, InterruptedException {
-        assertTrue("Before start there is no state", stateHolder.getJmxBasedSubscribers().isEmpty());
+        assertTrue("Before start there is no state", stateHolder.listSubscribers().isEmpty());
         // Add a consumer so it will generate an advisory message
         consumer.startJms(provider);
 
         // Needs to wait a bit for the message ro arrive
         TimeUnit.MILLISECONDS.sleep(200);
 
-        assertEquals("After the consumer is added one subscriber shows up", 1, stateHolder.getJmxBasedSubscribers().size());
+        assertEquals("After the consumer is added one subscriber shows up", 1, stateHolder.listSubscribers().size());
     }
 
     /**
@@ -74,7 +74,7 @@ public class AdvisoryConsumerStateHolderTest {
         // Needs to wait a bit for the message ro arrive
         TimeUnit.MILLISECONDS.sleep(200);
 
-        assertTrue("No consumers after consumer is stopped", stateHolder.getJmxBasedSubscribers().isEmpty());
+        assertTrue("No consumers after consumer is stopped", stateHolder.listSubscribers().isEmpty());
     }
 
 }
