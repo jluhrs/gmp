@@ -1,0 +1,39 @@
+/*! \page performance Performance Testing
+ *
+ * \section performance_intro_sec Introduction
+ * This page has information on the performance tests of the GMP. Currently, these tests are designed to evaluate the
+ * performance of updating status values from the C++ glue, and propagating said changes to EPICS.
+ *
+ *
+ * \section performance_tests_sec Tests
+ * \subsection setups_sec Setups
+ * The test application is composed of three parts: The C++ process that will use the GIAPI cpp glue to send status
+ * item updates, the GMP and the EPICS client camonitor.
+ *
+ * The machines used for testing are:
+ * \li Machine #1: Intel i7 880 @3.07Ghz(quadcore), 8GB RAM, RHEL 5.5 64bit
+ * \li Machine #2: Intel i7 620M @2.67Ghz(dualcore), 8GB RAM, OSX 10.6.6
+ * \li Machine #3: VMWare running @ Machine #2, 1 core, 1GB RAM, RHEL 5.2 32bit
+ *
+ * We will use three different setups:
+ * \li Setup #1 will have the C++ process, the GMP and the EPICS clients running in Machine #1.
+ * \li <b>Setup #2 will have the C++ process and the GMP in Machine #1(simulating the TLC) and the EPICS
+ * clients in Machine #3(simulating the Gemini EPICS clients, like ISDs and DM screens).</b>
+ * \li Setup #3 will have the C++ process in Machine #1, the GMP in Machine #2 and the EPICS clients in Machine #3.
+ *
+ * \subsection testing_sec Testing Procedure
+ * \li Configure the GMP Epics Status Service to use giapi-glue-cc/src/examples/stresstest.xml (see \ref cas_configuration_sec)
+ * \li Build and start the GMP on the desired machine (see \ref main, \ref usage_sec)
+ * \li To check that everything is running correctly, you can run <tt>caget gpi:status1</tt> and see if it can read a
+ * value. Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running
+ * \li Run the \c epicsclients.sh script in giapi-glue-cc/src/examples/ to connect clients to all the EPICS channels.
+ * Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running
+ * \li Run <tt>sh runExample.sh stresstest</tt>. Remember to either have a \c gmp.properties file configured in the
+ * current directory, or to set the environment variable \c GMP_CONFIGURATION to point to the correct file.
+ *
+ * \subsection results_sec Results
+ * \li Setup #1: 10500 [msg/s]
+ * \li <b>Setup #2: 11800 [msg/s] Notifications to EPICS channels lag behind, ~8800</b>
+ * \li Setup #3: 1500 [msg/s]
+ *
+ */

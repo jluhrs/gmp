@@ -89,4 +89,7 @@
  *
  * - \subpage cas
  * - \subpage gmp-epics-status-service
+ *
+ * \section perf_tests_sec Performance and Testing
+ * \li GMP EPICS Status Service and CAS performance tests at \ref performance.
  */
