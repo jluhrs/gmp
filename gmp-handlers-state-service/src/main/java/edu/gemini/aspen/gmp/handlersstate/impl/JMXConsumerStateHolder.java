@@ -35,10 +35,6 @@ class JMXConsumerStateHolder implements ConsumerStateHolder {
         }
     }
 
-    protected List<MessageSubscriber> getJmxBasedSubscribers() {
-        return ImmutableList.copyOf(jmxBasedSubscribers);
-    }
-
     private void findConsumers() throws MalformedObjectNameException, InstanceNotFoundException, ReflectionException, AttributeNotFoundException, MBeanException {
         ObjectName brokerMBean = findBrokerMBean();
         if (brokerMBean != null) {
@@ -85,5 +81,10 @@ class JMXConsumerStateHolder implements ConsumerStateHolder {
 
     private boolean isThereAnMBeanServer(List<MBeanServer> servers) {
         return servers != null && !servers.isEmpty();
+    }
+
+    @Override
+    public List<MessageSubscriber> listSubscribers() {
+        return ImmutableList.copyOf(jmxBasedSubscribers);
     }
 }

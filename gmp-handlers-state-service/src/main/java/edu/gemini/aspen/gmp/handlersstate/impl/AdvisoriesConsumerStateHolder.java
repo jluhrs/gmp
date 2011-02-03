@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * <p/>
  * See <a href="http://activemq.apache.org/advisory-message.html">Advisory Messages</a>
  */
-public class AdvisoriesConsumerStateHolder extends BaseMessageConsumer implements MessageListener {
+public class AdvisoriesConsumerStateHolder extends BaseMessageConsumer implements MessageListener, ConsumerStateHolder {
     private static final Logger LOG = Logger.getLogger(AdvisoriesConsumerStateHolder.class.getName());
     private final ConcurrentMap<String, MessageSubscriber> advisoryBasedSubscribers = Maps.newConcurrentMap();
 
@@ -78,8 +78,9 @@ public class AdvisoriesConsumerStateHolder extends BaseMessageConsumer implement
         RemoveInfo consumerInfo = (RemoveInfo) amqMsg.getDataStructure();
         advisoryBasedSubscribers.remove(consumerInfo.getObjectId().toString());
     }
-
-    protected List<MessageSubscriber> getJmxBasedSubscribers() {
+    
+    @Override
+    public List<MessageSubscriber> listSubscribers() {
         return ImmutableList.copyOf(advisoryBasedSubscribers.values());
     }
 }
