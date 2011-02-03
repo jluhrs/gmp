@@ -14,8 +14,8 @@ public class ConfigPath implements Comparable<ConfigPath> {
     private static final char SEPARATOR_CHAR = ':';
     private static final String ITEM_SEPARATOR = ".";
     private static final String EMPTY_PATH_STR = "";
-    private String _path;
-    private int _prefixLenght;
+    private final String _path;
+    private final int _prefixLenght;
 
     /**
      * A ConfigPath to represent an empty path
@@ -28,7 +28,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * @param path The string representing the current path
      */
     public ConfigPath(String path)  {
-        if (path == null) throw new NullPointerException();
+        if (path == null) throw new IllegalArgumentException("Path cannot be null");
         _path = _normalize(path);
         _prefixLenght = _path.lastIndexOf(SEPARATOR_CHAR);
     }
@@ -40,9 +40,9 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * the new ConfigPath
      * @param child child of the config path
      */
-    public ConfigPath(String parent, String child) {
+    ConfigPath(String parent, String child) {
 
-        if (child == null) throw new NullPointerException();
+        if (child == null) throw new IllegalArgumentException("child cannot be null");
 
         String path;
         if (parent == null) {
@@ -67,18 +67,15 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * new ConfigPath
      * @param child child of the config path
      */
-    public ConfigPath(ConfigPath parent, String child) {
+    ConfigPath(ConfigPath parent, String child) {
         this(parent.getName(), child);
     }
-
 
     /**
      * Split the path into its consitutent parts
      * @return names that make up the path
      */
-    public String[] split() {
-        if (SEPARATOR.equals(_path)) return new String[0];
-
+    String[] split() {
         String path =_path;
         if (_path.startsWith(SEPARATOR)) {
             path = _path.substring(1);
@@ -88,15 +85,15 @@ public class ConfigPath implements Comparable<ConfigPath> {
 
     /**
      * Get the name of the element referenced by this path. This
-     * is just the last name in hte path's sequence. For instance, if
+     * is just the last name in the path's sequence. For instance, if
      * the path is "gpi:cc:filter.name", the name is "filter.name"
      * If the path's sequence is empty, then the empty string
      * is returned.
      *
-     * @return name of the element denoted bu this path, or the
+     * @return name of the element denoted by this path, or the
      * empty string if this path's name sequence is empty
      */
-    public String getReferencedName() {
+    String getReferencedName() {
         if (_prefixLenght < 0) return _path;
         return _path.substring(_prefixLenght + 1);
     }
@@ -105,10 +102,10 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * Get the path to the parent (if there is one) for this path.
      *
      * @return path for the parent node of this path, or
-     * <code>null</code> if this does not have a parent
+     * <code>EMPTY_PATH</code> if this does not have a parent
      */
-    public ConfigPath getParent() {
-        if (_prefixLenght <= 0) return null;
+    ConfigPath getParent() {
+        if (_prefixLenght <= 0) return EMPTY_PATH;
         return new ConfigPath(_path.substring(0, _prefixLenght));
     }
 
@@ -117,9 +114,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * @param path base path to be tested
      * @return true if this path starts with the given path.
      */
-    public boolean startsWith(ConfigPath path) {
-
-        if (_path == null) return false;
+    boolean startsWith(ConfigPath path) {
         if (path == null) return false;
         //check if the path starts with the given path
         return _path.startsWith(path.getName());
@@ -139,9 +134,9 @@ public class ConfigPath implements Comparable<ConfigPath> {
      * @return the child path for the given path argument, or
      * <code>null</code> if it does not exist.
      */
-    public ConfigPath getChildPath(ConfigPath path) {
-        if (!startsWith(path)) return null;
-        if (path.equals(this)) return null;
+    ConfigPath getChildPath(ConfigPath path) {
+        if (!startsWith(path)) return EMPTY_PATH;
+        if (path.equals(this)) return EMPTY_PATH;
 
         String rest = _path.substring(path._path.length());
 
@@ -198,7 +193,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
     @Override
     public int hashCode() {
         int result;
-        result = (_path != null ? _path.hashCode() : 0);
+        result = _path.hashCode();
         result = 31 * result + _prefixLenght;
         return result;
     }
@@ -215,7 +210,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
      */
     private String _normalize(String pathstr) {
 
-        if (pathstr == null || "".equals(pathstr)) return "";
+        if (pathstr == null || "".equals(pathstr) || pathstr.equals(SEPARATOR)) return EMPTY_PATH_STR;
         pathstr = pathstr.trim();
         StringBuilder sb = new StringBuilder();
 
@@ -227,6 +222,7 @@ public class ConfigPath implements Comparable<ConfigPath> {
         }
         pathstr = sb.toString();
         //return the path without the last separator.
+        assert pathstr.length() > 1;
         return pathstr.substring(0, pathstr.length() - 1);
     }
 

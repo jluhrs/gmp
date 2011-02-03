@@ -23,13 +23,4 @@
 
   <packaging>bundle</packaging>
 
-  <dependencies>
-    <!--dependency>
-      <type>pom</type>
-      <groupId>${parent.groupId}</groupId>
-      <artifactId>provision</artifactId>
-      <optional>true</optional>
-    </dependency-->
-  </dependencies>
-
 </project>
