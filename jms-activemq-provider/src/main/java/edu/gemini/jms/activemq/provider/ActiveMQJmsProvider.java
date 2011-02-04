@@ -20,7 +20,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     private static final Logger LOG = Logger.getLogger(ActiveMQJmsProvider.class.getName());
 
     private ConnectionFactory _factory;
-    private static final String DEFAULT_BROKER_URL =  "failover:(tcp://localhost:61616)";
+    private static final String DEFAULT_BROKER_URL = "failover:(tcp://localhost:61616)";
 
     @Property(name = "brokerUrl", value=DEFAULT_BROKER_URL, mandatory = true)
     private String brokerUrl;
