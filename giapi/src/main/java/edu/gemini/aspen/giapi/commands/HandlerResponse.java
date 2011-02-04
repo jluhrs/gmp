@@ -4,7 +4,7 @@ package edu.gemini.aspen.giapi.commands;
  * Handler response interface. Contains an enumerated response type
  * and a message when an error is produced.
  */
-public class HandlerResponse {
+public final class HandlerResponse {
 
 
     /**
