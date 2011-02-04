@@ -35,7 +35,7 @@ public class ActiveMQBroker implements Broker {
         try {
             _broker.addConnector(builder.url);
         } catch (Exception e) {
-            LOG.severe("URL for ActiveMQ Broker not valid: " + builder.url + " aborting...");
+            LOG.log(Level.SEVERE, "URL for ActiveMQ Broker not valid: " + builder.url + " aborting...", e);
             throw new IllegalArgumentException("Cannot start a broker with a url " + builder.url);
         }
     }
