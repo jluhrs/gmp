@@ -10,6 +10,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
 
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
+
 /**
  * A configuration parser takes a map representation of a configuration (as it comes from the servlet interface)
  * and transform it to a real Configuration object.
@@ -28,11 +32,11 @@ public class ConfigurationParser {
 
         if (parameters == null) return null;
         Set<String> keys = parameters.keySet();
-        DefaultConfiguration config = new DefaultConfiguration();
+        DefaultConfiguration.Builder builder = copy(emptyConfiguration());
         for (String key: keys) {
-            config.put(new ConfigPath(key), parameters.get(key));
+            builder.withPath(configPath(key), parameters.get(key));
         }
-        return config;
+        return builder.build();
     }
 
 
