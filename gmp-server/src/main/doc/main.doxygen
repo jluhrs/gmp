@@ -5,13 +5,15 @@
  *
  * \section intro_sec Introduction
  *
- * This is the introduction.
+ * The GMP Server is a module of GIAPI that encapsulates a full application composed by several bundles and their
+ * configuration. As such this module does not contain any code but instead it lists the bundles that compose it
+ * and allows you to run it either as a local server for development or to create a package to be deployed
  *
- * \section install_sec Installation
+ * \section install_sec Layout
  *
- * The \ref gmp-server directory contains the GMP server and it describe the set of bundles that compose the application as well as the
- * configurations for them. From here one can build a locally running application or deploy a zip file or assembly in maven
- * parlance.
+ * The \ref gmp-server directory contains the a description of the GMP server as set of bundles that compose it, as well
+ * as the configuration required. From here one can build a locally running application or a tar.gz file for distribution
+ * or assembly in maven parlance.
  *
  * \note All the instructions assume that your bundles sit in a GMP_SRC_DIR
  *
