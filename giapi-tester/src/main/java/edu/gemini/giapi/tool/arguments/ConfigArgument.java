@@ -1,10 +1,12 @@
 package edu.gemini.giapi.tool.arguments;
 
-import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.giapi.tool.parser.AbstractArgument;
 import edu.gemini.giapi.tool.parser.Util;
+
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 
 /**
  * Argument to get a Configuration
@@ -49,9 +51,9 @@ public class ConfigArgument extends AbstractArgument {
                 throw new IllegalArgumentException("Configuration item '" +
                         item + "' not in the form 'key=value'");
             if (_config == null)
-                _config = new DefaultConfiguration();
+                _config = emptyConfiguration();
             DefaultConfiguration dc = (DefaultConfiguration) _config;
-            dc.put(new ConfigPath(arg[0]), arg[1]);
+            _config = DefaultConfiguration.copy(_config).withPath(configPath(arg[0]), arg[1]).build();
         }
         return _config;
     }

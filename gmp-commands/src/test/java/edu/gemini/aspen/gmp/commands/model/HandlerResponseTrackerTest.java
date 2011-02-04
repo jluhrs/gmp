@@ -4,6 +4,8 @@ import edu.gemini.aspen.giapi.commands.*;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
+
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.*;
 
 /**
@@ -19,18 +21,16 @@ public class HandlerResponseTrackerTest {
     
     @Before
     public void setUp() {
-
         handlerResponseTracker = new HandlerResponseTracker();
         a = new Action(SequenceCommand.ABORT,
                        Activity.PRESET_START,
-                       new DefaultConfiguration(),
+                       emptyConfiguration(),
                        null);
 
         b = new Action(SequenceCommand.ABORT,
                        Activity.PRESET_START,
-                       new DefaultConfiguration(),
+                       emptyConfiguration(),
                        null);
-
     }
 
     @After

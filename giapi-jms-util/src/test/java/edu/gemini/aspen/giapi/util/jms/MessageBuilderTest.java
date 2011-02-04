@@ -11,6 +11,9 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Session;
 
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -21,8 +24,6 @@ import static org.mockito.Mockito.*;
  * Unit tests for the MessageBuilder class
  */
 public class MessageBuilderTest {
-
-
     private Session _mockedSession;
 
     @Before
@@ -40,7 +41,6 @@ public class MessageBuilderTest {
             assertEquals(MessageBuilder.InvalidHandlerResponseMessage(), e.getMessage());
         }
     }
-
 
     @Test
     public void testNullResponseType() {
@@ -95,7 +95,6 @@ public class MessageBuilderTest {
 
     }
 
-
     @Test
     public void testCreateAcceptedHandlerResponse() throws JMSException {
 
@@ -103,7 +102,7 @@ public class MessageBuilderTest {
         when(mockedSession.createMapMessage()).thenReturn(new ActiveMQMapMessage());
 
         HandlerResponse response = HandlerResponse.ACCEPTED;
-        MapMessage m = (MapMessage)MessageBuilder.buildHandlerResponseMessage(mockedSession, response);
+        MapMessage m = (MapMessage) MessageBuilder.buildHandlerResponseMessage(mockedSession, response);
 
         assertEquals(HandlerResponse.ACCEPTED.getResponse().name(), m.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
         //we should not have any error messages
@@ -112,12 +111,11 @@ public class MessageBuilderTest {
 
     }
 
-
     @Test
     public void testCreateErrorHandlerResponse() throws JMSException {
 
         HandlerResponse response = HandlerResponse.createError("An error");
-        MapMessage m = (MapMessage)MessageBuilder.buildHandlerResponseMessage(_mockedSession, response);
+        MapMessage m = (MapMessage) MessageBuilder.buildHandlerResponseMessage(_mockedSession, response);
 
         assertEquals(response.getResponse().name(), m.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
         assertEquals(response.getMessage(), m.getString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY));
@@ -126,11 +124,10 @@ public class MessageBuilderTest {
     }
 
 
-
     @Test
     public void testCreateErrorHandlerResponseWithoutMessage() throws JMSException {
         HandlerResponse response = HandlerResponse.createError(null);
-        MapMessage m = (MapMessage)MessageBuilder.buildHandlerResponseMessage(_mockedSession, response);
+        MapMessage m = (MapMessage) MessageBuilder.buildHandlerResponseMessage(_mockedSession, response);
 
         assertEquals(response.getResponse().name(), m.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
         assertNull(m.getString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY));
@@ -141,9 +138,10 @@ public class MessageBuilderTest {
     @Test
     public void testBuildCompletionInformationMessage() throws JMSException {
 
-        DefaultConfiguration config = new DefaultConfiguration();
-        config.put(new ConfigPath("gpi:dc.value1"), "one");
-        config.put(new ConfigPath("gpi:dc.value2"), "two");
+        Configuration config = copy(emptyConfiguration())
+                .withPath(configPath("gpi:dc.value1"), "one")
+                .withPath(configPath("gpi:dc.value2"), "two")
+                .build();
 
         CompletionInformation ci = new CompletionInformation(
                 HandlerResponse.STARTED,
@@ -152,19 +150,15 @@ public class MessageBuilderTest {
                 config
         );
 
-        MapMessage m = (MapMessage)MessageBuilder.buildCompletionInformationMessage(_mockedSession, ci);
+        MapMessage m = (MapMessage) MessageBuilder.buildCompletionInformationMessage(_mockedSession, ci);
 
         assertEquals(HandlerResponse.STARTED.getResponse().name(), m.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
         assertEquals(SequenceCommand.INIT.name(), m.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY));
         assertEquals(Activity.START.name(), m.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY));
 
-       for (ConfigPath path : config.getKeys()) {
-           assertEquals(config.getValue(path), m.getString(path.getName()));
-       }
+        for (ConfigPath path : config.getKeys()) {
+            assertEquals(config.getValue(path), m.getString(path.getName()));
+        }
 
     }
-
-
-
-
 }

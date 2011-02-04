@@ -1,15 +1,18 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import java.util.TreeMap;
+
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -39,23 +42,21 @@ public class ApplySenderExecutorTest {
                 HandlerResponse.createError("Error message")
         };
 
-
         TreeMap<ConfigPath, String> configuration = new TreeMap<ConfigPath, String>();
 
-        configuration.put(new ConfigPath("X:A.val1"), "xa1");
-        configuration.put(new ConfigPath("X:A.val2"), "xa2");
-        configuration.put(new ConfigPath("X:A.val3"), "xa3");
+        configuration.put(configPath("X:A.val1"), "xa1");
+        configuration.put(configPath("X:A.val2"), "xa2");
+        configuration.put(configPath("X:A.val3"), "xa3");
 
-        configuration.put(new ConfigPath("X:B.val1"), "xb1");
-        configuration.put(new ConfigPath("X:B.val2"), "xb2");
-        configuration.put(new ConfigPath("X:B.val3"), "xb3");
+        configuration.put(configPath("X:B.val1"), "xb1");
+        configuration.put(configPath("X:B.val2"), "xb2");
+        configuration.put(configPath("X:B.val3"), "xb3");
 
-        configuration.put(new ConfigPath("X:C.val1"), "xc1");
-        configuration.put(new ConfigPath("X:C.val2"), "xc2");
-        configuration.put(new ConfigPath("X:C.val3"), "xc3");
+        configuration.put(configPath("X:C.val1"), "xc1");
+        configuration.put(configPath("X:C.val2"), "xc2");
+        configuration.put(configPath("X:C.val3"), "xc3");
 
         _applyConfig = new DefaultConfiguration(configuration);
-
     }
 
     @Test
@@ -71,7 +72,7 @@ public class ApplySenderExecutorTest {
     public void testEmptyConfiguration() {
         Action action = new Action(SequenceCommand.APPLY,
                 Activity.START,
-                new DefaultConfiguration(), null);
+                emptyConfiguration(), null);
         HandlerResponse response = _executor.execute(action, _sender);
         assertEquals(HandlerResponse.createError("No configuration present for Apply Sequence command"), response);
     }

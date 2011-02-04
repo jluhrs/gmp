@@ -1,15 +1,19 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.giapi.commands.*;
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
-import static org.junit.Assert.*;
-
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
+import static org.junit.Assert.*;
 
 /**
  * Test suite for the Action Manager class. 
@@ -28,7 +32,7 @@ public class ActionManagerTest {
         manager.start();
         actions = new ArrayList<Action>();
 
-        Configuration config1 = new DefaultConfiguration();
+        Configuration config1 = emptyConfiguration();
 
         for (int i = 0; i < TOTAL_ACTIONS; i++) {
             actions.add(new Action(SequenceCommand.ABORT,
@@ -247,7 +251,7 @@ public class ActionManagerTest {
     @Test
     public void testNoListener() {
         Action a = new Action(SequenceCommand.ABORT, Activity.PRESET,
-                new DefaultConfiguration(), null);
+                emptyConfiguration(), null);
         manager.registerAction(a);
 
         manager.registerCompletionInformation(a.getId(),
@@ -280,7 +284,7 @@ public class ActionManagerTest {
 
         Action a = new Action(SequenceCommand.APPLY,
                 Activity.PRESET_START,
-                new DefaultConfiguration(),
+                emptyConfiguration(),
                 cl);
 
         manager.registerAction(a);
@@ -317,7 +321,7 @@ public class ActionManagerTest {
 
         Action a = new Action(SequenceCommand.APPLY,
                 Activity.PRESET_START,
-                new DefaultConfiguration(),
+                emptyConfiguration(),
                 cl);
 
         manager.registerAction(a);

@@ -7,6 +7,10 @@ import javax.jms.MapMessage;
 import javax.jms.JMSException;
 import java.util.Enumeration;
 
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
+
 /**
  *
  */
@@ -74,16 +78,17 @@ public class CommandMessage {
 
         try {
             Enumeration enumeration = msg.getMapNames();
-            DefaultConfiguration config = new DefaultConfiguration();
+            Configuration config = emptyConfiguration();
+            DefaultConfiguration.Builder builder = copy(config);
 
             while(enumeration.hasMoreElements()) {
                 Object o = enumeration.nextElement();
                 if (o instanceof String) {
                     String key = (String)o;
-                    config.put(new ConfigPath(key), msg.getString(key));
+                    builder.withPath(configPath(key), msg.getString(key));
                 }
             }
-            return config;
+            return builder.build();
         } catch (JMSException e) {
             throw new FormatException("Message didn't contain a configuration");
         }

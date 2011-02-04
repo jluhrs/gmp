@@ -1,12 +1,16 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.giapi.commands.*;
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
-
-import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
 import com.gargoylesoftware.base.testing.EqualsTester;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.CompletionListener;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
+import org.junit.Before;
+import org.junit.Test;
+
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
+import static org.junit.Assert.*;
 
 
 /**
@@ -23,7 +27,7 @@ public class ActionTest {
     public void setUp() {
 
         CompletionListener listener1 = new TestCompletionListener();
-        Configuration config1 = new DefaultConfiguration();
+        Configuration config1 = emptyConfiguration();
         a1 = new Action(SequenceCommand.ABORT,
                 Activity.PRESET,
                 config1,

@@ -1,26 +1,27 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.*;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
+import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.test.TestActionSender;
 import edu.gemini.aspen.gmp.commands.test.TestRebootManager;
-import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
-import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
+import org.junit.Before;
+import org.junit.Test;
+
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Test class for the REBOOT sender executor
  */
 public class RebootSenderExecutorTest {
-
-
-    DefaultConfiguration configGMP;
-    DefaultConfiguration configReboot;
-    DefaultConfiguration configNone;
+    Configuration configGMP;
+    Configuration configReboot;
+    Configuration configNone;
 
     RebootSenderExecutor executor;
 
@@ -45,30 +46,20 @@ public class RebootSenderExecutorTest {
 
     @Before
     public void setUp() {
-
-        configGMP = new DefaultConfiguration();
-        configGMP.put(new ConfigPath("REBOOT_OPT"), "GMP");
-
-        configReboot = new DefaultConfiguration();
-        configReboot.put(new ConfigPath("REBOOT_OPT"), "REBOOT");
-
-        configNone = new DefaultConfiguration();
-        configNone.put(new ConfigPath("REBOOT_OPT"), "NONE");
+        configGMP = configuration(configPath("REBOOT_OPT"), "GMP");
+        configReboot = configuration(configPath("REBOOT_OPT"), "REBOOT");
+        configNone = configuration(configPath("REBOOT_OPT"), "NONE");
 
         executor = new RebootSenderExecutor(new JmsActionMessageBuilder(), rebootManager);
-
         sender = new TestActionSender();
 
         rebootManager.reset();
-
     }
 
     @Test
     public void testRebootPreset() {
-
         Action action = new Action(SequenceCommand.REBOOT,
                 Activity.PRESET, configGMP, null);
-
 
         //set the sender to anything but ACCEPTED
         sender.defineAnswer(HandlerResponse.createError("error"));
@@ -77,16 +68,12 @@ public class RebootSenderExecutorTest {
 
         //and make sure the response is ACCEPTED, regardless
         assertEquals(HandlerResponse.ACCEPTED, response);
-
     }
-
 
     @Test
     public void testRebootCancel() {
-
         Action action = new Action(SequenceCommand.REBOOT,
                 Activity.CANCEL, configGMP, null);
-
 
         //set the sender to anything but ERROR
         sender.defineAnswer(HandlerResponse.ACCEPTED);
@@ -94,11 +81,8 @@ public class RebootSenderExecutorTest {
         HandlerResponse response = executor.execute(action, sender);
 
         //and make sure the response is the right ERROR message, regardless
-
         assertEquals(HandlerResponse.createError("Can't cancel a REBOOT sequence command"), response);
-
     }
-
 
     @Test
     public void testRebootWithoutConfig() {
@@ -138,9 +122,7 @@ public class RebootSenderExecutorTest {
 
     @Test
     public void testRebootWithInvalidConfigs() {
-
-        DefaultConfiguration c = new DefaultConfiguration();
-        c.put(new ConfigPath("REBOOT_OPT"), "Invalid");
+        Configuration c = configuration(configPath("REBOOT_OPT"), "Invalid");
 
         Action action = new Action(SequenceCommand.REBOOT,
                 Activity.START, c, null);
@@ -152,16 +134,13 @@ public class RebootSenderExecutorTest {
         assertEquals(HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + c), response);
 
 
-        c = new DefaultConfiguration();
-        c.put(new ConfigPath("INVALID_KEY"), "REBOOT");
+        c = configuration(configPath("INVALID_KEY"), "REBOOT");
         action = new Action(SequenceCommand.REBOOT,
                 Activity.START, c, null);
         response = executor.execute(action, sender);
 
         assertEquals(HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + c), response);
-
     }
-
 
     @Test
     public void testRebootWithNoneArg() {
@@ -180,7 +159,6 @@ public class RebootSenderExecutorTest {
         testRebootWithImmediateCompletion(configReboot, RebootArgument.REBOOT);
         testRebootWithLaterCompletion(configReboot, RebootArgument.REBOOT);
     }
-
 
     //auxiliary method to exercise the reboot executor with different configurations
     //that will perform the reboot, asumming the caller completes immediately.

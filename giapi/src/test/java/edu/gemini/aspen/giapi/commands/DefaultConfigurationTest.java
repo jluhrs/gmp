@@ -1,10 +1,14 @@
 package edu.gemini.aspen.giapi.commands;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
+import com.google.common.collect.ImmutableSortedMap;
 import org.junit.Test;
+
+import java.util.SortedMap;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
 import static org.junit.Assert.*;
 
 /**
@@ -31,5 +35,20 @@ public class DefaultConfigurationTest {
         Configuration c = configuration(configPath("X", "val2"), "1");
 
         new EqualsTester(a, b, c, null);
+    }
+
+    @Test
+    public void testBuilder() {
+        Configuration configuration = configuration(configPath("X"), "value1");
+        Configuration copy = copy(configuration).build();
+        assertEquals(configuration, copy);
+
+        Configuration modifiedCopy = copy(configuration).withPath(configPath("Y"), "value2").build();
+        assertFalse(copy.equals(modifiedCopy));
+
+        SortedMap<ConfigPath, String> baseConfig = ImmutableSortedMap.of(configPath("X"), "value1", configPath("Y"), "value2");
+        Configuration referenceConfig = new DefaultConfiguration(baseConfig);
+
+        assertEquals(modifiedCopy, referenceConfig);
     }
 }

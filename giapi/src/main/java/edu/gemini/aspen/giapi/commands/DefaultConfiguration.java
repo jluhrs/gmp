@@ -1,6 +1,7 @@
 package edu.gemini.aspen.giapi.commands;
 
 import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.Maps;
 
 import java.util.Set;
 import java.util.SortedMap;
@@ -27,6 +28,17 @@ public final class DefaultConfiguration implements Configuration {
      */
     public static Configuration configuration(ConfigPath path, String value) {
         return new DefaultConfiguration(path, value);
+    }
+
+    /**
+     * Factory method to return an empty configuration
+     */
+    public static Configuration emptyConfiguration() {
+        return new DefaultConfiguration();
+    }
+
+    public static Builder copy(Configuration config) {
+        return new Builder(config);
     }
     
     DefaultConfiguration() {
@@ -64,6 +76,7 @@ public final class DefaultConfiguration implements Configuration {
         if (path == null) {
             return null;
         }
+        // Finds everything from path to anything represented by the last possible char
         ConfigPath endPath = new ConfigPath(path, "\uFFFF");
         return new DefaultConfiguration(_config.subMap(path, endPath));
     }
@@ -94,5 +107,23 @@ public final class DefaultConfiguration implements Configuration {
     @Override
     public String toString() {
         return "{config=" + _config +'}';
+    }
+
+    public static class Builder {
+        private final SortedMap<ConfigPath, String> _baseConfiguration = Maps.newTreeMap();
+        private Builder(Configuration config) {
+            for (ConfigPath path: config.getKeys()) {
+                _baseConfiguration.put(path, config.getValue(path));
+            }
+        }
+
+        public Builder withPath(ConfigPath configPath, String value) {
+            _baseConfiguration.put(configPath, value);
+            return this;
+        }
+
+        public Configuration build() {
+            return new DefaultConfiguration(_baseConfiguration);
+        }
     }
 }

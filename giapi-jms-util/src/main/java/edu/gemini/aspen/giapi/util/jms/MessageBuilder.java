@@ -13,6 +13,9 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
+
 /**
  * Collection of utility methods that will help to transform from JMS messages
  * to GIAPI data structures and vice versa
@@ -182,21 +185,23 @@ public final class MessageBuilder {
         }
 
         //get configuration
-        DefaultConfiguration config = null;
+        Configuration config = null;
         Enumeration names = msg.getMapNames();
 
+        // FIXME Here is a potential NPE
         if (names.hasMoreElements()) {
-            config = new DefaultConfiguration();
-        }
-
-        while (names.hasMoreElements()) {
-            Object o = names.nextElement();
-            if (!(o instanceof String)) {
-                throw new JMSException(InvalidConfigurationMessage());
+            config = DefaultConfiguration.emptyConfiguration();
+            DefaultConfiguration.Builder builder = copy(config);
+            while (names.hasMoreElements()) {
+                Object o = names.nextElement();
+                if (!(o instanceof String)) {
+                    throw new JMSException(InvalidConfigurationMessage());
+                }
+                String path = (String) o;
+                String value = msg.getString(path);
+                builder.withPath(configPath(path), value);
             }
-            String path = (String) o;
-            String value = msg.getString(path);
-            config.put(new ConfigPath(path), value);
+            config = builder.build();
         }
 
         return new CompletionInformation(handlerResponse, sc, activity, config);
