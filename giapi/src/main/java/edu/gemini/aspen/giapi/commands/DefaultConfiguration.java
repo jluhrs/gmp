@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
  * A straightforward implementation of {@link Configuration}
@@ -45,17 +44,6 @@ public final class DefaultConfiguration implements Configuration {
         _config = ImmutableSortedMap.of();
     }
 
-    public DefaultConfiguration(Configuration config) {
-        if (config.getKeys().isEmpty()) {
-            throw new IllegalArgumentException("Configuration cannot be empty");
-        }
-        SortedMap previousConfig = new TreeMap<ConfigPath, String>();
-        for (ConfigPath key : config.getKeys()) {
-            previousConfig.put(key, config.getValue(key));
-        }
-        _config = ImmutableSortedMap.copyOfSorted(previousConfig);
-    }
-
     public DefaultConfiguration(SortedMap<ConfigPath, String> map) {
         _config = ImmutableSortedMap.copyOfSorted(map);
     }
@@ -74,7 +62,7 @@ public final class DefaultConfiguration implements Configuration {
 
     public Configuration getSubConfiguration(ConfigPath path) {
         if (path == null) {
-            return null;
+            return emptyConfiguration();
         }
         // Finds everything from path to anything represented by the last possible char
         ConfigPath endPath = new ConfigPath(path, "\uFFFF");

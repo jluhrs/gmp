@@ -9,6 +9,7 @@ import java.util.SortedMap;
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.*;
 
 /**
@@ -25,7 +26,7 @@ public class DefaultConfigurationTest {
         assertTrue(configuration.getKeys().contains(configPath("X")));
         assertFalse(configuration.getKeys().contains(configPath("Y")));
         assertEquals(configuration, configuration.getSubConfiguration(configPath("X")));
-        assertNull(configuration.getSubConfiguration(null));
+        assertEquals(emptyConfiguration(), configuration.getSubConfiguration(null));
     }
 
     @Test
@@ -50,5 +51,12 @@ public class DefaultConfigurationTest {
         Configuration referenceConfig = new DefaultConfiguration(baseConfig);
 
         assertEquals(modifiedCopy, referenceConfig);
+    }
+
+    @Test
+    public void testEmptyConfiguration() {
+        assertTrue(emptyConfiguration().getKeys().isEmpty());
+        assertEquals(emptyConfiguration(), emptyConfiguration());
+        assertEquals(emptyConfiguration(), emptyConfiguration().getSubConfiguration(null));
     }
 }
