@@ -4,6 +4,7 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 import org.junit.Test;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.EMPTY_PATH;
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static org.junit.Assert.*;
 
 /**
@@ -15,78 +16,75 @@ import static org.junit.Assert.*;
 public class ConfigPathTest {
     @Test
     public void testConstructionWithString() {
-        ConfigPath path = new ConfigPath("my:test:path");
-        assertArrayEquals(new String[]{"my", "test", "path"}, path.split());
-        assertEquals("path", path.getReferencedName());
-        assertEquals(new ConfigPath("my:test"), path.getParent());
-        assertEquals("my:test:path", path.getName());
-        assertTrue(path.startsWith(new ConfigPath("my")));
-        assertTrue(path.startsWith(new ConfigPath("my:test")));
-        assertTrue(path.equals(new ConfigPath("my:test:path")));
-        assertEquals(new ConfigPath("my:test"), path.getChildPath(new ConfigPath("my")));
+        ConfigPath testPath = configPath("my:test:configPath");
+        assertArrayEquals(new String[]{"my", "test", "configPath"}, testPath.split());
+        assertEquals("configPath", testPath.getReferencedName());
+        assertEquals(configPath("my:test"), testPath.getParent());
+        assertEquals("my:test:configPath", testPath.getName());
+        assertTrue(testPath.startsWith(configPath("my")));
+        assertTrue(testPath.startsWith(configPath("my:test")));
+        assertTrue(testPath.equals(configPath("my:test:configPath")));
+        assertEquals(configPath("my:test"), testPath.getChildPath(configPath("my")));
     }
 
     @Test
     public void testConstructionWithChild() {
-        ConfigPath path = new ConfigPath("X", "val1");
-        assertArrayEquals(new String[]{"X", "val1"}, path.split());
-        assertEquals("val1", path.getReferencedName());
-        assertEquals(new ConfigPath("X"), path.getParent());
-        assertEquals("X:val1", path.getName());
-        assertEquals("X:val1", path.toString());
-        assertTrue(path.startsWith(new ConfigPath("X")));
-        assertEquals(new ConfigPath("X:val1"), path.getChildPath(new ConfigPath("X")));
-        assertEquals(EMPTY_PATH, path.getChildPath(new ConfigPath("val1")));
+        ConfigPath testPath = configPath("X", "val1");
+        assertArrayEquals(new String[]{"X", "val1"}, testPath.split());
+        assertEquals("val1", testPath.getReferencedName());
+        assertEquals(configPath("X"), testPath.getParent());
+        assertEquals("X:val1", testPath.getName());
+        assertEquals("X:val1", testPath.toString());
+        assertTrue(testPath.startsWith(configPath("X")));
+        assertEquals(configPath("X:val1"), testPath.getChildPath(configPath("X")));
+        assertEquals(EMPTY_PATH, testPath.getChildPath(configPath("val1")));
     }
 
     @Test
     public void testConstructionsWithSeparator() {
-        ConfigPath path = new ConfigPath("X:", "val1");
+        ConfigPath path = configPath("X:", "val1");
         assertEquals("X:val1", path.getName());
-        path = new ConfigPath("X", ":val1");
+        path = configPath("X", ":val1");
         assertEquals("X:val1", path.getName());
-        path = new ConfigPath("X:", ":val1");
+        path = configPath("X:", ":val1");
         assertEquals("X:val1", path.getName());
     }
 
     @Test
     public void testEquality() {
-        ConfigPath a = new ConfigPath("X", "val1");
-        ConfigPath b = new ConfigPath("X", "val1");
-        ConfigPath c = new ConfigPath("X", "val2");
-        ConfigPath d = new ConfigPath("X", "val1") {
-        };
+        ConfigPath a = configPath("X", "val1");
+        ConfigPath b = configPath("X", "val1");
+        ConfigPath c = configPath("X", "val2");
 
-        new EqualsTester(a, b, c, d);
+        new EqualsTester(a, b, c, null);
     }
 
     @Test
     public void testComparison() {
-        ConfigPath a = new ConfigPath("X", "val1");
-        ConfigPath b = new ConfigPath("X", "val1");
+        ConfigPath a = configPath("X", "val1");
+        ConfigPath b = configPath("X", "val1");
         assertEquals(0, a.compareTo(b));
     }
 
     @Test
     public void testPathOnlyWithSeparator() {
-        ConfigPath path = new ConfigPath(":");
+        ConfigPath path = configPath(":");
         assertArrayEquals(new String[]{""}, path.split());
         assertEquals("", path.getName());
         assertEquals("", path.getReferencedName());
         assertEquals(EMPTY_PATH, path.getParent());
         assertTrue(path.getParent().startsWith(EMPTY_PATH));
         assertFalse(path.getParent().startsWith(null));
-        System.out.println(path.getReferencedName());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testBadConstruction1() {
-        new ConfigPath(null);
+        configPath(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testBadConstruction2() {
-        new ConfigPath("parent", null);
+        configPath("parent", null);
     }
 
 }

@@ -8,7 +8,7 @@ package edu.gemini.aspen.giapi.commands;
  * The path is composed of a series of names separated by the ':' character
  * 
  */
-public class ConfigPath implements Comparable<ConfigPath> {
+public final class ConfigPath implements Comparable<ConfigPath> {
 
     private static final String SEPARATOR = ":";
     private static final char SEPARATOR_CHAR = ':';
@@ -22,11 +22,35 @@ public class ConfigPath implements Comparable<ConfigPath> {
      */
     public static final ConfigPath EMPTY_PATH = new ConfigPath(EMPTY_PATH_STR);
 
+    /**
+     * Factory constructor
+     *
+     * @param path The string representing the current path
+     * @return a fully valid {@link ConfigPath}
+     */
+    public static ConfigPath configPath(String path) {
+        return new ConfigPath(path);
+    }
+
+    /**
+     * Creates a path for the given string as a parent and
+     * the given child.
+     *
+     * @param parent String representation of the parent for
+     * the new ConfigPath
+     * @param child child of the config path
+     * @return a fully valid {@link ConfigPath}
+     */
+    @Deprecated
+    public static ConfigPath configPath(String parent, String child) {
+        return new ConfigPath(parent, child);
+    }
 
     /**
      * Creates a path for the given string
      * @param path The string representing the current path
      */
+    @Deprecated
     public ConfigPath(String path)  {
         if (path == null) throw new IllegalArgumentException("Path cannot be null");
         _path = _normalize(path);
