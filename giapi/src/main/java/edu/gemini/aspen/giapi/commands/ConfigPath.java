@@ -1,12 +1,11 @@
 package edu.gemini.aspen.giapi.commands;
 
 /**
- *  A ConfigPath can be used to refer to a set of items
+ * A ConfigPath can be used to refer to a set of items
  * in a Configuration tree. It is modeled after the <code>PioPath</code>
  * in the Gemini OCS.
  * <p/>
  * The path is composed of a series of names separated by the ':' character
- * 
  */
 public final class ConfigPath implements Comparable<ConfigPath> {
 
@@ -15,7 +14,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
     private static final String ITEM_SEPARATOR = ".";
     private static final String EMPTY_PATH_STR = "";
     private final String _path;
-    private final int _prefixLenght;
+    private final int _prefixLength;
 
     /**
      * A ConfigPath to represent an empty path
@@ -37,36 +36,39 @@ public final class ConfigPath implements Comparable<ConfigPath> {
      * the given child.
      *
      * @param parent String representation of the parent for
-     * the new ConfigPath
-     * @param child child of the config path
+     *               the new ConfigPath
+     * @param child  child of the config path
      * @return a fully valid {@link ConfigPath}
      */
-    @Deprecated
     public static ConfigPath configPath(String parent, String child) {
         return new ConfigPath(parent, child);
     }
 
     /**
      * Creates a path for the given string
+     *
      * @param path The string representing the current path
      */
-    @Deprecated
-    public ConfigPath(String path)  {
-        if (path == null) throw new IllegalArgumentException("Path cannot be null");
+    public ConfigPath(String path) {
+        if (path == null) {
+            throw new IllegalArgumentException("Path cannot be null");
+        }
         _path = _normalize(path);
-        _prefixLenght = _path.lastIndexOf(SEPARATOR_CHAR);
+        _prefixLength = _path.lastIndexOf(SEPARATOR_CHAR);
     }
 
     /**
      * Creates a path for the given string as a parent and
      * the given child.
+     *
      * @param parent String representation of the parent for
-     * the new ConfigPath
-     * @param child child of the config path
+     *               the new ConfigPath
+     * @param child  child of the config path
      */
     ConfigPath(String parent, String child) {
-
-        if (child == null) throw new IllegalArgumentException("child cannot be null");
+        if (child == null) {
+            throw new IllegalArgumentException("child cannot be null");
+        }
 
         String path;
         if (parent == null) {
@@ -81,26 +83,28 @@ public final class ConfigPath implements Comparable<ConfigPath> {
         }
 
         _path = _normalize(path);
-        _prefixLenght = _path.lastIndexOf(SEPARATOR_CHAR);
+        _prefixLength = _path.lastIndexOf(SEPARATOR_CHAR);
     }
 
     /**
      * Creates a new config path using the given
      * ConfigPath as a parent and the string as a child
+     *
      * @param parent ConfigPath to be used as the parent for the
-     * new ConfigPath
-     * @param child child of the config path
+     *               new ConfigPath
+     * @param child  child of the config path
      */
     ConfigPath(ConfigPath parent, String child) {
         this(parent.getName(), child);
     }
 
     /**
-     * Split the path into its consitutent parts
+     * Split the path into its constituent parts
+     *
      * @return names that make up the path
      */
     String[] split() {
-        String path =_path;
+        String path = _path;
         if (_path.startsWith(SEPARATOR)) {
             path = _path.substring(1);
         }
@@ -115,31 +119,38 @@ public final class ConfigPath implements Comparable<ConfigPath> {
      * is returned.
      *
      * @return name of the element denoted by this path, or the
-     * empty string if this path's name sequence is empty
+     *         empty string if this path's name sequence is empty
      */
     String getReferencedName() {
-        if (_prefixLenght < 0) return _path;
-        return _path.substring(_prefixLenght + 1);
+        if (_prefixLength < 0) {
+            return _path;
+        }
+        return _path.substring(_prefixLength + 1);
     }
 
     /**
      * Get the path to the parent (if there is one) for this path.
      *
      * @return path for the parent node of this path, or
-     * <code>EMPTY_PATH</code> if this does not have a parent
+     *         <code>EMPTY_PATH</code> if this does not have a parent
      */
     ConfigPath getParent() {
-        if (_prefixLenght <= 0) return EMPTY_PATH;
-        return new ConfigPath(_path.substring(0, _prefixLenght));
+        if (_prefixLength <= 0) {
+            return EMPTY_PATH;
+        }
+        return new ConfigPath(_path.substring(0, _prefixLength));
     }
 
     /**
      * Returns true if this path starts with the given path
+     *
      * @param path base path to be tested
      * @return true if this path starts with the given path.
      */
     boolean startsWith(ConfigPath path) {
-        if (path == null) return false;
+        if (path == null) {
+            return false;
+        }
         //check if the path starts with the given path
         return _path.startsWith(path.getName());
 
@@ -153,14 +164,17 @@ public final class ConfigPath implements Comparable<ConfigPath> {
      * to <code>getChildPath(new ConfigPath("gpi"))</code> will
      * return a path to "gpi:cc".
      *
-     *
      * @param path parent path to get the child path in the current path
      * @return the child path for the given path argument, or
-     * <code>null</code> if it does not exist.
+     *         <code>null</code> if it does not exist.
      */
     ConfigPath getChildPath(ConfigPath path) {
-        if (!startsWith(path)) return EMPTY_PATH;
-        if (path.equals(this)) return EMPTY_PATH;
+        if (!startsWith(path)) {
+            return EMPTY_PATH;
+        }
+        if (path.equals(this)) {
+            return EMPTY_PATH;
+        }
 
         String rest = _path.substring(path._path.length());
 
@@ -179,7 +193,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
         if (itemPos > 0) {
             rest = rest.substring(0, itemPos);
         }
-                                                  
+
         String[] parts = rest.split(SEPARATOR);
 
         if (parts.length > 0) {
@@ -195,6 +209,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
 
     /**
      * Returns the ConfigPath as a String
+     *
      * @return string representation of this ConfigPath
      */
     public String getName() {
@@ -203,13 +218,21 @@ public final class ConfigPath implements Comparable<ConfigPath> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         ConfigPath that = (ConfigPath) o;
 
-        if (_prefixLenght != that._prefixLenght) return false;
-        if (_path != null ? !_path.equals(that._path) : that._path != null) return false;
+        if (_prefixLength != that._prefixLength) {
+            return false;
+        }
+        if (!_path.equals(that._path)) {
+            return false;
+        }
         //they are equals. 
         return true;
     }
@@ -218,7 +241,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
     public int hashCode() {
         int result;
         result = _path.hashCode();
-        result = 31 * result + _prefixLenght;
+        result = 31 * result + _prefixLength;
         return result;
     }
 
@@ -229,24 +252,28 @@ public final class ConfigPath implements Comparable<ConfigPath> {
 
     /**
      * Auxiliary method to normalize a string to use it as a ConfigPath
+     *
      * @param pathstr string to be normalized
      * @return normalized string to be used as a ConfigPath
      */
     private String _normalize(String pathstr) {
-
-        if (pathstr == null || "".equals(pathstr) || pathstr.equals(SEPARATOR)) return EMPTY_PATH_STR;
+        if (pathstr == null || "".equals(pathstr) || pathstr.equals(SEPARATOR)) {
+            return EMPTY_PATH_STR;
+        }
         pathstr = pathstr.trim();
         StringBuilder sb = new StringBuilder();
 
         String[] parts = pathstr.split(SEPARATOR);
-        for (String part: parts) {
+        for (String part : parts) {
             part = part.trim();
-            if ("".equals(part)) continue;
+            if ("".equals(part)) {
+                continue;
+            }
             sb.append(part).append(SEPARATOR);
         }
         pathstr = sb.toString();
-        //return the path without the last separator.
         assert pathstr.length() > 1;
+        //return the path without the last separator.
         return pathstr.substring(0, pathstr.length() - 1);
     }
 
