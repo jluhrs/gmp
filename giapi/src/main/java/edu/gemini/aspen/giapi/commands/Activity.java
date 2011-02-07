@@ -9,7 +9,7 @@ public enum Activity {
     PRESET_START("PRESET/START"),
     CANCEL("CANCEL");
 
-    Activity(String name) {
+    private Activity(String name) {
         _name = name;
     }
 
@@ -23,14 +23,14 @@ public enum Activity {
      * @return Activity associated to the name
      */
     public static Activity toActivity(String name) {
-
-        if (name != null && name.equals("PRESET/START")) {
+        if (name == null) {
+            throw new IllegalArgumentException("Cannot call Activity.toActivity with a null argument");
+        }
+        if ("PRESET/START".equals(name)) {
             return PRESET_START;
         }
         return Activity.valueOf(name);
     }
 
     private final String _name;
-
-
 }
