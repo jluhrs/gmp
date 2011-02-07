@@ -38,8 +38,29 @@ public class CompletionInformationTest {
         CompletionInformation a = new CompletionInformation(handlerResponse, init, start, configuration);
         CompletionInformation b = new CompletionInformation(handlerResponse, init, start, configuration);
         CompletionInformation c = new CompletionInformation(handlerResponse, init, Activity.PRESET, configuration);
-        CompletionInformation d = new CompletionInformation(handlerResponse, init, Activity.PRESET, configuration) {};
+        CompletionInformation d = new CompletionInformation(handlerResponse, init, Activity.PRESET, configuration) {
+        };
 
         new EqualsTester(a, b, c, d);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBadConstruction1() {
+        new CompletionInformation(null, init, start, configuration);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBadConstruction2() {
+        new CompletionInformation(handlerResponse, null, start, configuration);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBadConstruction3() {
+        new CompletionInformation(handlerResponse, init, null, configuration);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBadConstruction4() {
+        new CompletionInformation(handlerResponse, init, start, null);
     }
 }
