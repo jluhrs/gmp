@@ -31,34 +31,34 @@ public final class HandlerResponse {
     public static HandlerResponse NOANSWER = new HandlerResponse(Response.NOANSWER);
 
     /**
-	 * Creates an Error Handler Response with the given error message
+     * Creates an Error Handler Response with the given error message
+     *
      * @param errorMsg The error message that will be associated to the
-     * error HandlerResponse that will be returned.
+     *                 error HandlerResponse that will be returned.
      * @return an error HandlerResponse with the corresponding error message
-     * set.
-	 */
+     *         set.
+     */
     public static HandlerResponse createError(String errorMsg) {
         return new HandlerResponse(errorMsg);
     }
 
-
     public enum Response {
         /**
-		 * Action Accepted.
-		 */
+         * Action Accepted.
+         */
         ACCEPTED("ACCEPTED"),
 
         /**
-		 * Actions started
-		 */
+         * Actions started
+         */
         STARTED("STARTED"),
         /**
-		 * Actions completed
-		 */
+         * Actions completed
+         */
         COMPLETED("COMPLETED"),
         /**
-		 * Request ended with error.
-		 */
+         * Request ended with error.
+         */
         ERROR("ERROR"),
         /**
          * Special error handler response. Created internally
@@ -95,20 +95,22 @@ public final class HandlerResponse {
     private final Response _response;
 
     /**
-	 * Return the response type.
+     * Return the response type.
+     *
      * @return The response type
-	 */
+     */
     public Response getResponse() {
         return _response;
     }
 
     /**
-	 * Return the message associated to this handler
-	 * response. If the response type is not ERROR,
-	 * the return value is NULL.
+     * Return the message associated to this handler
+     * response. If the response type is not ERROR,
+     * the return value is NULL.
+     *
      * @return the message associated to an ERROR response type or NULL if
-     * the response is not ERROR.
-	 */
+     *         the response is not ERROR.
+     */
     public String getMessage() {
         return _message;
     }
@@ -116,32 +118,37 @@ public final class HandlerResponse {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        if (_response != null) {
-            sb.append("[").append(_response.getTag());
+        sb.append("[").append(_response.getTag());
 
-            if (_response == Response.ERROR) {
-                //we should have a message
-                sb.append(" {");
-                if (_message != null) {
-                    sb.append(_message);
-                }
-                sb.append("}");
+        if (_response == Response.ERROR) {
+            //we should have a message
+            sb.append(" {");
+            if (_message != null) {
+                sb.append(_message);
             }
-            sb.append("]");
+            sb.append("}");
         }
+        sb.append("]");
         return sb.toString();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         HandlerResponse that = (HandlerResponse) o;
 
-        if (_message != null ? !_message.equals(that._message) : that._message != null)
+        if (_message != null ? !_message.equals(that._message) : that._message != null) {
             return false;
-        if (_response != that._response) return false;
+        }
+        if (_response != that._response) {
+            return false;
+        }
         //nothing to be done
         return true;
     }
@@ -154,14 +161,14 @@ public final class HandlerResponse {
     }
 
     /**
-	 * Gets a HandlerResponse object for the given response
+     * Gets a HandlerResponse object for the given response
+     *
      * @param response The response type the HandlerResponse to be
-     * returned will have, like ACCEPTED
+     *                 returned will have, like ACCEPTED
      * @return a HandlerResponse with the corresponding response type. If
-     * the response is "ERROR", an empty ERROR handler response will be returned
-	 */
+     *         the response is "ERROR", an empty ERROR handler response will be returned
+     */
     public static HandlerResponse get(HandlerResponse.Response response) {
-
         switch (response) {
             case ACCEPTED:
                 return HandlerResponse.ACCEPTED;
@@ -175,9 +182,7 @@ public final class HandlerResponse {
                 return HandlerResponse.NOANSWER;
         }
         return null;
-
     }
-
 
 
 }

@@ -23,7 +23,16 @@ public class HandlerResponseTest {
         String errorMsg = "Error message";
         HandlerResponse a = HandlerResponse.createError(errorMsg);
         HandlerResponse b = HandlerResponse.createError(errorMsg);
-        HandlerResponse c = HandlerResponse.createError("another Error");
+        HandlerResponse c = HandlerResponse.get(HandlerResponse.Response.ACCEPTED);
+
+        new EqualsTester(a, b, c, null);
+    }
+
+    @Test
+    public void testHandlerResponseEquality() {
+        HandlerResponse a = HandlerResponse.get(HandlerResponse.Response.ACCEPTED);
+        HandlerResponse b = HandlerResponse.get(HandlerResponse.Response.ACCEPTED);
+        HandlerResponse c = HandlerResponse.get(HandlerResponse.Response.COMPLETED);
 
         new EqualsTester(a, b, c, null);
     }
