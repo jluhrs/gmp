@@ -34,11 +34,11 @@ public class HandlerResponseTest {
     }
 
     private void testResponseType(HandlerResponse.Response responseType) {
-        HandlerResponse startedResponse = HandlerResponse.get(responseType);
-        assertNotNull(startedResponse);
-        assertNull(startedResponse.getMessage());
-        assertEquals(responseType, startedResponse.getResponse());
-        assertEquals(responseType.getTag(), startedResponse.getResponse().getTag());
+        HandlerResponse handlerResponse = HandlerResponse.get(responseType);
+        assertNotNull(handlerResponse);
+        assertNull(handlerResponse.getMessage());
+        assertEquals(responseType, handlerResponse.getResponse());
+        assertEquals(responseType.getTag(), handlerResponse.getResponse().getTag());
     }
 
     @Test
@@ -54,5 +54,22 @@ public class HandlerResponseTest {
     @Test
     public void testHandlerResponseNoAnswer() {
         testResponseType(HandlerResponse.Response.NOANSWER);
+    }
+
+    @Test
+    public void testErrorResponseType() {
+        HandlerResponse errorResponse = HandlerResponse.get(HandlerResponse.Response.ERROR);
+        assertNotNull(errorResponse);
+        assertEquals("", errorResponse.getMessage());
+        assertEquals(HandlerResponse.Response.ERROR, errorResponse.getResponse());
+        assertEquals(HandlerResponse.Response.ERROR.getTag(), errorResponse.getResponse().getTag());
+    }
+
+    @Test
+    public void testToString() {
+        HandlerResponse handlerResponse = HandlerResponse.get(HandlerResponse.Response.ERROR);
+        assertEquals("[ERROR {}]", handlerResponse.toString());
+        handlerResponse = HandlerResponse.get(HandlerResponse.Response.ACCEPTED);
+        assertEquals("[ACCEPTED]", handlerResponse.toString());
     }
 }
