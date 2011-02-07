@@ -52,6 +52,7 @@ public class ActiveMQBrokerComponent {
                     .name(brokerName)
                     .url(url)
                     .useJmx(useJmx)
+                    .persistent(isPersistent)
                     .useAdvisoryMessages(useAdvisoryMessages)
                     .deleteMsgOnStartup(deleteMsgOnStartup)
                     .jmxConnectorPort(jmxConnectorPort)
