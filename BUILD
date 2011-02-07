@@ -32,6 +32,15 @@ During development we often don't want to run the tests all the time
 You can skip them by issuing:
    mvn -Dmaven.test.skip=true install
 
+4. Integration tests
+------------------------
+Most tests in the project are unit test but there are some integration tests are identified by classes ending with
+IT unlike unit tests that end in Test.
+
+Integration tests are not run by default to make the builds faster and the normal mvn test won't execute them, to
+run the unit tests you need to issue:
+    mvn test failsafe:integration-test failsafe:verify
+
 5. Use with IntelliJ idea
 ------------------------------
 Idea works best by just importing the pom.xml as a project file definition
