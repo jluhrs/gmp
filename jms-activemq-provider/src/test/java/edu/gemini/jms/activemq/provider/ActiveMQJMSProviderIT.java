@@ -1,7 +1,6 @@
 package edu.gemini.jms.activemq.provider;
 
 import edu.gemini.jms.api.JmsProvider;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -14,7 +13,6 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
@@ -40,15 +38,13 @@ public class ActiveMQJMSProviderIT {
                 mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("com.springsource.javax.jms").groupId("javax.jms").versionAsInProject(),
                 mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").version("4.2.0"),
-                //mavenBundle().artifactId("jms-activemq-broker").groupId("edu.gemini.jms").version("1.1.0"),
                 mavenBundle().artifactId("activemq-core").groupId("org.apache.activemq").version("5.4.2"),
                 mavenBundle().artifactId("geronimo-j2ee-management_1.1_spec").groupId("org.apache.geronimo.specs").version("1.0.1"),
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").version("5.4.2"),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").version("1.1.1"),
                 mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
-                mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").version("1.1.0").update(),
-                mavenBundle().artifactId("org.apache.felix.configadmin").groupId("org.apache.felix").versionAsInProject()
+                mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").version("1.1.0").update()
         );
     }
 
@@ -68,10 +64,7 @@ public class ActiveMQJMSProviderIT {
     }
 
     @Test
-    @Ignore("Cannot find the service yet")
     public void doesServiceExist() throws IOException, BundleException, InterruptedException {
-        // Wait a sec for the container to start
-        TimeUnit.MILLISECONDS.wait(500);
         assertTrue(isJMSProviderInUse());
     }
 
