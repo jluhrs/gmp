@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.pcs.osgi;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 
@@ -10,6 +11,7 @@ import static org.mockito.Mockito.*;
  * <p/>
  * @author cquiroz
  */
+@Ignore
 public class ActivatorTest {
 
     @Test
