@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.pcs.jms;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
-import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterComposite;
+import edu.gemini.aspen.gmp.pcs.model.PcsUpdater;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 
 import javax.jms.BytesMessage;
@@ -28,7 +28,7 @@ public class PcsUpdateListener implements MessageListener {
     /**
      * Object that will process the updates.
      */
-    private final PcsUpdaterComposite _updater;
+    private final PcsUpdater _updater;
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public class PcsUpdateListener implements MessageListener {
      * @param updater The PcsUpdater object that will be notified whenever a
      *                new PCS update message is received
      */
-    public PcsUpdateListener(PcsUpdaterComposite updater) {
+    public PcsUpdateListener(PcsUpdater updater) {
         _updater = updater;
     }
 

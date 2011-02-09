@@ -1,33 +1,37 @@
 package edu.gemini.aspen.gmp.pcs.jms;
 
-import edu.gemini.aspen.gmp.pcs.test.TestPcsUpdater;
+import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
+import edu.gemini.aspen.gmp.pcs.model.PcsUpdater;
+import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.apache.activemq.command.ActiveMQMessage;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Unit test case for the PcsUpdateListener class
  */
 public class PcsUpdateListenerTest {
     private PcsUpdateListener _listener;
-
-    private final TestPcsUpdater _updater = new TestPcsUpdater();
+    private final PcsUpdater _updater = mock(PcsUpdater.class);
+    private ActiveMQBytesMessage m;
 
     @Before
     public void setUp() {
-        _updater.reset();
         _listener = new PcsUpdateListener(_updater);
+        m = new ActiveMQBytesMessage();
     }
 
     @Test
-    public void testValidMessage() throws JMSException {
+    public void testValidMessage() throws JMSException, PcsUpdaterException {
         Double updates[] = new Double[]{
                 1.0,
                 2.0,
@@ -36,23 +40,17 @@ public class PcsUpdateListenerTest {
                 5.0
         };
 
-        ActiveMQBytesMessage m = new ActiveMQBytesMessage();
         m.writeInt(updates.length);
         for (Double d : updates) {
             m.writeDouble(d);
         }
         m.reset();
 
-        synchronized (_updater) {
-            _listener.onMessage(m);
-            try {
-                _updater.wait(1);
-            } catch (InterruptedException e) {
-                fail("Updater interrupted");
-            }
-        }
+        _listener.onMessage(m);
+        ArgumentCaptor<PcsUpdate> updateCapture = ArgumentCaptor.forClass(PcsUpdate.class);
+        verify(_updater).update(updateCapture.capture());
 
-        assertArrayEquals(updates, _updater.getUpdate().getZernikes());
+        assertEquals(updateCapture.getValue(), new PcsUpdate(updates));
     }
 
     @Test(expected = JmsPcsMessageException.class)
