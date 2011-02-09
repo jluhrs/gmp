@@ -19,11 +19,11 @@ import java.util.logging.Logger;
 @Provides(specifications = PcsUpdaterComposite.class)
 public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComposite.class.getName());
-    private final List<PcsUpdater> _pcsUpdaters = new CopyOnWriteArrayList<PcsUpdater>();
 
+    private final List<PcsUpdater> _pcsUpdaters = new CopyOnWriteArrayList<PcsUpdater>();
     private BaseMessageConsumer _messageConsumer;
 
-    @Requires
+    @Requires(id="provider")
     private JmsProvider _provider;
 
     public PcsUpdaterCompositeImpl() {
@@ -62,6 +62,7 @@ public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite {
 
     @Validate
     public void initialize() throws JMSException {
+        LOG.info("Start listening for JMS Messages on " + PcsUpdateListener.DESTINATION_NAME);
         //Creates the PCS Updates Consumer
         _messageConsumer = new BaseMessageConsumer(
                 "JMS PCS Updates Consumer",
