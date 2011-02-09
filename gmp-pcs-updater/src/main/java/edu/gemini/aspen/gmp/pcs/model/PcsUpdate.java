@@ -1,7 +1,8 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * A class that holds an update for the PCS system.
@@ -11,21 +12,13 @@ public final class PcsUpdate {
     /**
      * List of zernikes to be sent
      */
-    private List<Double> _zernikes;
+    private final List<Double> _zernikes;
 
     /**
      * Constructor
      */
-    public PcsUpdate() {
-        _zernikes = new ArrayList<Double>();
-    }
-
-    /**
-     * Adds a new zernike to this update
-     * @param value the new zernike to this update
-     */
-    public void addZernike(double value) {
-        _zernikes.add(value);
+    public PcsUpdate(Double[] values) {
+        _zernikes = ImmutableList.copyOf(values);
     }
 
     /**

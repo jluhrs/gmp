@@ -43,7 +43,7 @@ public class EpicsPcsUpdaterTest {
     @Test
     public void simpleUpdate() throws PcsUpdaterException, EpicsException {
         EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
-        pcsUpdater.update(new PcsUpdate());
+        pcsUpdater.update(new PcsUpdate(new Double[0]));
 
         verify(writer).write(eq(channel), (Double[])anyObject());
     }

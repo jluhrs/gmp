@@ -1,22 +1,22 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertArrayEquals;
 import edu.gemini.aspen.gmp.pcs.test.TestPcsUpdater;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 
 /**
- * Test for the PcsUpdaterComposite class
+ * Test for the PcsUpdaterCompositeImpl class
  */
-public class PcsUpdaterCompositeTest {
+public class PcsUpdaterCompositeImplTest {
 
     private final TestPcsUpdater u1, u2, u3;
 
-    private PcsUpdaterComposite _composite;
+    private PcsUpdaterCompositeImpl _composite;
 
-    public PcsUpdaterCompositeTest() {
+    public PcsUpdaterCompositeImplTest() {
         u1 = new TestPcsUpdater();
         u2 = new TestPcsUpdater();
         u3 = new TestPcsUpdater();
@@ -28,7 +28,7 @@ public class PcsUpdaterCompositeTest {
         u1.reset();
         u2.reset();
         u3.reset();
-        _composite = new PcsUpdaterComposite();
+        _composite = new PcsUpdaterCompositeImpl();
 
     }
 
@@ -40,16 +40,11 @@ public class PcsUpdaterCompositeTest {
         _composite.registerUpdater(u2);
         _composite.registerUpdater(u3);
 
-        PcsUpdate update = new PcsUpdate();
-
         Double[] values = new Double [] {
                 1.5,
                 6.7
         };
-
-        for (Double value: values) {
-            update.addZernike(value);
-        }
+        PcsUpdate update = new PcsUpdate(values);
 
         //Send the update, and see if the three updaters
         //should have been gottent the update.
@@ -89,23 +84,19 @@ public class PcsUpdaterCompositeTest {
     }
 
     @Test
-    public void tesUnregisterUpdaters() {
+    public void tesUnRegisterUpdaters() {
 
         _composite.registerUpdater(u1);
         _composite.registerUpdater(u2);
         _composite.registerUpdater(u3);
         _composite.unregisterUpdater(u1);
 
-        PcsUpdate update = new PcsUpdate();
-
         Double[] values = new Double [] {
                 1.5,
                 6.7
         };
 
-        for (Double value: values) {
-            update.addZernike(value);
-        }
+        PcsUpdate update = new PcsUpdate(values);
 
         try {
             _composite.update(update);

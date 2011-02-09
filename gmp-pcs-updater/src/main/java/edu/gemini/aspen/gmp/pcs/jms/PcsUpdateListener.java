@@ -1,16 +1,16 @@
 package edu.gemini.aspen.gmp.pcs.jms;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
-import edu.gemini.aspen.gmp.pcs.model.PcsUpdater;
+import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterComposite;
+import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 
-import javax.jms.MessageListener;
-import javax.jms.Message;
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
-import java.util.logging.Logger;
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class receives PCS updates from the instrument
@@ -29,7 +29,7 @@ public class PcsUpdateListener implements MessageListener {
     /**
      * Object that will process the updates.
      */
-    private PcsUpdater _updater;
+    private PcsUpdaterComposite _updater;
 
     /**
      * Constructor.
@@ -37,7 +37,7 @@ public class PcsUpdateListener implements MessageListener {
      * @param updater The PcsUpdater object that will be notified whenever a
      *                new PCS update message is received
      */
-    public PcsUpdateListener(PcsUpdater updater) {
+    public PcsUpdateListener(PcsUpdaterComposite updater) {
         _updater = updater;
     }
 
@@ -55,11 +55,12 @@ public class PcsUpdateListener implements MessageListener {
             if (count <= 0) {
                 throw new JmsPcsMessageException("Invalid PCS update Message: It has " + count + " zernikes coefficients");
             }
-            PcsUpdate pcsUpdate = new PcsUpdate();
+            Double[] zernikes = new Double[count];
             for (int i = 0; i < count; i++) {
-                pcsUpdate.addZernike(bm.readDouble());
+                zernikes[i] = bm.readDouble();
             }
-            //update the registerd updaters with this information
+            PcsUpdate pcsUpdate = new PcsUpdate(zernikes);
+            //update the registered updaters with this information
             _updater.update(pcsUpdate);
 
         } catch (JMSException e) {
