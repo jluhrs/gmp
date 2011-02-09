@@ -68,13 +68,9 @@ public class ActiveMQJMSProviderIT {
         assertTrue(isJMSProviderInUse());
     }
 
-    private boolean isServiceClassInUse(Class<?> serviceClass) {
-        ServiceReference aggregateReference = context.getServiceReference(serviceClass.getName());
-        return aggregateReference != null;
-    }
-
     private boolean isJMSProviderInUse() {
-        return isServiceClassInUse(JmsProvider.class);
+        ServiceReference aggregateReference = context.getServiceReference(JmsProvider.class.getName());
+        return aggregateReference != null;
     }
 
 }
