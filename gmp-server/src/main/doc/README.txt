@@ -30,7 +30,34 @@ The following details the files and directories included in the package
     Directory with the application log
 
 When the application is launched a directory under /bin/runner is created that contains a cache of the binaries
-It can be deleted freely
+The directory can be deleted freely
+
+REQUIREMENTS
+------------
+The only set requirement is a Java 1.6 or higher installation. You can verify it with the command:
+java -version
 
 RUNNING
 -------
+To start the GMP go to the /bin directory and call the start.sh script
+
+At the end of the start the process should be running and there will be a prompt in the screen.
+Type help to see the list of commands
+
+TELNET
+------
+A telnet daemon is included that gives access to the shell with several commands that can be used to manage
+the application. To reach the server type
+
+telnet hostname 15001
+
+NOTE: There is a bug in the telnet daemon, if you press CTRL+C to exit the telnet client will hang. This doesn't
+affect the GMP
+
+NOTE2: There is no security, anybody can reach the telnet daemon
+
+WEB CONSOLE
+-----------
+A Web interface to the GMP OSGi container is available at
+
+http://hostname:8888/admin
