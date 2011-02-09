@@ -15,29 +15,30 @@ import java.util.logging.Logger;
  * a configuration file.
  */
 public class EpicsPcsUpdater implements PcsUpdater {
-
     private static final Logger LOG = Logger.getLogger(EpicsPcsUpdater.class.getName());
+    private static final String TCS_ZERNIKES_CHANNEL = "tst:array.VALJ";
 
-    private final IEpicsWriter _writter;
+    private final IEpicsWriter _writer;
+    private final String _channel;
 
-    private static final String TCS_ZERNIZES_CHANNEL = "tst:array.VALJ";
-
-    private String _channel;
-
-    public EpicsPcsUpdater(IEpicsWriter writter, String channel) throws PcsUpdaterException {
-
-        _channel = channel;
-        _writter = writter;
+    public EpicsPcsUpdater(IEpicsWriter writer, String channel) throws PcsUpdaterException {
+        _writer = writer;
 
         /**
          * If the channel is not specified, use the default one
          */
-        if (_channel == null) {
-            _channel = TCS_ZERNIZES_CHANNEL;
+        if (channel == null) {
+            LOG.info("Using default epics channel " + TCS_ZERNIKES_CHANNEL);
+            _channel = TCS_ZERNIKES_CHANNEL;
+        } else {
+            _channel = channel;
         }
+        bindEpicsChannel();
+    }
 
+    private void bindEpicsChannel() throws PcsUpdaterException {
         try {
-            _writter.bindChannel(_channel);
+            _writer.bindChannel(_channel);
         } catch (EpicsException e) {
             throw new PcsUpdaterException("Problem binding " +
                                    _channel +
@@ -46,7 +47,6 @@ public class EpicsPcsUpdater implements PcsUpdater {
     }
 
     public void update(PcsUpdate update) throws PcsUpdaterException {
-
         if (update == null) {
             LOG.warning("PCS Update is null");
             return;
@@ -54,9 +54,9 @@ public class EpicsPcsUpdater implements PcsUpdater {
         //attempt to write the values to EPICS
         try {
             LOG.fine("Post Zernikes updates to EPICS Channel: " + _channel);
-            _writter.write(_channel, update.getZernikes());
+            _writer.write(_channel, update.getZernikes());
         } catch (EpicsException e) {
-            throw new PcsUpdaterException("Trouble writting zernikes coefficients", e);
+            throw new PcsUpdaterException("Trouble writing zernikes coefficients", e);
         }
     }
 }
