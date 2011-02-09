@@ -4,3 +4,4 @@
 
 Private-Package: ${bundle.namespace}.*
 Export-Package:
+Bundle-Activator:
