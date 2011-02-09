@@ -10,13 +10,9 @@ import java.util.logging.Logger;
  * A simple PcsUpdater implementation that just logs the requests
  */
 public class LogPcsUpdater implements PcsUpdater {
-
     private static final Logger LOG = Logger.getLogger(LogPcsUpdater.class.getName());
 
     public void update(PcsUpdate update) throws PcsUpdaterException {
-
         LOG.info("PCS Update received " + update);
-
-
     }
 }
