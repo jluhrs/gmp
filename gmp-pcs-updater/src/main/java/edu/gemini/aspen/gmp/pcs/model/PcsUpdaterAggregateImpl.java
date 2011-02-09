@@ -16,7 +16,8 @@ import java.util.logging.Logger;
 
 @Component
 @Instantiate
-public class PcsUpdaterAggregate implements PcsUpdater, PcsUpdaterComposite {
+@Provides(specifications = PcsUpdaterComposite.class)
+public class PcsUpdaterAggregateImpl implements PcsUpdaterComposite {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComposite.class.getName());
     private final List<PcsUpdater> _pcsUpdaters = new CopyOnWriteArrayList<PcsUpdater>();
 
@@ -25,10 +26,15 @@ public class PcsUpdaterAggregate implements PcsUpdater, PcsUpdaterComposite {
     @Requires
     private JmsProvider _provider;
 
-    public PcsUpdaterAggregate() {
+    public PcsUpdaterAggregateImpl() {
         registerUpdater(new LogPcsUpdater());
     }
 
+    /**
+     * Register a new PcsUpdater in this aggregation
+     *
+     * @param updater the new updater in the agregation
+     */
     @Override
     @Bind(aggregate = true)
     public void registerUpdater(PcsUpdater updater) {
@@ -36,6 +42,11 @@ public class PcsUpdaterAggregate implements PcsUpdater, PcsUpdaterComposite {
         _pcsUpdaters.add(updater);
     }
 
+    /**
+     * Removes the given PcsUpdater from the aggregation
+     *
+     * @param updater updater to remove
+     */
     @Override
     @Unbind
     public void unregisterUpdater(PcsUpdater updater) {
@@ -51,6 +62,7 @@ public class PcsUpdaterAggregate implements PcsUpdater, PcsUpdaterComposite {
 
     @Validate
     public void initialize() throws JMSException {
+        LOG.info("Pcs");
         //Creates the PCS Updates Consumer
         _messageConsumer = new BaseMessageConsumer(
                 "JMS PCS Updates Consumer",
@@ -58,7 +70,6 @@ public class PcsUpdaterAggregate implements PcsUpdater, PcsUpdaterComposite {
                         DestinationType.TOPIC),
                 new PcsUpdateListener(this)
         );
-        _messageConsumer.startJms(_provider);
 
         try {
             _messageConsumer.startJms(_provider);

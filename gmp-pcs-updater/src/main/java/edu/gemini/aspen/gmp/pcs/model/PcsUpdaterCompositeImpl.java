@@ -23,8 +23,8 @@ public class PcsUpdaterCompositeImpl {
 
     @Requires(id = "epicsWriter")
     private IEpicsWriter _epicsWriter;
-    @Requires(optional = false)
-    private PcsUpdaterAggregate pcsUpdaterAggregate;
+    @Requires
+    private PcsUpdaterComposite pcsUpdaterAggregate;
 
     private PcsUpdater updater;
 

@@ -9,11 +9,11 @@ import static org.mockito.Mockito.*;
 
 
 /**
- * Test for the PcsUpdaterAggregate class
+ * Test for the PcsUpdaterAggregateImpl class
  */
-public class PcsUpdaterAggregateTest {
+public class PcsUpdaterAggregateImplTest {
     private PcsUpdater u1, u2, u3;
-    private PcsUpdaterAggregate _composite;
+    private PcsUpdaterAggregateImpl _composite;
     private Double[] values = new Double [] {1.5, 6.7};
 
     @Before
@@ -21,7 +21,7 @@ public class PcsUpdaterAggregateTest {
         u1 = mock(PcsUpdater.class);
         u2 = mock(PcsUpdater.class);
         u3 = mock(PcsUpdater.class);
-        _composite = new PcsUpdaterAggregate();
+        _composite = new PcsUpdaterAggregateImpl();
     }
 
     @Test
