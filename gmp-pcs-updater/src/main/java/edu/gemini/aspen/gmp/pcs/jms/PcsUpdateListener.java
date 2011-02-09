@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  * objects
  */
 public class PcsUpdateListener implements MessageListener {
-
     private static final Logger LOG = Logger.getLogger(PcsUpdateListener.class.getName());
 
     /**
@@ -29,7 +28,7 @@ public class PcsUpdateListener implements MessageListener {
     /**
      * Object that will process the updates.
      */
-    private PcsUpdaterComposite _updater;
+    private final PcsUpdaterComposite _updater;
 
     /**
      * Constructor.
@@ -42,27 +41,9 @@ public class PcsUpdateListener implements MessageListener {
     }
 
     public void onMessage(Message message) {
-
-        //if the message is not a ByteMessage, we got an invalid message
-        if (!(message instanceof BytesMessage)) {
-            throw new JmsPcsMessageException("Invalid message received");
-        }
-
-        BytesMessage bm = (BytesMessage) message;
-        //get the number of zernikes
+        checkIsBytesMessages(message);
         try {
-            int count = bm.readInt();
-            if (count <= 0) {
-                throw new JmsPcsMessageException("Invalid PCS update Message: It has " + count + " zernikes coefficients");
-            }
-            Double[] zernikes = new Double[count];
-            for (int i = 0; i < count; i++) {
-                zernikes[i] = bm.readDouble();
-            }
-            PcsUpdate pcsUpdate = new PcsUpdate(zernikes);
-            //update the registered updaters with this information
-            _updater.update(pcsUpdate);
-
+            updatePcs((BytesMessage) message);
         } catch (JMSException e) {
             throw new JmsPcsMessageException("Problem receiving message with PCS updates from instrument", e);
         } catch (PcsUpdaterException e) {
@@ -70,4 +51,27 @@ public class PcsUpdateListener implements MessageListener {
         }
     }
 
+    private void checkIsBytesMessages(Message message) {
+        if (!(message instanceof BytesMessage)) {
+            throw new JmsPcsMessageException("Invalid message received");
+        }
+    }
+
+    private void updatePcs(BytesMessage message) throws JMSException, PcsUpdaterException {
+        Double[] zernikes = readZernikes(message);
+        _updater.update(new PcsUpdate(zernikes));
+    }
+
+    private Double[] readZernikes(BytesMessage message) throws JMSException {
+        // Decode the message containing the zernikes
+        int count = message.readInt();
+        if (count <= 0) {
+            throw new JmsPcsMessageException("Invalid PCS update Message: It has " + count + " zernikes coefficients");
+        }
+        Double[] zernikes = new Double[count];
+        for (int i = 0; i < count; i++) {
+            zernikes[i] = message.readDouble();
+        }
+        return zernikes;
+    }
 }
