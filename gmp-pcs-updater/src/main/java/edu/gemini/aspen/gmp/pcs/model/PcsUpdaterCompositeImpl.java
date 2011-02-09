@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 /**
  * Interface to define a composite of several PCS updater objects
  */
-@Component
-@Instantiate
+@Component(name = "pcsUpdater", managedservice = "edu.gemini.aspen.gmp.pcs.PcsUpdater")
+@Instantiate(name = "pcsUpdater")
 @Provides(specifications = PcsUpdaterComposite.class)
 public class PcsUpdaterCompositeImpl implements PcsUpdater, PcsUpdaterComposite {
 
