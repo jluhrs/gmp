@@ -8,7 +8,6 @@ import java.util.List;
  * An immutable class that holds an update for the PCS system.
  */
 public final class PcsUpdate {
-
     /**
      * List of zernikes to be sent
      */
@@ -29,7 +28,6 @@ public final class PcsUpdate {
         _zernikes.toArray(results);
         return results;
     }
-
 
     @Override
     public boolean equals(Object o) {
