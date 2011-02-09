@@ -9,7 +9,4 @@ public class PcsUpdaterException extends Exception {
         super(message, cause);
     }
 
-    public PcsUpdaterException(String message) {
-        super(message);
-    }
 }
