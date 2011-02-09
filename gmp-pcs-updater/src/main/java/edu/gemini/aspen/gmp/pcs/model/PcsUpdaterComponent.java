@@ -28,7 +28,19 @@ public class PcsUpdaterComponent {
 
     private PcsUpdater updater;
 
-    public PcsUpdaterComponent() {}
+    private PcsUpdaterComponent() {
+    }
+
+    protected PcsUpdaterComponent(IEpicsWriter epicsWriter, PcsUpdaterComposite updater, Boolean simulation, String pcsChannel) {
+        this(epicsWriter, updater);
+        this.simulation = simulation;
+        this.pcsChannel = pcsChannel;
+    }
+
+    protected PcsUpdaterComponent(IEpicsWriter epicsWriter, PcsUpdaterComposite updater) {
+        this._epicsWriter = epicsWriter;
+        this.pcsUpdaterAggregate = updater;
+    }
 
     @Bind(id = "epicsWriter")
     public void registerEpicsWriter() {
@@ -45,14 +57,11 @@ public class PcsUpdaterComponent {
 
     @Unbind(id = "epicsWriter")
     public void unRegisterEpicsWriter() {
-        if (!simulation) {
-            if (updater != null) {
-                pcsUpdaterAggregate.unregisterUpdater(updater);
-                updater = null;
-                LOG.info("Disconnected from EPICS");
-            }
+        if (!simulation && updater != null) {
+            pcsUpdaterAggregate.unregisterUpdater(updater);
+            updater = null;
+            LOG.info("Disconnected from EPICS");
         }
-
     }
 
     @Modified(id = "epicsWriter")
@@ -60,13 +69,13 @@ public class PcsUpdaterComponent {
         if (!simulation) {
             if (updater != null) {
                 pcsUpdaterAggregate.unregisterUpdater(updater);
-                LOG.info("Removed old instance of EPICS writter");
+                LOG.info("Removed old instance of EPICS writer");
             }
 
             try {
                 updater = new EpicsPcsUpdater(_epicsWriter, pcsChannel);
                 pcsUpdaterAggregate.registerUpdater(updater);
-                LOG.info("New instance of EPICS writter registered");
+                LOG.info("New instance of EPICS writer registered");
             } catch (PcsUpdaterException ex) {
                 LOG.log(Level.WARNING, "Can't initialize EPICS channels", ex);
             }

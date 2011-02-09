@@ -62,7 +62,6 @@ public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite {
 
     @Validate
     public void initialize() throws JMSException {
-        LOG.info("Pcs");
         //Creates the PCS Updates Consumer
         _messageConsumer = new BaseMessageConsumer(
                 "JMS PCS Updates Consumer",
