@@ -1,76 +1,85 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
-import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
-import edu.gemini.epics.IEpicsWriter;
+import edu.gemini.aspen.gmp.pcs.jms.PcsUpdateListener;
+import edu.gemini.aspen.gmp.pcs.model.updaters.LogPcsUpdater;
+import edu.gemini.jms.api.BaseMessageConsumer;
+import edu.gemini.jms.api.DestinationData;
+import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 
+import javax.jms.JMSException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Interface to define a composite of several PCS updater objects
- */
-@Component(name = "pcsUpdater", managedservice = "edu.gemini.aspen.gmp.pcs.PcsUpdater")
-@Instantiate(name = "pcsUpdater")
-public class PcsUpdaterCompositeImpl {
+@Component
+@Instantiate
+@Provides(specifications = PcsUpdaterComposite.class)
+public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComposite.class.getName());
+    private final List<PcsUpdater> _pcsUpdaters = new CopyOnWriteArrayList<PcsUpdater>();
 
-    @Property(name = "simulation", value = "yes", mandatory = true)
-    private Boolean simulation;
+    private BaseMessageConsumer _messageConsumer;
 
-    @Property(name = "epicsChannel", value = "NOVALID", mandatory = true)
-    private String pcsChannel;
-
-    @Requires(id = "epicsWriter")
-    private IEpicsWriter _epicsWriter;
     @Requires
-    private PcsUpdaterComposite pcsUpdaterAggregate;
+    private JmsProvider _provider;
 
-    private PcsUpdater updater;
+    public PcsUpdaterCompositeImpl() {
+        registerUpdater(new LogPcsUpdater());
+    }
 
-    public PcsUpdaterCompositeImpl() {}
+    /**
+     * Register a new PcsUpdater in this aggregation
+     *
+     * @param updater the new updater in the agregation
+     */
+    @Override
+    @Bind(aggregate = true)
+    public void registerUpdater(PcsUpdater updater) {
+        LOG.fine("Adding a registered PcsUpdater: " + updater);
+        _pcsUpdaters.add(updater);
+    }
 
-    @Bind(id = "epicsWriter")
-    public void registerEpicsWriter() {
-        if (!simulation) {
-            try {
-                updater = new EpicsPcsUpdater(_epicsWriter, pcsChannel);
-                pcsUpdaterAggregate.registerUpdater(updater);
-                LOG.info("EPICS Connection established");
-            } catch (PcsUpdaterException ex) {
-                LOG.log(Level.WARNING, "Can't initialize EPICS channels", ex);
-            }
+    /**
+     * Removes the given PcsUpdater from the aggregation
+     *
+     * @param updater updater to remove
+     */
+    @Override
+    @Unbind
+    public void unregisterUpdater(PcsUpdater updater) {
+        LOG.fine("Adding an unregistered PcsUpdater: " + updater);
+        _pcsUpdaters.remove(updater);
+    }
+
+    public void update(PcsUpdate update) throws PcsUpdaterException {
+        for (PcsUpdater updater : _pcsUpdaters) {
+            updater.update(update);
         }
     }
 
-    @Unbind(id = "epicsWriter")
-    public void unRegisterEpicsWriter() {
-        if (!simulation) {
-            if (updater != null) {
-                pcsUpdaterAggregate.unregisterUpdater(updater);
-                updater = null;
-                LOG.info("Disconnected from EPICS");
-            }
-        }
+    @Validate
+    public void initialize() throws JMSException {
+        LOG.info("Pcs");
+        //Creates the PCS Updates Consumer
+        _messageConsumer = new BaseMessageConsumer(
+                "JMS PCS Updates Consumer",
+                new DestinationData(PcsUpdateListener.DESTINATION_NAME,
+                        DestinationType.TOPIC),
+                new PcsUpdateListener(this)
+        );
 
-    }
-
-    @Modified(id = "epicsWriter")
-    public void modifiedEpicsWriter() {
-        if (!simulation) {
-            if (updater != null) {
-                pcsUpdaterAggregate.unregisterUpdater(updater);
-                LOG.info("Removed old instance of EPICS writter");
-            }
-
-            try {
-                updater = new EpicsPcsUpdater(_epicsWriter, pcsChannel);
-                pcsUpdaterAggregate.registerUpdater(updater);
-                LOG.info("New instance of EPICS writter registered");
-            } catch (PcsUpdaterException ex) {
-                LOG.log(Level.WARNING, "Can't initialize EPICS channels", ex);
-            }
+        try {
+            _messageConsumer.startJms(_provider);
+        } catch (JMSException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
+    @Invalidate
+    public void invalidate() {
+        _messageConsumer.stopJms();
+    }
 }
