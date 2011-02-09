@@ -34,7 +34,7 @@ public class JmsProviderTracker extends ServiceTracker {
         _requestConsumer = new RequestConsumer(provider);
 
         //property service
-        Service propertyService = new PropertyService(new OsgiPropertyHolder(context));
+        Service propertyService = new PropertyService(new XMLFileBasedPropertyHolder(context));
         _requestConsumer.registerService(propertyService);
 
 

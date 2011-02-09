@@ -19,7 +19,7 @@ import java.util.Map;
  * from an XML configuration stored in the OSGi
  * bundle configuration.
  */
-public class OsgiPropertyHolder implements PropertyHolder {
+public class XMLFileBasedPropertyHolder implements PropertyHolder {
 
     private static final String CONF_FILE = "gmp.properties.conf";
     private static final String PROPERTY_TAG = "property";
@@ -27,7 +27,7 @@ public class OsgiPropertyHolder implements PropertyHolder {
 
     private Map<String, String> _properties;
 
-    public OsgiPropertyHolder(BundleContext ctx) {
+    public XMLFileBasedPropertyHolder(BundleContext ctx) {
         Document doc = getPropertiesDocument(ctx);
         _properties = parseProperties(doc);
     }
@@ -41,7 +41,7 @@ public class OsgiPropertyHolder implements PropertyHolder {
 
         Element root = doc.getRootElement();
         Map<String, String> prop = new HashMap<String, String>();
-        
+
         for (Iterator it = root.elementIterator(PROPERTY_TAG); it.hasNext(); ) {
             Element element = (Element)it.next();
             Attribute at = element.attribute(KEY_TAG);
