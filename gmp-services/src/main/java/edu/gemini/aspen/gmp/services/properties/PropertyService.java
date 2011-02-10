@@ -8,11 +8,7 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import javax.jms.*;
 import java.util.logging.Logger;
 
-/**
- *
- */
 public class PropertyService extends JmsService {
-
     private static final Logger LOG = Logger.getLogger(PropertyService.class.getName());
 
     private PropertyHolder _properties;
@@ -43,8 +39,6 @@ public class PropertyService extends JmsService {
         } catch (JMSException e) {
             throw new ServiceException(e);
         }
-
-
     }
 
     public ServiceType getType() {

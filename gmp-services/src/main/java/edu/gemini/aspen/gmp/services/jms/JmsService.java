@@ -8,8 +8,8 @@ import javax.jms.Session;
 
 /**
  * A Service that stores the JMS session internally, so
- * implementators can use it for advanced operations
- * as sending information back to the requestor
+ * implementers can use it for advanced operations
+ * as sending information back to the requester
  */
 public abstract class JmsService implements Service {
 

@@ -15,7 +15,7 @@ public enum ServiceType {
     }
 
     /**
-     * Returns the diaplaly name associated
+     * Returns the display name associated
      * to the type.
      * @return the display name for the given service.
      */
