@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.services.osgi;
 import edu.gemini.aspen.gmp.services.core.Service;
 import edu.gemini.aspen.gmp.services.jms.RequestConsumer;
 import edu.gemini.aspen.gmp.services.properties.PropertyService;
+import edu.gemini.aspen.gmp.services.properties.XMLFileBasedPropertyHolder;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 import org.osgi.framework.ServiceReference;

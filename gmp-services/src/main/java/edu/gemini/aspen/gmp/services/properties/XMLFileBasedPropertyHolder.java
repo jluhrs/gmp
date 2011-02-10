@@ -1,6 +1,5 @@
-package edu.gemini.aspen.gmp.services.osgi;
+package edu.gemini.aspen.gmp.services.properties;
 
-import edu.gemini.aspen.gmp.services.properties.PropertyHolder;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;

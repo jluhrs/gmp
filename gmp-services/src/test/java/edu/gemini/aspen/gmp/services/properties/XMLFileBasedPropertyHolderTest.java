@@ -1,11 +1,10 @@
-package edu.gemini.aspen.gmp.services.osgi;
+package edu.gemini.aspen.gmp.services.properties;
 
+import edu.gemini.aspen.gmp.services.properties.XMLFileBasedPropertyHolder;
 import org.junit.Test;
-import org.osgi.framework.BundleContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class XMLFileBasedPropertyHolderTest {
     @Test
