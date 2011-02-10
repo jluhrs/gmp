@@ -55,7 +55,8 @@ public class PropertyServiceTest {
     }
 
     private Destination mockDestination(MapMessage msg) throws JMSException {
-        Destination destination = new Destination() {};
+        Destination destination = new Destination() {
+        };
         when(msg.getJMSReplyTo()).thenReturn(destination);
         return destination;
     }
@@ -89,13 +90,25 @@ public class PropertyServiceTest {
 
     @Test(expected = ServiceException.class)
     public void testJmsExceptionConversion() throws JMSException, ServiceException {
-      PropertyService propertyService = new PropertyService(propertyHolder);
+        PropertyService propertyService = new PropertyService(propertyHolder);
         MapMessage requestMessage = mock(MapMessage.class);
 
         JmsServiceRequest request = mockServiceRequest(requestMessage);
         Destination destination = mockDestination(requestMessage);
         Session session = mock(Session.class);
         when(session.createProducer(destination)).thenThrow(new JMSException("Exception"));
+
+        propertyService.setJmsSession(session);
+        propertyService.process(request);
+    }
+
+    @Test
+    public void testNoDestination() throws JMSException, ServiceException {
+        PropertyService propertyService = new PropertyService(propertyHolder);
+        MapMessage requestMessage = mock(MapMessage.class);
+
+        JmsServiceRequest request = mockServiceRequest(requestMessage);
+        Session session = mockSession(null);
 
         propertyService.setJmsSession(session);
         propertyService.process(request);
