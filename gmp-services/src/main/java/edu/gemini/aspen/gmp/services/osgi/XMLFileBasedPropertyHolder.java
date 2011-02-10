@@ -67,4 +67,10 @@ public class XMLFileBasedPropertyHolder implements PropertyHolder {
         return doc;
     }
 
+    @Override
+    public String toString() {
+        return "XMLFileBasedPropertyHolder{" +
+                "_properties=" + _properties +
+                '}';
+    }
 }

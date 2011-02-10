@@ -15,6 +15,7 @@ public class PropertyService extends JmsService {
 
     public PropertyService(PropertyHolder holder) {
         _properties = holder;
+        LOG.info("Properties service started with properties: " + _properties);
     }
 
     public void process(JmsServiceRequest jmsRequest) throws ServiceException {
