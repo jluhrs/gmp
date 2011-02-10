@@ -6,7 +6,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.osgi.framework.BundleContext;
 
 import java.io.File;
 import java.util.Collections;
@@ -20,25 +19,21 @@ import java.util.Map;
  * bundle configuration.
  */
 public class XMLFileBasedPropertyHolder implements PropertyHolder {
-
-    private static final String CONF_FILE = "gmp.properties.conf";
     private static final String PROPERTY_TAG = "property";
     private static final String KEY_TAG = "key";
 
     private Map<String, String> _properties;
 
-    public XMLFileBasedPropertyHolder(BundleContext ctx) {
-        Document doc = getPropertiesDocument(ctx);
+    public XMLFileBasedPropertyHolder(String configFileLocation) {
+        Document doc = getPropertiesDocument(configFileLocation);
         _properties = parseProperties(doc);
     }
-
 
     public String getProperty(String key) {
         return _properties.get(key);
     }
 
     private Map<String, String> parseProperties(Document doc) {
-
         Element root = doc.getRootElement();
         Map<String, String> prop = new HashMap<String, String>();
 
@@ -54,14 +49,12 @@ public class XMLFileBasedPropertyHolder implements PropertyHolder {
         }
 
         return Collections.unmodifiableMap(prop);
-
     }
 
-     private Document getPropertiesDocument(BundleContext ctx) {
-        String configFileStr = getProperty(ctx, CONF_FILE);
-        File confFile = new File(configFileStr);
+     private Document getPropertiesDocument(String configFileLocation) {
+        File confFile = new File(configFileLocation);
         if (!confFile.exists()) {
-            throw new RuntimeException("Missing properties config file: " + configFileStr);
+            throw new RuntimeException("Missing properties config file: " + configFileLocation);
         }
         SAXReader reader = new SAXReader();
         Document doc;
@@ -73,15 +66,5 @@ public class XMLFileBasedPropertyHolder implements PropertyHolder {
 
         return doc;
     }
-
-    private String getProperty(BundleContext ctx, String key) {
-        String res = ctx.getProperty(key);
-        if (res == null) {
-            throw new RuntimeException("Missing configuration: " + key);
-        }
-
-        return res;
-    }
-
 
 }

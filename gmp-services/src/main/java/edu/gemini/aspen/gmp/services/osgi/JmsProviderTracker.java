@@ -18,23 +18,30 @@ public class JmsProviderTracker extends ServiceTracker {
 
     private final static Logger LOG = Logger.getLogger(JmsProviderTracker.class.getName());
 
-    private RequestConsumer _requestConsumer = null;
+    private static final String CONF_FILE = "gmp.properties.conf";
 
-    
+    private RequestConsumer _requestConsumer = null;
+    private final String configurationFile;
+
+
     public JmsProviderTracker(BundleContext ctx) {
         super(ctx, JmsProvider.class.getName(), null);
+        this.configurationFile = ctx.getProperty(CONF_FILE);
+        if (configurationFile == null) {
+            throw new RuntimeException("Missing configuration: " + CONF_FILE);
+        }
     }
 
     @Override
     public Object addingService(ServiceReference serviceReference) {
 
         LOG.info("JMS Provider found. Starting Services bundle");
-        JmsProvider provider = (JmsProvider)context.getService(serviceReference);
+        JmsProvider provider = (JmsProvider) context.getService(serviceReference);
 
         _requestConsumer = new RequestConsumer(provider);
 
         //property service
-        Service propertyService = new PropertyService(new XMLFileBasedPropertyHolder(context));
+        Service propertyService = new PropertyService(new XMLFileBasedPropertyHolder(configurationFile));
         _requestConsumer.registerService(propertyService);
 
 
