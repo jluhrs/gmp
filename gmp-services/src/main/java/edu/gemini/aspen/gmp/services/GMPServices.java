@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.services.osgi;
+package edu.gemini.aspen.gmp.services;
 
 import edu.gemini.aspen.gmp.services.core.Service;
 import edu.gemini.aspen.gmp.services.jms.RequestConsumer;
@@ -16,8 +16,8 @@ import java.util.logging.Logger;
  */
 @Component(name="GMP Services", managedservice = "edu.gemini.aspen.gmp.services.GMPServices")
 @Instantiate(name = "GMP Services")
-public class JmsProviderTracker {
-    private final static Logger LOG = Logger.getLogger(JmsProviderTracker.class.getName());
+public class GMPServices {
+    private final static Logger LOG = Logger.getLogger(GMPServices.class.getName());
     private static final String CONF_FILE = "gmp.properties.conf";
 
     private RequestConsumer _requestConsumer = null;
@@ -27,7 +27,7 @@ public class JmsProviderTracker {
     @Requires
     private JmsProvider provider;
 
-    public JmsProviderTracker() {
+    public GMPServices() {
     }
 
     @Validate
