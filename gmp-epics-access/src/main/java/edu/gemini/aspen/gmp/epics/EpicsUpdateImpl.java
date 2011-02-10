@@ -28,15 +28,21 @@ public class EpicsUpdateImpl implements EpicsUpdate {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         EpicsUpdateImpl that = (EpicsUpdateImpl) o;
 
-        if (!channelData.equals(that.channelData))
+        if (!channelData.equals(that.channelData)) {
             return false;
-        if (!channelName.equals(that.channelName))
+        }
+        if (!channelName.equals(that.channelName)) {
             return false;
+        }
         //everything is fine, the objects are the same
         return true;
     }
