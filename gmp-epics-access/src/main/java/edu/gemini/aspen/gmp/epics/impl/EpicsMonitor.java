@@ -1,10 +1,10 @@
 package edu.gemini.aspen.gmp.epics.impl;
 
-import java.util.logging.Logger;
-
-import edu.gemini.epics.IEpicsClient;
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
+import edu.gemini.epics.IEpicsClient;
+
+import java.util.logging.Logger;
 
 /**
  * This class monitors the EPICS channels acting as an IEpicsClient.
@@ -17,14 +17,17 @@ import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
  *
  */
 public class EpicsMonitor implements IEpicsClient {
-
     public static final Logger LOG = Logger.getLogger(EpicsMonitor.class.getName());
 
-    private boolean connected;
+    private volatile boolean connected = false;
+    private final EpicsRegistrar _registrar;
 
-
-    private EpicsRegistrar _registrar;
-
+    public EpicsMonitor(EpicsRegistrar registrar) {
+        if (registrar == null) {
+            throw new IllegalArgumentException("Cannot create an EpicsMonitor with a null registrar");
+        }
+        _registrar = registrar;
+    }
 
     public void channelChanged(String channel, Object value) {
         _registrar.processEpicsUpdate(new EpicsUpdateImpl(channel, value));
@@ -36,17 +39,12 @@ public class EpicsMonitor implements IEpicsClient {
     }
 
     public void disconnected() {
-        connected = false;
         LOG.info("Disconnected from EPICS");
-    }
-
-    public EpicsMonitor(EpicsRegistrar registrar) {
-        _registrar = registrar;
+        connected = false;
     }
 
     public boolean isConnected() {
         return connected;
     }
-
 
 }
