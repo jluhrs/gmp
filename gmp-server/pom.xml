@@ -30,7 +30,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
 
-        <gmp.properties.conf>${conf.base}/gmp-properties.xml</gmp.properties.conf>
         <edu.gemini.aspen.gmp.tcs.epicsChannel>tc1:sad:astCtx</edu.gemini.aspen.gmp.tcs.epicsChannel>
         <edu.gemini.aspen.gmp.tcs.simulation>yes</edu.gemini.aspen.gmp.tcs.simulation>
         <edu.gemini.aspen.gmp.tcs.simulationData>${conf.base}/tcsCtx.data</edu.gemini.aspen.gmp.tcs.simulationData>
