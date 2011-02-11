@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.epics.impl;
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateListener;
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 import java.util.Map;
@@ -14,14 +15,12 @@ import java.util.HashMap;
  * registered listeners using a separate thread
  */
 public class EpicsUpdaterThread implements EpicsRegistrar {
-
     private final static Logger LOG = Logger.getLogger(EpicsUpdaterThread.class.getName());
 
     private final BlockingQueue<EpicsUpdate> _updateQueue =
             new LinkedBlockingQueue<EpicsUpdate>();
 
-
-     Map<String, EpicsUpdateListener> _updatersMap = new HashMap<String, EpicsUpdateListener>();
+    Map<String, EpicsUpdateListener> _updatersMap = new HashMap<String, EpicsUpdateListener>();
 
     /**
      * The executor service provides a separate thread for the Updater thread
@@ -30,17 +29,11 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
     private final ExecutorService _executorService =
             Executors.newSingleThreadExecutor();
 
-
     /**
-    * The update task is responsible for receiving updates through
-    * the update queue and notify the clients waiting in the action quueue
-    */
+     * The update task is responsible for receiving updates through
+     * the update queue and notify the clients waiting in the action queue
+     */
     private final UpdaterTask _updaterTask = new UpdaterTask();
-    //create a thread and a blocking queue for updates.
-    //similar to what I have inthe Status Updater class. That can be moved out.
-
-    //then this class has to have a method to "receive" updates. That probably
-    //should be part of the public interface.
 
     public void unregisterInterest(String channel) {
         _updatersMap.remove(channel);
@@ -51,7 +44,7 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
     }
 
     public synchronized void processEpicsUpdate(EpicsUpdate update) {
-         //put the update on the queue, and keep waiting for more updates
+        //put the update on the queue, and keep waiting for more updates
         try {
             _updateQueue.put(update);
         } catch (InterruptedException e) {
@@ -61,11 +54,10 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
 
     /**
      * This is the runnable task that will get the epics updates from
-     * the queue and will invoke any registered listeners.  
+     * the queue and will invoke any registered listeners.
      */
     private class UpdaterTask implements Runnable {
         private boolean isRunning;
-
 
         public void run() {
             isRunning = true;
@@ -104,16 +96,10 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
         public synchronized void stop() {
             isRunning = false;
         }
-
     }
 
-
-
-
-      /**
-     * Start up a background thread used to send the completion
-     * information invoking the <code>CompletionListener</code> handlers
-     * registered.
+    /**
+     * Start up a background thread
      */
     public void start() {
         //Submit the processor task for execution in a separate thread
@@ -121,7 +107,7 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
     }
 
     /*
-     ** Stop the processing thread of this action manager.
+     ** Stop the processing thread.
     */
     public void stop() {
         _updaterTask.stop();
@@ -134,6 +120,5 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
             _executorService.shutdownNow();
         }
     }
-
 
 }
