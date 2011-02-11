@@ -9,6 +9,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class EpicsUpdaterThreadTest {
@@ -43,5 +44,42 @@ public class EpicsUpdaterThreadTest {
                         latch.countDown();
                     }
                 };
+    }
+
+    @Test
+    public void testNoUpdateOnUnRegisteredListener() throws InterruptedException {
+        EpicsUpdaterThread epicsUpdater = new EpicsUpdaterThread();
+        try {
+            EpicsUpdateListener listener = createListener();
+
+            epicsUpdater.registerInterest(channel, listener);
+            epicsUpdater.start();
+            epicsUpdater.unregisterInterest(channel);
+            epicsUpdater.processEpicsUpdate(epicsUpdate);
+
+            // Wait on the latch for just 200 milisecs;
+            latch.await(100, TimeUnit.MILLISECONDS);
+            assertFalse(passed.get());
+        } finally {
+            epicsUpdater.stop();
+        }
+    }
+
+    @Test
+    public void testNoUpdateOnOtherChannelListener() throws InterruptedException {
+        EpicsUpdaterThread epicsUpdater = new EpicsUpdaterThread();
+        try {
+            EpicsUpdateListener listener = createListener();
+
+            epicsUpdater.registerInterest("X.val2", listener);
+            epicsUpdater.start();
+            epicsUpdater.processEpicsUpdate(epicsUpdate);
+
+            // Wait on the latch for just 200 milisecs;
+            latch.await(100, TimeUnit.MILLISECONDS);
+            assertFalse(passed.get());
+        } finally {
+            epicsUpdater.stop();
+        }
     }
 }
