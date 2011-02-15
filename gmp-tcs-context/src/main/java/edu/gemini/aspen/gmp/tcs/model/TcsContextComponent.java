@@ -3,10 +3,14 @@ package edu.gemini.aspen.gmp.tcs.model;
 import edu.gemini.aspen.gmp.tcs.jms.JmsTcsContextDispatcher;
 import edu.gemini.aspen.gmp.tcs.jms.TcsContextRequestListener;
 import edu.gemini.epics.IEpicsReader;
-import edu.gemini.jms.api.*;
+import edu.gemini.jms.api.BaseMessageConsumer;
+import edu.gemini.jms.api.DestinationData;
+import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,7 +94,7 @@ public class TcsContextComponent {
     private void addSimulatedTcsContextFetcher() {
         try {
             LOG.info("Simulating data for TCS Context from " + simulationData);
-            _listener.registerTcsContextFetcher(new SimTcsContextFetcher(simulationData));
+            _listener.registerTcsContextFetcher(new SimTcsContextFetcher(new FileInputStream(simulationData)));
         } catch (FileNotFoundException e) {
             LOG.log(Level.SEVERE, "Simulation file not found " + simulationData, e);
         }
