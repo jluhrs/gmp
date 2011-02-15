@@ -27,4 +27,11 @@ public class EpicsReaderMock implements IEpicsReader {
     public void bindChannel(String channel) throws EpicsException {
         this._channel = channel;
     }
+
+    @Override
+    public String toString() {
+        return "EpicsReader{" +
+                "channel='" + _channel + '\'' +
+                '}';
+    }
 }
