@@ -11,7 +11,6 @@ import java.util.logging.Logger;
  * The message producer used to send the TCS Context back to the requester.
  */
 public class JmsTcsContextDispatcher extends BaseMessageProducer {
-
     private static final Logger LOG = Logger.getLogger(JmsTcsContextDispatcher.class.getName());
 
     public JmsTcsContextDispatcher(String clientName) {
@@ -30,7 +29,7 @@ public class JmsTcsContextDispatcher extends BaseMessageProducer {
     public void send(double[] context, Destination destination) throws JMSException {
         if (context == null) {
             LOG.warning("Can't send a null context. Problem accessing the TCS?");
-            return; //nothting to do
+            return; //nothing to do
         }
 
         BytesMessage msg = _session.createBytesMessage();
