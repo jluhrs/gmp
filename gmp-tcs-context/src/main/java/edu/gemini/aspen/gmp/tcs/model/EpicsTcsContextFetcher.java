@@ -7,7 +7,7 @@ import edu.gemini.epics.EpicsException;
  * The Epics Tcs Context Fetcher provides a mechanism to obtain the
  * TCS Context from Gemini via EPICS channel.
  */
-public class EpicsTcsContextFetcher implements TcsContextFetcher {
+class EpicsTcsContextFetcher implements TcsContextFetcher {
 
     /**
      * Default channel to get the TCS Context from Gemini
@@ -17,12 +17,12 @@ public class EpicsTcsContextFetcher implements TcsContextFetcher {
     /**
      * EPICS Reader instance
      */
-    private IEpicsReader _reader;
+    private final IEpicsReader _reader;
 
     /**
      * Actual channel name to obtain the TCS Context from Gemini
      */
-    private String _tcsCtxChannel;
+    private final String _tcsCtxChannel;
 
     /**
      * Constructor. Takes as an argument the EPICS reader to get access
@@ -35,16 +35,18 @@ public class EpicsTcsContextFetcher implements TcsContextFetcher {
      * @throws TcsContextException in case there is a problem obtaining
      *                             the TCS Context
      */
-    public EpicsTcsContextFetcher(IEpicsReader reader, String tcsCtxChannel)
+    protected EpicsTcsContextFetcher(IEpicsReader reader, String tcsCtxChannel)
             throws TcsContextException {
         _reader = reader;
 
-        _tcsCtxChannel = tcsCtxChannel;
         /**
          * If no context channel is passed, then we will use the default value
          */
-        if (_tcsCtxChannel == null)
+        if (tcsCtxChannel == null) {
             _tcsCtxChannel = TCS_CONTEXT_CHANNEL;
+        } else {
+            _tcsCtxChannel = tcsCtxChannel;
+        }
 
         try {
             _reader.bindChannel(_tcsCtxChannel);
@@ -63,8 +65,8 @@ public class EpicsTcsContextFetcher implements TcsContextFetcher {
      * @param reader EPICS reader
      * @throws TcsContextException in case of problems obtaininig the TCS
      */
-    public EpicsTcsContextFetcher(IEpicsReader reader) throws TcsContextException {
-        this(reader, null);
+    protected EpicsTcsContextFetcher(IEpicsReader reader) throws TcsContextException {
+        this(reader, TCS_CONTEXT_CHANNEL);
     }
 
 
@@ -77,21 +79,19 @@ public class EpicsTcsContextFetcher implements TcsContextFetcher {
      *                             trying to get the TCS Context.
      */
     public double[] getTcsContext() throws TcsContextException {
-
         try {
-            Object o = _reader.getValue(_tcsCtxChannel);
+            Object readValue = _reader.getValue(_tcsCtxChannel);
 
-            if (o == null) return null;
-
-            if (!(o instanceof double[])) {
-                throw new TcsContextException("Invalid data obtained from EPICS channel " + _tcsCtxChannel + ": " + o);
+            if (readValue == null) {
+                return null;
             }
 
-            return (double[]) o;
-
+            if (!(readValue instanceof double[])) {
+                throw new TcsContextException("Invalid data obtained from EPICS channel " + _tcsCtxChannel + ": " + readValue);
+            }
+            return (double[]) readValue;
         } catch (EpicsException e) {
             throw new TcsContextException("Problem getting the TCS Context from EPICS channel " + _tcsCtxChannel, e);
         }
-
     }
 }

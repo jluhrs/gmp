@@ -1,97 +1,64 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
+
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 
 /**
  * Test class for the TCS Context Fetcher Interface
  */
 public class EpicsTcsContextFetcherTest {
+    private EpicsReaderMock _epicsReaderMock;
+    private TcsContextFetcher _fetcher;
 
-
-    EpicsReaderMockup _epicsReaderMockup;
-
-    TcsContextFetcher _fetcher;
-
-    @Before
-    public void setUp() {
-        _epicsReaderMockup = new EpicsReaderMockup();
-
+    @Test
+    public void testUseDefaultChannel() throws TcsContextException {
+        _epicsReaderMock = new EpicsReaderMock("channel", null);
+        _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock);
+        assertEquals(EpicsTcsContextFetcher.TCS_CONTEXT_CHANNEL, _epicsReaderMock.getBoundChannel());
     }
 
     @Test
-    public void testUseDefaultChannel() {
-        try {
-            _fetcher = new EpicsTcsContextFetcher(_epicsReaderMockup);
-            assertEquals(EpicsTcsContextFetcher.TCS_CONTEXT_CHANNEL, _epicsReaderMockup.getBindedChannel());
-        } catch (TcsContextException e) {
-            fail("Unexpected exception" + e);
-        }
+    public void testUseNonDefaultChannel() throws TcsContextException {
+        _epicsReaderMock = new EpicsReaderMock("channel", null);
+        _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock, "otherChannel");
+        assertEquals("otherChannel", _epicsReaderMock.getBoundChannel());
     }
 
-    @Test
-    public void testUseNonDefaultChannel() {
-        try {
-            _fetcher = new EpicsTcsContextFetcher(_epicsReaderMockup, "otherChannel");
-            assertEquals("otherChannel", _epicsReaderMockup.getBindedChannel());
-        } catch (TcsContextException e) {
-            fail("Unexpected exception" + e);
-        }
-    }
-
-    @Test
-    (expected = TcsContextException.class)
-    public void testInvalidTcsContext() throws TcsContextException {
-
-        _epicsReaderMockup.setValue("Not A Double Array");
-        _fetcher = new EpicsTcsContextFetcher(_epicsReaderMockup);
+    @Test(expected = TcsContextException.class)
+    public void testInvalidReaderValue() throws TcsContextException {
+        _epicsReaderMock = new EpicsReaderMock("channel", "Not A Double Array");
+        _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock);
         _fetcher.getTcsContext();
     }
 
     @Test
-    public void testNullTcsContext() throws TcsContextException {
-
-        _epicsReaderMockup.setValue(null);
-        _fetcher = new EpicsTcsContextFetcher(_epicsReaderMockup);
+    public void testNullChannel() throws TcsContextException {
+        _epicsReaderMock = new EpicsReaderMock("channel", null);
+        _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock);
         assertEquals(_fetcher.getTcsContext(), null);
     }
 
-
+    @Test
+    public void testNullChannelOnConstructor() throws TcsContextException {
+        _epicsReaderMock = new EpicsReaderMock("channel", null);
+        _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock, null);
+        assertEquals(_fetcher.getTcsContext(), null);
+    }
 
     @Test
-    public void testGetContext() {
-
-        double x[] = new double[39];
-
-        for (int i = 0; i < 39; i++) {
-            x[i] = (double) i;
+    public void testGetContext() throws TcsContextException {
+        double simulatedValues[] = new double[39];
+        for (int i = 0; i < simulatedValues.length; i++) {
+            simulatedValues[i] = (double) i;
         }
 
-        _epicsReaderMockup.setContext(x);
+        _epicsReaderMock = new EpicsReaderMock("channel", simulatedValues);
+        _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock);
+        double[] valuesFromContext = _fetcher.getTcsContext();
 
-        try {
-            _fetcher = new EpicsTcsContextFetcher(_epicsReaderMockup);
-            double[] ctx = _fetcher.getTcsContext();
-
-            for (int i = 0; i < x.length; i++) {
-                assertEquals(x[i], ctx[i], 0.000000001);
-            }
-
-
-        } catch (TcsContextException e) {
-            fail("Unexpected exception" + e);
-        }
+        assertArrayEquals(simulatedValues, valuesFromContext, 0.000000001);
     }
-
-
-    @After
-    public void tearDown() {
-        _epicsReaderMockup = null;
-    }
-
-
 }
