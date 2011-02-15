@@ -72,6 +72,15 @@ public class TcsContextComponent {
         );
     }
 
+    protected TcsContextComponent(JmsProvider provider, IEpicsReader reader, String tcsChannel) {
+        this();
+        this._provider = provider;
+        this._epicsReader = reader;
+        this.tcsChannel = tcsChannel;
+        this.simulation = false;
+        this.simulationData = null;
+    }
+
     @Validate
     public void validated() throws JMSException {
         LOG.info("TcsContext validated, starting... ");
