@@ -1,14 +1,13 @@
 package edu.gemini.aspen.gmp.epics.osgi;
 
-import org.osgi.util.tracker.ServiceTracker;
+import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
+import edu.gemini.aspen.gmp.epics.jms.EpicsConfigRequestConsumer;
+import edu.gemini.jms.api.JmsProvider;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
 
 import java.util.logging.Logger;
-
-import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.aspen.gmp.epics.jms.EpicsConfigRequestConsumer;
-import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
 
 /**
  * Tracks for the JMS provider and instantiate the epics request consumer once

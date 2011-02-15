@@ -1,19 +1,25 @@
 package edu.gemini.aspen.gmp.epics.impl;
 
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
-import edu.gemini.aspen.gmp.epics.EpicsUpdateListener;
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+import edu.gemini.aspen.gmp.epics.EpicsUpdateListener;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * This implements the EpicsRegistrar interface. Its job is
  * to receive Epics Updates, and then process them via the
  * registered listeners using a separate thread
  */
+@Component
+@Instantiate
+@Provides
 public class EpicsUpdaterThread implements EpicsRegistrar {
     private final static Logger LOG = Logger.getLogger(EpicsUpdaterThread.class.getName());
 
