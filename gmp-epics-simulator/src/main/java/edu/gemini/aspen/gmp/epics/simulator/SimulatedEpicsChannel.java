@@ -8,58 +8,62 @@ import java.util.Random;
  * The description of a simulated channel includes its name, data type and
  * update rate.
  */
-public class SimulatedEpicsChannel {
+public abstract class SimulatedEpicsChannel {
+    protected Random random = new SecureRandom();
 
-    private Object data;
-    private String name;
+    protected final String name;
+    protected final int size;
+    protected final DataType type;
+    protected final long updateRate;
 
-    private Random ran = new SecureRandom();
-    private DataType type;
-    private long updateRate;
+    public static SimulatedEpicsChannel buildSimulatedEpicsChannel(String name, int size, DataType type, long updateRate) {
+        SimulatedEpicsChannel result = null;
+        switch (type) {
+            case DOUBLE:
+                result = new DoubleSimulatedEpicsChannel(name, size, type, updateRate);
+                break;
+            case FLOAT:
+                result = new FloatSimulatedEpicsChannel(name, size, type, updateRate);
+                break;
+            case INT:
+                result = new IntegerSimulatedEpicsChannel(name, size, type, updateRate);
+                break;
+            case SHORT:
+                result = new ShortSimulatedEpicsChannel(name, size, type, updateRate);
+                break;
+            case STRING:
+                result = new StringSimulatedEpicsChannel(name, size, type, updateRate);
+                break;
+            case BYTE:
+                result = new ByteSimulatedEpicsChannel(name, size, type, updateRate);
+                break;
+            default:
+                throw new IllegalArgumentException("Cannot create simulated channel for datatype " + type);
+        }
+        return result;
+    }
 
     /**
      * Constructor.
-     * @param name Name of the epics channel to simulate
-     * @param size Number of elements this channel contain. All the elements
-     * are of the same type
-     * @param type Type of the elements in the channel.
+     *
+     * @param name       Name of the epics channel to simulate
+     * @param size       Number of elements this channel contain. All the elements
+     *                   are of the same type
+     * @param type       Type of the elements in the channel.
      * @param updateRate Update rate used to simulate this channel
      */
     public SimulatedEpicsChannel(String name, int size, DataType type, long updateRate) {
-
         this.name = name;
+        this.size = size;
         this.type = type;
         this.updateRate = updateRate;
-
-        switch (type) {
-
-            case DOUBLE:
-                data = new double[size];
-                break;
-            case FLOAT:
-                data = new float[size];
-                break;
-            case INT:
-                data = new int[size];
-                break;
-            case SHORT:
-                data = new short[size];
-                break;
-            case STRING:
-                data = new String[size];
-                break;
-            case BYTE:
-                data = new byte[size];
-                break;
-        }
-
-
     }
 
     /**
      * Return the update rate (in milliseconds) of this simulated channel.
+     *
      * @return the update rate in milliseconds to be used when simulating
-     * this channel
+     *         this channel
      */
     public long getUpdateRate() {
         return updateRate;
@@ -67,6 +71,7 @@ public class SimulatedEpicsChannel {
 
     /**
      * Returns the name of the simulated EPICS channel
+     *
      * @return the name of the simulated EPICS channel
      */
     public String getName() {
@@ -77,68 +82,32 @@ public class SimulatedEpicsChannel {
      * Get an updated value of this channel. The value is an array
      * of primitives that depends on the data type defined when
      * this channel was constructed
+     *
      * @return a new randomly generated set of values for this
-     * simulated channel.
+     *         simulated channel.
      */
-    public Object getNextValue() {
-
-        switch (type) {
-
-            case BYTE:
-                byte[] b = (byte[])data;
-                ran.nextBytes(b);
-                break;
-            case DOUBLE:
-                double[] d = (double [])data;
-                for (int i = 0; i < d.length; i++) {
-                    d[i] = ran.nextDouble();
-                }
-                break;
-            case FLOAT:
-                float[] f = (float [])data;
-                for (int i = 0; i < f.length; i++) {
-                    f[i] = ran.nextFloat();
-                }
-
-                break;
-            case INT:
-                int[] ia = (int[])data;
-                for (int i = 0; i < ia.length; i++) {
-                    ia[i] = ran.nextInt();
-                }
-
-                break;
-            case SHORT:
-                short[] s = (short [])data;
-                for (int i = 0; i < s.length; i++) {
-                   s[i] = (short)ran.nextInt();
-                }
-
-                break;
-            case STRING:
-                String[] string = (String[])data;
-                for (int i = 0; i < string.length; i++) {
-                    string[i] = "Random text " + ran.nextInt();
-                }
-
-                break;
-        }
-        return data;
-    }
-
+    public abstract SimulatedEpicsChannel getNextValue();
+    
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SimulatedEpicsChannel that = (SimulatedEpicsChannel) o;
-        if (updateRate != that.updateRate) return false;
-//        if (data != null ? !Arrays.equals(data, that.data) : that.data != null)
-//            return false;
-
-        if (name != null ? !name.equals(that.name) : that.name != null)
+        if (updateRate != that.updateRate) {
             return false;
-        if (type != that.type) return false;
+        }
+
+        if (name != null ? !name.equals(that.name) : that.name != null) {
+            return false;
+        }
+        if (type != that.type) {
+            return false;
+        }
         //they are the same
         return true;
     }

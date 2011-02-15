@@ -29,6 +29,7 @@ public class OsgiSimulatedEpicsConfiguration implements SimulatedEpicsConfigurat
 
     private Set<SimulatedEpicsChannel> _simChannels;
 
+  
 
     public OsgiSimulatedEpicsConfiguration(BundleContext context) {
         Document doc = getPropertiesDocument(context);
@@ -130,7 +131,7 @@ public class OsgiSimulatedEpicsConfiguration implements SimulatedEpicsConfigurat
                 }
 
                 if (name != null && type != null) {
-                    channels.add(new SimulatedEpicsChannel(name, size, type, updateRate));
+                    channels.add(SimulatedEpicsChannel.buildSimulatedEpicsChannel(name, size, type, updateRate));
                 }
 
             }
