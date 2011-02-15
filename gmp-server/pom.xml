@@ -33,7 +33,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <edu.gemini.aspen.gmp.tcs.epicsChannel>tc1:sad:astCtx</edu.gemini.aspen.gmp.tcs.epicsChannel>
         <edu.gemini.aspen.gmp.tcs.simulation>yes</edu.gemini.aspen.gmp.tcs.simulation>
         <edu.gemini.aspen.gmp.tcs.simulationData>${conf.base}/tcsCtx.data</edu.gemini.aspen.gmp.tcs.simulationData>
-        <gmp.epics.conf>${conf.base}/epics-channels.xml</gmp.epics.conf>
         <gmp.epics.simulation.conf>${conf.base}/simulated-epics-channels.xml</gmp.epics.simulation.conf>
         <felix.cm.loglevel>4</felix.cm.loglevel>
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
