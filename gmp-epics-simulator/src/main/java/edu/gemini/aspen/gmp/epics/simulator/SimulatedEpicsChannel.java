@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.epics.simulator;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -12,7 +13,7 @@ public class SimulatedEpicsChannel {
     private Object data;
     private String name;
 
-    private Random ran = new Random();
+    private Random ran = new SecureRandom();
     private DataType type;
     private long updateRate;
 
@@ -131,10 +132,10 @@ public class SimulatedEpicsChannel {
         if (o == null || getClass() != o.getClass()) return false;
 
         SimulatedEpicsChannel that = (SimulatedEpicsChannel) o;
-
         if (updateRate != that.updateRate) return false;
-        if (data != null ? !data.equals(that.data) : that.data != null)
-            return false;
+//        if (data != null ? !Arrays.equals(data, that.data) : that.data != null)
+//            return false;
+
         if (name != null ? !name.equals(that.name) : that.name != null)
             return false;
         if (type != that.type) return false;
@@ -144,7 +145,7 @@ public class SimulatedEpicsChannel {
 
     @Override
     public int hashCode() {
-        int result = data != null ? data.hashCode() : 0;
+        int result = 0;//data != null ? data.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (int) (updateRate ^ (updateRate >>> 32));
