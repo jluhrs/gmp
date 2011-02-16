@@ -81,24 +81,32 @@ public abstract class SimulatedEpicsChannel {
     }
 
     /**
-     * Get an updated value of this channel. The value is an array
-     * of primitives that depends on the data type defined when
-     * this channel was constructed
+     * Builds a new EpicsUpdate for this channel with simulated data
+     * Every time this method is invoked a different EpicsUpdate is created
      *
-     * @return a new randomly generated set of values for this
-     *         simulated channel.
+     * @return a new simulated EpicsUpdate value 
      */
-    public abstract SimulatedEpicsChannel getNextSimulatedValue();
-        
+    public abstract EpicsUpdate buildEpicsUpdate();
+
+    @Override
+    public String toString() {
+        return "SimulatedEpicsChannel{" +
+                "name='" + name + '\'' +
+                ", size=" + size +
+                ", type=" + type +
+                ", updateRate=" + updateRate +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+
+        if (o == null || !(o instanceof SimulatedEpicsChannel)) {
             return false;
         }
-
         SimulatedEpicsChannel that = (SimulatedEpicsChannel) o;
         if (updateRate != that.updateRate) {
             return false;
@@ -122,7 +130,4 @@ public abstract class SimulatedEpicsChannel {
         result = 31 * result + (int) (updateRate ^ (updateRate >>> 32));
         return result;
     }
-
-
-    public abstract EpicsUpdate buildEpicsUpdate();
 }

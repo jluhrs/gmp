@@ -22,7 +22,7 @@ public class ChannelSimulator implements Runnable {
 
     private EpicsRegistrar _registrar;
 
-    private SimulatedEpicsChannel _simulatedChannel;
+    private final SimulatedEpicsChannel _simulatedChannel;
 
     /**
      * Creates a new Channel simualtor tasks, indicating the channel to simulate
@@ -44,7 +44,6 @@ public class ChannelSimulator implements Runnable {
                 Thread.sleep(_simulatedChannel.getUpdateRate());
                 EpicsUpdate newUpdate = _simulatedChannel.buildEpicsUpdate();
                 _registrar.processEpicsUpdate(newUpdate);
-                _simulatedChannel = _simulatedChannel.getNextSimulatedValue();
             } catch (InterruptedException e) {
                 LOG.info("Thread interrupted, exiting");
                 return;

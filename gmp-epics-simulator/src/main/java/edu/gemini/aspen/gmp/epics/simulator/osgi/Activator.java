@@ -1,26 +1,27 @@
 package edu.gemini.aspen.gmp.epics.simulator.osgi;
 
+import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
+import edu.gemini.aspen.gmp.epics.simulator.SimulatedEpicsChannel;
+import edu.gemini.aspen.gmp.epics.simulator.SimulatedEpicsConfiguration;
+import edu.gemini.aspen.gmp.epics.simulator.Simulator;
+import edu.gemini.aspen.gmp.epics.simulator.XMLBasedSimulatedEpicsConfiguration;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
-import java.util.logging.Logger;
+import java.io.FileInputStream;
 import java.util.Set;
-
-import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
-import edu.gemini.aspen.gmp.epics.simulator.Simulator;
-import edu.gemini.aspen.gmp.epics.simulator.SimulatedEpicsChannel;
-import edu.gemini.aspen.gmp.epics.simulator.SimulatedEpicsConfiguration;
+import java.util.logging.Logger;
 
 /**
- * OSGi Activator for the EPICS simulator bundle 
+ * OSGi Activator for the EPICS simulator bundle
  */
 public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     private static final Logger LOG = Logger.getLogger(Activator.class.getName());
-
+    private static final String CONF_FILE = "gmp.epics.simulation.conf";
 
     private ServiceTracker _tracker;
 
@@ -32,16 +33,22 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
     private SimulatedEpicsConfiguration conf;
 
     public void start(BundleContext bundleContext) throws Exception {
-
-
         context = bundleContext;
-
-        conf = new OsgiSimulatedEpicsConfiguration(bundleContext);
+        conf = new XMLBasedSimulatedEpicsConfiguration(new FileInputStream(getProperty(context, CONF_FILE)));
 
         _tracker = new ServiceTracker(context, EpicsRegistrar.class.getName(), this);
         _tracker.open();
 
 
+    }
+
+    private String getProperty(BundleContext ctx, String key) {
+        String res = ctx.getProperty(key);
+        if (res == null) {
+            throw new RuntimeException("Missing configuration: " + key);
+        }
+
+        return res;
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
@@ -52,7 +59,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
     public Object addingService(ServiceReference serviceReference) {
 
         LOG.info("GMP Epics Registrar module found. Starting simulation");
-        EpicsRegistrar registrar = (EpicsRegistrar)context.getService(serviceReference);
+        EpicsRegistrar registrar = (EpicsRegistrar) context.getService(serviceReference);
 
         _simulator = new Simulator(registrar);
 

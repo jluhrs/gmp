@@ -30,6 +30,6 @@ public class ChannelSimulatorTest {
             TimeUnit.MILLISECONDS.sleep(PASSES * updateRate);
         }
 
-        verify(registrar, atLeast(PASSES-1)).processEpicsUpdate(Matchers.<EpicsUpdate>anyObject());
+        verify(registrar, atLeast(PASSES - 1)).processEpicsUpdate(Matchers.<EpicsUpdate>anyObject());
     }
 }
