@@ -21,7 +21,7 @@
        <name>ws:wsFilter.VALL</name>
        <type>double</type>
        <size>10</size>
-       <updateRate>5</updateRate>
+       <updateRate>1</updateRate>
    </channel>
 
     <channel>

@@ -11,7 +11,6 @@ import java.util.Set;
  *
  */
 public interface SimulatedEpicsConfiguration {
-
     
     static final String CHANNEL_TAG = "channel";
     static final String NAME_TAG = "name";

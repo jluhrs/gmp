@@ -17,7 +17,7 @@ public class XMLBasedSimulatedEpicsConfigurationTest {
         assertNotNull(simulatedChannels);
         assertEquals(2, simulatedChannels.size());
 
-        assertTrue(simulatedChannels.contains(SimulatedEpicsChannel.buildSimulatedEpicsChannel("ws:wsFilter.VALL", 10, DataType.DOUBLE, 5000L)));
+        assertTrue(simulatedChannels.contains(SimulatedEpicsChannel.buildSimulatedEpicsChannel("ws:wsFilter.VALL", 10, DataType.DOUBLE, 1000L)));
         assertTrue(simulatedChannels.contains(SimulatedEpicsChannel.buildSimulatedEpicsChannel("ws:cpWf", 20, DataType.BYTE, 7000L)));
     }
 }
