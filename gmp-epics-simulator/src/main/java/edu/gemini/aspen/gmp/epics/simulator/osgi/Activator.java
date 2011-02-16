@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.epics.simulator.osgi;
 
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
-import edu.gemini.aspen.gmp.epics.simulator.SimulatedEpicsChannel;
+import edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel;
 import edu.gemini.aspen.gmp.epics.simulator.SimulatedEpicsConfiguration;
 import edu.gemini.aspen.gmp.epics.simulator.Simulator;
 import edu.gemini.aspen.gmp.epics.simulator.XMLBasedSimulatedEpicsConfiguration;

@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.epics.simulator;
 
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+import edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel;
 import org.junit.Test;
 import org.mockito.Matchers;
 

@@ -1,6 +1,7 @@
-package edu.gemini.aspen.gmp.epics.simulator;
+package edu.gemini.aspen.gmp.epics.simulator.channels;
 
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+import edu.gemini.aspen.gmp.epics.simulator.DataType;
 
 import java.security.SecureRandom;
 import java.util.Random;

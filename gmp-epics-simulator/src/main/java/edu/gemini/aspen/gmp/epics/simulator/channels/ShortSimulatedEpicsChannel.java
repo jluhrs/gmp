@@ -1,7 +1,8 @@
-package edu.gemini.aspen.gmp.epics.simulator;
+package edu.gemini.aspen.gmp.epics.simulator.channels;
 
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
+import edu.gemini.aspen.gmp.epics.simulator.DataType;
 
 class ShortSimulatedEpicsChannel extends SimulatedEpicsChannel {
     public ShortSimulatedEpicsChannel(String name, int size, DataType type, long updateRate) {

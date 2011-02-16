@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.epics.simulator;
 
+import edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel;
 import org.junit.Test;
 
 import java.util.Set;

@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.epics.simulator;
 
+import edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

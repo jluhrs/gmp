@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.epics.simulator;
 
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
+import edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 /**
  * The Simulator is in charge of starting new jobs to simulate EPICS
- * channels. A {@link edu.gemini.aspen.gmp.epics.simulator.SimulatedEpicsChannel}
+ * channels. A {@link edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel}
  * contains all the information needed by this class to execute the simulation.
  */
 public class Simulator {

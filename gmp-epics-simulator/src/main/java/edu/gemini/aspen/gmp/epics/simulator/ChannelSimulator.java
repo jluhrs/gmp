@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.epics.simulator;
 
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+import edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel;
 
 import java.util.logging.Logger;
 
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  * the update rate
  * <p/>
  * Channel Simulator tasks are started by the Simulator, via the
- * {@link Simulator#startSimulation(SimulatedEpicsChannel)} method.
+ * {@link Simulator#startSimulation(edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel)} method.
  *
  */
 public class ChannelSimulator implements Runnable {
