@@ -6,7 +6,6 @@ import edu.gemini.aspen.gmp.services.properties.PropertyService;
 import edu.gemini.aspen.gmp.services.properties.XMLFileBasedPropertyHolder;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
-import org.osgi.framework.ServiceReference;
 
 import java.util.logging.Logger;
 
@@ -31,7 +30,7 @@ public class GMPServices {
     }
 
     @Validate
-    public void validate() {
+    public void startServices() {
         LOG.info("JMS Provider found. Starting Services bundle with configuration " + configurationFile);
 
         _requestConsumer = new RequestConsumer(provider);
@@ -42,7 +41,7 @@ public class GMPServices {
     }
 
     @Invalidate
-    public void removedService(ServiceReference serviceReference, Object o) {
+    public void stopServices() {
         LOG.info("Stopping Services bundle");
         _requestConsumer.close();
         _requestConsumer = null;
