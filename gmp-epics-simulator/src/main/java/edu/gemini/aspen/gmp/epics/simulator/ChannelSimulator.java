@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.epics.simulator;
 
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
-import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
+import edu.gemini.aspen.gmp.epics.EpicsUpdate;
 
 import java.util.logging.Logger;
 
@@ -31,7 +31,6 @@ public class ChannelSimulator implements Runnable {
      * @param registrar EpicsRegistrar to notify when updates occur
      */
     public ChannelSimulator(SimulatedEpicsChannel channel, EpicsRegistrar registrar) {
-
         _simulatedChannel = channel;
         _registrar = registrar;
     }
@@ -41,11 +40,11 @@ public class ChannelSimulator implements Runnable {
      */
     public void run() {
         while (true) {
-
             try {
                 Thread.sleep(_simulatedChannel.getUpdateRate());
-                Object data = _simulatedChannel.getNextValue();
-                _registrar.processEpicsUpdate(new EpicsUpdateImpl(_simulatedChannel.getName(), data));
+                EpicsUpdate newUpdate = _simulatedChannel.buildEpicsUpdate();
+                _registrar.processEpicsUpdate(newUpdate);
+                _simulatedChannel = _simulatedChannel.getNextSimulatedValue();
             } catch (InterruptedException e) {
                 LOG.info("Thread interrupted, exiting");
                 return;

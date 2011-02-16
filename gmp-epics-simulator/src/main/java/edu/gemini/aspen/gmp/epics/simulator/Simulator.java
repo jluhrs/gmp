@@ -14,9 +14,7 @@ import java.util.ArrayList;
  * contains all the information needed by this class to execute the simulation.
  */
 public class Simulator {
-
-
-       /**
+     /**
      * The executor service provides a separate thread for the Updater thread
      * to run
      */
@@ -24,7 +22,6 @@ public class Simulator {
             Executors.newFixedThreadPool(10);
 
     private EpicsRegistrar _registrar;
-
 
     private List<Future> _tasks = new ArrayList<Future>();
 

@@ -34,37 +34,37 @@ public class SimulatedEpicsChannelTest {
     @Test
     public void testGetNextByteValue() {
         SimulatedEpicsChannel channel = SimulatedEpicsChannel.buildSimulatedEpicsChannel(name, size, DataType.BYTE, updateRate);
-        assertFalse(channel.equals(channel.getNextValue()));
+        assertFalse(channel.equals(channel.getNextSimulatedValue()));
     }
 
     @Test
     public void testGetNextIntValue() {
         SimulatedEpicsChannel channel = SimulatedEpicsChannel.buildSimulatedEpicsChannel(name, size, DataType.INT, updateRate);
-        assertFalse(channel.equals(channel.getNextValue()));
+        assertFalse(channel.equals(channel.getNextSimulatedValue()));
     }
 
     @Test
     public void testGetNextDoubleValue() {
         SimulatedEpicsChannel channel = SimulatedEpicsChannel.buildSimulatedEpicsChannel(name, size, DataType.DOUBLE, updateRate);
-        assertFalse(channel.equals(channel.getNextValue()));
+        assertFalse(channel.equals(channel.getNextSimulatedValue()));
     }
 
     @Test
     public void testGetNextFloatValue() {
         SimulatedEpicsChannel channel = SimulatedEpicsChannel.buildSimulatedEpicsChannel(name, size, DataType.FLOAT, updateRate);
-        assertFalse(channel.equals(channel.getNextValue()));
+        assertFalse(channel.equals(channel.getNextSimulatedValue()));
     }
 
     @Test
     public void testGetNextShortValue() {
         SimulatedEpicsChannel channel = SimulatedEpicsChannel.buildSimulatedEpicsChannel(name, size, DataType.SHORT, updateRate);
-        assertFalse(channel.equals(channel.getNextValue()));
+        assertFalse(channel.equals(channel.getNextSimulatedValue()));
     }
 
     @Test
     public void testGetNextStringValue() {
         SimulatedEpicsChannel channel = SimulatedEpicsChannel.buildSimulatedEpicsChannel(name, size, DataType.STRING, updateRate);
-        assertFalse(channel.equals(channel.getNextValue()));
+        assertFalse(channel.equals(channel.getNextSimulatedValue()));
     }
 
     @Test

@@ -1,5 +1,7 @@
 package edu.gemini.aspen.gmp.epics.simulator;
 
+import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -86,8 +88,8 @@ public abstract class SimulatedEpicsChannel {
      * @return a new randomly generated set of values for this
      *         simulated channel.
      */
-    public abstract SimulatedEpicsChannel getNextValue();
-    
+    public abstract SimulatedEpicsChannel getNextSimulatedValue();
+        
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -122,4 +124,5 @@ public abstract class SimulatedEpicsChannel {
     }
 
 
+    public abstract EpicsUpdate buildEpicsUpdate();
 }

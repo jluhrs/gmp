@@ -1,5 +1,8 @@
 package edu.gemini.aspen.gmp.epics.simulator;
 
+import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
+
 import java.util.Arrays;
 
 class DoubleSimulatedEpicsChannel extends SimulatedEpicsChannel {
@@ -14,9 +17,14 @@ class DoubleSimulatedEpicsChannel extends SimulatedEpicsChannel {
     }
 
     @Override
-    public SimulatedEpicsChannel getNextValue() {
+    public SimulatedEpicsChannel getNextSimulatedValue() {
         return new DoubleSimulatedEpicsChannel(name, size, type, updateRate);
     }
+
+    @Override
+    public EpicsUpdate buildEpicsUpdate() {
+        return new EpicsUpdateImpl(name, values);
+    }    
 
     @Override
     public boolean equals(Object o) {

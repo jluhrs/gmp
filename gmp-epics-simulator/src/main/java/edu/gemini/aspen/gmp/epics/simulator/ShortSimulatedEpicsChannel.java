@@ -1,5 +1,8 @@
 package edu.gemini.aspen.gmp.epics.simulator;
 
+import edu.gemini.aspen.gmp.epics.EpicsUpdate;
+import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
+
 import java.util.Arrays;
 
 class ShortSimulatedEpicsChannel extends SimulatedEpicsChannel {
@@ -11,6 +14,16 @@ class ShortSimulatedEpicsChannel extends SimulatedEpicsChannel {
         for (int i = 0; i < values.length; i++) {
             values[i] = (short) random.nextInt();
         }
+    }
+
+    @Override
+    public SimulatedEpicsChannel getNextSimulatedValue() {
+        return new ShortSimulatedEpicsChannel(name, size, type, updateRate);
+    }
+
+    @Override
+    public EpicsUpdate buildEpicsUpdate() {
+        return new EpicsUpdateImpl(name, values);
     }
 
     @Override
@@ -39,11 +52,5 @@ class ShortSimulatedEpicsChannel extends SimulatedEpicsChannel {
         int result = super.hashCode();
         result = 31 * result + Arrays.hashCode(values);
         return result;
-    }
-
-    @Override
-    public SimulatedEpicsChannel getNextValue() {
-        return new ShortSimulatedEpicsChannel(name, size, type, updateRate);
-
     }
 }
