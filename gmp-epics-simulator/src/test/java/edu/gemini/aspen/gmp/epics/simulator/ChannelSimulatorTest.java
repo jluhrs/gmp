@@ -27,9 +27,7 @@ public class ChannelSimulatorTest {
         ChannelSimulator simulator = new ChannelSimulator(channel, registrar);
         executorService.submit(simulator);
 
-        synchronized (this) {
-            TimeUnit.MILLISECONDS.sleep(PASSES * updateRate);
-        }
+        TimeUnit.MILLISECONDS.sleep(PASSES * updateRate);
 
         verify(registrar, atLeast(PASSES - 1)).processEpicsUpdate(Matchers.<EpicsUpdate>anyObject());
     }
