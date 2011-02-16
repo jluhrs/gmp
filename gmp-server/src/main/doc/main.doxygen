@@ -87,11 +87,15 @@
  * 
  * \section bundles_sec Bundles
  *
- * The \b GMP is comprised of the following bundles:
+ * The \b GMP Server is comprised of the following bundles:
  *
  * - \subpage cas
  * - \subpage gmp-epics-status-service
  * - \subpage gmp-pcs-updater
+ * - \subpage gmp-tcs-context
+ * - \subpage gmp-epics-simulator
+ * - \subpage gmp-epics-access
+ * - \subpage gmp-services
  *
  * \section perf_tests_sec Performance and Testing
  * \li GMP EPICS Status Service and CAS performance tests at \ref performance.

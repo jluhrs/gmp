@@ -1,13 +1,13 @@
 /*!
  * \page gmp-pcs-updater GMP PCS Updater
  *
- * This bundle receives JMS messages sent to the GMP_PCS_UPDATE_DESTINATION destination
- * at GMP.PCS_UPDATE_DESTINATION. The bundle expects those messages to contain an array of double values
+ * This bundle receives JMS messages sent to the GMP.PCS_UPDATE_DESTINATION destination.
+ * The bundle expects those messages to contain an array of double values
  * representing zernikes and writes them to an EPICS channel
  *
  * \section gmp-pcs-updater_provides_sec Provided Services
  * The \ref edu.gemini.aspen.gmp.pcs.model.PcsUpdaterComposite "PcsUpdaterComposite" class provides a service
- * which is not being used directly y other bundles but rather is used internally. The service listens for JMS messages
+ * which is not being used directly by other bundles but is rather used internally instead. The service listens for JMS messages
  * and writes them to the EPICS channel
  *
  * \section gmp-pcs-updater_requires_sec Required Services

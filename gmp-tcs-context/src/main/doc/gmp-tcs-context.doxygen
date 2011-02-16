@@ -4,12 +4,13 @@
  * \section gmp-tcs-context_provides_sec Provided Services
  * This bundle doesn't provide any services
  *
- * \section gmp-pcs-updater_requires_sec Required Services
- * This bundle requires the \ref import edu.gemini.epics.IEpicsReader "EpicsReader" OSGI service, provided by
+ * \section gmp-tcs-context_requires_sec Required Services
+ * This bundle requires the \ref edu.gemini.epics.IEpicsReader "EpicsReader" OSGI service, provided by the
  * \ref epics-service bundle.
+ *
  * It also requires a reference to \ref edu.gemini.jms.api.JmsProvider "JmsProvider" service
  *
- * \section gmp-pcs-updater_configuration_sec Configuration
+ * \section gmp-tcs-context_configuration_sec Configuration
  * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.tcs.TcsContext.cfg
  *
  * There, you can set three properties:

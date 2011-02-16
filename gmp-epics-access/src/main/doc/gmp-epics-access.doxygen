@@ -1,0 +1,25 @@
+/*!
+ * \page gmp-epics-access GMP Epics Access
+ *
+ * \section gmp-epics-access_provides_sec Provided Services
+ * This bundle provides the following services
+ *
+ * - EpicsConfiguration implemented by \ref edu.gemini.aspen.gmp.epics.osgi.OsgiEpicsConfiguration it reads the list
+ * of epics channels that will be made available to other services. The address of the XML file has to be passed as
+ * a configuration variable
+ * - IEpicsClient implemented by \ref edu.gemini.aspen.gmp.epics.impl.EpicsMonitor
+ * - EpicsRegistrar implemented by \ref edu.gemini.aspen.gmp.epics.impl.EpicsUpdaterThread
+ *
+ * \section gmp-epics-access_requires_sec Required Services
+ * This bundle requires the \ref service edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service
+ *
+ * \section gmp-epics-accessr_configuration_sec Configuration
+ * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.epics.EpicsAccess.cfg
+ *
+ * There, you can set only one property:
+ *
+ * - configurationFile: This property points to a XML file containing a list of channels made available to GMP
+ *
+ * The XML file mentioned in the configurationFile should list the EPICS channels .
+ * As a reference you can see the example \ref epics-channels.xml
+ */
