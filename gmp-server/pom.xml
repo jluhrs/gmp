@@ -30,10 +30,10 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
 
-        <felix.cm.loglevel>4</felix.cm.loglevel>
+        <!--felix.cm.loglevel>4</felix.cm.loglevel-->
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
-        <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
         <felix.fileinstall.noInitialDelay>true</felix.fileinstall.noInitialDelay>
+        <!--felix.fileinstall.log.level>4</felix.fileinstall.log.level-->
         <!--felix.log.level>4</felix.log.level-->
         <!--ipojo.log.level>debug</ipojo.log.level-->
     </properties>
