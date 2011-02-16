@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-
-<project name="jms-activemq-lib" default="all" basedir=".">
-    <import file="../build.xml"/>
-
-</project>

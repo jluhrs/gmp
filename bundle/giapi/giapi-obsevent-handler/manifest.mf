@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-Activator: edu.gemini.giapi.data.obsevent.handler.osgi.Activator
-Bundle-Name: GIAPI Observation Event Handler - Demo
-Bundle-Description: Observation Event Handler for testing purpose.
-Bundle-Vendor: Gemini 8m Observatories, Software Group
-Bundle-Version: 0.1.0
-Import-Package: edu.gemini.aspen.giapi.data,
- org.osgi.util.tracker,
- org.osgi.framework

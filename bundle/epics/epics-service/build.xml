@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<project name="epics-service" default="all" basedir=".">
-        <import file="../build.xml"/>
-	<path id="build.classpath.extra">
-		<fileset dir="../jca-lib/lib" includes="*.jar"/>
-	</path>
-
-</project>

@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-Activator: edu.gemini.util.telnetd.osgi.Activator
-Bundle-Version: 0.1.0
-Bundle-Description: Telnet Daemon for Oscar
-Bundle-Name: Telnet Daemon
-Bundle-Classpath: .,lib/telnetd2.jar,lib/commons-logging.jar
-Import-Package: org.osgi.framework, 
- org.osgi.util.tracker,
- org.ungoverned.osgi.service.shell
