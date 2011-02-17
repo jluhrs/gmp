@@ -92,7 +92,8 @@ The GMP Server starts 2 consoles:
 
 DEPLOYMENT PACKAGE
 ------------------
-To build a tar ball with the application so that it can be distributed without access to the maven repositories do:
+To build a tar ball with the application so that it can be distributed without access to the maven repositories, at 
+gmp-server/ directory, you must do:
 
     mvn -Pproduction assembly:assembly
 
