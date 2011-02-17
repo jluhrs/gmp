@@ -40,11 +40,12 @@ public class EpicsMonitor implements IEpicsClient {
 
     @ServiceProperty(name = "edu.gemini.epics.IEpicsClient.EPICS_CHANNELS")
     private String[] props;
-    
+
     private EpicsConfigRequestConsumer _epicsRequestConsumer;
     private EpicsStatusUpdater _epicsStatusUpdater;
 
-    private EpicsMonitor() {}
+    private EpicsMonitor() {
+    }
 
     public EpicsMonitor(EpicsRegistrar registrar, JmsProvider provider) {
         if (registrar == null) {
@@ -60,8 +61,8 @@ public class EpicsMonitor implements IEpicsClient {
 
     @Updated
     public void updated() {
-        LOG.info("Updated configuration of Epics Access");
         Set<String> channelsNames = _epicsConfig.getValidChannelsNames();
+        LOG.info("Updated configuration of Epics Access with " + channelsNames);
         props = channelsNames.toArray(new String[0]);
         LOG.info("Services properties set as: " + Arrays.asList(props));
     }
@@ -85,22 +86,28 @@ public class EpicsMonitor implements IEpicsClient {
     @Invalidate
     public void invalidate() {
         LOG.info("Stopping Epics Access bundle");
+        removeInterestingChannels();
+
         _epicsRequestConsumer.close();
-
-        for (String channel : _epicsConfig.getValidChannelsNames()) {
-            _registrar.unregisterInterest(channel);
-        }
-
         _epicsStatusUpdater.close();
     }
 
+    private void removeInterestingChannels() {
+        if (_epicsConfig != null && _registrar != null) {
+            LOG.info("CONFIG " + _epicsConfig + " " + _registrar);
+            for (String channel : _epicsConfig.getValidChannelsNames()) {
+                _registrar.unregisterInterest(channel);
+            }
+        }
+    }
+
     public void connected() {
-        LOG.info("Connected to EPICS");
+        LOG.info(this + " connected to EPICS");
         connected = true;
     }
 
     public void disconnected() {
-        LOG.info("Disconnected from EPICS");
+        LOG.info(this + " disconnected from EPICS");
         connected = false;
     }
 
@@ -108,4 +115,11 @@ public class EpicsMonitor implements IEpicsClient {
         return connected;
     }
 
+    @Override
+    public String toString() {
+        return "EpicsMonitor{" +
+                "connected=" + connected +
+                ", props=" + (props == null ? null : Arrays.asList(props)) +
+                '}';
+    }
 }
