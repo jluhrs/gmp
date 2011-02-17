@@ -7,6 +7,12 @@
 		<type>INT</type>
 		<initial>2</initial>
 	</SimpleChannel>
+	<SimpleChannel>
+		<giapiname>gpi:status2</giapiname>
+		<epicsname>gpi:status2</epicsname>
+		<type>INT</type>
+		<initial>2</initial>
+	</SimpleChannel>
 	<AlarmChannel>
 		<giapiname>gpi:alarm1</giapiname>
 		<epicsname>gpi:alarm1</epicsname>

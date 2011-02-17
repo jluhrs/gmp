@@ -13,5 +13,6 @@
  * - \subpage gmp-services
  *
  * \section perf_tests_sec Performance and Testing
- * \li GMP EPICS Status Service and CAS performance tests at \ref performance.
+ * \li GMP EPICS Status Service and CAS performance tests at \subpage performance.
+ * \li \subpage validation
  */
