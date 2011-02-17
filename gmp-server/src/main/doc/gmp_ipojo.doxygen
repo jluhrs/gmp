@@ -1,6 +1,6 @@
-/*! \page gmp_internal_documentation GMP Developers Documentation
+/*! \page gmp_ipojo IPojo in GIAPI/GMP
  *
- * \section bundles_sec Bundles
+ * \section bundles_sec Configuration
  *
  * The \b GMP Server is comprised of the following bundles:
  *
