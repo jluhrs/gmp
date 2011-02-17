@@ -17,5 +17,6 @@
  * \li Check that the camonitor reflects the changes in the values of the EPICS channels.
  * \li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:status1 -value 100 -type INTEGER</tt>.
  * \li Check that the camonitor reflects the changes in the values of the EPICS channel.
- *
+ * \li Finally, run all the other tests in the C++ glue examples directory, except for the stresstest. For info on how
+ * to run the stresstest check \ref performance.
  */
