@@ -2,7 +2,6 @@ package edu.gemini.aspen.giapi.statusservice;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.jms.api.JmsProvider;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -43,7 +42,8 @@ public class StatusServiceIT {
                 mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
                 mavenBundle().artifactId("giapi-jms-util").groupId("edu.gemini.aspen").versionAsInProject(),
-                mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").versionAsInProject()
+                mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").versionAsInProject(),
+                mavenBundle().artifactId("guava").groupId("com.google.guava").version("8.0.0")
         );
     }
 
@@ -64,14 +64,19 @@ public class StatusServiceIT {
                 // Properties required to ensure the activemq broker and provider don't collide
                 systemProperty("edu.gemini.jms.activemq.broker.url").value("vm://gmp"),
                 systemProperty("edu.gemini.jms.activemq.provider.url").value("vm://gmp"),
+                //systemProperty("ipojo.log.level").value("debug"),
+                systemProperty("log4j.configuration").value("/Users/cquiroz/log4j.properties"),
+
                 mavenBundle().artifactId("gmp-statusdb").groupId("edu.gemini.aspen.gmp").version("0.1.0"),
+                mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").version("1.1.0"),
+                mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.5.3"),
+                mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.5.3"),
                 mavenBundle().artifactId("jms-activemq-broker").groupId("edu.gemini.jms").version("1.1.0"),
                 mavenBundle().artifactId("activemq-core").groupId("org.apache.activemq").version("5.4.2"),
                 mavenBundle().artifactId("geronimo-j2ee-management_1.1_spec").groupId("org.apache.geronimo.specs").version("1.0.1"),
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").version("5.4.2"),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").version("1.1.1"),
-                mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
-                mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").version("1.1.0")
+                mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1")
         );
     }
 
@@ -126,12 +131,11 @@ public class StatusServiceIT {
     }
 
     @Test
-    @Ignore("Ignored for now due to broken JMSProvider")
     public void withStatusDbAndJMSProviderStatusServiceShouldExist() {
         assertTrue("StatusService should exist as a managed service", isStatusServiceRunning());
         assertTrue("StatusHandlerAggregate should exist as dependencies are met", isStatusHandlerAggregateRunning());
-        assertTrue("StatusDB is available", isStatusHandlerInUse());
-        assertTrue("JMSProvider is available", isJMSProviderInUse());
+        assertTrue("StatusDB should be available", isStatusHandlerInUse());
+        assertTrue("JMSProvider should be available", isJMSProviderInUse());
     }
 
     @Test

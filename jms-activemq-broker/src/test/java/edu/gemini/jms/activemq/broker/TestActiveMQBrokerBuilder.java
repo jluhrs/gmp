@@ -1,5 +1,6 @@
 package edu.gemini.jms.activemq.broker;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.management.*;
@@ -15,6 +16,7 @@ import static org.junit.Assert.assertNotNull;
  * Since ActiveMQBroker is not meant to expose the configuration publicly
  * we can only check some of those value using JMX
  */
+@Ignore
 public class TestActiveMQBrokerBuilder {
 
     private MBeanServer mBeanServer;

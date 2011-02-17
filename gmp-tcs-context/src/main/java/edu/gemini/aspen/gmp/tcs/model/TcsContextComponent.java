@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 /**
  * Interface to define a composite of several TCS Context objects
  */
-@Component(name = "tcsContext", managedservice = "edu.gemini.aspen.gmp.tcs.TcsContext")
-@Instantiate(name = "tcsContext")
+@Component(managedservice = "edu.gemini.aspen.gmp.tcs.model.TcsContextComponent")
+@Instantiate
 public class TcsContextComponent {
     private static final Logger LOG = Logger.getLogger(TcsContextComponent.class.getName());
     private static final String TCS_CTX_CHANNEL_PROP = "edu.gemini.aspen.gmp.tcs.epicsChannel";
