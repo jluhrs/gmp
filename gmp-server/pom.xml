@@ -44,7 +44,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 <groupId>com.soebes.maven.plugins.dmg</groupId>
                 <artifactId>doxygen-maven-plugin</artifactId>
                 <version>1.0.1</version>
-                <executions>
+                <!--executions>
                     <execution>
                         <id>make-documentation</id>
                         <phase>generate-resources</phase>
@@ -52,7 +52,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                             <goal>report</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions-->
                  <configuration>
                     <filePatterns>*.doxygen *.doxy *.java *.xsd *.xml *.properties *.cfg</filePatterns>
                     <recursive>true</recursive>
