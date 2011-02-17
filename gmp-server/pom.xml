@@ -33,7 +33,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <!--felix.cm.loglevel>4</felix.cm.loglevel-->
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
         <felix.fileinstall.noInitialDelay>true</felix.fileinstall.noInitialDelay>
-        <!--felix.fileinstall.log.level>4</felix.fileinstall.log.level-->
+        <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
         <!--felix.log.level>4</felix.log.level-->
         <!--ipojo.log.level>debug</ipojo.log.level-->
     </properties>
