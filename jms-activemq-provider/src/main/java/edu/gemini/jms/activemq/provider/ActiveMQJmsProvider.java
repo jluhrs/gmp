@@ -13,8 +13,8 @@ import java.util.logging.Logger;
  * the ActiveMQ package should be encapsulated here. Other classes just
  * rely on the plain JMS interfaces. 
  */
-@Component(name = "ActiveMQJmsProvider", managedservice = "edu.gemini.jms.activemq.provider.ActiveMQJmsProvider")
-@Instantiate(name = "ActiveMQJmsProvider")
+@Component(managedservice = "edu.gemini.jms.activemq.provider.ActiveMQJmsProvider")
+@Instantiate
 @Provides
 public final class ActiveMQJmsProvider implements JmsProvider {
     private static final Logger LOG = Logger.getLogger(ActiveMQJmsProvider.class.getName());
