@@ -30,9 +30,9 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
 
-        <!--felix.cm.loglevel>4</felix.cm.loglevel-->
+        <felix.cm.loglevel>4</felix.cm.loglevel>
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
-        <felix.fileinstall.noInitialDelay>true</felix.fileinstall.noInitialDelay>
+        <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
         <!--felix.log.level>4</felix.log.level-->
         <!--ipojo.log.level>debug</ipojo.log.level-->
@@ -40,6 +40,39 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.soebes.maven.plugins.dmg</groupId>
+                <artifactId>doxygen-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <id>make-documentation</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                 <configuration>
+                    <filePatterns>*.doxygen *.doxy *.java *.xsd *.xml *.properties *.cfg</filePatterns>
+                    <recursive>true</recursive>
+                    <excludePatterns>*/test/*Test*.java */target/* *pom.xml</excludePatterns>
+                    <optimizeOutputJava>true</optimizeOutputJava>
+                    <haveDot>true</haveDot>
+                    <quiet>false</quiet>
+                     <input>../</input>
+                    <projectName>"GIAPI - OSGI"</projectName>
+                    <generateLatex>true</generateLatex>
+                    <generateHtml>true</generateHtml>
+                    <!-- this needs to be set correctly when generating the official documentation -->
+                    <stripFromPath>${basedir}</stripFromPath>
+                    <extractAll>true</extractAll>
+                    <imagePath>gmp-server/src/main/doc/</imagePath>
+                    <!--   <latexHideIndices>true</latexHideIndices>
+                           <compactLatex>true</compactLatex>
+                    -->
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -274,7 +307,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 <dependency>
                     <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
                     <artifactId>provision</artifactId>
-                    <version>1.0.0  </version>
+                    <version>1.0.0</version>
                     <type>pom</type>
                 </dependency>
             </dependencies>
