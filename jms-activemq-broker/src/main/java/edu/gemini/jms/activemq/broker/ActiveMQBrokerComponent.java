@@ -46,7 +46,7 @@ public class ActiveMQBrokerComponent {
 
     @Updated
     private void updated() {
-        LOG.info("Updated configuration of ActiveMQ broker");
+        LOG.info("Updating configuration of ActiveMQ broker. URL:"+url);
         if (_broker == null) {
             _broker = activemq()
                     .name(brokerName)
@@ -61,10 +61,13 @@ public class ActiveMQBrokerComponent {
         } else {
             LOG.warning("Cannot reconfigure a running ActiveMQ Broker");
         }
+        LOG.info("Updated configuration of ActiveMQ broker");
     }
 
     @Validate
     public void start() {
+        LOG.info("Starting ActiveMQ broker: URL:" + url);
         _broker.start();
+        LOG.info("Started ActiveMQ broker");
     }
 }
