@@ -44,6 +44,7 @@ public class ChannelSimulator implements Runnable {
             try {
                 Thread.sleep(_simulatedChannel.getUpdateRate());
                 EpicsUpdate newUpdate = _simulatedChannel.buildEpicsUpdate();
+                LOG.fine("New simulated value for " + _simulatedChannel.getName() + " " + newUpdate);
                 _registrar.processEpicsUpdate(newUpdate);
             } catch (InterruptedException e) {
                 LOG.info("Thread interrupted, exiting");

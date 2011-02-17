@@ -9,8 +9,8 @@ import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Component(name = "epicsSimulatorComponent", managedservice = "edu.gemini.aspen.gmp.epics.simulator.EpicsSimulator")
-@Instantiate(name = "epicsSimulatorComponent")
+@Component(managedservice = "edu.gemini.aspen.gmp.epics.simulator.EpicsSimulatorComponent")
+@Instantiate
 public class EpicsSimulatorComponent {
     private static final Logger LOG = Logger.getLogger(EpicsSimulatorComponent.class.getName());
     @Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true)
