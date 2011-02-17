@@ -13,8 +13,8 @@ import static edu.gemini.jms.activemq.broker.ConfigDefaults.*;
  *
  * @author cquiroz
  */
-@Component(name = "ActiveMQBroker", managedservice = "edu.gemini.jms.activemq.broker.ActiveMQBroker")
-@Instantiate(name = "ActiveMQBroker")
+@Component(managedservice = "edu.gemini.jms.activemq.broker.ActiveMQBrokerComponent")
+@Instantiate
 public class ActiveMQBrokerComponent {
     private static final Logger LOG = Logger.getLogger(ActiveMQBroker.class.getName());
 
@@ -46,7 +46,7 @@ public class ActiveMQBrokerComponent {
 
     @Updated
     private void updated() {
-        LOG.info("Updating configuration of ActiveMQ broker. URL:"+url);
+        LOG.info("Updating configuration of ActiveMQ broker with URL:"+url);
         if (_broker == null) {
             _broker = activemq()
                     .name(brokerName)
