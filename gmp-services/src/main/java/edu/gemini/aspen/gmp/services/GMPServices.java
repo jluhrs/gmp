@@ -13,25 +13,25 @@ import java.util.logging.Logger;
  * Tracks for a JMS provider and instantiate the request consumer
  * when a JMS provider is found
  */
-@Component(name="GMP Services", managedservice = "edu.gemini.aspen.gmp.services.GMPServices")
-@Instantiate(name = "GMP Services")
+@Component(managedservice = "edu.gemini.aspen.gmp.services.GMPServices")
+@Instantiate
 public class GMPServices {
     private final static Logger LOG = Logger.getLogger(GMPServices.class.getName());
-    private static final String CONF_FILE = "gmp.properties.conf";
 
     private RequestConsumer _requestConsumer = null;
     
     @Property(name = "propertiesFile", value = "NOVALID", mandatory = true)
     private String configurationFile;
+
     @Requires
     private JmsProvider provider;
 
-    public GMPServices() {
+    private GMPServices() {
     }
 
     @Validate
     public void startServices() {
-        LOG.info("JMS Provider found. Starting Services bundle with configuration " + configurationFile);
+        LOG.info("Starting Services bundle with configuration at " + configurationFile);
 
         _requestConsumer = new RequestConsumer(provider);
 
