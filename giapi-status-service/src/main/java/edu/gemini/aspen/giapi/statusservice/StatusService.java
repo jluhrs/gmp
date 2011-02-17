@@ -14,8 +14,8 @@ import java.util.logging.Logger;
  * The main class for the status service. This class is responsible to interface between the OSGi
  * container and the actual implementation residing in the StatusService
  */
-@Component(name = "statusService", managedservice = "edu.gemini.aspen.giapi.statusservice.StatusService")
-@Instantiate(name = "statusService")
+@Component(managedservice = "edu.gemini.aspen.giapi.statusservice.StatusService")
+@Instantiate
 public class StatusService implements JmsArtifact{
     private static final Logger LOG = Logger.getLogger(StatusService.class.getName());
     private static final String DEFAULT_STATUS = ">"; //defaults to listen for all the status items.

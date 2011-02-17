@@ -51,6 +51,5 @@ public class StatusHandlerAggregateImpl implements StatusHandlerAggregate {
     public void unbindStatusHandler(StatusHandler handler) {
         _statusHandlers.remove(handler);
         LOG.info("Removed Status Handler: " + handler);
-
     }
 }
