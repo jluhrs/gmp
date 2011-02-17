@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.fileinstall</artifactId>
-            <version>3.1.6</version>
+            <version>3.1.10</version>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
@@ -102,6 +102,21 @@
             <artifactId>org.apache.felix.ipojo</artifactId>
             <version>1.6.8</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.arch</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.webconsole</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <!--dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
+            <version>1.0.1</version>
+        </dependency-->
         <!-- End Level 2-->
         <dependency>
             <groupId>javax.jms</groupId>
