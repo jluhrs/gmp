@@ -105,24 +105,6 @@ public class EpicsStatusService implements StatusHandler {
         }
     }
 
-    /**
-     * Initialize method version for testing only.
-     *
-     *
-     * @param items channels to create and listen to.
-     */
-    public void testInitialize(Channels items) {
-        for (BaseChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
-            if (item instanceof HealthChannelType) {
-                healthChannelMap.put(item.getGiapiname(), null);
-            } else if (item instanceof AlarmChannelType) {
-                alarmChannelMap.put(item.getGiapiname(), null);
-            } else if (item instanceof SimpleChannelType) {
-                channelMap.put(item.getGiapiname(), null);
-            }
-        }
-    }
-
 
     /**
      * Destroys the registered channels in the IChannelAccessServer
@@ -228,32 +210,23 @@ public class EpicsStatusService implements StatusHandler {
 
     /**
      * Just for testing
-     */
-    public void dump(){
-        LOG.info(channelMap.toString());
-        LOG.info(alarmChannelMap.toString());
-        LOG.info(healthChannelMap.toString());
-    }
-
-    /**
-     * Just for testing
      * @return unmodifiable map
      */
-    public Map<String, IChannel> getChannels(){
+    Map<String, IChannel> getChannels(){
         return Collections.unmodifiableMap(channelMap);
     }
     /**
      * Just for testing
      * @return unmodifiable map
      */
-    public Map<String, IAlarmChannel> getAlarmChannels(){
+    Map<String, IAlarmChannel> getAlarmChannels(){
         return Collections.unmodifiableMap(alarmChannelMap);
     }
     /**
      * Just for testing
      * @return unmodifiable map
      */
-    public Map<String, IChannel> getHealthChannels(){
+    Map<String, IChannel> getHealthChannels(){
         return Collections.unmodifiableMap(healthChannelMap);
     }
     @Override
