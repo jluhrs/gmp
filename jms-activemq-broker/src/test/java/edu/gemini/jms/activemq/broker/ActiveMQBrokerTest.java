@@ -4,6 +4,7 @@ package edu.gemini.jms.activemq.broker;
  * Integration test for ActiveMQBroker. it attempts to launch and configure an ActiveMQBroker
  */
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
+@Ignore
 public class ActiveMQBrokerTest {
     @Inject
     private BundleContext context;
