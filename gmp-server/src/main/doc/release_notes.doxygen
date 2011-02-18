@@ -1,2 +1,24 @@
 /*! \page release_notes Release Notes
+
+
+<h2>
+Release Notes - Gemini Instrument Application Programmer Interface - Version Release 11
+</h2>
+<ul>
+<li>Add EPICS channels simulation to Channel Access Server
+</li>
+<li>Add EPICS Status Service to GMP to export instrument status items to EPICS
+</li>
+<li>giapi-tester functionality updates
+</li>
+<li>Migrate ant build system to Maven
+</li>
+<li>Create documentation in doxygen
+</li>
+<li>Upgrade to OSGi V4 and Felix
+</li>
+<li>Adopt iPojo/ConfigAdmin/FileInstall
+</li>
+</ul>
+
  */
