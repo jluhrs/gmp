@@ -14,6 +14,7 @@ import gov.aps.jca.dbr.DBR_STS_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -32,32 +33,123 @@ import static org.mockito.Mockito.*;
  */
 public class EpicsStatusServiceTest extends TestCase {
     private static final Logger LOG = Logger.getLogger(EpicsStatusServiceTest.class.getName());
+
+    private AlarmChannelType buildAlarmChannel(String giapiname, String epicsname, DataType type, String initial){
+        AlarmChannelType ch= new AlarmChannelType();
+        ch.setGiapiname(giapiname);
+        ch.setEpicsname(epicsname);
+        ch.setType(type);
+        ch.setInitial(initial);
+        return ch;
+    }
+
+    private IChannelAccessServer cas;
+
+    @Before
+    public void setUp(){
+        cas= mock(ChannelAccessServer.class);
+        IAlarmChannel iach=mock(IAlarmChannel.class);
+        when(cas.createIntegerAlarmChannel(anyString(),anyInt())).thenReturn(iach);
+        when(cas.createFloatAlarmChannel(anyString(),anyInt())).thenReturn(iach);
+        when(cas.createDoubleAlarmChannel(anyString(),anyInt())).thenReturn(iach);
+        when(cas.createStringAlarmChannel(anyString(),anyInt())).thenReturn(iach);
+        IChannel ich=mock(IChannel.class);
+        when(cas.createIntegerChannel(anyString(), anyInt())).thenReturn(ich);
+        when(cas.createFloatChannel(anyString(), anyInt())).thenReturn(ich);
+        when(cas.createDoubleChannel(anyString(), anyInt())).thenReturn(ich);
+        when(cas.createStringChannel(anyString(), anyInt())).thenReturn(ich);
+    }
+
     @Test
     public void testBasic(){
-        IChannelAccessServer cas= mock(ChannelAccessServer.class);
-        IAlarmChannel ich=mock(IAlarmChannel.class);
-        when(cas.createIntegerAlarmChannel(anyString(),anyInt())).thenReturn(ich);
         EpicsStatusService ess=new EpicsStatusService(cas);
-        LOG.info("Service name: "+ess.getName());
+
+        //LOG.info("Service name: "+ess.getName());
 
         Channels lst= new Channels();
-        AlarmChannelType ch= new AlarmChannelType();
-        ch.setGiapiname("name");
-        ch.setEpicsname("other name");
-        ch.setType(DataType.INT);
-        ch.setInitial("3");
-        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(ch);
+        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name1","other name1",DataType.INT,"3"));
+        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name2","other name2",DataType.DOUBLE,"3.0"));
+        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name3","other name3",DataType.FLOAT,"3.0"));
+        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name4","other name4",DataType.STRING,"three"));
 
 
         ess.initialize(lst);
 
+        ess.update(new AlarmStatus<Integer>("name1", 4, AlarmSeverity.ALARM_OK, AlarmCause.ALARM_CAUSE_OK));
+
         Set<String> testSet = new HashSet<String>();
-        testSet.add("name");
+        testSet.add("name1");
+        testSet.add("name2");
+        testSet.add("name3");
+        testSet.add("name4");
         assertEquals(testSet, ess.getAlarmChannels().keySet());
 
 
         ess.shutdown();
 
         assertEquals(ess.getChannels().keySet(),new HashSet<String>());
+    }
+
+    @Test
+    public void testFull() throws Exception{
+           File xml = null;
+
+        xml = File.createTempFile("EpicsTest", "xml");
+
+        File xsd = null;
+        xsd = File.createTempFile("EpicsTest", "xsd");
+
+        FileWriter xmlWrt = new FileWriter(xml);
+        FileWriter xsdWrt = new FileWriter(xsd);
+
+        xmlWrt.write(EpicsStatusServiceConfigurationTest.xmlStr);
+        xsdWrt.write(EpicsStatusServiceConfigurationTest.xsdStr);
+        xmlWrt.close();
+        xsdWrt.close();
+
+
+        //initialize and check channels are created
+        EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
+
+
+        EpicsStatusService ess=new EpicsStatusService(cas);
+        ess.initialize(essc.getSimulatedChannels());
+        Map<String, IAlarmChannel> ac = ess.getAlarmChannels();
+
+        Map<String, IChannel> nc = ess.getChannels();
+
+        Map<String, IChannel> hc = ess.getHealthChannels();
+
+        for (BaseChannelType cc : essc.getSimulatedChannels().getSimpleChannelOrAlarmChannelOrHealthChannel()) {
+            if (cc instanceof HealthChannelType) {
+                assertTrue(hc.keySet().contains(cc.getGiapiname()));
+            } else if (cc instanceof AlarmChannelType) {
+                assertTrue(ac.keySet().contains(cc.getGiapiname()));
+            } else if (cc instanceof SimpleChannelType) {
+                assertTrue(nc.keySet().contains(cc.getGiapiname()));
+            } else {
+                fail();
+            }
+        }
+
+        //update channels
+        StatusItem<Integer> si = new BasicStatus<Integer>("giapinameint", 1);
+        ess.update(si);
+
+        StatusItem<Double> asi = new AlarmStatus<Double>("giapialarmdouble", 2.0, AlarmSeverity.ALARM_FAILURE, AlarmCause.ALARM_CAUSE_HI);
+        ess.update(asi);
+
+
+        StatusItem<Health> hsi = new HealthStatus("giapihealth1", Health.GOOD);
+        ess.update(hsi);
+        hsi = new HealthStatus("giapihealth1", Health.WARNING);
+        ess.update(hsi);
+
+        //shutdown and check channels get deleted
+        ess.shutdown();
+
+        assertEquals(ess.getAlarmChannels().keySet(), new HashSet<String>());
+        assertEquals(ess.getChannels().keySet(), new HashSet<String>());
+
     }
 }
