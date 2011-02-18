@@ -50,6 +50,10 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>target/site/doxygen</directory>
+            <outputDirectory>/doc</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>src/main/etc/bin</directory>
             <fileMode>0755</fileMode>
             <outputDirectory>/bin</outputDirectory>

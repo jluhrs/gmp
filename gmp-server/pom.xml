@@ -53,21 +53,21 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                         </goals>
                     </execution>
                 </executions-->
-                 <configuration>
+                <configuration>
                     <filePatterns>*.doxygen *.doxy *.java *.xsd *.xml *.properties *.cfg</filePatterns>
                     <recursive>true</recursive>
                     <excludePatterns>*/test/*Test*.java */target/* *pom.xml</excludePatterns>
                     <optimizeOutputJava>true</optimizeOutputJava>
                     <haveDot>true</haveDot>
                     <quiet>false</quiet>
-                     <input>../</input>
+                    <input>../</input>
                     <projectName>"GIAPI - OSGI"</projectName>
                     <generateLatex>true</generateLatex>
                     <generateHtml>true</generateHtml>
                     <!-- this needs to be set correctly when generating the official documentation -->
                     <stripFromPath>${basedir}</stripFromPath>
                     <extractAll>true</extractAll>
-                    <imagePath>gmp-server/src/main/doc/</imagePath>
+                    <imagePath>src/main/doc/</imagePath>
                     <!--   <latexHideIndices>true</latexHideIndices>
                            <compactLatex>true</compactLatex>
                     -->

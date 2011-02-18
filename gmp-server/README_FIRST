@@ -93,13 +93,25 @@ The GMP Server starts 2 consoles:
 DEPLOYMENT PACKAGE
 ------------------
 To build a tar ball with the application so that it can be distributed without access to the maven repositories, at 
-gmp-server/ directory, you must do:
+GMP_SRC_DIR/ directory, you must do:
 
+    mvn clean install
+    cd gmp-server
     mvn -Pproduction assembly:assembly
+
+A script buildgmppackage.sh is included that does the full process
 
 The result file will be under target/gmp-server-{VERSION}.tar.gz
 
 The tar file contains all the bundles, configuration and dependencies to run and it shouldn't require network connection
 to our local maven repository to run
+
+INCLUDING DOCS
+--------------
+The full GMP package should contain, beside the binaries, the doxygen documentation but that is not included by default
+in the deployment package to make the build faster. However for releases it is recommended to include it and for that
+there is a script called
+
+buildrelease.sh
 
 
