@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.epics.osgi;
+package edu.gemini.aspen.gmp.epics.impl;
 
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
 import org.apache.felix.ipojo.annotations.*;
@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 @Component
 @Provides
-public class OsgiEpicsConfiguration implements EpicsConfiguration {
+public class ChannelListConfiguration implements EpicsConfiguration {
     private static final String CONF_FILE = "gmp.epics.conf";
     private static final String CHANNEL_TAG = "channel";
 
@@ -29,11 +29,11 @@ public class OsgiEpicsConfiguration implements EpicsConfiguration {
     @Property(mandatory = true, value = CONF_FILE, name = "configurationFile")
     private String configFileStr;
 
-    private OsgiEpicsConfiguration() {
+    private ChannelListConfiguration() {
 
     }
 
-    public OsgiEpicsConfiguration(String configFileStr) {
+    public ChannelListConfiguration(String configFileStr) {
         this.configFileStr = configFileStr;
         parseConfiguration();
     }

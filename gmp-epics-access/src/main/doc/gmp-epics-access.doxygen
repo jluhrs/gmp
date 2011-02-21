@@ -4,7 +4,7 @@
  * \section gmp-epics-access_provides_sec Provided Services
  * This bundle provides the following services
  *
- * - EpicsConfiguration implemented by \ref edu.gemini.aspen.gmp.epics.osgi.OsgiEpicsConfiguration it reads the list
+ * - EpicsConfiguration implemented by \ref edu.gemini.aspen.gmp.epics.impl.ChannelListConfiguration it reads the list
  * of epics channels that will be made available to other services. The address of the XML file has to be passed as
  * a configuration variable
  * - IEpicsClient implemented by \ref edu.gemini.aspen.gmp.epics.impl.EpicsMonitor
