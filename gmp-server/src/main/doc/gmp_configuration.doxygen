@@ -1,0 +1,15 @@
+/*! \page gmp_configuration Configuration
+ *
+ * \image html gemini.jpg
+ * \image html gpiLogo.jpg
+ *
+ *
+ * - \subpage epics-service
+ * - \subpage package
+ * - \subpage how_to_run
+ * - \subpage telnet
+ * - \subpage web_console
+ * - \subpage configuration
+ *
+ */
+

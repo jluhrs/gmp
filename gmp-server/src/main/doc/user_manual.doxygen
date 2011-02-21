@@ -1,4 +1,103 @@
 /*! \page user_manual User Manual
  *
- * \section Dependencies
+ * \image html gemini.jpg
+ * \image html gpiLogo.jpg
+ *
+ * These pages describes how to use run, monitor and configure the GMP Server
+ *
+ * This manual is dividen in the following sections
+ * - \subpage requirements
+ * - \subpage package
+ * - \subpage how_to_run
+ * - \subpage telnet
+ * - \subpage web_console
+ * - \subpage gmp_configuration
+ *
+ * \page requirements Requirements
+ *
+ * The only requirement is the Java 1.6 or higher runtime installed. You can verify it with the command:
+ *
+ * \c > \c java \c -version
+ *
+ * GMP has been tested in Mac OSX's java 1.6.0_22 and RedHat 5.5 with Sun's JDK 1.6.0_17
+ *
+ * \page package Package
+ *
+ * The GMP is delivered as tar.gz or .zip package containing the binaries, configuration and this documentation.
+ *
+ * The following details the files and directories included in the package
+ * \li /README.txt\n
+ *   Basic documentation
+ *
+ * \li /bin\n
+ *   Scripts and binaries to launch the GMP server
+ *
+ * \li /bin/start.sh\n
+ *   Bash script used to start the GMP
+ *
+ * \li /bin/pax-runner-1.5.0.jar\n
+ *   Pax runner binary is a launcher for OSGi applications
+ *
+ * \li /bin/runner.args\n
+ *   Arguments passed to pax-runner
+ *
+ * \li /bundles\n
+ *   All the bundles that compose the gmp server stored as a maven repository
+ *
+ * \li /conf\n
+ *    Configuration files
+ *
+ * \li /conf/services\n
+ *   Configuration files of specific OSGi services. These files are observed at runtime and modifications are
+ *    reflected on the running services
+ *
+ * \li /felix\n
+ *    OSGi container
+ *
+ * \li /logs\n
+ *   Directory with the application log
+ *
+ * When the application is launched a directory under /bin/runner is created that contains a cache of the binaries
+ * The directory can be freely deleted
+ *
+ * \page how_to_run How to run
+ * To start the GMP go to the /bin directory and call the start.sh script
+ *
+ * At the end of the start the process should be running and there will be a prompt in the screen which is the
+ * felix gogo console.
+ *
+ * Type \b help to see the list of available commands and you will see console like this:
+ *
+ * \image html console_help.jpg
+ * \image latex console_help.jpg
+ *
+ * \page telnet Telnet
+ *
+ * A telnet daemon is included that gives access to the shell remotely. To reach the GMP server type
+ *
+ * \c telnet \c hostname \c 15001
+ *
+ * \attention There is a bug in the telnet daemon, if you press CTRL+C to exit the telnet client will hang. This doesn't
+ * affect the GMP inner workings
+ *
+ * \section telnet_security Security
+ * There is no security in place, anybody that can reach the telnet daemon can login to it
+ *
+ * \page web_console Web Console
+ * A Web interface to the GMP OSGi container is available at
+ *
+ * \c http://hostname:8888/admin
+ *
+ * \section console_security Security:
+ *
+ * The console is secured with the credentials
+ *
+ * - Username: admin
+ * - Password: admin
+ * This can be changed using the web console configuration or the configuration files
+ *
+ * Below is a screenshot of the web console initial page showing all the installed bundles:
+ * \image html webconsole_startpage.jpg
+ * \image latex webconsole_startpage.jpg
  */
+
