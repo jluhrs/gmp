@@ -4,15 +4,15 @@
  * This bundles is capable of generating simulated Epics values at a fixed rate. The simulated
  * values are random and can be of different types as expressed in the configuration
  *
- * \section gmp-tcs-context_provides_sec Provided Services
+ * \section gmp-epics-simulator_provides_sec Provided Services
  * This bundle doesn't provide any services
  *
- * \section gmp-pcs-updater_requires_sec Required Services
+ * \section gmp-epics-simulator_requires_sec Required Services
  * This bundle requires the \ref service edu.gemini.aspen.gmp.epics.EpicsRegistrar "EpicsRegistrar" OSGI service,
  * provided by, for example, the \ref gmp-epics-access bundle.
  *
- * \section gmp-pcs-updater_configuration_sec Configuration
- * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.epics.simulator.EpicsSimulator.cfg
+ * \section gmp-epics-simulator_configuration_sec Configuration
+ * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.epics.simulator.EpicsSimulatorComponent-default.cfg
  *
  * There, you can set only one properties:
  *
