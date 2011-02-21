@@ -13,8 +13,7 @@ import java.util.logging.Logger;
  * Tracks for a JMS provider and instantiate the request consumer
  * when a JMS provider is found
  */
-@Component(managedservice = "edu.gemini.aspen.gmp.services.GMPServices")
-@Instantiate
+@Component
 public class GMPServices {
     private final static Logger LOG = Logger.getLogger(GMPServices.class.getName());
 

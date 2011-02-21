@@ -10,8 +10,7 @@ import java.util.logging.Logger;
 /**
  * Interface to define a composite of several PCS updater objects
  */
-@Component(managedservice = "edu.gemini.aspen.gmp.pcs.model.PcsUpdaterComponent")
-@Instantiate
+@Component
 public class PcsUpdaterComponent {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComposite.class.getName());
 

@@ -18,8 +18,7 @@ import java.io.IOException;
 /**
  * An Epics Configuration built on top of the OSGI properties infraestructure
  */
-@Component(managedservice = "edu.gemini.aspen.gmp.epics.EpicsAccess")
-@Instantiate
+@Component
 @Provides
 public class OsgiEpicsConfiguration implements EpicsConfiguration {
     private static final String CONF_FILE = "gmp.epics.conf";

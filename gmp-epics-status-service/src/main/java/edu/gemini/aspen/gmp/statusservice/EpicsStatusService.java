@@ -24,8 +24,7 @@ import java.util.logging.Logger;
  *         Date: Nov 9, 2010
  */
 //TODO:support multiple values (array)
-@Component(managedservice = "edu.gemini.aspen.gmp.statusservice.EpicsStatusService")
-@Instantiate
+@Component
 @Provides
 public class EpicsStatusService implements StatusHandler {
     private static final Logger LOG = Logger.getLogger(EpicsStatusService.class.getName());

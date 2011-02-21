@@ -46,7 +46,6 @@ public class ActiveMQBrokerComponent {
     @Updated
     private void updated() {
         LOG.info("Updating configuration of ActiveMQ broker with URL:"+url);
-        new RuntimeException().printStackTrace();
         if (_broker == null) {
             _broker = activemq()
                     .name(brokerName)

@@ -14,8 +14,7 @@ import java.util.logging.Logger;
  * The main class for the status service. This class is responsible to interface between the OSGi
  * container and the actual implementation residing in the StatusService
  */
-@Component(managedservice = "edu.gemini.aspen.giapi.statusservice.StatusService")
-@Instantiate
+@Component
 public class StatusService implements JmsArtifact{
     private static final Logger LOG = Logger.getLogger(StatusService.class.getName());
     private static final String DEFAULT_STATUS = ">"; //defaults to listen for all the status items.
@@ -32,7 +31,7 @@ public class StatusService implements JmsArtifact{
     @Property(name = "statusName", value = DEFAULT_STATUS, mandatory = true)
     private String statusName;
 
-    @Property(name = "serviceName", value = DEFAULT_NAME)
+    @Property(name = "serviceName", value = DEFAULT_NAME, mandatory = true)
     private String serviceName;
 
     // Mark as private so is not exposed for API but iPOJO can see it anyway
