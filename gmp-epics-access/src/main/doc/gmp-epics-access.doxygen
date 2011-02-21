@@ -13,8 +13,8 @@
  * \section gmp-epics-access_requires_sec Required Services
  * This bundle requires the \ref service edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service
  *
- * \section gmp-epics-accessr_configuration_sec Configuration
- * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.epics.EpicsAccess.cfg
+ * \section gmp-epics-access_configuration_sec Configuration
+ * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.epics.impl.ChannelListConfiguration-default.cfg
  *
  * There, you can set only one property:
  *
