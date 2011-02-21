@@ -61,6 +61,7 @@ public class EpicsSimulatorComponent {
     @Invalidate
     public void stopSimulation() {
         if (isSimulationRunning()) {
+            LOG.info("Stopping simulation");
             _simulator.stopSimulation();
         }
     }
