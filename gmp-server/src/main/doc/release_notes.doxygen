@@ -19,6 +19,8 @@ Release Notes - Gemini Instrument Application Programmer Interface - Version Rel
 </li>
 <li>Adopt iPojo/ConfigAdmin/FileInstall
 </li>
+<li>Add web based UI to show/edit the bundle's properties
+</li>
 </ul>
 
  */
