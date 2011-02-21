@@ -12,7 +12,7 @@
  * value. Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
  * \li Run <tt>camonitor gpi:status1 gpi:status2</tt> to connect clients to some EPICS channels.
  * Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
- * \li Run <tt>sh runExample.sh status</tt>. Remember to either have a \c gmp.properties file configured in the
+ * \li Run <tt>sh runExample.sh status</tt> (available in src/examples/ in the C++ glue code). Remember to either have a \c gmp.properties file configured in the
  * current directory, or to set the environment variable \c GMP_CONFIGURATION to point to the correct file.
  * \li Check that the camonitor reflects the changes in the values of the EPICS channels.
  * \li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:status1 -value 100 -type INTEGER</tt>.
