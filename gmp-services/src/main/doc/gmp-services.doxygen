@@ -13,7 +13,7 @@
  * provided by, for example, the \ref jms-activemq-provider bundle.
  *
  * \section gmp-services_configuration_sec Configuration
- * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.services.GMPServices.cfg
+ * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.services.GMPServices-default.cfg
  *
  * There, you can set only one property:
  *
