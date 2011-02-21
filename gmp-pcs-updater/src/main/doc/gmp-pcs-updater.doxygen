@@ -15,7 +15,7 @@
  * \ref epics-service bundle.
  *
  * \section gmp-pcs-updater_configuration_sec Configuration
- * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.pcs.PcsUpdater.cfg
+ * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.pcs.model.PcsUpdaterComponent-default.cfg
  *
  * There, you can set two properties:
  *
