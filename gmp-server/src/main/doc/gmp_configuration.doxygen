@@ -1,15 +1,43 @@
 /*! \page gmp_configuration Configuration
  *
- * \image html gemini.jpg
- * \image html gpiLogo.jpg
+ * \section intro Introduction
  *
+ * \attention The configuration of the different parts of the GMP are subject to change as we move to use the
+ * web interface as an alternative to editing the configuration files directly
  *
- * - \subpage epics-service
- * - \subpage package
- * - \subpage how_to_run
- * - \subpage telnet
- * - \subpage web_console
- * - \subpage configuration
+ * The GMP is an OSGI application composed of several independent bundles that collaborate to form the application.
+ * As such the configuration is independent for each bundle but they conform to the standard way to do configuration
+ * using the ConfigAdmin service.
+ *
+ * OSGI Components and/or Services are created using configurations defined in the conf/services directory. These
+ * configurations are just string key-value properties, so for more complex items those properties often point
+ * to other files under the conf directory.
+ *
+ * \section changes How to change
+ *
+ * The configuration files are observed so changes are immediately sent to the bundles though not all of them are
+ * capable of changing their configuration at runtime and may need a restart.
+ *
+ * Some modules offer a web ui to change the configuration. For example the ActiveMQ broker bundle's configuration looks
+ * like:
+ *
+ * \image html activemqbroker_configuration.jpg
+ * \image latex activemqbroker_configuration.jpg
+ *
+ * \section configurable_bundles Configurable bundles
+ * Here is a list of the documentation of the bundles that can be configured. Each page contains a description of the
+ * configuration files for the bundle.
+ *
+ * Please refer to each bundle's documentation for details on their ability to be restarted and how to configure them
+ *
+ * - \ref giapi-status-service_configuration_sec "Status Service"
+ * - \ref gmp-epics-access_configuration_sec "Epics Access"
+ * - \ref gmp-epics-simulator_configuration_sec "GMP Epics Simulator"
+ * - \ref gmp-pcs-updater_configuration_sec "GMP Pcs Updater"
+ * - \ref gmp-services_configuration_sec "GMP Services"
+ * - \ref gmp-epics-status-service_configuration_sec "Epics Status Service"
+ * - \ref gmp-tcs-context_configuration_sec "GMP Tcs Context"
+ * - \ref jms_activemq_broker_configuration_sec "ActiveMQ Broker"
+ * - \ref jms_activemq_provider_configuration_sec "ActiveMQ Provider"
  *
  */
-

@@ -1,21 +1,3 @@
 /*! \page gmp_ipojo IPojo in GIAPI/GMP
  *
- * \section bundles_sec Configuration
- *
- * The \b GMP Server is comprised of the following bundles:
- *
- * - \subpage cas
- * - \subpage gmp-epics-status-service
- * - \subpage gmp-pcs-updater
- * - \subpage gmp-tcs-context
- * - \subpage gmp-epics-simulator
- * - \subpage gmp-epics-access
- * - \subpage gmp-services
- *
- * \section perf_tests_sec Performance and Testing
- * \li GMP EPICS Status Service and CAS performance tests at \subpage performance.
- * \li \subpage validation
- *
- * \section iPojo IPojo
- * We use iPojo as a the base framework for development on top of OSGi at \gmp_ipojo
  */
