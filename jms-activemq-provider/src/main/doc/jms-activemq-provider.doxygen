@@ -1,0 +1,12 @@
+/*!
+ * \page jms_activemq_provider JMS ActiveMQ Provider
+ *
+ * \section jms_activemq_provider_provides_sec Provided Services
+ *
+ * \section jms_activemq_provider_requires_sec Required Services
+ * This bundle requires no other OSGI services.
+ *
+ * \section jms_activemq_provider_configuration_sec Configuration
+ * TBD
+ *
+ */
