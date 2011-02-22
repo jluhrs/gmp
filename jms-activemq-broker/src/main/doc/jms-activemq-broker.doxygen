@@ -1,12 +1,33 @@
 /*!
  * \page jms_activemq_broker JMS ActiveMQ Broker
  *
+ * The ActiveMQ Broker bundle encapsulates an ActiveMQ broker making it compatible with OSGi. It contains a
+ * configurable iPojo component that takes the configuration, builds and start an embedded Broker
+ *
  * \section jms_activemq_broker_provides_sec Provided Services
+ * This bundle does not provides any services
  *
  * \section jms_activemq_broker_requires_sec Required Services
- * This bundle requires no other OSGI services.
+ * This bundle requires only the ConfigAdmin service.
  *
  * \section jms_activemq_broker_configuration_sec Configuration
- * TBD
+ * The broker is configured with the contents of the file edu.gemini.jms.activemq.broker.ActiveMQBrokerComponent-default.cfg
  *
+ * Some of the configurations, in particular brokerUrl is explained in the ActiveMQ web site, specifically
+ * <a href="http://activemq.apache.org/configuring-version-5-transports.html">here</a>
+ *
+ * The configuration contains the following items:
+ * - brokerName Internal name of the ActiveMQ Broker
+ * - brokerUrl URL where ActiveMQ listens
+ * - persistent Whether ActiveMQ should use persistence
+ * - deleteMsgOnStartup Whether original message should be deleted
+ * - useAdvisoryMessages Whether to use advisory messages
+ * - useJmx Whether to use JMX
+ * - jmxRmiServerPort Port for the RMI server launched by the JMX connector
+ * - jmxConnectorPort Port for the JMX connector
+ *
+ * \attention The broker will not be reconfigured on the fly. You need to change the configuration and restart
+ *
+ * To edit the configuration you can use the web console as shown in the screenshot:
+ * \image html activemqbroker_configuration.jpg
  */
