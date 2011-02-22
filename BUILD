@@ -37,9 +37,9 @@ You can skip them by issuing:
 Most tests in the project are unit test but there are some integration tests are identified by classes ending with
 IT unlike unit tests that end in Test.
 
-Integration tests are not run by default to make the builds faster and the normal mvn test won't execute them, to
-run the unit tests you need to issue:
-    mvn test failsafe:integration-test failsafe:verify
+Integration tests are not run by default to make the builds faster and the normal mvn test target won't execute them.
+To run the integration tests manually you need to issue:
+    mvn install failsafe:integration-test failsafe:verify
 
 5. Use with IntelliJ idea
 ------------------------------
