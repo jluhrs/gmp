@@ -61,6 +61,7 @@
             <filtered>true</filtered>
             <includes>
                 <include>start.sh</include>
+                <include>giapi-tester.sh</include>
             </includes>
         </fileSet>
         <fileSet>

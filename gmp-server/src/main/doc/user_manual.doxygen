@@ -12,6 +12,7 @@
  * - \subpage telnet
  * - \subpage web_console
  * - \subpage gmp_configuration
+ * - \subpage giapi_tester
  *
  * \page requirements Requirements
  *
@@ -99,5 +100,12 @@
  * Below is a screenshot of the web console initial page showing all the installed bundles:
  * \image html webconsole_startpage.jpg
  * \image latex webconsole_startpage.jpg
+ *
+ * \page giapi_tester GIAPI Tester
+ * The giapi-tester is a command line tool you can use to test various API features. You can find it in
+ * gmp-server/bin/giapi-tester.sh. For usage information, type <tt>./giapi-tester.sh -?</tt>. If using <tt>csh</tt>, type
+ * <tt>./giapi-tester.sh -\?</tt>.
+ *
+ *
  */
 
