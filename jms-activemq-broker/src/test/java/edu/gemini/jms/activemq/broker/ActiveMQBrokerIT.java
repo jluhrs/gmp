@@ -13,50 +13,24 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
-import org.osgi.service.cm.ConfigurationAdmin;
 
-import java.io.IOException;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.concurrent.TimeUnit;
 
 import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
 
 @RunWith(JUnit4TestRunner.class)
-public class ActiveMQBrokerTest {
+public class ActiveMQBrokerIT {
     @Inject
     private BundleContext context;
 
-    //@Before
-    public void before() throws IOException {
-        ConfigurationAdmin configAdmin = (ConfigurationAdmin) context.getService(context.getServiceReference(ConfigurationAdmin.class.getName()));
-        org.osgi.service.cm.Configuration configuration = configAdmin.getConfiguration("edu.gemini.jms.activemq.broker.ActiveMQBroker");
-//        configuration.getProperties()
-        Dictionary dictionary = new Hashtable<String, String>();
-        dictionary.put("brokerName", "gmp");
-        dictionary.put("brokerUrl", "vm://gmp");
-        dictionary.put("persistent", "false");
-        dictionary.put("deleteMsgOnStartup", "true");
-        dictionary.put("useAdvisoryMessages", "true");
-        dictionary.put("useJmx", "false");
-        dictionary.put("jmxRmiServerPort", "9000");
-        dictionary.put("jmxConnectorPort", "1099");
-        configuration.update(dictionary);
-        System.out.println("UPDATE " + dictionary);
-    }
-
     @Configuration
     public static Option[] baseConfig() {
-        //System.out.println(System.getProperties());
-        //getClass().getResource("")
         return options(
                 felix(),
                 waitForFrameworkStartup(),
-                //systemProperty("ipojo.log.level").value("debug"),
-                systemProperty("felix.cm.loglevel").value("4"),
-                systemProperty("felix.fileinstall.log.level").value("4"),
+                cleanCaches(),
                 systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + "/src/test/resources/conf/services"),
-                systemProperty("felix.fileinstall.noInitialDelay").value("true"),
                 mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("com.springsource.javax.jms").groupId("javax.jms").versionAsInProject(),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
@@ -75,9 +49,8 @@ public class ActiveMQBrokerTest {
 
     @Test
     public void testBrokerRunning() throws BundleException, InterruptedException {
-        //TimeUnit.MILLISECONDS.sleep(2200L);
         Bundle bundle = getJmsActiveMQBrokerBundle();
-
+        TimeUnit.MILLISECONDS.sleep(2200L);
     }
 
     private Bundle getJmsActiveMQBrokerBundle() throws BundleException {

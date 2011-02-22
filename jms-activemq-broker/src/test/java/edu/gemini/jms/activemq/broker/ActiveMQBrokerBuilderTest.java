@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
  * we can only check some of those value using JMX
  */
 @Ignore
-public class TestActiveMQBrokerBuilder {
+public class ActiveMQBrokerBuilderTest {
 
     private MBeanServer mBeanServer;
     private ObjectName brokerObjectName;
@@ -26,7 +26,7 @@ public class TestActiveMQBrokerBuilder {
     private static int startPort = 9100;
     private final ObjectName amqObjectNamePattern;
 
-    public TestActiveMQBrokerBuilder() throws MalformedObjectNameException {
+    public ActiveMQBrokerBuilderTest() throws MalformedObjectNameException {
         amqObjectNamePattern = new ObjectName("org.apache.activemq:BrokerName=*,Type=Broker");
     }
 
