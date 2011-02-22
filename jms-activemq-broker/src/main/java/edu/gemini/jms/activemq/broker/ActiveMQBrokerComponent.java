@@ -44,8 +44,8 @@ public class ActiveMQBrokerComponent {
     private int jmxConnectorPort;
 
     @Updated
-    private void updated() {
-        LOG.info("Updating configuration of ActiveMQ broker with URL:"+url);
+    private void updatedConfiguration() {
+        LOG.info("Updating configuration of ActiveMQ broker with URL:" + url);
         if (_broker == null) {
             _broker = activemq()
                     .name(brokerName)
@@ -64,9 +64,15 @@ public class ActiveMQBrokerComponent {
     }
 
     @Validate
-    public void start() {
-        LOG.info("Starting ActiveMQ broker: URL:" + url);
+    public void startBroker() {
+        LOG.info("Starting ActiveMQ broker with URL:" + url);
         _broker.start();
-        LOG.info("Started ActiveMQ broker");
+    }
+
+    @Invalidate
+    public void stopBroker() {
+        if (_broker != null) {
+            _broker.shutdown();
+        }
     }
 }

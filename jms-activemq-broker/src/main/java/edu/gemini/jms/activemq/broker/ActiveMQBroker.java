@@ -112,6 +112,11 @@ public class ActiveMQBroker implements Broker {
         LOG.info("Starting up ActiveMQ Broker");
         try {
             _broker.start();
+            if (_broker.waitUntilStarted()) {
+                LOG.info("ActiveMQ Broker Component Started");
+            } else {
+                LOG.severe("ActiveMQ didn't start properly");
+            }
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "Exception while starting broker", e);
         }

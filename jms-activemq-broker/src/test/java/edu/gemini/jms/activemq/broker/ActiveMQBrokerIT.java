@@ -4,6 +4,7 @@ package edu.gemini.jms.activemq.broker;
  * Integration test for ActiveMQBroker. it attempts to launch and configure an ActiveMQBroker
  */
 
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -14,8 +15,11 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 
-import java.util.concurrent.TimeUnit;
+import javax.jms.Connection;
+import javax.jms.JMSException;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
 
@@ -31,6 +35,7 @@ public class ActiveMQBrokerIT {
                 waitForFrameworkStartup(),
                 cleanCaches(),
                 systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + "/src/test/resources/conf/services"),
+                systemProperty("felix.fileinstall.noInitialDelay").value("true"),
                 mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("com.springsource.javax.jms").groupId("javax.jms").versionAsInProject(),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
@@ -48,15 +53,25 @@ public class ActiveMQBrokerIT {
     }
 
     @Test
-    public void testBrokerRunning() throws BundleException, InterruptedException {
-        Bundle bundle = getJmsActiveMQBrokerBundle();
-        TimeUnit.MILLISECONDS.sleep(2200L);
+    public void testBundleStarted() throws BundleException, InterruptedException, JMSException {
+        assertNotNull(getJmsActiveMQBrokerBundle());
+        assertEquals(getJmsActiveMQBrokerBundle().getState(), Bundle.ACTIVE);
+    }
+
+    @Test
+    public void testBrokerIsRunning() throws BundleException, InterruptedException, JMSException {
+        // The parameters of the connection are very relevant:
+        // create=false prevents another broker to be created by default
+        // waitForStart=4000 ensure the connection will wait for the broker to be started before giving up
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://gmp?create=false&waitForStart=4000");
+        Connection connection = connectionFactory.createConnection();
+        assertEquals("5.4.2", connection.getMetaData().getProviderVersion());
     }
 
     private Bundle getJmsActiveMQBrokerBundle() throws BundleException {
         for (Bundle b : context.getBundles()) {
             if ("edu.gemini.jms.activemq-broker".equals(b.getSymbolicName())) {
-                b.start();
+                return b;
             }
         }
         return null;
