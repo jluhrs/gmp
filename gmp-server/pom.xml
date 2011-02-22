@@ -308,6 +308,14 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                     <artifactId>pax-runner</artifactId>
                     <version>1.5.0</version>
                 </dependency>
+                <!-- GIAPI tester -->
+                <dependency>
+                    <groupId>edu.gemini.aspen</groupId>
+                    <artifactId>giapi-tester</artifactId>
+                    <version>0.1.0</version>
+                    
+                    <classifier>jar-with-dependencies</classifier>
+                </dependency>
                 <!-- Felix Shell and GOGO -->
                 <dependency>
                     <groupId>org.apache.felix</groupId>
