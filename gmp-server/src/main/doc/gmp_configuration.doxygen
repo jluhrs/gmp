@@ -13,6 +13,9 @@
  * configurations are just string key-value properties, so for more complex items those properties often point
  * to other files under the conf directory.
  *
+ * \section log_configuration Log Configuration
+ * TBD
+ *
  * \section changes How to change
  *
  * The configuration files are observed so changes are immediately sent to the bundles though not all of them are
