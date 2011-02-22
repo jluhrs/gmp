@@ -11,7 +11,7 @@
  * It also requires a reference to \ref edu.gemini.jms.api.JmsProvider "JmsProvider" service
  *
  * \section gmp-tcs-context_configuration_sec Configuration
- * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.tcs.TcsContext.cfg
+ * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.tcs.model.TcsContextComponent-default.cfg
  *
  * There, you can set three properties:
  *
