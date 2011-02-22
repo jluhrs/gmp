@@ -6,7 +6,7 @@
  * \section jms_activemq_broker_requires_sec Required Services
  * This bundle requires no other OSGI services.
  *
- * \section jms_activemq_broker__configuration_sec Configuration
+ * \section jms_activemq_broker_configuration_sec Configuration
  * TBD
  *
  */
