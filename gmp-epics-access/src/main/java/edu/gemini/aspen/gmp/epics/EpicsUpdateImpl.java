@@ -53,4 +53,12 @@ public class EpicsUpdateImpl implements EpicsUpdate {
         result = 31 * result + channelData.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "EpicsUpdate{" +
+                "channelName='" + channelName + '\'' +
+                ", channelData=" + channelData +
+                '}';
+    }
 }
