@@ -1,5 +1,9 @@
 package edu.gemini.aspen.giapi.commands;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
+
 import java.util.*;
 
 /**
@@ -14,7 +18,7 @@ import java.util.*;
  */
 public class ConfigPathNavigator {
 
-    private TreeMap<ConfigPath, String> _treeMap = new TreeMap<ConfigPath, String>();
+    private final Map<ConfigPath, String> _treeMap;
 
     /**
      * Construct using the given configuration
@@ -22,10 +26,12 @@ public class ConfigPathNavigator {
      * by this ConfigPathNavigator
      */
     public ConfigPathNavigator(Configuration config) {
+        TreeMap<ConfigPath, String> configMap = Maps.newTreeMap();
         Set<ConfigPath> keys = config.getKeys();
         for (ConfigPath key: keys) {
-            _treeMap.put(key, config.getValue(key));
+            configMap.put(key, config.getValue(key));
         }
+        _treeMap = ImmutableMap.copyOf(configMap);
     }
 
     /**
@@ -62,7 +68,7 @@ public class ConfigPathNavigator {
      * @return a set of all the child paths that can be obtained from the
      * current configuration
      */
-    public Set<ConfigPath> getChildPaths(ConfigPath path) {
+    public Set<ConfigPath> getChildPaths(final ConfigPath path) {
         //ordered set of all the keys
         Set<ConfigPath> set = _treeMap.keySet();
 
