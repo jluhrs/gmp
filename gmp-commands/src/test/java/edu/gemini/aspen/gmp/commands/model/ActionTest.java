@@ -17,11 +17,7 @@ import static org.junit.Assert.*;
  * Test the Action Class. 
  */
 public class ActionTest {
-
-
     private Action a1, a2, a3, a4;
-
-
 
     @Before
     public void setUp() {
@@ -73,13 +69,9 @@ public class ActionTest {
         assertEquals(Activity.START, a.getActivity());
         assertEquals(null, a.getConfiguration());
         assertEquals(a1.getCompletionListener(), a.getCompletionListener());
+        assertEquals(a1.getId(), a.getId());
 
         //finally check that both objects are equals now
-        assertEquals(a1, a);
-
-
+        assertFalse(a1.equals(a));
     }
-
-
-
 }

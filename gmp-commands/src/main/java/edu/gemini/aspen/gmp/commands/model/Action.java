@@ -13,17 +13,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class Action implements Comparable<Action> {
 
     private static AtomicInteger ID = new AtomicInteger();
-    private int _actionId;
-    private SequenceCommand _sequenceCommand; //Sequence Command associated to it.
-    private Activity _activity;
-    private Configuration _configuration;
-    private CompletionListener _listener;
+    private final int _actionId;
+    private final SequenceCommand _sequenceCommand; //Sequence Command associated to it.
+    private final Activity _activity;
+    private final Configuration _configuration;
+    private final CompletionListener _listener;
 
     public Action(SequenceCommand sequenceCommand,
                     Activity activity,
                     Configuration configuration,
                     CompletionListener listener) {
         _actionId = ID.incrementAndGet();
+        _sequenceCommand = sequenceCommand;
+        _activity = activity;
+        _configuration = configuration;
+        _listener = listener;
+    }
+
+    private Action(int actionId,
+                   SequenceCommand sequenceCommand,
+                    Activity activity,
+                    Configuration configuration,
+                    CompletionListener listener) {
+        _actionId = actionId;
         _sequenceCommand = sequenceCommand;
         _activity = activity;
         _configuration = configuration;
@@ -118,10 +130,6 @@ public final class Action implements Comparable<Action> {
                          Activity activity,
                          Configuration config,
                          CompletionListener completionListener) {
-        _sequenceCommand = newSequenceCommand;
-        _activity = activity;
-        _configuration = config;
-        _listener = completionListener;
-        return this;
+        return new Action(this._actionId, newSequenceCommand, activity, config, completionListener);
     }
 }
