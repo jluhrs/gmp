@@ -1,7 +1,8 @@
 package edu.gemini.aspen.gmp.commands.model;
 
+import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.Activity;
-import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
@@ -9,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
@@ -21,26 +21,21 @@ import static org.junit.Assert.*;
 public class ActionManagerTest {
 
     private ActionManager manager;
-
     private List<Action> actions;
-
     private static final int TOTAL_ACTIONS = 10;
 
     @Before
     public void setUp() {
         manager = new ActionManager();
         manager.start();
-        actions = new ArrayList<Action>();
-
-        Configuration config1 = emptyConfiguration();
+        actions = Lists.newArrayList();
 
         for (int i = 0; i < TOTAL_ACTIONS; i++) {
             actions.add(new Action(SequenceCommand.ABORT,
                     Activity.PRESET,
-                    config1,
+                    emptyConfiguration(),
                     new TestCompletionListener()));
         }
-
     }
 
     @After
@@ -54,24 +49,27 @@ public class ActionManagerTest {
      */
     @Test
     public void testOneActionOneCompletion() {
-        Action a1 = actions.get(0);
+        Action action = actions.get(0);
 
-        manager.registerAction(a1);
+        manager.registerAction(action);
 
-        manager.registerCompletionInformation(a1.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
+        waitForListener(action.getCompletionListener(), 5000);
 
-        synchronized (a1.getCompletionListener()) {
+        TestCompletionListener cl = (TestCompletionListener) action.getCompletionListener();
+        assertTrue(cl.wasInvoked());
+    }
+
+    private void waitForListener(CompletionListener listener, int maxTime) {
+        synchronized (listener) {
             try {
-                a1.getCompletionListener().wait(5000);
+                listener.wait(maxTime);
             } catch (InterruptedException e) {
                 fail("Thread interrupted");
             }
         }
-
-        TestCompletionListener cl = (TestCompletionListener) a1.getCompletionListener();
-        assertTrue(cl.wasInvoked());
     }
 
     /**
@@ -79,43 +77,29 @@ public class ActionManagerTest {
      */
     @Test
     public void testLock() {
-        Action a1 = actions.get(0);
+        Action action = actions.get(0);
 
-        manager.registerAction(a1);
+        manager.registerAction(action);
 
         //lock the manager, so it should not update the listener...
         manager.lock();
 
-        manager.registerCompletionInformation(a1.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
+        waitForListener(action.getCompletionListener(), 1000);
 
-        synchronized (a1.getCompletionListener()) {
-            try {
-                a1.getCompletionListener().wait(1000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
-
-        TestCompletionListener cl = (TestCompletionListener) a1.getCompletionListener();
+        TestCompletionListener cl = (TestCompletionListener) action.getCompletionListener();
         assertFalse(cl.wasInvoked());
 
         //unlock the manager
         manager.unlock();
 
-        synchronized (a1.getCompletionListener()) {
-            try {
-                a1.getCompletionListener().wait(1000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
+        waitForListener(action.getCompletionListener(), 1000);
 
         assertTrue(cl.wasInvoked());
 
     }
-
 
     /**
      * Validates that completion info for an action will trigger the listeners
@@ -123,7 +107,6 @@ public class ActionManagerTest {
      */
     @Test
     public void testMultiplePendingActions() {
-
         for (Action a : actions) {
             manager.registerAction(a);
         }
@@ -133,15 +116,8 @@ public class ActionManagerTest {
                 HandlerResponse.COMPLETED);
 
         //and give the listeners a chance to run...
-
         for (Action a : actions) {
-            synchronized (a.getCompletionListener()) {
-                try {
-                    a.getCompletionListener().wait(1000);
-                } catch (InterruptedException e) {
-                    fail("Thread interrupted");
-                }
-            }
+            waitForListener(a.getCompletionListener(), 1000);
         }
 
         for (int i = 0; i < TOTAL_ACTIONS - 1; i++) {
@@ -157,21 +133,13 @@ public class ActionManagerTest {
      */
     @Test
     public void testInvalidAction() {
+        Action action = actions.get(0);
 
-        Action a1 = actions.get(0);
-
-        manager.registerCompletionInformation(a1.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        synchronized (a1.getCompletionListener()) {
-            try {
-                a1.getCompletionListener().wait(1000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
-
-        assertFalse(((TestCompletionListener) ((a1.getCompletionListener()))).wasInvoked());
+        waitForListener(action.getCompletionListener(), 1000);
+        assertFalse(((TestCompletionListener) ((action.getCompletionListener()))).wasInvoked());
 
     }
 
@@ -181,38 +149,24 @@ public class ActionManagerTest {
      */
     @Test
     public void testDuplicatedAction() {
+        Action action = actions.get(0);
 
-        Action a1 = actions.get(0);
+        manager.registerAction(action);
 
-        manager.registerAction(a1);
-
-        manager.registerCompletionInformation(a1.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        synchronized (a1.getCompletionListener()) {
-            try {
-                a1.getCompletionListener().wait(1000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
+        waitForListener(action.getCompletionListener(), 1000);
 
-        assertTrue(((TestCompletionListener) ((a1.getCompletionListener()))).wasInvoked());
-
+        assertTrue(((TestCompletionListener) ((action.getCompletionListener()))).wasInvoked());
 
         //now, receive completion again...
-        ((TestCompletionListener) ((a1.getCompletionListener()))).reset();
+        ((TestCompletionListener) ((action.getCompletionListener()))).reset();
 
-        manager.registerCompletionInformation(a1.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
-        synchronized (a1.getCompletionListener()) {
-            try {
-                a1.getCompletionListener().wait(1000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
-        assertFalse(((TestCompletionListener) ((a1.getCompletionListener()))).wasInvoked());
+        waitForListener(action.getCompletionListener(), 1000);
+        assertFalse(((TestCompletionListener) ((action.getCompletionListener()))).wasInvoked());
     }
 
 
@@ -223,24 +177,18 @@ public class ActionManagerTest {
      */
     @Test
     public void testFutureAction() {
-        Action a1 = actions.get(0);
+        Action action = actions.get(0);
 
-        manager.registerAction(a1);
+        manager.registerAction(action);
 
         //receive completion info for an ID we haven't produced..
         manager.registerCompletionInformation(actions.get(TOTAL_ACTIONS - 1).getId() + 1,
                 HandlerResponse.COMPLETED);
 
         //see if this triggers action #1.
-        synchronized (a1.getCompletionListener()) {
-            try {
-                a1.getCompletionListener().wait(1000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
-        //it shouldn't have been called. 
-        assertFalse(((TestCompletionListener) ((a1.getCompletionListener()))).wasInvoked());
+        waitForListener(action.getCompletionListener(), 1000);
+        //it shouldn't have been called.
+        assertFalse(((TestCompletionListener) ((action.getCompletionListener()))).wasInvoked());
     }
 
     /**
@@ -248,11 +196,11 @@ public class ActionManagerTest {
      */
     @Test
     public void testNoListener() {
-        Action a = new Action(SequenceCommand.ABORT, Activity.PRESET,
+        Action action = new Action(SequenceCommand.ABORT, Activity.PRESET,
                 emptyConfiguration(), null);
-        manager.registerAction(a);
+        manager.registerAction(action);
 
-        manager.registerCompletionInformation(a.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
         //if everything went fine, we should be able to process other actions..
@@ -280,27 +228,21 @@ public class ActionManagerTest {
     public void testCompletionForApplySequenceCommand() {
         TestCompletionListener cl = new TestCompletionListener();
 
-        Action a = new Action(SequenceCommand.APPLY,
+        Action action = new Action(SequenceCommand.APPLY,
                 Activity.PRESET_START,
                 emptyConfiguration(),
                 cl);
 
-        manager.registerAction(a);
+        manager.registerAction(action);
 
         //An action started has been registered.
-        manager.increaseRequiredResponses(a);
+        manager.increaseRequiredResponses(action);
 
-        manager.registerCompletionInformation(a.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
         //the completion listener should have been called.
-        synchronized (a.getCompletionListener()) {
-            try {
-                a.getCompletionListener().wait(5000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
+        waitForListener(action.getCompletionListener(), 5000);
         assertTrue(cl.wasInvoked());
     }
 
@@ -313,49 +255,34 @@ public class ActionManagerTest {
      */
     @Test
     public void testMultipleCompletionForApplySequenceCommand() {
-
-
         TestCompletionListener cl = new TestCompletionListener();
 
-        Action a = new Action(SequenceCommand.APPLY,
+        Action action = new Action(SequenceCommand.APPLY,
                 Activity.PRESET_START,
                 emptyConfiguration(),
                 cl);
 
-        manager.registerAction(a);
+        manager.registerAction(action);
 
         //two handlers will be expected..
-        manager.increaseRequiredResponses(a); manager.increaseRequiredResponses(a);
+        manager.increaseRequiredResponses(action); manager.increaseRequiredResponses(action);
 
 
         cl.reset();
-        manager.registerCompletionInformation(a.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
         //the completion listener should not have been called.
-
-        synchronized (a.getCompletionListener()) {
-            try {
-                a.getCompletionListener().wait(5000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
+        waitForListener(action.getCompletionListener(), 5000);
 
         assertFalse(cl.wasInvoked());
 
         cl.reset();
 
-        manager.registerCompletionInformation(a.getId(),
+        manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        synchronized (a.getCompletionListener()) {
-            try {
-                a.getCompletionListener().wait(5000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
+        waitForListener(action.getCompletionListener(), 5000);
 
         assertTrue(cl.wasInvoked());
     }
