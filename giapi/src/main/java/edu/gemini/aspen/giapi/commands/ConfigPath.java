@@ -260,9 +260,9 @@ public final class ConfigPath implements Comparable<ConfigPath> {
         if (pathstr == null || pathstr.isEmpty() || pathstr.equals(SEPARATOR)) {
             return EMPTY_PATH_STR;
         }
-        StringBuilder sb = new StringBuilder(pathstr.trim());
+        StringBuilder sb = new StringBuilder();
 
-        String[] parts = pathstr.split(SEPARATOR);
+        String[] parts = pathstr.trim().split(SEPARATOR);
         for (String part : parts) {
             part = part.trim();
             if ("".equals(part)) {
@@ -270,10 +270,9 @@ public final class ConfigPath implements Comparable<ConfigPath> {
             }
             sb.append(part).append(SEPARATOR);
         }
-        pathstr = sb.toString();
-        assert pathstr.length() > 1;
+        String finalPathStr = sb.toString();
         //return the path without the last separator.
-        return sb.toString().substring(0, pathstr.length() - 1);
+        return finalPathStr.substring(0, finalPathStr.length() - 1);
     }
 
 }
