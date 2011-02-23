@@ -5,12 +5,14 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Actions are used to keep track of sequence command progress.
  */
 public final class Action implements Comparable<Action> {
 
-    private static int ID = 0;
+    private static AtomicInteger ID = new AtomicInteger();
     private int _actionId;
     private SequenceCommand _sequenceCommand; //Sequence Command associated to it.
     private Activity _activity;
@@ -21,7 +23,7 @@ public final class Action implements Comparable<Action> {
                     Activity activity,
                     Configuration configuration,
                     CompletionListener listener) {
-        _actionId = ++ID;
+        _actionId = ID.incrementAndGet();
         _sequenceCommand = sequenceCommand;
         _activity = activity;
         _configuration = configuration;
@@ -29,7 +31,7 @@ public final class Action implements Comparable<Action> {
     }
 
     public static int getCurrentId() {
-        return ID;
+        return ID.get();
     }
 
     public Activity getActivity() {

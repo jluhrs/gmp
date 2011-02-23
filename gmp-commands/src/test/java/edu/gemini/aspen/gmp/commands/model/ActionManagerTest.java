@@ -241,8 +241,6 @@ public class ActionManagerTest {
         }
         //it shouldn't have been called. 
         assertFalse(((TestCompletionListener) ((a1.getCompletionListener()))).wasInvoked());
-
-
     }
 
     /**
