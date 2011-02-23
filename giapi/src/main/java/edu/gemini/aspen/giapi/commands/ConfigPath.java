@@ -257,11 +257,10 @@ public final class ConfigPath implements Comparable<ConfigPath> {
      * @return normalized string to be used as a ConfigPath
      */
     private String _normalize(String pathstr) {
-        if (pathstr == null || "".equals(pathstr) || pathstr.equals(SEPARATOR)) {
+        if (pathstr == null || pathstr.isEmpty() || pathstr.equals(SEPARATOR)) {
             return EMPTY_PATH_STR;
         }
-        pathstr = pathstr.trim();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(pathstr.trim());
 
         String[] parts = pathstr.split(SEPARATOR);
         for (String part : parts) {
@@ -274,7 +273,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
         pathstr = sb.toString();
         assert pathstr.length() > 1;
         //return the path without the last separator.
-        return pathstr.substring(0, pathstr.length() - 1);
+        return sb.toString().substring(0, pathstr.length() - 1);
     }
 
 }
