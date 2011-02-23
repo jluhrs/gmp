@@ -169,7 +169,10 @@ public final class HandlerResponse {
      *         the response is "ERROR", an empty ERROR handler response will be returned
      */
     public static HandlerResponse get(HandlerResponse.Response response) {
-        switch (response) {
+        if (response == null) {
+            throw new IllegalArgumentException("Response cannot be null");
+        }
+        switch ( response) {
             case ACCEPTED:
                 return HandlerResponse.ACCEPTED;
             case STARTED:
@@ -180,9 +183,9 @@ public final class HandlerResponse {
                 return HandlerResponse.createError("");
             case NOANSWER:
                 return HandlerResponse.NOANSWER;
+            default:
+                throw new IllegalArgumentException("Unknown response type " + response);
         }
-        return null;
     }
-
 
 }

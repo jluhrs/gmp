@@ -42,6 +42,11 @@ public class HandlerResponseTest {
         testResponseType(HandlerResponse.Response.STARTED);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testNotValidResponse() {
+        HandlerResponse.get(null);
+    }
+
     private void testResponseType(HandlerResponse.Response responseType) {
         HandlerResponse handlerResponse = HandlerResponse.get(responseType);
         assertNotNull(handlerResponse);
@@ -80,5 +85,11 @@ public class HandlerResponseTest {
         assertEquals("[ERROR {}]", handlerResponse.toString());
         handlerResponse = HandlerResponse.get(HandlerResponse.Response.ACCEPTED);
         assertEquals("[ACCEPTED]", handlerResponse.toString());
+    }
+
+    @Test
+    public void testToStringWithNullError() {
+        HandlerResponse handlerResponse = HandlerResponse.createError(null);
+        assertEquals("[ERROR {}]", handlerResponse.toString());
     }
 }
