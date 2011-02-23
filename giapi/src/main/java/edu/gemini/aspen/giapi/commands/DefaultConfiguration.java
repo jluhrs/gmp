@@ -39,6 +39,10 @@ public final class DefaultConfiguration implements Configuration {
     public static Builder copy(Configuration config) {
         return new Builder(config);
     }
+
+    public static Builder configurationBuilder() {
+        return new Builder(emptyConfiguration());
+    }
     
     DefaultConfiguration() {
         _config = ImmutableSortedMap.of();

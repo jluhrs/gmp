@@ -6,9 +6,7 @@ import org.junit.Test;
 import java.util.Set;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -21,7 +19,7 @@ public class ConfigPathNavigatorTest {
     public void setUp() throws Exception {
         singlePathConfiguration = configuration(configPath("gpi:cc:filter.name"), "x'");
         
-        multiplePathConfiguration = copy(emptyConfiguration())
+        multiplePathConfiguration = configurationBuilder()
                 .withPath(configPath("gpi:cc:filter.name"), "x")
                 .withPath(configPath("gpi:cc:mirror.pos"), "Y")
                 .withPath(configPath("gpi:dc:exposure"), "1")
