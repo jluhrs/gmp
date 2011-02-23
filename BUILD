@@ -17,7 +17,7 @@ any required dependencies, compile the code (under src/main/java), compile
 and run the tests (under src/test/java), and package the jar file with
 the necessary OSGi headers.
 
-The headers are derived from the pom information and that provided in the
+The headers are derived from the pom information and those provided in the
 osgi.bnd file
 
 3. Build a single module
@@ -34,10 +34,12 @@ You can skip them by issuing:
 
 4. Integration tests
 ------------------------
-Most tests in the project are unit test but there are some integration tests are identified by classes ending with
-IT unlike unit tests that end in Test.
+Most tests in the project are unit test but there are some integration tests are
+identified by classes ending with IT unlike unit tests that end in Test.
 
-Integration tests are not run by default to make the builds faster and the normal mvn test target won't execute them.
+Integration tests are not run by default to make the builds faster and the
+normal mvn test target won't execute them.
+
 To run the integration tests manually you need to issue:
     mvn install failsafe:integration-test failsafe:verify
 
@@ -56,25 +58,29 @@ the application there
 
 7. Pax-construct
 ----------------
-Pax construct is a set of scripts that make it easier to build the pom files, add new bundles and new
-dependencies
+Pax construct is a set of scripts that make it easier to build the pom files,
+add new bundles and new dependencies
 
 You can get it at:
 
 Install pax-construct 1.4 or higher and put the scripts on the path.
 You can get pax construct from
 http://repo1.maven.org/maven2/org/ops4j/pax/construct/scripts/1.4/scripts-1.4.zip
-Expand the zip file, for example to ~/Java/pax-construct-1.4 and add the bin dir to
-your path
+Expand the zip file, for example to ~/Java/pax-construct-1.4 and add the bin dir
+to your path
 
 7.1 Add new bundle
 ------------------
-You can use pax-create-bundle at the project level to create a new bundle for example as:
+You can use pax-create-bundle at the project level to create a new bundle for
+example as:
 
-pax-create-bundle -p edu.gemini.aspen.gmp.mypackage -n "mypackage"g edu.gemini.aspen.gmp -v 0.1.0
+pax-create-bundle -p edu.gemini.aspen.gmp.mypackage -n "mypackage" -g edu.gemini.aspen.gmp -v 0.1.0
 
-This will create a dir mypackage with a pom.xml using the given packages and groupId/artifactId/version
-and will add the module to the main project's pom.xml
+Where -p defines the package for the new bundle, -n specifies the name of the
+package and -g the name of the group for the bundle.
+
+This will create a dir mypackage with a pom.xml using the given packages and
+groupId/artifactId/version and will add the module to the main project's pom.xml
 
 7.2 Add bundle dependency
 -------------------------

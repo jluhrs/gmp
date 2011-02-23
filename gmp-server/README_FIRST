@@ -16,8 +16,8 @@ For those the source code is under GMP_SRC_DIR and to be used they have to be bu
 maven repository. To do so you need to go to GMP_SRC_DIR and issue mvn install. Note that unless you install them the
 latest version of them won't be reflected in the GMP Server
 
-The list of GMP bundles in the GMP server applications are dependencies on the local pom at GMP_SRC_DIR/gmp-server/pom.xml
-, for example GIAPI, JmsProvider, etc. are listed as dependencies.
+The list of GMP bundles in the GMP server applications are dependencies on the local pom at
+GMP_SRC_DIR/gmp-server/pom.xml, for example GIAPI, JmsProvider, etc. are listed as dependencies.
 
 - External dependencies
 External dependencies are marked as provisioned and listed at GMP_SRC_DIR/provision/pom.xml
@@ -108,6 +108,9 @@ to our local maven repository to run
 
 INCLUDING DOCS
 --------------
+
+In order to produce the documentation you have to have doxygen install.
+
 The full GMP package should contain, beside the binaries, the doxygen documentation but that is not included by default
 in the deployment package to make the build faster. However for releases it is recommended to include it and for that
 there is a script called

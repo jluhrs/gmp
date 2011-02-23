@@ -74,6 +74,9 @@
         </fileSet>
         <fileSet>
             <directory>src/main/etc/conf</directory>
+            <excludes>
+                <exclude>gsaoi.xml</exclude>
+            </excludes>
             <outputDirectory>/conf</outputDirectory>
             <filtered>true</filtered>
         </fileSet>

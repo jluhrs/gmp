@@ -1,6 +1,6 @@
 <!--
     This configuration file contains the description of EPICS channels
-    that will be simultated in the GMP.
+    that will be simulated in the GMP.
 
     Each channel must have the following parameters:
          name : The name of the EPICS channel that will be simulated
