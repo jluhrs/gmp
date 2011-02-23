@@ -19,13 +19,12 @@ import java.util.logging.Logger;
  * either COMPLETED or ERROR.
  */
 public class CompletionInfoListener implements MessageListener {
-
     private static final Logger LOG = Logger.getLogger(
             CompletionInfoListener.class.getName());
 
     public final static String QUEUE_NAME = JmsKeys.GMP_COMPLETION_INFO;
 
-    private CommandUpdater _commandUpdater;
+    private final CommandUpdater _commandUpdater;
 
     public CompletionInfoListener(CommandUpdater updater) {
         _commandUpdater = updater;
