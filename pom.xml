@@ -47,29 +47,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.soebes.maven.plugins.dmg</groupId>
-                <artifactId>doxygen-maven-plugin</artifactId>
-                <version>1.0.1</version>
-                <configuration>
-                    <filePatterns>*.doxygen *.doxy *.java *.xsd *.xml *.properties *.cfg</filePatterns>
-                    <recursive>true</recursive>
-                    <excludePatterns>*/test/*Test*.java */target/* *pom.xml</excludePatterns>
-                    <optimizeOutputJava>true</optimizeOutputJava>
-                    <haveDot>true</haveDot>
-                    <quiet>false</quiet>
-                    <projectName>"GIAPI - OSGI"</projectName>
-                    <generateLatex>true</generateLatex>
-                    <generateHtml>true</generateHtml>
-                    <!-- this needs to be set correctly when generating the official documentation -->
-                    <stripFromPath>${basedir}</stripFromPath>
-                    <extractAll>true</extractAll>
-                    <imagePath>gmp-server/src/main/doc/</imagePath>
-                    <!--   <latexHideIndices>true</latexHideIndices>
-                           <compactLatex>true</compactLatex>
-                    -->
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>

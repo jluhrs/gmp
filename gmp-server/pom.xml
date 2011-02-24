@@ -52,9 +52,12 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                     <haveDot>true</haveDot>
                     <quiet>false</quiet>
                     <input>../</input>
-                    <projectName>"GIAPI - OSGI"</projectName>
+                    <projectName>"GIAPI - GMP"</projectName>
                     <generateLatex>true</generateLatex>
                     <generateHtml>true</generateHtml>
+                    <htmlStylesheet>${basedir}/src/main/doc/stylesheet.css}</htmlStylesheet>
+                    <htmlHeader>${basedir}/src/main/doc/header.html</htmlHeader>
+                    <htmlFooter>${basedir}/src/main/doc/footer.html</htmlFooter>
                     <!-- this needs to be set correctly when generating the official documentation -->
                     <stripFromPath>${basedir}</stripFromPath>
                     <extractAll>true</extractAll>

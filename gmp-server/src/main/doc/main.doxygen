@@ -1,13 +1,24 @@
-/*! \mainpage GIAPI/GMP Technical Manual
- *
- * \image html gemini.jpg
- * \image html gpiLogo.jpg
+/*! \mainpage GIAPI/GMP Documentation
  *
  * \section intro_sec Introduction
  *
- * The GMP Server is a module of GIAPI that encapsulates a full application composed by several bundles and their
- * configuration. As such this module does not contain any code but instead it lists the bundles that compose it
- * and allows you to run it either as a local server for development or to create a package to be deployed
+ * The Gemini Master Process (GMP) is a Gemini-provided component that provides
+ * the bulk of the Gemini features and integration functionality for instruments
+ * that use the GIAPI to interface with Gemini.
+ *
+ * The GMP encapsulates and handles the details of all communication with
+ * current Gemini software. The GMP interfaces with the instrument via one or more implementations of the
+ * language-specific API or GIAPI glue.
+ * This way, the instrument is only concerned with the
+ * details of the GIAPI as documented in the language-specific glue API ICDs.
+ *
+ * A simple instrument that shows the relationship between builder code, the
+ * Gemini Master Process and the language-specific API glue is shown below.
+ *
+ * \image html gmp_context.png
+ *
+ * Complete details about the GMP can be found in the GIAPI Design and Use
+ * document.
  *
  * - \subpage user_manual
  * - \subpage instrument_developers_documentation

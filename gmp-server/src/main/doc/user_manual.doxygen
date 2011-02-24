@@ -1,11 +1,9 @@
 /*! \page user_manual User Manual
  *
- * \image html gemini.jpg
- * \image html gpiLogo.jpg
  *
  * These pages describes how to use run, monitor and configure the GMP Server
  *
- * This manual is dividen in the following sections
+ * This manual is divided in the following sections
  * - \subpage requirements
  * - \subpage package
  * - \subpage how_to_run
@@ -20,7 +18,7 @@
  *
  * \c > \c java \c -version
  *
- * GMP has been tested in Mac OSX's java 1.6.0_22 and RedHat 5.5 with Sun's JDK 1.6.0_17
+ * GMP has been tested in Mac OSX's java 1.6.0_22 and RedHat 5.5 64 bits with Sun's JDK 1.6.0_17
  *
  * \page package Package
  *
