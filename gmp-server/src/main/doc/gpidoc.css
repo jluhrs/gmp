@@ -1,0 +1,18 @@
+
+#titlearea {
+    position: relative;
+    height: 51px;
+    width: 100%;
+}
+
+#gemini_logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#projectname {
+    position: absolute:
+    top: 0;
+    left: 0;
+}
