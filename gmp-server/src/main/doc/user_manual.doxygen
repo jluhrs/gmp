@@ -1,93 +1,104 @@
 /*! \page user_manual User Manual
  *
  *
- * These pages describes how to use run, monitor and configure the GMP Server
+ * These pages describes how to run, use, monitor and configure the GMP Server
  *
  * This manual is divided in the following sections
- * - \subpage requirements
- * - \subpage package
- * - \subpage how_to_run
- * - \subpage telnet
- * - \subpage web_console
- * - \subpage gmp_configuration
- * - \subpage giapi_tester
+ * - \ref requirements
+ * - \ref package
+ * - \ref how_to_run
+ * - \ref telnet
+ * - \ref web_console
+ * - \ref gmp_configuration
+ * - \ref giapi_tester
  *
- * \page requirements Requirements
+ * \section requirements Requirements
  *
- * The only requirement is the Java 1.6 or higher runtime installed. You can verify it with the command:
+ * The only requirement is  Java 1.6 runtime installed (or higher). You can verify it with the command:
  *
  * \c > \c java \c -version
  *
  * GMP has been tested in Mac OSX's java 1.6.0_22 and RedHat 5.5 64 bits with Sun's JDK 1.6.0_17
  *
- * \page package Package
+ * \section package Package contents
  *
  * The GMP is delivered as tar.gz or .zip package containing the binaries, configuration and this documentation.
+ * Unpack the content of this file to a $GMP_HOME directory.
  *
- * The following details the files and directories included in the package
- * \li /README.txt\n
- *   Basic documentation
+ * The following details the files and directories will be available:
  *
- * \li /bin\n
- *   Scripts and binaries to launch the GMP server
+ * \li $GMP_HOME/README.txt\n
+ *   Basic documentation to get started.
  *
- * \li /bin/start.sh\n
+ * \li $GMP_HOME/bin\n
+ *   Directory containing scripts and binaries to launch the GMP server
+ *
+ * \li $GMP_HOME/bin/start.sh\n
  *   Bash script used to start the GMP
  *
- * \li /bin/pax-runner-1.5.0.jar\n
+ * \li $GMP_HOME/bin/giapi-tester.sh
+ *   Bash script used to start the GIAPI tester application
+ *
+ * \li $GMP_HOME/bin/pax-runner-1.5.0.jar\n
  *   Pax runner binary is a launcher for OSGi applications
  *
- * \li /bin/runner.args\n
+ * \li $GMP_HOME/bin/runner.args\n
  *   Arguments passed to pax-runner
  *
- * \li /bundles\n
+ * \li $GMP_HOME/bundles\n
  *   All the bundles that compose the gmp server stored as a maven repository
  *
- * \li /conf\n
+ * \li $GMP_HOME/conf\n
  *    Configuration files
  *
- * \li /conf/services\n
+ * \li $GMP_HOME/conf/services\n
  *   Configuration files of specific OSGi services. These files are observed at runtime and modifications are
  *    reflected on the running services
  *
- * \li /felix\n
+ * \li $GMP_HOME/felix\n
  *    OSGi container
  *
- * \li /logs\n
+ * \li $GMP_HOME/logs\n
  *   Directory with the application log
  *
- * When the application is launched a directory under /bin/runner is created that contains a cache of the binaries
+ * When the application is launched a directory under $GMP_HOME/bin/runner is created that contains a cache of the binaries
  * The directory can be freely deleted
  *
- * \page how_to_run How to run
- * To start the GMP go to the /bin directory and call the start.sh script
+ * \section how_to_run How to run the Gemini Master Process
+ * To start the GMP go to the $GMP_HOME/bin directory and call the start.sh script
  *
  * At the end of the start the process should be running and there will be a prompt in the screen which is the
- * felix gogo console.
+ * Felix \em gogo console. Press <enter> if you don't see the prompt.
  *
  * Type \b help to see the list of available commands and you will see console like this:
  *
  * \image html console_help.jpg
  * \image latex console_help.jpg
  *
- * \page telnet Telnet
+ * To see a list of all the bundles that form the Gemini Master process, you can type
+ * \b lb in the console. You will see an output similar to:
+ *
+ * \image html bundle_list.jpg
+ * \image latex bundle_list.jpg
+ *
+ * \section telnet Telnet Interface
  *
  * A telnet daemon is included that gives access to the shell remotely. To reach the GMP server type
  *
  * \c telnet \c hostname \c 15001
  *
  * \attention There is a bug in the telnet daemon, if you press CTRL+C to exit the telnet client will hang. This doesn't
- * affect the GMP inner workings
+ * affect the GMP inner workings. Use CTRL-D to exit the telnet client.
  *
- * \section telnet_security Security
+ * \subsection telnet_security Security
  * There is no security in place, anybody that can reach the telnet daemon can login to it
  *
- * \page web_console Web Console
+ * \section web_console Web Console Interface
  * A Web interface to the GMP OSGi container is available at
  *
- * \c http://hostname:8888/admin
+ * \c http://localhost:8888/admin
  *
- * \section console_security Security:
+ * \subsection console_security Security:
  *
  * The console is secured with the credentials
  *
@@ -95,15 +106,56 @@
  * - Password: admin
  * This can be changed using the web console configuration or the configuration files
  *
- * Below is a screenshot of the web console initial page showing all the installed bundles:
+ * Below is a screenshot of the initial page of the web console showing all the installed bundles:
  * \image html webconsole_startpage.jpg
  * \image latex webconsole_startpage.jpg
  *
- * \page giapi_tester GIAPI Tester
+ * \section giapi_tester GIAPI Tester
  * The giapi-tester is a command line tool you can use to test various API features. You can find it in
- * gmp-server/bin/giapi-tester.sh. For usage information, type <tt>./giapi-tester.sh -?</tt>. If using <tt>csh</tt>, type
+ * $GMP_HOME/bin/giapi-tester.sh. For usage information, type <tt>./giapi-tester.sh -?</tt>. If using <tt>csh</tt>, type
  * <tt>./giapi-tester.sh -\?</tt>.
  *
+ * \section gmp_configuration Configuration
+ *
+ *
+ * \attention The configuration of the different parts of the GMP are subject to change as we move to use the
+ * web interface as an alternative to editing the configuration files directly
+ *
+ * The GMP is an OSGi application composed of several independent bundles that collaborate to form the application.
+ * As such the configuration is independent for each bundle but they conform to the standard way to do configuration
+ * using the ConfigAdmin service.
+ *
+ * OSGi Components and/or Services are created using configurations defined in the $GMP_HOME/conf/services directory. These
+ * configurations are just string key-value properties, so for more complex items those properties often point
+ * to other files under the $GMP_HOME/conf directory.
+ *
+ * \subsection log_configuration Log Configuration
+ * TBD
+ *
+ * \subsection changes How to change configuration parameters
+ *
+ * The configuration files are "watched" by the different services, so changes are immediately sent to the bundles though not all of them are
+ * capable of changing their configuration at runtime and may need a restart.
+ *
+ * Some modules offer a web user interface to change the configuration. For example the ActiveMQ broker bundle's configuration looks
+ * like:
+ *
+ * \image html activemqbroker_configuration.jpg
+ * \image latex activemqbroker_configuration.jpg
+ *
+ * \section configurable_bundles Configurable bundles
+ * Here is a list of the bundles that can be configured. Each page contains a description of the
+ * configuration files for the particular bundle.
+ *
+ * Please refer to each bundle's documentation for details on their ability to be restarted and how to configure them
+ *
+ * - \ref gmp-epics-access_configuration_sec "GMP EPICS Access Service"
+ * - \ref gmp-epics-simulator_configuration_sec "GMP EPICS Simulator"
+ * - \ref gmp-pcs-updater_configuration_sec "GMP PCS Updater"
+ * - \ref gmp-services_configuration_sec "GMP Services"
+ * - \ref gmp-epics-status-service_configuration_sec "GMP EPICS Status Service"
+ * - \ref gmp-tcs-context_configuration_sec "GMP TCS Context Service"
+ * - \ref jms_activemq_broker_configuration_sec "ActiveMQ Broker"
+ * - \ref jms_activemq_provider_configuration_sec "ActiveMQ Provider"
  *
  */
-

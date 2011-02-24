@@ -1,5 +1,5 @@
 /*!
- * \page gmp-epics-access GMP Epics Access
+ * \page gmp-epics-access GMP EPICS Access Service
  *
  * \section gmp-epics-access_provides_sec Provided Services
  * This bundle provides the following services
@@ -20,6 +20,7 @@
  *
  * - configurationFile: This property points to a XML file containing a list of channels made available to GMP
  *
- * The XML file mentioned in the configurationFile should list the EPICS channels .
+ * The XML file mentioned in the configurationFile should list the EPICS channels that are authorized to be
+ * monitored by the instrument.
  * As a reference you can see the example \ref epics-channels.xml
  */

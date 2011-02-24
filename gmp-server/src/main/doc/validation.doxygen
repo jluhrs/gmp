@@ -1,8 +1,11 @@
-/*! \page validation Validation of the Software Installation
+/*! \page validation Integration Tests
  *
  * \section validation_intro_sec Introduction
- * This page has information on the validation tests of the GMP. These tests are designed to check that
- * everything is working correctly. Currently, you can check updating status values from the C++ glue, and propagating
+ *
+ * This is work in progress as we continue building the OCS infrastructure connection to the GMP.
+ *
+ * This page has information on the integration tests of the GMP. These tests are designed to check that
+ * everything is working correctly from end to end. Currently, you can check updating status values from the C++ glue, and propagating
  * said changes to EPICS. This will show that JMS communication from the C++ glue to the GMP is working, as well as
  * the exposing of those values to EPICS channels.
  *

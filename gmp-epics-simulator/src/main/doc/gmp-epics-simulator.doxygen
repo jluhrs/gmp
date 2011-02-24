@@ -1,14 +1,14 @@
 /*!
- * \page gmp-epics-simulator GMP Epics Simulator
+ * \page gmp-epics-simulator GMP EPICS Simulator
  *
- * This bundles is capable of generating simulated Epics values at a fixed rate. The simulated
+ * This bundles is capable of generating simulated EPICS values at a fixed rate. The simulated
  * values are random and can be of different types as expressed in the configuration
  *
  * \section gmp-epics-simulator_provides_sec Provided Services
  * This bundle doesn't provide any services
  *
  * \section gmp-epics-simulator_requires_sec Required Services
- * This bundle requires the \ref service edu.gemini.aspen.gmp.epics.EpicsRegistrar "EpicsRegistrar" OSGI service,
+ * This bundle requires the \ref service edu.gemini.aspen.gmp.epics.EpicsRegistrar "EpicsRegistrar" OSGi service,
  * provided by, for example, the \ref gmp-epics-access bundle.
  *
  * \section gmp-epics-simulator_configuration_sec Configuration

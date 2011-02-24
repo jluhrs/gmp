@@ -17,5 +17,6 @@
  * \li \subpage validation
  *
  * \section iPojo IPojo
- * We use iPojo as a the base framework for development on top of OSGi at \gmp_ipojo
+ * We use iPojo as the base framework for development on top of OSGi. More information
+ * about iPojo can be found at \subpage gmp_ipojo
  */
