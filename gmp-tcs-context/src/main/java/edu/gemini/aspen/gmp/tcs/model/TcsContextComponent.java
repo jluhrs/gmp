@@ -21,9 +21,6 @@ import java.util.logging.Logger;
 @Component
 public class TcsContextComponent {
     private static final Logger LOG = Logger.getLogger(TcsContextComponent.class.getName());
-    private static final String TCS_CTX_CHANNEL_PROP = "edu.gemini.aspen.gmp.tcs.epicsChannel";
-    private static final String TCS_CTX_SIMULATION_PROP = "edu.gemini.aspen.gmp.tcs.simulation";
-    private static final String TCS_CTX_SIMULATION_DATA_PROP = "edu.gemini.aspen.gmp.tcs.simulationData";
 
     @Property(name = "simulation", value = "yes", mandatory = true)
     private Boolean simulation;
