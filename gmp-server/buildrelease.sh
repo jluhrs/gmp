@@ -10,4 +10,4 @@ script_path=`dirname "$abspath"`
 cd $script_path/../
 mvn clean install
 cd $script_path
-mvn -Pproduction doxygen:report assembly:assembly
+mvn -Pproduction resources:copy-resources doxygen:report assembly:assembly
