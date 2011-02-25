@@ -17,7 +17,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
     <name>GMP Server Application</name>
     <description>The GMP Server</description>
 
-    <version>1.0.0</version>
+    <version>0.11.0</version>
 
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmpserver</bundle.symbolicName>
@@ -280,6 +280,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>gmp-handlers-state-service</artifactId>
             <version>0.1.0</version>
         </dependency>
+        <!--dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-webconsole-docs</artifactId>
+            <version>0.1.0</version>
+        </dependency-->
     </dependencies>
 
     <profiles>
@@ -329,7 +334,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                     <groupId>edu.gemini.aspen</groupId>
                     <artifactId>giapi-tester</artifactId>
                     <version>0.1.0</version>
-
                     <classifier>jar-with-dependencies</classifier>
                 </dependency>
                 <!-- Felix Shell and GOGO -->
