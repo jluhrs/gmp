@@ -62,7 +62,7 @@ public final class MessageBuilder {
     }
 
 
-    public static HandlerResponse buildHandlerResponse(Message m) throws JMSException {
+    public static HandlerResponse  buildHandlerResponse(Message m) throws JMSException {
 
         if (!(m instanceof MapMessage))
             throw new JMSException(InvalidHandlerResponseMessage());
@@ -185,12 +185,11 @@ public final class MessageBuilder {
         }
 
         //get configuration
-        Configuration config = null;
+        Configuration config = DefaultConfiguration.emptyConfiguration();
         Enumeration names = msg.getMapNames();
 
         // FIXME Here is a potential NPE
-        if (names.hasMoreElements()) {
-            config = DefaultConfiguration.emptyConfiguration();
+        if (names.hasMoreElements()) {  
             DefaultConfiguration.Builder builder = copy(config);
             while (names.hasMoreElements()) {
                 Object o = names.nextElement();
