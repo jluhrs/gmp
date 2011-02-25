@@ -2,8 +2,6 @@ package edu.gemini.cas;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.dbr.Severity;
-import gov.aps.jca.dbr.Status;
 
 /**
  * Interface IChannel
