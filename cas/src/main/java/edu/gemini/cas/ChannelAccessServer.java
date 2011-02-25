@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 
 /**
  * Class ChannelAccessServer. Implements the bulk of the giapi-cas bundle.
- * <p/>
- * It implements the Runnable interface because we need to run the JCA server in another thread.
  *
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
@@ -43,7 +41,7 @@ public class ChannelAccessServer implements IChannelAccessServer {
      * Creates a server, a jca context and spawns a new thread to run the server.
      *
      * @throws IllegalStateException if trying to start an already started server
-     * @throws CAException           is thrown if the jca context could not be instanciated.
+     * @throws CAException           is thrown if the jca context could not be instantiated.
      */
     @Validate
     public void start() throws CAException {
@@ -244,7 +242,7 @@ public class ChannelAccessServer implements IChannelAccessServer {
      */
     @Override
     public void destroyChannel(IChannel channel) {
-        Channel ch=null;
+        Channel ch;
         try{
             ch = channels.get(channel.getName());
         }catch(NullPointerException ex){//if channel was already destroyed
@@ -260,7 +258,7 @@ public class ChannelAccessServer implements IChannelAccessServer {
     /**
      * Destroys the jca context and waits for the thread to return.
      *
-     * @throws CAException
+     * @throws CAException if there are problems with Channel Access
      * @throws java.lang.IllegalStateException
      *                     if the context has already been destroyed.
      */
