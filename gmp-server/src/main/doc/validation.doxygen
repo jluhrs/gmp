@@ -23,3 +23,384 @@
  * \li Finally, run all the other tests in the C++ glue examples directory, except for the stresstest. For info on how
  * to run the stresstest check \ref performance.
  */
+
+
+ 1. Compile all the C++ glue example code located at src/examples.
+
+ 2. Update the gmp.properties file to the machine where the GMP server is running
+
+ 3. Integration Tests
+
+ 3.1 Epics Subscription Channels
+
+     The epicssubscription application will monitor two channels: ws:wsFilter.VALL and ws:cpWf.
+     Whenever an update is received, the values will be displayed in the console.
+
+     Before running the application, make sure the EPCS Simulator is running and
+     the simulated_epics_channels.xml file contains these two channels. This file
+     should have something like:
+
+<channels>
+   <channel>
+       <name>ws:wsFilter.VALL</name>
+       <type>double</type>
+       <size>10</size>
+       <updateRate>5</updateRate>
+   </channel>
+
+    <channel>
+        <name>ws:cpWf</name>
+        <type>byte</type>
+        <size>20</size>
+        <updateRate>7</updateRate>
+    </channel>
+
+</channels>
+
+Of course, you can change these values and update the test application accordingly.
+
+     Once this is checked, run the application:
+
+     $ ./runExample.sh epicssubscription
+
+     and you should get something similar to:
+
+     Starting Epics Subscription Demo
+     2011-02-25 11:00:47,792 [0x2ab4c9a45260] INFO  giapi.GeminiUtilImpl - Subscribe epics status ws:wsFilter.VALL
+     2011-02-25 11:00:47,805 [0x2ab4c9a45260] INFO  giapi.GeminiUtilImpl - Subscribe epics status ws:cpWf
+     Channel Changed ws:wsFilter.VALL
+     Value [0] = 0.697006
+     Value [1] = 0.983262
+     Value [2] = 0.759258
+     Value [3] = 0.5015
+     Value [4] = 0.742861
+     Value [5] = 0.456031
+     Value [6] = 0.482406
+     Value [7] = 0.865949
+     Value [8] = 0.59004
+     Value [9] = 0.87209
+     Channel Changed ws:cpWf
+     Value: {222 18 139 96 53 39 239 9 163 221 117 129 193 153 71 159 50 31 218 9 }
+     Channel Changed ws:wsFilter.VALL
+     Value [0] = 0.144421
+     Value [1] = 0.516714
+     Value [2] = 0.787672
+     Value [3] = 0.67028
+     Value [4] = 0.954519
+     Value [5] = 0.304772
+     Value [6] = 0.116668
+     Value [7] = 0.200185
+     Value [8] = 0.204309
+     Value [9] = 0.141435
+
+
+     Make sure you see both channels updating. To exit the application use CTRL-C
+
+
+ 3.2 File Events
+
+     First, use the giapi-tester application to start listening for File Events
+     (see documentation for giapi-tester here):
+
+     $ ./giapi-tester.sh -fileEvents
+     Feb 25, 2011 11:03:21 AM edu.gemini.jms.activemq.provider.ActiveMQJmsProvider __validated
+     INFO: ActiveMQ JMS Provider setup with url: tcp://localhost:61616
+     log4j:WARN No appenders could be found for logger (org.apache.activemq.transport.WireFormatNegotiator).
+     log4j:WARN Please initialize the log4j system properly.
+     Feb 25, 2011 11:03:21 AM edu.gemini.jms.api.BaseJmsArtifact startJms
+     INFO: Started JMS Artifact [File Event Test Client]
+
+
+     Now run the fileevents application:
+
+      $./runExample.sh fileevents
+
+      You'll see a bunch of messages in the console, make sure you don't see anything that looks like an error.
+
+      In the giapi-tester, you should see:
+
+      Ancillary File Event    [S2009020201-1/01myfile1.txt]
+      Intermediate File Event [S2009020201-1/02myfile1.txt/null]
+      Intermediate File Event [S2009020201-1/03myfile2.txt/hint]
+
+
+
+ 3.3 Observation Events
+
+        First, use the giapi-tester application to start listening for Observation Events
+          (see documentation for giapi-tester here):
+
+          $ ./giapi-tester.sh -obsEvents
+          Feb 25, 2011 11:07:16 AM edu.gemini.jms.activemq.provider.ActiveMQJmsProvider __validated
+          INFO: ActiveMQ JMS Provider setup with url: tcp://localhost:61616
+          log4j:WARN No appenders could be found for logger (org.apache.activemq.transport.WireFormatNegotiator).
+          log4j:WARN Please initialize the log4j system properly.
+          Feb 25, 2011 11:07:17 AM edu.gemini.jms.api.BaseJmsArtifact startJms
+          INFO: Started JMS Artifact [Observation Event Test Client]
+
+
+
+          Now run the obsevent application:
+
+           $./runExample.sh obsevent
+
+           You'll see a bunch of messages in the console, make sure you don't see anything that looks like an error.
+
+           In the giapi-tester, you should see:
+
+                                                                       [S2009020201-1/OBS_PREP]
+                                                                       [S2009020201-1/OBS_START_ACQ]
+                                                                       [S2009020201-1/OBS_END_ACQ]
+                                                                       [S2009020201-1/OBS_START_READOUT]
+                                                                       [S2009020201-1/OBS_END_READOUT]
+                                                                       [S2009020201-1/OBS_START_DSET_WRITE]
+                                                                       [S2009020201-1/OBS_END_DSET_WRITE]
+
+            Make sure the order is exactly the one shown above.
+
+
+ 3.4 Logging
+
+        Look at the GMP logs first:
+
+            tail -f gmp.log
+
+
+        Now, run the logging application:
+
+        $ ./runExample.sh logging
+
+        and you should see in the gmp.logs the following ( the format may vary as it is configurable in the GMP):
+
+        2011-02-25 11:11:50,327 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (1)
+        2011-02-25 11:11:50,580 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (2)
+        2011-02-25 11:11:50,834 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (3)
+        2011-02-25 11:11:51,087 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (4)
+        2011-02-25 11:11:51,340 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (5)
+        2011-02-25 11:11:51,591 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (6)
+        2011-02-25 11:11:51,844 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (7)
+        2011-02-25 11:11:52,098 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (8)
+        2011-02-25 11:11:52,350 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (9)
+        2011-02-25 11:11:52,603 INFO  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (10)
+        2011-02-25 11:11:52,857 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (1)
+        2011-02-25 11:11:53,111 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (2)
+        2011-02-25 11:11:53,364 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (3)
+        2011-02-25 11:11:53,617 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (4)
+        2011-02-25 11:11:53,869 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (5)
+        2011-02-25 11:11:54,121 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (6)
+        2011-02-25 11:11:54,375 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (7)
+        2011-02-25 11:11:54,629 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (8)
+        2011-02-25 11:11:54,880 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (9)
+        2011-02-25 11:11:55,133 WARN  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (10)
+        2011-02-25 11:11:55,386 ERROR [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (1)
+        2011-02-25 11:11:55,640 ERROR [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (2)
+        2011-02-25 11:11:55,893 ERROR  [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (4)
+        2011-02-25 11:11:56,400 ERROR [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (5)
+        2011-02-25 11:11:56,653 ERROR [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (6)
+        2011-02-25 11:11:56,906 ERROR[ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (3)
+        2011-02-25 11:11:56,147 ERROR [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (7)
+        2011-02-25 11:11:57,158 ERROR [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (8)
+        2011-02-25 11:11:57,412 ERROR [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (9)
+        2011-02-25 11:11:57,665 ERROR [ActiveMQ Session Task] ni.aspen.gmp.logging.DefaultLogProcessor -  Log Message (10)
+
+
+
+3.5  PCS Updater
+
+        First, make sure the GMP PCS Updater Service is running in the GMP (look at the Active bundles).
+
+        Then, ensure the GMP PCS Updater is configured in simulation. Check
+
+         cat  $GMP_HOME/conf/services/edu.gemini.aspen.gmp.pcs.model.PcsUpdaterComponent-default.cfg
+
+        It should look like:
+
+          # Indicates whether the PCS Updater is in simulation mode
+          simulation=true
+          # What epics channel is used by PCS Updater
+          epicsChannel=tst:array.VALJ
+
+        If simulation is set to false, change it and restart the GMP. This is VERY important, as otherwise
+        we might send values to the real PCS!!!!!
+
+
+        Now, start looking at the GMP logs:
+
+            tail -f gmp.log
+
+        And then run the pcsupdater application:
+
+             $ ./runExample.sh pcsupdater
+
+             You should see in the console:
+
+            Starting PCS Zernikes Example
+            2011-02-25 11:18:16,065 [0x2aeb685b7260] INFO  giapi.GeminiUtilImpl - postPCSUpdate: 1.00 2.00 3.00 4.00 5.00 6.00
+
+        And in the GMP logs:
+
+            2011-02-25 11:18:16,076 INFO  [ActiveMQ Session Task] pen.gmp.pcs.model.updaters.LogPcsUpdater -  PCS Update received PcsUpdate{zernikes=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0]}
+
+        And confirm that the zernikes arrive correctly.
+
+
+3.6   Sequence Commands
+
+        First, start the seq-command application:
+
+            $ ./runExample.sh seq-command
+
+        You will see:
+
+        2011-02-25 11:21:21,007 [0x2ad394370260] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.PARK
+
+
+        This will start listening for the PARK Command with the PRESET/START activity and will invoke a handler upon reception of
+         the command. The handler will alternate simulating  an immediate response and an action that takes about 10 seconds to complete.
+
+
+        To confirm this is working, use the giapi-tester to send this command to the application.
+
+        $ ./giapi-tester.sh -sc PARK -activity PRESET_START
+         Response Received: [COMPLETED]
+
+        If you run it again, you should see:
+        $ ./giapi-tester.sh -sc PARK -activity PRESET_START
+        Response Received: [STARTED]
+        Completion Information: [[response=[COMPLETED]][command=PARK][activity=PRESET_START][{config={}}]]
+
+        The same results should be obtained if we send PRESET or START as the activity, though in
+        a real-life application, the PRESET should return right away.
+
+3.7  Status
+
+        First start the giapi-tester to monitor all the status items:
+
+             ./giapi-tester.sh -monitor ">"
+
+        You'll see a bunch of setup logging information. Check there are no errors.
+
+        Now start the status application. This application will generate status information for
+        two items, gpi:status1 and gpi:status2. The fist one will go from 0 to 999 and the other will
+        go from 1000 to 1:
+
+               ./runExample.sh status
+
+        You will see in the console:
+               Starting Status Example
+               Elapsed Time: 1.176 [sec]
+               Throughput  : 1700.68 [msg/sec]
+
+        and in the giapi-tester you will see the received values:
+
+        ....
+        Status value: StatusItem{name='gpi:status1', value=994}
+        Status value: StatusItem{name='gpi:status2', value=6}
+        Status value: StatusItem{name='gpi:status1', value=995}
+        Status value: StatusItem{name='gpi:status2', value=5}
+        Status value: StatusItem{name='gpi:status1', value=996}
+        Status value: StatusItem{name='gpi:status2', value=4}
+        Status value: StatusItem{name='gpi:status1', value=997}
+        Status value: StatusItem{name='gpi:status2', value=3}
+        Status value: StatusItem{name='gpi:status1', value=998}
+        Status value: StatusItem{name='gpi:status2', value=2}
+        Status value: StatusItem{name='gpi:status1', value=999}
+        Status value: StatusItem{name='gpi:status2', value=1}
+
+
+3.8 Services
+
+        Check the content of the services configuration file:
+
+        $ cat $GMP_HOME/conf/gmp-properties.xml
+        <!--
+            Contains the description of the properties that can be obtained through the
+            GIAPI. Each property has a string value associated.
+        -->
+
+
+        <properties>
+           <property key="GMP_HOST_NAME">localhost</property>
+           <property key="DHS_ANCILLARY_DATA_PATH">/home/anunez/tmp</property>
+           <property key="DHS_SCIENCE_DATA_PATH">/home/anunez/tmp</property>
+           <property key="DHS_INTERMEDIATE_DATA_PATH">/home/anunez/tmp</property>
+           <property key="DEFAULT"> </property>
+        </properties>
+
+       The services application will try to get the GMP_HOST NAME
+
+       Now start the services application:
+
+       ]$ ./runExample.sh services
+       Starting Services Util Example
+       2011-02-25 11:42:09,229 [0x2b3764b1e260] INFO  giapi.ServicesUtilImpl - Property requested for key: GMP_HOST_NAME
+       Hostname: localhost
+
+
+       Confirm that the value obtained matches the one in the configuration file.
+
+       NOTE: We will update this test application to read all the properties.
+
+3.9 TCS Context
+
+    First, verify the GMP TCS context service is running in the GMP and
+    it is configured in simulation:
+
+     $ cat $GMP_HOME/conf/services/edu.gemini.aspen.gmp.tcs.model.TcsContextComponent-default.cfg
+     # Indicates whether the TCS Context is in simulation mode
+     simulation=true
+     # What epics channel is used by the TCS ContextUpdater
+     tcsChannel=tc1:sad:astCtx
+     # Configuration file pointing to the simulation data
+     simulationData=${conf.base}/tcsCtx.data
+
+     If it's not configured in simulation, change it and restart the GMP.
+
+     Now, start the tcscontext application:
+
+     $ ./runExample.sh tcscontext
+
+     Your output should be similar to the one shown below:
+
+     Starting TCS Context Example
+     TCS Context:
+     =================
+     Raw Time        :     1298645243
+     Mount Flexure X :      -0.122335
+     Mount Flexure Y :       0.970269
+     Mount Flexure Z :       0.208836
+     =================
+     Telescope Parameters
+     Telescope focal length (mm)                   :         128000
+     Rotator mechanical angle (rads)               :       -1.02922
+     Azimuth axis tilt NS (rads)                   :   -0.000106659
+     Azimuth axis tilt EW (rads)                   :    0.000125809
+     Az/El nonperpendicularity (rads)              :   -2.62714e-05
+     Net left-right(horizontal) collimation (rads) :    0.000144038
+     Net up-down(vertical) collimation (rads)      :              0
+     Pointing origin x-component (mm)              :              0
+     Pointing origin y-component (mm)              :              0
+     =================
+     Apparent to Observed Parameters
+          -0.527798      -0.503632       0.863918      1.342e-06           2722
+             283.16            730            0.4            0.5         0.0065
+        0.000204089   -2.32164e-07              0        4.95851    -6.6214e-08
+     =================
+     M2 tip/tilt (3 chop states)
+        2.99898e-12    2.11159e-16
+        2.99895e-12    1.54401e-16
+        1.62883e-09    2.36088e-05
+     =================
+     Point Origins
+     Mount point origin in X            :     -0.0771683
+     Mount point origin in Y            :       -4.48684
+     Source chop A pointing origin in X :     -0.0771683
+     Source chop A pointing origin in Y :       -4.48684
+     Source chop B pointing origin in X :     -0.0771683
+     Source chop B pointing origin in Y :       -4.48684
+     Source chop C pointing origin in X :     -0.0771683
+     Source chop C pointing origin in Y :       -4.48684
+     =================
+     Optical Distortions
+           0       1       0       0       0       1
+
