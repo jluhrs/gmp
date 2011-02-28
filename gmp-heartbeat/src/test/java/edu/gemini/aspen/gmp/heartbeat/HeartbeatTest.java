@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.heartbeat;
 
 
 import edu.gemini.aspen.gmp.heartbeat.jms.HeartbeatConsumer;
+import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import org.apache.activemq.broker.BrokerService;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -24,15 +25,31 @@ public class HeartbeatTest{
         broker.setUseJmx(false);
         broker.start();
 
-        Heartbeat hb = new Heartbeat();
+        Heartbeat hb = new Heartbeat(new ActiveMQJmsProvider("vm://HeartbeatTestBroker"));
         HeartbeatConsumer hbc = new HeartbeatConsumer();
         hbc.start("vm://HeartbeatTestBroker");
-        hb.start("vm://HeartbeatTestBroker");
+        hb.start();
 
         Thread.sleep(secs * 1000);
         hb.stop();
         hbc.stop();
         broker.stop();
+        assertEquals(true, hbc.getLast() >= (secs - 1));
+    }
+
+    /**
+     * Main method that prints to stdout any heartbeats it receives
+     * @param args
+     * @throws Exception
+     */
+    public static void main(String args[]) throws Exception{
+        long secs = 3;
+
+        HeartbeatConsumer hbc = new HeartbeatConsumer();
+        hbc.start("tcp://localhost:61616");
+
+        Thread.sleep(secs * 1000);
+        hbc.stop();
         assertEquals(true, hbc.getLast() >= (secs - 1));
     }
 }
