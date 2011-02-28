@@ -12,9 +12,6 @@
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp.tcs-context</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.tcs</bundle.namespace>
-        <edu.gemini.aspen.gmp.tcs.epicsChannel>tc1:sad:astCtx</edu.gemini.aspen.gmp.tcs.epicsChannel>
-        <edu.gemini.aspen.gmp.tcs.simulation>yes</edu.gemini.aspen.gmp.tcs.simulation>
-        <edu.gemini.aspen.gmp.tcs.simulationData>../src/main/etc/conf/tcsCtx.data</edu.gemini.aspen.gmp.tcs.simulationData>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,6 +23,24 @@
     <description>TCS Context service</description>
 
     <packaging>bundle</packaging>
+
+    <build>
+        <plugins>
+            <!-- use pax exam maven plugin -->
+            <plugin>
+                <groupId>org.ops4j.pax.exam</groupId>
+                <artifactId>maven-paxexam-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-config</id>
+                        <goals>
+                            <goal>generate-depends-file</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!--
