@@ -83,7 +83,7 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
             Object readValue = _reader.getValue(_tcsCtxChannel);
 
             if (readValue == null) {
-                return null;
+                return new double[0];
             }
 
             if (!(readValue instanceof double[])) {

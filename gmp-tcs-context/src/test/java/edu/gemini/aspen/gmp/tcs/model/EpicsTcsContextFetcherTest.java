@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
  * Test class for the TCS Context Fetcher Interface
  */
 public class EpicsTcsContextFetcherTest {
+    private static final double ERROR_TOLERANCE = 0.000000001;
     private EpicsReaderMock _epicsReaderMock;
     private TcsContextFetcher _fetcher;
 
@@ -38,14 +39,14 @@ public class EpicsTcsContextFetcherTest {
     public void testNullChannel() throws TcsContextException {
         _epicsReaderMock = new EpicsReaderMock("channel", null);
         _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock);
-        assertEquals(_fetcher.getTcsContext(), null);
+        assertArrayEquals(new double[0], _fetcher.getTcsContext(), ERROR_TOLERANCE);
     }
 
     @Test
     public void testNullChannelOnConstructor() throws TcsContextException {
         _epicsReaderMock = new EpicsReaderMock("channel", null);
         _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock, null);
-        assertEquals(_fetcher.getTcsContext(), null);
+        assertArrayEquals(new double[0], _fetcher.getTcsContext(), ERROR_TOLERANCE);
     }
 
     @Test
@@ -59,6 +60,6 @@ public class EpicsTcsContextFetcherTest {
         _fetcher = new EpicsTcsContextFetcher(_epicsReaderMock);
         double[] valuesFromContext = _fetcher.getTcsContext();
 
-        assertArrayEquals(simulatedValues, valuesFromContext, 0.000000001);
+        assertArrayEquals(simulatedValues, valuesFromContext, ERROR_TOLERANCE);
     }
 }
