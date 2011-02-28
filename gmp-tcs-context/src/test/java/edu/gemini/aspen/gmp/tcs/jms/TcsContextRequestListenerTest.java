@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.tcs.model.jms;
+package edu.gemini.aspen.gmp.tcs.jms;
 
 import edu.gemini.aspen.gmp.tcs.jms.JmsTcsContextDispatcher;
 import edu.gemini.aspen.gmp.tcs.jms.TcsContextRequestListener;
