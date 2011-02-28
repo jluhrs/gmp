@@ -73,18 +73,17 @@ public class TcsContextRequestListener implements MessageListener {
         Destination replyDestination = message.getJMSReplyTo();
         if (canDispatchContext(replyDestination)) {
             dispatchContext(replyDestination);
+        } else {
+            LOG.severe("TCS Context could not be sent properly:" + _fetcher);
         }
     }
 
-    private boolean canDispatchContext(Destination d) {
-        return _fetcher != null && d!= null;
+    private boolean canDispatchContext(Destination d) throws TcsContextException {
+        return _fetcher != null && _fetcher.getTcsContext() != null && d!= null;
     }
 
     private void dispatchContext(Destination replyDestination) throws TcsContextException, JMSException {
         double[] context = _fetcher.getTcsContext();
-
-        if (context != null) {
-            _dispatcher.send(context, replyDestination);
-        }
+        _dispatcher.send(context, replyDestination);
     }
 }

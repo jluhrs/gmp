@@ -39,7 +39,7 @@ public class TcsContextRequestListenerTest {
         when(fetcher.getTcsContext()).thenReturn(context);
         listener.onMessage(message);
 
-        verify(fetcher).getTcsContext();
+        verify(fetcher, atLeastOnce()).getTcsContext();
         verify(contextDispatcher).send(eq(context), eq(destination));
     }
 
@@ -55,6 +55,17 @@ public class TcsContextRequestListenerTest {
     @Test
     public void testOnMessageWithNullContext() throws TcsContextException, JMSException {
         when(fetcher.getTcsContext()).thenReturn(null);
+        listener.registerTcsContextFetcher(fetcher);
+
+        listener.onMessage(message);
+
+        verifyZeroInteractions(contextDispatcher);
+    }
+
+    @Test
+    public void testOnMessageWithJMSException() throws TcsContextException, JMSException {
+        when(fetcher.getTcsContext()).thenThrow(new TcsContextException("Exception"));
+        listener.registerTcsContextFetcher(fetcher);
 
         listener.onMessage(message);
 
