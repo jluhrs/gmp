@@ -404,18 +404,56 @@ Of course, you can change these values and update the test application according
        0       1       0       0       0       1
 \endverbatim
 
- * \subsection validation_testing_sec EPICS Status Service
- * \li Start the GMP as indicated in \ref user_manual.
- * \li To check that everything is running correctly, you can run <tt>caget gpi:status1</tt> and see if it can read a
- * value. Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
- * \li Run <tt>camonitor gpi:status1 gpi:status2</tt> to connect clients to some EPICS channels.
- * Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
- * \li Run <tt>sh runExample.sh status</tt> (available in src/examples/ in the C++ glue code). Remember to either have a \c gmp.properties file configured in the
- * current directory, or to set the environment variable \c GMP_CONFIGURATION to point to the correct file.
- * \li Check that the camonitor reflects the changes in the values of the EPICS channels.
- * \li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:status1 -value 100 -type INTEGER</tt>.
- * \li Check that the camonitor reflects the changes in the values of the EPICS channel.
-
+\subsection validation_testing_sec EPICS Status Service
+\li Start the GMP as indicated in \ref user_manual.
+\li To check that everything is running correctly, you can run <tt>$ caget -a gpi:status1</tt> and see if it can read a
+value. Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running. You should see
+something like this:
+\verbatim
+    gpi:status1                    2011-03-01 10:07:07.040000 2
+\endverbatim
+\li Run <tt>$ camonitor gpi:status1 gpi:status2</tt> to connect clients to some EPICS channels.
+Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
+\li Run <tt>sh runExample.sh status</tt> (available in src/examples/ in the C++ glue code). Remember to either have a \c gmp.properties file configured in the
+current directory, or to set the environment variable \c GMP_CONFIGURATION to point to the correct file. The output from the
+example code should be something like:
+\verbatim
+    Starting Status Example
+    Elapsed Time: 1.561 [sec]
+    Throughput  : 1281.23 [msg/sec]
+\endverbatim
+\li Check that the camonitor reflects the changes in the values of the EPICS channels:
+\verbatim
+    ...
+    gpi:status1                    2011-03-01 11:28:02.316000 995
+    gpi:status2                    2011-03-01 11:28:02.317000 5
+    gpi:status1                    2011-03-01 11:28:02.317000 996
+    gpi:status2                    2011-03-01 11:28:02.317000 4
+    gpi:status1                    2011-03-01 11:28:02.317000 997
+    gpi:status2                    2011-03-01 11:28:02.317000 3
+    gpi:status1                    2011-03-01 11:28:02.317000 998
+    gpi:status2                    2011-03-01 11:28:02.317000 2
+    gpi:status1                    2011-03-01 11:28:02.318000 999
+    gpi:status2                    2011-03-01 11:28:02.318000 1
+\endverbatim
+\li Now run <tt>$ camonitor gpi:status1 gpi:alarm1 gpi:health1</tt>.
+\li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:status1 -value 100 -type INTEGER</tt>.
+\li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:health1 -value WARNING -type HEALTH</tt>.
+\li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:alarm1 -value 100 -type ALARM_INTEGER -severity ALARM_WARNING -cause ALARM_CAUSE_HI -message "Error message"</tt>.
+\li Check that the camonitor reflects the changes in the values of the EPICS channel:
+\verbatim
+    gpi:status1                    2011-03-01 11:36:09.052000 999
+    gpi:alarm1                     2011-03-01 11:35:52.853000 2
+    gpi:health1                    2011-03-01 11:33:27.367000 BAD
+    gpi:alarm1.OMSS                2011-03-01 11:35:52.853000
+    gpi:status1                    2011-03-01 11:36:23.308000 100
+    gpi:health1                    2011-03-01 11:36:31.349000 WARNING
+    gpi:alarm1                     2011-03-01 11:36:37.641000 100
+    gpi:alarm1                     2011-03-01 11:36:37.641000 100 HIGH MINOR
+    gpi:alarm1.OMSS                2011-03-01 11:36:37.641000 Error message
+\endverbatim
+\li As you can see, the error message for alarm goes to a separate channel, with the same name as the main channel, followed by ".OMSS".
+The valid values for health, severity and alarm cause, can be found in the giapi_tester help.
 
 
 */
