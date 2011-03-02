@@ -2,6 +2,6 @@
 # Use this file to add customized Bnd instructions for the bundle
 #-----------------------------------------------------------------
 
-Bundle-Activator: ${bundle.namespace}.osgi.Activator
+Bundle-Activator:
 Export-Package: ${bundle.namespace}
 Private-Package: ${bundle.namespace}.*

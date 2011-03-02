@@ -134,7 +134,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
      * @return path for the parent node of this path, or
      *         <code>EMPTY_PATH</code> if this does not have a parent
      */
-    ConfigPath getParent() {
+    public ConfigPath getParent() {
         if (_prefixLength <= 0) {
             return EMPTY_PATH;
         }

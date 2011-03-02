@@ -244,6 +244,12 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>gmp-status-gateway</artifactId>
             <version>0.1.0</version>
         </dependency>
+        <!-- GIAPI Status dispatcher-->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-dispatcher</artifactId>
+            <version>0.1.0</version>
+        </dependency>
         <!-- GMP Commands Gateway -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
