@@ -8,9 +8,7 @@ import org.junit.Ignore;
 /**
  * A Stub Action Sender, where you can define the expected answer. 
  */
-@Ignore
-public class TestActionSender implements ActionSender {
-
+public class ActionSenderMock implements ActionSender {
     private HandlerResponse _response;
 
     public void defineAnswer(HandlerResponse response) {

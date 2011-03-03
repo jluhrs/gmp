@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.*;
-import edu.gemini.aspen.gmp.commands.test.TestActionSender;
+import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 public class SequenceCommandExecutorStrategyTest {
 
     private ActionMessageBuilder builder = new JmsActionMessageBuilder();
-    private ActionSender sender = new TestActionSender();
+    private ActionSender sender = new ActionSenderMock();
     private ActionManager manager = mock(ActionManager.class);
     private SequenceCommandExecutorStrategy strategy;
     private TestCompletionListener listener = new TestCompletionListener();

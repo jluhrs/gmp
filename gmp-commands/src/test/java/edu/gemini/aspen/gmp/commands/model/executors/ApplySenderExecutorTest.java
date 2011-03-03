@@ -4,11 +4,9 @@ import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
-import edu.gemini.aspen.gmp.commands.test.TestActionSender;
+import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.TreeMap;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
@@ -23,7 +21,7 @@ public class ApplySenderExecutorTest {
 
     private ApplySenderExecutor _executor;
 
-    private TestActionSender _sender;
+    private ActionSenderMock _sender;
 
     private HandlerResponse[] _responses;
 
@@ -34,7 +32,7 @@ public class ApplySenderExecutorTest {
         ActionManager actionManager = new ActionManager();
         actionManager.start();
         _executor = new ApplySenderExecutor(new JmsActionMessageBuilder(), actionManager);
-        _sender = new TestActionSender();
+        _sender = new ActionSenderMock();
         _responses = new HandlerResponse[] {
                 HandlerResponse.COMPLETED,
                 HandlerResponse.STARTED,

@@ -5,7 +5,7 @@ import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
-import edu.gemini.aspen.gmp.commands.test.TestActionSender;
+import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.TestRebootManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class RebootSenderExecutorTest {
 
     private RebootSenderExecutor executor;
 
-    private TestActionSender sender;
+    private ActionSenderMock sender;
     private final TestRebootManager rebootManager = new TestRebootManager();
 
     //A completion listener for the reboot sequence command
@@ -51,7 +51,7 @@ public class RebootSenderExecutorTest {
         configNone = configuration(configPath("REBOOT_OPT"), "NONE");
 
         executor = new RebootSenderExecutor(new JmsActionMessageBuilder(), rebootManager);
-        sender = new TestActionSender();
+        sender = new ActionSenderMock();
 
         rebootManager.reset();
     }
