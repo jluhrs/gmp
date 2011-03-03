@@ -1,5 +1,7 @@
 package edu.gemini.jms.api;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Container with JMS Destination information.
  */
@@ -9,6 +11,10 @@ public final class DestinationData {
     private DestinationType _type;
 
     public DestinationData(String name, DestinationType type) {
+        checkArgument(name != null, "Destination name cannot be null");
+        checkArgument(!name.isEmpty(), "Destination name cannot be null");
+        checkArgument(type != null, "Destination Type cannot be null");
+        
         _name = name;
         _type = type;
     }
