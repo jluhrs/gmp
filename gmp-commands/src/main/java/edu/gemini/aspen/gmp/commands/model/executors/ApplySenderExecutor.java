@@ -16,8 +16,8 @@ import java.util.Set;
  */
 public class ApplySenderExecutor implements SequenceCommandExecutor {
 
-    private ActionMessageBuilder _actionMessageBuilder;
-    private ActionManager _actionManager;
+    private final ActionMessageBuilder _actionMessageBuilder;
+    private final ActionManager _actionManager;
 
     public ApplySenderExecutor(ActionMessageBuilder builder, ActionManager manager) {
         _actionMessageBuilder = builder;
@@ -39,7 +39,7 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
      * the appropriate handlers.
      *
      * @param action The action to be sent
-     * @param config current configuration being analized
+     * @param config current configuration being analyzed
      * @param path   current path level in the configuration
      * @param sender A Map Sender object that will send this message and will
      *               get an answer.
@@ -52,19 +52,15 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
     private HandlerResponse getResponse(Action action, Configuration config,
                                         ConfigPath path, ActionSender sender) {
 
-        if (config == null)
-            return HandlerResponse.createError("Can't get a reply");
-
         ConfigPathNavigator navigator = new ConfigPathNavigator(config);
-
         Set<ConfigPath> configPathSet = navigator.getChildPaths(path);
 
         if (configPathSet.size() <= 0) {
             return HandlerResponse.NOANSWER;
         }
 
-        //this analizer will get the result answer from this part of the configuration
-        HandlerResponseAnalizer analizer = new HandlerResponseAnalizer();
+        //this analyzer will get the result answer from this part of the configuration
+        HandlerResponseAnalizer analyzer = new HandlerResponseAnalizer();
 
         for (ConfigPath cp : configPathSet) {
             //get the subconfiguration
@@ -87,14 +83,14 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
                 response = getResponse(action, c, cp, sender);
             }
 
-            //if the answer is still NOANSWER, return inmediately, there is no one
+            //if the answer is still NOANSWER, return immediately, there is no one
             //that can process this part of the configuration.
             if (response == HandlerResponse.NOANSWER) {
                 return response;
             }
-            analizer.addResponse(response);
+            analyzer.addResponse(response);
         }
-        return analizer.getSummaryResponse();
+        return analyzer.getSummaryResponse();
     }
 
 }
