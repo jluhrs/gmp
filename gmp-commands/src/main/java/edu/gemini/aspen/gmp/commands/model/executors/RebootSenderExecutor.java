@@ -22,7 +22,7 @@ public class RebootSenderExecutor implements SequenceCommandExecutor {
     }
 
 
-
+    @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
 
         final RebootArgument arg = RebootArgument.parse(action.getConfiguration());
@@ -78,7 +78,7 @@ public class RebootSenderExecutor implements SequenceCommandExecutor {
             rebootArg = arg;
         }
 
-
+        @Override
         public void onHandlerResponse(HandlerResponse response,
                                       SequenceCommand command,
                                       Activity activity,

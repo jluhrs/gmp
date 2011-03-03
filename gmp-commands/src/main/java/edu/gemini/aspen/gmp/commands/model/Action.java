@@ -66,6 +66,7 @@ public final class Action implements Comparable<Action> {
         return _listener;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -84,6 +85,7 @@ public final class Action implements Comparable<Action> {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int result;
         result = _actionId;
@@ -97,10 +99,12 @@ public final class Action implements Comparable<Action> {
     }
 
 
+    @Override
     public int compareTo(Action other) {
         return _actionId - other.getId();
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[").append(_actionId).append(":").

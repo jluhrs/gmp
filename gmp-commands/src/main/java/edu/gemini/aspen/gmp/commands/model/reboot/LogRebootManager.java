@@ -14,6 +14,7 @@ public class LogRebootManager implements RebootManager {
 
     private static final Logger LOG = Logger.getLogger(LogRebootManager.class.getName());
 
+    @Override
     public void reboot(RebootArgument arg) {
         LOG.info("Starting shutdown of the instrument with argument " + arg);
     }

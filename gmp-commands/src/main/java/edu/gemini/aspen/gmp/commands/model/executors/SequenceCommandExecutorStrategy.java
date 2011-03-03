@@ -32,6 +32,7 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
         );
     }
 
+    @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
 
         if (action == null)

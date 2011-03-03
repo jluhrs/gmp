@@ -1,14 +1,16 @@
 package edu.gemini.aspen.gmp.commands.jms;
 
 
-import javax.jms.*;
-
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import java.util.logging.Logger;
 
 /**
@@ -30,6 +32,7 @@ public class CompletionInfoListener implements MessageListener {
         _commandUpdater = updater;
     }
 
+    @Override
     public void onMessage(Message message) {
         try {
             if (message instanceof MapMessage) {

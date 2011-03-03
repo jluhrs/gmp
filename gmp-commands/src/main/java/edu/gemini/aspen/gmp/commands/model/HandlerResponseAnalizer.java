@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class HandlerResponseAnalizer {
 
 
-    private List<HandlerResponse> _responses = new ArrayList<HandlerResponse>();
+    private final List<HandlerResponse> _responses = new ArrayList<HandlerResponse>();
 
     /**
      * Adds the response to the collection of responses to be analized

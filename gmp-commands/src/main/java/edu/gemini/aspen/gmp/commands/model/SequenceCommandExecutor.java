@@ -6,7 +6,7 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
  * This interface defines a method to dispatch an action using
  * a given {@link edu.gemini.aspen.gmp.commands.model.ActionSender}. The
  * operation returns a {@link edu.gemini.aspen.giapi.commands.HandlerResponse}
- * representing the resut of the action.
+ * representing the result of the action.
  */
 public interface SequenceCommandExecutor {
 

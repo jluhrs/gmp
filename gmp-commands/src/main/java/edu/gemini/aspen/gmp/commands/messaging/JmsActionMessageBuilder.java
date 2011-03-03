@@ -98,15 +98,17 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
             return sb.toString();
         }
 
-
+        @Override
         public DestinationData getDestinationData() {
             return dd;
         }
 
+        @Override
         public Map<String, Object> getProperties() {
             return props;
         }
 
+        @Override
         public Map<String, Object> getDataElements() {
             return data;
         }
@@ -144,6 +146,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
      * @param action the action to be used to construct the message
      * @return a new ActionMessage
      */
+    @Override
     public ActionMessage buildActionMessage(Action action) {
         return new ActionMessageImpl(action);
     }
@@ -160,6 +163,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
      * @return a new ActionMessage containing the sub-configuration defined
      *         by the ConfigPath
      */
+    @Override
     public ActionMessage buildActionMessage(Action action, ConfigPath path) {
         return new ActionMessageImpl(action, path);
     }

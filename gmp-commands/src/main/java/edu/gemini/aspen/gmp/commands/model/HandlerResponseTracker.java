@@ -5,6 +5,7 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import java.util.Map;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -33,7 +34,7 @@ class HandlerResponseTracker {
          */
         HandlerResponseAnalizer analizer = new HandlerResponseAnalizer();
 
-        private int pendingResponses = 0; //how many responses are required to complete the request
+        private AtomicInteger pendingResponses = new AtomicInteger(); //how many responses are required to complete the request
 
 
         /**
@@ -42,7 +43,7 @@ class HandlerResponseTracker {
          */
         public void addResponse(HandlerResponse response) {
             analizer.addResponse(response);
-            pendingResponses--;
+            pendingResponses.decrementAndGet();
         }
 
         /**
@@ -52,7 +53,7 @@ class HandlerResponseTracker {
          * action, <code>false</code> otherwise.
          */
         public boolean hasNoPendingResponses() {
-            return pendingResponses <= 0;   //note the <=0. This is because for actions other
+            return pendingResponses.get() <= 0;   //note the <=0. This is because for actions other
             //than APPLY, the pending response will be <0 once we received their answers 
         }
 
@@ -66,8 +67,9 @@ class HandlerResponseTracker {
                 return analizer.getSummaryResponse();
             }
             else {
+                int pending = pendingResponses.get();
                 return HandlerResponse.createError(
-                        String.format(ERROR_MSG, pendingResponses, pendingResponses > 1 ? "s":""));
+                        String.format(ERROR_MSG, pending, pending > 1 ? "s":""));
             }
         }
 
@@ -75,7 +77,7 @@ class HandlerResponseTracker {
          * Increments in one the number of responses needed.
          */
         public void addPendingResponse() {
-            pendingResponses++;
+            pendingResponses.incrementAndGet();
         }
     }
 

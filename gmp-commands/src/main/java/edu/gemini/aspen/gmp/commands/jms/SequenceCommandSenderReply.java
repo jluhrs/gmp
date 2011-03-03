@@ -26,6 +26,7 @@ public class SequenceCommandSenderReply extends JmsMapMessageSenderReply
         super(clientData);
     }
 
+    @Override
     protected Object buildResponse(Message reply) throws JMSException {
 
         if (reply instanceof MapMessage) {
@@ -36,6 +37,7 @@ public class SequenceCommandSenderReply extends JmsMapMessageSenderReply
 
     }
 
+    @Override
     public HandlerResponse send(ActionMessage actionMessage)
             throws SequenceCommandException {
 

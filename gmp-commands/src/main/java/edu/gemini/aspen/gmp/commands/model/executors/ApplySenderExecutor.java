@@ -24,7 +24,7 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
         _actionManager = manager;
     }
 
-
+    @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
 
         Configuration config = action.getConfiguration();
