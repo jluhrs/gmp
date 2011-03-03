@@ -24,9 +24,7 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
                                            ActionManager manager) {
         _defaultExecutor = new DefaultSenderExecutor(builder);
         _applyExecutor = new ApplySenderExecutor(builder, manager);
-        _rebootExecutor = new RebootSenderExecutor(
-                builder,
-                new LogRebootManager()
+        _rebootExecutor = new RebootSenderExecutor(new LogRebootManager()
         );
     }
 

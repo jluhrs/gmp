@@ -1,7 +1,7 @@
 package edu.gemini.aspen.giapi.commands;
 
 /**
- * A class to represent and manipultate the REBOOT arguments in a
+ * A class to represent and manipulate the REBOOT arguments in a
  * sequence command. 
  */
 public enum RebootArgument {

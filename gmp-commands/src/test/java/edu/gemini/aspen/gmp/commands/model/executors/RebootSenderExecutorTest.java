@@ -1,11 +1,10 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
-import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.test.RebootManagerMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,24 +24,9 @@ public class RebootSenderExecutorTest {
 
     private RebootSenderExecutor executor;
 
-    private ActionSenderMock sender;
     private final RebootManagerMock rebootManager = new RebootManagerMock();
 
-    //A completion listener for the reboot sequence command
-    private final CompletionListener rebootCompletionListener = new CompletionListener() {
-
-        public boolean invoked = false;
-
-        public void onHandlerResponse(HandlerResponse response,
-                                      SequenceCommand command,
-                                      Activity activity, Configuration config) {
-            //just notifies that it was invoked.
-            invoked = true;
-            synchronized (this) {
-                notifyAll();
-            }
-        }
-    };
+    private final CompletionListenerMock rebootCompletionListener = new CompletionListenerMock();
 
     @Before
     public void setUp() {
@@ -50,19 +34,19 @@ public class RebootSenderExecutorTest {
         configReboot = configuration(configPath("REBOOT_OPT"), "REBOOT");
         configNone = configuration(configPath("REBOOT_OPT"), "NONE");
 
-        executor = new RebootSenderExecutor(new JmsActionMessageBuilder(), rebootManager);
-        sender = new ActionSenderMock();
+        executor = new RebootSenderExecutor(rebootManager);
 
         rebootManager.reset();
+        rebootCompletionListener.reset();
     }
 
     @Test
-    public void testRebootPreset() {
+    public void testRebootWithPreset() {
         Action action = new Action(SequenceCommand.REBOOT,
                 Activity.PRESET, configGMP, null);
 
         //set the sender to anything but ACCEPTED
-        sender.defineAnswer(HandlerResponse.createError("error"));
+        ActionSender sender = new ActionSenderMock(HandlerResponse.createError("error"));
 
         HandlerResponse response = executor.execute(action, sender);
 
@@ -71,12 +55,12 @@ public class RebootSenderExecutorTest {
     }
 
     @Test
-    public void testRebootCancel() {
+    public void testRebootWithCancel() {
         Action action = new Action(SequenceCommand.REBOOT,
                 Activity.CANCEL, configGMP, null);
 
         //set the sender to anything but ERROR
-        sender.defineAnswer(HandlerResponse.ACCEPTED);
+        ActionSender sender = new ActionSenderMock(HandlerResponse.ACCEPTED);
 
         HandlerResponse response = executor.execute(action, sender);
 
@@ -101,7 +85,7 @@ public class RebootSenderExecutorTest {
 
         for (HandlerResponse response : responses) {
             rebootManager.reset();
-            sender.defineAnswer(response);
+            ActionSender sender = new ActionSenderMock(response);
             HandlerResponse answer = executor.execute(action, sender);
             //wait for the reboot manager to be invoked, if the answer was completed.
             if (response.getResponse() == HandlerResponse.Response.COMPLETED) {
@@ -115,8 +99,8 @@ public class RebootSenderExecutorTest {
                 //make sure the reboot manager got the right arg
                 assertEquals(RebootArgument.NONE, rebootManager.getReceivedArgument());
             }
-            //verify the answer is the one defined by the sender. 
-            assertEquals(response, answer);
+            //verify the answer is always COMPLETED, despite of the sender
+            assertEquals(HandlerResponse.COMPLETED, answer);
         }
     }
 
@@ -127,7 +111,7 @@ public class RebootSenderExecutorTest {
         Action action = new Action(SequenceCommand.REBOOT,
                 Activity.START, c, null);
 
-        sender.defineAnswer(HandlerResponse.COMPLETED);
+        ActionSender sender = new ActionSenderMock(HandlerResponse.COMPLETED);
 
         HandlerResponse response = executor.execute(action, sender);
 
@@ -145,23 +129,20 @@ public class RebootSenderExecutorTest {
     @Test
     public void testRebootWithNoneArg() {
         testRebootWithImmediateCompletion(configNone, RebootArgument.NONE);
-        testRebootWithLaterCompletion(configNone, RebootArgument.NONE);
     }
 
     @Test
     public void testRebootWithGMPArg() {
         testRebootWithImmediateCompletion(configGMP, RebootArgument.GMP);
-        testRebootWithLaterCompletion(configGMP, RebootArgument.GMP);
     }
 
     @Test
     public void testRebootWithRebootArg() {
         testRebootWithImmediateCompletion(configReboot, RebootArgument.REBOOT);
-        testRebootWithLaterCompletion(configReboot, RebootArgument.REBOOT);
     }
 
     //auxiliary method to exercise the reboot executor with different configurations
-    //that will perform the reboot, asumming the caller completes immediately.
+    //that will perform the reboot, assuming the caller completes immediately.
     private void testRebootWithImmediateCompletion(Configuration config, RebootArgument expectedArg) {
         //activities that produce an execution of the reboot sequence command.
         Activity activities[] = new Activity[]{
@@ -175,7 +156,7 @@ public class RebootSenderExecutorTest {
             //if the sender returns COMPLETED, this means the instrument
             //will execute the reboot with the supplied argument.
 
-            sender.defineAnswer(HandlerResponse.COMPLETED);
+            ActionSender sender = new ActionSenderMock(HandlerResponse.COMPLETED);
             HandlerResponse response = executor.execute(action, sender);
 
             synchronized (rebootManager) {
@@ -189,53 +170,6 @@ public class RebootSenderExecutorTest {
             assertEquals(expectedArg, rebootManager.getReceivedArgument());
             //and verify the response is also COMPLETED
             assertEquals(HandlerResponse.COMPLETED, response);
-        }
-    }
-
-    //auxiliary method to test the reboot with a later completion from the
-    //PARK command sent to the instrument
-    private void testRebootWithLaterCompletion(Configuration config, RebootArgument expectedArg) {
-
-        ActionManager actionManager = new ActionManager();
-        actionManager.start();
-
-        CommandUpdaterImpl cu = new CommandUpdaterImpl(actionManager);
-
-        Activity activities[] = new Activity[]{
-                Activity.START,
-                Activity.PRESET_START
-        };
-
-        for (Activity activity : activities) {
-            Action action = new Action(SequenceCommand.REBOOT,
-                    activity, config, rebootCompletionListener);
-
-            actionManager.registerAction(action);
-
-            sender.defineAnswer(HandlerResponse.STARTED);
-
-            HandlerResponse response = executor.execute(action, sender);
-
-            assertEquals(HandlerResponse.STARTED, response);
-
-
-            //simulate a completion listener from the PARK sequene command...
-            HandlerResponse r1 = HandlerResponse.COMPLETED;
-            cu.updateOcs(Action.getCurrentId(), r1);
-
-            //now, we wait for the reboot completion listener to be invoked...
-
-            synchronized (rebootCompletionListener) {
-                try {
-                    rebootCompletionListener.wait(5000);
-                } catch (InterruptedException e) {
-                    fail("Reboot Completion Listener interrupted");
-                }
-            }
-
-            //if everything went fine, the reboot manager should have been called
-            //make sure the reboot manager got the right arg
-            assertEquals(expectedArg, rebootManager.getReceivedArgument());
         }
     }
 }

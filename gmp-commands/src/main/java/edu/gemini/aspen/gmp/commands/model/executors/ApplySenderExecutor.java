@@ -19,6 +19,8 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
     private final ActionMessageBuilder _actionMessageBuilder;
     private final ActionManager _actionManager;
 
+    static final String ERROR_MSG = "No configuration present for Apply Sequence command";
+
     public ApplySenderExecutor(ActionMessageBuilder builder, ActionManager manager) {
         _actionMessageBuilder = builder;
         _actionManager = manager;
@@ -29,7 +31,7 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
 
         Configuration config = action.getConfiguration();
         if (config == null || config.getKeys().size() == 0)
-            return HandlerResponse.createError("No configuration present for Apply Sequence command");
+            return HandlerResponse.createError(ERROR_MSG);
         return getResponse(action, config, ConfigPath.EMPTY_PATH, sender);
     }
 

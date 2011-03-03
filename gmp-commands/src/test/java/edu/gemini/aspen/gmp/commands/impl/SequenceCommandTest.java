@@ -1,31 +1,29 @@
 package edu.gemini.aspen.gmp.commands.impl;
 
 import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.test.SequenceCommandExecutorMock;
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import edu.gemini.aspen.gmp.commands.model.ActionManager;
-import edu.gemini.aspen.gmp.commands.model.Action;
+import static org.junit.Assert.*;
 
 
 /**
- * A Class to test Sequence Commnads. It will excercise
+ * A Class to test Sequence Commands. It will exercise
  * the Command Sender and Command Updater implementations
  */
 public class SequenceCommandTest {
 
-    private CommandSender cs;
+//    private CommandSender cs;
     private CommandUpdater cu;
 
     private ActionManager actionManager;
-
-
-    private ActionSenderMock sender; //A test action sender that does not use the network
 
     private SequenceCommandExecutorMock executor; //a simplified executor, that don't take into account the type of action.
 
@@ -37,13 +35,13 @@ public class SequenceCommandTest {
         actionManager = new ActionManager();
         actionManager.start();
 
-        sender = new ActionSenderMock();
+//        sender = new ActionSenderMock();
 
         cu = new CommandUpdaterImpl(actionManager);
 
         executor = new SequenceCommandExecutorMock(cu, completionListener);
 
-        cs = new CommandSenderImpl(actionManager, sender, executor);
+//        cs = new CommandSenderImpl(actionManager, sender, executor);
 
 
 
@@ -62,7 +60,7 @@ public class SequenceCommandTest {
      * returned to the client is COMPLETED, ERROR or ACCEPTED.
      */
     @Test
-    public void testInmmediateCommand() {
+    public void testImmediateCommand() {
 
 
         HandlerResponse[] answers = new HandlerResponse[]{
@@ -73,7 +71,9 @@ public class SequenceCommandTest {
 
         for (HandlerResponse r : answers) {
 
-            sender.defineAnswer(r);
+            ActionSender sender = new ActionSenderMock(r);
+            CommandSender cs = new CommandSenderImpl(actionManager, sender, executor);
+
             completionListener.reset();
 
             HandlerResponse response = cs.sendSequenceCommand(
@@ -119,7 +119,8 @@ public class SequenceCommandTest {
     @Test
     public void testLongCommand() {
         HandlerResponse r = HandlerResponse.STARTED;
-        sender.defineAnswer(r);
+        ActionSender sender = new ActionSenderMock(r);
+        CommandSender cs = new CommandSenderImpl(actionManager, sender, executor);
         HandlerResponse response = cs.sendSequenceCommand(
                 SequenceCommand.ABORT,
                 Activity.START,
@@ -152,7 +153,8 @@ public class SequenceCommandTest {
 
         //the answer to the command will be Started
         HandlerResponse r = HandlerResponse.STARTED;
-        sender.defineAnswer(r);
+        ActionSender sender = new ActionSenderMock(r);
+        CommandSender cs = new CommandSenderImpl(actionManager, sender, executor);
 
         //let's configure the ActionSender to reply completion information
 

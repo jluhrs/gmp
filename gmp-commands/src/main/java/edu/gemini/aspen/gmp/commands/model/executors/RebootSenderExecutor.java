@@ -1,23 +1,28 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
-import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.commands.model.*;
-import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
-
-import java.util.logging.Logger;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.RebootArgument;
+import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
+import edu.gemini.aspen.gmp.commands.model.RebootManager;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 
 /**
- * An executor for the REBOOT sequence command.
+ * An executor for the REBOOT sequence command.It will initiate the reboot
+ * if the activity is PRESET or PRESET/START and will return immediately
+ * to the client with a COMPLETED response.
+ * <p/>
+ * It is an error to try to CANCEL a REBOOT sequence command. The
+ * reboot itself is delegated to a {@link RebootManager} object that
+ * will process the command. The arguments are validated by this class
+ * before passing them to the {@link RebootManager}.
  */
 public class RebootSenderExecutor implements SequenceCommandExecutor {
 
-    private static final Logger LOG = Logger.getLogger(RebootSenderExecutor.class.getName());
+    private final RebootManager _rebootManager;
 
-    private RebootManager _rebootManager;
-    private DefaultSenderExecutor _defaultExecutor;
-
-    public RebootSenderExecutor(ActionMessageBuilder builder, RebootManager rebootManager) {
-        _defaultExecutor = new DefaultSenderExecutor(builder);
+    public RebootSenderExecutor(RebootManager rebootManager) {
         _rebootManager = rebootManager;
     }
 
@@ -36,62 +41,16 @@ public class RebootSenderExecutor implements SequenceCommandExecutor {
             return HandlerResponse.createError("Can't cancel a REBOOT sequence command");
         }
 
-        //So we have an start. Let's perform a PARK on the instrument, catching
-        //the return response. The actual reboot will be executed once we
-        //get the completion information.
-        Action parkAction = action.mutate(SequenceCommand.PARK,
-                Activity.START,
-                null,
-                new RebootCompletionListener(action.getCompletionListener(), arg));
 
-
-        //use the default executor to send the command.
-        HandlerResponse response = _defaultExecutor.execute(parkAction, sender);
-
-        if (response != null && response.getResponse() == HandlerResponse.Response.COMPLETED) {
-            //a fast PARK. The instrument was parked already, for instance.
-            //let's initiate the reboot in a different thread
-            new Thread() {
-                @Override
-                public void run() {
-                    _rebootManager.reboot(arg);
-                }
-            }.start();
-        }
-
-        return response;
-    }
-
-    /**
-     * A decorator listener that will receive the completion information
-     * associated to the park sequence command and then it will initiate
-     * the corresponding reboot of the system.
-     */
-    class RebootCompletionListener implements CompletionListener {
-
-
-        private CompletionListener listener;
-        private RebootArgument rebootArg;
-
-        public RebootCompletionListener(CompletionListener l, RebootArgument arg) {
-            listener = l;
-            rebootArg = arg;
-        }
-
-        @Override
-        public void onHandlerResponse(HandlerResponse response,
-                                      SequenceCommand command,
-                                      Activity activity,
-                                      Configuration config) {
-            if (listener != null) {
-                listener.onHandlerResponse(response, command, activity, config);
+        //We have a START or PRESET_START. Let's initiate the reboot in a different thread
+        new Thread() {
+            @Override
+            public void run() {
+                _rebootManager.reboot(arg);
             }
-            //now, let's initiate the reboot...
-            if (response.getResponse() == HandlerResponse.Response.COMPLETED) {
-                _rebootManager.reboot(rebootArg);
-            } else {
-                LOG.warning("Can't reboot, the PARK command terminated with " + response);
-            }
-        }
+        }.start();
+
+        //and always return COMPLETED.
+        return HandlerResponse.COMPLETED;
     }
 }

@@ -1,9 +1,13 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
-import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +25,6 @@ public class ApplySenderExecutorTest {
 
     private ApplySenderExecutor _executor;
 
-    private ActionSenderMock _sender;
-
     private HandlerResponse[] _responses;
 
     private Configuration _applyConfig;
@@ -32,7 +34,6 @@ public class ApplySenderExecutorTest {
         ActionManager actionManager = new ActionManager();
         actionManager.start();
         _executor = new ApplySenderExecutor(new JmsActionMessageBuilder(), actionManager);
-        _sender = new ActionSenderMock();
         _responses = new HandlerResponse[] {
                 HandlerResponse.COMPLETED,
                 HandlerResponse.STARTED,
@@ -61,7 +62,8 @@ public class ApplySenderExecutorTest {
         Action action = new Action(SequenceCommand.APPLY,
                 Activity.START,
                 null, null);
-        HandlerResponse response = _executor.execute(action, _sender);
+        ActionSender sender = new ActionSenderMock(HandlerResponse.ACCEPTED);
+        HandlerResponse response = _executor.execute(action, sender);
         assertEquals(HandlerResponse.createError("No configuration present for Apply Sequence command"), response);
     }
 
@@ -70,7 +72,8 @@ public class ApplySenderExecutorTest {
         Action action = new Action(SequenceCommand.APPLY,
                 Activity.START,
                 emptyConfiguration(), null);
-        HandlerResponse response = _executor.execute(action, _sender);
+        ActionSender sender = new ActionSenderMock(HandlerResponse.ACCEPTED);
+        HandlerResponse response = _executor.execute(action, sender);
         assertEquals(HandlerResponse.createError("No configuration present for Apply Sequence command"), response);
     }
 
@@ -85,8 +88,8 @@ public class ApplySenderExecutorTest {
                 _applyConfig, null);
 
         for (HandlerResponse response: _responses) {
-            _sender.defineAnswer(response);
-            HandlerResponse myResponse = _executor.execute(action, _sender);
+            ActionSender sender = new ActionSenderMock(response);
+            HandlerResponse myResponse = _executor.execute(action, sender);
             assertEquals(response, myResponse);
         }
     }

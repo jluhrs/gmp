@@ -5,6 +5,7 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,14 +20,12 @@ import static org.junit.Assert.assertEquals;
 public class DefaultSenderExecutorTest {
 
     private DefaultSenderExecutor _executor;
-    private ActionSenderMock _sender;
 
     private HandlerResponse[] _responses;
 
     @Before
     public void setUp() {
         _executor = new DefaultSenderExecutor(new JmsActionMessageBuilder());
-        _sender = new ActionSenderMock();
 
         _responses = new HandlerResponse[] {
                 HandlerResponse.COMPLETED,
@@ -49,9 +48,9 @@ public class DefaultSenderExecutorTest {
                 Activity.START, emptyConfiguration(), null);
 
         for (HandlerResponse response: _responses) {
-            _sender.defineAnswer(response);
+            ActionSender sender = new ActionSenderMock(response);
             HandlerResponse exResponse =
-                    _executor.execute(action, _sender);
+                    _executor.execute(action, sender);
             assertEquals(response, exResponse);
         }
     }

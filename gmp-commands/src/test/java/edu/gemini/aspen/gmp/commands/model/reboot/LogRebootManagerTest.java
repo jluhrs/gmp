@@ -11,5 +11,7 @@ public class LogRebootManagerTest {
 
         // There is nothing really to test except for not throwing exceptions
         rebootManager.reboot(RebootArgument.GMP);
+        rebootManager.reboot(RebootArgument.NONE);
+        rebootManager.reboot(RebootArgument.REBOOT);
     }
 }
