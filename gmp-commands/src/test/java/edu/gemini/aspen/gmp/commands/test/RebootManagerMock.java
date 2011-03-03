@@ -8,12 +8,9 @@ import org.junit.Ignore;
  * A dummy test reboot manager for testing purposes.
  *
  */
-@Ignore
-public class TestRebootManager implements RebootManager {
-
-
+public class RebootManagerMock implements RebootManager {
     private RebootArgument _arg;
-    
+
     public void reboot(RebootArgument arg) {
         _arg = arg;
         //notify that this handler was invoked. 
