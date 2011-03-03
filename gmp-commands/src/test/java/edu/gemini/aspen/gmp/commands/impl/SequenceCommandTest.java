@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.commands.impl;
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
+import edu.gemini.aspen.gmp.commands.test.SequenceCommandExecutorMock;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
@@ -10,7 +11,6 @@ import static org.junit.Assert.*;
 
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.test.TestSequenceCommandExecutor;
 
 
 /**
@@ -27,7 +27,7 @@ public class SequenceCommandTest {
 
     private ActionSenderMock sender; //A test action sender that does not use the network
 
-    private TestSequenceCommandExecutor executor; //a simplified executor, that don't take into account the type of action.
+    private SequenceCommandExecutorMock executor; //a simplified executor, that don't take into account the type of action.
 
     private final CompletionListenerMock completionListener = new CompletionListenerMock();
 
@@ -41,7 +41,7 @@ public class SequenceCommandTest {
 
         cu = new CommandUpdaterImpl(actionManager);
 
-        executor = new TestSequenceCommandExecutor(cu, completionListener);
+        executor = new SequenceCommandExecutorMock(cu, completionListener);
 
         cs = new CommandSenderImpl(actionManager, sender, executor);
 

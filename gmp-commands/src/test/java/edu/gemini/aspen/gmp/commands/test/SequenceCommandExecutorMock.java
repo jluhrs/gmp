@@ -14,23 +14,20 @@ import static org.junit.Assert.fail;
  * A Sequence Command executor that can simulate a fast sequence command
  * handler completing _before_ the execute method does.
  */
-@Ignore
-public class TestSequenceCommandExecutor implements SequenceCommandExecutor {
-
+public class SequenceCommandExecutorMock implements SequenceCommandExecutor {
     private CommandUpdater _commandUpdater;
 
     private final CompletionListener _completionListener;
     private boolean _simulateFastHandler;
     private HandlerResponse _response;
 
-    public TestSequenceCommandExecutor(CommandUpdater cu, CompletionListener listener) {
+    public SequenceCommandExecutorMock(CommandUpdater cu, CompletionListener listener) {
         _commandUpdater = cu;
         _simulateFastHandler = false;
         _response = null;
         _completionListener = listener;
 
     }
-
 
     public HandlerResponse execute(Action action, ActionSender sender) {
 
