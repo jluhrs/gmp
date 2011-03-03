@@ -79,4 +79,10 @@ public class SequenceCommandExecutorStrategyTest {
         HandlerResponse response = strategy.execute(action, sender);
         assertNull(response);
     }
+
+    @Test(expected = SequenceCommandException.class)
+    public void testExecuteNullAction() {
+        Action action = null;
+        strategy.execute(action, sender);
+    }
 }
