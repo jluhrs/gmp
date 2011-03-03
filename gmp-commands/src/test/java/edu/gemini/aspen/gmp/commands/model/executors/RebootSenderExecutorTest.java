@@ -19,17 +19,17 @@ import static org.junit.Assert.fail;
  * Test class for the REBOOT sender executor
  */
 public class RebootSenderExecutorTest {
-    Configuration configGMP;
-    Configuration configReboot;
-    Configuration configNone;
+    private Configuration configGMP;
+    private Configuration configReboot;
+    private Configuration configNone;
 
-    RebootSenderExecutor executor;
+    private RebootSenderExecutor executor;
 
-    TestActionSender sender;
-    final TestRebootManager rebootManager = new TestRebootManager();
+    private TestActionSender sender;
+    private final TestRebootManager rebootManager = new TestRebootManager();
 
     //A completion listener for the reboot sequence command
-    final CompletionListener rebootCompletionListener = new CompletionListener() {
+    private final CompletionListener rebootCompletionListener = new CompletionListener() {
 
         public boolean invoked = false;
 
@@ -209,7 +209,6 @@ public class RebootSenderExecutorTest {
         for (Activity activity : activities) {
             Action action = new Action(SequenceCommand.REBOOT,
                     activity, config, rebootCompletionListener);
-
 
             actionManager.registerAction(action);
 
