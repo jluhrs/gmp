@@ -121,5 +121,7 @@ public class StatusDispatcherTest {
 
         latch.await(1, TimeUnit.SECONDS);
         assertEquals(4, counter.get());
+
+        ss.stopJms();
     }
 }

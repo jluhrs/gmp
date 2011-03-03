@@ -1,44 +1,29 @@
 package edu.gemini.aspen.giapi.status.dispatcher;
 
-import edu.gemini.aspen.giapi.commands.ConfigPath;
-import edu.gemini.aspen.giapi.status.*;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
-//import edu.gemini.giapi.tool.status.StatusSetter;
-import edu.gemini.jms.api.*;
+import edu.gemini.aspen.giapitestsupport.StatusSetter;
+import edu.gemini.jms.api.JmsProvider;
 import org.junit.*;
 import org.junit.runner.*;
 import org.ops4j.pax.exam.*;
 import org.ops4j.pax.exam.junit.*;
 import org.osgi.framework.*;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
 
-@Ignore
 @RunWith(JUnit4TestRunner.class)
-public class StatusDispatcherIT {
+public class StatusDispatcherIT{
     private static final Logger LOG = Logger.getLogger(StatusDispatcherIT.class.getName());
+
     @Inject
-    private int counter=0;
     private BundleContext context;
-    private abstract class TestHandler implements FilteredStatusHandler{
 
-            @Override
-            public String getName() {
-                return "Filter: "+getFilter().toString();
-            }
-
-            @Override
-            public void update(StatusItem item) {
-                //check that we only get items that are children of our filter
-                assertTrue(item.getName().startsWith(getFilter().toString()));
-                LOG.info("ITEM: "+item);
-                counter++;
-            }
-    }
     @Configuration
     public static Option[] withStatusDbAndJMSProviderConfig() {
         return options(
@@ -68,15 +53,16 @@ public class StatusDispatcherIT {
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").version("5.4.2"),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").version("1.1.1"),
                 mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
+                mavenBundle().artifactId("giapi-test-support").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject()
                 );
     }
 
-   @Test
+    @Test
     public void bundleExistence() {
         assertNotNull(getStatusDispatcherBundle());
-
+        assertTrue(isStatusDispatcherRunning());
     }
 
     private Bundle getStatusDispatcherBundle() {
@@ -99,75 +85,23 @@ public class StatusDispatcherIT {
         return false;
     }
 
-
-    private boolean isServiceClassInUse(Class<?> serviceClass) {
-        ServiceReference aggregateReference = context.getServiceReference(serviceClass.getName());
-        return aggregateReference != null;
-    }
-
-    private boolean isJMSProviderInUse() {
-        return isServiceClassInUse(JmsProvider.class);
-    }
-
     @Test
-    public void withStatusDbAndJMSProviderStatusServiceShouldExist() {
-        assertTrue("StatusDispatcher should exist as a managed service", isStatusDispatcherRunning());
-        assertTrue("JMSProvider should be available", isJMSProviderInUse());
-    }
+    public void checkBinding() throws Exception{
+        TestHandler testHandler1 = new TestHandler();
+        context.registerService(FilteredStatusHandler.class.getName(),testHandler1,null);
+        TestHandler testHandler2 = new TestHandler();
+        context.registerService(FilteredStatusHandler.class.getName(),testHandler2,null);
+        JmsProvider provider = (JmsProvider) context.getService(context.getServiceReference("edu.gemini.jms.api.JmsProvider"));
+        StatusSetter ss = new StatusSetter("gpi:status1");
+        ss.startJms(provider);
+        ss.setStatusItem(new BasicStatus<String>("gpi:status1", "gpi:status1"));
+        testHandler1.latch.await(1, TimeUnit.SECONDS);
+        assertEquals(1, testHandler1.counter);
+        testHandler2.latch.await(1, TimeUnit.SECONDS);
+        assertEquals(1, testHandler2.counter);
 
-    @Test
-    public void testUpdate()throws Exception{
-        ServiceReference ref = context.getServiceReference("StatusDispatcher");
-        assertNotNull(ref);
-        StatusDispatcher dispatcher = (StatusDispatcher)context.getService(ref);
-        assertNotNull(dispatcher);
-        dispatcher.bindStatusHandler(new TestHandler() {
-            @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:");
-            }
-        });
-        dispatcher.bindStatusHandler(new TestHandler() {
-            @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:a:1");
-            }
-        });
-        dispatcher.bindStatusHandler(new TestHandler() {
-            @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b");
-            }
-        });
-        dispatcher.bindStatusHandler(new TestHandler() {
-            @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b");
-            }
-        });
-        FilteredStatusHandler h = new TestHandler() {
-            @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b");
-            }
-        };
-        dispatcher.bindStatusHandler(h);
-        dispatcher.unbindStatusHandler(h);
-        dispatcher.bindStatusHandler(new TestHandler() {
-            @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b:1");
-            }
-        });
-        dispatcher.bindStatusHandler(new TestHandler() {
-            @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b:2");
-            }
-        });
-//        StatusSetter ss=new StatusSetter("gpi:b:1");
-//        ss.setStatusItem(new BasicStatus<String>("gpi:b:1","new value"));
-//        assertEquals(4,counter);
+        ss.stopJms();
+
     }
 
 }

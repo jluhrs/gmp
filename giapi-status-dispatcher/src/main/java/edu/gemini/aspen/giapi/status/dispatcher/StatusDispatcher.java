@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  */
 @Component
 @Instantiate
-@Provides(specifications = {StatusHandler.class,StatusDispatcher.class})
+@Provides
 public class StatusDispatcher implements StatusHandler {
 
     private final static Logger LOG = Logger.getLogger(StatusDispatcher.class.getName());
