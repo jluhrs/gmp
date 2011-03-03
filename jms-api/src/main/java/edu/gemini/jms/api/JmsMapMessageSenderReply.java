@@ -10,14 +10,14 @@ import java.util.Map;
  * Implementations of this class need to define how to reconstruct the
  * reply message in the communication as an Object.
  */
-public abstract class JmsMapMessageSenderReply extends JmsMapMessageSender 
+public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
         implements MapMessageSenderReply {
 
     public JmsMapMessageSenderReply(String clientData) {
         super(clientData);
     }
 
-    public Object sendMapMessageReply(DestinationData destination,
+    public T sendMapMessageReply(DestinationData destination,
                                       Map<String, Object> message,
                                       Map<String, Object> properties,
                                       long timeout) throws MessagingException {
@@ -48,5 +48,5 @@ public abstract class JmsMapMessageSenderReply extends JmsMapMessageSender
      * @throws JMSException if there is a problem decoding the
      * reply
      */
-    protected abstract Object buildResponse(Message reply) throws JMSException;
+    protected abstract T buildResponse(Message reply) throws JMSException;
 }

@@ -19,7 +19,7 @@ import javax.jms.MapMessage;
  * to simplify the usage (and consistency) across the different
  * {@link edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor}
  */
-public class SequenceCommandSenderReply extends JmsMapMessageSenderReply
+public class SequenceCommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse>
         implements ActionSender {
 
     public SequenceCommandSenderReply(String clientData) {
@@ -27,8 +27,7 @@ public class SequenceCommandSenderReply extends JmsMapMessageSenderReply
     }
 
     @Override
-    protected Object buildResponse(Message reply) throws JMSException {
-
+    protected HandlerResponse buildResponse(Message reply) throws JMSException {
         if (reply instanceof MapMessage) {
             MapMessage replyMap = (MapMessage) reply;
             return MessageBuilder.buildHandlerResponse(replyMap);
