@@ -1,20 +1,19 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.reboot.LogRebootManager;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 
 /**
- * This is a high order Sequence Commnad Executor. It will delegate
+ * This is a high order Sequence Command Executor. It will delegate
  * the actual execution to a more specific executor.
  */
 public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor {
-
-
-    private SequenceCommandExecutor _defaultExecutor;
-    private SequenceCommandExecutor _applyExecutor;
-    private SequenceCommandExecutor _rebootExecutor;
+    private final SequenceCommandExecutor _defaultExecutor;
+    private final SequenceCommandExecutor _applyExecutor;
+    private final SequenceCommandExecutor _rebootExecutor;
 
     /**
      * Construct the executor specifying the ActionMessageBuilder to use.
@@ -23,7 +22,6 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
      */
     public SequenceCommandExecutorStrategy(ActionMessageBuilder builder,
                                            ActionManager manager) {
-
         _defaultExecutor = new DefaultSenderExecutor(builder);
         _applyExecutor = new ApplySenderExecutor(builder, manager);
         _rebootExecutor = new RebootSenderExecutor(
@@ -34,18 +32,20 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
 
     @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
-
         if (action == null)
             throw new SequenceCommandException("Null action received for execution");
 
-        switch (action.getSequenceCommand()) {
-            case APPLY:
-                return _applyExecutor.execute(action, sender);
-            case REBOOT:
-                return _rebootExecutor.execute(action, sender);
-            default:
-                return _defaultExecutor.execute(action, sender);
-        }
+        return findCommandExecutor(action.getSequenceCommand()).execute(action, sender);
+    }
 
+    private SequenceCommandExecutor findCommandExecutor(SequenceCommand sequenceCommand) {
+        switch (sequenceCommand) {
+            case APPLY:
+                return _applyExecutor;
+            case REBOOT:
+                return _rebootExecutor;
+            default:
+                return _defaultExecutor;
+        }
     }
 }
