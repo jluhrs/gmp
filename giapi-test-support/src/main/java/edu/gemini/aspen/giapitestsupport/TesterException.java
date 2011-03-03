@@ -1,4 +1,4 @@
-package edu.gemini.giapi.tool;
+package edu.gemini.aspen.giapitestsupport;
 
 /**
  */

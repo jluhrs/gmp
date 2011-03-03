@@ -140,5 +140,10 @@
             <version>8.0.0</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-test-support</artifactId>
+            <version>0.1.0</version>
+        </dependency>
     </dependencies>
 </project>

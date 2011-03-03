@@ -2,8 +2,8 @@ package edu.gemini.giapi.tool.commands;
 
 import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.giapi.tool.jms.BrokerConnection;
-import edu.gemini.giapi.tool.TesterException;
 import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.arguments.*;

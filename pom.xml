@@ -95,6 +95,7 @@
         <module>giapi</module>
         <module>giapi-fileevent-handler</module>
         <module>jms-api</module>
+        <module>giapi-test-support</module>
         <module>giapi-obsevents</module>
         <module>giapi-jms-util</module>
         <module>giapi-status-service</module>

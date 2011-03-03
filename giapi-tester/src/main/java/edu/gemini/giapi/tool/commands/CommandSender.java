@@ -5,8 +5,8 @@ import javax.jms.*;
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.giapi.tool.jms.BrokerConnection;
-import edu.gemini.giapi.tool.TesterException;
 
 /**
  * This class sends sequence commands to the GMP using the gateway

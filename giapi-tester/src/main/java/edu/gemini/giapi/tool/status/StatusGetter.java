@@ -3,7 +3,7 @@ package edu.gemini.giapi.tool.status;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
-import edu.gemini.giapi.tool.TesterException;
+import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.jms.api.BaseMessageProducer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;

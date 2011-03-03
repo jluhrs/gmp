@@ -1,6 +1,6 @@
 package edu.gemini.giapi.tool.status;
 
-import edu.gemini.giapi.tool.TesterException;
+import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.giapi.tool.arguments.GetStatusNamesArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.parser.Argument;

@@ -1,5 +1,6 @@
 package edu.gemini.giapi.tool.jms;
 
+import edu.gemini.aspen.giapitestsupport.TesterException;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.ConnectionFactory;
@@ -7,7 +8,6 @@ import javax.jms.Connection;
 import javax.jms.Session;
 import javax.jms.JMSException;
 
-import edu.gemini.giapi.tool.TesterException;
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
