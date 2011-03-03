@@ -4,7 +4,7 @@ import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
-import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class SequenceCommandExecutorStrategyTest {
     private ActionSender sender = new ActionSenderMock();
     private ActionManager manager = mock(ActionManager.class);
     private SequenceCommandExecutorStrategy strategy;
-    private TestCompletionListener listener = new TestCompletionListener();
+    private CompletionListenerMock listener = new CompletionListenerMock();
 
     @Before
     public void setUp() throws Exception {

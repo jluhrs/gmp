@@ -8,14 +8,13 @@ import org.junit.Ignore;
  * A completion listener that can record the last response received and
  * whether it was called or not.
  */
-@Ignore
-public class TestCompletionListener implements CompletionListener {
+public class CompletionListenerMock implements CompletionListener {
 
     private boolean wasInoked = false;
 
     private HandlerResponse lastResponse = null;
     
-    public TestCompletionListener() {
+    public CompletionListenerMock() {
     }
 
     public void onHandlerResponse(HandlerResponse response,

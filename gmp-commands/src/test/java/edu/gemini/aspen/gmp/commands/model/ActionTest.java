@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class ActionTest {
     @Before
     public void setUp() {
 
-        CompletionListener listener1 = new TestCompletionListener();
+        CompletionListener listener1 = new CompletionListenerMock();
         Configuration config1 = emptyConfiguration();
         a1 = new Action(SequenceCommand.ABORT,
                 Activity.PRESET,

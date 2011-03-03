@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class ActionManagerTest {
             actions.add(new Action(SequenceCommand.ABORT,
                     Activity.PRESET,
                     emptyConfiguration(),
-                    new TestCompletionListener()));
+                    new CompletionListenerMock()));
         }
     }
 
@@ -58,7 +58,7 @@ public class ActionManagerTest {
 
         waitForListener(action.getCompletionListener(), 5000);
 
-        TestCompletionListener cl = (TestCompletionListener) action.getCompletionListener();
+        CompletionListenerMock cl = (CompletionListenerMock) action.getCompletionListener();
         assertTrue(cl.wasInvoked());
     }
 
@@ -89,7 +89,7 @@ public class ActionManagerTest {
 
         waitForListener(action.getCompletionListener(), 1000);
 
-        TestCompletionListener cl = (TestCompletionListener) action.getCompletionListener();
+        CompletionListenerMock cl = (CompletionListenerMock) action.getCompletionListener();
         assertFalse(cl.wasInvoked());
 
         //unlock the manager
@@ -121,9 +121,9 @@ public class ActionManagerTest {
         }
 
         for (int i = 0; i < TOTAL_ACTIONS - 1; i++) {
-            assertTrue(((TestCompletionListener) ((actions.get(i).getCompletionListener()))).wasInvoked());
+            assertTrue(((CompletionListenerMock) ((actions.get(i).getCompletionListener()))).wasInvoked());
         }
-        assertFalse(((TestCompletionListener) ((actions.get(TOTAL_ACTIONS - 1).getCompletionListener()))).wasInvoked());
+        assertFalse(((CompletionListenerMock) ((actions.get(TOTAL_ACTIONS - 1).getCompletionListener()))).wasInvoked());
 
     }
 
@@ -139,7 +139,7 @@ public class ActionManagerTest {
                 HandlerResponse.COMPLETED);
 
         waitForListener(action.getCompletionListener(), 1000);
-        assertFalse(((TestCompletionListener) ((action.getCompletionListener()))).wasInvoked());
+        assertFalse(((CompletionListenerMock) ((action.getCompletionListener()))).wasInvoked());
 
     }
 
@@ -158,15 +158,15 @@ public class ActionManagerTest {
 
         waitForListener(action.getCompletionListener(), 1000);
 
-        assertTrue(((TestCompletionListener) ((action.getCompletionListener()))).wasInvoked());
+        assertTrue(((CompletionListenerMock) ((action.getCompletionListener()))).wasInvoked());
 
         //now, receive completion again...
-        ((TestCompletionListener) ((action.getCompletionListener()))).reset();
+        ((CompletionListenerMock) ((action.getCompletionListener()))).reset();
 
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
         waitForListener(action.getCompletionListener(), 1000);
-        assertFalse(((TestCompletionListener) ((action.getCompletionListener()))).wasInvoked());
+        assertFalse(((CompletionListenerMock) ((action.getCompletionListener()))).wasInvoked());
     }
 
 
@@ -188,7 +188,7 @@ public class ActionManagerTest {
         //see if this triggers action #1.
         waitForListener(action.getCompletionListener(), 1000);
         //it shouldn't have been called.
-        assertFalse(((TestCompletionListener) ((action.getCompletionListener()))).wasInvoked());
+        assertFalse(((CompletionListenerMock) ((action.getCompletionListener()))).wasInvoked());
     }
 
     /**
@@ -226,7 +226,7 @@ public class ActionManagerTest {
 
     @Test
     public void testCompletionForApplySequenceCommand() {
-        TestCompletionListener cl = new TestCompletionListener();
+        CompletionListenerMock cl = new CompletionListenerMock();
 
         Action action = new Action(SequenceCommand.APPLY,
                 Activity.PRESET_START,
@@ -255,7 +255,7 @@ public class ActionManagerTest {
      */
     @Test
     public void testMultipleCompletionForApplySequenceCommand() {
-        TestCompletionListener cl = new TestCompletionListener();
+        CompletionListenerMock cl = new CompletionListenerMock();
 
         Action action = new Action(SequenceCommand.APPLY,
                 Activity.PRESET_START,

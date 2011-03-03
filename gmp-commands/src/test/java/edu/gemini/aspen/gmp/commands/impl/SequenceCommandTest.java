@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.impl;
 
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
@@ -10,7 +11,6 @@ import static org.junit.Assert.*;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.test.TestSequenceCommandExecutor;
-import edu.gemini.aspen.gmp.commands.test.TestCompletionListener;
 
 
 /**
@@ -29,7 +29,7 @@ public class SequenceCommandTest {
 
     private TestSequenceCommandExecutor executor; //a simplified executor, that don't take into account the type of action.
 
-    private final TestCompletionListener completionListener = new TestCompletionListener();
+    private final CompletionListenerMock completionListener = new CompletionListenerMock();
 
     @Before
     public void setUp() {
