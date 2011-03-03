@@ -3,37 +3,32 @@ package edu.gemini.aspen.giapi.status.dispatcher;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
+import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
+import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
+import edu.gemini.aspen.giapi.statusservice.StatusService;
+import edu.gemini.aspen.giapitestsupport.StatusSetter;
+import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
-import java.util.logging.Logger;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StatusDispatcherTest {
-    private static final Logger LOG = Logger.getLogger(StatusDispatcherTest.class.getName());
+
     StatusDispatcher dispatcher;
-    int counter;
+    AtomicInteger counter;
+    CountDownLatch latch;
+
     @Before
     public void setUp() throws Exception {
-        dispatcher=new StatusDispatcher();
-        counter=0;
-    }
-    private abstract class TestHandler implements FilteredStatusHandler{
+        dispatcher = new StatusDispatcher();
+        counter = new AtomicInteger(0);
+        latch = new CountDownLatch(4);
 
-            @Override
-            public String getName() {
-                return "Filter: "+getFilter().toString();
-            }
-
-            @Override
-            public void update(StatusItem item) {
-                //check that we only get items that are children of our filter
-                assertTrue(item.getName().startsWith(getFilter().toString()));
-                counter++;
-            }
-    }
-    @Test
-    public void testUpdate() throws Exception {
         dispatcher.bindStatusHandler(new TestHandler() {
             @Override
             public ConfigPath getFilter() {
@@ -78,9 +73,53 @@ public class StatusDispatcherTest {
                 return new ConfigPath("gpi:b:2");
             }
         });
-        dispatcher.update(new BasicStatus<String>("gpi:b:1","gpi:b:1"));
-        //check that the right amount of handlers were called
-        assertEquals(4, counter);
     }
 
+    private abstract class TestHandler implements FilteredStatusHandler {
+
+        @Override
+        public String getName() {
+            return "Filter: " + getFilter().toString();
+        }
+
+        @Override
+        public void update(StatusItem item) {
+            //check that we only get items that are children of our filter
+            assertTrue(item.getName().startsWith(getFilter().toString()));
+            counter.incrementAndGet();
+            latch.countDown();
+        }
+    }
+
+    @Test
+    public void testUpdateLocal() throws Exception {
+
+        dispatcher.update(new BasicStatus<String>("gpi:b:1", "gpi:b:1"));
+        //check that the right amount of handlers were called
+        latch.await(1, TimeUnit.SECONDS);
+        assertEquals(4, counter.get());
+    }
+
+    @Test
+    public void testUpdateViaJms() throws Exception {
+        //create jms provider
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider("vm://StatusDispatcherTest");
+        provider.validated();
+
+        //create status service connected to the jms provider
+        StatusHandlerAggregate agg = new StatusHandlerAggregateImpl();
+        StatusService statusservice = new StatusService(agg, "Status Service", ">", provider);
+        statusservice.initialize();
+
+        //resgister the status dispatcher as a status handler
+        agg.bindStatusHandler(dispatcher);
+
+
+        StatusSetter ss = new StatusSetter("gpi:b:1");
+        ss.startJms(provider);
+        ss.setStatusItem(new BasicStatus<String>("gpi:b:1", "gpi:b:1"));
+
+        latch.await(1, TimeUnit.SECONDS);
+        assertEquals(4, counter.get());
+    }
 }

@@ -23,17 +23,24 @@
     <description>Status Dispatcher</description>
 
     <packaging>bundle</packaging>
-
+    <build>
+        <plugins>
+            <!-- use pax exam maven plugin -->
+            <plugin>
+                <groupId>org.ops4j.pax.exam</groupId>
+                <artifactId>maven-paxexam-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-config</id>
+                        <goals>
+                            <goal>generate-depends-file</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
@@ -51,6 +58,11 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-api</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>com.springsource.javax.jms</artifactId>
             <version>1.1.0</version>
@@ -61,6 +73,20 @@
             <artifactId>guava</artifactId>
             <version>8.0.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-test-support</artifactId>
+            <version>0.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-provider</artifactId>
+            <version>1.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
