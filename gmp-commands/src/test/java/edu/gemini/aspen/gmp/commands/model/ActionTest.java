@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  * Test the Action Class. 
  */
 public class ActionTest {
-    private Action a1, a2, a3, a4;
+    private Action a1, a2, a3;
 
     @Before
     public void setUp() {
@@ -28,50 +28,55 @@ public class ActionTest {
                 Activity.PRESET,
                 config1,
                 listener1);
-
-        a2 = new Action(SequenceCommand.ABORT,
+        //the only way to create two Actions equals is to explicitly
+        //set up the Action ID. This cannot be done outside the package.
+        a2 = new Action(Action.getCurrentId(),
+                SequenceCommand.ABORT,
                 Activity.PRESET,
                 config1,
                 listener1);
 
+        //Though this action looks "equals", it's not as the action id
+        //should change.
         a3 = new Action(SequenceCommand.ABORT,
-                Activity.PRESET_START,
+                Activity.PRESET,
                 config1,
                 listener1);
-
-        a4 = a1.mutate(a1.getSequenceCommand(), a1.getActivity(), a1.getConfiguration(), a1.getCompletionListener());
-
     }
 
     @Test
     public void testEquals() {
-        new EqualsTester(a1, a4, a2, null);
+        new EqualsTester(a1, a2, a3, null);
     }
 
     @Test
     public void alwaysDifferent() {
-        assertFalse(a1.equals(a2));
+        assertFalse(a1.equals(a3));
     }
 
     @Test
     public void testCompare() {
-        assertTrue(a1.compareTo(a2) < 0);
-        assertTrue(a2.compareTo(a3) < 0);
         assertTrue(a1.compareTo(a3) < 0);
+        assertTrue(a2.compareTo(a3) < 0);
     }
 
     @Test
-    public void testMutate() {
+    public void testAccessListener() {
+        assertEquals(new CompletionListenerMock(), a1.getCompletionListener());
+    }
 
-        Action a = a1.mutate(SequenceCommand.DATUM, Activity.START, null, a1.getCompletionListener());
+    @Test
+    public void testAccessSequenceCommand() {
+        assertEquals(SequenceCommand.ABORT, a1.getSequenceCommand());
+    }
 
-        assertEquals(SequenceCommand.DATUM, a.getSequenceCommand());
-        assertEquals(Activity.START, a.getActivity());
-        assertEquals(null, a.getConfiguration());
-        assertEquals(a1.getCompletionListener(), a.getCompletionListener());
-        assertEquals(a1.getId(), a.getId());
+    @Test
+    public void testAccessActivity() {
+        assertEquals(Activity.PRESET, a1.getActivity());
+    }
 
-        //finally check that both objects are equals now
-        assertFalse(a1.equals(a));
+    @Test
+    public void testAccessConfiguration() {
+        assertEquals(emptyConfiguration(), a1.getConfiguration());
     }
 }

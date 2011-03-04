@@ -286,4 +286,56 @@ public class ActionManagerTest {
 
         assertTrue(cl.wasInvoked());
     }
+
+    @Test
+    public void testReceptionOfUnexpectedActionId() {
+
+        CompletionListenerMock cl = new CompletionListenerMock();
+
+        Action fakedAction = new Action(Action.getCurrentId() + 1,
+                SequenceCommand.APPLY,
+                Activity.PRESET_START,
+                emptyConfiguration(),
+                cl);
+
+        manager.registerAction(fakedAction);
+        //An action started has been registered.
+        manager.increaseRequiredResponses(fakedAction);
+
+
+
+        manager.registerCompletionInformation(fakedAction.getId(),
+                HandlerResponse.COMPLETED);
+
+        //the completion listener should not have been called.
+        //a log message should appear in the logs saying that an unexpected action was received.
+        waitForListener(fakedAction.getCompletionListener(), 5000);
+        assertFalse(cl.wasInvoked());
+
+
+    }
+
+     @Test
+    public void testReceptionOfUnexpectedActionIdLowerThanLastOneProcessed() {
+
+        CompletionListenerMock cl = new CompletionListenerMock();
+
+        Action fakedAction = new Action(18,
+                SequenceCommand.GUIDE,
+                Activity.PRESET_START,
+                emptyConfiguration(),
+                cl);
+        //register this action with the manager
+        manager.registerAction(fakedAction);
+
+        //and let's fake the reception of an unexpected action ID, lower than the
+        //last registered (18)
+        manager.registerCompletionInformation(5,
+                HandlerResponse.COMPLETED);
+
+        //the completion listener should not have been called
+        //a log message should appear in the logs saying that an unexpected action was received.
+        waitForListener(fakedAction.getCompletionListener(), 5000);
+        assertFalse(cl.wasInvoked());
+    }
 }

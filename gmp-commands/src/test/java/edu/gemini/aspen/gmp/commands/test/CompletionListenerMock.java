@@ -1,16 +1,15 @@
 package edu.gemini.aspen.gmp.commands.test;
 
 import edu.gemini.aspen.giapi.commands.*;
-import org.junit.Ignore;
 
 
 /**
  * A completion listener that can record the last response received and
  * whether it was called or not.
  */
-public class CompletionListenerMock implements CompletionListener {
+public final class CompletionListenerMock implements CompletionListener {
 
-    private boolean wasInoked = false;
+    private boolean wasInvoked = false;
 
     private HandlerResponse lastResponse = null;
     
@@ -22,22 +21,43 @@ public class CompletionListenerMock implements CompletionListener {
                                   Activity activity,
                                   Configuration config) {
         synchronized (this) {
-            wasInoked = true;
+            wasInvoked = true;
             lastResponse = response;
             notifyAll();
         }
     }
 
     public boolean wasInvoked() {
-        return wasInoked;
+        return wasInvoked;
     }
 
     public void reset() {
-        wasInoked = false;
+        wasInvoked = false;
         lastResponse = null;
     }
 
     public HandlerResponse getLastResponse() {
         return lastResponse;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CompletionListenerMock that = (CompletionListenerMock) o;
+
+        if (wasInvoked != that.wasInvoked) return false;
+        if (lastResponse != null ? !lastResponse.equals(that.lastResponse) : that.lastResponse != null)
+            return false;
+        //equals
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (wasInvoked ? 1 : 0);
+        result = 31 * result + (lastResponse != null ? lastResponse.hashCode() : 0);
+        return result;
     }
 }
