@@ -9,7 +9,7 @@ import javax.jms.JMSException;
  * A Status parser is capable of constructing a Status Item out
  * of a JMS Bytes Message
  */
-public interface StatusParser {
+public interface StatusParser<T> {
     /**
      * Construct a Status Item object from the content of the
      * given BytesMessage JMS message
@@ -19,5 +19,5 @@ public interface StatusParser {
      * @throws JMSException if there is a problem accessing
      * the JMS message information
      */
-    StatusItem parse(BytesMessage bm) throws JMSException;
+    StatusItem<T> parse(BytesMessage bm) throws JMSException;
 }

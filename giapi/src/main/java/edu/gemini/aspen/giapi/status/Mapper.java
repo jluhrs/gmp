@@ -12,7 +12,7 @@ package edu.gemini.aspen.giapi.status;
  * a String for these cases).
  * 
  */
-public interface Mapper<T> {
+public interface Mapper<S,T> {
 
     /**
      * Extract T from the provided StatusItem, or return
@@ -20,6 +20,6 @@ public interface Mapper<T> {
      * @param item The status item to extract the information from
      * @return T or null if the value is not available. 
      */
-    T extract (StatusItem item);
+    T extract (StatusItem<S> item);
 
 }

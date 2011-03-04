@@ -29,7 +29,7 @@ public class HealthStatusParser extends StatusParserBase<Health> {
 
     }
 
-    StatusItem buildStatusItem(String name, Health value, BytesMessage bm) throws JMSException {
+    StatusItem<Health> buildStatusItem(String name, Health value, BytesMessage bm) throws JMSException {
         return new HealthStatus(name, value);
     }
 }

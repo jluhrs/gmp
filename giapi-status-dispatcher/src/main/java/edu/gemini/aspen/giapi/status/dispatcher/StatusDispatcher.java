@@ -43,7 +43,7 @@ public class StatusDispatcher implements StatusHandler {
     }
 
     @Override
-    public void update(StatusItem item) {
+    public <T> void update(StatusItem<T> item) {
         for(ConfigPath path= new ConfigPath(item.getName());path!=ConfigPath.EMPTY_PATH;path=path.getParent()){
             lock.readLock().lock();
             for (FilteredStatusHandler handler : _handlers.get(path)) {

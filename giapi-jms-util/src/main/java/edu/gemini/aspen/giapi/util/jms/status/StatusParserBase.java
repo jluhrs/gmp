@@ -9,7 +9,7 @@ import javax.jms.JMSException;
  * Base class for all the Status Parsers. Reads the
  * name and the value of the status item from the BytesMessage.
  */
-public abstract class StatusParserBase<T> implements StatusParser {
+public abstract class StatusParserBase<T> implements StatusParser<T> {
     /**
      * All the Status items have name and a certain value.
      * This method deals with that, delegating the read of the particular
@@ -20,7 +20,7 @@ public abstract class StatusParserBase<T> implements StatusParser {
      * @return Status Item contained in the byte message
      * @throws JMSException in case of problems reading the message
      */
-    public final StatusItem parse(BytesMessage bm) throws JMSException {
+    public final StatusItem<T> parse(BytesMessage bm) throws JMSException {
         String name = bm.readUTF();
         T value = getValue(bm);
         return buildStatusItem(name, value, bm);
@@ -48,5 +48,5 @@ public abstract class StatusParserBase<T> implements StatusParser {
      * @throws JMSException in case there are problems reading the
      * information from the JMS message
      */
-    abstract StatusItem buildStatusItem(String name, T value, BytesMessage bm) throws JMSException;
+    abstract StatusItem<T> buildStatusItem(String name, T value, BytesMessage bm) throws JMSException;
 }

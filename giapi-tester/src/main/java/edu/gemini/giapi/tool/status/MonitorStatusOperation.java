@@ -41,11 +41,13 @@ public class MonitorStatusOperation implements Operation {
             this.expectedValue = expectedValue;
         }
 
+        @Override
         public String getName() {
             return "Status Monitor";
         }
 
-        public void update(StatusItem item) {
+        @Override
+        public <T> void update(StatusItem<T> item) {
             System.out.println("Status value: " + item);
             lastItem = item;
             // If value is found exit immediately

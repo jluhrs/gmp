@@ -7,9 +7,9 @@ import edu.gemini.aspen.giapi.status.StatusItem;
  * A Mapper implementation to extract Integer values out of
  * a Status Item.
  */
-public class IntMapper implements Mapper<Integer> {
+public class IntMapper implements Mapper<Integer,Integer> {
     @Override
-    public Integer extract(StatusItem item) {
+    public Integer extract(StatusItem<Integer> item) {
         Object o = item.getValue();
 
         if (o instanceof Integer) {

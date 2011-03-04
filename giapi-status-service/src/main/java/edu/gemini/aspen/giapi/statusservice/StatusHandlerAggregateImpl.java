@@ -29,11 +29,13 @@ public class StatusHandlerAggregateImpl implements StatusHandlerAggregate {
     
     private final List<StatusHandler> _statusHandlers = new CopyOnWriteArrayList<StatusHandler>();
 
+    @Override
     public String getName() {
         return STATUS_HANDLER_NAME;
     }
 
-    public void update(StatusItem item) {
+    @Override
+    public <T> void update(StatusItem<T> item) {
         for (StatusHandler handler: _statusHandlers) {
             handler.update(item);
         }

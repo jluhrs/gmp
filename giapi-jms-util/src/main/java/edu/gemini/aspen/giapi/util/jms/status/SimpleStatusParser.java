@@ -11,7 +11,7 @@ import javax.jms.JMSException;
  * is in the type of value they contain. 
  */
 public abstract class SimpleStatusParser<T> extends StatusParserBase<T> {
-    StatusItem buildStatusItem(String name, T value, BytesMessage bm) {
+    StatusItem<T> buildStatusItem(String name, T value, BytesMessage bm) {
         return new BasicStatus<T>(name, value);
     }
 

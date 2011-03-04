@@ -37,7 +37,7 @@ public class ExampleHandler1 implements FilteredStatusHandler {
     }
 
     @Override
-    public void update(StatusItem item) {
+    public <T> void update(StatusItem<T> item) {
         LOG.info(item.toString());
     }
 }

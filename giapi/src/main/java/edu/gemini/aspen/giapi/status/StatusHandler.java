@@ -16,6 +16,6 @@ public interface StatusHandler {
      * Alert listeners that a status update has occurred.
      * @param item the status item in this update
      */
-    void update(StatusItem item);
+    <T> void update(StatusItem<T> item);
 
 }

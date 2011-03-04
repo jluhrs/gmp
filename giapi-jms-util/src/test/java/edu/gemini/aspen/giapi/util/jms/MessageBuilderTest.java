@@ -141,8 +141,8 @@ public class MessageBuilderTest {
     @Test
     public void testBuildIntegerStatusItemMessage() throws JMSException {
         String statusName = "X.val1";
-        Integer statusValue = Integer.valueOf(1);
-        StatusItem statusItem = new BasicStatus(statusName, statusValue);
+        Integer statusValue = 1;
+        StatusItem statusItem = new BasicStatus<Integer>(statusName, statusValue);
 
         BytesMessage mockedMessage = mock(BytesMessage.class);
         when(_mockedSession.createBytesMessage()).thenReturn(mockedMessage);
@@ -157,8 +157,8 @@ public class MessageBuilderTest {
     @Test
     public void testBuildDoubleStatusItemMessage() throws JMSException {
         String statusName = "X.val1";
-        Double statusValue = Double.valueOf(1);
-        StatusItem statusItem = new BasicStatus(statusName, statusValue);
+        Double statusValue = 1.0;
+        StatusItem statusItem = new BasicStatus<Double>(statusName, statusValue);
 
         BytesMessage mockedMessage = mock(BytesMessage.class);
         when(_mockedSession.createBytesMessage()).thenReturn(mockedMessage);
@@ -173,8 +173,8 @@ public class MessageBuilderTest {
     @Test
     public void testBuildFloatStatusItemMessage() throws JMSException {
         String statusName = "X.val1";
-        Float statusValue = Float.valueOf(1);
-        StatusItem statusItem = new BasicStatus(statusName, statusValue);
+        Float statusValue = 1.0f;
+        StatusItem statusItem = new BasicStatus<Float>(statusName, statusValue);
 
         BytesMessage mockedMessage = mock(BytesMessage.class);
         when(_mockedSession.createBytesMessage()).thenReturn(mockedMessage);
@@ -190,7 +190,7 @@ public class MessageBuilderTest {
     public void testBuildStringStatusItemMessage() throws JMSException {
         String statusName = "X.val1";
         String statusValue = "status";
-        StatusItem statusItem = new BasicStatus(statusName, statusValue);
+        StatusItem statusItem = new BasicStatus<String>(statusName, statusValue);
 
         BytesMessage mockedMessage = mock(BytesMessage.class);
         when(_mockedSession.createBytesMessage()).thenReturn(mockedMessage);

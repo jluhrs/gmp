@@ -21,13 +21,13 @@ public class StatusHandlerAggregateImplTest {
 
     private StatusHandlerAggregateImpl manager;
     private StatusHandler handler;
-    private StatusItem item;
+    private StatusItem<Integer> item;
 
     @Before
     public void setupTest() {
         manager = new StatusHandlerAggregateImpl();
         handler = mock(StatusHandler.class);
-        item = new BasicStatus<Integer>("status", Integer.valueOf(0));
+        item = new BasicStatus<Integer>("status", 0);
     }
 
     @Test
@@ -55,13 +55,13 @@ public class StatusHandlerAggregateImplTest {
         verifyNoInteraction(handler, item);
     }
 
-    private void verifyStatusPassedAlong(StatusHandler handler, StatusItem item) {
+    private <T> void verifyStatusPassedAlong(StatusHandler handler, StatusItem<T> item) {
         // Now pass the handler and verify interaction
         manager.update(item);
         verify(handler).update(item);
     }
 
-    private void verifyNoInteraction(StatusHandler handler, StatusItem item) {
+    private <T> void verifyNoInteraction(StatusHandler handler, StatusItem<T> item) {
         // Verify that a call doesn't apply to handler yet
         manager.update(item);
         verifyZeroInteractions(handler);

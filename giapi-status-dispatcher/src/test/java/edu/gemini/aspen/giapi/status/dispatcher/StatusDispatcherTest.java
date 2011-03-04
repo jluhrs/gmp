@@ -83,7 +83,7 @@ public class StatusDispatcherTest {
         }
 
         @Override
-        public void update(StatusItem item) {
+        public <T> void update(StatusItem<T> item) {
             //check that we only get items that are children of our filter
             assertTrue(item.getName().startsWith(getFilter().toString()));
             counter.incrementAndGet();

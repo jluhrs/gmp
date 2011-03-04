@@ -28,20 +28,23 @@ public class StatusDatabase implements StatusHandler, StatusDatabaseService {
     public StatusDatabase() {
     }
 
+    @Override
     public String getName() {
         return "Status Database";  
     }
 
-
+    @Override
     public StatusItem getStatusItem(String name) {
         return _db.get(name);
     }
 
+    @Override
     public Set<String> getStatusNames(){
         return Collections.unmodifiableSet(_db.keySet());
     }
-    
-    public void update(StatusItem item) {
+
+    @Override
+    public <T> void update(StatusItem<T> item) {
         //store this new value in the database
         _db.put(item.getName(), item);
     }

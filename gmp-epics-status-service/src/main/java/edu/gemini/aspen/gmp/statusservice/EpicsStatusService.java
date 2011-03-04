@@ -238,14 +238,9 @@ public class EpicsStatusService implements StatusHandler {
         return NAME;
     }
 
-    @Override
-    public void update(StatusItem item) {
-//        LOG.info("Update item "+item.getName());
-        updateInternal(item);
-    }
 
-    //StatusHandler.update() should be a generic method
-    private <T> void updateInternal(StatusItem<T> item) {
+    @Override
+    public <T> void update(StatusItem<T> item) {
         if (channelMap.containsKey(item.getName())) {
             IChannel ch = channelMap.get(item.getName());
             try {

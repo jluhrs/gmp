@@ -27,7 +27,7 @@ public class PropertyHandler implements StatusHandler {
     }
 
     @Override
-    public void update(StatusItem item) {
+    public <T> void update(StatusItem<T> item) {
         //get the value of the item
         Object value = _mapper.extract(item);
 
