@@ -1,6 +1,5 @@
 package edu.gemini.aspen.giapi.status.dispatcher;
 
-import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 
 /**
@@ -15,5 +14,5 @@ public interface FilteredStatusHandler extends StatusHandler {
      *
      * @return a ConfigPath representing the filter
      */
-    ConfigPath getFilter();
+    StatusItemFilter getFilter();
 }

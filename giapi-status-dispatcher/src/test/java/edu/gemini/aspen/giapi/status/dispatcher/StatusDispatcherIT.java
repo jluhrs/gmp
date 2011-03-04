@@ -10,7 +10,6 @@ import org.ops4j.pax.exam.junit.*;
 import org.osgi.framework.*;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;

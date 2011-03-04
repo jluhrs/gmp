@@ -1,6 +1,5 @@
 package edu.gemini.aspen.giapi.status.dispatcher;
 
-import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -27,8 +26,8 @@ public class ExampleHandler2 {
         LOG.info("Validating ExampleHandler2");
         _dispatcher.bindStatusHandler(new FilteredStatusHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:status2");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:status2");
             }
 
             @Override

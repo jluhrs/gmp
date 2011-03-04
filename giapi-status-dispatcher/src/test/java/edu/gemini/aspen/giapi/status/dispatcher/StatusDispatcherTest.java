@@ -1,6 +1,5 @@
 package edu.gemini.aspen.giapi.status.dispatcher;
 
-import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
@@ -31,46 +30,46 @@ public class StatusDispatcherTest {
 
         dispatcher.bindStatusHandler(new TestHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:");
             }
         });
         dispatcher.bindStatusHandler(new TestHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:a:1");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:a:1");
             }
         });
         dispatcher.bindStatusHandler(new TestHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:b");
             }
         });
         dispatcher.bindStatusHandler(new TestHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:b");
             }
         });
         FilteredStatusHandler h = new TestHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:b");
             }
         };
         dispatcher.bindStatusHandler(h);
         dispatcher.unbindStatusHandler(h);
         dispatcher.bindStatusHandler(new TestHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b:1");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:b:1");
             }
         });
         dispatcher.bindStatusHandler(new TestHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:b:2");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:b:2");
             }
         });
     }
@@ -96,8 +95,8 @@ public class StatusDispatcherTest {
         //add a second handler for "gpi:", the first was added in setUp()
         dispatcher.bindStatusHandler(new TestHandler() {
             @Override
-            public ConfigPath getFilter() {
-                return new ConfigPath("gpi:");
+            public StatusItemFilter getFilter() {
+                return new StatusItemFilter("gpi:");
             }
         });
 

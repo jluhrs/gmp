@@ -3,8 +3,6 @@ package edu.gemini.aspen.giapi.status.dispatcher;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import com.google.common.collect.Multimaps;
-import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 
@@ -33,7 +31,7 @@ public class StatusDispatcher implements StatusHandler {
 
     private final static Logger LOG = Logger.getLogger(StatusDispatcher.class.getName());
 
-    private final Multimap<ConfigPath, FilteredStatusHandler> _handlers = HashMultimap.create();
+    private final Multimap<StatusItemFilter, FilteredStatusHandler> _handlers = HashMultimap.create();
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 
@@ -44,9 +42,9 @@ public class StatusDispatcher implements StatusHandler {
 
     @Override
     public <T> void update(StatusItem<T> item) {
-        for(ConfigPath path= new ConfigPath(item.getName());path!=ConfigPath.EMPTY_PATH;path=path.getParent()){
+        for(StatusItemFilter filter = new StatusItemFilter(item.getName()); !filter.equals(StatusItemFilter.EMPTY_FILTER); filter=filter.getParent()){
             lock.readLock().lock();
-            for (FilteredStatusHandler handler : _handlers.get(path)) {
+            for (FilteredStatusHandler handler : _handlers.get(filter)) {
                 handler.update(item);
             }
             lock.readLock().unlock();
@@ -56,7 +54,7 @@ public class StatusDispatcher implements StatusHandler {
     @Bind(aggregate = true)
     public void bindStatusHandler(FilteredStatusHandler handler) {
         lock.writeLock().lock();
-        _handlers.put(handler.getFilter(),handler);
+        _handlers.put(handler.getFilter(), handler);
         lock.writeLock().unlock();
         LOG.info("Status Handler Registered at Dispatcher: " + handler);
     }
@@ -64,7 +62,7 @@ public class StatusDispatcher implements StatusHandler {
     @Unbind
     public void unbindStatusHandler(FilteredStatusHandler handler) {
         lock.writeLock().lock();
-        _handlers.remove(handler.getFilter(),handler);
+        _handlers.remove(handler.getFilter(), handler);
         lock.writeLock().unlock();
         LOG.info("Removed Status Handler from Dispatcher: " + handler);
     }
