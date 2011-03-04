@@ -92,8 +92,25 @@ public class StatusDispatcherTest {
     }
 
     @Test
-    public void testUpdateLocal() throws Exception {
+    public void testUpdateLocal2HandlersPerFilter() throws Exception {
+        //add a second handler for "gpi:", the first was added in setUp()
+        dispatcher.bindStatusHandler(new TestHandler() {
+            @Override
+            public ConfigPath getFilter() {
+                return new ConfigPath("gpi:");
+            }
+        });
 
+        latch = new CountDownLatch(2);
+
+        dispatcher.update(new BasicStatus<String>("gpi:", "any value"));
+        //check that the right amount of handlers were called
+        latch.await(1, TimeUnit.SECONDS);
+        assertEquals(2, counter.get());
+    }
+
+    @Test
+    public void testUpdateLocal() throws Exception {
         dispatcher.update(new BasicStatus<String>("gpi:b:1", "gpi:b:1"));
         //check that the right amount of handlers were called
         latch.await(1, TimeUnit.SECONDS);
