@@ -19,7 +19,6 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 public class StatusDispatcherIT{
-    private static final Logger LOG = Logger.getLogger(StatusDispatcherIT.class.getName());
 
     @Inject
     private BundleContext context;
@@ -43,7 +42,6 @@ public class StatusDispatcherIT{
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("guava").groupId("com.google.guava").version("8.0.0"),
-                mavenBundle().artifactId("gmp-statusdb").groupId("edu.gemini.aspen.gmp").version("0.1.0"),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").version("1.1.0"),
@@ -87,18 +85,23 @@ public class StatusDispatcherIT{
 
     @Test
     public void checkBinding() throws Exception{
+        //register handlers
         TestHandler testHandler1 = new TestHandler();
         context.registerService(FilteredStatusHandler.class.getName(),testHandler1,null);
         TestHandler testHandler2 = new TestHandler();
         context.registerService(FilteredStatusHandler.class.getName(),testHandler2,null);
         JmsProvider provider = (JmsProvider) context.getService(context.getServiceReference("edu.gemini.jms.api.JmsProvider"));
+
+        //send StatusItem update via JMS
         StatusSetter ss = new StatusSetter("gpi:status1");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<String>("gpi:status1", "gpi:status1"));
-        testHandler1.latch.await(1, TimeUnit.SECONDS);
-        assertEquals(1, testHandler1.counter);
-        testHandler2.latch.await(1, TimeUnit.SECONDS);
-        assertEquals(1, testHandler2.counter);
+
+        //wait for messages to arrive and assert
+        testHandler1.waitOnLatch(1, TimeUnit.SECONDS);
+        testHandler2.waitOnLatch(1, TimeUnit.SECONDS);
+        assertEquals(1, testHandler1.getCounter());
+        assertEquals(1, testHandler2.getCounter());
 
         ss.stopJms();
 

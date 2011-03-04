@@ -9,6 +9,8 @@ import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 
 import org.apache.felix.ipojo.annotations.*;
+
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
 
 /**
@@ -31,9 +33,9 @@ public class StatusDispatcher implements StatusHandler {
 
     private final static Logger LOG = Logger.getLogger(StatusDispatcher.class.getName());
 
-    private final Multimap<ConfigPath, FilteredStatusHandler> _handlers =
-            Multimaps.synchronizedMultimap(HashMultimap.<ConfigPath, FilteredStatusHandler>create());
+    private final Multimap<ConfigPath, FilteredStatusHandler> _handlers = HashMultimap.create();
 
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 
     @Override
     public String getName() {
@@ -43,23 +45,27 @@ public class StatusDispatcher implements StatusHandler {
     @Override
     public void update(StatusItem item) {
         for(ConfigPath path= new ConfigPath(item.getName());path!=ConfigPath.EMPTY_PATH;path=path.getParent()){
-            synchronized (_handlers){
-                for(FilteredStatusHandler handler: _handlers.get(path)){
-                    handler.update(item);
-                }
+            lock.readLock().lock();
+            for (FilteredStatusHandler handler : _handlers.get(path)) {
+                handler.update(item);
             }
+            lock.readLock().unlock();
         }
     }
 
     @Bind(aggregate = true)
     public void bindStatusHandler(FilteredStatusHandler handler) {
+        lock.writeLock().lock();
         _handlers.put(handler.getFilter(),handler);
+        lock.writeLock().unlock();
         LOG.info("Status Handler Registered at Dispatcher: " + handler);
     }
 
     @Unbind
     public void unbindStatusHandler(FilteredStatusHandler handler) {
+        lock.writeLock().lock();
         _handlers.remove(handler.getFilter(),handler);
+        lock.writeLock().unlock();
         LOG.info("Removed Status Handler from Dispatcher: " + handler);
     }
 

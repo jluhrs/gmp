@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 @Component
 @Provides(specifications = FilteredStatusHandler.class)
 public class TestHandler implements FilteredStatusHandler {
-    public int counter = 0;
-    public CountDownLatch latch = new CountDownLatch(1);
+    private int counter = 0;
+    private final CountDownLatch latch = new CountDownLatch(1);
     private static final Logger LOG = Logger.getLogger(TestHandler.class.getName());
 
     @Validate
@@ -43,5 +43,13 @@ public class TestHandler implements FilteredStatusHandler {
         LOG.info(item.toString());
         counter++;
         latch.countDown();
+    }
+
+    public void waitOnLatch(long l, java.util.concurrent.TimeUnit timeUnit) throws java.lang.InterruptedException{
+        latch.await(l,timeUnit);
+    }
+
+    public int getCounter(){
+        return counter;
     }
 }

@@ -19,9 +19,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class StatusDispatcherTest {
 
-    StatusDispatcher dispatcher;
-    AtomicInteger counter;
-    CountDownLatch latch;
+    private StatusDispatcher dispatcher;
+    private AtomicInteger counter;
+    private CountDownLatch latch;
 
     @Before
     public void setUp() throws Exception {
