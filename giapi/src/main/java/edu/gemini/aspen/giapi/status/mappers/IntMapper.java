@@ -10,11 +10,6 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 public class IntMapper implements Mapper<Integer,Integer> {
     @Override
     public Integer extract(StatusItem<Integer> item) {
-        Object o = item.getValue();
-
-        if (o instanceof Integer) {
-            return (Integer)o;
-        }
-        return null;
+        return item.getValue();
     }
 }
