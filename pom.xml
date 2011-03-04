@@ -110,7 +110,6 @@
         <module>gmp-commands-gateway</module>
         <module>gmp-services</module>
         <module>gmp-pcs-updater</module>
-        <module>gmp-servlet</module>
         <module>gmp-status-gateway</module>
         <module>gmp-statusdb</module>
         <module>jca-lib</module>
