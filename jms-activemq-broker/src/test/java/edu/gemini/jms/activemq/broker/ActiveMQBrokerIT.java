@@ -42,13 +42,15 @@ public class ActiveMQBrokerIT {
                 mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").version("4.2.0"),
                 mavenBundle().artifactId("org.apache.felix.configadmin").groupId("org.apache.felix").version("1.2.8"),
                 mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").version("3.1.10"),
-                mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.5.3"),
-                mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.5.3"),
+                mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
+                mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("activemq-core").groupId("org.apache.activemq").version("5.4.2"),
                 mavenBundle().artifactId("geronimo-j2ee-management_1.1_spec").groupId("org.apache.geronimo.specs").version("1.0.1"),
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").version("5.4.2"),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").version("1.1.1"),
                 mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
+                //mavenBundle().artifactId("guava").groupId("com.google.guava").version("8.0.0"),
+                mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject(),
                 mavenBundle().artifactId("jms-activemq-broker").groupId("edu.gemini.jms").version("1.1.0").update().startLevel(6));
     }
 
