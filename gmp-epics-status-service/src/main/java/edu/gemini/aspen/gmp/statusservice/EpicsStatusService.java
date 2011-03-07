@@ -241,9 +241,9 @@ public class EpicsStatusService implements StatusHandler {
 
     @Override
     public <T> void update(StatusItem<T> item) {
-        if (channelMap.containsKey(item.getName())) {
-            IChannel ch = channelMap.get(item.getName());
-            try {
+        try {
+            if (channelMap.containsKey(item.getName())) {
+                IChannel ch = channelMap.get(item.getName());
                 if (item.getValue().getClass() == Integer.class) {
                     ch.setValue((Integer) item.getValue());
                 } else if (item.getValue().getClass() == Float.class) {
@@ -255,16 +255,9 @@ public class EpicsStatusService implements StatusHandler {
                 } else {
                     LOG.warning("Unsupported item type " + item.getValue().getClass());
                 }
-            } catch (CAException ex) {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
-
-            } catch (IllegalArgumentException ex) {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        } else if (alarmChannelMap.containsKey(item.getName())) {
-            if (item instanceof AlarmStatusItem) {
-                IAlarmChannel ch = alarmChannelMap.get(item.getName());
-                try {
+            } else if (alarmChannelMap.containsKey(item.getName())) {
+                if (item instanceof AlarmStatusItem) {
+                    IAlarmChannel ch = alarmChannelMap.get(item.getName());
                     if (item.getValue().getClass() == Integer.class) {
                         ch.setValue((Integer) item.getValue());
                         setAlarm((AlarmStatusItem<T>) item, ch);
@@ -280,32 +273,26 @@ public class EpicsStatusService implements StatusHandler {
                     } else {
                         LOG.warning("Unsupported item type " + item.getValue().getClass());
                     }
-                } catch (CAException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
-
-                } catch (IllegalArgumentException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                } else {
+                    LOG.warning("Received StatusItem that is not an AlarmStatusItem for " + item.getName());
                 }
-            } else {
-                LOG.warning("Received StatusItem that is not an AlarmStatusItem for " + item.getName());
-            }
-        } else if (healthChannelMap.containsKey(item.getName())) {
-            if (item instanceof HealthStatusItem) {
-                IChannel ch = healthChannelMap.get(item.getName());
-                try {
+            } else if (healthChannelMap.containsKey(item.getName())) {
+                if (item instanceof HealthStatusItem) {
+                    IChannel ch = healthChannelMap.get(item.getName());
                     ch.setValue(((HealthStatusItem) item).getHealth().name());
-                } catch (CAException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                } catch (IllegalArgumentException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                } else {
+                    LOG.warning("Received StatusItem that is not a HealthStatusItem for " + item.getName());
                 }
             } else {
-                LOG.warning("Received StatusItem that is not a HealthStatusItem for " + item.getName());
+                //received a status item not on the config file
+                //ignoring it
+                LOG.warning("Unknown item " + item.getName());
             }
-        } else {
-            //received a status item not on the config file
-            //ignoring it
-            LOG.warning("Unknown item " + item.getName());
+        } catch (CAException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } catch (IllegalArgumentException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
