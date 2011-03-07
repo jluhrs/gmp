@@ -293,20 +293,9 @@ public class EpicsStatusService implements StatusHandler {
             if (item instanceof HealthStatusItem) {
                 IChannel ch = healthChannelMap.get(item.getName());
                 try {
-                    switch (((HealthStatusItem) item).getHealth()) {
-                        case GOOD:
-                            ch.setValue("GOOD");
-                            break;
-                        case WARNING:
-                            ch.setValue("WARNING");
-                            break;
-                        case BAD:
-                            ch.setValue("BAD");
-                            break;
-                    }
+                    ch.setValue(((HealthStatusItem) item).getHealth().name());
                 } catch (CAException ex) {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
-
                 } catch (IllegalArgumentException ex) {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
