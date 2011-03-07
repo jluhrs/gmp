@@ -6,13 +6,7 @@ import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.cas.ChannelAccessServer;
-import edu.gemini.cas.IAlarmChannel;
-import edu.gemini.cas.IChannel;
-import edu.gemini.cas.IChannelAccessServer;
-import gov.aps.jca.dbr.DBR_STS_Double;
-import gov.aps.jca.dbr.Severity;
-import gov.aps.jca.dbr.Status;
+import edu.gemini.cas.*;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +14,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.mockito.Mockito.*;
@@ -46,18 +39,18 @@ public class EpicsStatusServiceTest extends TestCase {
     private IChannelAccessServer cas;
 
     @Before
-    public void setUp(){
+    public void setUp()throws Exception{
         cas= mock(ChannelAccessServer.class);
-        IAlarmChannel iach=mock(IAlarmChannel.class);
-        when(cas.createIntegerAlarmChannel(anyString(),anyInt())).thenReturn(iach);
-        when(cas.createFloatAlarmChannel(anyString(),anyInt())).thenReturn(iach);
-        when(cas.createDoubleAlarmChannel(anyString(),anyInt())).thenReturn(iach);
-        when(cas.createStringAlarmChannel(anyString(),anyInt())).thenReturn(iach);
-        IChannel ich=mock(IChannel.class);
-        when(cas.createIntegerChannel(anyString(), anyInt())).thenReturn(ich);
-        when(cas.createFloatChannel(anyString(), anyInt())).thenReturn(ich);
-        when(cas.createDoubleChannel(anyString(), anyInt())).thenReturn(ich);
-        when(cas.createStringChannel(anyString(), anyInt())).thenReturn(ich);
+        IAlarmChannel iach = mock(IAlarmChannel.class);
+        when(cas.createAlarmChannel(anyString(),anyInt())).thenReturn(iach);
+        when(cas.createAlarmChannel(anyString(),anyFloat())).thenReturn(iach);
+        when(cas.createAlarmChannel(anyString(),anyDouble())).thenReturn(iach);
+        when(cas.createAlarmChannel(anyString(),anyString())).thenReturn(iach);
+        IChannel ich = mock(IChannel.class);
+        when(cas.createChannel(anyString(),anyInt())).thenReturn(ich);
+        when(cas.createChannel(anyString(),anyFloat())).thenReturn(ich);
+        when(cas.createChannel(anyString(),anyDouble())).thenReturn(ich);
+        when(cas.createChannel(anyString(),anyString())).thenReturn(ich);
     }
 
     @Test
@@ -114,11 +107,11 @@ public class EpicsStatusServiceTest extends TestCase {
 
         EpicsStatusService ess=new EpicsStatusService(cas);
         ess.initialize(essc.getSimulatedChannels());
-        Map<String, IAlarmChannel> ac = ess.getAlarmChannels();
+        Map<String, IAlarmChannel<?>> ac = ess.getAlarmChannels();
 
-        Map<String, IChannel> nc = ess.getChannels();
+        Map<String, IChannel<?>> nc = ess.getChannels();
 
-        Map<String, IChannel> hc = ess.getHealthChannels();
+        Map<String, IChannel<String>> hc = ess.getHealthChannels();
 
         for (BaseChannelType cc : essc.getSimulatedChannels().getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             if (cc instanceof HealthChannelType) {

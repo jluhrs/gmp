@@ -1,5 +1,6 @@
 package edu.gemini.cas;
 
+import com.google.common.collect.ImmutableList;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.STS;
 import gov.aps.jca.dbr.Severity;
@@ -10,7 +11,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -139,7 +139,7 @@ public class CasTest {
      */
     @Test
     public void testWriteVar() throws Exception {
-        IChannel ch = giapicas.createIntegerChannel(varname, 1);
+        IntegerChannel ch = giapicas.createIntegerChannel(varname, 1);
         ch.setValue(3);
 
         DBR dbr = ch.getValue();
@@ -158,8 +158,8 @@ public class CasTest {
      */
     @Test
     public void testWriteArray() throws Exception {
-        IChannel ch = giapicas.createIntegerChannel(varname, 3);
-        ch.setValue(new Integer[]{3, 4, 5});
+        IntegerChannel ch = giapicas.createIntegerChannel(varname, 3);
+        ch.setValue(ImmutableList.of(3,4,5));
 
         DBR dbr = ch.getValue();
 
@@ -179,10 +179,10 @@ public class CasTest {
      */
     @Test
     public void testWriteVarAllTypes() throws Exception {
-        IChannel chI = giapicas.createIntegerChannel("nico:int", 1);
-        IChannel chF = giapicas.createFloatChannel("nico:float", 1);
-        IChannel chD = giapicas.createDoubleChannel("nico:double", 1);
-        IChannel chS = giapicas.createStringChannel("nico:string", 1);
+        IntegerChannel chI = giapicas.createIntegerChannel("nico:int", 1);
+        FloatChannel chF = giapicas.createFloatChannel("nico:float", 1);
+        DoubleChannel chD = giapicas.createDoubleChannel("nico:double", 1);
+        StringChannel chS = giapicas.createStringChannel("nico:string", 1);
 
 
         chI.setValue(3);
@@ -250,7 +250,7 @@ public class CasTest {
 
     @Test
     public void testWriteAlarm() throws Exception {
-        IAlarmChannel ch = giapicas.createIntegerAlarmChannel(varname, 1);
+        IntegerAlarmChannel ch = giapicas.createIntegerAlarmChannel(varname, 1);
         ch.setAlarm(Status.HIHI_ALARM, Severity.MAJOR_ALARM, "alarm message");
         ch.setValue(3);
         DBR dbr = ch.getValue();

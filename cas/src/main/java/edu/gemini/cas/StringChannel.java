@@ -1,0 +1,48 @@
+package edu.gemini.cas;
+
+import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
+import gov.aps.jca.dbr.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Class IntegerChannel
+ *
+ * @author Nicolas A. Barriga
+ *         Date: 3/7/11
+ */
+public class StringChannel extends AbstractChannel<String> {
+
+    StringChannel(String name, int length) {
+        super(new AlarmMemoryProcessVariable(name,null, DBR_String.TYPE,new double[length]));
+    }
+
+    @Override
+    protected boolean validateArgument(List<String> values) {
+        try{
+            String a= (String)values.get(0);
+        }catch(ClassCastException ex){
+            return false;
+        }
+        return isString() && (getSize() == values.size());
+    }
+
+    @Override
+    protected DBR buildDBR(List<String> values) {
+        return new DBR_STS_String(values.toArray(new String[0]));
+    }
+
+    @Override
+    protected DBR emptyDBR() {
+        return new DBR_TIME_String(getSize());
+    }
+
+    @Override
+    protected List<String> extractValues(DBR dbr) {
+        Object objVal = dbr.getValue();
+        String[] stringVal = (String[])objVal;
+        return Arrays.asList(stringVal);
+    }
+}

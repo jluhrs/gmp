@@ -10,7 +10,7 @@ import gov.aps.jca.dbr.Status;
  * @author Nicolas A. Barriga
  *         Date: 1/17/11
  */
-public interface IAlarmChannel extends IChannel {
+public interface IAlarmChannel<T> extends IChannel<T> {
     /**
      * Resets the alarm status and severity to NO_ALARM
      *

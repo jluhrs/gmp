@@ -1,13 +1,13 @@
 package edu.gemini.cas;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
-import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
+import com.google.common.collect.ImmutableList;
 import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
-import gov.aps.jca.dbr.*;
 import org.apache.felix.ipojo.annotations.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,7 +29,7 @@ public class ChannelAccessServer implements IChannelAccessServer {
     private ServerContext serverContext = null;
     private ExecutorService executor;
     private final JCALibrary jca = JCALibrary.getInstance();
-    private Map<String, Channel> channels;
+    private Map<String, IChannel<?>> channels;
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ public class ChannelAccessServer implements IChannelAccessServer {
     @Validate
     public void start() throws CAException {
         executor = Executors.newSingleThreadExecutor();
-        channels = new HashMap<String, Channel>();
+        channels = new HashMap<String, IChannel<?>>();
         server = new DefaultServerImpl();
         if (serverContext != null) {
             throw new IllegalStateException("Tried to start the ChannelAccessServer more than once");
@@ -74,166 +74,183 @@ public class ChannelAccessServer implements IChannelAccessServer {
     }
 
     @Override
-    public IChannel createIntegerChannel(String name, int length) {
+    public <T> IChannel<T> createChannel(String name, T value) throws CAException {
+        return createChannel(name, ImmutableList.of(value));
+    }
+    @Override
+    public <T> IChannel<T> createChannel(String name, List<T> values) throws CAException {
+        if(values.isEmpty()){
+            throw new IllegalArgumentException("At least one value must be passed");
+        }
+        IChannel ch = null;
+        if (values.get(0) instanceof Integer) {
+            ch = createIntegerChannel(name, values.size());
+        } else if (values.get(0) instanceof Float) {
+            ch = createFloatChannel(name, values.size());
+        } else if (values.get(0) instanceof Double) {
+            ch = createDoubleChannel(name, values.size());
+        } else if (values.get(0) instanceof String) {
+            ch = createStringChannel(name, values.size());
+        } else {
+            throw new IllegalArgumentException("Unsupported item type " + values.get(0).getClass());
+        }
+        ch.setValue(values);
+        return ch;
+    }
+
+    @Override
+    public IntegerChannel createIntegerChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
-            if (ch.isInteger()) {
-                return ch;
+            IChannel ch = channels.get(name);
+            if (ch instanceof IntegerChannel) {
+                return (IntegerChannel) ch;
             } else {
                 throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Integer");
             }
         }
-        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Int.TYPE,new int[length]);
-        Channel ch = new Channel(pv);
+        IntegerChannel ch = new IntegerChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
         return ch;
     }
 
     @Override
-    public IChannel createFloatChannel(String name, int length) {
+    public FloatChannel createFloatChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
-            if (ch.isFloat()) {
-                return ch;
+            IChannel ch = channels.get(name);
+            if (ch instanceof FloatChannel) {
+                return (FloatChannel) ch;
             } else {
                 throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Float");
             }
         }
-        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Float.TYPE,new float[length]);
-        Channel ch = new Channel(pv);
+        FloatChannel ch = new FloatChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
         return ch;
     }
 
     @Override
-    public IChannel createDoubleChannel(String name, int length) {
+    public DoubleChannel createDoubleChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
-            if (ch.isDouble()) {
-                return ch;
+            IChannel ch = channels.get(name);
+            if (ch instanceof DoubleChannel) {
+                return (DoubleChannel) ch;
             } else {
                 throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Double");
             }
         }
-        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Double.TYPE,new double[length]);
-        Channel ch = new Channel(pv);
+        DoubleChannel ch = new DoubleChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
         return ch;
     }
 
     @Override
-    public IChannel createStringChannel(String name, int length) {
+    public StringChannel createStringChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
-            if (ch.isString()) {
-                return ch;
+            IChannel ch = channels.get(name);
+            if (ch instanceof StringChannel) {
+                return (StringChannel) ch;
             } else {
                 throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type String");
             }
         }
-        String[] array = new String[length];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = "";
+        StringChannel ch = new StringChannel(name, length);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
+    @Override
+    public <T> IAlarmChannel<T> createAlarmChannel(String name, T value) throws CAException {
+        return createAlarmChannel(name,ImmutableList.of(value));
+    }
+    @Override
+    public <T> IAlarmChannel<T> createAlarmChannel(String name, List<T> values) throws CAException {
+        if(values.isEmpty()){
+            throw new IllegalArgumentException("At least one value must be passed");
         }
-        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_String.TYPE,array);
-        Channel ch = new Channel(pv);
+        IAlarmChannel ch = null;
+        if (values.get(0) instanceof Integer) {
+            ch = createIntegerAlarmChannel(name, values.size());
+        } else if (values.get(0) instanceof Float) {
+            ch = createFloatAlarmChannel(name, values.size());
+        } else if (values.get(0) instanceof Double) {
+            ch = createDoubleAlarmChannel(name, values.size());
+        } else if (values.get(0) instanceof String) {
+            ch = createStringAlarmChannel(name, values.size());
+        } else {
+            throw new IllegalArgumentException("Unsupported item type " + values.get(0).getClass());
+        }
+        ch.setValue(values);
+        return ch;
+    }
+
+    @Override
+    public IntegerAlarmChannel createIntegerAlarmChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            IChannel ch = channels.get(name);
+            if (ch instanceof IntegerAlarmChannel) {
+                return (IntegerAlarmChannel) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type IntegerAlarmChannel");
+            }
+        }
+        IntegerAlarmChannel ch = new IntegerAlarmChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
         return ch;
     }
 
     @Override
-    public IAlarmChannel createIntegerAlarmChannel(String name, int length) {
+    public FloatAlarmChannel createFloatAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
-            if(ch instanceof AlarmChannel){
-                if (ch.isInteger()) {
-                    return (AlarmChannel)ch;
-                } else {
-                    throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Integer");
-                }
-            }else{
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not an AlarmChannel");
+            IChannel ch = channels.get(name);
+            if (ch instanceof FloatAlarmChannel) {
+                return (FloatAlarmChannel) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type FloatAlarmChannel");
             }
         }
-        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Int.TYPE,new int[length]);
-        AlarmMemoryProcessVariable alarmPV = new AlarmMemoryProcessVariable(name+".OMSS",null,DBR_String.TYPE,new String[]{""});
-        AlarmChannel ch = new AlarmChannel(pv,alarmPV);
+        FloatAlarmChannel ch = new FloatAlarmChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
         return ch;
-     }
+    }
 
     @Override
-    public IAlarmChannel createFloatAlarmChannel(String name, int length) {
+    public DoubleAlarmChannel createDoubleAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
-            if(ch instanceof AlarmChannel){
-                if (ch.isFloat()) {
-                    return (AlarmChannel)ch;
-                } else {
-                    throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Float");
-                }
-            }else{
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not an AlarmChannel");
+            IChannel ch = channels.get(name);
+            if (ch instanceof DoubleAlarmChannel) {
+                return (DoubleAlarmChannel) ch;
+
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type DoubleAlarmChannel");
             }
         }
-        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Float.TYPE,new float[length]);
-        AlarmMemoryProcessVariable alarmPV = new AlarmMemoryProcessVariable(name+".OMSS",null,DBR_String.TYPE,new String[]{""});
-        AlarmChannel ch = new AlarmChannel(pv,alarmPV);
+        DoubleAlarmChannel ch = new DoubleAlarmChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
         return ch;
-     }
+    }
 
     @Override
-    public IAlarmChannel createDoubleAlarmChannel(String name, int length) {
+    public StringAlarmChannel createStringAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
-            if(ch instanceof AlarmChannel){
-                if (ch.isDouble()) {
-                    return (AlarmChannel)ch;
-                } else {
-                    throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Double");
-                }
-            }else{
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not an AlarmChannel");
-            }
-        }
-        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_Double.TYPE,new double[length]);
-        AlarmMemoryProcessVariable alarmPV = new AlarmMemoryProcessVariable(name+".OMSS",null,DBR_String.TYPE,new String[]{""});
-        AlarmChannel ch = new AlarmChannel(pv,alarmPV);
-        ch.register(server);
-        channels.put(name, ch);
-        return ch;    }
+            IChannel ch = channels.get(name);
+            if (ch instanceof StringAlarmChannel) {
+                return (StringAlarmChannel) ch;
 
-    @Override
-    public IAlarmChannel createStringAlarmChannel(String name, int length) {
-        if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
-            if(ch instanceof AlarmChannel){
-                if (ch.isString()) {
-                    return (AlarmChannel)ch;
-                } else {
-                    throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type String");
-                }
-            }else{
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not an AlarmChannel");
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type StringAlarmChannel");
             }
         }
-        String[] array = new String[length];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = "";
-        }
-        AlarmMemoryProcessVariable pv = new AlarmMemoryProcessVariable(name,null,DBR_String.TYPE,array);
-        AlarmMemoryProcessVariable alarmPV = new AlarmMemoryProcessVariable(name+".OMSS",null,DBR_String.TYPE,new String[]{""});
-        AlarmChannel ch = new AlarmChannel(pv,alarmPV);
+        StringAlarmChannel ch = new StringAlarmChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
-        return ch;    }
+        return ch;
+    }
 
     /**
      * Removes channel from internal Map, unregisters from server and destroys PV
@@ -242,15 +259,21 @@ public class ChannelAccessServer implements IChannelAccessServer {
      */
     @Override
     public void destroyChannel(IChannel channel) {
-        Channel ch;
-        try{
+        IChannel ch;
+        try {
             ch = channels.get(channel.getName());
-        }catch(NullPointerException ex){//if channel was already destroyed
-            return;        
+        } catch (NullPointerException ex) {//if channel was already destroyed
+            return;
         }
-        if(ch!=null){
+        if (ch != null) {
             channels.remove(ch.getName());
-            ch.destroy(server);
+            if (ch instanceof AbstractChannel) {
+                ((AbstractChannel) ch).destroy(server);
+            } else if (ch instanceof AbstractAlarmChannel) {
+                ((AbstractAlarmChannel) ch).destroy(server);
+            } else {
+                LOG.warning("Unknown channel type: " + ch.getClass().getName());
+            }
         }
     }
 
@@ -265,8 +288,14 @@ public class ChannelAccessServer implements IChannelAccessServer {
     @Invalidate
     public void stop() throws CAException {
         for (String name : channels.keySet()) {
-            Channel ch = channels.get(name);
-            ch.destroy(server);
+            IChannel ch = channels.get(name);
+            if (ch instanceof AbstractChannel) {
+                ((AbstractChannel) ch).destroy(server);
+            } else if (ch instanceof AbstractAlarmChannel) {
+                ((AbstractAlarmChannel) ch).destroy(server);
+            } else {
+                LOG.warning("Unknown channel type: " + ch.getClass().getName());
+            }
         }
         channels.clear();
         executor.shutdown();

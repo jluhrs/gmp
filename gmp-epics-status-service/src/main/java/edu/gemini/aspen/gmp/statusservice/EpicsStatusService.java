@@ -47,9 +47,9 @@ public class EpicsStatusService implements StatusHandler {
     /**
      * Structure mapping Giapi Status Item -> Epics PV
      */
-    private final Map<String, IChannel> channelMap = new HashMap<String, IChannel>();
-    private final Map<String, IAlarmChannel> alarmChannelMap = new HashMap<String, IAlarmChannel>();
-    private final Map<String, IChannel> healthChannelMap = new HashMap<String, IChannel>();
+    private final Map<String, IChannel<?>> channelMap = new HashMap<String, IChannel<?>>();
+    private final Map<String, IAlarmChannel<?>> alarmChannelMap = new HashMap<String, IAlarmChannel<?>>();
+    private final Map<String, IChannel<String>> healthChannelMap = new HashMap<String, IChannel<String>>();
 
     @Requires
     private IChannelAccessServer _channelAccessServer;
@@ -81,24 +81,16 @@ public class EpicsStatusService implements StatusHandler {
      */
     public void initialize(Channels items) {
         for (BaseChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
-            if (item instanceof HealthChannelType) {
-                try {
+            try {
+                if (item instanceof HealthChannelType) {
                     addHealthVariable(item.getGiapiname(), item.getEpicsname(), Health.valueOf("BAD"));
-                } catch (CAException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                }
-            } else if (item instanceof AlarmChannelType) {
-                try {
+                } else if (item instanceof AlarmChannelType) {
                     addAlarmVariable(item.getGiapiname(), item.getEpicsname(), ChannelsHelper.getInitial((SimpleChannelType) item));
-                } catch (CAException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                }
-            } else if (item instanceof SimpleChannelType) {
-                try {
+                } else if (item instanceof SimpleChannelType) {
                     addVariable(item.getGiapiname(), item.getEpicsname(), ChannelsHelper.getInitial((SimpleChannelType) item));
-                } catch (CAException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
+            } catch (CAException ex) {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
     }
@@ -121,28 +113,9 @@ public class EpicsStatusService implements StatusHandler {
     }
 
     private <T> void addVariable(String giapiName, String epicsName, T value) throws CAException {
-//        LOG.info("Adding variable GIAPI: "+giapiName+" EPICS: "+epicsName);
         if (_channelAccessServer != null) {
-            IChannel ch;
-            if (value.getClass() == Integer.class) {
-                ch = _channelAccessServer.createIntegerChannel(epicsName, 1);
-                ch.setValue((Integer) value);
-                channelMap.put(giapiName, ch);
-            } else if (value.getClass() == Float.class) {
-                ch = _channelAccessServer.createFloatChannel(epicsName, 1);
-                ch.setValue((Float) value);
-                channelMap.put(giapiName, ch);
-            } else if (value.getClass() == Double.class) {
-                ch = _channelAccessServer.createDoubleChannel(epicsName, 1);
-                ch.setValue((Double) value);
-                channelMap.put(giapiName, ch);
-            } else if (value.getClass() == String.class) {
-                ch = _channelAccessServer.createStringChannel(epicsName, 1);
-                ch.setValue((String) value);
-                channelMap.put(giapiName, ch);
-            } else {
-                throw new IllegalArgumentException("Unsupported item type " + value.getClass());
-            }
+            IChannel<T> ch = _channelAccessServer.createChannel(epicsName, value);
+            channelMap.put(giapiName, ch);
         } else {
             throw new IllegalStateException("The cas service is unavailable");
         }
@@ -150,24 +123,8 @@ public class EpicsStatusService implements StatusHandler {
     }
 
     private <T> void addAlarmVariable(String giapiName, String epicsName, T value) throws CAException {
-//        LOG.info("Adding variable GIAPI: "+giapiName+" EPICS: "+epicsName);
         if (_channelAccessServer != null) {
-            IAlarmChannel ch;
-            if (value.getClass() == Integer.class) {
-                ch = _channelAccessServer.createIntegerAlarmChannel(epicsName, 1);
-                ch.setValue((Integer) value);
-            } else if (value.getClass() == Float.class) {
-                ch = _channelAccessServer.createFloatAlarmChannel(epicsName, 1);
-                ch.setValue((Float) value);
-            } else if (value.getClass() == Double.class) {
-                ch = _channelAccessServer.createDoubleAlarmChannel(epicsName, 1);
-                ch.setValue((Double) value);
-            } else if (value.getClass() == String.class) {
-                ch = _channelAccessServer.createStringAlarmChannel(epicsName, 1);
-                ch.setValue((String) value);
-            } else {
-                throw new IllegalArgumentException("Unsupported item type " + value.getClass());
-            }
+            IAlarmChannel<T> ch = _channelAccessServer.createAlarmChannel(epicsName, value);
             alarmChannelMap.put(giapiName, ch);
         } else {
             throw new IllegalStateException("The cas service is unavailable");
@@ -177,8 +134,7 @@ public class EpicsStatusService implements StatusHandler {
 
     private void addHealthVariable(String giapiName, String epicsName, Health health) throws CAException {
         if (_channelAccessServer != null) {
-            IChannel ch = _channelAccessServer.createStringChannel(epicsName, 1);
-            ch.setValue(health.name());
+            IChannel<String> ch = _channelAccessServer.createChannel(epicsName, health.name());
             healthChannelMap.put(giapiName, ch);
         } else {
             throw new IllegalStateException("The cas service is unavailable");
@@ -211,7 +167,7 @@ public class EpicsStatusService implements StatusHandler {
      *
      * @return unmodifiable map
      */
-    Map<String, IChannel> getChannels() {
+    Map<String, IChannel<?>> getChannels() {
         return Collections.unmodifiableMap(channelMap);
     }
 
@@ -220,7 +176,7 @@ public class EpicsStatusService implements StatusHandler {
      *
      * @return unmodifiable map
      */
-    Map<String, IAlarmChannel> getAlarmChannels() {
+    Map<String, IAlarmChannel<?>> getAlarmChannels() {
         return Collections.unmodifiableMap(alarmChannelMap);
     }
 
@@ -229,7 +185,7 @@ public class EpicsStatusService implements StatusHandler {
      *
      * @return unmodifiable map
      */
-    Map<String, IChannel> getHealthChannels() {
+    Map<String, IChannel<String>> getHealthChannels() {
         return Collections.unmodifiableMap(healthChannelMap);
     }
 
@@ -244,41 +200,18 @@ public class EpicsStatusService implements StatusHandler {
         try {
             if (channelMap.containsKey(item.getName())) {
                 IChannel ch = channelMap.get(item.getName());
-                if (item.getValue().getClass() == Integer.class) {
-                    ch.setValue((Integer) item.getValue());
-                } else if (item.getValue().getClass() == Float.class) {
-                    ch.setValue((Float) item.getValue());
-                } else if (item.getValue().getClass() == Double.class) {
-                    ch.setValue((Double) item.getValue());
-                } else if (item.getValue().getClass() == String.class) {
-                    ch.setValue((String) item.getValue());
-                } else {
-                    LOG.warning("Unsupported item type " + item.getValue().getClass());
-                }
+                ch.setValue(item.getValue());
             } else if (alarmChannelMap.containsKey(item.getName())) {
                 if (item instanceof AlarmStatusItem) {
                     IAlarmChannel ch = alarmChannelMap.get(item.getName());
-                    if (item.getValue().getClass() == Integer.class) {
-                        ch.setValue((Integer) item.getValue());
-                        setAlarm((AlarmStatusItem<T>) item, ch);
-                    } else if (item.getValue().getClass() == Float.class) {
-                        ch.setValue((Float) item.getValue());
-                        setAlarm((AlarmStatusItem<T>) item, ch);
-                    } else if (item.getValue().getClass() == Double.class) {
-                        ch.setValue((Double) item.getValue());
-                        setAlarm((AlarmStatusItem<T>) item, ch);
-                    } else if (item.getValue().getClass() == String.class) {
-                        ch.setValue((String) item.getValue());
-                        setAlarm((AlarmStatusItem<T>) item, ch);
-                    } else {
-                        LOG.warning("Unsupported item type " + item.getValue().getClass());
-                    }
+                    ch.setValue(item.getValue());
+                    setAlarm((AlarmStatusItem<T>) item, ch);
                 } else {
                     LOG.warning("Received StatusItem that is not an AlarmStatusItem for " + item.getName());
                 }
             } else if (healthChannelMap.containsKey(item.getName())) {
                 if (item instanceof HealthStatusItem) {
-                    IChannel ch = healthChannelMap.get(item.getName());
+                    IChannel<String> ch = healthChannelMap.get(item.getName());
                     ch.setValue(((HealthStatusItem) item).getHealth().name());
                 } else {
                     LOG.warning("Received StatusItem that is not a HealthStatusItem for " + item.getName());
@@ -296,7 +229,7 @@ public class EpicsStatusService implements StatusHandler {
         }
     }
 
-    private <T> void setAlarm(AlarmStatusItem<T> item, IAlarmChannel channel) {
+    private <T> void setAlarm(AlarmStatusItem<T> item, IAlarmChannel<T> channel) {
         AlarmState state = item.getAlarmState();
         try {
             channel.setAlarm(CAUSE_MAP.get(state.getCause()), SEVERITY_MAP.get(state.getSeverity()), state.getMessage());

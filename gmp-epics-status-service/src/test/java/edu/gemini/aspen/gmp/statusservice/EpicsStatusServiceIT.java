@@ -12,7 +12,6 @@ import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.IAlarmChannel;
 import edu.gemini.cas.IChannel;
-import edu.gemini.cas.IChannelAccessServer;
 import gov.aps.jca.dbr.DBR_STS_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
@@ -23,8 +22,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.mockito.Mockito.*;
@@ -67,11 +64,11 @@ public class EpicsStatusServiceIT extends TestCase {
 
         ess.initialize(essc.getSimulatedChannels());
 
-        Map<String, IAlarmChannel> ac = ess.getAlarmChannels();
+        Map<String, IAlarmChannel<?>> ac = ess.getAlarmChannels();
 
-        Map<String, IChannel> nc = ess.getChannels();
+        Map<String, IChannel<?>> nc = ess.getChannels();
 
-        Map<String, IChannel> hc = ess.getHealthChannels();
+        Map<String, IChannel<String>> hc = ess.getHealthChannels();
 
         for (BaseChannelType cc : essc.getSimulatedChannels().getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             if (cc instanceof HealthChannelType) {

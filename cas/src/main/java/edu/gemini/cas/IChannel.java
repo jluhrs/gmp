@@ -3,13 +3,15 @@ package edu.gemini.cas;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 
+import java.util.List;
+
 /**
  * Interface IChannel
  *
  * @author Nicolas A. Barriga
  *         Date: Dec 2, 2010
  */
-public interface IChannel {
+public interface IChannel<T> {
     /**
      * Sets a new value to a PV
      *
@@ -17,22 +19,8 @@ public interface IChannel {
      * @throws CAException if write couldn't be completed
      * @throws IllegalArgumentException if wrong data type or incorrect amount of data is passed.
      */
-    void setValue(Integer value) throws CAException;
-
-    void setValue(Integer[] values) throws CAException;
-
-    void setValue(Float value) throws CAException;
-
-    void setValue(Float[] values) throws CAException;
-
-    void setValue(Double value) throws CAException;
-
-    void setValue(Double[] values) throws CAException;
-
-    void setValue(String value) throws CAException;
-
-    void setValue(String[] values) throws CAException;
-
+    void setValue(T value) throws CAException;
+    void setValue(List<T> values) throws CAException;
     /**
      * Retrieves a value from a PV
      *
@@ -43,4 +31,5 @@ public interface IChannel {
     DBR getValue() throws CAException;
 
     String getName();
+
 }
