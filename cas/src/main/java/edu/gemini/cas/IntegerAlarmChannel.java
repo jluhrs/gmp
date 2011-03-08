@@ -11,7 +11,7 @@ import gov.aps.jca.dbr.DBR_String;
  */
 class IntegerAlarmChannel extends AbstractAlarmChannel<Integer> {
     IntegerAlarmChannel(String name, int length) {
-        super(new IntegerChannel(name,length), new AlarmMemoryProcessVariable(name+".OMSS",null, DBR_String.TYPE,new String[]{""}));
+        super(new IntegerChannel(name,length));
     }
 
 }

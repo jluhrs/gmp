@@ -11,7 +11,7 @@ import gov.aps.jca.dbr.DBR_String;
  */
 class DoubleAlarmChannel extends AbstractAlarmChannel<Double> {
     DoubleAlarmChannel(String name, int length) {
-        super(new DoubleChannel(name,length), new AlarmMemoryProcessVariable(name+".OMSS",null, DBR_String.TYPE,new String[]{""}));
+        super(new DoubleChannel(name,length));
     }
 
 }

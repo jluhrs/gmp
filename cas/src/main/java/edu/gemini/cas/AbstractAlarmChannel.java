@@ -20,11 +20,12 @@ import java.util.List;
  *         Date: 3/7/11
  */
 class AbstractAlarmChannel<T> implements IAlarmChannel<T>{
-    protected final AlarmMemoryProcessVariable alarmMessagePV;
+    private final String ALARM_MESSAGE_SUFFIX=".OMSS";
+    protected final AbstractChannel<String> alarmCh;
     protected final AbstractChannel<T> ch;
-    protected AbstractAlarmChannel(AbstractChannel<T> ch, AlarmMemoryProcessVariable alarmPV) {
+    protected AbstractAlarmChannel(AbstractChannel<T> ch) {
         this.ch=ch;
-        alarmMessagePV = alarmPV;
+        alarmCh = new StringChannel(ch.getName()+ALARM_MESSAGE_SUFFIX, 1);
     }
 
     @Override
@@ -49,16 +50,13 @@ class AbstractAlarmChannel<T> implements IAlarmChannel<T>{
 
     void register(DefaultServerImpl server){
         ch.register(server);
-        server.registerProcessVaribale(alarmMessagePV.getName(), alarmMessagePV);
+        alarmCh.register(server);
     }
 
     void destroy(DefaultServerImpl server) {
         ch.destroy(server);
-        server.unregisterProcessVaribale(alarmMessagePV.getName());
-        alarmMessagePV.destroy();
+        alarmCh.destroy(server);
     }
-
-
 
     @Override
     public void clearAlarm() throws CAException{
@@ -71,10 +69,6 @@ class AbstractAlarmChannel<T> implements IAlarmChannel<T>{
 
         ch.setValue(ch.extractValues(ch.getValue()));
 
-        DBR_STS_String alarmMessageDbr = new DBR_STS_String(new String[]{message});
-        CAStatus caStatus = alarmMessagePV.write(alarmMessageDbr, null);
-        if (caStatus != CAStatus.NORMAL) {
-            throw new CAStatusException(caStatus);
-        }
+        alarmCh.setValue(message);
     }
 }

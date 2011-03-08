@@ -11,7 +11,7 @@ import gov.aps.jca.dbr.DBR_String;
  */
 class FloatAlarmChannel extends AbstractAlarmChannel<Float> {
     FloatAlarmChannel(String name, int length) {
-        super(new FloatChannel(name,length), new AlarmMemoryProcessVariable(name+".OMSS",null, DBR_String.TYPE,new String[]{""}));
+        super(new FloatChannel(name,length));
     }
 
 }
