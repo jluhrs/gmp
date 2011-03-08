@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.model;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
 
 /**
- * Interface defininig a builder of action messages
+ * Interface defining a builder of action messages
  *
  */
 public interface ActionMessageBuilder {
@@ -17,7 +17,7 @@ public interface ActionMessageBuilder {
 
     /**
      * Builds an action message for the specified action, but
-     * only containing the configurarion information that
+     * only containing the configuration information that
      * matches the provided ConfigPath
      *
      * @param action the action to be used to construct the message
