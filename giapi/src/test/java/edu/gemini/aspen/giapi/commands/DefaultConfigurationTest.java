@@ -58,5 +58,6 @@ public class DefaultConfigurationTest {
         assertTrue(emptyConfiguration().getKeys().isEmpty());
         assertEquals(emptyConfiguration(), emptyConfiguration());
         assertEquals(emptyConfiguration(), emptyConfiguration().getSubConfiguration(null));
+        assertTrue(emptyConfiguration().isEmpty());
     }
 }

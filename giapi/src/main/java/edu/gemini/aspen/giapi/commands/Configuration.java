@@ -46,4 +46,9 @@ public interface Configuration {
      */
     Configuration getSubConfiguration(ConfigPath path);
 
+    /**
+     * Indicates whether the Configuration is empty meaning it doesn't
+     * containing any paths
+     */
+    boolean isEmpty();
 }

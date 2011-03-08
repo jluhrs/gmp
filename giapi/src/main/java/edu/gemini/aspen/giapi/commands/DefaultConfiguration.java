@@ -74,6 +74,11 @@ public final class DefaultConfiguration implements Configuration {
     }
 
     @Override
+    public boolean isEmpty() {
+        return _config.isEmpty();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
