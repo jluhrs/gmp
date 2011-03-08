@@ -48,10 +48,43 @@ abstract class AbstractChannel<T> implements IChannel<T>  {
         pv.setStatus(status);
         pv.setSeverity(severity);
     }
+
+    /**
+     * Check the correctness of the arguments
+     *
+     * @param values to check
+     * @return true if argument type and size matches the channel's, false otherwise
+     */
     protected abstract boolean validateArgument(List<T> values);
+
+    /**
+     * Construct a DBR of appropriate type, with the given values.
+     *
+     * @param values to put in the DBR
+     * @return a DBR that implements gov.aps.jca.dbr.STS, with the given values
+     */
     protected abstract DBR buildDBR(List<T> values);
+
+    /**
+     * Construct an empty DBR of appropriate type.
+     *
+     * @return a DBR that implements gov.aps.jca.dbr.TIME
+     */
     protected abstract DBR emptyDBR();
+
+    /**
+     * Get the values from the DBR.
+     *
+     * @param dbr to read values from
+     * @return a List of the appropriate type, with the values in the DBR
+     */
     protected abstract List<T> extractValues(DBR dbr);
+
+    /**
+     * Get the size of the PV's data.
+     *
+     * @return the size of the PV's data.
+     */
     protected int getSize(){
         return pv.getDimensionSize(0);
     }
@@ -103,6 +136,9 @@ abstract class AbstractChannel<T> implements IChannel<T>  {
     }
     @Override
     public void setValue(List<T> values) throws CAException {
+        if (values==null || values.isEmpty()){
+            throw new IllegalArgumentException("Trying to write 0 values.");
+        }
         if (!validateArgument(values)) {
             throw new IllegalArgumentException("Trying to write a " + values.get(0).getClass().getName() + " value in a " + pv.getType().getName() + " field.");
         }

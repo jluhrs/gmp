@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class IntegerChannel
+ * Class StringChannel
  *
  * @author Nicolas A. Barriga
  *         Date: 3/7/11

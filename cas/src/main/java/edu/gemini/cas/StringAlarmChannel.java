@@ -4,7 +4,7 @@ import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.dbr.DBR_String;
 
 /**
- * Class IntegerAlarmChannel
+ * Class StringAlarmChannel
  *
  * @author Nicolas A. Barriga
  *         Date: 3/7/11

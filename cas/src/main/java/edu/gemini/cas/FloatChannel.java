@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class IntegerChannel
+ * Class FloatChannel
  *
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
