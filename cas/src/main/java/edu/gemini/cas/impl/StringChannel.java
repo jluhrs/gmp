@@ -1,9 +1,8 @@
-package edu.gemini.cas;
+package edu.gemini.cas.impl;
 
 import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.dbr.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

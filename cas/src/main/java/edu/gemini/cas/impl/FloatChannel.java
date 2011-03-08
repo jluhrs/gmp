@@ -1,4 +1,4 @@
-package edu.gemini.cas;
+package edu.gemini.cas.impl;
 
 import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.dbr.*;

@@ -1,5 +1,6 @@
 package edu.gemini.cas;
 
+import edu.gemini.cas.impl.ChannelAccessServer;
 import gov.aps.jca.*;
 import org.junit.After;
 import org.junit.Before;

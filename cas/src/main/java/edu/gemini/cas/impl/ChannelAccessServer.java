@@ -1,7 +1,8 @@
-package edu.gemini.cas;
+package edu.gemini.cas.impl;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
+import edu.gemini.cas.*;
 import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
 import org.apache.felix.ipojo.annotations.*;

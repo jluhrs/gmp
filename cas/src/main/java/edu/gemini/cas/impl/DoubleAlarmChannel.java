@@ -1,7 +1,4 @@
-package edu.gemini.cas;
-
-import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
-import gov.aps.jca.dbr.DBR_String;
+package edu.gemini.cas.impl;
 
 /**
  * Class DoubleAlarmChannel

@@ -7,6 +7,7 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.cas.*;
+import edu.gemini.cas.impl.ChannelAccessServer;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;

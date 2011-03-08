@@ -1,16 +1,12 @@
-package edu.gemini.cas;
+package edu.gemini.cas.impl;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
-import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
+import edu.gemini.cas.IAlarmChannel;
 import gov.aps.jca.CAException;
-import gov.aps.jca.CAStatus;
-import gov.aps.jca.CAStatusException;
 import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.dbr.DBR_STS_String;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,7 +15,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-class AbstractAlarmChannel<T> implements IAlarmChannel<T>{
+class AbstractAlarmChannel<T> implements IAlarmChannel<T> {
     private final String ALARM_MESSAGE_SUFFIX=".OMSS";
     protected final AbstractChannel<String> alarmCh;
     protected final AbstractChannel<T> ch;
@@ -69,6 +65,6 @@ class AbstractAlarmChannel<T> implements IAlarmChannel<T>{
 
         ch.setValue(ch.extractValues(ch.getValue()));
 
-        alarmCh.setValue(message);
+        alarmCh.setValue(message!=null?message:"");
     }
 }

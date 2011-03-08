@@ -1,6 +1,7 @@
 package edu.gemini.cas;
 
 import com.google.common.collect.ImmutableList;
+import edu.gemini.cas.impl.ChannelAccessServer;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.STS;
 import gov.aps.jca.dbr.Severity;

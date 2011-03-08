@@ -9,7 +9,7 @@ import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.cas.impl.ChannelAccessServer;
 import edu.gemini.cas.IAlarmChannel;
 import edu.gemini.cas.IChannel;
 import gov.aps.jca.dbr.DBR_STS_Double;
@@ -23,8 +23,6 @@ import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import static org.mockito.Mockito.*;
 
 /**
  * Class EpicsStatusServiceTest

@@ -1,14 +1,14 @@
-package edu.gemini.cas;
+package edu.gemini.cas.impl;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
+import edu.gemini.cas.IChannel;
 import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
 import gov.aps.jca.dbr.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-abstract class AbstractChannel<T> implements IChannel<T>  {
+abstract class AbstractChannel<T> implements IChannel<T> {
     private AlarmMemoryProcessVariable pv;
 
     protected AbstractChannel(AlarmMemoryProcessVariable pv) {
