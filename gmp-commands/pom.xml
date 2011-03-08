@@ -25,15 +25,17 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
+        <!--dependency>
           <type>pom</type>
           <groupId>${parent.groupId}</groupId>
           <artifactId>provision</artifactId>
           <optional>true</optional>
+        </dependency-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>8.0.0</version>
         </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
@@ -59,7 +61,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>8.0.0</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
