@@ -12,7 +12,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-public class FloatChannel extends AbstractChannel<Float> {
+class FloatChannel extends AbstractChannel<Float> {
 
     FloatChannel(String name, int length) {
         super(new AlarmMemoryProcessVariable(name,null, DBR_Float.TYPE,new float[length]));

@@ -19,7 +19,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-public class AbstractAlarmChannel<T> implements IAlarmChannel<T>{
+class AbstractAlarmChannel<T> implements IAlarmChannel<T>{
     protected final AlarmMemoryProcessVariable alarmMessagePV;
     protected final AbstractChannel<T> ch;
     protected AbstractAlarmChannel(AbstractChannel<T> ch, AlarmMemoryProcessVariable alarmPV) {

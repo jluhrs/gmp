@@ -17,7 +17,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-public abstract class AbstractChannel<T> implements IChannel<T>  {
+abstract class AbstractChannel<T> implements IChannel<T>  {
     private AlarmMemoryProcessVariable pv;
 
     protected AbstractChannel(AlarmMemoryProcessVariable pv) {

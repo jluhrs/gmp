@@ -12,7 +12,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-public class DoubleChannel extends AbstractChannel<Double> {
+class DoubleChannel extends AbstractChannel<Double> {
 
     DoubleChannel(String name, int length) {
         super(new AlarmMemoryProcessVariable(name,null, DBR_Double.TYPE,new double[length]));

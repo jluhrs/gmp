@@ -139,7 +139,7 @@ public class CasTest {
      */
     @Test
     public void testWriteVar() throws Exception {
-        IntegerChannel ch = giapicas.createIntegerChannel(varname, 1);
+        IChannel<Integer> ch = giapicas.createIntegerChannel(varname, 1);
         ch.setValue(3);
 
         DBR dbr = ch.getValue();
@@ -158,7 +158,7 @@ public class CasTest {
      */
     @Test
     public void testWriteArray() throws Exception {
-        IntegerChannel ch = giapicas.createIntegerChannel(varname, 3);
+        IChannel<Integer> ch = giapicas.createIntegerChannel(varname, 3);
         ch.setValue(ImmutableList.of(3,4,5));
 
         DBR dbr = ch.getValue();
@@ -179,10 +179,10 @@ public class CasTest {
      */
     @Test
     public void testWriteVarAllTypes() throws Exception {
-        IntegerChannel chI = giapicas.createIntegerChannel("nico:int", 1);
-        FloatChannel chF = giapicas.createFloatChannel("nico:float", 1);
-        DoubleChannel chD = giapicas.createDoubleChannel("nico:double", 1);
-        StringChannel chS = giapicas.createStringChannel("nico:string", 1);
+        IChannel<Integer> chI = giapicas.createIntegerChannel("nico:int", 1);
+        IChannel<Float> chF = giapicas.createFloatChannel("nico:float", 1);
+        IChannel<Double> chD = giapicas.createDoubleChannel("nico:double", 1);
+        IChannel<String> chS = giapicas.createStringChannel("nico:string", 1);
 
 
         chI.setValue(3);
@@ -236,7 +236,19 @@ public class CasTest {
             //correct
             exceptions++;
         }
-        assertEquals(3, exceptions);
+        try {
+            ch.setValue(new Object());
+        } catch (IllegalArgumentException ex) {
+            //correct
+            exceptions++;
+        }
+        try {
+            ch.setValue(new Exception());
+        } catch (IllegalArgumentException ex) {
+            //correct
+            exceptions++;
+        }
+        assertEquals(5, exceptions);
 
     }
 
@@ -250,7 +262,7 @@ public class CasTest {
 
     @Test
     public void testWriteAlarm() throws Exception {
-        IntegerAlarmChannel ch = giapicas.createIntegerAlarmChannel(varname, 1);
+        IAlarmChannel<Integer> ch = giapicas.createIntegerAlarmChannel(varname, 1);
         ch.setAlarm(Status.HIHI_ALARM, Severity.MAJOR_ALARM, "alarm message");
         ch.setValue(3);
         DBR dbr = ch.getValue();

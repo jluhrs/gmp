@@ -73,10 +73,38 @@ public class ChannelAccessServer implements IChannelAccessServer {
         }
     }
 
+    /**
+      * Destroys the jca context and waits for the thread to return.
+      *
+      * @throws CAException if there are problems with Channel Access
+      * @throws java.lang.IllegalStateException
+      *                     if the context has already been destroyed.
+      */
+     @Invalidate
+     public void stop() throws CAException {
+         for (String name : channels.keySet()) {
+             IChannel ch = channels.get(name);
+             if (ch instanceof AbstractChannel) {
+                 ((AbstractChannel) ch).destroy(server);
+             } else if (ch instanceof AbstractAlarmChannel) {
+                 ((AbstractAlarmChannel) ch).destroy(server);
+             } else {
+                 LOG.warning("Unknown channel type: " + ch.getClass().getName());
+             }
+         }
+         channels.clear();
+         executor.shutdown();
+         serverContext.destroy();
+         channels = null;
+         server = null;
+         serverContext = null;
+     }
+
     @Override
     public <T> IChannel<T> createChannel(String name, T value) throws CAException {
         return createChannel(name, ImmutableList.of(value));
     }
+
     @Override
     public <T> IChannel<T> createChannel(String name, List<T> values) throws CAException {
         if(values.isEmpty()){
@@ -99,72 +127,10 @@ public class ChannelAccessServer implements IChannelAccessServer {
     }
 
     @Override
-    public IntegerChannel createIntegerChannel(String name, int length) {
-        if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
-            if (ch instanceof IntegerChannel) {
-                return (IntegerChannel) ch;
-            } else {
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Integer");
-            }
-        }
-        IntegerChannel ch = new IntegerChannel(name, length);
-        ch.register(server);
-        channels.put(name, ch);
-        return ch;
-    }
-
-    @Override
-    public FloatChannel createFloatChannel(String name, int length) {
-        if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
-            if (ch instanceof FloatChannel) {
-                return (FloatChannel) ch;
-            } else {
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Float");
-            }
-        }
-        FloatChannel ch = new FloatChannel(name, length);
-        ch.register(server);
-        channels.put(name, ch);
-        return ch;
-    }
-
-    @Override
-    public DoubleChannel createDoubleChannel(String name, int length) {
-        if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
-            if (ch instanceof DoubleChannel) {
-                return (DoubleChannel) ch;
-            } else {
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Double");
-            }
-        }
-        DoubleChannel ch = new DoubleChannel(name, length);
-        ch.register(server);
-        channels.put(name, ch);
-        return ch;
-    }
-
-    @Override
-    public StringChannel createStringChannel(String name, int length) {
-        if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
-            if (ch instanceof StringChannel) {
-                return (StringChannel) ch;
-            } else {
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type String");
-            }
-        }
-        StringChannel ch = new StringChannel(name, length);
-        ch.register(server);
-        channels.put(name, ch);
-        return ch;
-    }
-    @Override
     public <T> IAlarmChannel<T> createAlarmChannel(String name, T value) throws CAException {
         return createAlarmChannel(name,ImmutableList.of(value));
     }
+
     @Override
     public <T> IAlarmChannel<T> createAlarmChannel(String name, List<T> values) throws CAException {
         if(values.isEmpty()){
@@ -186,8 +152,119 @@ public class ChannelAccessServer implements IChannelAccessServer {
         return ch;
     }
 
-    @Override
-    public IntegerAlarmChannel createIntegerAlarmChannel(String name, int length) {
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Integer
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    public IChannel<Integer> createIntegerChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            IChannel ch = channels.get(name);
+            if (ch instanceof IntegerChannel) {
+                return (IntegerChannel) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Integer");
+            }
+        }
+        IntegerChannel ch = new IntegerChannel(name, length);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Float
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    public IChannel<Float> createFloatChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            IChannel ch = channels.get(name);
+            if (ch instanceof FloatChannel) {
+                return (FloatChannel) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Float");
+            }
+        }
+        FloatChannel ch = new FloatChannel(name, length);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Double
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    public IChannel<Double> createDoubleChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            IChannel ch = channels.get(name);
+            if (ch instanceof DoubleChannel) {
+                return (DoubleChannel) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Double");
+            }
+        }
+        DoubleChannel ch = new DoubleChannel(name, length);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type String
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    public IChannel<String> createStringChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            IChannel ch = channels.get(name);
+            if (ch instanceof StringChannel) {
+                return (StringChannel) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type String");
+            }
+        }
+        StringChannel ch = new StringChannel(name, length);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Integer,
+     * that is able to raise an alarm.
+     *
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    public IAlarmChannel<Integer> createIntegerAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
             IChannel ch = channels.get(name);
             if (ch instanceof IntegerAlarmChannel) {
@@ -202,8 +279,19 @@ public class ChannelAccessServer implements IChannelAccessServer {
         return ch;
     }
 
-    @Override
-    public FloatAlarmChannel createFloatAlarmChannel(String name, int length) {
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Float,
+     * that is able to raise an alarm.
+     *
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    public IAlarmChannel<Float> createFloatAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
             IChannel ch = channels.get(name);
             if (ch instanceof FloatAlarmChannel) {
@@ -218,8 +306,19 @@ public class ChannelAccessServer implements IChannelAccessServer {
         return ch;
     }
 
-    @Override
-    public DoubleAlarmChannel createDoubleAlarmChannel(String name, int length) {
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Double,
+     * that is able to raise an alarm.
+     *
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    public IAlarmChannel<Double> createDoubleAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
             IChannel ch = channels.get(name);
             if (ch instanceof DoubleAlarmChannel) {
@@ -235,8 +334,19 @@ public class ChannelAccessServer implements IChannelAccessServer {
         return ch;
     }
 
-    @Override
-    public StringAlarmChannel createStringAlarmChannel(String name, int length) {
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type String,
+     * that is able to raise an alarm.
+     *
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    public IAlarmChannel<String> createStringAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
             IChannel ch = channels.get(name);
             if (ch instanceof StringAlarmChannel) {
@@ -278,32 +388,6 @@ public class ChannelAccessServer implements IChannelAccessServer {
     }
 
 
-    /**
-     * Destroys the jca context and waits for the thread to return.
-     *
-     * @throws CAException if there are problems with Channel Access
-     * @throws java.lang.IllegalStateException
-     *                     if the context has already been destroyed.
-     */
-    @Invalidate
-    public void stop() throws CAException {
-        for (String name : channels.keySet()) {
-            IChannel ch = channels.get(name);
-            if (ch instanceof AbstractChannel) {
-                ((AbstractChannel) ch).destroy(server);
-            } else if (ch instanceof AbstractAlarmChannel) {
-                ((AbstractAlarmChannel) ch).destroy(server);
-            } else {
-                LOG.warning("Unknown channel type: " + ch.getClass().getName());
-            }
-        }
-        channels.clear();
-        executor.shutdown();
-        serverContext.destroy();
-        channels = null;
-        server = null;
-        serverContext = null;
-    }
 
 
     /**

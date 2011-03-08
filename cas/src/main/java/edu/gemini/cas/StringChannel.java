@@ -13,7 +13,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-public class StringChannel extends AbstractChannel<String> {
+class StringChannel extends AbstractChannel<String> {
 
     StringChannel(String name, int length) {
         super(new AlarmMemoryProcessVariable(name,null, DBR_String.TYPE,new double[length]));

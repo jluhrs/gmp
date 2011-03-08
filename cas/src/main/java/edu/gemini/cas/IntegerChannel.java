@@ -15,7 +15,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-public class IntegerChannel extends AbstractChannel<Integer> {
+class IntegerChannel extends AbstractChannel<Integer> {
 
     IntegerChannel(String name, int length) {
         super(new AlarmMemoryProcessVariable(name,null, DBR_Int.TYPE,new int[length]));
