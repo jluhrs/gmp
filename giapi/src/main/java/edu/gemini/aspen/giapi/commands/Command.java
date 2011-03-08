@@ -1,0 +1,114 @@
+package edu.gemini.aspen.giapi.commands;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
+
+/**
+ * This class encapsulates a Command sent to an instrument acting as a ParameterObject
+ */
+public class Command {
+    private final SequenceCommand _sequenceCommand;
+    private final Activity _activity;
+    private final Configuration _config;
+
+    /**
+     * Builds a new immutable Command object.
+     * <p/>
+     * Null parameters are not allowed.
+     *
+     * Commands that need to pass a configuration like REBOOT and APPLY should use the
+     * constructor {@link edu.gemini.aspen.giapi.commands.Command(SequenceCommand command, Activity activity, Configuration config)}
+     *
+     * @param sequenceCommand  The Sequence sequenceCommand to send, like INIT or REBOOT
+     * @param activity The associated activities to be executed for the
+     *                 specified sequence sequenceCommand, like PRESET or START
+     */
+    public Command(SequenceCommand sequenceCommand, Activity activity) {
+        checkArgument(sequenceCommand != null, "Command cannot be null");
+        checkArgument(activity != null, "Activity cannot be null");
+        checkArgument(!(sequenceCommand.equals(SequenceCommand.APPLY) ||  sequenceCommand.equals(SequenceCommand.REBOOT)), "Activity with no configuration cannot be APPLY or REBOOT");
+
+        this._sequenceCommand = sequenceCommand;
+        this._activity = activity;
+        this._config = emptyConfiguration();
+    }
+
+    /**
+     * Builds a new immutable Command object.
+     * <p/>
+     * Null parameters are not allowed.
+     *
+     * @param sequenceCommand  The Sequence sequenceCommand to send, like INIT or REBOOT
+     * @param activity The associated activities to be executed for the
+     *                 specified sequence sequenceCommand, like PRESET or START
+     * @param config   the configuration that will be sent along with the
+     *                 sequence sequenceCommand
+     */
+    public Command(SequenceCommand sequenceCommand, Activity activity, Configuration config) {
+        checkArgument(sequenceCommand != null, "Command cannot be null");
+        checkArgument(activity != null, "Activity cannot be null");
+        checkArgument(config != null, "Configuration cannot be null, use emptyConfiguration instead");
+
+        this._sequenceCommand = sequenceCommand;
+        this._activity = activity;
+        this._config = config;
+    }
+
+    public boolean isApply() {
+        return _sequenceCommand == SequenceCommand.APPLY;
+    }
+
+    public SequenceCommand getSequenceCommand() {
+        return _sequenceCommand;
+    }
+
+    public Activity getActivity() {
+        return _activity;
+    }
+
+    public Configuration getConfiguration() {
+        return _config;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Command command = (Command) o;
+
+        if (_activity != command._activity) {
+            return false;
+        }
+        if (!_config.equals(command._config)) {
+            return false;
+        }
+        if (_sequenceCommand != command._sequenceCommand) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = _sequenceCommand.hashCode();
+        result = 31 * result + _activity.hashCode();
+        result = 31 * result + _config.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Command{" +
+                "sequence=" + _sequenceCommand +
+                ", activity=" + _activity +
+                (_config.isEmpty()?"":", _config=" + _config )+
+                '}';
+    }
+}
