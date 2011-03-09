@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.commands.impl;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
@@ -14,6 +15,7 @@ public class CommandUpdaterImpl implements CommandUpdater {
     private final ActionManager _manager;
 
     public CommandUpdaterImpl(ActionManager manager) {
+        Preconditions.checkArgument(manager != null, "ActionManager cannot be null");
         _manager = manager;
     }
 

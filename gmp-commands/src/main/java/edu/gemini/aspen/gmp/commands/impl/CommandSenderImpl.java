@@ -48,7 +48,9 @@ public class CommandSenderImpl implements CommandSender {
     public CommandSenderImpl(ActionManager manager,
                              ActionSender sender,
                              SequenceCommandExecutor executor) {
-        Preconditions.checkArgument(manager != null);
+        Preconditions.checkArgument(manager != null, "ActionManager cannot be null");
+        Preconditions.checkArgument(sender != null, "ActionSender cannot be null");
+        Preconditions.checkArgument(executor != null, "SequenceCommandExecutor cannot be null");
         _manager = manager;
         _executor = executor;
         _sender = sender;
