@@ -21,23 +21,28 @@ public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
                                       Map<String, Object> message,
                                       Map<String, Object> properties,
                                       long timeout) throws MessagingException {
+        Message m = sendRequest(destination, message, properties);
 
-        Message m = sendMapMessageWithCreator(destination,
-                message,
-                properties,
-                MapMessageCreator.ReplyCreator);
-
-        MessageConsumer tempConsumer;
         try {
-            tempConsumer = _session.createConsumer(m.getJMSReplyTo());
-            Message reply = tempConsumer.receive(timeout);
-            tempConsumer.close();
-            return buildResponse(reply);
-
+            return waitForReply(m, timeout);
         } catch (JMSException e) {
             throw new MessagingException("Problem receiving reply", e);
         }
 
+    }
+
+    private Message sendRequest(DestinationData destination, Map<String, Object> message, Map<String, Object> properties) {
+        return sendMapMessageWithCreator(destination,
+                    message,
+                    properties,
+                    MapMessageCreator.ReplyCreator);
+    }
+
+    private T waitForReply(Message m, long timeout) throws JMSException {
+        MessageConsumer tempConsumer = _session.createConsumer(m.getJMSReplyTo());
+        Message reply = tempConsumer.receive(timeout);
+        tempConsumer.close();
+        return buildResponse(reply);
     }
 
     /**
