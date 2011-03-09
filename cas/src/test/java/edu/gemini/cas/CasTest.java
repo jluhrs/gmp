@@ -59,7 +59,7 @@ public class CasTest {
     @Test
     public void testAddTwice() throws Exception {
 
-        IChannel ch = giapicas.createIntegerChannel(varname, 1);
+        IChannel ch = giapicas.createChannel(varname, 2);
         DBR dbr = ch.getValue();
 
 
@@ -67,28 +67,31 @@ public class CasTest {
         assertEquals(1, num);
         Object obj = dbr.getValue();
         int[] objarr = (int[]) obj;
-        assertEquals(0, objarr[0]);
+        assertEquals(2, objarr[0]);
 
         IChannel ch2 = giapicas.createIntegerChannel(varname, 1);
-
+        ch2.setValue(2);
         assertEquals(ch, ch2);
 
         giapicas.destroyChannel(ch);
         giapicas.destroyChannel(ch2);
-        ch = giapicas.createFloatChannel(varname, 1);
+        ch = giapicas.createChannel(varname, 2.0f);
         ch2 = giapicas.createFloatChannel(varname, 1);
+        ch2.setValue(2.0f);
         assertEquals(ch, ch2);
 
         giapicas.destroyChannel(ch);
         giapicas.destroyChannel(ch2);
-        ch = giapicas.createDoubleChannel(varname, 1);
+        ch = giapicas.createChannel(varname, 2.0);
         ch2 = giapicas.createDoubleChannel(varname, 1);
+        ch2.setValue(2.0);
         assertEquals(ch, ch2);
 
         giapicas.destroyChannel(ch);
         giapicas.destroyChannel(ch2);
-        ch = giapicas.createStringChannel(varname, 1);
+        ch = giapicas.createChannel(varname, "2");
         ch2 = giapicas.createStringChannel(varname, 1);
+        ch2.setValue("2");
         assertEquals(ch, ch2);
         giapicas.destroyChannel(ch2);
         try {
