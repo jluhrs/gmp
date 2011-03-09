@@ -18,6 +18,11 @@ public class ActionSenderMock implements ActionSender {
 
 
     public HandlerResponse send(ActionMessage message) {
+        return send(message, 0);
+    }
+
+    @Override
+    public HandlerResponse send(ActionMessage message, long timeout) {
         //for testing, don't send anything, just reply with the predefined answer...
         return _response;
     }

@@ -41,18 +41,19 @@ public class SequenceCommandSenderReply extends JmsMapMessageSenderReply<Handler
     @Override
     public HandlerResponse send(ActionMessage actionMessage)
             throws SequenceCommandException {
+        return send(actionMessage, RESPONSE_WAIT_TIMEOUT);
+    }
+
+    @Override
+    public HandlerResponse send(ActionMessage actionMessage, long timeout) {
         try {
-            HandlerResponse response = sendMapMessageReply(
+            return sendMapMessageReply(
                     actionMessage.getDestinationData(),
                     actionMessage.getDataElements(),
                     actionMessage.getProperties(),
-                    RESPONSE_WAIT_TIMEOUT);
-            return response;
-
+                    timeout);
         } catch (MessagingException e) {
             throw new SequenceCommandException("Unable to send action", e);
         }
-
-
     }
 }
