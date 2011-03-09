@@ -35,28 +35,25 @@
         </dependency>
         -->
         <dependency>
-	        <groupId>edu.gemini.jms</groupId>
-	        <artifactId>jms-api</artifactId>
-	        <version>1.2.0</version>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-api</artifactId>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
-	        <groupId>edu.gemini.aspen</groupId>
-	        <artifactId>giapi-jms-util</artifactId>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-jms-util</artifactId>
             <version>0.10.0</version>
         </dependency>
         <dependency>
-	        <groupId>edu.gemini.jms</groupId>
-    		<artifactId>jms-activemq-provider</artifactId>
-    		<version>1.1.0</version>
-
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-provider</artifactId>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
-            <version>0.9.0</version>
-	        <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>com.springsource.javax.jms</artifactId>
@@ -66,9 +63,9 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
-            <version>5.4.2</version>
+            <version>${org.activemq.core.version}</version>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
             <version>1.0.1</version>

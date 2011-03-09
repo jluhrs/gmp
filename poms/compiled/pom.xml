@@ -20,6 +20,15 @@
         <maven.build.timestamp.format>E MMM dd k:mm:ss z yyyy</maven.build.timestamp.format>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>edu.gemini.aspen</groupId>
+                <artifactId>giapi</artifactId>
+                <version>0.9.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -52,7 +61,7 @@
             <version>1.8.5</version>
             <scope>test</scope>
         </dependency>
-             <dependency>
+        <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
             <artifactId>pax-exam</artifactId>
             <version>${pax-exam.version}</version>

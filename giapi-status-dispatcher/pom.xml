@@ -44,7 +44,6 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
-            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
