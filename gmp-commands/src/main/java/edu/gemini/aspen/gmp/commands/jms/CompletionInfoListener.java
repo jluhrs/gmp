@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.jms;
 
 
+import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
@@ -29,6 +30,7 @@ public class CompletionInfoListener implements MessageListener {
     private final CommandUpdater _commandUpdater;
 
     public CompletionInfoListener(CommandUpdater updater) {
+        Preconditions.checkArgument(updater != null, "CommandUpdater cannot be null");
         _commandUpdater = updater;
     }
 
@@ -40,8 +42,7 @@ public class CompletionInfoListener implements MessageListener {
 
                 int actionId = m.getIntProperty(JmsKeys.GMP_ACTIONID_PROP);
                 HandlerResponse response = MessageBuilder.buildHandlerResponse(m);
-                LOG.info(
-                        "Received Completion info for action ID " +
+                LOG.info("Received Completion info for action ID " +
                                 actionId + " : " + response.toString());
                 //Notify the OCS. Based on the action ID, we know who to notify
                 _commandUpdater.updateOcs(actionId, response);
