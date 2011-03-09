@@ -258,10 +258,22 @@ public class CasTest {
 
     @Test
     public void testCreateAlarmChannels() throws Exception {
-        IAlarmChannel ch1 = giapicas.createIntegerAlarmChannel("int", 1);
-        IAlarmChannel ch2 = giapicas.createFloatAlarmChannel("float", 1);
-        IAlarmChannel ch3 = giapicas.createDoubleAlarmChannel("double", 1);
-        IAlarmChannel ch4 = giapicas.createStringAlarmChannel("string", 1);
+        IAlarmChannel ch = giapicas.createIntegerAlarmChannel("int", 1);
+        giapicas.destroyChannel(ch);
+        ch = giapicas.createFloatAlarmChannel("float", 1);
+        giapicas.destroyChannel(ch);
+        ch = giapicas.createDoubleAlarmChannel("double", 1);
+        giapicas.destroyChannel(ch);
+        ch = giapicas.createStringAlarmChannel("string", 1);
+        giapicas.destroyChannel(ch);
+        ch = giapicas.createAlarmChannel("int",1);
+        giapicas.destroyChannel(ch);
+        ch = giapicas.createAlarmChannel("float",1.0f);
+        giapicas.destroyChannel(ch);
+        ch = giapicas.createAlarmChannel("double",1.0);
+        giapicas.destroyChannel(ch);
+        ch = giapicas.createAlarmChannel("string","1");
+        giapicas.destroyChannel(ch);
     }
 
     @Test
