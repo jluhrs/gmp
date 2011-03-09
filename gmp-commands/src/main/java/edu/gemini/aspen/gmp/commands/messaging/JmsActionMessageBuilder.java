@@ -1,5 +1,8 @@
 package edu.gemini.aspen.gmp.commands.messaging;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
@@ -10,8 +13,8 @@ import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Helper class to construct {@link edu.gemini.aspen.gmp.commands.model.ActionMessage}
@@ -22,6 +25,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
      * Map to store topics associated to each sequence command
      */
     private static final Map<SequenceCommand, String> TOPIC_MAP = new HashMap<SequenceCommand, String>();
+
     /**
      * Topic map static initialization
      */
@@ -38,9 +42,9 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
      */
     private final class ActionMessageImpl implements ActionMessage {
 
-        private DestinationData dd;
-        private Map<String, Object> props;
-        private Map<String, Object> data;
+        private final DestinationData dd;
+        private final ImmutableMap<String, Object> props;
+        private final Map<String, Object> configurationElements;
 
         /**
          * Constructs an Action Message that contains only the
@@ -52,31 +56,24 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
          *               that match the given path will be considered.
          */
         public ActionMessageImpl(Action action, ConfigPath path) {
-
+            Preconditions.checkArgument(action != null, "Cannot create a message for a null action");
+            Preconditions.checkArgument(path != null, "Cannot create a message for a null path");
             dd = new DestinationData(getTopicName(action, path), DestinationType.TOPIC);
 
-            props = new HashMap<String, Object>();
+            props = ImmutableMap.<String, Object>of(JmsKeys.GMP_ACTIVITY_PROP,
+                    action.getCommand().getActivity().getName(),
+                    JmsKeys.GMP_ACTIONID_PROP, action.getId());
 
-            props.put(JmsKeys.GMP_ACTIVITY_PROP,
-                    action.getCommand().getActivity().getName());
-            props.put(JmsKeys.GMP_ACTIONID_PROP, action.getId());
-
-            data = new HashMap<String, Object>();
+            configurationElements = Maps.newHashMap();
 
             //Store the configuration elements that
             //matches this config path.
             Configuration c = action.getCommand().getConfiguration();
-            if (c != null) {
+            c = c.getSubConfiguration(path);
 
-                if (path != null) {
-                    c = c.getSubConfiguration(path);
-                }
-
-                for (ConfigPath cp : c.getKeys()) {
-                    data.put(cp.getName(), c.getValue(cp));
-                }
+            for (ConfigPath cp : c.getKeys()) {
+                configurationElements.put(cp.getName(), c.getValue(cp));
             }
-
         }
 
         /**
@@ -85,13 +82,13 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
          * @param action The action to be used to build this action message
          */
         public ActionMessageImpl(Action action) {
-            this(action, null);
+            this(action, ConfigPath.EMPTY_PATH);
         }
 
         private String getTopicName(Action action, ConfigPath path) {
             //the destination changes if a config path is specified...
             StringBuilder sb = new StringBuilder(TOPIC_MAP.get(action.getCommand().getSequenceCommand()));
-            if (path != null) {
+            if (!path.equals(ConfigPath.EMPTY_PATH)) {
                 sb.append(JmsKeys.GMP_SEPARATOR);
                 sb.append(path.getName());
             }
@@ -110,22 +107,29 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
 
         @Override
         public Map<String, Object> getDataElements() {
-            return data;
+            return configurationElements;
         }
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             ActionMessageImpl that = (ActionMessageImpl) o;
 
-            if (data != null ? !data.equals(that.data) : that.data != null)
+            if (configurationElements != null ? !configurationElements.equals(that.configurationElements) : that.configurationElements != null) {
                 return false;
-            if (dd != null ? !dd.equals(that.dd) : that.dd != null)
+            }
+            if (dd != null ? !dd.equals(that.dd) : that.dd != null) {
                 return false;
-            if (props != null ? !props.equals(that.props) : that.props != null)
+            }
+            if (props != null ? !props.equals(that.props) : that.props != null) {
                 return false;
+            }
             //same thing
             return true;
         }
@@ -134,7 +138,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
         public int hashCode() {
             int result = dd != null ? dd.hashCode() : 0;
             result = 31 * result + (props != null ? props.hashCode() : 0);
-            result = 31 * result + (data != null ? data.hashCode() : 0);
+            result = 31 * result + (configurationElements != null ? configurationElements.hashCode() : 0);
             return result;
         }
 

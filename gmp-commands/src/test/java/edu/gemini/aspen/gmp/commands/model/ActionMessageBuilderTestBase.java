@@ -81,15 +81,14 @@ public abstract class ActionMessageBuilderTestBase extends ActionMessageTestBase
         testConfigPaths(action, ImmutableList.of(configPath("X")), 12);
     }
 
-
     /**
      * Test the message building when specifying sub configurations
      * to match
      */
     @Test
-    public void testBuildMessageWithNullConfigPath() {
+    public void testBuildMessageWithEmptyConfigPath() {
         //finally, test with a null Config Path.
-        ActionMessage am = getActionMessageBuilder().buildActionMessage(action, null);
+        ActionMessage am = getActionMessageBuilder().buildActionMessage(action);
 
         Map<String, Object> data = am.getDataElements();
         //null should be interpreted as no-filter, so all the stuff should be there
