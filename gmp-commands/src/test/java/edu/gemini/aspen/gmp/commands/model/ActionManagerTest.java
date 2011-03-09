@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.commands.model;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
@@ -12,20 +12,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
- * Test suite for the Action Manager class. 
+ * Test suite for the Action Manager class.
  */
 public class ActionManagerTest {
     private static final int TOTAL_ACTIONS = 10;
-    
+    private static final int TIMEOUT_FOR_RESPONSE = 1000;
+    private static final int TIMEOUT_FOR_NO_RESPONSE = 200;
+
     private ActionManager manager;
     private List<Action> actions;
+    private Map<Action, CompletionListenerMock> completionListeners = Maps.newHashMap();
 
     @Before
     public void setUp() {
@@ -34,10 +37,13 @@ public class ActionManagerTest {
         actions = Lists.newArrayList();
 
         for (int i = 0; i < TOTAL_ACTIONS; i++) {
-            actions.add(new Action(new Command(SequenceCommand.ABORT,
-                    Activity.PRESET,
-                    emptyConfiguration()),
-                    new CompletionListenerMock()));
+            CompletionListenerMock listener = new CompletionListenerMock();
+            Action action = new Action(
+                    new Command(SequenceCommand.ABORT, Activity.PRESET, emptyConfiguration()),
+                    listener);
+
+            completionListeners.put(action, listener);
+            actions.add(action);
         }
     }
 
@@ -55,24 +61,13 @@ public class ActionManagerTest {
         Action action = actions.get(0);
 
         manager.registerAction(action);
-
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        waitForListener(action.getCompletionListener(), 1000);
+        CompletionListenerMock cl = completionListeners.get(action);
 
-        CompletionListenerMock cl = (CompletionListenerMock) action.getCompletionListener();
+        cl.waitForCompletion(TIMEOUT_FOR_RESPONSE);
         assertTrue(cl.wasInvoked());
-    }
-
-    private void waitForListener(CompletionListener listener, int maxTime) {
-        synchronized (listener) {
-            try {
-                listener.wait(maxTime);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
     }
 
     /**
@@ -86,22 +81,20 @@ public class ActionManagerTest {
 
         //lock the manager, so it should not update the listener...
         manager.lock();
-
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        waitForListener(action.getCompletionListener(), 1000);
+        CompletionListenerMock cl = completionListeners.get(action);
 
-        CompletionListenerMock cl = (CompletionListenerMock) action.getCompletionListener();
+        cl.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
         assertFalse(cl.wasInvoked());
 
         //unlock the manager
         manager.unlock();
 
-        waitForListener(action.getCompletionListener(), 1000);
-
+        // Now it should be invoked
+        cl.waitForCompletion(TIMEOUT_FOR_RESPONSE);
         assertTrue(cl.wasInvoked());
-
     }
 
     /**
@@ -120,13 +113,17 @@ public class ActionManagerTest {
 
         //and give the listeners a chance to run...
         for (Action a : actions) {
-            waitForListener(a.getCompletionListener(), 1000);
+            CompletionListenerMock cl = completionListeners.get(a);
+            cl.waitForCompletion(TIMEOUT_FOR_RESPONSE);
         }
 
         for (int i = 0; i < TOTAL_ACTIONS - 1; i++) {
-            assertTrue(((CompletionListenerMock) ((actions.get(i).getCompletionListener()))).wasInvoked());
+            CompletionListenerMock cl = completionListeners.get(actions.get(i));
+            assertTrue(cl.wasInvoked());
         }
-        assertFalse(((CompletionListenerMock) ((actions.get(TOTAL_ACTIONS - 1).getCompletionListener()))).wasInvoked());
+
+        CompletionListenerMock cl = completionListeners.get(actions.get(TOTAL_ACTIONS - 1));
+        assertFalse(cl.wasInvoked());
 
     }
 
@@ -141,9 +138,9 @@ public class ActionManagerTest {
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        waitForListener(action.getCompletionListener(), 1000);
-        assertFalse(((CompletionListenerMock) ((action.getCompletionListener()))).wasInvoked());
-
+        CompletionListenerMock cl = completionListeners.get(action);
+        cl.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
+        assertFalse(cl.wasInvoked());
     }
 
     /**
@@ -159,17 +156,18 @@ public class ActionManagerTest {
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        waitForListener(action.getCompletionListener(), 1000);
-
-        assertTrue(((CompletionListenerMock) ((action.getCompletionListener()))).wasInvoked());
+        CompletionListenerMock cl = completionListeners.get(action);
+        cl.waitForCompletion(TIMEOUT_FOR_RESPONSE);
+        assertTrue(cl.wasInvoked());
 
         //now, receive completion again...
-        ((CompletionListenerMock) ((action.getCompletionListener()))).reset();
+        cl.reset();
 
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
-        waitForListener(action.getCompletionListener(), 1000);
-        assertFalse(((CompletionListenerMock) ((action.getCompletionListener()))).wasInvoked());
+        
+        cl.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
+        assertFalse(cl.wasInvoked());
     }
 
 
@@ -189,34 +187,11 @@ public class ActionManagerTest {
                 HandlerResponse.COMPLETED);
 
         //see if this triggers action #1.
-        waitForListener(action.getCompletionListener(), 1000);
+        CompletionListenerMock cl = completionListeners.get(action);
+        cl.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
         //it shouldn't have been called.
-        assertFalse(((CompletionListenerMock) ((action.getCompletionListener()))).wasInvoked());
+        assertFalse(cl.wasInvoked());
     }
-
-    /**
-     * Test the case when the action does not have a listener associated.
-     */
-    @Test
-    public void testNoListener() {
-        Action action = new Action(new Command(SequenceCommand.ABORT, Activity.PRESET,
-                emptyConfiguration()), new CompletionListenerMock());
-        manager.registerAction(action);
-
-        manager.registerCompletionInformation(action.getId(),
-                HandlerResponse.COMPLETED);
-
-        //if everything went fine, we should be able to process other actions..
-        //since otherwise the null listener should have caused a NPE that
-        //would have stopped the execution loop
-
-        testOneActionOneCompletion();
-        tearDown();
-
-        setUp();
-        testMultiplePendingActions();
-    }
-
 
     /**
      * This test verifies the handling of completion information
@@ -244,7 +219,7 @@ public class ActionManagerTest {
                 HandlerResponse.COMPLETED);
 
         //the completion listener should have been called.
-        waitForListener(action.getCompletionListener(), 1000);
+        cl.waitForCompletion(TIMEOUT_FOR_RESPONSE);
         assertTrue(cl.wasInvoked());
     }
 
@@ -275,17 +250,16 @@ public class ActionManagerTest {
                 HandlerResponse.COMPLETED);
 
         //the completion listener should not have been called.
-        waitForListener(action.getCompletionListener(), 1000);
-
+        cl.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
         assertFalse(cl.wasInvoked());
 
         cl.reset();
 
+        // Now it should be called
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        waitForListener(action.getCompletionListener(), 1000);
-
+        cl.waitForCompletion(TIMEOUT_FOR_RESPONSE);
         assertTrue(cl.wasInvoked());
     }
 
@@ -296,8 +270,8 @@ public class ActionManagerTest {
 
         Action fakedAction = new Action(Action.getCurrentId() + 1,
                 new Command(SequenceCommand.APPLY,
-                Activity.PRESET_START,
-                emptyConfiguration()),
+                        Activity.PRESET_START,
+                        emptyConfiguration()),
                 cl);
 
         manager.registerAction(fakedAction);
@@ -309,18 +283,18 @@ public class ActionManagerTest {
 
         //the completion listener should not have been called.
         //a log message should appear in the logs saying that an unexpected action was received.
-        waitForListener(fakedAction.getCompletionListener(), 1000);
+        cl.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
         assertFalse(cl.wasInvoked());
     }
 
-     @Test
+    @Test
     public void testReceptionOfUnexpectedActionIdLowerThanLastOneProcessed() {
         CompletionListenerMock cl = new CompletionListenerMock();
 
         Action fakedAction = new Action(18,
                 new Command(SequenceCommand.GUIDE,
-                Activity.PRESET_START,
-                emptyConfiguration()),
+                        Activity.PRESET_START,
+                        emptyConfiguration()),
                 cl);
         //register this action with the manager
         manager.registerAction(fakedAction);
@@ -331,7 +305,7 @@ public class ActionManagerTest {
 
         //the completion listener should not have been called
         //a log message should appear in the logs saying that an unexpected action was received.
-        waitForListener(fakedAction.getCompletionListener(), 5000);
+        cl.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
         assertFalse(cl.wasInvoked());
     }
 }
