@@ -1,6 +1,13 @@
 package edu.gemini.aspen.gmp.commands.impl;
 
-import edu.gemini.aspen.giapi.commands.*;
+import com.google.common.base.Preconditions;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CommandSender;
+import edu.gemini.aspen.giapi.commands.CompletionListener;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
@@ -58,39 +65,39 @@ public class CommandSenderImpl implements CommandSender {
         private CompletionListener _listener;
         private HandlerResponse _response;
 
-        public CompletionListenerDecorator(CompletionListener l) {
-            _listener = l;
+        public CompletionListenerDecorator(CompletionListener listener) {
+            Preconditions.checkArgument(listener != null, "Completion Listener cannot be null");
+            _listener = listener;
         }
 
         HandlerResponse getResponse() {
             return _response;
         }
 
-        public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
-            _listener.onHandlerResponse(response, command, activity, config);
-            //register the response received. 
+        @Override
+        public void onHandlerResponse(HandlerResponse response, Command command) {
+            _listener.onHandlerResponse(response, command);
+            //register the response received.
             _response = response;
+        }
+
+        @Override
+        public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
+            onHandlerResponse(response, new Command(command, activity, config));
+        }
+
+        @Override
+        public String toString() {
+            return _listener.toString();
         }
     }
 
     @Override
-    public HandlerResponse sendSequenceCommand(SequenceCommand command,
-                                               Activity activity,
-                                               CompletionListener listener) {
-        return sendSequenceCommand(command, activity, null, listener);
-
-    }
-
-    @Override
-    public HandlerResponse sendSequenceCommand(SequenceCommand command,
-                                               Activity activity,
-                                               Configuration config,
-                                               CompletionListener listener) {
-
+    public HandlerResponse sendCommand(Command command, CompletionListener listener) {
         CompletionListenerDecorator decoratorListener =
                 new CompletionListenerDecorator(listener);
 
-        Action action = new Action(command, activity, config,
+        Action action = new Action(command,
                 decoratorListener);
 
         //first, register the action even if it's something that
@@ -114,7 +121,7 @@ public class CommandSenderImpl implements CommandSender {
                 //we ensure we are not
                 //processing handlers while we validate the
                 //action has finished
-                _manager.lock();  
+                _manager.lock();
                 try {
                     if (decoratorListener.getResponse() != null) {
                         response = decoratorListener.getResponse();
@@ -131,5 +138,26 @@ public class CommandSenderImpl implements CommandSender {
             }
         }
         return response;
+    }
+
+    @Override
+    public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public HandlerResponse sendSequenceCommand(SequenceCommand command,
+                                               Activity activity,
+                                               CompletionListener listener) {
+        return sendSequenceCommand(command, activity, null, listener);
+
+    }
+
+    @Override
+    public HandlerResponse sendSequenceCommand(SequenceCommand command,
+                                               Activity activity,
+                                               Configuration config,
+                                               CompletionListener listener) {
+        return sendCommand(new Command(command, activity, config), listener);
     }
 }

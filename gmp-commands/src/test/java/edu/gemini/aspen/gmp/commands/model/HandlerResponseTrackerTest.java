@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.model;
 
 import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -22,15 +23,15 @@ public class HandlerResponseTrackerTest {
     @Before
     public void setUp() {
         handlerResponseTracker = new HandlerResponseTracker();
-        a = new Action(SequenceCommand.ABORT,
+        a = new Action(new Command(SequenceCommand.ABORT,
                        Activity.PRESET_START,
-                       emptyConfiguration(),
-                       null);
+                       emptyConfiguration()),
+                       new CompletionListenerMock());
 
-        b = new Action(SequenceCommand.ABORT,
+        b = new Action(new Command(SequenceCommand.ABORT,
                        Activity.PRESET_START,
-                       emptyConfiguration(),
-                       null);
+                       emptyConfiguration()),
+                       new CompletionListenerMock());
     }
 
     @After

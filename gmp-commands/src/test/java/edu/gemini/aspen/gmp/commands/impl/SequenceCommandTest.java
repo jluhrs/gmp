@@ -1,6 +1,11 @@
 package edu.gemini.aspen.gmp.commands.impl;
 
-import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CommandSender;
+import edu.gemini.aspen.giapi.commands.CommandUpdater;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
@@ -9,9 +14,12 @@ import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.test.SequenceCommandExecutorMock;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -19,9 +27,7 @@ import static org.junit.Assert.*;
  * the Command Sender and Command Updater implementations
  */
 public class SequenceCommandTest {
-
-//    private CommandSender cs;
-    private CommandUpdater cu;
+    private CommandUpdater commandUpdater;
 
     private ActionManager actionManager;
 
@@ -31,24 +37,15 @@ public class SequenceCommandTest {
 
     @Before
     public void setUp() {
-
         actionManager = new ActionManager();
         actionManager.start();
 
-//        sender = new ActionSenderMock();
+        commandUpdater = new CommandUpdaterImpl(actionManager);
 
-        cu = new CommandUpdaterImpl(actionManager);
-
-        executor = new SequenceCommandExecutorMock(cu, completionListener);
-
-//        cs = new CommandSenderImpl(actionManager, sender, executor);
-
-
+        executor = new SequenceCommandExecutorMock(commandUpdater, completionListener);
 
         completionListener.reset();
-
     }
-
 
     @After
     public void tearDown() {
@@ -60,8 +57,7 @@ public class SequenceCommandTest {
      * returned to the client is COMPLETED, ERROR or ACCEPTED.
      */
     @Test
-    public void testImmediateCommand() {
-
+    public void testImmediateCommand() throws InterruptedException {
 
         HandlerResponse[] answers = new HandlerResponse[]{
                 HandlerResponse.COMPLETED,
@@ -70,39 +66,28 @@ public class SequenceCommandTest {
         };
 
         for (HandlerResponse r : answers) {
-
             ActionSender sender = new ActionSenderMock(r);
-            CommandSender cs = new CommandSenderImpl(actionManager, sender, executor);
+            CommandSender commandSender = new CommandSenderImpl(actionManager, sender, executor);
 
-            completionListener.reset();
-
-            HandlerResponse response = cs.sendSequenceCommand(
+            HandlerResponse response = commandSender.sendCommand(new Command(
                     SequenceCommand.ABORT,
-                    Activity.PRESET,
+                    Activity.PRESET),
                     completionListener
             );
 
-            assertEquals(response, r);
+            assertEquals(r, response);
 
             //let's fake completion information...(we shouldn't receive this, since
             //the action completed immediately). If we do, there is something
             //wrong in the instrument code since it's  sending completion
             //info for actions that did not "STARTED".
             //The code will generate WARNING Messages, but that's okay
-            HandlerResponse r1 = HandlerResponse.COMPLETED;
-            cu.updateOcs(Action.getCurrentId(), r1);
-
+            HandlerResponse completedResponse = HandlerResponse.COMPLETED;
+            commandUpdater.updateOcs(Action.getCurrentId(), completedResponse);
 
             //now, make sure the completion listener is not triggered, since
             //this action completed immediately.
-
-            synchronized (completionListener) {
-                try {
-                    completionListener.wait(1000);
-                } catch (InterruptedException e) {
-                    fail("Thread interrupted");
-                }
-            }
+            completionListener.waitForCompletion(1000L);
 
             //the listener should not have been invoked
             assertFalse(completionListener.wasInvoked());
@@ -113,39 +98,50 @@ public class SequenceCommandTest {
     /**
      * Test a command that takes time to complete. So the first answer is
      * STARTED and then we receive completion information as "COMPLETED".
-     * 
-     * 
      */
     @Test
-    public void testLongCommand() {
-        HandlerResponse r = HandlerResponse.STARTED;
-        ActionSender sender = new ActionSenderMock(r);
+    public void testLongCommand() throws InterruptedException {
+        ActionSender sender = new ActionSenderMock(HandlerResponse.STARTED);
         CommandSender cs = new CommandSenderImpl(actionManager, sender, executor);
-        HandlerResponse response = cs.sendSequenceCommand(
+        HandlerResponse response = cs.sendCommand(new Command(
                 SequenceCommand.ABORT,
-                Activity.START,
+                Activity.START),
                 completionListener
         );
 
-        assertEquals(response, r);
+        assertEquals(HandlerResponse.STARTED, response);
 
         HandlerResponse r1 = HandlerResponse.COMPLETED;
-        cu.updateOcs(Action.getCurrentId(), r1);
+        commandUpdater.updateOcs(Action.getCurrentId(), r1);
 
-        synchronized (completionListener) {
-            try {
-                completionListener.wait(1000);
-            } catch (InterruptedException e) {
-                fail("Thread interrupted");
-            }
-        }
+        completionListener.waitForCompletion(1000L);
+
         assertTrue(completionListener.wasInvoked());
         assertEquals(r1, completionListener.getLastResponse());
     }
 
     /**
+     * Test a command that is not process and thus it timeouts
+     */
+    @Test
+    @Ignore
+    public void testCommandWithTimeout() throws InterruptedException {
+        ActionSender sender = new ActionSenderMock(HandlerResponse.STARTED);
+        actionManager.stop();
+        CommandSender cs = new CommandSenderImpl(actionManager, sender, executor);
+        HandlerResponse response = cs.sendCommand(new Command(
+                SequenceCommand.ABORT,
+                Activity.START),
+                completionListener,
+                3000L
+        );
+
+        assertEquals(HandlerResponse.createError("Timeout"), response);
+    }
+
+    /**
      * This case test a command whose associated handler finishes faster than
-     * the code that receivesthe request... so we get "Completed" for instance,
+     * the code that receives the request... so we get "Completed" for instance,
      * for an action we have not quite yet send the "Started".
      */
     @Test
@@ -169,9 +165,9 @@ public class SequenceCommandTest {
         //returned "STARTED". However, since we receive first a "COMPLETED"
         //due to the handler, internally the command sender has to
         //consider that and return the final answer.
-        HandlerResponse response = cs.sendSequenceCommand(
+        HandlerResponse response = cs.sendCommand(new Command(
                 SequenceCommand.DATUM,
-                Activity.START,
+                Activity.START),
                 completionListener
         );
 

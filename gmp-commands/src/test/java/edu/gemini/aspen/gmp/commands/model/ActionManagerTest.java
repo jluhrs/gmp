@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.model;
 
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
@@ -13,16 +14,18 @@ import org.junit.Test;
 import java.util.List;
 
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test suite for the Action Manager class. 
  */
 public class ActionManagerTest {
-
+    private static final int TOTAL_ACTIONS = 10;
+    
     private ActionManager manager;
     private List<Action> actions;
-    private static final int TOTAL_ACTIONS = 10;
 
     @Before
     public void setUp() {
@@ -31,9 +34,9 @@ public class ActionManagerTest {
         actions = Lists.newArrayList();
 
         for (int i = 0; i < TOTAL_ACTIONS; i++) {
-            actions.add(new Action(SequenceCommand.ABORT,
+            actions.add(new Action(new Command(SequenceCommand.ABORT,
                     Activity.PRESET,
-                    emptyConfiguration(),
+                    emptyConfiguration()),
                     new CompletionListenerMock()));
         }
     }
@@ -56,7 +59,7 @@ public class ActionManagerTest {
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        waitForListener(action.getCompletionListener(), 5000);
+        waitForListener(action.getCompletionListener(), 1000);
 
         CompletionListenerMock cl = (CompletionListenerMock) action.getCompletionListener();
         assertTrue(cl.wasInvoked());
@@ -196,8 +199,8 @@ public class ActionManagerTest {
      */
     @Test
     public void testNoListener() {
-        Action action = new Action(SequenceCommand.ABORT, Activity.PRESET,
-                emptyConfiguration(), null);
+        Action action = new Action(new Command(SequenceCommand.ABORT, Activity.PRESET,
+                emptyConfiguration()), new CompletionListenerMock());
         manager.registerAction(action);
 
         manager.registerCompletionInformation(action.getId(),
@@ -223,14 +226,13 @@ public class ActionManagerTest {
      * can receive multiple responses. This test verifies the simpler
      * case when only one handler replies.
      */
-
     @Test
     public void testCompletionForApplySequenceCommand() {
         CompletionListenerMock cl = new CompletionListenerMock();
 
-        Action action = new Action(SequenceCommand.APPLY,
+        Action action = new Action(new Command(SequenceCommand.APPLY,
                 Activity.PRESET_START,
-                emptyConfiguration(),
+                emptyConfiguration()),
                 cl);
 
         manager.registerAction(action);
@@ -242,7 +244,7 @@ public class ActionManagerTest {
                 HandlerResponse.COMPLETED);
 
         //the completion listener should have been called.
-        waitForListener(action.getCompletionListener(), 5000);
+        waitForListener(action.getCompletionListener(), 1000);
         assertTrue(cl.wasInvoked());
     }
 
@@ -257,23 +259,23 @@ public class ActionManagerTest {
     public void testMultipleCompletionForApplySequenceCommand() {
         CompletionListenerMock cl = new CompletionListenerMock();
 
-        Action action = new Action(SequenceCommand.APPLY,
+        Action action = new Action(new Command(SequenceCommand.APPLY,
                 Activity.PRESET_START,
-                emptyConfiguration(),
+                emptyConfiguration()),
                 cl);
 
         manager.registerAction(action);
 
         //two handlers will be expected..
-        manager.increaseRequiredResponses(action); manager.increaseRequiredResponses(action);
-
+        manager.increaseRequiredResponses(action);
+        manager.increaseRequiredResponses(action);
 
         cl.reset();
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
         //the completion listener should not have been called.
-        waitForListener(action.getCompletionListener(), 5000);
+        waitForListener(action.getCompletionListener(), 1000);
 
         assertFalse(cl.wasInvoked());
 
@@ -282,7 +284,7 @@ public class ActionManagerTest {
         manager.registerCompletionInformation(action.getId(),
                 HandlerResponse.COMPLETED);
 
-        waitForListener(action.getCompletionListener(), 5000);
+        waitForListener(action.getCompletionListener(), 1000);
 
         assertTrue(cl.wasInvoked());
     }
@@ -293,45 +295,39 @@ public class ActionManagerTest {
         CompletionListenerMock cl = new CompletionListenerMock();
 
         Action fakedAction = new Action(Action.getCurrentId() + 1,
-                SequenceCommand.APPLY,
+                new Command(SequenceCommand.APPLY,
                 Activity.PRESET_START,
-                emptyConfiguration(),
+                emptyConfiguration()),
                 cl);
 
         manager.registerAction(fakedAction);
         //An action started has been registered.
         manager.increaseRequiredResponses(fakedAction);
 
-
-
         manager.registerCompletionInformation(fakedAction.getId(),
                 HandlerResponse.COMPLETED);
 
         //the completion listener should not have been called.
         //a log message should appear in the logs saying that an unexpected action was received.
-        waitForListener(fakedAction.getCompletionListener(), 5000);
+        waitForListener(fakedAction.getCompletionListener(), 1000);
         assertFalse(cl.wasInvoked());
-
-
     }
 
      @Test
     public void testReceptionOfUnexpectedActionIdLowerThanLastOneProcessed() {
-
         CompletionListenerMock cl = new CompletionListenerMock();
 
         Action fakedAction = new Action(18,
-                SequenceCommand.GUIDE,
+                new Command(SequenceCommand.GUIDE,
                 Activity.PRESET_START,
-                emptyConfiguration(),
+                emptyConfiguration()),
                 cl);
         //register this action with the manager
         manager.registerAction(fakedAction);
 
         //and let's fake the reception of an unexpected action ID, lower than the
         //last registered (18)
-        manager.registerCompletionInformation(5,
-                HandlerResponse.COMPLETED);
+        manager.registerCompletionInformation(5, HandlerResponse.COMPLETED);
 
         //the completion listener should not have been called
         //a log message should appear in the logs saying that an unexpected action was received.

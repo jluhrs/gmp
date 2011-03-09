@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.jms;
 
 import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
@@ -58,4 +59,16 @@ public class SequenceCommandSenderReplyTest {
         assertEquals(HandlerResponse.Response.NOANSWER, response.getResponse());
     }
 
+    //@Test
+    public void testSend() {
+        SequenceCommandSenderReply senderReply = new SequenceCommandSenderReply(clientData);
+
+        JmsActionMessageBuilder messageBuilder = new JmsActionMessageBuilder();
+        Action action = new Action(new Command(SequenceCommand.DATUM,
+                Activity.START, emptyConfiguration()), null);
+        ActionMessage actionMessage = messageBuilder.buildActionMessage(action);
+        HandlerResponse response = senderReply.send(actionMessage);
+
+        assertEquals(HandlerResponse.Response.NOANSWER, response.getResponse());
+    }
 }

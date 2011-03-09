@@ -1,12 +1,10 @@
 package edu.gemini.aspen.gmp.commands.test;
 
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
-import edu.gemini.aspen.giapi.commands.CompletionListener;
-import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
-import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import org.junit.Ignore;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 
 import static org.junit.Assert.fail;
 
@@ -17,16 +15,15 @@ import static org.junit.Assert.fail;
 public class SequenceCommandExecutorMock implements SequenceCommandExecutor {
     private CommandUpdater _commandUpdater;
 
-    private final CompletionListener _completionListener;
+    private final CompletionListenerMock _completionListener;
     private boolean _simulateFastHandler;
     private HandlerResponse _response;
 
-    public SequenceCommandExecutorMock(CommandUpdater cu, CompletionListener listener) {
+    public SequenceCommandExecutorMock(CommandUpdater cu, CompletionListenerMock listener) {
         _commandUpdater = cu;
         _simulateFastHandler = false;
         _response = null;
         _completionListener = listener;
-
     }
 
     public HandlerResponse execute(Action action, ActionSender sender) {
@@ -35,12 +32,9 @@ public class SequenceCommandExecutorMock implements SequenceCommandExecutor {
             _commandUpdater.updateOcs(action.getId(), _response);
 
             //let's wait for the completion listener to finish
-            synchronized (_completionListener) {
-                try {
-                    _completionListener.wait(1000);
-                } catch (InterruptedException e) {
-                    fail("Thread interrupted");
-                }
+            _completionListener.waitForCompletion(1000);
+            if (!_completionListener.wasInvoked()) {
+                fail("Thread interrupted");
             }
         }
         return sender.send(null);

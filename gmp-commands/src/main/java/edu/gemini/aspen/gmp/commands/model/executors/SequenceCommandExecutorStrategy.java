@@ -1,10 +1,14 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.model.*;
-import edu.gemini.aspen.gmp.commands.model.reboot.LogRebootManager;
+import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
+import edu.gemini.aspen.gmp.commands.model.reboot.LogRebootManager;
 
 /**
  * This is a high order Sequence Command Executor. It will delegate
@@ -33,11 +37,11 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
         if (action == null)
             throw new SequenceCommandException("Null action received for execution");
 
-        return findCommandExecutor(action.getSequenceCommand()).execute(action, sender);
+        return findCommandExecutor(action.getCommand()).execute(action, sender);
     }
 
-    private SequenceCommandExecutor findCommandExecutor(SequenceCommand sequenceCommand) {
-        switch (sequenceCommand) {
+    private SequenceCommandExecutor findCommandExecutor(Command sequenceCommand) {
+        switch (sequenceCommand.getSequenceCommand()) {
             case APPLY:
                 return _applyExecutor;
             case REBOOT:

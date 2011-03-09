@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.model;
 
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 import org.junit.Before;
@@ -36,7 +37,7 @@ public abstract class ActionMessageTestBase {
 
         for (SequenceCommand sc: SequenceCommand.values()) {
             for (Activity activity: Activity.values()) {
-                _action.add(new Action(sc, activity, dummyConfig, null));
+                _action.add(new Action(new Command(sc, activity, dummyConfig), new CompletionListenerMock()));
             }
         }
     }
@@ -52,7 +53,7 @@ public abstract class ActionMessageTestBase {
 
             //name
             StringBuilder sb = new StringBuilder(JmsKeys.GMP_SEQUENCE_COMMAND_PREFIX);
-            sb.append(a.getSequenceCommand().getName());
+            sb.append(a.getCommand().getSequenceCommand().getName());
             assertEquals(sb.toString(), dd.getName());
         }
     }
@@ -70,7 +71,7 @@ public abstract class ActionMessageTestBase {
 
             //activity is also a property
             String act = (String) props.get(JmsKeys.GMP_ACTIVITY_PROP);
-            assertEquals(a.getActivity(), Activity.toActivity(act));
+            assertEquals(a.getCommand().getActivity(), Activity.toActivity(act));
         }
     }
 
@@ -96,7 +97,7 @@ public abstract class ActionMessageTestBase {
 
         Configuration config = new DefaultConfiguration(map);
 
-        Action a = new Action(SequenceCommand.ABORT, Activity.START, config, null);
+        Action a = new Action(new Command(SequenceCommand.ABORT, Activity.START, config), new CompletionListenerMock());
 
         ActionMessage am = getActionMessage(a);
 

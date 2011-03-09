@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
@@ -9,6 +10,7 @@ import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,20 +60,10 @@ public class ApplySenderExecutorTest {
     }
 
     @Test
-    public void testNoConfiguration() {
-        Action action = new Action(SequenceCommand.APPLY,
-                Activity.START,
-                null, null);
-        ActionSender sender = new ActionSenderMock(HandlerResponse.ACCEPTED);
-        HandlerResponse response = _executor.execute(action, sender);
-        assertEquals(HandlerResponse.createError("No configuration present for Apply Sequence command"), response);
-    }
-
-    @Test
     public void testEmptyConfiguration() {
-        Action action = new Action(SequenceCommand.APPLY,
+        Action action = new Action(new Command(SequenceCommand.APPLY,
                 Activity.START,
-                emptyConfiguration(), null);
+                emptyConfiguration()), new CompletionListenerMock());
         ActionSender sender = new ActionSenderMock(HandlerResponse.ACCEPTED);
         HandlerResponse response = _executor.execute(action, sender);
         assertEquals(HandlerResponse.createError("No configuration present for Apply Sequence command"), response);
@@ -83,9 +75,9 @@ public class ApplySenderExecutorTest {
      */
     @Test
     public void testCorrectHandlerResponse() {
-        Action action = new Action(SequenceCommand.APPLY,
+        Action action = new Action(new Command(SequenceCommand.APPLY,
                 Activity.START,
-                _applyConfig, null);
+                _applyConfig), new CompletionListenerMock());
 
         for (HandlerResponse response: _responses) {
             ActionSender sender = new ActionSenderMock(response);

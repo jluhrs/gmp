@@ -29,7 +29,7 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
     @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
 
-        Configuration config = action.getConfiguration();
+        Configuration config = action.getCommand().getConfiguration();
         if (config == null || config.getKeys().size() == 0)
             return HandlerResponse.createError(ERROR_MSG);
         return getResponse(action, config, ConfigPath.EMPTY_PATH, sender);

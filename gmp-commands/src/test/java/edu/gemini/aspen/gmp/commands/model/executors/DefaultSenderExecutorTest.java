@@ -1,12 +1,14 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,8 +46,8 @@ public class DefaultSenderExecutorTest {
     @Test
     public void testDefaultExecution() {
 
-        Action action = new Action(SequenceCommand.DATUM,
-                Activity.START, emptyConfiguration(), null);
+        Action action = new Action(new Command(SequenceCommand.DATUM,
+                Activity.START, emptyConfiguration()), new CompletionListenerMock());
 
         for (HandlerResponse response: _responses) {
             ActionSender sender = new ActionSenderMock(response);

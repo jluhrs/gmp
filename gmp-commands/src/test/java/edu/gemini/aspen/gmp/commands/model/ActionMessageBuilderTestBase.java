@@ -1,10 +1,21 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.ConfigPath;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for the ActionMessageBuilder
@@ -51,7 +62,7 @@ public abstract class ActionMessageBuilderTestBase extends ActionMessageTestBase
 
         Configuration config = new DefaultConfiguration(configuration);
 
-        Action action = new Action(SequenceCommand.ABORT, Activity.START, config, null);
+        Action action = new Action(new Command(SequenceCommand.ABORT, Activity.START, config), new CompletionListenerMock());
 
         List<ConfigPath> configPaths = new ArrayList<ConfigPath>();
 

@@ -58,14 +58,14 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
             props = new HashMap<String, Object>();
 
             props.put(JmsKeys.GMP_ACTIVITY_PROP,
-                    action.getActivity().getName());
+                    action.getCommand().getActivity().getName());
             props.put(JmsKeys.GMP_ACTIONID_PROP, action.getId());
 
             data = new HashMap<String, Object>();
 
             //Store the configuration elements that
             //matches this config path.
-            Configuration c = action.getConfiguration();
+            Configuration c = action.getCommand().getConfiguration();
             if (c != null) {
 
                 if (path != null) {
@@ -90,7 +90,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
 
         private String getTopicName(Action action, ConfigPath path) {
             //the destination changes if a config path is specified...
-            StringBuilder sb = new StringBuilder(TOPIC_MAP.get(action.getSequenceCommand()));
+            StringBuilder sb = new StringBuilder(TOPIC_MAP.get(action.getCommand().getSequenceCommand()));
             if (path != null) {
                 sb.append(JmsKeys.GMP_SEPARATOR);
                 sb.append(path.getName());

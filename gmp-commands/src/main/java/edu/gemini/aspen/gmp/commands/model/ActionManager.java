@@ -2,14 +2,18 @@ package edu.gemini.aspen.gmp.commands.model;
 
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
 
-import java.util.*;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.concurrent.*;
+import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class keeps track of the actions that are being sent to the instruments
@@ -80,7 +84,7 @@ public class ActionManager {
      * @param action the APPLY action that will get a future response later.
      */
     public void increaseRequiredResponses(Action action) {
-        if (action != null && action.getSequenceCommand() == SequenceCommand.APPLY) {
+        if (action != null && action.getCommand().isApply()) {
             _handlerResponseTracker.increaseRequiredResponses(action);
         }
     }
@@ -156,9 +160,7 @@ public class ActionManager {
                             CompletionListener listener = action.getCompletionListener();
                             if (listener != null) {
                                 listener.onHandlerResponse(_handlerResponseTracker.getResponse(action),
-                                        action.getSequenceCommand(),
-                                        action.getActivity(),
-                                        action.getConfiguration());
+                                        action.getCommand());
                             } else {
                                 LOG.info("No interested listener on action " + action);
                             }

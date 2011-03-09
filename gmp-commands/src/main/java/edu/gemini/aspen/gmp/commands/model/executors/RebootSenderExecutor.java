@@ -30,14 +30,14 @@ public class RebootSenderExecutor implements SequenceCommandExecutor {
     @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
 
-        final RebootArgument arg = RebootArgument.parse(action.getConfiguration());
+        final RebootArgument arg = RebootArgument.parse(action.getCommand().getConfiguration());
         if (arg == null) {
-            return HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + action.getConfiguration());
+            return HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + action.getCommand().getConfiguration());
         }
 
-        if (action.getActivity() == Activity.PRESET)
+        if (action.getCommand().getActivity() == Activity.PRESET)
             return HandlerResponse.ACCEPTED;
-        if (action.getActivity() == Activity.CANCEL) {
+        if (action.getCommand().getActivity() == Activity.CANCEL) {
             return HandlerResponse.createError("Can't cancel a REBOOT sequence command");
         }
 

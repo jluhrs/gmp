@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -42,8 +43,8 @@ public class RebootSenderExecutorTest {
 
     @Test
     public void testRebootWithPreset() {
-        Action action = new Action(SequenceCommand.REBOOT,
-                Activity.PRESET, configGMP, null);
+        Action action = new Action(new Command(SequenceCommand.REBOOT,
+                Activity.PRESET, configGMP), new CompletionListenerMock());
 
         //set the sender to anything but ACCEPTED
         ActionSender sender = new ActionSenderMock(HandlerResponse.createError("error"));
@@ -56,8 +57,8 @@ public class RebootSenderExecutorTest {
 
     @Test
     public void testRebootWithCancel() {
-        Action action = new Action(SequenceCommand.REBOOT,
-                Activity.CANCEL, configGMP, null);
+        Action action = new Action(new Command(SequenceCommand.REBOOT,
+                Activity.CANCEL, configGMP), new CompletionListenerMock());
 
         //set the sender to anything but ERROR
         ActionSender sender = new ActionSenderMock(HandlerResponse.ACCEPTED);
@@ -70,8 +71,8 @@ public class RebootSenderExecutorTest {
 
     @Test
     public void testRebootWithoutConfig() {
-        Action action = new Action(SequenceCommand.REBOOT,
-                Activity.START, null, null);
+        Action action = new Action(new Command(SequenceCommand.REBOOT,
+                Activity.START, emptyConfiguration()), new CompletionListenerMock());
 
         //if null the answer should be the one of the sender, i.e,
         //it's like a NONE argument
@@ -108,8 +109,8 @@ public class RebootSenderExecutorTest {
     public void testRebootWithInvalidConfigs() {
         Configuration c = configuration(configPath("REBOOT_OPT"), "Invalid");
 
-        Action action = new Action(SequenceCommand.REBOOT,
-                Activity.START, c, null);
+        Action action = new Action(new Command(SequenceCommand.REBOOT,
+                Activity.START, c), new CompletionListenerMock());
 
         ActionSender sender = new ActionSenderMock(HandlerResponse.COMPLETED);
 
@@ -119,8 +120,8 @@ public class RebootSenderExecutorTest {
 
 
         c = configuration(configPath("INVALID_KEY"), "REBOOT");
-        action = new Action(SequenceCommand.REBOOT,
-                Activity.START, c, null);
+        action = new Action(new Command(SequenceCommand.REBOOT,
+                Activity.START, c), new CompletionListenerMock());
         response = executor.execute(action, sender);
 
         assertEquals(HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + c), response);
@@ -151,8 +152,8 @@ public class RebootSenderExecutorTest {
         };
 
         for (Activity activity : activities) {
-            Action action = new Action(SequenceCommand.REBOOT,
-                    activity, config, null);
+            Action action = new Action(new Command(SequenceCommand.REBOOT,
+                    activity, config), new CompletionListenerMock());
             //if the sender returns COMPLETED, this means the instrument
             //will execute the reboot with the supplied argument.
 
