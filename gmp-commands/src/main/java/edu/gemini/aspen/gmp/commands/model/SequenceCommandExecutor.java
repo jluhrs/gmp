@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model;
 
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 
 /**

@@ -30,9 +30,11 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
     public HandlerResponse execute(Action action, ActionSender sender) {
 
         Configuration config = action.getCommand().getConfiguration();
-        if (config == null || config.getKeys().size() == 0)
+        if (config.isEmpty()) {
             return HandlerResponse.createError(ERROR_MSG);
-        return getResponse(action, config, ConfigPath.EMPTY_PATH, sender);
+        } else {
+            return getResponse(action, config, ConfigPath.EMPTY_PATH, sender);
+        }
     }
 
 

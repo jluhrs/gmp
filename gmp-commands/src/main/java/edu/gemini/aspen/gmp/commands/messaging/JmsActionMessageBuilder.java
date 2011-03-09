@@ -19,7 +19,7 @@ import java.util.HashMap;
  */
 public class JmsActionMessageBuilder implements ActionMessageBuilder {
     /**
-     * Map to store topics associtated to each sequence command
+     * Map to store topics associated to each sequence command
      */
     private static final Map<SequenceCommand, String> TOPIC_MAP = new HashMap<SequenceCommand, String>();
     /**

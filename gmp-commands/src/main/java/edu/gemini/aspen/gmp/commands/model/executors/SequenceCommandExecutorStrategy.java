@@ -37,7 +37,8 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
         if (action == null)
             throw new SequenceCommandException("Null action received for execution");
 
-        return findCommandExecutor(action.getCommand()).execute(action, sender);
+        Command command = action.getCommand();
+        return findCommandExecutor(command).execute(action, sender);
     }
 
     private SequenceCommandExecutor findCommandExecutor(Command sequenceCommand) {
