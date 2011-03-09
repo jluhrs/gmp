@@ -8,12 +8,7 @@ import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
  */
 public class JmsActionMessageBuilderTest extends ActionMessageBuilderTestBase {
 
-    private JmsActionMessageBuilder _builder;
-
     protected ActionMessageBuilder getActionMessageBuilder() {
-        if (_builder == null) {
-            _builder = new JmsActionMessageBuilder();
-        }
-        return _builder;
+        return new JmsActionMessageBuilder();
     }
 }
