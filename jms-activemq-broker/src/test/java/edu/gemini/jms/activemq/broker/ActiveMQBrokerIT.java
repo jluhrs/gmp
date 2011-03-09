@@ -49,7 +49,6 @@ public class ActiveMQBrokerIT {
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").version("5.4.2"),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").version("1.1.1"),
                 mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
-                //mavenBundle().artifactId("guava").groupId("com.google.guava").version("8.0.0"),
                 mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject(),
                 mavenBundle().artifactId("jms-activemq-broker").groupId("edu.gemini.jms").version("1.1.0").update().startLevel(6));
     }
