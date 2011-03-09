@@ -22,8 +22,8 @@ import static org.junit.Assert.assertEquals;
  */
 public abstract class ActionMessageBuilderTestBase extends ActionMessageTestBase {
 
-    private Configuration config;
-    private Action action;
+    protected Configuration config;
+    protected Action action;
 
     protected abstract ActionMessageBuilder getActionMessageBuilder();
 
