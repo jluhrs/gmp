@@ -31,33 +31,34 @@ set -e # reenable
 # - functions to start/stop the container ...
 #
 function startContainer() {
-  if [ -z ${pid_isrunning} ]; then
+#  if [ -z ${pid_isrunning} ]; then
     echo "starting ${app_name}"
-    pushd ${app_root} > /dev/null
-    ${app_root}/bin/gmp.sh --startd >${log_file} 2>&1 &
-    echo $! > ${pid_file}
+    pushd ${app_root}/bin > /dev/null
+    # Will start pax-runner reading the configuration from the file bin/runner.args
+    exec java -cp ${app_root}/bin/pax-runner-1.5.0.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd 2>&1 | tee  ${log_file} |grep "lock exists" &
+#    echo $! > ${pid_file}
     popd > /dev/null
-  else
-    echo "${app_name} already running with pid ${pid}"
-  fi
+#  else
+#    echo "${app_name} already running with pid ${pid}"
+#  fi
 }
 #
 function stopContainer() {
 #  if [ ! -z ${pid_isrunning} ]; then
-    echo "stopping ${app_name} with pid ${pid}"
-    ${app_root}/bin/gmp.sh --stop >${log_file} 2>&1
+#    echo "stopping ${app_name} with pid ${pid}"
+    exec java -cp ${app_root}/bin/pax-runner-1.5.0.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop
 #  else
 #    echo "${app_name} not running"
 #  fi
 }
-function killContainer() {
-  if [ ! -z ${pid_isrunning} ]; then
-    echo "killing ${app_name} with pid ${pid}"
-    kill `cat ${pid_file}`
-  else
-    echo "${app_name} not running"
-  fi
-}
+#function killContainer() {
+#  if [ ! -z ${pid_isrunning} ]; then
+#    echo "killing ${app_name} with pid ${pid}"
+#    kill `cat ${pid_file}`
+#  else
+#    echo "${app_name} not running"
+#  fi
+#}
 #
 # - main command dispatch ...
 #
@@ -68,22 +69,22 @@ case "$1" in
     stop)
       stopContainer
       ;;
-    kill)
-      killContainer
-      ;;
-    restart)
-      stopContainer
-      startContainer
-      ;;
-    status)
-      if [ ! -z ${pid_isrunning} ]; then
-        echo "${app_name} is running with pid ${pid}"
-      else
-        echo "${app_name} not running"
-      fi
-      ;;
+#    kill)
+#      killContainer
+#      ;;
+#    restart)
+#      stopContainer
+#      startContainer
+#      ;;
+#    status)
+#      if [ ! -z ${pid_isrunning} ]; then
+#        echo "${app_name} is running with pid ${pid}"
+#      else
+#        echo "${app_name} not running"
+#      fi
+#      ;;
     *)
-      echo "Usage: ${app_name} {start|stop|kill|restart|status}"
+      echo "Usage: ${app_name} {start|stop}"
       exit 1
       ;;
 esac
