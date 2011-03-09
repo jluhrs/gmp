@@ -22,6 +22,8 @@ import javax.jms.MapMessage;
 public class SequenceCommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse>
         implements ActionSender {
 
+    public static final int RESPONSE_WAIT_TIMEOUT = 500;
+
     public SequenceCommandSenderReply(String clientData) {
         super(clientData);
     }
@@ -39,18 +41,13 @@ public class SequenceCommandSenderReply extends JmsMapMessageSenderReply<Handler
     @Override
     public HandlerResponse send(ActionMessage actionMessage)
             throws SequenceCommandException {
-
         try {
-            Object o = sendMapMessageReply(
+            HandlerResponse response = sendMapMessageReply(
                     actionMessage.getDestinationData(),
                     actionMessage.getDataElements(),
                     actionMessage.getProperties(),
-                    500);
-            if (o instanceof HandlerResponse)
-                return (HandlerResponse) o;
-            else
-                throw new SequenceCommandException(
-                        "Invalid answer received for sequence command message");
+                    RESPONSE_WAIT_TIMEOUT);
+            return response;
 
         } catch (MessagingException e) {
             throw new SequenceCommandException("Unable to send action", e);
