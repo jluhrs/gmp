@@ -11,8 +11,7 @@
 --localRepository=file:../felix,file:../bundles
 
 # Pass System properties for configuration and logs
---vmOptions=-Dconf.base=../../conf \
-            -Dlogs.dir=../../logs
+--vmOptions=-Dfelix.system.properties=file:../../conf/config.properties
 
 # Instructions on what bundles to load
 scan-composite:file:../conf/module.properties

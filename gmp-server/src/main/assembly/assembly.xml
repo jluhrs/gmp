@@ -61,6 +61,7 @@
             <filtered>true</filtered>
             <includes>
                 <include>start.sh</include>
+                <include>gmp.sh</include>
             </includes>
         </fileSet>
         <fileSet>
