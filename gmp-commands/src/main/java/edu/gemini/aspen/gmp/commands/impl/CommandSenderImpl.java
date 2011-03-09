@@ -48,6 +48,7 @@ public class CommandSenderImpl implements CommandSender {
     public CommandSenderImpl(ActionManager manager,
                              ActionSender sender,
                              SequenceCommandExecutor executor) {
+        Preconditions.checkArgument(manager != null);
         _manager = manager;
         _executor = executor;
         _sender = sender;
@@ -142,7 +143,7 @@ public class CommandSenderImpl implements CommandSender {
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

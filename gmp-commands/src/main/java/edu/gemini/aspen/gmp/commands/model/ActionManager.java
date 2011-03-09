@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 
 import java.util.Queue;
@@ -157,13 +156,7 @@ public class ActionManager {
                         _handlerResponseTracker.storeResponse(action, response);
                         if (_handlerResponseTracker.isComplete(action)) {
                             LOG.info("Updating clients with action " + action + " response " + response);
-                            CompletionListener listener = action.getCompletionListener();
-                            if (listener != null) {
-                                listener.onHandlerResponse(_handlerResponseTracker.getResponse(action),
-                                        action.getCommand());
-                            } else {
-                                LOG.info("No interested listener on action " + action);
-                            }
+                            action.sendResponseToListeners(_handlerResponseTracker.getResponse(action));
                             //remove the action from the list of tracked actions
                             _handlerResponseTracker.removeTrackedAction(action);
                             
