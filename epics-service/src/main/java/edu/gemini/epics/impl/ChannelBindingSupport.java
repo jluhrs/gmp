@@ -18,6 +18,7 @@ import gov.aps.jca.event.GetListener;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -143,7 +144,7 @@ public class ChannelBindingSupport {
             }
             it.remove();
         }
-        LOGGER.info("Closed channel binder. " + _ctx.getChannels().length + " channel(s) remaining in context.");
+        LOGGER.info("Closed channel binder. " + Arrays.toString(_ctx.getChannels()) + " channel(s) remaining in context.");
     }
 
 }

@@ -131,4 +131,14 @@ public class ChannelBindingSupportTest {
         // Simulate an update sent through a MonitorListener
         return monitorListenerArgument.getValue();
     }
+
+    @Test
+    public void testClose() throws CAException {
+        when(context.createChannel(eq(CHANNEL_NAME), any(ConnectionListener.class))).thenReturn(channel);
+        cbs.bindChannel(CHANNEL_NAME);
+
+        cbs.close();
+        
+        verify(channel).destroy();
+    }
 }
