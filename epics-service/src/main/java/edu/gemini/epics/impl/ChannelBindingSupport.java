@@ -1,6 +1,7 @@
 package edu.gemini.epics.impl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import edu.gemini.epics.IEpicsClient;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
@@ -19,57 +20,64 @@ import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChannelBindingSupport {
-    private static final Logger LOGGER = Logger.getLogger(ChannelBindingSupport.class.getName());
+    private static final Logger LOG = Logger.getLogger(ChannelBindingSupport.class.getName());
 
     private final Context _ctx;
-    private final IEpicsClient target;
-    private final Set<Channel> channels = new HashSet<Channel>();
-    private boolean closed;
+    private final IEpicsClient _epicsClient;
+    private final Set<Channel> _channels = Sets.newHashSet();
+    private boolean _closed;
 
     private final ConnectionListener connectionListener = new ConnectionListener() {
         public void connectionChanged(ConnectionEvent ce) {
             Channel ch = (Channel) ce.getSource();
             if (ce.isConnected()) {
-
-                LOGGER.fine("Channel was opened for " + ch.getName());
-                try {
-                    ch.addMonitor(Monitor.VALUE, monitorListener);
-                    ch.getContext().flushIO();
-                } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "Could not add monitor to " + ch.getName(), e);
-                }
-
+                addMonitorListenerToChannel(ch);
             } else {
-
-                // The channel was closed.
-                // First, update the value to null.
-                target.channelChanged(ch.getName(), null);
+                updateClientUponClosing(ch);
 
                 // Now throw the dead channel away and reconnect. The old monitor
                 // will get GC'd so we don't need to worry about it.
-                if (!closed) {
-                    LOGGER.warning("Connection was closed for " + ch.getName());
-                    try {
-
-                        LOGGER.info("Destroying channel " + ch.getName() + ", state is " + ch.getConnectionState());
-                        ch.destroy();
-
-                        LOGGER.info("Reconnecting channel " + ch.getName());
-                        ch = ch.getContext().createChannel(ch.getName(), this);
-                        ch.getContext().flushIO();
-
-                    } catch (Exception e) {
-                        LOGGER.log(Level.SEVERE, "Trouble reconnecting channel " + ch.getName(), e);
-                    }
+                if (!_closed) {
+                    reconnectChannel(ch);
                 }
             }
+        }
+
+        private void reconnectChannel(Channel ch) {
+            LOG.warning("Connection was _closed for " + ch.getName());
+            try {
+
+                LOG.info("Destroying channel " + ch.getName() + ", state is " + ch.getConnectionState());
+                ch.destroy();
+
+                LOG.info("Reconnecting channel " + ch.getName());
+                ch = ch.getContext().createChannel(ch.getName(), this);
+                ch.getContext().flushIO();
+
+            } catch (Exception e) {
+                LOG.log(Level.SEVERE, "Trouble reconnecting channel " + ch.getName(), e);
+            }
+        }
+
+        private void addMonitorListenerToChannel(Channel ch) {
+            LOG.fine("Channel was opened for " + ch.getName());
+            try {
+                ch.addMonitor(Monitor.VALUE, monitorListener);
+                ch.getContext().flushIO();
+            } catch (Exception e) {
+                LOG.log(Level.SEVERE, "Could not add monitor to " + ch.getName(), e);
+            }
+        }
+
+        private void updateClientUponClosing(Channel ch) {
+            // The channel was _closed.
+            // First, update the value to null.
+            _epicsClient.channelChanged(ch.getName(), null);
         }
     };
 
@@ -77,74 +85,83 @@ public class ChannelBindingSupport {
         public void monitorChanged(MonitorEvent me) {
             Channel ch = (Channel) me.getSource();
             try {
-                if (ch.getConnectionState() == Channel.CONNECTED) {
-                    ch.get(getListener);
-                    ch.getContext().flushIO();
-                } else {
-                    // This can happen when a channel is closing. We can safely ignore this event.
-                    LOGGER.info("Discarding monitor change event from closed channel: " + ch.getName());
-                }
+                distributeChannelValue(ch);
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Could not request value for " + ch.getName(), e);
+                LOG.log(Level.SEVERE, "Could not request value for " + ch.getName(), e);
             }
         }
     };
+
+    private void distributeChannelValue(Channel ch) throws CAException {
+        if (ch.getConnectionState() == Channel.CONNECTED) {
+            ch.get(getListener);
+            ch.getContext().flushIO();
+        } else {
+            // This can happen when a channel is closing. We can safely ignore this event.
+            LOG.info("Discarding monitor change event from _closed channel: " + ch.getName());
+        }
+    }
 
     private final GetListener getListener = new GetListener() {
         public void getCompleted(GetEvent ge) {
             Channel ch = (Channel) ge.getSource();
             try {
-
-                // Get the new value.
-                Object value = ge.getDBR().getValue();
-
-                //send the value directly to the target.
-                target.channelChanged(ch.getName(), value);
-
+                sendUpdateToClient(ge, ch);
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Could not get/set value for " + ch.getName(), e);
+                LOG.log(Level.SEVERE, "Could not get/set value for " + ch.getName(), e);
             }
+        }
+
+        private void sendUpdateToClient(GetEvent ge, Channel ch) {
+            // Get the new value.
+            Object value = ge.getDBR().getValue();
+
+            //send the value directly to the _epicsClient.
+            _epicsClient.channelChanged(ch.getName(), value);
         }
     };
 
-    public ChannelBindingSupport(Context ctx, IEpicsClient target) throws CAException {
+    public ChannelBindingSupport(Context ctx, IEpicsClient epicsClient) throws CAException {
         Preconditions.checkArgument(ctx != null, "JCA Context cannot be null");
-        Preconditions.checkArgument(target != null, "EpicsClient cannot be null");
-        this.target = target;
+        Preconditions.checkArgument(epicsClient != null, "EpicsClient cannot be null");
+        this._epicsClient = epicsClient;
         this._ctx = ctx;
+        addContextListeners();
+    }
+
+    private void addContextListeners() throws CAException {
         _ctx.addContextExceptionListener(new ContextExceptionListener() {
             public void contextException(ContextExceptionEvent cee) {
-                LOGGER.log(Level.WARNING, "Trouble in JCA Context.", cee);
+                LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
             }
 
             public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
-                LOGGER.log(Level.WARNING, "Trouble in JCA Context.", cvce);
+                LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
             }
         });
         _ctx.addContextMessageListener(new ContextMessageListener() {
             public void contextMessage(ContextMessageEvent cme) {
-                LOGGER.info(cme.getMessage());
+                LOG.info(cme.getMessage());
             }
         });
     }
 
     public void bindChannel(String channel) throws CAException {
-        channels.add(_ctx.createChannel(channel, connectionListener));
+        _channels.add(_ctx.createChannel(channel, connectionListener));
         _ctx.flushIO();
     }
 
     public void close() throws IllegalStateException, CAException {
-        closed = true;
-        for (Iterator<Channel> it = channels.iterator(); it.hasNext();) {
-            Channel ch = it.next();
+        _closed = true;
+        for (Channel channel : _channels) {
             try {
-                ch.destroy();
+                channel.destroy();
             } catch (IllegalStateException ise) {
                 // Ok; channel already destroyed.
             }
-            it.remove();
         }
-        LOGGER.info("Closed channel binder. " + Arrays.toString(_ctx.getChannels()) + " channel(s) remaining in context.");
+        _channels.clear();
+        LOG.info("Closed channel binder. " + Arrays.toString(_ctx.getChannels()) + " channel(s) remaining in context.");
     }
 
 }
