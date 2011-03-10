@@ -110,8 +110,10 @@ public class EpicsBase implements IEpicsBase {
     }
 
     protected Channel getChannel(String channelName) {
-        Channel channel = _channels.get(channelName);
-        if (channel == null) {
+        Channel channel = null;
+        if (isChannelKnown(channelName)) {
+            channel = _channels.get(channelName);
+        } else {
             LOG.log(Level.FINE, "No information available about channel " + channelName);
         }
         return channel;

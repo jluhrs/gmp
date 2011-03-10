@@ -27,11 +27,15 @@ public class EpicsReader extends EpicsBase implements IEpicsReader {
      * @throws EpicsException
      */
     public Object getValue(String channelName) throws EpicsException {
-        Channel channel = getChannel(channelName);
-        if (channel == null) {
+        if (isChannelKnown(channelName)) {
+            return readChannelValue(channelName);
+        } else {
             return null;
         }
+    }
 
+    private Object readChannelValue(String channelName) {
+        Channel channel = getChannel(channelName);
         try {
             return readEpicsValue(channel);
         } catch (CAException e) {
