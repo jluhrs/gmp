@@ -127,6 +127,7 @@ public class EpicsBase implements IEpicsBase {
                 // Ok; channel already destroyed.
             }
         }
+        _channels.clear();
         LOG.info("Closed channel binder. " + Arrays.toString(_ctx.getChannels()) + " channel(s) remaining in context.");
     }
 
