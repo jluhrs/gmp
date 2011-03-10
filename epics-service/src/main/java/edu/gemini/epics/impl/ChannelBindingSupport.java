@@ -2,6 +2,7 @@ package edu.gemini.epics.impl;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
+import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.IEpicsClient;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
@@ -121,12 +122,16 @@ public class ChannelBindingSupport {
         }
     };
 
-    public ChannelBindingSupport(Context ctx, IEpicsClient epicsClient) throws CAException {
+    public ChannelBindingSupport(Context ctx, IEpicsClient epicsClient) throws EpicsException {
         Preconditions.checkArgument(ctx != null, "JCA Context cannot be null");
         Preconditions.checkArgument(epicsClient != null, "EpicsClient cannot be null");
         this._epicsClient = epicsClient;
         this._ctx = ctx;
-        addContextListeners();
+        try {
+            addContextListeners();
+        } catch (CAException e) {
+            throw new EpicsException("Exception while adding context listeners", e);
+        }
     }
 
     private void addContextListeners() throws CAException {
@@ -146,17 +151,23 @@ public class ChannelBindingSupport {
         });
     }
 
-    public void bindChannel(String channel) throws CAException {
-        _channels.add(_ctx.createChannel(channel, connectionListener));
-        _ctx.flushIO();
+    public void bindChannel(String channel) throws EpicsException {
+        try {
+            _channels.add(_ctx.createChannel(channel, connectionListener));
+            _ctx.flushIO();
+        } catch (CAException e) {
+            throw new EpicsException("Exception while adding a new channel", e);
+        }
     }
 
-    public void close() throws IllegalStateException, CAException {
+    public void close() throws EpicsException {
         _closed = true;
         for (Channel channel : _channels) {
             try {
                 channel.destroy();
             } catch (IllegalStateException ise) {
+                // Ok; channel already destroyed.
+            } catch (CAException e) {
                 // Ok; channel already destroyed.
             }
         }

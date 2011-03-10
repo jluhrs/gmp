@@ -1,12 +1,12 @@
 package edu.gemini.epics.osgi;
 
+import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.IEpicsClient;
 import edu.gemini.epics.IEpicsReader;
 import edu.gemini.epics.IEpicsWriter;
 import edu.gemini.epics.impl.ChannelBindingSupport;
 import edu.gemini.epics.impl.EpicsReader;
 import edu.gemini.epics.impl.EpicsWriter;
-import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import org.osgi.framework.BundleActivator;
@@ -97,7 +97,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
             client.connected();
             return cbs;
 
-        } catch (CAException cae) {
+        } catch (EpicsException cae) {
             LOGGER.log(Level.SEVERE, "Could not connect to EPICS.", cae);
             return null;
         }
