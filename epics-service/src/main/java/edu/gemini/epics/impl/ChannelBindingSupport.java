@@ -4,9 +4,18 @@ import edu.gemini.epics.IEpicsClient;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
-import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
-import gov.aps.jca.event.*;
+import gov.aps.jca.event.ConnectionEvent;
+import gov.aps.jca.event.ConnectionListener;
+import gov.aps.jca.event.ContextExceptionEvent;
+import gov.aps.jca.event.ContextExceptionListener;
+import gov.aps.jca.event.ContextMessageEvent;
+import gov.aps.jca.event.ContextMessageListener;
+import gov.aps.jca.event.ContextVirtualCircuitExceptionEvent;
+import gov.aps.jca.event.GetEvent;
+import gov.aps.jca.event.GetListener;
+import gov.aps.jca.event.MonitorEvent;
+import gov.aps.jca.event.MonitorListener;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,10 +24,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChannelBindingSupport {
-
     private static final Logger LOGGER = Logger.getLogger(ChannelBindingSupport.class.getName());
-    private final Context _ctx;
 
+    private final Context _ctx;
     private final IEpicsClient target;
     private final Set<Channel> channels = new HashSet<Channel>();
     private boolean closed;
@@ -89,7 +97,7 @@ public class ChannelBindingSupport {
                 // Get the new value.
                 Object value = ge.getDBR().getValue();
 
-                //send the value directly to the target. 
+                //send the value directly to the target.
                 target.channelChanged(ch.getName(), value);
 
             } catch (Exception e) {
