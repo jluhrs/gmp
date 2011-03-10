@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *         Date: 12/29/10
  */
 public class HeartbeatConsumer{
-    public static final Logger LOG = Logger.getLogger(HeartbeatConsumer.class.getName());
+    private static final Logger LOG = Logger.getLogger(HeartbeatConsumer.class.getName());
     private BaseMessageConsumer consumer;
     private HeartbeatListener hbl;
     public HeartbeatConsumer() {

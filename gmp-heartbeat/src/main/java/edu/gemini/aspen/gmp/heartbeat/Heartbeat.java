@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 @Component
 @Instantiate
 public class Heartbeat{
-    protected static final Logger LOG = Logger.getLogger(Heartbeat.class.getName());
+    private static final Logger LOG = Logger.getLogger(Heartbeat.class.getName());
 
     private class HeartbeatMessageProducer extends BaseMessageProducer implements Runnable{
         public HeartbeatMessageProducer(){
@@ -43,8 +43,7 @@ public class Heartbeat{
                 }
             }
     }
-    private HeartbeatMessageProducer producer;
-
+    private final HeartbeatMessageProducer producer;
     private ScheduledThreadPoolExecutor executor;
     private ScheduledFuture future;
 

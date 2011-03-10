@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *         Date: 12/29/10
  */
 public class HeartbeatListener implements MessageListener {
-    public static final Logger LOG = Logger.getLogger(HeartbeatListener.class.getName());
+    private static final Logger LOG = Logger.getLogger(HeartbeatListener.class.getName());
     private long last=0;
 
     public long getLast(){
