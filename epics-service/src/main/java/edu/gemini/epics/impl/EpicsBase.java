@@ -131,4 +131,7 @@ public class EpicsBase implements IEpicsBase {
         LOG.info("Closed channel binder. " + Arrays.toString(_ctx.getChannels()) + " channel(s) remaining in context.");
     }
 
+    protected boolean isChannelKnown(String channelName) {
+        return _channels.containsKey(channelName);
+    }
 }
