@@ -9,11 +9,11 @@ import gov.aps.jca.*;
  */
 public class EpicsWriter extends EpicsBase implements IEpicsWriter {
 
-    public EpicsWriter() throws CAException {
-        super();
+    public EpicsWriter(Context ctx) throws CAException {
+        super(ctx);
     }
 
-    public void write(String channelName, Double value) throws EpicsException{
+    public void write(String channelName, Double value) throws EpicsException {
         Channel channel = getChannel(channelName);
         if (channel == null) {
             return;
@@ -36,7 +36,7 @@ public class EpicsWriter extends EpicsBase implements IEpicsWriter {
         write(channelName, val);
     }
 
-    public void write(String channelName, double[] value)  throws EpicsException {
+    public void write(String channelName, double[] value) throws EpicsException {
         Channel channel = getChannel(channelName);
 
         if (channel == null) {
@@ -49,7 +49,4 @@ public class EpicsWriter extends EpicsBase implements IEpicsWriter {
             throw new EpicsException("Problem writting to channel " + channelName, e);
         }
     }
-
-
-
 }

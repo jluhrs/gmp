@@ -1,33 +1,33 @@
 package edu.gemini.epics.impl;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.Channel;
-import gov.aps.jca.TimeoutException;
-import gov.aps.jca.dbr.DBR;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.IEpicsReader;
+import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
+import gov.aps.jca.Context;
+import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
 
 
 /**
  * An Epics Reader object, that allows to get the value of a
- * binded Epics Channel.
+ * bound Epics Channel.
  */
 public class EpicsReader extends EpicsBase implements IEpicsReader {
-
-    public EpicsReader() throws CAException {
-        super();
+    public EpicsReader(Context ctx) throws CAException {
+        super(ctx);
     }
 
     /**
      * Reads the value from the EPICS channel, and returns it as
-     * an Object. 
+     * an Object.
+     *
      * @param channelName EPICS channel to read from
-     * @return Object containing the value in the EPICS channel. 
+     * @return Object containing the value in the EPICS channel.
      * @throws EpicsException
      */
     public Object getValue(String channelName) throws EpicsException {
-
-        Channel channel =getChannel(channelName);
+        Channel channel = getChannel(channelName);
         if (channel == null) {
             return null;
         }
@@ -44,9 +44,5 @@ public class EpicsReader extends EpicsBase implements IEpicsReader {
         }
 
     }
-
-
-    
-
 
 }

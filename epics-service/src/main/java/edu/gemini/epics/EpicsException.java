@@ -13,5 +13,4 @@ public class EpicsException extends Exception {
         super(message);
     }
 
-
 }

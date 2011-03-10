@@ -11,8 +11,9 @@ import java.util.*;
  * Trivial test to write a value in an Epics Channel
  */
 public class WriteTest {
-
-    /** Map the channel names to friendly text names. */
+    /**
+     * Map the channel names to friendly text names.
+     */
     private static final Map<String, String> CHANNELS = new TreeMap<String, String>();
 
     static {
@@ -21,17 +22,14 @@ public class WriteTest {
 
     private IEpicsWriter _writter;
 
-
     public WriteTest() throws CAException, EpicsException {
-        _writter = new EpicsWriter();
+        _writter = new EpicsWriter(JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA));
         for (String s : CHANNELS.keySet()) {
             _writter.bindChannel(s);
         }
     }
 
-
     public void writeValue(String channel, Double[] value) {
-
         try {
             _writter.write(channel, value);
         } catch (EpicsException e) {
@@ -39,18 +37,15 @@ public class WriteTest {
         }
     }
 
-
     @Override
-	protected void finalize() throws Throwable {
-		((EpicsWriter)_writter).close();
-		super.finalize();
-	}
+    protected void finalize() throws Throwable {
+        ((EpicsWriter) _writter).close();
+        super.finalize();
+    }
 
     public static void main(String[] args) throws EpicsException, CAException, InterruptedException {
-
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "172.16.2.24");
         System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
-
 
         Double values[] = {1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9, 10.10};
 
@@ -59,13 +54,10 @@ public class WriteTest {
         WriteTest test = new WriteTest();
 
         for (int i = 0; i < 10; i++) {
-            test.writeValue("tst:array.J", (Double[])l.toArray());
+            test.writeValue("tst:array.J", (Double[]) l.toArray());
             Collections.rotate(l, 1);
             Thread.sleep(50); // 20Hz updates
         }
         Thread.sleep(Long.MAX_VALUE);
     }
-
-
-    
 }

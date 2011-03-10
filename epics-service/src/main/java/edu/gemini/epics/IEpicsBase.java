@@ -13,5 +13,4 @@ public interface IEpicsBase {
      * given channel.
      */
     void bindChannel(String channel) throws EpicsException;
-    
 }

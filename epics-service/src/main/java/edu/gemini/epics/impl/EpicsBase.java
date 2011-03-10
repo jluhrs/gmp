@@ -1,24 +1,32 @@
 package edu.gemini.epics.impl;
 
-import gov.aps.jca.*;
-import gov.aps.jca.event.*;
-
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.Map;
-import java.util.TreeMap;
-
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.IEpicsBase;
+import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
+import gov.aps.jca.Context;
+import gov.aps.jca.TimeoutException;
+import gov.aps.jca.event.ConnectionEvent;
+import gov.aps.jca.event.ConnectionListener;
+import gov.aps.jca.event.ContextExceptionEvent;
+import gov.aps.jca.event.ContextExceptionListener;
+import gov.aps.jca.event.ContextMessageEvent;
+import gov.aps.jca.event.ContextMessageListener;
+import gov.aps.jca.event.ContextVirtualCircuitExceptionEvent;
+
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Base class for Epics Accessing Objects
  */
-public class EpicsBase implements IEpicsBase{
+public class EpicsBase implements IEpicsBase {
 
     private static final Logger LOG = Logger.getLogger(EpicsReader.class.getName());
 
-    public static Context ctx;
+    private final Context _ctx;
 
     private Map<String, Channel> _channels = new TreeMap<String, Channel>();
 
@@ -57,10 +65,10 @@ public class EpicsBase implements IEpicsBase{
     };
 
 
-    public EpicsBase() throws CAException {
-        if (ctx == null) {
-            ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-            ctx.addContextExceptionListener(new ContextExceptionListener() {
+    public EpicsBase(Context ctx) throws CAException {
+        this._ctx = ctx;
+        if (_ctx == null) {
+            _ctx.addContextExceptionListener(new ContextExceptionListener() {
                 public void contextException(ContextExceptionEvent cee) {
                     LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
                 }
@@ -69,7 +77,7 @@ public class EpicsBase implements IEpicsBase{
                     LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
                 }
             });
-            ctx.addContextMessageListener(new ContextMessageListener() {
+            _ctx.addContextMessageListener(new ContextMessageListener() {
                 public void contextMessage(ContextMessageEvent cme) {
                     LOG.info(cme.getMessage());
                 }
@@ -77,13 +85,12 @@ public class EpicsBase implements IEpicsBase{
         }
     }
 
-
     public void bindChannel(String channel) throws EpicsException {
         try {
-            Channel cnl = ctx.createChannel(channel);
+            Channel cnl = _ctx.createChannel(channel);
             //TODO: Do we need to bind the channels asynchronously, using the connection listener?
             _channels.put(channel, cnl);
-            ctx.pendIO(5.0);
+            _ctx.pendIO(5.0);
         } catch (CAException e) {
             throw new EpicsException("Problem on Channel Access", e);
         } catch (TimeoutException e) {
@@ -111,20 +118,18 @@ public class EpicsBase implements IEpicsBase{
                 // Ok; channel already destroyed.
             }
         }
-        LOG.info("Closed channel binder. " + ctx.getChannels().length + " channel(s) remaining in context.");
+        LOG.info("Closed channel binder. " + _ctx.getChannels().length + " channel(s) remaining in context.");
     }
 
-
-    public static void destroy() {
+    public void destroy() {
         try {
-            if (ctx != null) {
-                ctx.destroy();
+            if (_ctx != null) {
+                _ctx.destroy();
                 LOG.info("Destroyed JCA context.");
             }
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Could not destroy JCA context.", e);
         }
-        ctx = null;
     }
 
 }
