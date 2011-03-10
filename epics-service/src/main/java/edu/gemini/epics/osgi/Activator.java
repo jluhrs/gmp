@@ -38,6 +38,8 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
     private ServiceRegistration _readerRegistration;
     private EpicsReader epicsReader;
     private EpicsWriter epicsWriter;
+    private Context ctx;
+    private ChannelBindingSupport cbs;
 
 
     public void start(BundleContext context) throws Exception {
@@ -60,7 +62,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
         tracker = new ServiceTracker(context, IEpicsClient.class.getName(), this);
         tracker.open();
-        Context ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+        ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
         epicsWriter = new EpicsWriter(ctx);
         //Register the EpicsWriter service
         _writterRegistration = context.registerService(
@@ -80,20 +82,17 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         this.context = null;
         _writterRegistration.unregister();
         _readerRegistration.unregister();
-        ChannelBindingSupport.destroy();
+        cbs.destroy();
         epicsWriter.destroy();
         epicsReader.destroy();
     }
 
     public Object addingService(ServiceReference ref) {
-
-
         IEpicsClient client = (IEpicsClient) context.getService(ref);
         LOGGER.info("IEpicsClient added: " + client);
 
         try {
-
-            ChannelBindingSupport cbs = new ChannelBindingSupport(client);
+            cbs = new ChannelBindingSupport(ctx, client);
             String[] channels = (String[]) ref.getProperty(IEpicsClient.EPICS_CHANNELS);
             for (String channel : channels) {
                 cbs.bindChannel(channel);

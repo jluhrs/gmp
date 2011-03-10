@@ -1,5 +1,7 @@
 package edu.gemini.epics.impl;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.IEpicsBase;
 import gov.aps.jca.CAException;
@@ -15,7 +17,6 @@ import gov.aps.jca.event.ContextMessageListener;
 import gov.aps.jca.event.ContextVirtualCircuitExceptionEvent;
 
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,13 +24,10 @@ import java.util.logging.Logger;
  * Base class for Epics Accessing Objects
  */
 public class EpicsBase implements IEpicsBase {
-
-    private static final Logger LOG = Logger.getLogger(EpicsReader.class.getName());
+    private static final Logger LOG = Logger.getLogger(EpicsBase.class.getName());
 
     private final Context _ctx;
-
-    private Map<String, Channel> _channels = new TreeMap<String, Channel>();
-
+    private final Map<String, Channel> _channels = Maps.newTreeMap();
     private boolean closed = false;
 
     //TODO: The following code can be resucitated when more testing is done to define
@@ -41,10 +39,7 @@ public class EpicsBase implements IEpicsBase {
 
             if (ce.isConnected()) {
                 LOG.fine("Channel was opened for " + ch.getName());
-
-
             } else {
-
                 // Now throw the dead channel away and reconnect.
                 if (!closed) {
                     LOG.warning("Connection was closed for " + ch.getName());
@@ -66,23 +61,22 @@ public class EpicsBase implements IEpicsBase {
 
 
     public EpicsBase(Context ctx) throws CAException {
+        Preconditions.checkArgument(ctx != null, "Passed JCA Context cannot be null");
         this._ctx = ctx;
-        if (_ctx == null) {
-            _ctx.addContextExceptionListener(new ContextExceptionListener() {
-                public void contextException(ContextExceptionEvent cee) {
-                    LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
-                }
+        _ctx.addContextExceptionListener(new ContextExceptionListener() {
+            public void contextException(ContextExceptionEvent cee) {
+                LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
+            }
 
-                public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
-                    LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
-                }
-            });
-            _ctx.addContextMessageListener(new ContextMessageListener() {
-                public void contextMessage(ContextMessageEvent cme) {
-                    LOG.info(cme.getMessage());
-                }
-            });
-        }
+            public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
+                LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
+            }
+        });
+        _ctx.addContextMessageListener(new ContextMessageListener() {
+            public void contextMessage(ContextMessageEvent cme) {
+                LOG.info(cme.getMessage());
+            }
+        });
     }
 
     public void bindChannel(String channel) throws EpicsException {

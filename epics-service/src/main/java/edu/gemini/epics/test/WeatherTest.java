@@ -3,6 +3,8 @@ package edu.gemini.epics.test;
 import edu.gemini.epics.IEpicsClient;
 import edu.gemini.epics.impl.ChannelBindingSupport;
 import gov.aps.jca.CAException;
+import gov.aps.jca.Context;
+import gov.aps.jca.JCALibrary;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,7 +29,8 @@ public class WeatherTest implements IEpicsClient {
     private final ChannelBindingSupport cbs;
 
     public WeatherTest() throws CAException {
-        cbs = new ChannelBindingSupport(this);
+         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+        cbs = new ChannelBindingSupport(context, this);
         for (String s : CHANNELS.keySet()) {
             cbs.bindChannel(s);
         }
