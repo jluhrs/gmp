@@ -1,5 +1,6 @@
 package edu.gemini.epics.impl;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.epics.IEpicsClient;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
@@ -59,7 +60,8 @@ public class ChannelBindingSupport {
                         LOGGER.info("Destroying channel " + ch.getName() + ", state is " + ch.getConnectionState());
                         ch.destroy();
 
-                        LOGGER.info("Reconnecting channel " + ch.getName());                        ch = ch.getContext().createChannel(ch.getName(), this);
+                        LOGGER.info("Reconnecting channel " + ch.getName());
+                        ch = ch.getContext().createChannel(ch.getName(), this);
                         ch.getContext().flushIO();
 
                     } catch (Exception e) {
@@ -105,24 +107,24 @@ public class ChannelBindingSupport {
     };
 
     public ChannelBindingSupport(Context ctx, IEpicsClient target) throws CAException {
+        Preconditions.checkArgument(ctx != null, "JCA Context cannot be null");
+        Preconditions.checkArgument(target != null, "EpicsClient cannot be null");
         this.target = target;
         this._ctx = ctx;
-        if (_ctx != null) {
-            _ctx.addContextExceptionListener(new ContextExceptionListener() {
-                public void contextException(ContextExceptionEvent cee) {
-                    LOGGER.log(Level.WARNING, "Trouble in JCA Context.", cee);
-                }
+        _ctx.addContextExceptionListener(new ContextExceptionListener() {
+            public void contextException(ContextExceptionEvent cee) {
+                LOGGER.log(Level.WARNING, "Trouble in JCA Context.", cee);
+            }
 
-                public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
-                    LOGGER.log(Level.WARNING, "Trouble in JCA Context.", cvce);
-                }
-            });
-            _ctx.addContextMessageListener(new ContextMessageListener() {
-                public void contextMessage(ContextMessageEvent cme) {
-                    LOGGER.info(cme.getMessage());
-                }
-            });
-        }
+            public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
+                LOGGER.log(Level.WARNING, "Trouble in JCA Context.", cvce);
+            }
+        });
+        _ctx.addContextMessageListener(new ContextMessageListener() {
+            public void contextMessage(ContextMessageEvent cme) {
+                LOGGER.info(cme.getMessage());
+            }
+        });
     }
 
     public void bindChannel(String channel) throws CAException {

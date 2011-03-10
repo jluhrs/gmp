@@ -24,7 +24,7 @@ public class ChannelBindingSupportTest {
     @Test
     public void testBindingChannel() throws CAException {
         Context context = mock(Context.class);
-        IEpicsClient target = null;
+        IEpicsClient target = mock(IEpicsClient.class);
         ChannelBindingSupport cbs = new ChannelBindingSupport(context, target);
 
         cbs.bindChannel(CHANNEL_NAME);
@@ -34,7 +34,7 @@ public class ChannelBindingSupportTest {
 
     @Test
     public void testConnectionChangedEventOnConnection() throws CAException {
-        IEpicsClient target = null;
+        IEpicsClient target = mock(IEpicsClient.class);
         ChannelBindingSupport cbs = new ChannelBindingSupport(context, target);
 
         cbs.bindChannel(CHANNEL_NAME);
