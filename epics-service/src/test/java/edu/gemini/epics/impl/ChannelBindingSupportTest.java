@@ -14,6 +14,7 @@ import gov.aps.jca.event.GetEvent;
 import gov.aps.jca.event.GetListener;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -25,14 +26,24 @@ import static org.mockito.Mockito.when;
 
 public class ChannelBindingSupportTest {
     private static final String CHANNEL_NAME = "tst:tst";
-    private Context context = mock(Context.class);
+    private Context context;
+    private IEpicsClient epicsClient;
+    private ChannelBindingSupport cbs;
+    private Channel channel;
+
+    @Before
+    public void setUp() throws Exception {
+        epicsClient = mock(IEpicsClient.class);
+        context = mock(Context.class);
+        cbs = new ChannelBindingSupport(context, epicsClient);
+
+        channel = mock(Channel.class);
+        when(channel.getContext()).thenReturn(context);
+        when(channel.getName()).thenReturn(CHANNEL_NAME);
+    }
 
     @Test
     public void testBindingChannel() throws CAException {
-        Context context = mock(Context.class);
-        IEpicsClient target = mock(IEpicsClient.class);
-        ChannelBindingSupport cbs = new ChannelBindingSupport(context, target);
-
         cbs.bindChannel(CHANNEL_NAME);
 
         verify(context).createChannel(eq(CHANNEL_NAME), any(ConnectionListener.class));
@@ -40,17 +51,19 @@ public class ChannelBindingSupportTest {
 
     @Test
     public void testConnectionChangedEventOnConnection() throws CAException {
-        IEpicsClient target = mock(IEpicsClient.class);
-        ChannelBindingSupport cbs = new ChannelBindingSupport(context, target);
-
         cbs.bindChannel(CHANNEL_NAME);
 
-        Channel channel = mock(Channel.class);
-        ConnectionListener listener = mockConnectionListener(channel);
-        listener.connectionChanged(new ConnectionEvent(channel, true));
+        simulateConnectionStarted();
 
         // assert that a channel monitor is added
         verify(channel).addMonitor(eq(Monitor.VALUE), any(MonitorListener.class));
+    }
+
+    private ConnectionListener simulateConnectionStarted() throws CAException {
+        ConnectionListener listener = mockConnectionListener(channel);
+        // Simulate a connection change event
+        listener.connectionChanged(new ConnectionEvent(channel, true));
+        return listener;
     }
 
     private ConnectionListener mockConnectionListener(Channel channel) throws CAException {
@@ -59,7 +72,6 @@ public class ChannelBindingSupportTest {
         verify(context).createChannel(eq(CHANNEL_NAME), connectionListenerArgument.capture());
 
         ConnectionListener listener = connectionListenerArgument.getValue();
-        // Simulate a connection change event
 
         when(channel.getContext()).thenReturn(context);
         return listener;
@@ -67,14 +79,7 @@ public class ChannelBindingSupportTest {
 
     @Test
     public void testConnectionChangedEventOnDisconnection() throws CAException {
-        IEpicsClient target = mock(IEpicsClient.class);
-        ChannelBindingSupport cbs = new ChannelBindingSupport(context, target);
-
         cbs.bindChannel(CHANNEL_NAME);
-
-        Channel channel = mock(Channel.class);
-        when(channel.getContext()).thenReturn(context);
-        when(channel.getName()).thenReturn(CHANNEL_NAME);
 
         Channel replacingChannel = mock(Channel.class);
         when(replacingChannel.getContext()).thenReturn(context);
@@ -84,47 +89,46 @@ public class ChannelBindingSupportTest {
         ConnectionListener listener = mockConnectionListener(channel);
         listener.connectionChanged(new ConnectionEvent(channel, false));
 
-        verify(target).channelChanged(CHANNEL_NAME, null);
+        verify(epicsClient).channelChanged(CHANNEL_NAME, null);
     }
 
     @Test
     public void testChannelChange() throws CAException {
-        IEpicsClient target = mock(IEpicsClient.class);
-        ChannelBindingSupport cbs = new ChannelBindingSupport(context, target);
-
         cbs.bindChannel(CHANNEL_NAME);
-
-        Channel channel = mock(Channel.class);
-        when(channel.getName()).thenReturn(CHANNEL_NAME);
-
-        ConnectionListener listener = mockConnectionListener(channel);
-        ArgumentCaptor<MonitorListener> monitorListenerArgument = ArgumentCaptor.forClass(MonitorListener.class);
-        listener.connectionChanged(new ConnectionEvent(channel, true));
-        
-        verify(channel).addMonitor(eq(Monitor.VALUE), monitorListenerArgument.capture());
-
-        // Simulate an update sent through a MonitorListener
-        MonitorListener monitorListener = monitorListenerArgument.getValue();
-
+        // Needed when distributing updates
         when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
+
+        ConnectionListener connectionListener = simulateConnectionStarted();
+
+        MonitorListener monitorListener = buildMockMonitorListener();
 
         DBR dbr = new DBR_Float(1);
         CAStatus status = CAStatus.NORMAL;
         MonitorEvent event = new MonitorEvent(channel, dbr, status);
+
+        // Simulate monitor event
         monitorListener.monitorChanged(event);
 
-        // Need to capture the get call too
+        // Need to capture the getListener too
         ArgumentCaptor<GetListener> getListenerArgument = ArgumentCaptor.forClass(GetListener.class);
-        listener.connectionChanged(new ConnectionEvent(channel, true));
-
+        connectionListener.connectionChanged(new ConnectionEvent(channel, true));
         verify(channel).get(getListenerArgument.capture());
 
+        // Simulate a getCompleted event
         GetListener listenerOfGets = getListenerArgument.getValue();
         GetEvent getEvent = new GetEvent(channel, dbr, status);
         listenerOfGets.getCompleted(getEvent);
 
-        // assert that a channel monitor is added
-        verify(target).channelChanged(eq(CHANNEL_NAME), eq(dbr.getValue()));
+        // assert that a channel changed event is sent
+        verify(epicsClient).channelChanged(eq(CHANNEL_NAME), eq(dbr.getValue()));
 
+    }
+
+    private MonitorListener buildMockMonitorListener() throws CAException {
+        ArgumentCaptor<MonitorListener> monitorListenerArgument = ArgumentCaptor.forClass(MonitorListener.class);
+        verify(channel).addMonitor(eq(Monitor.VALUE), monitorListenerArgument.capture());
+
+        // Simulate an update sent through a MonitorListener
+        return monitorListenerArgument.getValue();
     }
 }
