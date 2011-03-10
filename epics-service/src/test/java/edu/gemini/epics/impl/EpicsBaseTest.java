@@ -36,6 +36,19 @@ public class EpicsBaseTest {
         assertNull(epicsBase.getChannel(CHANNEL_NAME));
     }
 
+    @Test
+    public void testClose() throws CAException {
+        when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
+
+        // Bind a channel
+        EpicsBase epicsBase = new EpicsBase(context);
+        epicsBase.bindChannel(CHANNEL_NAME);
+
+        // close
+        epicsBase.close();
+        assertNull(epicsBase.getChannel(CHANNEL_NAME));
+    }
+
     @Test(expected = EpicsException.class)
     public void testCAExceptionWhileBindingChannel() throws CAException {
         when(context.createChannel(CHANNEL_NAME)).thenThrow(new CAException());

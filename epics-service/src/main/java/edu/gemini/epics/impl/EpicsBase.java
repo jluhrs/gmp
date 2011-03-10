@@ -16,6 +16,7 @@ import gov.aps.jca.event.ContextMessageEvent;
 import gov.aps.jca.event.ContextMessageListener;
 import gov.aps.jca.event.ContextVirtualCircuitExceptionEvent;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,10 +102,10 @@ public class EpicsBase implements IEpicsBase {
         }
     }
 
-    private void bindNewChannel(String channel) throws CAException, TimeoutException {
-        Channel cnl = _ctx.createChannel(channel);
+    private void bindNewChannel(String channelName) throws CAException, TimeoutException {
+        Channel epicsChannel = _ctx.createChannel(channelName);
         //TODO: Do we need to bind the channels asynchronously, using the connection listener?
-        _channels.put(channel, cnl);
+        _channels.put(channelName, epicsChannel);
         _ctx.pendIO(5.0);
     }
 
@@ -126,7 +127,7 @@ public class EpicsBase implements IEpicsBase {
                 // Ok; channel already destroyed.
             }
         }
-        LOG.info("Closed channel binder. " + _ctx.getChannels().length + " channel(s) remaining in context.");
+        LOG.info("Closed channel binder. " + Arrays.toString(_ctx.getChannels()) + " channel(s) remaining in context.");
     }
 
 }
