@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.heartbeat.jms;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
@@ -13,16 +12,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class HeartbeatConsumer
+ * Class JmsHeartbeatConsumer
  *
  * @author Nicolas A. Barriga
  *         Date: 12/29/10
  */
-public class HeartbeatConsumer{
-    private static final Logger LOG = Logger.getLogger(HeartbeatConsumer.class.getName());
+public class JmsHeartbeatConsumer {
+    private static final Logger LOG = Logger.getLogger(JmsHeartbeatConsumer.class.getName());
     private BaseMessageConsumer consumer;
     private MessageListener hbl;
-    public HeartbeatConsumer(String name, MessageListener listener) {
+    public JmsHeartbeatConsumer(String name, MessageListener listener) {
         hbl = listener;
         consumer = new BaseMessageConsumer(name, new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC), hbl);
 

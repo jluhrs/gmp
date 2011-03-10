@@ -51,16 +51,19 @@ public class Heartbeat{
     private JmsProvider provider;
 
     private Heartbeat() {
+        LOG.info("Heartbeat Constructor");
         producer=new HeartbeatMessageProducer();
     }
 
     public Heartbeat(JmsProvider provider) {
+        LOG.info("Heartbeat Constructor");
         producer=new HeartbeatMessageProducer();
         this.provider=provider;
     }
 
     @Validate
     public void start() {
+        LOG.info("Heartbeat Validate");
         try {
             producer.startJms(provider);
         } catch (JMSException ex) {
@@ -73,6 +76,7 @@ public class Heartbeat{
 
     @Invalidate
     public void stop() {
+        LOG.info("Heartbeat InValidate");
         future.cancel(false);
         executor.shutdown();
         try {

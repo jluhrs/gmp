@@ -122,6 +122,7 @@
         <module>gpi-bean</module>
         <module>gmp-server</module>
         <module>gmp-heartbeat</module>
+        <module>heartbeat-distributor-service</module>
         <module>giapi-tester</module>
         <module>gmp-webconsole-branding</module>
         <module>gmp-handlers-state-service</module>
