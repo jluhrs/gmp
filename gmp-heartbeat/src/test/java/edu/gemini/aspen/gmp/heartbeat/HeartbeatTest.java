@@ -3,10 +3,19 @@ package edu.gemini.aspen.gmp.heartbeat;
 
 import edu.gemini.aspen.gmp.heartbeat.jms.HeartbeatConsumer;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
+import edu.gemini.jms.api.JmsProvider;
 import org.apache.activemq.broker.BrokerService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
+
+import javax.jms.BytesMessage;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,25 +25,48 @@ import static org.junit.Assert.*;
  *         Date: 12/29/10
  */
 public class HeartbeatTest{
+    private long last=0;
+
+    private class HeartbeatListener implements MessageListener {
+        private final Logger LOG = Logger.getLogger(HeartbeatListener.class.getName());
+
+        @Override
+        public void onMessage(Message message) {
+            if (message instanceof BytesMessage) {
+                BytesMessage bm = (BytesMessage) message;
+                try {
+                    last = bm.readLong();
+                    LOG.info("Heartbeat: " + last);
+                } catch (JMSException ex) {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            } else {
+                LOG.warning("Wrong message type");
+            }
+        }
+    }
+
+    private HeartbeatListener hbl=new HeartbeatListener();
+
     @Test
-    public void testBasic() throws Exception{
+    public void testBasic() throws Exception {
         long secs = 3;
         BrokerService broker = new BrokerService();
 
         broker.addConnector("vm://HeartbeatTestBroker");
         broker.setUseJmx(false);
         broker.start();
-
-        Heartbeat hb = new Heartbeat(new ActiveMQJmsProvider("vm://HeartbeatTestBroker"));
-        HeartbeatConsumer hbc = new HeartbeatConsumer();
-        hbc.start("vm://HeartbeatTestBroker");
+        JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
+        Heartbeat hb = new Heartbeat(provider);
+        HeartbeatConsumer hbc = new HeartbeatConsumer("Test HeartBeat Consumer", hbl);
+        hbc.start(provider);
         hb.start();
 
         Thread.sleep(secs * 1000);
         hb.stop();
         hbc.stop();
         broker.stop();
-        assertEquals(true, hbc.getLast() >= (secs - 1));
+        assertEquals(true, last >= (secs - 1));
     }
 
     /**
@@ -44,12 +76,13 @@ public class HeartbeatTest{
      */
     public static void main(String args[]) throws Exception{
         long secs = 3;
+        HeartbeatTest test= new HeartbeatTest();
 
-        HeartbeatConsumer hbc = new HeartbeatConsumer();
-        hbc.start("tcp://localhost:61616");
+        HeartbeatConsumer hbc = new HeartbeatConsumer("Test HeartBeat Consumer",test.hbl);
+        hbc.start(new ActiveMQJmsProvider("tcp://localhost:61616"));
 
         Thread.sleep(secs * 1000);
         hbc.stop();
-        assertEquals(true, hbc.getLast() >= (secs - 1));
+        assertEquals(true, test.last >= (secs - 1));
     }
 }

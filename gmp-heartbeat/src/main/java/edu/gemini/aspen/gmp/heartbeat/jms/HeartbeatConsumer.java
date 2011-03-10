@@ -5,8 +5,10 @@ import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
+import javax.jms.MessageListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,16 +21,16 @@ import java.util.logging.Logger;
 public class HeartbeatConsumer{
     private static final Logger LOG = Logger.getLogger(HeartbeatConsumer.class.getName());
     private BaseMessageConsumer consumer;
-    private HeartbeatListener hbl;
-    public HeartbeatConsumer() {
-        hbl = new HeartbeatListener();
-        consumer = new BaseMessageConsumer("HeartbeatConsumer", new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC), hbl);
+    private MessageListener hbl;
+    public HeartbeatConsumer(String name, MessageListener listener) {
+        hbl = listener;
+        consumer = new BaseMessageConsumer(name, new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC), hbl);
 
     }
 
-    public void start(String url) {
+    public void start(JmsProvider provider) {
         try {
-            consumer.startJms(new ActiveMQJmsProvider(url));
+            consumer.startJms(provider);
         } catch (JMSException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -38,7 +40,4 @@ public class HeartbeatConsumer{
         consumer.stopJms();
     }
 
-    public long getLast(){
-        return hbl.getLast();
-    }
 }
