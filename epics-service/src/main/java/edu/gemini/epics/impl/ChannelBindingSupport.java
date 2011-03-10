@@ -88,7 +88,6 @@ public class ChannelBindingSupport {
         }
     };
 
-
     private final GetListener getListener = new GetListener() {
         public void getCompleted(GetEvent ge) {
             Channel ch = (Channel) ge.getSource();
@@ -105,7 +104,6 @@ public class ChannelBindingSupport {
             }
         }
     };
-
 
     public ChannelBindingSupport(Context ctx, IEpicsClient target) throws CAException {
         this.target = target;
@@ -145,17 +143,6 @@ public class ChannelBindingSupport {
             it.remove();
         }
         LOGGER.info("Closed channel binder. " + _ctx.getChannels().length + " channel(s) remaining in context.");
-    }
-
-    public void destroy() {
-        try {
-            if (_ctx != null) {
-                _ctx.destroy();
-                LOGGER.info("Destroyed JCA context.");
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Could not destroy JCA context.", e);
-        }
     }
 
 }

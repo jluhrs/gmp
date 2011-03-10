@@ -82,7 +82,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         this.context = null;
         _writterRegistration.unregister();
         _readerRegistration.unregister();
-        cbs.destroy();
     }
 
     public Object addingService(ServiceReference ref) {
