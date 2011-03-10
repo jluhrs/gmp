@@ -47,8 +47,7 @@ public class EpicsReaderTest {
     @Test(expected = EpicsException.class)
     public void testReadValueWithCAException() throws CAException {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
-        float[] simulatedValue = {1, 2};
-        when(channel.get()).thenReturn(new DBR_Float(simulatedValue));
+        when(channel.get()).thenThrow(new CAException());
 
         EpicsReader epicsReader = new EpicsReader(context);
         epicsReader.bindChannel(CHANNEL_NAME);
@@ -59,7 +58,6 @@ public class EpicsReaderTest {
     @Test(expected = EpicsException.class)
     public void testReadValueWithTimeoutException() throws CAException, TimeoutException {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
-        when(channel.get()).thenThrow(new CAException());
         when(channel.getContext()).thenReturn(context);
 
         EpicsReader epicsReader = new EpicsReader(context);
