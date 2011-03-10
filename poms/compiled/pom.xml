@@ -53,7 +53,7 @@
     <dependencies>
         <dependency>
             <type>pom</type>
-            <groupId>${parent.groupId}</groupId>
+            <groupId>${project.parent.groupId}</groupId>
             <artifactId>provision</artifactId>
             <version>1.0.0</version>
             <optional>true</optional>
@@ -133,11 +133,11 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
-                        <Bundle-Version>${pom.version}</Bundle-Version>
+                        <Bundle-Version>${project.version}</Bundle-Version>
                         <Build-Date>${maven.build.timestamp}</Build-Date>
                         <Build-Host>${maven.build.hostname}</Build-Host>
                         <Bundle-Activator>${bundle.namespace}.osgi.Activator</Bundle-Activator>
-                        <Export-Package>${bundle.namespace}.*;version="${pom.version}"</Export-Package>
+                        <Export-Package>${bundle.namespace}.*;version="${project.version}"</Export-Package>
                         <_include>-osgi.bnd, ${basedir}/target/buildmeta.properties</_include>
                         <_debug>true</_debug>
                     </instructions>
