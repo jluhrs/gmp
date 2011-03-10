@@ -41,7 +41,6 @@
         </plugins>
     </build>
 
-
     <dependencies>
         <!--
          | uncomment to add all imported (non-local) bundles to your compilation classpath

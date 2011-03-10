@@ -38,6 +38,7 @@
         <clover.version>3.0.2</clover.version>
         <org.activemq.core.version>5.4.2</org.activemq.core.version>
         <pax-exam.version>1.2.3</pax-exam.version>
+        <org.apache.felix.ipojo>1.6.4</org.apache.felix.ipojo>
         <!-- Global encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -92,6 +93,8 @@
     <modules>
         <module>poms</module>
         <module>provision</module>
+        <module>jca-lib</module>
+        <module>epics-service</module>
         <module>giapi</module>
         <module>giapi-fileevent-handler</module>
         <module>jms-api</module>
@@ -112,9 +115,7 @@
         <module>gmp-pcs-updater</module>
         <module>gmp-status-gateway</module>
         <module>gmp-statusdb</module>
-        <module>jca-lib</module>
         <module>cas</module>
-        <module>epics-service</module>
         <module>gmp-epics-access</module>
         <module>gmp-epics-simulator</module>
         <module>gmp-epics-status-service</module>

@@ -37,7 +37,6 @@
         <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
-            <version>0.2.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
