@@ -63,8 +63,17 @@ public class EpicsBase implements IEpicsBase {
     public EpicsBase(Context ctx) {
         Preconditions.checkArgument(ctx != null, "Passed JCA Context cannot be null");
         this._ctx = ctx;
+
         try {
-            _ctx.addContextExceptionListener(new ContextExceptionListener() {
+            addJCAContextListeners();
+        } catch (CAException e) {
+            throw new EpicsException("Caught exception while adding JCA Context listeners", e);
+        }
+
+    }
+
+    private void addJCAContextListeners() throws CAException {
+        _ctx.addContextExceptionListener(new ContextExceptionListener() {
                 public void contextException(ContextExceptionEvent cee) {
                     LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
                 }
@@ -73,23 +82,16 @@ public class EpicsBase implements IEpicsBase {
                     LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
                 }
             });
-            _ctx.addContextMessageListener(new ContextMessageListener() {
-                public void contextMessage(ContextMessageEvent cme) {
-                    LOG.info(cme.getMessage());
-                }
-            });
-        } catch (CAException e) {
-            throw new EpicsException("Caught exception while adding JCA Context listeners", e);
-        }
-
+        _ctx.addContextMessageListener(new ContextMessageListener() {
+            public void contextMessage(ContextMessageEvent cme) {
+                LOG.info(cme.getMessage());
+            }
+        });
     }
 
     public void bindChannel(String channel) throws EpicsException {
         try {
-            Channel cnl = _ctx.createChannel(channel);
-            //TODO: Do we need to bind the channels asynchronously, using the connection listener?
-            _channels.put(channel, cnl);
-            _ctx.pendIO(5.0);
+            bindNewChannel(channel);
         } catch (CAException e) {
             throw new EpicsException("Problem on Channel Access", e);
         } catch (TimeoutException e) {
@@ -97,6 +99,13 @@ public class EpicsBase implements IEpicsBase {
         } catch (IllegalStateException e) {
             LOG.log(Level.WARNING, "Epics channel in incorrect state " + channel, e);
         }
+    }
+
+    private void bindNewChannel(String channel) throws CAException, TimeoutException {
+        Channel cnl = _ctx.createChannel(channel);
+        //TODO: Do we need to bind the channels asynchronously, using the connection listener?
+        _channels.put(channel, cnl);
+        _ctx.pendIO(5.0);
     }
 
     protected Channel getChannel(String channelName) {
@@ -118,17 +127,6 @@ public class EpicsBase implements IEpicsBase {
             }
         }
         LOG.info("Closed channel binder. " + _ctx.getChannels().length + " channel(s) remaining in context.");
-    }
-
-    public void destroy() {
-        try {
-            if (_ctx != null) {
-                _ctx.destroy();
-                LOG.info("Destroyed JCA context.");
-            }
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "Could not destroy JCA context.", e);
-        }
     }
 
 }

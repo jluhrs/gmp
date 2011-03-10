@@ -83,8 +83,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         _writterRegistration.unregister();
         _readerRegistration.unregister();
         cbs.destroy();
-        epicsWriter.destroy();
-        epicsReader.destroy();
     }
 
     public Object addingService(ServiceReference ref) {
