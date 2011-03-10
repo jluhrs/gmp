@@ -7,6 +7,7 @@ import gov.aps.jca.Context;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,5 +23,15 @@ public class EpicsBaseTest {
         epicsBase.bindChannel(channelName);
 
         assertNotNull(epicsBase.getChannel(channelName));
+    }
+
+    @Test
+    public void testFindUnknownChannel() throws CAException, EpicsException {
+        Context context = mock(Context.class);
+        String channelName = "tst:tst";
+
+        EpicsBase epicsBase = new EpicsBase(context);
+
+        assertNull(epicsBase.getChannel(channelName));
     }
 }
