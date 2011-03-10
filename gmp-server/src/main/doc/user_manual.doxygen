@@ -81,6 +81,18 @@
  * \image html bundle_list.jpg
  * \image latex bundle_list.jpg
  *
+ * \subsection run_daemon Running the GMP as a Daemon
+ *
+ * The $GMP_HOME/bin/gmp-server script can be used to run the GMP as a daemon. It can be used as an init.d script, for
+ * which you need to copy it to /etc/init.d/ and run <tt>$ chkconfig --add gmp-server</tt>, or you can run it directly
+ * from the original location. It takes one of two parameters: <tt>start</tt>, that starts the GMP if no other GMP instance is
+ * running, and <tt>stop</tt>, that stops a running GMP. If the GMP doesn't go down gracefully, for instance in case of
+ * a bundle in an infinite loop, it will force the process to exit.
+ *
+ * \attention Until an RPM is provided, you need to <tt>$ touch ~/.pax/runner/org.ops4j.pax.runner.daemon.password.file</tt>.
+ * This will create an empty password file, thus disallowing remote access to stop the daemon, it must be stopped locally
+ * using the provided script.
+ *
  * \section telnet Telnet Interface
  *
  * A telnet daemon is included that gives access to the shell remotely. To reach the GMP server type

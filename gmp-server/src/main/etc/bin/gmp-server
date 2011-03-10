@@ -35,7 +35,7 @@ function startContainer() {
     echo "starting ${app_name}"
     pushd ${app_root}/bin > /dev/null
     # Will start pax-runner reading the configuration from the file bin/runner.args
-    exec java -cp ${app_root}/bin/pax-runner-1.5.0.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd 2>&1 | tee  ${log_file} |grep "lock exists" &
+    exec java -cp ${app_root}/bin/pax-runner-1.5.0.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd 2>&1 | tee -a ${log_file} |grep "lock exists" &
 #    echo $! > ${pid_file}
     popd > /dev/null
 #  else
