@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 public class ChannelBindingSupportTest {
     private static final String CHANNEL_NAME = "tst:tst";
+    private Context context = mock(Context.class);
 
     @Test
     public void testBindingChannel() throws CAException {
@@ -32,24 +33,51 @@ public class ChannelBindingSupportTest {
     }
 
     @Test
-    public void testConnectionChangedEvent() throws CAException {
-        Context context = mock(Context.class);
+    public void testConnectionChangedEventOnConnection() throws CAException {
         IEpicsClient target = null;
         ChannelBindingSupport cbs = new ChannelBindingSupport(context, target);
 
         cbs.bindChannel(CHANNEL_NAME);
 
+        Channel channel = mock(Channel.class);
+        ConnectionListener listener = mockConnectionListener(channel);
+        listener.connectionChanged(new ConnectionEvent(channel, true));
+
+        // assert that a channel monitor is added
+        verify(channel).addMonitor(eq(Monitor.VALUE), any(MonitorListener.class));
+    }
+
+    private ConnectionListener mockConnectionListener(Channel channel) throws CAException {
         // Capture the connection listener to simulate the event
         ArgumentCaptor<ConnectionListener> connectionListenerArgument = ArgumentCaptor.forClass(ConnectionListener.class);
         verify(context).createChannel(eq(CHANNEL_NAME), connectionListenerArgument.capture());
 
         ConnectionListener listener = connectionListenerArgument.getValue();
         // Simulate a connection change event
+
+        when(channel.getContext()).thenReturn(context);
+        return listener;
+    }
+
+    @Test
+    public void testConnectionChangedEventOnDisconnection() throws CAException {
+        IEpicsClient target = mock(IEpicsClient.class);
+        ChannelBindingSupport cbs = new ChannelBindingSupport(context, target);
+
+        cbs.bindChannel(CHANNEL_NAME);
+
         Channel channel = mock(Channel.class);
         when(channel.getContext()).thenReturn(context);
-        listener.connectionChanged(new ConnectionEvent(channel, true));
+        when(channel.getName()).thenReturn(CHANNEL_NAME);
 
-        // assert that a channel monitor is added
-        verify(channel).addMonitor(eq(Monitor.VALUE), any(MonitorListener.class));
+        Channel replacingChannel = mock(Channel.class);
+        when(replacingChannel.getContext()).thenReturn(context);
+
+        when(context.createChannel(eq(CHANNEL_NAME), any(ConnectionListener.class))).thenReturn(replacingChannel);
+
+        ConnectionListener listener = mockConnectionListener(channel);
+        listener.connectionChanged(new ConnectionEvent(channel, false));
+
+        verify(target).channelChanged(CHANNEL_NAME, null);
     }
 }

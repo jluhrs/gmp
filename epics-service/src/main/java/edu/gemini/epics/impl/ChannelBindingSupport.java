@@ -59,8 +59,7 @@ public class ChannelBindingSupport {
                         LOGGER.info("Destroying channel " + ch.getName() + ", state is " + ch.getConnectionState());
                         ch.destroy();
 
-                        LOGGER.info("Reconnecting channel " + ch.getName());
-                        ch = ch.getContext().createChannel(ch.getName(), this);
+                        LOGGER.info("Reconnecting channel " + ch.getName());                        ch = ch.getContext().createChannel(ch.getName(), this);
                         ch.getContext().flushIO();
 
                     } catch (Exception e) {
