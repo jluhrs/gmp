@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-commands</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
 
     <name>GMP Sequence Commands Service</name>
     <description>Sequence Command Processor service</description>
