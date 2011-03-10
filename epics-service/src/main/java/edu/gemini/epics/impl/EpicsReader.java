@@ -36,13 +36,11 @@ public class EpicsReader extends EpicsBase implements IEpicsReader {
             DBR dbr = channel.get();
             channel.getContext().pendIO(1.0);
             return dbr.getValue();
-
         } catch (CAException e) {
             throw new EpicsException("Problem reading channel " + channel, e);
         } catch (TimeoutException e) {
             throw new EpicsException("Timeout while reading channel " + channel, e);
         }
-
     }
 
 }

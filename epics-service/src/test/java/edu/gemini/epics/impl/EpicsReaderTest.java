@@ -1,0 +1,43 @@
+package edu.gemini.epics.impl;
+
+import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
+import gov.aps.jca.Context;
+import gov.aps.jca.dbr.DBR_Float;
+import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class EpicsReaderTest {
+
+    private static final String CHANNEL_NAME = "tst:tst";
+    private final Context context = mock(Context.class);
+    private final Channel channel = mock(Channel.class);
+
+    @Test
+    public void testReadValue() throws CAException {
+        when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
+
+        float[] simulatedValue = {1, 2};
+        when(channel.get()).thenReturn(new DBR_Float(simulatedValue));
+        when(channel.getContext()).thenReturn(context);
+
+        EpicsReader epicsReader = new EpicsReader(context);
+        epicsReader.bindChannel(CHANNEL_NAME);
+
+        Object value = epicsReader.getValue(CHANNEL_NAME);
+        assertArrayEquals(simulatedValue, (float[])value, 0.001f);
+    }
+
+    @Test
+    public void testReadValueOfUnknownChannel() throws CAException {
+        EpicsReader epicsReader = new EpicsReader(context);
+
+        Object value = epicsReader.getValue(CHANNEL_NAME);
+        assertNull(value);
+    }
+
+}
