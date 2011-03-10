@@ -5,7 +5,7 @@ import edu.gemini.epics.EpicsException;
 import gov.aps.jca.*;
 
 /**
- * Implementation of the EpicsWritter interface using JCA
+ * Implementation of the EpicsWriter interface using JCA
  */
 public class EpicsWriter extends EpicsBase implements IEpicsWriter {
 
@@ -20,7 +20,7 @@ public class EpicsWriter extends EpicsBase implements IEpicsWriter {
                 channel.put(value);
                 channel.getContext().flushIO();
             } catch (CAException e) {
-                throw new EpicsException("Problem writting to channel " + channelName, e);
+                throw new EpicsException("Problem writing to channel " + channelName, e);
             }
         }
     }
@@ -41,7 +41,7 @@ public class EpicsWriter extends EpicsBase implements IEpicsWriter {
                 channel.put(value);
                 channel.getContext().flushIO();
             } catch (CAException e) {
-                throw new EpicsException("Problem writting to channel " + channelName, e);
+                throw new EpicsException("Problem writing to channel " + channelName, e);
             }
         }
     }
