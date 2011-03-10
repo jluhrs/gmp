@@ -92,10 +92,12 @@ public class ChannelBindingSupport {
     private final GetListener getListener = new GetListener() {
         public void getCompleted(GetEvent ge) {
             Channel ch = (Channel) ge.getSource();
+            System.out.println(ge.getDBR().getValue());
             try {
 
                 // Get the new value.
                 Object value = ge.getDBR().getValue();
+                System.out.println(value);
 
                 //send the value directly to the target.
                 target.channelChanged(ch.getName(), value);
