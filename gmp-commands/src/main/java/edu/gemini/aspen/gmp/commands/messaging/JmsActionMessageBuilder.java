@@ -12,6 +12,7 @@ import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
+import org.apache.felix.ipojo.annotations.Provides;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,7 @@ import java.util.Map;
  * Helper class to construct {@link edu.gemini.aspen.gmp.commands.model.ActionMessage}
  * objects based on a given Action, using JMS objects
  */
+//@Provides
 public class JmsActionMessageBuilder implements ActionMessageBuilder {
     /**
      * Map to store topics associated to each sequence command

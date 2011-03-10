@@ -16,11 +16,13 @@ import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 /**
  * Command Sender implementation
  */
+//@Provides
 public class CommandSenderImpl implements CommandSender {
 
     /**
      * Holds state of the actions being tracked in the system
      */
+    //@Requires
     private final ActionManager _manager;
 
     /**

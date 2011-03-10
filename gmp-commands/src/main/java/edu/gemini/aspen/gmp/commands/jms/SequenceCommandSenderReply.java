@@ -1,16 +1,16 @@
 package edu.gemini.aspen.gmp.commands.jms;
 
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
+import edu.gemini.aspen.gmp.commands.model.ActionMessage;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.jms.api.JmsMapMessageSenderReply;
 import edu.gemini.jms.api.MessagingException;
-import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.model.ActionSender;
-import edu.gemini.aspen.gmp.commands.model.ActionMessage;
-import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 
-import javax.jms.Message;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
+import javax.jms.Message;
 
 /**
  * This is the implementation of the JMS producer object that will
@@ -19,6 +19,7 @@ import javax.jms.MapMessage;
  * to simplify the usage (and consistency) across the different
  * {@link edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor}
  */
+//@Provides(specifications = ActionSender.class)
 public class SequenceCommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse>
         implements ActionSender {
 
