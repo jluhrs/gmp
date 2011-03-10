@@ -107,7 +107,7 @@ public class ChannelBindingSupport {
     public ChannelBindingSupport(Context ctx, IEpicsClient target) throws CAException {
         this.target = target;
         this._ctx = ctx;
-        if (_ctx == null) {
+        if (_ctx != null) {
             _ctx.addContextExceptionListener(new ContextExceptionListener() {
                 public void contextException(ContextExceptionEvent cee) {
                     LOGGER.log(Level.WARNING, "Trouble in JCA Context.", cee);
