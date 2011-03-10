@@ -60,23 +60,28 @@ public class EpicsBase implements IEpicsBase {
     };
 
 
-    public EpicsBase(Context ctx) throws CAException {
+    public EpicsBase(Context ctx) {
         Preconditions.checkArgument(ctx != null, "Passed JCA Context cannot be null");
         this._ctx = ctx;
-        _ctx.addContextExceptionListener(new ContextExceptionListener() {
-            public void contextException(ContextExceptionEvent cee) {
-                LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
-            }
+        try {
+            _ctx.addContextExceptionListener(new ContextExceptionListener() {
+                public void contextException(ContextExceptionEvent cee) {
+                    LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
+                }
 
-            public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
-                LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
-            }
-        });
-        _ctx.addContextMessageListener(new ContextMessageListener() {
-            public void contextMessage(ContextMessageEvent cme) {
-                LOG.info(cme.getMessage());
-            }
-        });
+                public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
+                    LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
+                }
+            });
+            _ctx.addContextMessageListener(new ContextMessageListener() {
+                public void contextMessage(ContextMessageEvent cme) {
+                    LOG.info(cme.getMessage());
+                }
+            });
+        } catch (CAException e) {
+            throw new EpicsException("Caught exception while adding JCA Context listeners", e);
+        }
+
     }
 
     public void bindChannel(String channel) throws EpicsException {

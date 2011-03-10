@@ -1,6 +1,5 @@
 package edu.gemini.epics.impl;
 
-import edu.gemini.epics.EpicsException;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
@@ -13,7 +12,7 @@ import static org.mockito.Mockito.when;
 
 public class EpicsBaseTest {
     @Test
-    public void testChannelBinding() throws CAException, EpicsException {
+    public void testChannelBinding() throws CAException {
         Context context = mock(Context.class);
         String channelName = "tst:tst";
         Channel channel = mock(Channel.class);
@@ -26,7 +25,7 @@ public class EpicsBaseTest {
     }
 
     @Test
-    public void testFindUnknownChannel() throws CAException, EpicsException {
+    public void testFindUnknownChannel() {
         Context context = mock(Context.class);
         String channelName = "tst:tst";
 

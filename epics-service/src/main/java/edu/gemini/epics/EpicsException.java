@@ -3,7 +3,7 @@ package edu.gemini.epics;
 /**
  * Exception produced when accessing the EPICS layer
  */
-public class EpicsException extends Exception {
+public class EpicsException extends RuntimeException {
 
     public EpicsException(String message, Exception cause) {
         super(message, cause);
