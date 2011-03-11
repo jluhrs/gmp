@@ -10,6 +10,7 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
@@ -81,12 +82,13 @@ public class HeartbeatDistributorIT {
         //register handlers
         JmsProvider provider = (JmsProvider) context.getService(context.getServiceReference("edu.gemini.jms.api.JmsProvider"));
 
-        TestConsumerComponent comp = new TestConsumerComponent();
+        TestConsumerComponent comp = new TestConsumerComponent(2);
         context.registerService(IHeartbeatConsumer.class.getName(),comp,null);
 
-        Thread.sleep(2000);
-
+         //wait at most 3 second for 2 beats to arrive
+        comp.waitOnLatch(3, TimeUnit.SECONDS);
         assertTrue(comp.getLast()>0);
+        assertTrue(comp.getCount()>=2);
 
     }
 }
