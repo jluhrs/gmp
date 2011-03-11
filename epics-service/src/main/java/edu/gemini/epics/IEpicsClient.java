@@ -9,7 +9,7 @@ package edu.gemini.epics;
 public interface IEpicsClient {
 
     /**
-     * Service property for defing the channels that the client cares about.
+     * Service property for defining the channels that the client cares about.
      * Pass this as part of your registration as an array of Strings.
      */
     String EPICS_CHANNELS = IEpicsClient.class.getName() + ".EPICS_CHANNELS";

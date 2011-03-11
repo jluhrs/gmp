@@ -79,6 +79,16 @@ public class EpicsServiceImplTest {
         verify(epicsClient).disconnected();
     }
 
+    @Test
+    public void testUnbindingUnknownClient() {
+        epicsService.startService();
+        IEpicsClient epicsClient = mock(IEpicsClient.class);
+        epicsService.unbindEpicsClient(epicsClient);
+
+        epicsService.stopService();
+        verifyZeroInteractions(epicsClient);
+    }
+
     @Test(expected = IllegalStateException.class)
     public void testGetContextBeforeReady() {
         epicsService.getJCAContext();
@@ -87,7 +97,7 @@ public class EpicsServiceImplTest {
     @Test
     public void testGetContextPassedInitially() {
         Context context = mock(Context.class);
-        EpicsService epicsService = new EpicsServiceImpl(context);
+        EpicsService epicsService = new EpicsServiceImpl(context, "127.0.0.1");
         assertEquals(context, epicsService.getJCAContext());
     }
 }

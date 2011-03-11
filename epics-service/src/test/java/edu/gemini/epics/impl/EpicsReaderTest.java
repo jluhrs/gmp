@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EpicsReaderTest {
-
+    private static final String ADDRESS = "172.16.2.24";
     private static final String CHANNEL_NAME = "tst:tst";
     private final Context context = mock(Context.class);
     private final Channel channel = mock(Channel.class);
@@ -29,7 +29,7 @@ public class EpicsReaderTest {
         when(channel.get()).thenReturn(new DBR_Float(simulatedValue));
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context));
+        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
@@ -38,7 +38,7 @@ public class EpicsReaderTest {
 
     @Test
     public void testReadValueOfUnknownChannel() throws CAException {
-        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context));
+        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context, ADDRESS));
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
         assertNull(value);
@@ -49,7 +49,7 @@ public class EpicsReaderTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.get()).thenThrow(new CAException());
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context));
+        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         epicsReader.getValue(CHANNEL_NAME);
@@ -60,7 +60,7 @@ public class EpicsReaderTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context));
+        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         doThrow(new TimeoutException()).when(context).pendIO(anyDouble());

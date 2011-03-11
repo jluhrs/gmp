@@ -1,5 +1,6 @@
 package edu.gemini.epics.impl;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.IEpicsClient;
 import gov.aps.jca.CAException;
@@ -9,6 +10,7 @@ import org.apache.felix.ipojo.annotations.Bind;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Invalidate;
+import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Unbind;
 import org.apache.felix.ipojo.annotations.Validate;
@@ -27,7 +29,9 @@ import java.util.logging.Logger;
 @Instantiate
 public class EpicsServiceImpl implements EpicsService {
     private static final Logger LOG = Logger.getLogger(EpicsService.class.getName());
-    private String addressList = "edu.gemini.epics.addr_list";
+
+    @Property(mandatory = true, name = "_addressList")
+    private String _addressList;
     private String autoAddressList = "edu.gemini.epics.auto_addr_list";
     private Context _ctx;
     private final EpicsClientsHolder epicsClientsHolder = new EpicsClientsHolder();
@@ -37,10 +41,14 @@ public class EpicsServiceImpl implements EpicsService {
      */
     protected EpicsServiceImpl() {
         _ctx = null;
+        _addressList = "";
     }
 
-    public EpicsServiceImpl(Context context) {
+    public EpicsServiceImpl(Context context, String addressList) {
+        Preconditions.checkArgument(context != null, "JCAContext cannot be null");
+        Preconditions.checkArgument(addressList != null, "Address to connect cannot be null");
         _ctx = context;
+        this._addressList = addressList;
     }
 
     @Override
@@ -76,12 +84,12 @@ public class EpicsServiceImpl implements EpicsService {
      */
     @Validate
     public void startService() {
-        System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "172.17.2.255");
+        System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", _addressList);
         System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
 
         try {
             _ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-            LOG.info("JCALibrary built to connect to addressList: " + addressList);
+            LOG.info("JCALibrary built to connect to _addressList: " + _addressList);
             epicsClientsHolder.connectAllPendingClients(_ctx);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, "Cannot start JCALibrary", e);

@@ -25,7 +25,7 @@ public class WriteTest {
 
     public WriteTest() throws CAException, EpicsException {
         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        _writer = new EpicsWriter(new EpicsServiceImpl(context));
+        _writer = new EpicsWriter(new EpicsServiceImpl(context, "172.16.2.24"));
         for (String s : CHANNELS.keySet()) {
             _writer.bindChannel(s);
         }
@@ -46,7 +46,6 @@ public class WriteTest {
     }
 
     public static void main(String[] args) throws EpicsException, CAException, InterruptedException {
-        System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "172.16.2.24");
         System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
 
         Double values[] = {1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9, 10.10};

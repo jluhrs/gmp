@@ -79,6 +79,7 @@ public class ChannelBindingSupport {
             // The channel was _closed.
             // First, update the value to null.
             _epicsClient.channelChanged(ch.getName(), null);
+            _epicsClient.disconnected();
         }
     };
 
