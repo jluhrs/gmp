@@ -1,21 +1,34 @@
 package edu.gemini.epics.impl;
 
 import edu.gemini.epics.EpicsException;
+import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.IEpicsReader;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
+import org.apache.felix.ipojo.annotations.Requires;
+import org.apache.felix.ipojo.annotations.Validate;
+
+import java.util.logging.Logger;
 
 
 /**
  * An Epics Reader object, that allows to get the value of a
  * bound Epics Channel.
  */
+@Component
+@Instantiate
+@Provides(specifications = IEpicsReader.class)
 public class EpicsReader extends EpicsBase implements IEpicsReader {
-    public EpicsReader(Context ctx) throws CAException {
-        super(ctx);
+    private static final Logger LOG = Logger.getLogger(EpicsReader.class.getName());
+
+    public EpicsReader(@Requires EpicsService epicsService) {
+        super(epicsService);
+        startEpicsReader();
     }
 
     /**
@@ -34,6 +47,11 @@ public class EpicsReader extends EpicsBase implements IEpicsReader {
         }
     }
 
+    @Validate
+    public void startEpicsReader() {
+        LOG.info("EpicsReader ready" );
+    }
+
     private Object readChannelValue(String channelName) {
         Channel channel = getChannel(channelName);
         try {
@@ -50,5 +68,4 @@ public class EpicsReader extends EpicsBase implements IEpicsReader {
         channel.getContext().pendIO(1.0);
         return dbr.getValue();
     }
-
 }

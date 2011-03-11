@@ -63,13 +63,13 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         tracker = new ServiceTracker(context, IEpicsClient.class.getName(), this);
         tracker.open();
         ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        epicsWriter = new EpicsWriter(ctx);
+        //epicsWriter = new EpicsWriter(ctx);
         //Register the EpicsWriter service
         _writterRegistration = context.registerService(
                 IEpicsWriter.class.getName(),
                 epicsWriter, null);
         //Register the EpicsReader service
-        epicsReader = new EpicsReader(ctx);
+        //epicsReader = new EpicsReader(ctx);
         _readerRegistration = context.registerService(
                 IEpicsReader.class.getName(),
                 epicsReader, null

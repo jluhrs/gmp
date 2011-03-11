@@ -1,16 +1,19 @@
 package edu.gemini.epics.impl;
 
-import edu.gemini.epics.IEpicsWriter;
 import edu.gemini.epics.EpicsException;
-import gov.aps.jca.*;
+import edu.gemini.epics.EpicsService;
+import edu.gemini.epics.IEpicsWriter;
+import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
 
 /**
  * Implementation of the EpicsWriter interface using JCA
  */
+//@Provides(specifications = IEpicsWriter.class)
 public class EpicsWriter extends EpicsBase implements IEpicsWriter {
 
-    public EpicsWriter(Context ctx) throws CAException {
-        super(ctx);
+    public EpicsWriter(EpicsService epicsService) throws CAException {
+        super(epicsService);
     }
 
     public void write(String channelName, Double value) throws EpicsException {

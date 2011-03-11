@@ -29,7 +29,7 @@ public class EpicsReaderTest {
         when(channel.get()).thenReturn(new DBR_Float(simulatedValue));
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReader(context);
+        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
@@ -38,7 +38,7 @@ public class EpicsReaderTest {
 
     @Test
     public void testReadValueOfUnknownChannel() throws CAException {
-        EpicsReader epicsReader = new EpicsReader(context);
+        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context));
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
         assertNull(value);
@@ -49,7 +49,7 @@ public class EpicsReaderTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.get()).thenThrow(new CAException());
 
-        EpicsReader epicsReader = new EpicsReader(context);
+        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         epicsReader.getValue(CHANNEL_NAME);
@@ -60,7 +60,7 @@ public class EpicsReaderTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReader(context);
+        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         doThrow(new TimeoutException()).when(context).pendIO(anyDouble());

@@ -26,7 +26,7 @@ public class EpicsWriterTest {
 
         when(channel.getContext()).thenReturn(context);
 
-        EpicsWriter epicsWriter = new EpicsWriter(context);
+        EpicsWriter epicsWriter = new EpicsWriter(new EpicsServiceImpl(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, simulatedValue);
@@ -35,7 +35,7 @@ public class EpicsWriterTest {
 
     @Test
     public void testWriteValueToUnknownChannel() throws CAException {
-        EpicsWriter epicsWriter = new EpicsWriter(context);
+        EpicsWriter epicsWriter = new EpicsWriter(new EpicsServiceImpl(context));
 
         epicsWriter.write(CHANNEL_NAME, simulatedValue);
         verifyZeroInteractions(channel);
@@ -47,7 +47,7 @@ public class EpicsWriterTest {
 
         when(channel.getContext()).thenReturn(context);
 
-        EpicsWriter epicsWriter = new EpicsWriter(context);
+        EpicsWriter epicsWriter = new EpicsWriter(new EpicsServiceImpl(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         Double[] valuesAsObject = new Double[] {1., 2.};
@@ -62,7 +62,7 @@ public class EpicsWriterTest {
 
         when(channel.getContext()).thenReturn(context);
 
-        EpicsWriter epicsWriter = new EpicsWriter(context);
+        EpicsWriter epicsWriter = new EpicsWriter(new EpicsServiceImpl(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, singleValue);
@@ -71,7 +71,7 @@ public class EpicsWriterTest {
 
     @Test
     public void testWriteSingleValueToUnknownChannel() throws CAException {
-        EpicsWriter epicsWriter = new EpicsWriter(context);
+        EpicsWriter epicsWriter = new EpicsWriter(new EpicsServiceImpl(context));
 
         epicsWriter.write(CHANNEL_NAME, singleValue);
         verifyZeroInteractions(channel);
@@ -83,7 +83,7 @@ public class EpicsWriterTest {
 
         doThrow(new CAException()).when(channel).put(singleValue);
 
-        EpicsWriter epicsWriter = new EpicsWriter(context);
+        EpicsWriter epicsWriter = new EpicsWriter(new EpicsServiceImpl(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, singleValue);
@@ -95,7 +95,7 @@ public class EpicsWriterTest {
 
         doThrow(new CAException()).when(channel).put(simulatedValue);
 
-        EpicsWriter epicsWriter = new EpicsWriter(context);
+        EpicsWriter epicsWriter = new EpicsWriter(new EpicsServiceImpl(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, simulatedValue);

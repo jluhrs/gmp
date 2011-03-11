@@ -2,7 +2,6 @@ package edu.gemini.epics.test;
 
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.IEpicsReader;
-import edu.gemini.epics.impl.EpicsReader;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
@@ -27,10 +26,10 @@ public class GetTest {
 
     public GetTest() throws CAException, EpicsException {
         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        _reader = new EpicsReader(context);
-        for (String s : CHANNELS.keySet()) {
-            _reader.bindChannel(s);
-        }
+//        _reader = new EpicsReader(new EpicsServiceImpl(context));
+//        for (String s : CHANNELS.keySet()) {
+//            _reader.bindChannel(s);
+//        }
     }
 
     Object getValues(String channel) throws EpicsException {
