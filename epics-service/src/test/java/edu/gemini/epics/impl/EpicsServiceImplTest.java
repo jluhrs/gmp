@@ -41,6 +41,7 @@ public class EpicsServiceImplTest {
 
         IEpicsClient epicsClient = mock(IEpicsClient.class);
         epicsService.bindEpicsClient(epicsClient, ImmutableMap.<String, Object>of(IEpicsClient.EPICS_CHANNELS, new String[]{"tst:tst"}));
+        
         verifyZeroInteractions(epicsClient);
         epicsService.startService();
 

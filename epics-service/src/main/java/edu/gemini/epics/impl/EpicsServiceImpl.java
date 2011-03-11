@@ -59,7 +59,7 @@ public class EpicsServiceImpl implements EpicsService {
 
     @Bind
     public void bindEpicsClient(IEpicsClient epicsClient, Map<String, Object> serviceProperties) {
-        LOG.info("Arrived Epics Client " + epicsClient + " and properties " + serviceProperties + ", binding it to the JCA Context");
+        LOG.info("Arrived Epics Client " + epicsClient + " and properties " + serviceProperties + ", binding it to the JCA Context " +_ctx);
         if (serviceHasValidProperties(serviceProperties)) {
             // This may be called before or after the startService method
             bindContextOrSave(epicsClient, serviceProperties);
@@ -73,9 +73,9 @@ public class EpicsServiceImpl implements EpicsService {
     private void bindContextOrSave(IEpicsClient epicsClient, Map<String, Object> serviceProperties) {
         String[] channels = (String[]) serviceProperties.get(IEpicsClient.EPICS_CHANNELS);
         if (isContextReady()) {
-            saveClientForBinding(epicsClient, channels);
-        } else {
             bindClientToContext(epicsClient, channels);
+        } else {
+            saveClientForBinding(epicsClient, channels);
         }
     }
 
@@ -98,12 +98,12 @@ public class EpicsServiceImpl implements EpicsService {
     }
 
     private boolean isContextReady() {
-        return _ctx == null;
+        return _ctx != null;
     }
 
     @Override
     public Context getJCAContext() {
-        if (isContextReady()) {
+        if (!isContextReady()) {
             throw new IllegalStateException("Illegal State, attempt to read the Context before it has been made available");
         }
         return _ctx;
