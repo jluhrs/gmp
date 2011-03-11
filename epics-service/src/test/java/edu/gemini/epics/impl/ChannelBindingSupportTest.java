@@ -50,7 +50,7 @@ public class ChannelBindingSupportTest {
     }
 
     @Test
-    public void testConnectionChangedEventOnConnection()` {
+    public void testConnectionChangedEventOnConnection() throws CAException {
         cbs.bindChannel(CHANNEL_NAME);
 
         simulateConnectionStarted();
