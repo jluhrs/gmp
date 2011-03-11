@@ -25,7 +25,7 @@ public class EpicsServiceImpl implements EpicsService {
     private String autoAddressList = "edu.gemini.epics.auto_addr_list";
     private Context _ctx;
 
-    private EpicsServiceImpl() {
+    protected EpicsServiceImpl() {
         _ctx = null;
     }
 

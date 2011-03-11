@@ -1,14 +1,13 @@
-package edu.gemini.epics;
+package edu.gemini.epics.impl;
 
-import edu.gemini.epics.impl.EpicsServiceImpl;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
-public class EpicsServiceTest {
+public class EpicsServiceImplTest {
     @Test
-    public void testValidate() {
-        EpicsServiceImpl epicsService = new EpicsServiceImpl(null);
+    public void testNormalProcessing() {
+        EpicsServiceImpl epicsService = new EpicsServiceImpl();
         epicsService.startService();
 
         assertNotNull(epicsService.getJCAContext());
