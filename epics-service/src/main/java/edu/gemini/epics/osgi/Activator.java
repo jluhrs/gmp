@@ -2,17 +2,12 @@ package edu.gemini.epics.osgi;
 
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.IEpicsClient;
-import edu.gemini.epics.IEpicsReader;
-import edu.gemini.epics.IEpicsWriter;
 import edu.gemini.epics.impl.ChannelBindingSupport;
-import edu.gemini.epics.impl.EpicsReader;
-import edu.gemini.epics.impl.EpicsWriter;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -34,10 +29,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
     private ServiceTracker tracker = null;
     private BundleContext context = null;
 
-    private ServiceRegistration _writterRegistration;
-    private ServiceRegistration _readerRegistration;
-    private EpicsReader epicsReader;
-    private EpicsWriter epicsWriter;
     private Context ctx;
     private ChannelBindingSupport cbs;
 
@@ -63,25 +54,13 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         tracker = new ServiceTracker(context, IEpicsClient.class.getName(), this);
         tracker.open();
         ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        //epicsWriter = new EpicsWriter(ctx);
-        //Register the EpicsWriter service
-        _writterRegistration = context.registerService(
-                IEpicsWriter.class.getName(),
-                epicsWriter, null);
-        //Register the EpicsReader service
-        //epicsReader = new EpicsReader(ctx);
-        _readerRegistration = context.registerService(
-                IEpicsReader.class.getName(),
-                epicsReader, null
-        );
+
     }
 
     public void stop(BundleContext context) throws Exception {
         tracker.close();
         tracker = null;
         this.context = null;
-        _writterRegistration.unregister();
-        _readerRegistration.unregister();
     }
 
     public Object addingService(ServiceReference ref) {
