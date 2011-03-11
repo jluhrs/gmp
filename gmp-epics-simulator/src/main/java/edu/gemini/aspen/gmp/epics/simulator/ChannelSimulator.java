@@ -15,7 +15,6 @@ import java.util.logging.Logger;
  * <p/>
  * Channel Simulator tasks are started by the Simulator, via the
  * {@link Simulator#startSimulation(edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel)} method.
- *
  */
 public class ChannelSimulator implements Runnable {
 
@@ -28,7 +27,8 @@ public class ChannelSimulator implements Runnable {
     /**
      * Creates a new Channel simualtor tasks, indicating the channel to simulate
      * and the EPICS registrar to be notified of changes
-     * @param channel the channel to simulate
+     *
+     * @param channel   the channel to simulate
      * @param registrar EpicsRegistrar to notify when updates occur
      */
     public ChannelSimulator(SimulatedEpicsChannel channel, EpicsRegistrar registrar) {
@@ -40,16 +40,8 @@ public class ChannelSimulator implements Runnable {
      * Execution thread of this simulated channel.
      */
     public void run() {
-        while (true) {
-            try {
-                Thread.sleep(_simulatedChannel.getUpdateRate());
-                EpicsUpdate newUpdate = _simulatedChannel.buildEpicsUpdate();
-                LOG.fine("New simulated value for " + _simulatedChannel.getName() + " " + newUpdate);
-                _registrar.processEpicsUpdate(newUpdate);
-            } catch (InterruptedException e) {
-                LOG.info("Thread interrupted, exiting");
-                return;
-            }
-        }
+        EpicsUpdate newUpdate = _simulatedChannel.buildEpicsUpdate();
+        LOG.fine("New simulated value for " + _simulatedChannel.getName() + " " + newUpdate);
+        _registrar.processEpicsUpdate(newUpdate);
     }
 }
