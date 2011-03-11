@@ -68,6 +68,17 @@ public class EpicsServiceImplTest {
         epicsService.stopService();
     }
 
+    @Test
+    public void testUnbindingEpicsClientWhenStopping() {
+        epicsService.startService();
+        IEpicsClient epicsClient = mock(IEpicsClient.class);
+        epicsService.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
+        verify(epicsClient).connected();
+
+        epicsService.stopService();
+        verify(epicsClient).disconnected();
+    }
+
     @Test(expected = IllegalStateException.class)
     public void testGetContextBeforeReady() {
         epicsService.getJCAContext();
