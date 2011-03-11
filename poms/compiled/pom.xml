@@ -61,7 +61,7 @@
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-            <version>1.6.4</version>
+            <version>${org.apache.felix.ipojo}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -163,7 +163,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-ipojo-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>${org.apache.felix.ipojo}</version>
                 <executions>
                     <execution>
                         <goals>

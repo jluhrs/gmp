@@ -35,7 +35,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
         <!--felix.log.level>4</felix.log.level-->
-        <!--ipojo.log.level>debug</ipojo.log.level-->
+        <ipojo.log.level>debug</ipojo.log.level>
     </properties>
 
     <build>
@@ -175,7 +175,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
-            <version>0.2.0</version>
+            <version>0.3.0</version>
         </dependency>
         <!-- CAS -->
         <dependency>
