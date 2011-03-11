@@ -1,7 +1,5 @@
 package edu.gemini.epics.impl;
 
-import com.google.common.collect.Maps;
-import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.IEpicsClient;
 import gov.aps.jca.CAException;
@@ -15,7 +13,6 @@ import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Unbind;
 import org.apache.felix.ipojo.annotations.Validate;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,8 +29,7 @@ public class EpicsServiceImpl implements EpicsService {
     private String addressList = "edu.gemini.epics.addr_list";
     private String autoAddressList = "edu.gemini.epics.auto_addr_list";
     private Context _ctx;
-    private Map<IEpicsClient, String[]> pendingClients = Maps.newConcurrentMap();
-    private Map<IEpicsClient, ChannelBindingSupport> currentClients = Maps.newConcurrentMap();
+    private final EpicsClientsHolder epicsClientsHolder = new EpicsClientsHolder();
 
     protected EpicsServiceImpl() {
         _ctx = null;
@@ -75,35 +71,22 @@ public class EpicsServiceImpl implements EpicsService {
         try {
             _ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
             LOG.info("JCALibrary built to connect to addressList: " + addressList);
-            // TODO Lock access to pendingClients
-            for (Map.Entry<IEpicsClient, String[]> pendingClient : pendingClients.entrySet()) {
-                bindClientToContext(pendingClient.getKey(), pendingClient.getValue());
-            }
-            pendingClients.clear();
+            epicsClientsHolder.bindPendingClients(_ctx);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, "Cannot start JCALibrary", e);
-        }
-    }
-
-    private void bindClientToContext(IEpicsClient epicsClient, String[] channels) {
-        try {
-            LOG.info("Binding client " + epicsClient + " to channels " + Arrays.toString(channels));
-            ChannelBindingSupport cbs = new ChannelBindingSupport(_ctx, epicsClient);
-            for (String channel : channels) {
-                cbs.bindChannel(channel);
-            }
-            currentClients.put(epicsClient, cbs);
-            epicsClient.connected();
-        } catch (EpicsException cae) {
-            LOG.log(Level.SEVERE, "Could not connect to EPICS.", cae);
         }
     }
 
     @Bind
     public void bindEpicsClient(IEpicsClient epicsClient, Map<String, Object> serviceProperties) {
         if (serviceHasValidProperties(serviceProperties)) {
-            // This may be called before or after the startService method
-            bindContextOrSave(epicsClient, serviceProperties);
+            String[] channels = (String[]) serviceProperties.get(IEpicsClient.EPICS_CHANNELS);
+            if (isContextReady()) {
+                epicsClientsHolder.bindClientToContext(_ctx, epicsClient, channels);
+            } else {
+                // This may be called before or after the startService method
+                epicsClientsHolder.saveClientForLateBinding(epicsClient, channels);
+            }
         }
     }
 
@@ -111,35 +94,8 @@ public class EpicsServiceImpl implements EpicsService {
         return serviceProperties.containsKey(IEpicsClient.EPICS_CHANNELS) && serviceProperties.get(IEpicsClient.EPICS_CHANNELS) instanceof String[];
     }
 
-    private void bindContextOrSave(IEpicsClient epicsClient, Map<String, Object> serviceProperties) {
-        String[] channels = (String[]) serviceProperties.get(IEpicsClient.EPICS_CHANNELS);
-        if (isContextReady()) {
-            LOG.info("Arrived Epics Client " + epicsClient + ", binding it to the JCA Context " + _ctx);
-            bindClientToContext(epicsClient, channels);
-        } else {
-            LOG.info("Arrived Epics Client before context is ready. Will start" + epicsClient + " upon starting context");
-            saveClientForBinding(epicsClient, channels);
-        }
-    }
-
-    private void saveClientForBinding(IEpicsClient epicsClient, String[] channels) {
-        LOG.info("Saving client " + epicsClient + " for binding channels " + Arrays.toString(channels));
-        pendingClients.put(epicsClient, channels);
-    }
-
     @Unbind
     public void unbindEpicsClient(IEpicsClient epicsClient) {
-        LOG.info("IEpicsClient removed: " + epicsClient);
-
-        if (currentClients.containsKey(epicsClient)) {
-            ChannelBindingSupport cbs = currentClients.get(epicsClient);
-            try {
-                cbs.close();
-                epicsClient.disconnected();
-                currentClients.remove(epicsClient);
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Could not close channel binder.", e);
-            }
-        }
+        epicsClientsHolder.unbindEpicsClient(epicsClient);
     }
 }
