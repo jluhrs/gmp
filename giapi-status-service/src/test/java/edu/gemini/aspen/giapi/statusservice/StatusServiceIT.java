@@ -1,6 +1,6 @@
 package edu.gemini.aspen.giapi.statusservice;
 
-import edu.gemini.aspen.giapi.status.*;
+import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.jms.api.*;
 import org.junit.*;
 import org.junit.runner.*;
@@ -61,7 +61,7 @@ public class StatusServiceIT {
                 );
     }
 
-   @Test
+    @Test
     public void bundleExistence() {
         assertNotNull(getStatusServiceBundle());
     }
