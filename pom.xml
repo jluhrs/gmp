@@ -127,6 +127,7 @@
         <module>giapi-tester</module>
         <module>gmp-webconsole-branding</module>
         <module>gmp-handlers-state-service</module>
+        <module>epics-heartbeat</module>
     </modules>
 
     <distributionManagement>
