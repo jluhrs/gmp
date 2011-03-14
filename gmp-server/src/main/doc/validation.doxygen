@@ -16,7 +16,7 @@
 
  \section integration_tests Integration Tests
 
- \subsection epics_subscription_test Epics Subscription Channels
+ \subsection epics_subscription_test Epics Subscription Channels Intergration Tests
 
      The epicssubscription application will monitor two channels: \c ws:wsFilter.VALL and \c ws:cpWf.
      Whenever an update is received, the values will be displayed in the console.
@@ -82,7 +82,7 @@ Of course, you can change these values and update the test application according
      Make sure you see both channels updating. To exit the application use CTRL-C
 
 
- \subsection file_events_test File Events
+ \subsection file_events_test File Events Service Integration Tests
 
      First, use the giapi-tester application to start listening for File Events
      (see documentation for giapi-tester here):
@@ -111,7 +111,7 @@ Of course, you can change these values and update the test application according
     \endverbatim
 
 
- \subsection obs_events_test Observation Events
+ \subsection obs_events_test Observation Events Integration Tests
 
         First, use the giapi-tester application to start listening for Observation Events
           (see documentation for giapi-tester here):
@@ -146,7 +146,7 @@ Of course, you can change these values and update the test application according
             Make sure the order is exactly the one shown above.
 
 
- \subsection logging_test Logging
+ \subsection logging_test Logging Service Integration Tests
 
         Look at the GMP logs first:
 
@@ -192,7 +192,7 @@ Of course, you can change these values and update the test application according
     \endverbatim
 
 
-\subsection pcs_updater_test  PCS Updater
+\subsection pcs_updater_test  PCS Updater Service Integration Tests
 
         First, make sure the GMP PCS Updater Service is running in the GMP (look at the Active bundles).
 
@@ -231,7 +231,7 @@ Of course, you can change these values and update the test application according
         And confirm that the zernikes arrive correctly.
 
 
-\subsection seq_commands_test   Sequence Commands
+\subsection seq_commands_test  Sequence Commands Integration Tests
 
         First, start the seq-command application:
 
@@ -265,7 +265,7 @@ Of course, you can change these values and update the test application according
         The same results should be obtained if we send PRESET or START as the activity, though in
         a real-life application, the PRESET should return right away.
 
-\subsection status_test  Status
+\subsection status_test  Status Service Integration Tests
 
         First start the giapi-tester to monitor all the status items:
 
@@ -303,7 +303,7 @@ Of course, you can change these values and update the test application according
     Status value: StatusItem{name='gpi:status2', value=1}
 \endverbatim
 
-\subsection services_test Services
+\subsection services_test Gemini Services Integration Tests
 
         Check the content of the services configuration %file:
 
@@ -339,7 +339,7 @@ Of course, you can change these values and update the test application according
 
        NOTE: We will update this test application to read all the properties.
 
-\subsection tcs_context_test TCS Context
+\subsection tcs_context_test TCS Context Integration Tests
 
     First, verify the GMP TCS context service is running in the GMP and
     it is configured in simulation:
@@ -404,8 +404,8 @@ Of course, you can change these values and update the test application according
        0       1       0       0       0       1
 \endverbatim
 
-\subsection validation_testing_sec EPICS Status Service
-\li Start the GMP as indicated in \ref user_manual.
+\subsection validation_testing_sec EPICS Status Service Integration Tests
+\li Start the GMP as indicated in the \ref user_manual.
 \li To check that everything is running correctly, you can run <tt>$ caget -a gpi:status1</tt> and see if it can read a
 value. Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running. You should see
 something like this:
