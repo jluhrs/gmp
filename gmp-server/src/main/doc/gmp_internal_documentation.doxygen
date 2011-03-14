@@ -5,6 +5,7 @@
  * The \b GMP Server is comprised of the following bundles:
  *
  * - \subpage cas
+ * - \subpage epics-service
  * - \subpage gmp-epics-status-service
  * - \subpage gmp-pcs-updater
  * - \subpage gmp-tcs-context

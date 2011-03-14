@@ -1,0 +1,26 @@
+/*!
+ * \page epics-service Epics Service
+ *
+ * Epics Service is a bundle that gives access to external epics databases to read and write values.
+ *
+ * \section epics-service_provides_sec Provided Services
+ * This bundle provides the following OSGi services
+ *
+ * - \ref edu.gemini.epics.JCAContextController "JCAContextController" is a service that has a reference to a JCA-Context and takes care of creating and destroying it
+ * - \ref edu.gemini.epics.IEpicsReader "IEpicsReader" this service allows to read a value from a given EPICS channel. For that it is necessary to
+ * pass the channel name
+ * - \ref edu.gemini.epics.IEpicsWriter "IEpicsWriter" A service to write double values to a specific epics channel. Double arrays are also supported
+ *
+ * \section epics-service_requires_sec Required Services
+ * This bundle can use implementations of the \ref edu.gemini.epics.IEpicsClient "IEpicsClient" service. Implementations
+ * subscribe to get updates when certain EPICS Channels are updated. An implementation of \ref edu.gemini.epics.IEpicsClient "IEpicsClient"
+ * must inform what channels it wants to monitor by means of setting a service property named edu.gemini.epics.IEpicsClient.EPICS_CHANNELS
+ * to an array of Strings, each representing a monitored channel.
+ *
+ * \section epics-service_configuration_sec Configuration
+ * This bundle has its main configuration file in \ref edu.gemini.epics.EpicsService-default.cfg
+ *
+ * There, you can set one property:
+ *
+ * - addressList: An IP address where the epics-service can connect to
+ */

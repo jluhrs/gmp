@@ -162,6 +162,7 @@
  *
  * Please refer to each bundle's documentation for details on their ability to be restarted and how to configure them
  *
+ * - \ref epics-service_configuration_sec "EPICS Service"
  * - \ref gmp-epics-access_configuration_sec "GMP EPICS Access Service"
  * - \ref gmp-epics-simulator_configuration_sec "GMP EPICS Simulator"
  * - \ref gmp-pcs-updater_configuration_sec "GMP PCS Updater"
