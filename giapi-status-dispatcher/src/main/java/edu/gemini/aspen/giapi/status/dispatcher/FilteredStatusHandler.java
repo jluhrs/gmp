@@ -12,7 +12,7 @@ public interface FilteredStatusHandler extends StatusHandler {
     /**
      * Returns the filter to determine which status items to subscribe to.
      *
-     * @return a ConfigPath representing the filter
+     * @return a StatusItemFilter representing the filter
      */
     StatusItemFilter getFilter();
 }
