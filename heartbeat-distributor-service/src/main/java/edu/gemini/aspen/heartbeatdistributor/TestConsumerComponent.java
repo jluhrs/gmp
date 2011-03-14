@@ -18,23 +18,23 @@ public class TestConsumerComponent implements IHeartbeatConsumer{
     private final Logger LOG = Logger.getLogger(TestConsumerComponent.class.getName());
     private final CountDownLatch latch;
 
-    private long last=-1;
-    private long count=0;
+    private int last=-1;
+    private int count=0;
 
     public TestConsumerComponent(int latchSize){
         latch=new CountDownLatch(latchSize);
     }
 
-    public long getLast(){
+    public int getLast(){
         return last;
     }
 
-    public long getCount(){
+    public int getCount(){
         return count;
     }
 
     @Override
-    public void beat(long beatNumber) {
+    public void beat(int beatNumber) {
         LOG.info("Heartbeat: "+beatNumber);
         last=beatNumber;
         count++;

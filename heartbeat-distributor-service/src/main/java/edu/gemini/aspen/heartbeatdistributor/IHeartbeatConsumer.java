@@ -12,5 +12,5 @@ public interface IHeartbeatConsumer {
      *
      * @param beatNumber the last heartbeat number received
      */
-    void beat(long beatNumber);
+    void beat(int beatNumber);
 }

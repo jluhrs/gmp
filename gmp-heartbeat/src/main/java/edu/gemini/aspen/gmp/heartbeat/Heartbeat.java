@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 
 /**
- * Class Heartbeat
+ * Class Heartbeat sends an integer increasing every 1 second, and wrapping at 1000, back to 0.
  *
  * @author Nicolas A. Barriga
  *         Date: 12/29/10
@@ -30,13 +30,14 @@ public class Heartbeat{
         public HeartbeatMessageProducer(){
              super("Heartbeat", new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC));
         }
-        private long counter = 0;
+        private int counter = 0;
 
             @Override
             public synchronized void run() {
                 try {
                     BytesMessage m = _session.createBytesMessage();
-                    m.writeLong(counter++);
+                    m.writeInt(counter++);
+                    if(counter>=1000)counter=0;
                     _producer.send(m);
                 } catch (JMSException e) {
                     LOG.log(Level.SEVERE, e.getMessage(), e);
@@ -82,8 +83,7 @@ public class Heartbeat{
         try {
             executor.awaitTermination(1, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
-            //todo:check this exception management
-            throw new RuntimeException(ex);
+            LOG.log(Level.SEVERE,ex.getMessage(),ex);
         }
         producer.stopJms();
     }

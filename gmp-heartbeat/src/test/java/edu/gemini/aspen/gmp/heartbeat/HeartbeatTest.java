@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
  *         Date: 12/29/10
  */
 public class HeartbeatTest{
-    private long last=0;
+    private int last=0;
 
     private class HeartbeatListener implements MessageListener {
         private final Logger LOG = Logger.getLogger(HeartbeatListener.class.getName());
@@ -33,7 +33,7 @@ public class HeartbeatTest{
             if (message instanceof BytesMessage) {
                 BytesMessage bm = (BytesMessage) message;
                 try {
-                    last = bm.readLong();
+                    last = bm.readInt();
                     LOG.info("Heartbeat: " + last);
                 } catch (JMSException ex) {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);

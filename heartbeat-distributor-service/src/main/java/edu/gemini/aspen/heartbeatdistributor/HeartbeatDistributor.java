@@ -37,7 +37,7 @@ public class HeartbeatDistributor {
             if (message instanceof BytesMessage) {
                 BytesMessage bm = (BytesMessage) message;
                 try {
-                    notifyConsumers(bm.readLong());
+                    notifyConsumers(bm.readInt());
                 } catch (JMSException ex) {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
@@ -56,7 +56,7 @@ public class HeartbeatDistributor {
      *
      * @param beatNumber beat number to notify.
      */
-    private void notifyConsumers(long beatNumber){
+    private void notifyConsumers(int beatNumber){
         for(IHeartbeatConsumer consumer:consumers){
             consumer.beat(beatNumber);
         }

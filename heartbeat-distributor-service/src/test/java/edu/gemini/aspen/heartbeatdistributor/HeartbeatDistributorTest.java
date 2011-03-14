@@ -34,7 +34,7 @@ public class HeartbeatDistributorTest {
         public void sendBeat() {
             try {
                 BytesMessage m = _session.createBytesMessage();
-                m.writeLong(1);
+                m.writeInt(1);
                 _producer.send(m);
             } catch (JMSException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
