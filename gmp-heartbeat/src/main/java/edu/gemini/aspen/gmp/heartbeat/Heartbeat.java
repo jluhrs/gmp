@@ -37,7 +37,7 @@ public class Heartbeat{
                 try {
                     BytesMessage m = _session.createBytesMessage();
                     m.writeInt(counter++);
-                    if(counter>=1000)counter=0;
+                    if(counter>=Integer.MAX_VALUE)counter=0;
                     _producer.send(m);
                 } catch (JMSException e) {
                     LOG.log(Level.SEVERE, e.getMessage(), e);
