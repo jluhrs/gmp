@@ -1,5 +1,4 @@
 /*! \page known_issues_and_bugs Known Issues and Bugs
  *
  * - Telnet console doesn't quit with a CTRL-C keystroke, use the \b CTRL-D instead
- * - The GMP cannot start in the background yet
  */

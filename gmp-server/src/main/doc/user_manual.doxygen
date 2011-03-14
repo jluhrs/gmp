@@ -89,9 +89,10 @@
  * running, and <tt>stop</tt>, that stops a running GMP. If the GMP doesn't go down gracefully, for instance in case of
  * a bundle in an infinite loop, it will force the process to exit.
  *
- * \attention Until an RPM is provided, you need to <tt>$ touch ~/.pax/runner/org.ops4j.pax.runner.daemon.password.file</tt>.
- * This will create an empty password file, thus disallowing remote access to stop the daemon, it must be stopped locally
- * using the provided script.
+ * \attention Until an RPM is provided, you need to <tt>$ touch ~/.pax/runner/org.ops4j.pax.runner.daemon.password.file</tt>,
+ * to create an empty password file, disallowing remote access to stop the daemon. It must be stopped locally
+ * using the provided script. When we provide an RPM, there will be a method for creating a valid password file. At that time,
+ * you will be able to <tt>$ telnet machine_name 8008</tt>, and issue a \c shutdown command.
  *
  * \section telnet Telnet Interface
  *
