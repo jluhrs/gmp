@@ -1,6 +1,7 @@
 package edu.gemini.epics.impl;
 
 import edu.gemini.epics.EpicsException;
+import edu.gemini.epics.EpicsService;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
@@ -29,7 +30,7 @@ public class EpicsReaderTest {
         when(channel.get()).thenReturn(new DBR_Float(simulatedValue));
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
@@ -38,7 +39,7 @@ public class EpicsReaderTest {
 
     @Test
     public void testReadValueOfUnknownChannel() throws CAException {
-        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
         assertNull(value);
@@ -49,7 +50,7 @@ public class EpicsReaderTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.get()).thenThrow(new CAException());
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         epicsReader.getValue(CHANNEL_NAME);
@@ -60,7 +61,7 @@ public class EpicsReaderTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsServiceImpl(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         doThrow(new TimeoutException()).when(context).pendIO(anyDouble());

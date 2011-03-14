@@ -1,6 +1,6 @@
 package edu.gemini.epics.test;
 
-import edu.gemini.epics.impl.EpicsServiceImpl;
+import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.impl.EpicsWriter;
 import edu.gemini.epics.IEpicsWriter;
 import edu.gemini.epics.EpicsException;
@@ -25,7 +25,7 @@ public class WriteTest {
 
     public WriteTest() throws CAException, EpicsException {
         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        _writer = new EpicsWriter(new EpicsServiceImpl(context, "172.16.2.24"));
+        _writer = new EpicsWriter(new EpicsService(context, "172.16.2.24"));
         for (String s : CHANNELS.keySet()) {
             _writer.bindChannel(s);
         }

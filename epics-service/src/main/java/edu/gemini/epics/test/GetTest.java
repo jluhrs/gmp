@@ -26,7 +26,7 @@ public class GetTest {
 
     public GetTest() throws CAException, EpicsException {
         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-//        _reader = new EpicsReader(new EpicsServiceImpl(context));
+//        _reader = new EpicsReader(new EpicsService(context));
 //        for (String s : CHANNELS.keySet()) {
 //            _reader.bindChannel(s);
 //        }

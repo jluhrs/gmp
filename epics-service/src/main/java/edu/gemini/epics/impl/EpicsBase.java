@@ -3,7 +3,7 @@ package edu.gemini.epics.impl;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.EpicsService;
+import edu.gemini.epics.JCAContextController;
 import edu.gemini.epics.IEpicsBase;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
@@ -62,8 +62,8 @@ public class EpicsBase implements IEpicsBase {
     };
 
 
-    public EpicsBase(EpicsService epicsService) {
-        Preconditions.checkArgument(epicsService != null, "Passed EpicsService cannot be null");
+    public EpicsBase(JCAContextController epicsService) {
+        Preconditions.checkArgument(epicsService != null, "Passed JCAContextController cannot be null");
         Preconditions.checkArgument(epicsService.getJCAContext() != null, "Passed JCA Context cannot be null");
         this._ctx = epicsService.getJCAContext();
 

@@ -13,13 +13,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-public class EpicsServiceImplTest {
+public class EpicsServiceTest {
     private static final ImmutableMap<String,Object> CHANNELS_TO_READ = ImmutableMap.<String, Object>of(IEpicsClient.EPICS_CHANNELS, new String[] {"tst:tst"});
-    private EpicsServiceImpl epicsService;
+    private EpicsService epicsService;
 
     @Before
     public void setUp() throws Exception {
-        epicsService = new EpicsServiceImpl();
+        epicsService = new EpicsService("127.0.0.1");
     }
 
     @Test
@@ -97,7 +97,13 @@ public class EpicsServiceImplTest {
     @Test
     public void testGetContextPassedInitially() {
         Context context = mock(Context.class);
-        EpicsService epicsService = new EpicsServiceImpl(context, "127.0.0.1");
+        EpicsService epicsService = new EpicsService(context, "127.0.0.1");
         assertEquals(context, epicsService.getJCAContext());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPassingBadAddress() {
+        Context context = mock(Context.class);
+        new EpicsService(context, "a.b.c.d");
     }
 }
