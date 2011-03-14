@@ -69,7 +69,7 @@ public class HeartbeatDistributorTest {
         //wait at most 1 second for the beat to arrive
         comp.waitOnLatch(1, TimeUnit.SECONDS);
         //check that the beat number 1 arrived. The latch might have been released by the timeout.
-        assertTrue(comp.getLast()==1);
+        assertEquals(1,comp.getLast());
     }
 
 
