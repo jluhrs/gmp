@@ -1,9 +1,6 @@
-package edu.gemini.epics.test;
+package edu.gemini.epics;
 
-import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.impl.EpicsWriter;
-import edu.gemini.epics.IEpicsWriter;
-import edu.gemini.epics.EpicsException;
 import gov.aps.jca.*;
 
 import java.util.*;
@@ -11,7 +8,7 @@ import java.util.*;
 /**
  * Trivial test to write a value in an Epics Channel
  */
-public class WriteTest {
+public class WriteTestValues {
     /**
      * Map the channel names to friendly text names.
      */
@@ -23,7 +20,7 @@ public class WriteTest {
 
     private IEpicsWriter _writer;
 
-    public WriteTest() throws CAException, EpicsException {
+    public WriteTestValues() throws CAException, EpicsException {
         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
         _writer = new EpicsWriter(new EpicsService(context, "172.16.2.24"));
         for (String s : CHANNELS.keySet()) {
@@ -52,7 +49,7 @@ public class WriteTest {
 
         List<Double> l = Arrays.asList(values);
 
-        WriteTest test = new WriteTest();
+        WriteTestValues test = new WriteTestValues();
 
         for (int i = 0; i < 10; i++) {
             test.writeValue("tst:array.J", (Double[]) l.toArray());

@@ -20,6 +20,10 @@ import java.util.logging.Logger;
 /**
  * The EpicsService is an iPojo Component that has a reference to a JCAContext
  * and that lets EpicsClients to receive updates when an EPICS channel changes
+ *
+ * The Service can be configured using the ConfigAdmin service and it takes
+ * a single parameter in the form of an IP address
+ * 
  */
 @Component
 @Provides
@@ -34,7 +38,6 @@ public class EpicsService implements JCAContextController {
     @Property(name = "addressList", value = "127.0.0.1", mandatory = true)
     private String _addressList;
 
-    private String autoAddressList = "edu.gemini.epics.auto_addr_list";
     private Context _ctx;
     private final EpicsClientsHolder epicsClientsHolder = new EpicsClientsHolder();
 
@@ -42,7 +45,6 @@ public class EpicsService implements JCAContextController {
      * For iPojo
      */
     protected EpicsService() {
-        _ctx = null;
     }
 
     public EpicsService(Context context, String addressList) {

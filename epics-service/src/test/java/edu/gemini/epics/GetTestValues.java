@@ -1,35 +1,34 @@
-package edu.gemini.epics.test;
+package edu.gemini.epics;
 
-import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.IEpicsReader;
+import com.google.common.collect.Maps;
+import edu.gemini.epics.impl.EpicsReader;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * An example to test the usage of the EpicsReader class.
  */
-public class GetTest {
+public class GetTestValues {
     private IEpicsReader _reader;
 
     /**
      * Map the channel names to friendly text names.
      */
-    private static final Map<String, String> CHANNELS = new TreeMap<String, String>();
+    private static final Map<String, String> CHANNELS = Maps.newHashMap();
 
     static {
         CHANNELS.put("tc1:sad:astCtx", "TCS Context");
     }
 
-    public GetTest() throws CAException, EpicsException {
+    public GetTestValues() throws CAException, EpicsException {
         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-//        _reader = new EpicsReader(new EpicsService(context));
-//        for (String s : CHANNELS.keySet()) {
-//            _reader.bindChannel(s);
-//        }
+        _reader = new EpicsReader(new EpicsService(context, "172.16.2.22"));
+        for (String s : CHANNELS.keySet()) {
+            _reader.bindChannel(s);
+        }
     }
 
     Object getValues(String channel) throws EpicsException {
@@ -38,11 +37,7 @@ public class GetTest {
 
 
     public static void main(String[] args) throws CAException, EpicsException {
-        System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "172.16.2.22");
-        System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
-
-        GetTest test = new GetTest();
-
+        GetTestValues test = new GetTestValues();
 
         double[] values = (double[]) test.getValues("tc1:sad:astCtx");
 
