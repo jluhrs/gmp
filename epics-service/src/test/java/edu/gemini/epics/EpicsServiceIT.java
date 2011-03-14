@@ -8,6 +8,7 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,7 +33,9 @@ public class EpicsServiceIT {
                 felix(),
                 cleanCaches(),
                 systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + "/src/test/resources/conf/services"),
+                systemProperty("felix.fileinstall.noInitialDelay").value("true"),
                 mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
+                mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").version("4.2.0"),
                 mavenBundle().artifactId("org.apache.felix.configadmin").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
@@ -40,8 +43,8 @@ public class EpicsServiceIT {
                 mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
-                mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").update().versionAsInProject(),
-                mavenBundle().artifactId("jca-lib").groupId("edu.gemini.aspen").update().versionAsInProject()
+                mavenBundle().artifactId("jca-lib").groupId("edu.gemini.aspen").update().versionAsInProject(),
+                mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").update().versionAsInProject()
         );
     }
 
@@ -49,6 +52,12 @@ public class EpicsServiceIT {
     public void epicsServiceBundleStart() {
         assertNotNull(getEpicsServiceBundle());
         assertEquals(Bundle.ACTIVE, getEpicsServiceBundle().getState());
+    }
+
+    @Test
+    public void epicsServiceHasStarted() {
+        ServiceReference reference = context.getServiceReference(JCAContextController.class.getName());
+        assertNotNull(reference);
     }
 
     private Bundle getEpicsServiceBundle() {

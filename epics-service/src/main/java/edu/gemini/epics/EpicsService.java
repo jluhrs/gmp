@@ -33,6 +33,7 @@ public class EpicsService implements JCAContextController {
 
     @Property(name = "addressList", value = "127.0.0.1", mandatory = true)
     private String _addressList;
+
     private String autoAddressList = "edu.gemini.epics.auto_addr_list";
     private Context _ctx;
     private final EpicsClientsHolder epicsClientsHolder = new EpicsClientsHolder();
@@ -117,7 +118,7 @@ public class EpicsService implements JCAContextController {
      * @param epicsClient       An OSGi service implementing IEpicsClient that appears in the system
      * @param serviceProperties The properties of the service registration
      */
-    @Bind
+    @Bind(optional = true)
     public void bindEpicsClient(IEpicsClient epicsClient, Map<String, Object> serviceProperties) {
         if (serviceHasValidProperties(serviceProperties)) {
             String[] channels = (String[]) serviceProperties.get(IEpicsClient.EPICS_CHANNELS);
