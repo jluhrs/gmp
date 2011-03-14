@@ -1,8 +1,6 @@
-package edu.gemini.epics.impl;
+package edu.gemini.epics;
 
 import com.google.common.collect.ImmutableMap;
-import edu.gemini.epics.EpicsService;
-import edu.gemini.epics.IEpicsClient;
 import gov.aps.jca.Context;
 import org.junit.Before;
 import org.junit.Test;
