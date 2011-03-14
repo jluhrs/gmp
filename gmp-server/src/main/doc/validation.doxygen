@@ -5,9 +5,7 @@
  * This is work in progress as we continue building the OCS infrastructure connection to the GMP.
  *
  * This page has information on the integration tests of the GMP. These tests are designed to check that
- * everything is working correctly from end to end. Currently, you can check updating status values from the C++ glue, and propagating
- * said changes to EPICS. This will show that JMS communication from the C++ glue to the GMP is working, as well as
- * the exposing of those values to EPICS channels.
+ * everything is working correctly from end to end from the different services offered by the GMP.
  *
  \section it_prereqs Prerequisites
 
@@ -406,12 +404,17 @@ Of course, you can change these values and update the test application according
 
 \subsection validation_testing_sec EPICS Status Service Integration Tests
 \li Start the GMP as indicated in the \ref user_manual.
-\li To check that everything is running correctly, you can run <tt>$ caget -a gpi:status1</tt> and see if it can read a
+\li The EPICS status items that are configured in the GMP are defined in the \ref giapi-epics-status-mapping.xml file. See the
+\ref gmp-epics-status-service bundle documentation for more details.
+
+To check that everything is running correctly, you can run <tt>$ caget -a gpi:status1</tt> and see if it can read a
 value. Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running. You should see
 something like this:
 \verbatim
     gpi:status1                    2011-03-01 10:07:07.040000 2
 \endverbatim
+The value returned should match the initial value specified in the \ref giapi-epics-status-mapping.xml file.
+
 \li Run <tt>$ camonitor gpi:status1 gpi:status2</tt> to connect clients to some EPICS channels.
 Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
 \li Run <tt>sh runExample.sh status</tt> (available in src/examples/ in the C++ glue code). Remember to either have a \c gmp.properties file configured in the
@@ -422,7 +425,7 @@ example code should be something like:
     Elapsed Time: 1.561 [sec]
     Throughput  : 1281.23 [msg/sec]
 \endverbatim
-\li Check that the camonitor reflects the changes in the values of the EPICS channels:
+\li Check that <tt>camonitor</tt> reflects the changes in the values of the EPICS channels:
 \verbatim
     ...
     gpi:status1                    2011-03-01 11:28:02.316000 995
