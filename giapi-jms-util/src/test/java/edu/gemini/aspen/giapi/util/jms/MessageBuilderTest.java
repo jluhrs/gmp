@@ -12,6 +12,7 @@ import org.junit.Test;
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
+import javax.jms.Message;
 import javax.jms.Session;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
@@ -200,6 +201,87 @@ public class MessageBuilderTest {
         verify(msg).writeByte((byte)3);
         verify(msg).writeUTF(statusName);
         verify(msg).writeUTF(statusValue);
+    }
+
+    @Test
+    public void testBuildCompletionInformationOnAcceptedResponse() throws JMSException {
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, HandlerResponse.Response.ACCEPTED.toString());
+        mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.APPLY.toString());
+        mm.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
+        CompletionInformation completionInformation = MessageBuilder.buildCompletionInformation(mm);
+
+        assertEquals(new CompletionInformation(HandlerResponse.ACCEPTED, SequenceCommand.APPLY, Activity.PRESET, emptyConfiguration()), completionInformation);
+    }
+
+    @Test
+    public void testBuildCompletionInformationOnAcceptedResponseWithConfiguration() throws JMSException {
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, HandlerResponse.Response.ACCEPTED.toString());
+        mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.APPLY.toString());
+        mm.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
+
+        mm.setString("x:A", "1");
+        mm.setString("x:B", "2");
+        CompletionInformation completionInformation = MessageBuilder.buildCompletionInformation(mm);
+
+        Configuration config = DefaultConfiguration.configurationBuilder()
+                .withPath(configPath("x:A"), "1")
+                .withPath(configPath("x:B"), "2")
+                .build();
+        assertEquals(new CompletionInformation(HandlerResponse.ACCEPTED, SequenceCommand.APPLY, Activity.PRESET, config), completionInformation);
+    }
+
+    @Test
+    public void testBuildCompletionInformationOnErrorResponse() throws JMSException {
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, HandlerResponse.Response.ERROR.toString());
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, "Error message");
+        mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.APPLY.toString());
+        mm.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
+        CompletionInformation completionInformation = MessageBuilder.buildCompletionInformation(mm);
+
+        assertEquals(new CompletionInformation(HandlerResponse.createError("Error message"), SequenceCommand.APPLY, Activity.PRESET, emptyConfiguration()), completionInformation);
+    }
+
+    @Test(expected = JMSException.class)
+    public void testBuildCompletionInformationWithBadHandlerResponse() throws JMSException {
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, "BADRESPONSE");
+        MessageBuilder.buildCompletionInformation(mm);
+    }
+
+    @Test(expected = JMSException.class)
+    public void testBuildCompletionInformationWithBadSequenceCommand() throws JMSException {
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, HandlerResponse.Response.ERROR.toString());
+         mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, "BADCOMMAND");
+        MessageBuilder.buildCompletionInformation(mm);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuildCompletionInformationWithoutHandlerResponse() throws JMSException {
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, null);
+        mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.APPLY.toString());
+        mm.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
+        MessageBuilder.buildCompletionInformation(mm);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuildCompletionInformationWithoutSequenceCommand() throws JMSException {
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, HandlerResponse.Response.ACCEPTED.toString());
+        mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, null);
+        mm.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
+        MessageBuilder.buildCompletionInformation(mm);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuildCompletionInformationWithoutActivity() throws JMSException {
+        mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, HandlerResponse.Response.ACCEPTED.toString());
+        mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.APPLY.toString());
+        mm.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, null);
+        MessageBuilder.buildCompletionInformation(mm);
+    }
+
+    @Test(expected = JMSException.class)
+    public void testBuildCompletionInformationOnNonMapMessage() throws JMSException {
+        Message m = mock(Message.class);
+        MessageBuilder.buildCompletionInformation(m);
     }
 
 }
