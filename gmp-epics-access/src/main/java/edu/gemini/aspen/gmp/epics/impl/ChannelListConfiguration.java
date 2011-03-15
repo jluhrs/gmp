@@ -1,19 +1,23 @@
 package edu.gemini.aspen.gmp.epics.impl;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
-import org.apache.felix.ipojo.annotations.*;
-import org.osgi.framework.BundleContext;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
+import org.apache.felix.ipojo.annotations.Validate;
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.util.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * An Epics Configuration built on top of the OSGI properties infraestructure
@@ -24,7 +28,7 @@ public class ChannelListConfiguration implements EpicsConfiguration {
     private static final String CONF_FILE = "gmp.epics.conf";
     private static final String CHANNEL_TAG = "channel";
 
-    private Set<String> _validChannels;
+    private ImmutableSet<String> _validChannels;
     
     @Property(mandatory = true, value = CONF_FILE, name = "configurationFile")
     private String configFileStr;
@@ -45,9 +49,8 @@ public class ChannelListConfiguration implements EpicsConfiguration {
     }
 
     public Set<String> getValidChannelsNames() {
-        return Collections.unmodifiableSet(_validChannels);
+        return _validChannels;
     }
-
 
     private Document getPropertiesDocument(String configFileStr) {
         File confFile = new File(configFileStr);
@@ -72,14 +75,12 @@ public class ChannelListConfiguration implements EpicsConfiguration {
         return doc;
     }
 
-    private Set<String> parseChannels(Document doc) {
-
-        Set<String> channels = new HashSet<String>();
+    private ImmutableSet<String> parseChannels(Document doc) {
+        Set<String> channels = Sets.newHashSet();
 
         NodeList nodeList = doc.getElementsByTagName(CHANNEL_TAG);
 
         for (int i = 0; i < nodeList.getLength(); i++) {
-
             Node node = nodeList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 NodeList list = node.getChildNodes();
@@ -90,16 +91,7 @@ public class ChannelListConfiguration implements EpicsConfiguration {
             }
 
         }
-        return channels;
-    }
-
-    private String getProperty(BundleContext ctx, String key) {
-        String res = ctx.getProperty(key);
-        if (res == null) {
-            throw new RuntimeException("Missing configuration: " + key);
-        }
-
-        return res;
+        return ImmutableSet.copyOf(channels);
     }
 
 }
