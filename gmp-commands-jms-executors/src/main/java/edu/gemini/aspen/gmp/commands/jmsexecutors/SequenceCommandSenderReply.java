@@ -1,12 +1,16 @@
-package edu.gemini.aspen.gmp.commands.jms;
+package edu.gemini.aspen.gmp.commands.jmsexecutors;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
+import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsMapMessageSenderReply;
 import edu.gemini.jms.api.MessagingException;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
@@ -19,7 +23,9 @@ import javax.jms.Message;
  * to simplify the usage (and consistency) across the different
  * {@link edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor}
  */
-//@Provides(specifications = ActionSender.class)
+@Component
+@Instantiate
+@Provides(specifications = {ActionSender.class, JmsArtifact.class})
 public class SequenceCommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse>
         implements ActionSender {
 

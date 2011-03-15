@@ -12,11 +12,17 @@ import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.IActionManager;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
+import org.apache.felix.ipojo.annotations.Requires;
 
 /**
  * Command Sender implementation
  */
-//@Provides
+@Component
+@Instantiate
+@Provides
 public class CommandSenderImpl implements CommandSender {
 
     /**
@@ -47,9 +53,9 @@ public class CommandSenderImpl implements CommandSender {
      * @param executor the executor that will be in charge
      *                 of processing the actions using the given sender.
      */
-    public CommandSenderImpl(IActionManager manager,
-                             ActionSender sender,
-                             SequenceCommandExecutor executor) {
+    public CommandSenderImpl(@Requires IActionManager manager,
+                             @Requires ActionSender sender,
+                             @Requires SequenceCommandExecutor executor) {
         Preconditions.checkArgument(manager != null, "ActionManager cannot be null");
         Preconditions.checkArgument(sender != null, "ActionSender cannot be null");
         Preconditions.checkArgument(executor != null, "SequenceCommandExecutor cannot be null");

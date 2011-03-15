@@ -3,7 +3,6 @@ package edu.gemini.aspen.gmp.commands.osgi;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
 import edu.gemini.aspen.gmp.commands.jms.CompletionInfoListener;
-import edu.gemini.aspen.gmp.commands.jms.SequenceCommandSenderReply;
 import edu.gemini.aspen.gmp.commands.model.IActionManager;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
@@ -27,7 +26,7 @@ public class Activator implements BundleActivator {
 
     private IActionManager _actionManager;
 
-    private SequenceCommandSenderReply _sequenceCommandSenderReply;
+//    private SequenceCommandSenderReply _sequenceCommandSenderReply;
 
     private BaseMessageConsumer _messageConsumer;
 
@@ -49,8 +48,8 @@ public class Activator implements BundleActivator {
         );
 
         //and the Sequence Command Producer
-        _sequenceCommandSenderReply = new
-                SequenceCommandSenderReply("Sequence Command Producer");
+//        _sequenceCommandSenderReply = new
+//                SequenceCommandSenderReply("Sequence Command Producer");
 
     }
 
@@ -63,10 +62,10 @@ public class Activator implements BundleActivator {
                         new JmsActionMessageBuilder(),
                         _actionManager
                 ));*/
-
-        _jmsTracker = new JmsProviderTracker(bundleContext,
-                _messageConsumer, _sequenceCommandSenderReply);
-        _jmsTracker.open();
+//
+//        _jmsTracker = new JmsProviderTracker(bundleContext,
+//                _messageConsumer, _sequenceCommandSenderReply);
+//        _jmsTracker.open();
 
         //advertise the Command Sender service in the OSGi framework
         /*_registration = bundleContext.registerService(
@@ -78,11 +77,11 @@ public class Activator implements BundleActivator {
 
     public void stop(BundleContext bundleContext) throws Exception {
 
-        _jmsTracker.close();
-        _jmsTracker = null;
+//        _jmsTracker.close();
+//        _jmsTracker = null;
 
         //notify the OSGi framework this service is not longer available
-        _registration.unregister();
+//        _registration.unregister();
 
        // _actionManager.stop();
         LOG.info("Sequence Command Sender Bundle stopped");
