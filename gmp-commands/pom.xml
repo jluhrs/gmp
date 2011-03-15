@@ -32,11 +32,6 @@
           <optional>true</optional>
         </dependency-->
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>8.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
         </dependency>
