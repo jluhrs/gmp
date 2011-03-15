@@ -140,6 +140,24 @@ public class MessageBuilderTest {
     }
 
     @Test
+    public void testBuildCompletionInformationMessageOnHandlerError() throws JMSException {
+        String errorMsg = "Error Message";
+        CompletionInformation ci = new CompletionInformation(
+                HandlerResponse.createError(errorMsg),
+                SequenceCommand.INIT,
+                Activity.START,
+                emptyConfiguration()
+        );
+
+        MapMessage m = (MapMessage) MessageBuilder.buildCompletionInformationMessage(_mockedSession, ci);
+
+        assertEquals(HandlerResponse.Response.ERROR.toString(), m.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
+        assertEquals(errorMsg, m.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY));
+        assertEquals(SequenceCommand.INIT.name(), m.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY));
+        assertEquals(Activity.START.name(), m.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY));
+    }
+
+    @Test
     public void testBuildIntegerStatusItemMessage() throws JMSException {
         String statusName = "X.val1";
         Integer statusValue = 1;
