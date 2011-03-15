@@ -5,9 +5,9 @@ import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionManagerImpl;
+import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
@@ -18,6 +18,7 @@ import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 
 /**
@@ -33,9 +34,10 @@ public class ApplySenderExecutorTest {
 
     @Before
     public void setUp() {
-        ActionManager actionManager = new ActionManager();
+        ActionManagerImpl actionManager = new ActionManagerImpl();
         actionManager.start();
-        _executor = new ApplySenderExecutor(new JmsActionMessageBuilder(), actionManager);
+        ActionMessageBuilder builder = mock(ActionMessageBuilder.class);
+        _executor = new ApplySenderExecutor(builder, actionManager);
         _responses = new HandlerResponse[] {
                 HandlerResponse.COMPLETED,
                 HandlerResponse.STARTED,

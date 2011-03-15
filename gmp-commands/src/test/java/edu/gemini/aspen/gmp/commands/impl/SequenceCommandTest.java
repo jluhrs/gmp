@@ -7,7 +7,7 @@ import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionManagerImpl;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 public class SequenceCommandTest {
     private CommandUpdater commandUpdater;
 
-    private ActionManager actionManager;
+    private ActionManagerImpl actionManager;
 
     private SequenceCommandExecutorMock executor; //a simplified executor, that don't take into account the type of action.
 
@@ -37,7 +37,7 @@ public class SequenceCommandTest {
 
     @Before
     public void setUp() {
-        actionManager = new ActionManager();
+        actionManager = new ActionManagerImpl();
         actionManager.start();
 
         commandUpdater = new CommandUpdaterImpl(actionManager);

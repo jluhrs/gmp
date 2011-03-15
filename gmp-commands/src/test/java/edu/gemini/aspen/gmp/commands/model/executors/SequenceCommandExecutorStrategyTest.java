@@ -5,11 +5,10 @@ import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
+import edu.gemini.aspen.gmp.commands.model.IActionManager;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
@@ -22,8 +21,8 @@ import static org.mockito.Mockito.mock;
 
 public class SequenceCommandExecutorStrategyTest {
 
-    private ActionMessageBuilder builder = new JmsActionMessageBuilder();
-    private ActionManager manager = mock(ActionManager.class);
+    private ActionMessageBuilder builder = mock(ActionMessageBuilder.class);
+    private IActionManager manager = mock(IActionManager.class);
     private SequenceCommandExecutorStrategy strategy;
     private CompletionListenerMock listener = new CompletionListenerMock();
 

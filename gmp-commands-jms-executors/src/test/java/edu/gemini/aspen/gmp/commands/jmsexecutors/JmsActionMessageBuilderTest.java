@@ -2,7 +2,6 @@ package edu.gemini.aspen.gmp.commands.jmsexecutors;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
-import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import org.junit.Test;

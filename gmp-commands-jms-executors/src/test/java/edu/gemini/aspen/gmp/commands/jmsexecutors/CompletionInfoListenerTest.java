@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
 import edu.gemini.aspen.gmp.commands.jms.CompletionInfoListener;
-import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.IActionManager;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,15 +14,18 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 public class CompletionInfoListenerTest {
-    private ActionManager actionManager;
+    private IActionManager actionManager;
     private MapMessage message;
 
     @Before
     public void setUp() throws Exception {
-        actionManager = mock(ActionManager.class);
+        actionManager = mock(IActionManager.class);
         message = mock(MapMessage.class);
     }
 

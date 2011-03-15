@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.messaging;
+package edu.gemini.aspen.gmp.commands.jmsexecutors;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -12,6 +12,8 @@ import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
 
 import java.util.HashMap;
@@ -21,7 +23,9 @@ import java.util.Map;
  * Helper class to construct {@link edu.gemini.aspen.gmp.commands.model.ActionMessage}
  * objects based on a given Action, using JMS objects
  */
-//@Provides
+@Component
+@Provides
+@Instantiate
 public class JmsActionMessageBuilder implements ActionMessageBuilder {
     /**
      * Map to store topics associated to each sequence command

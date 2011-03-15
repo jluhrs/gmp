@@ -21,18 +21,18 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test suite for the Action Manager class.
  */
-public class ActionManagerTest {
+public class ActionManagerImplTest {
     private static final int TOTAL_ACTIONS = 10;
     private static final int TIMEOUT_FOR_RESPONSE = 1000;
     private static final int TIMEOUT_FOR_NO_RESPONSE = 200;
 
-    private ActionManager manager;
+    private ActionManagerImpl manager;
     private List<Action> actions;
     private Map<Action, CompletionListenerMock> completionListeners = Maps.newHashMap();
 
     @Before
     public void setUp() {
-        manager = new ActionManager();
+        manager = new ActionManagerImpl();
         manager.start();
         actions = Lists.newArrayList();
 

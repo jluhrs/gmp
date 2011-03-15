@@ -4,8 +4,8 @@ import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 /**
  * The default sender executor is trivial. Just use the sender
@@ -27,7 +28,8 @@ public class DefaultSenderExecutorTest {
 
     @Before
     public void setUp() {
-        _executor = new DefaultSenderExecutor(new JmsActionMessageBuilder());
+        ActionMessageBuilder builder = mock(ActionMessageBuilder.class);
+        _executor = new DefaultSenderExecutor(builder);
 
         _responses = new HandlerResponse[] {
                 HandlerResponse.COMPLETED,

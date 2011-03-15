@@ -1,6 +1,9 @@
 package edu.gemini.aspen.gmp.commands.model;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
 
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
@@ -19,10 +22,13 @@ import java.util.logging.Logger;
  * and notifies back the clients with completion information whenever that is
  * available.
  */
-public class ActionManager {
+@Component
+@Provides
+@Instantiate
+public class ActionManagerImpl implements IActionManager {
 
     private static final Logger LOG = Logger.getLogger(
-            ActionManager.class.getName());
+            IActionManager.class.getName());
 
     /**
      * The Action Queue stores the actions initiated when a sequence command
@@ -76,12 +82,7 @@ public class ActionManager {
         }
     }
 
-    /**
-     * Register that there is a future {@link edu.gemini.aspen.giapi.commands.HandlerResponse}
-     * to be received for the given APPLY action. If the action is not an APPLY, this method does nothing.
-     *
-     * @param action the APPLY action that will get a future response later.
-     */
+    @Override
     public void increaseRequiredResponses(Action action) {
         if (action != null && action.getCommand().isApply()) {
             _handlerResponseTracker.increaseRequiredResponses(action);
@@ -91,7 +92,7 @@ public class ActionManager {
     /**
      * Constructor.
      */
-    public ActionManager() {
+    public ActionManagerImpl() {
     }
 
 
@@ -214,24 +215,13 @@ public class ActionManager {
         }
     }
 
-    /**
-     * Register this Action to keep track its progress internally. When
-     * the completion information associated to this action is available, the
-     * listener contained in it will be invoked.
-     *
-     * @param action the action to register
-     */
+    @Override
     public void registerAction(Action action) {
         LOG.info("Start monitoring progress for Action " + action);
         _actionQueue.add(action);
     }
 
-    /**
-     * Deregister the given action from the monitored actions. This
-     * is done so the system don't attempt to update with completion
-     * information those actions that complete immediately.
-     * @param action the action to deregister. 
-     */
+    @Override
     public void unregisterAction(Action action) {
         LOG.info("Stopped monitoring progress for Action " + action + ". Action Completed Immediately");
         _actionQueue.remove(action);
@@ -241,6 +231,7 @@ public class ActionManager {
      * Acquire the updater processor lock. This way, the update processor
      * can't notify handler until the lock is released
      */
+    @Override
     public void lock() {
         _lock.lock();
     }
@@ -250,20 +241,12 @@ public class ActionManager {
      * processor thread will resume execution as soon as reacquires the
      * lock. 
      */
+    @Override
     public void unlock() {
         _lock.unlock();
     }
 
-    /**
-     * Register the completion information to be sent to the clients identified
-     * by the given action Id. This information is queued and used by the
-     * processing thread to notify the clients.
-     *
-     * @param actionId the action Id used to identify the clients waiting for
-     *                 completion feedback
-     * @param response the completion information to be sent to the clients.
-     */
-
+    @Override
     public void registerCompletionInformation(int actionId,
                                               HandlerResponse response) {
         UpdateData data = new UpdateData(actionId, response);

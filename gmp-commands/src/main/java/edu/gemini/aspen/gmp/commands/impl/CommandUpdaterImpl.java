@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.impl;
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.model.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.IActionManager;
 
 /**
  * Implementation of the {@link edu.gemini.aspen.giapi.commands.CommandUpdater}
@@ -12,9 +12,9 @@ import edu.gemini.aspen.gmp.commands.model.ActionManager;
  */
 public class CommandUpdaterImpl implements CommandUpdater {
 
-    private final ActionManager _manager;
+    private final IActionManager _manager;
 
-    public CommandUpdaterImpl(ActionManager manager) {
+    public CommandUpdaterImpl(IActionManager manager) {
         Preconditions.checkArgument(manager != null, "ActionManager cannot be null");
         _manager = manager;
     }

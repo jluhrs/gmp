@@ -17,11 +17,11 @@ import java.util.Set;
 public class ApplySenderExecutor implements SequenceCommandExecutor {
 
     private final ActionMessageBuilder _actionMessageBuilder;
-    private final ActionManager _actionManager;
+    private final IActionManager _actionManager;
 
     static final String ERROR_MSG = "No configuration present for Apply Sequence command";
 
-    public ApplySenderExecutor(ActionMessageBuilder builder, ActionManager manager) {
+    public ApplySenderExecutor(ActionMessageBuilder builder, IActionManager manager) {
         _actionMessageBuilder = builder;
         _actionManager = manager;
     }
