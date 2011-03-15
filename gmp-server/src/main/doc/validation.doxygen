@@ -14,7 +14,7 @@
 
  \section integration_tests Integration Tests
 
- \subsection epics_subscription_test Epics Subscription Channels Intergration Tests
+ \subsection epics_subscription_test Epics Subscription Channels Integration Tests
 
      The epicssubscription application will monitor two channels: \c ws:wsFilter.VALL and \c ws:cpWf.
      Whenever an update is received, the values will be displayed in the console.
