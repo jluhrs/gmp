@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class EpicsHeartbeat
+ * Class EpicsHeartbeat, receives heartbeats and publishes them to an EPICS channel.
  *
  * @author Nicolas A. Barriga
  *         Date: 3/14/11
@@ -54,6 +54,11 @@ public class EpicsHeartbeat implements IHeartbeatConsumer {
         initialize();
     }
 
+    /**
+     * Publishes the received beatNumber to the EPICS channel
+     *
+     * @param beatNumber the last heartbeat number received
+     */
     @Override
     public void beat(int beatNumber) {
         try {

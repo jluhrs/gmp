@@ -458,5 +458,21 @@ example code should be something like:
 \li As you can see, the error message for alarm goes to a separate channel, with the same name as the main channel, followed by ".OMSS".
 The valid values for health, severity and alarm cause, can be found in the giapi_tester help.
 
+\subsection heartbeat_test_sec EPICS Heartbeat Test
+
+\li Start the GMP as indicated in the \ref user_manual.
+\li Check that <tt>$ camonitor gmp:heartbeat</tt> prints an increasing heartbeat number roughly every second:
+\verbatim
+    gmp:heartbeat                  2011-03-14 11:05:42.307000 9
+    gmp:heartbeat                  2011-03-14 11:05:43.307000 10
+    gmp:heartbeat                  2011-03-14 11:05:44.307000 11
+    gmp:heartbeat                  2011-03-14 11:05:45.307000 12
+    gmp:heartbeat                  2011-03-14 11:05:46.306000 13
+    gmp:heartbeat                  2011-03-14 11:05:47.307000 14
+    gmp:heartbeat                  2011-03-14 11:05:48.307000 15
+    gmp:heartbeat                  2011-03-14 11:05:49.307000 16
+    gmp:heartbeat                  2011-03-14 11:05:50.306000 17
+    ...
+\endverbatim
 
 */
