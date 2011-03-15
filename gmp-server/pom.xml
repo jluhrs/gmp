@@ -93,7 +93,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <finalName>${artifactId}-${project.version}</finalName>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
                     <descriptors>
                         <descriptor>src/main/assembly/assembly.xml</descriptor>
                     </descriptors>
