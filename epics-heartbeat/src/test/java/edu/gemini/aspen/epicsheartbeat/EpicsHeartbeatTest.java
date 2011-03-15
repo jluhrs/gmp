@@ -7,6 +7,7 @@ import edu.gemini.cas.impl.ChannelAccessServer;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.activemq.broker.BrokerService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -19,40 +20,52 @@ import static org.junit.Assert.*;
  *         Date: 3/14/11
  */
 public class EpicsHeartbeatTest {
+    BrokerService broker;
+    HeartbeatDistributor hbDist;
+    Heartbeat hb;
+    ChannelAccessServer cas;
 
-    @Test
-    public void test() throws Exception {
+    @Before
+    public void setUp() throws Exception {
 
-        BrokerService broker = new BrokerService();
+        broker = new BrokerService();
         broker.addConnector("vm://HeartbeatTestBroker");
         broker.setUseJmx(false);
         broker.start();
         JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
 
-        ChannelAccessServer cas= new ChannelAccessServer();
+        cas = new ChannelAccessServer();
         cas.start();
 
-        Heartbeat hb = new Heartbeat(provider);
+        hb = new Heartbeat(provider);
         hb.start();
 
-        HeartbeatDistributor hbd = new HeartbeatDistributor(provider);
-        hbd.start();
+        hbDist = new HeartbeatDistributor(provider);
+        hbDist.start();
+    }
 
+    @After
+    public void tearDown() throws Exception {
+        hbDist.stop();
+        hb.stop();
+        cas.stop();
+        broker.stop();
+
+    }
+
+    @Test
+    public void test() throws Exception {
         EpicsHeartbeat ehb = new EpicsHeartbeat(cas,"gmp:heartbeat");
         ehb.initialize();
         IChannel<Integer> ch = cas.createChannel("gmp:heartbeat",0);
 
-        hbd.bindHeartbeatConsumer(ehb);
+        hbDist.bindHeartbeatConsumer(ehb);
 
         Thread.sleep(1200);
 
         assertNotSame(0,((int[])ch.getValue().getValue())[0]);
 
-        hbd.unbindHeartbeatConsumer(ehb);
+        hbDist.unbindHeartbeatConsumer(ehb);
         ehb.shutdown();
-        hbd.stop();
-        hb.stop();
-        cas.stop();
-        broker.stop();
     }
 }
