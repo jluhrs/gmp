@@ -1,47 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <parent>
-    <relativePath>../poms/compiled/</relativePath>
-    <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
-    <artifactId>compiled-bundle-settings</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <relativePath>../poms/compiled/</relativePath>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
+        <artifactId>compiled-bundle-settings</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
 
-  <properties>
-    <bundle.symbolicName>edu.gemini.aspen.gmp-commands-jms-executors</bundle.symbolicName>
-    <bundle.namespace>edu.gemini.aspen.gmp.commands.jmsexecutors</bundle.namespace>
-  </properties>
+    <properties>
+        <bundle.symbolicName>edu.gemini.aspen.gmp-commands-jms-executors</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.aspen.gmp.commands.jmsexecutors</bundle.namespace>
+    </properties>
 
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.gemini.aspen</groupId>
-  <artifactId>gmp-commands-jms-executors</artifactId>
-  <version>0.1.0</version>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>edu.gemini.aspen</groupId>
+    <artifactId>gmp-commands-jms-executors</artifactId>
+    <version>0.1.0</version>
 
-  <name>${bundle.symbolicName} [${bundle.namespace}]</name>
+    <name>GMP Commands JMS Executors</name>
 
-  <packaging>bundle</packaging>
+    <packaging>bundle</packaging>
 
-  <dependencies>
-    <!--
-     | uncomment to add all imported (non-local) bundles to your compilation classpath
-    <dependency>
-      <type>pom</type>
-      <groupId>${parent.groupId}</groupId>
-      <artifactId>provision</artifactId>
-      <optional>true</optional>
-    </dependency>
-    -->
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>osgi_R4_core</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>osgi_R4_compendium</artifactId>
-      <optional>true</optional>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <!--
+         | uncomment to add all imported (non-local) bundles to your compilation classpath
+        <dependency>
+          <type>pom</type>
+          <groupId>${parent.groupId}</groupId>
+          <artifactId>provision</artifactId>
+          <optional>true</optional>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+    </dependencies>
 
 </project>
