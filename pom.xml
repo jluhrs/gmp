@@ -64,10 +64,10 @@
                 <configuration>
                     <licenseLocation>${user.home}/.clover/clover.license</licenseLocation>
                     <!--<targetPercentage>30%</targetPercentage>
-                         <methodContexts>
-                             <main>(.* )?public static void main\(String\[\] argv\).*</main>
-                         </methodContexts>
-                         <contextFilters>main</contextFilters>-->
+                    <methodContexts>
+                        <main>(.* )?public static void main\(String\[\] argv\).*</main>
+                    </methodContexts>
+                    <contextFilters>main</contextFilters>-->
                     <historyThreshold>0.5%</historyThreshold>
                     <generateHistorical>true</generateHistorical>
                     <historyDir>${project.build.directory}/../history</historyDir>
@@ -108,9 +108,10 @@
         <module>giapi-fileevents</module>
         <module>jms-activemq-broker</module>
         <module>jms-activemq-provider</module>
-        <module>gmp-logging</module>
         <module>gmp-tcs-context</module>
+        <module>gmp-logging</module>
         <module>gmp-commands</module>
+        <module>gmp-commands-jms-executors</module>
         <module>gmp-commands-gateway</module>
         <module>gmp-services</module>
         <module>gmp-pcs-updater</module>
