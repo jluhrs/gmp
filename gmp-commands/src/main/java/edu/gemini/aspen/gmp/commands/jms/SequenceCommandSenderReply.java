@@ -30,7 +30,7 @@ public class SequenceCommandSenderReply extends JmsMapMessageSenderReply<Handler
     }
 
     @Override
-    protected HandlerResponse buildResponse(Message reply) throws JMSException {
+    public HandlerResponse buildResponse(Message reply) throws JMSException {
         if (reply instanceof MapMessage) {
             MapMessage replyMap = (MapMessage) reply;
             return MessageBuilder.buildHandlerResponse(replyMap);

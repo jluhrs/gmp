@@ -1,14 +1,14 @@
-package edu.gemini.aspen.gmp.commands.jms;
+package edu.gemini.aspen.gmp.commands.jmsexecutors;
 
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.gmp.commands.jms.SequenceCommandSenderReply;
 import edu.gemini.aspen.gmp.commands.messaging.JmsActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
-import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Test;
 import org.mockito.Matchers;
