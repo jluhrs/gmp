@@ -7,6 +7,7 @@ import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import org.apache.felix.ipojo.annotations.Bind;
 import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
@@ -25,8 +26,9 @@ import java.util.logging.Logger;
  * a single parameter in the form of an IP address
  * 
  */
-@Component
+@Component(managedservice = "edu.gemini.epics.EpicsService", publicFactory = false)
 @Provides
+@Instantiate
 public class EpicsService implements JCAContextController {
     private static final Logger LOG = Logger.getLogger(EpicsService.class.getName());
     private static final String IPADDRESS_PATTERN =
@@ -37,6 +39,9 @@ public class EpicsService implements JCAContextController {
 
     @Property(name = "addressList", value = "127.0.0.1", mandatory = true)
     private String _addressList;
+
+    @Property(name = "pid", value = "epicsService", mandatory = true)
+    private String _pid = "epicsService";
 
     private Context _ctx;
     private final EpicsClientsHolder epicsClientsHolder = new EpicsClientsHolder();

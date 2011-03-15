@@ -18,9 +18,14 @@
  * to an array of Strings, each representing a monitored channel.
  *
  * \section epics-service_configuration_sec Configuration
- * This bundle has its main configuration file in \ref edu.gemini.epics.EpicsService-default.cfg
+ * There is a singleton service that can be configured using the file \ref edu.gemini.epics.EpicsService.cfg
  *
  * There, you can set one property:
  *
- * - addressList: An IP address where the epics-service can connect to
+ * - addressList: An IP address where Epics Service connects to
+ *
+ * \attention The Epics Service cannot be reconfigured on the fly. You need to change the configuration and restart
+ *
+ * To edit the configuration you can use the web console as shown in the screenshot:
+ * \image html epicsservice_configuration.jpg
  */

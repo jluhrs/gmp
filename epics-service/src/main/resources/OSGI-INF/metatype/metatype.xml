@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
+
+    <OCD description="EpicsService" name="Epics Service" id="edu.gemini.epics.EpicsService">
+        <AD name="Address List" id="addressList" required="true"
+            type="String" default="127.0.0.1"/>
+    </OCD>
+
+    <Designate pid="edu.gemini.epics.EpicsService">
+        <Object ocdref="edu.gemini.epics.EpicsService"/>
+    </Designate>
+
+</metatype:MetaData>
