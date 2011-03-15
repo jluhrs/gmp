@@ -36,7 +36,6 @@
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-commands</artifactId>
-            <version>0.9.1</version>
         </dependency>
     </dependencies>
 
