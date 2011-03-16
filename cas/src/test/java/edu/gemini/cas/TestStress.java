@@ -1,6 +1,6 @@
 package edu.gemini.cas;
 
-import edu.gemini.cas.impl.ChannelAccessServer;
+import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import gov.aps.jca.*;
 import org.junit.After;
 import org.junit.Before;
@@ -21,15 +21,15 @@ import java.util.logging.Logger;
 @Ignore
 public class TestStress {
     private static final Logger LOG = Logger.getLogger(TestStress.class.getName());
-    private ChannelAccessServer cas;
+    private ChannelAccessServerImpl cas;
     private JCALibrary jca;
     private String varname="nico:test1";
-    private IChannel ch;
+    private Channel ch;
 
     @Before
     public void setUp() {
         jca = JCALibrary.getInstance();
-        cas = new ChannelAccessServer();
+        cas = new ChannelAccessServerImpl();
         try {
             cas.start();
             ch=cas.createIntegerChannel(varname,1);

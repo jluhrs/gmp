@@ -1,7 +1,7 @@
 package edu.gemini.cas.impl;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
-import edu.gemini.cas.IAlarmChannel;
+import edu.gemini.cas.AlarmChannel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.Severity;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-class AbstractAlarmChannel<T> implements IAlarmChannel<T> {
+class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     private final String ALARM_MESSAGE_SUFFIX=".OMSS";
     protected final AbstractChannel<String> alarmCh;
     protected final AbstractChannel<T> ch;

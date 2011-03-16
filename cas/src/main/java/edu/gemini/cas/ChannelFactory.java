@@ -5,12 +5,12 @@ import gov.aps.jca.CAException;
 import java.util.List;
 
 /**
- * Interface IChannelFactory
+ * Interface ChannelFactory
  *
  * @author Nicolas A. Barriga
  *         Date: Dec 2, 2010
  */
-public interface IChannelFactory {
+public interface ChannelFactory {
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of the type of the initial value
      *
@@ -20,8 +20,8 @@ public interface IChannelFactory {
      * @return the new channel
      * @throws CAException
      */
-    <T> IChannel<T> createChannel(String name, T value) throws CAException;
-    <T> IChannel<T> createChannel(String name, List<T> value) throws CAException;
+    <T> Channel<T> createChannel(String name, T value) throws CAException;
+    <T> Channel<T> createChannel(String name, List<T> value) throws CAException;
 
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of the type of the initial value,
@@ -33,7 +33,7 @@ public interface IChannelFactory {
      * @return the new channel
      * @throws CAException
      */
-    <T> IAlarmChannel<T> createAlarmChannel(String name, T value) throws CAException;
-    <T> IAlarmChannel<T> createAlarmChannel(String name, List<T> value) throws CAException;
+    <T> AlarmChannel<T> createAlarmChannel(String name, T value) throws CAException;
+    <T> AlarmChannel<T> createAlarmChannel(String name, List<T> value) throws CAException;
 
 }

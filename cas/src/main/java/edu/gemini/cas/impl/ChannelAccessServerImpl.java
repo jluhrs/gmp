@@ -3,6 +3,7 @@ package edu.gemini.cas.impl;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.*;
+import edu.gemini.cas.Channel;
 import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
 import org.apache.felix.ipojo.annotations.*;
@@ -16,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class ChannelAccessServer. Implements the bulk of the giapi-cas bundle.
+ * Class ChannelAccessServerImpl. Implements the bulk of the giapi-cas bundle.
  *
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
@@ -24,18 +25,18 @@ import java.util.logging.Logger;
 @Component
 @Instantiate
 @Provides
-public class ChannelAccessServer implements IChannelAccessServer {
-    private static final Logger LOG = Logger.getLogger(ChannelAccessServer.class.getName());
+public class ChannelAccessServerImpl implements ChannelAccessServer {
+    private static final Logger LOG = Logger.getLogger(ChannelAccessServerImpl.class.getName());
     private DefaultServerImpl server;
     private ServerContext serverContext = null;
     private ExecutorService executor;
     private final JCALibrary jca = JCALibrary.getInstance();
-    private Map<String, IChannel<?>> channels;
+    private Map<String, Channel<?>> channels;
 
     /**
      * Constructor.
      */
-    public ChannelAccessServer() {
+    public ChannelAccessServerImpl() {
     }
 
     /**
@@ -47,10 +48,10 @@ public class ChannelAccessServer implements IChannelAccessServer {
     @Validate
     public void start() throws CAException {
         executor = Executors.newSingleThreadExecutor();
-        channels = new HashMap<String, IChannel<?>>();
+        channels = new HashMap<String, Channel<?>>();
         server = new DefaultServerImpl();
         if (serverContext != null) {
-            throw new IllegalStateException("Tried to start the ChannelAccessServer more than once");
+            throw new IllegalStateException("Tried to start the ChannelAccessServerImpl more than once");
         }
         serverContext = jca.createServerContext(JCALibrary.CHANNEL_ACCESS_SERVER_JAVA, server);
         executor.execute(new Runnable() {
@@ -84,7 +85,7 @@ public class ChannelAccessServer implements IChannelAccessServer {
      @Invalidate
      public void stop() throws CAException {
          for (String name : channels.keySet()) {
-             IChannel ch = channels.get(name);
+             Channel ch = channels.get(name);
              if (ch instanceof AbstractChannel) {
                  ((AbstractChannel) ch).destroy(server);
              } else if (ch instanceof AbstractAlarmChannel) {
@@ -102,16 +103,16 @@ public class ChannelAccessServer implements IChannelAccessServer {
      }
 
     @Override
-    public <T> IChannel<T> createChannel(String name, T value) throws CAException {
+    public <T> Channel<T> createChannel(String name, T value) throws CAException {
         return createChannel(name, ImmutableList.of(value));
     }
 
     @Override
-    public <T> IChannel<T> createChannel(String name, List<T> values) throws CAException {
+    public <T> Channel<T> createChannel(String name, List<T> values) throws CAException {
         if(values.isEmpty()){
             throw new IllegalArgumentException("At least one value must be passed");
         }
-        IChannel ch = null;
+        Channel ch = null;
         if (values.get(0) instanceof Integer) {
             ch = createIntegerChannel(name, values.size());
         } else if (values.get(0) instanceof Float) {
@@ -128,16 +129,16 @@ public class ChannelAccessServer implements IChannelAccessServer {
     }
 
     @Override
-    public <T> IAlarmChannel<T> createAlarmChannel(String name, T value) throws CAException {
+    public <T> AlarmChannel<T> createAlarmChannel(String name, T value) throws CAException {
         return createAlarmChannel(name,ImmutableList.of(value));
     }
 
     @Override
-    public <T> IAlarmChannel<T> createAlarmChannel(String name, List<T> values) throws CAException {
+    public <T> AlarmChannel<T> createAlarmChannel(String name, List<T> values) throws CAException {
         if(values.isEmpty()){
             throw new IllegalArgumentException("At least one value must be passed");
         }
-        IAlarmChannel ch = null;
+        AlarmChannel ch = null;
         if (values.get(0) instanceof Integer) {
             ch = createIntegerAlarmChannel(name, values.size());
         } else if (values.get(0) instanceof Float) {
@@ -163,9 +164,9 @@ public class ChannelAccessServer implements IChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public IChannel<Integer> createIntegerChannel(String name, int length) {
+    public Channel<Integer> createIntegerChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
+            Channel ch = channels.get(name);
             if (ch instanceof IntegerChannel) {
                 return (IntegerChannel) ch;
             } else {
@@ -188,9 +189,9 @@ public class ChannelAccessServer implements IChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public IChannel<Float> createFloatChannel(String name, int length) {
+    public Channel<Float> createFloatChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
+            Channel ch = channels.get(name);
             if (ch instanceof FloatChannel) {
                 return (FloatChannel) ch;
             } else {
@@ -213,9 +214,9 @@ public class ChannelAccessServer implements IChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public IChannel<Double> createDoubleChannel(String name, int length) {
+    public Channel<Double> createDoubleChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
+            Channel ch = channels.get(name);
             if (ch instanceof DoubleChannel) {
                 return (DoubleChannel) ch;
             } else {
@@ -238,9 +239,9 @@ public class ChannelAccessServer implements IChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public IChannel<String> createStringChannel(String name, int length) {
+    public Channel<String> createStringChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
+            Channel ch = channels.get(name);
             if (ch instanceof StringChannel) {
                 return (StringChannel) ch;
             } else {
@@ -265,9 +266,9 @@ public class ChannelAccessServer implements IChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public IAlarmChannel<Integer> createIntegerAlarmChannel(String name, int length) {
+    public AlarmChannel<Integer> createIntegerAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
+            Channel ch = channels.get(name);
             if (ch instanceof IntegerAlarmChannel) {
                 return (IntegerAlarmChannel) ch;
             } else {
@@ -292,9 +293,9 @@ public class ChannelAccessServer implements IChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public IAlarmChannel<Float> createFloatAlarmChannel(String name, int length) {
+    public AlarmChannel<Float> createFloatAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
+            Channel ch = channels.get(name);
             if (ch instanceof FloatAlarmChannel) {
                 return (FloatAlarmChannel) ch;
             } else {
@@ -319,9 +320,9 @@ public class ChannelAccessServer implements IChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public IAlarmChannel<Double> createDoubleAlarmChannel(String name, int length) {
+    public AlarmChannel<Double> createDoubleAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
+            Channel ch = channels.get(name);
             if (ch instanceof DoubleAlarmChannel) {
                 return (DoubleAlarmChannel) ch;
 
@@ -347,9 +348,9 @@ public class ChannelAccessServer implements IChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public IAlarmChannel<String> createStringAlarmChannel(String name, int length) {
+    public AlarmChannel<String> createStringAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            IChannel ch = channels.get(name);
+            Channel ch = channels.get(name);
             if (ch instanceof StringAlarmChannel) {
                 return (StringAlarmChannel) ch;
 
@@ -366,11 +367,11 @@ public class ChannelAccessServer implements IChannelAccessServer {
     /**
      * Removes channel from internal Map, unregisters from server and destroys PV
      *
-     * @param channel the IChannel to remove
+     * @param channel the Channel to remove
      */
     @Override
-    public void destroyChannel(IChannel channel) {
-        IChannel ch;
+    public void destroyChannel(Channel channel) {
+        Channel ch;
         try {
             ch = channels.get(channel.getName());
         } catch (NullPointerException ex) {//if channel was already destroyed
@@ -397,7 +398,7 @@ public class ChannelAccessServer implements IChannelAccessServer {
      * @param args number of milliseconds to run the server
      */
     public static void main(String[] args) {
-        ChannelAccessServer giapicas = new ChannelAccessServer();
+        ChannelAccessServerImpl giapicas = new ChannelAccessServerImpl();
         try {
 
             giapicas.start();

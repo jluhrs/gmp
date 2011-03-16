@@ -9,9 +9,9 @@ import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.cas.impl.ChannelAccessServer;
-import edu.gemini.cas.IAlarmChannel;
-import edu.gemini.cas.IChannel;
+import edu.gemini.cas.Channel;
+import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.cas.AlarmChannel;
 import gov.aps.jca.dbr.DBR_STS_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
@@ -55,18 +55,18 @@ public class EpicsStatusServiceIT extends TestCase {
         //initialize and check channels are created
         EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
 
-        ChannelAccessServer cas = new ChannelAccessServer();
+        ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
         EpicsStatusService ess = new EpicsStatusService(cas);
 
 
         ess.initialize(essc.getSimulatedChannels());
 
-        Map<String, IAlarmChannel<?>> ac = ess.getAlarmChannels();
+        Map<String, AlarmChannel<?>> ac = ess.getAlarmChannels();
 
-        Map<String, IChannel<?>> nc = ess.getChannels();
+        Map<String, Channel<?>> nc = ess.getChannels();
 
-        Map<String, IChannel<String>> hc = ess.getHealthChannels();
+        Map<String, Channel<String>> hc = ess.getHealthChannels();
 
         for (BaseChannelType cc : essc.getSimulatedChannels().getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             if (cc instanceof HealthChannelType) {

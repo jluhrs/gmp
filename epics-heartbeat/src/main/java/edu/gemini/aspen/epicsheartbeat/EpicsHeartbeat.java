@@ -1,8 +1,8 @@
 package edu.gemini.aspen.epicsheartbeat;
 
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
-import edu.gemini.cas.IChannel;
-import edu.gemini.cas.IChannelAccessServer;
+import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.cas.Channel;
 import gov.aps.jca.CAException;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -21,18 +21,18 @@ public class EpicsHeartbeat implements HeartbeatConsumer {
     private static final Logger LOG = Logger.getLogger(EpicsHeartbeat.class.getName());
 
     @Requires
-    private IChannelAccessServer cas;
+    private ChannelAccessServer cas;
 
     @Property(name = "channelName", value = "INVALID", mandatory = true)
     private String channelName;
 
-    private IChannel<Integer> ch=null;
+    private Channel<Integer> ch=null;
 
     private EpicsHeartbeat(){
 
     }
 
-    public EpicsHeartbeat(IChannelAccessServer cas, String channelName){
+    public EpicsHeartbeat(ChannelAccessServer cas, String channelName){
         this.channelName=channelName;
         this.cas=cas;
     }

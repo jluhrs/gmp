@@ -6,12 +6,12 @@ import gov.aps.jca.dbr.DBR;
 import java.util.List;
 
 /**
- * Interface IChannel
+ * Interface Channel
  *
  * @author Nicolas A. Barriga
  *         Date: Dec 2, 2010
  */
-public interface IChannel<T> {
+public interface Channel<T> {
     /**
      * Sets a new value to a PV
      *

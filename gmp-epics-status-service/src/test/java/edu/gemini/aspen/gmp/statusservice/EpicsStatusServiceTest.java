@@ -7,7 +7,7 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.cas.*;
-import edu.gemini.cas.impl.ChannelAccessServer;
+import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,17 +37,17 @@ public class EpicsStatusServiceTest extends TestCase {
         return ch;
     }
 
-    private IChannelAccessServer cas;
+    private ChannelAccessServer cas;
 
     @Before
     public void setUp()throws Exception{
-        cas= mock(ChannelAccessServer.class);
-        IAlarmChannel iach = mock(IAlarmChannel.class);
+        cas= mock(ChannelAccessServerImpl.class);
+        AlarmChannel iach = mock(AlarmChannel.class);
         when(cas.createAlarmChannel(anyString(),anyInt())).thenReturn(iach);
         when(cas.createAlarmChannel(anyString(),anyFloat())).thenReturn(iach);
         when(cas.createAlarmChannel(anyString(),anyDouble())).thenReturn(iach);
         when(cas.createAlarmChannel(anyString(),anyString())).thenReturn(iach);
-        IChannel ich = mock(IChannel.class);
+        Channel ich = mock(Channel.class);
         when(cas.createChannel(anyString(),anyInt())).thenReturn(ich);
         when(cas.createChannel(anyString(),anyFloat())).thenReturn(ich);
         when(cas.createChannel(anyString(),anyDouble())).thenReturn(ich);
@@ -108,11 +108,11 @@ public class EpicsStatusServiceTest extends TestCase {
 
         EpicsStatusService ess=new EpicsStatusService(cas);
         ess.initialize(essc.getSimulatedChannels());
-        Map<String, IAlarmChannel<?>> ac = ess.getAlarmChannels();
+        Map<String, AlarmChannel<?>> ac = ess.getAlarmChannels();
 
-        Map<String, IChannel<?>> nc = ess.getChannels();
+        Map<String, Channel<?>> nc = ess.getChannels();
 
-        Map<String, IChannel<String>> hc = ess.getHealthChannels();
+        Map<String, Channel<String>> hc = ess.getHealthChannels();
 
         for (BaseChannelType cc : essc.getSimulatedChannels().getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             if (cc instanceof HealthChannelType) {

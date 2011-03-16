@@ -3,9 +3,9 @@ package edu.gemini.aspen.gmp.statusservice;
 
 import edu.gemini.aspen.giapi.status.*;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.cas.IAlarmChannel;
-import edu.gemini.cas.IChannel;
-import edu.gemini.cas.IChannelAccessServer;
+import edu.gemini.cas.AlarmChannel;
+import edu.gemini.cas.Channel;
+import edu.gemini.cas.ChannelAccessServer;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class EpicsStatusService, uses an IChannelAccessServer to create channels, listens
+ * Class EpicsStatusService, uses an ChannelAccessServer to create channels, listens
  * to the corresponding StatusItem updates and informs the server.
  *
  * @author Nicolas A. Barriga
@@ -47,12 +47,12 @@ public class EpicsStatusService implements StatusHandler {
     /**
      * Structure mapping Giapi Status Item -> Epics PV
      */
-    private final Map<String, IChannel<?>> channelMap = new HashMap<String, IChannel<?>>();
-    private final Map<String, IAlarmChannel<?>> alarmChannelMap = new HashMap<String, IAlarmChannel<?>>();
-    private final Map<String, IChannel<String>> healthChannelMap = new HashMap<String, IChannel<String>>();
+    private final Map<String, Channel<?>> channelMap = new HashMap<String, Channel<?>>();
+    private final Map<String, AlarmChannel<?>> alarmChannelMap = new HashMap<String, AlarmChannel<?>>();
+    private final Map<String, Channel<String>> healthChannelMap = new HashMap<String, Channel<String>>();
 
     @Requires
-    private IChannelAccessServer _channelAccessServer;
+    private ChannelAccessServer _channelAccessServer;
 
     @Property(name = "xmlFileName", value = "INVALID", mandatory = true)
     private String xmlFileName;
@@ -63,8 +63,8 @@ public class EpicsStatusService implements StatusHandler {
 
     }
 
-    public EpicsStatusService(IChannelAccessServer ICas) {
-        _channelAccessServer = ICas;
+    public EpicsStatusService(ChannelAccessServer Cas) {
+        _channelAccessServer = Cas;
     }
 
 
@@ -75,7 +75,7 @@ public class EpicsStatusService implements StatusHandler {
     }
 
     /**
-     * Initialize the EpicsStatusService. Creates appropriate channels in an IChannelAccessServer.
+     * Initialize the EpicsStatusService. Creates appropriate channels in an ChannelAccessServer.
      *
      * @param items channels to create and listen to.
      */
@@ -97,7 +97,7 @@ public class EpicsStatusService implements StatusHandler {
 
 
     /**
-     * Destroys the registered channels in the IChannelAccessServer
+     * Destroys the registered channels in the ChannelAccessServer
      */
     @Invalidate
     public void shutdown() {
@@ -114,7 +114,7 @@ public class EpicsStatusService implements StatusHandler {
 
     private <T> void addVariable(String giapiName, String epicsName, T value) throws CAException {
         if (_channelAccessServer != null) {
-            IChannel<T> ch = _channelAccessServer.createChannel(epicsName, value);
+            Channel<T> ch = _channelAccessServer.createChannel(epicsName, value);
             channelMap.put(giapiName, ch);
         } else {
             throw new IllegalStateException("The cas service is unavailable");
@@ -124,7 +124,7 @@ public class EpicsStatusService implements StatusHandler {
 
     private <T> void addAlarmVariable(String giapiName, String epicsName, T value) throws CAException {
         if (_channelAccessServer != null) {
-            IAlarmChannel<T> ch = _channelAccessServer.createAlarmChannel(epicsName, value);
+            AlarmChannel<T> ch = _channelAccessServer.createAlarmChannel(epicsName, value);
             alarmChannelMap.put(giapiName, ch);
         } else {
             throw new IllegalStateException("The cas service is unavailable");
@@ -134,7 +134,7 @@ public class EpicsStatusService implements StatusHandler {
 
     private void addHealthVariable(String giapiName, String epicsName, Health health) throws CAException {
         if (_channelAccessServer != null) {
-            IChannel<String> ch = _channelAccessServer.createChannel(epicsName, health.name());
+            Channel<String> ch = _channelAccessServer.createChannel(epicsName, health.name());
             healthChannelMap.put(giapiName, ch);
         } else {
             throw new IllegalStateException("The cas service is unavailable");
@@ -143,7 +143,7 @@ public class EpicsStatusService implements StatusHandler {
     }
 
     private void removeVariable(String giapiName) throws IllegalStateException {
-        IChannel ch = null;
+        Channel ch = null;
         if (channelMap.containsKey(giapiName)) {
             ch = channelMap.remove(giapiName);
         } else if (alarmChannelMap.containsKey(giapiName)) {
@@ -167,7 +167,7 @@ public class EpicsStatusService implements StatusHandler {
      *
      * @return unmodifiable map
      */
-    Map<String, IChannel<?>> getChannels() {
+    Map<String, Channel<?>> getChannels() {
         return Collections.unmodifiableMap(channelMap);
     }
 
@@ -176,7 +176,7 @@ public class EpicsStatusService implements StatusHandler {
      *
      * @return unmodifiable map
      */
-    Map<String, IAlarmChannel<?>> getAlarmChannels() {
+    Map<String, AlarmChannel<?>> getAlarmChannels() {
         return Collections.unmodifiableMap(alarmChannelMap);
     }
 
@@ -185,7 +185,7 @@ public class EpicsStatusService implements StatusHandler {
      *
      * @return unmodifiable map
      */
-    Map<String, IChannel<String>> getHealthChannels() {
+    Map<String, Channel<String>> getHealthChannels() {
         return Collections.unmodifiableMap(healthChannelMap);
     }
 
@@ -199,11 +199,11 @@ public class EpicsStatusService implements StatusHandler {
     public <T> void update(StatusItem<T> item) {
         try {
             if (channelMap.containsKey(item.getName())) {
-                IChannel ch = channelMap.get(item.getName());
+                Channel ch = channelMap.get(item.getName());
                 ch.setValue(item.getValue());
             } else if (alarmChannelMap.containsKey(item.getName())) {
                 if (item instanceof AlarmStatusItem) {
-                    IAlarmChannel ch = alarmChannelMap.get(item.getName());
+                    AlarmChannel ch = alarmChannelMap.get(item.getName());
                     ch.setValue(item.getValue());
                     setAlarm((AlarmStatusItem<T>) item, ch);
                 } else {
@@ -211,7 +211,7 @@ public class EpicsStatusService implements StatusHandler {
                 }
             } else if (healthChannelMap.containsKey(item.getName())) {
                 if (item instanceof HealthStatusItem) {
-                    IChannel<String> ch = healthChannelMap.get(item.getName());
+                    Channel<String> ch = healthChannelMap.get(item.getName());
                     ch.setValue(((HealthStatusItem) item).getHealth().name());
                 } else {
                     LOG.warning("Received StatusItem that is not a HealthStatusItem for " + item.getName());
@@ -229,7 +229,7 @@ public class EpicsStatusService implements StatusHandler {
         }
     }
 
-    private <T> void setAlarm(AlarmStatusItem<T> item, IAlarmChannel<T> channel) {
+    private <T> void setAlarm(AlarmStatusItem<T> item, AlarmChannel<T> channel) {
         AlarmState state = item.getAlarmState();
         try {
             channel.setAlarm(CAUSE_MAP.get(state.getCause()), SEVERITY_MAP.get(state.getSeverity()), state.getMessage());

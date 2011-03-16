@@ -5,8 +5,8 @@
  * infrastructure to implement EPICS databases in Java.
  *
  * \section cas_provides_sec Provided Services
- * The \ref edu.gemini.cas.ChannelAccessServer "ChannelAccessServer" class provides the main entry point to the \ref cas
- * bundle. It implements the \ref edu.gemini.cas.IChannelAccessServer and \ref edu.gemini.cas.IChannelFactory interfaces,
+ * The \ref edu.gemini.cas.ChannelAccessServerImpl "ChannelAccessServerImpl" class provides the main entry point to the \ref cas
+ * bundle. It implements the \ref edu.gemini.cas.ChannelAccessServer and \ref edu.gemini.cas.ChannelFactory interfaces,
  * exposing them as an OSGi service. This services allows the creation of Integer, Float, Double and String EPICS
  * process variables.
  *

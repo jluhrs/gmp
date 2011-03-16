@@ -2,8 +2,8 @@ package edu.gemini.aspen.epicsheartbeat;
 
 import edu.gemini.aspen.gmp.heartbeat.Heartbeat;
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatDistributor;
-import edu.gemini.cas.IChannel;
-import edu.gemini.cas.impl.ChannelAccessServer;
+import edu.gemini.cas.Channel;
+import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.activemq.broker.BrokerService;
@@ -23,7 +23,7 @@ public class EpicsHeartbeatTest {
     BrokerService broker;
     HeartbeatDistributor hbDist;
     Heartbeat hb;
-    ChannelAccessServer cas;
+    ChannelAccessServerImpl cas;
 
     @Before
     public void setUp() throws Exception {
@@ -34,7 +34,7 @@ public class EpicsHeartbeatTest {
         broker.start();
         JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
 
-        cas = new ChannelAccessServer();
+        cas = new ChannelAccessServerImpl();
         cas.start();
 
         hb = new Heartbeat(provider);
@@ -57,7 +57,7 @@ public class EpicsHeartbeatTest {
     public void test() throws Exception {
         EpicsHeartbeat ehb = new EpicsHeartbeat(cas,"gmp:heartbeat");
         ehb.initialize();
-        IChannel<Integer> ch = cas.createChannel("gmp:heartbeat",0);
+        Channel<Integer> ch = cas.createChannel("gmp:heartbeat",0);
 
         hbDist.bindHeartbeatConsumer(ehb);
 
