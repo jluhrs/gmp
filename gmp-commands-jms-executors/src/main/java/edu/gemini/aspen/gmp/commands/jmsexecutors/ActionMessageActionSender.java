@@ -31,13 +31,13 @@ import javax.jms.JMSException;
 @Component
 @Instantiate
 @Provides(specifications = {ActionSender.class})
-public class SequenceCommandActionSender implements ActionSender {
+public class ActionMessageActionSender implements ActionSender {
 
     public static final int RESPONSE_WAIT_TIMEOUT = 500;
-    private final SequenceCommandMessageSenderReply _messageSender = new SequenceCommandMessageSenderReply(JmsKeys.GW_COMMAND_TOPIC);
+    private final HandlerResponseSenderReply _messageSender = new HandlerResponseSenderReply(JmsKeys.GW_COMMAND_TOPIC);
     private final JmsProvider _provider;
 
-    public SequenceCommandActionSender(@Requires JmsProvider jmsProvider) {
+    public ActionMessageActionSender(@Requires JmsProvider jmsProvider) {
         super();
         this._provider = jmsProvider;
     }

@@ -8,16 +8,21 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
-public class SequenceCommandMessageSenderReply extends JmsMapMessageSenderReply<HandlerResponse> {
-    public SequenceCommandMessageSenderReply(String clientData) {
-        super(clientData);
+/**
+ * Extension of {@link edu.gemini.jms.api.JmsMapMessageSenderReply} that can understand and decode a
+ * reply of a {@link edu.gemini.aspen.giapi.commands.SequenceCommand} in the form
+ * of a {@link edu.gemini.aspen.giapi.commands.HandlerResponse}
+ * 
+ */
+public class HandlerResponseSenderReply extends JmsMapMessageSenderReply<HandlerResponse> {
+    public HandlerResponseSenderReply(String topicName) {
+        super(topicName);
     }
 
     @Override
     public HandlerResponse buildResponse(Message reply) throws JMSException {
         if (reply instanceof MapMessage) {
-            MapMessage replyMap = (MapMessage) reply;
-            return MessageBuilder.buildHandlerResponse(replyMap);
+            return MessageBuilder.buildHandlerResponse(reply);
         }
         return HandlerResponse.NOANSWER;
 

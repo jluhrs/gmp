@@ -27,14 +27,14 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SequenceCommandActionSenderTest {
+public class ActionMessageActionSenderTest {
 
     @Test
     public void testSend() throws JMSException {
         JmsProvider provider = mock(JmsProvider.class);
         mockMessageAndDestinations(provider);
 
-        SequenceCommandActionSender actionSender = new SequenceCommandActionSender(provider);
+        ActionMessageActionSender actionSender = new ActionMessageActionSender(provider);
         actionSender.startJmsClient();
 
         ActionMessage actionMessage = createActionToSend();
@@ -57,7 +57,7 @@ public class SequenceCommandActionSenderTest {
         Session session = mockSessionCreation(provider);
         when(session.createMapMessage()).thenThrow(new JMSException(""));
 
-        SequenceCommandActionSender actionSender = new SequenceCommandActionSender(provider);
+        ActionMessageActionSender actionSender = new ActionMessageActionSender(provider);
         actionSender.startJmsClient();
 
         ActionMessage actionMessage = createActionToSend();

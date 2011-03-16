@@ -13,12 +13,12 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SequenceCommandMessageSenderReplyTest {
+public class HandlerResponseSenderReplyTest {
     private String clientData = JmsKeys.GW_COMMAND_TOPIC;
 
     @Test
     public void testBuildResponseCompleted() throws JMSException {
-        SequenceCommandMessageSenderReply senderReply = new SequenceCommandMessageSenderReply(clientData);
+        HandlerResponseSenderReply senderReply = new HandlerResponseSenderReply(clientData);
 
         MapMessage reply = mock(MapMessage.class);
         when(reply.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenReturn("COMPLETED");
@@ -30,7 +30,7 @@ public class SequenceCommandMessageSenderReplyTest {
 
     @Test
     public void testBuildResponseError() throws JMSException {
-        SequenceCommandMessageSenderReply senderReply = new SequenceCommandMessageSenderReply(clientData);
+        HandlerResponseSenderReply senderReply = new HandlerResponseSenderReply(clientData);
 
         MapMessage reply = mock(MapMessage.class);
         when(reply.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenReturn("ERROR");
@@ -44,7 +44,7 @@ public class SequenceCommandMessageSenderReplyTest {
 
     @Test
     public void testBuildResponseNoMessage() throws JMSException {
-        SequenceCommandMessageSenderReply senderReply = new SequenceCommandMessageSenderReply(clientData);
+        HandlerResponseSenderReply senderReply = new HandlerResponseSenderReply(clientData);
 
         Message reply = mock(Message.class);
 
