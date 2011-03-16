@@ -8,9 +8,8 @@ import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
 @Instantiate
 public class HeartbeatDistributor {
     private static final Logger LOG = Logger.getLogger(HeartbeatDistributor.class.getName());
-    private final List<IHeartbeatConsumer> consumers = Collections.synchronizedList(new ArrayList<IHeartbeatConsumer>());
+    private final List<HeartbeatConsumer> consumers = new CopyOnWriteArrayList<HeartbeatConsumer>();
 
     /**
      * Implements the JMS message listener
@@ -57,7 +56,7 @@ public class HeartbeatDistributor {
      * @param beatNumber beat number to notify.
      */
     private void notifyConsumers(int beatNumber){
-        for(IHeartbeatConsumer consumer:consumers){
+        for(HeartbeatConsumer consumer:consumers){
             consumer.beat(beatNumber);
         }
     }
@@ -66,7 +65,7 @@ public class HeartbeatDistributor {
      * Private constructor. Used by iPOJO.
      */
     private HeartbeatDistributor(){
-        LOG.info("HeartbeatDistributor Constructor");
+        LOG.fine("HeartbeatDistributor Constructor");
         hbConsumer = new JmsHeartbeatConsumer("HeartbeatDistributor",new HeartbeatListener());
     }
 
@@ -76,7 +75,7 @@ public class HeartbeatDistributor {
      * @param provider the JmsProvider to get JMS messages from.
      */
     public HeartbeatDistributor(JmsProvider provider){
-        LOG.info("HeartbeatDistributor Constructor");
+        LOG.fine("HeartbeatDistributor Constructor");
         this.provider=provider;
         hbConsumer = new JmsHeartbeatConsumer("HeartbeatDistributor",new HeartbeatListener());
     }
@@ -86,8 +85,8 @@ public class HeartbeatDistributor {
      */
     @Validate
     public void start(){
-        LOG.info("HeartbeatDistributor Validate");
         hbConsumer.start(provider);
+        LOG.info("HeartbeatDistributor started.");
     }
 
     /**
@@ -95,30 +94,30 @@ public class HeartbeatDistributor {
      */
     @Invalidate
     public void stop(){
-        LOG.info("HeartbeatDistributor InValidate");
         hbConsumer.stop();
+        LOG.info("HeartbeatDistributor stopped.");
     }
 
     /**
-     * Registers Heartbeat consumers. Automatically called by iPOJO when components implementing IHeartbeatConsumer
+     * Registers Heartbeat consumers. Automatically called by iPOJO when components implementing HeartbeatConsumer
      * are activated.
      *
      * @param consumer the consumer to register
      */
     @Bind(aggregate = true)
-    public void bindHeartbeatConsumer(IHeartbeatConsumer consumer) {
+    public void bindHeartbeatConsumer(HeartbeatConsumer consumer) {
         consumers.add(consumer);
         LOG.info("Heartbeat Consumer registered at Distributor: " + consumer);
     }
 
     /**
-     * Unregisters Heartbeat consumers. Automatically called by iPOJO when components implementing IHeartbeatConsumer
+     * Unregisters Heartbeat consumers. Automatically called by iPOJO when components implementing HeartbeatConsumer
      * are deactivated.
      *
      * @param consumer the consumer to unregister
      */
     @Unbind
-    public void unbindHeartbeatConsumer(IHeartbeatConsumer consumer) {
+    public void unbindHeartbeatConsumer(HeartbeatConsumer consumer) {
         consumers.remove(consumer);
         LOG.info("Removed Heartbeat Consumer from Distributor: " + consumer);
     }

@@ -83,7 +83,7 @@ public class HeartbeatDistributorIT {
         JmsProvider provider = (JmsProvider) context.getService(context.getServiceReference("edu.gemini.jms.api.JmsProvider"));
 
         TestConsumerComponent comp = new TestConsumerComponent(2);
-        context.registerService(IHeartbeatConsumer.class.getName(),comp,null);
+        context.registerService(HeartbeatConsumer.class.getName(),comp,null);
 
          //wait at most 3 second for 2 beats to arrive
         comp.waitOnLatch(3, TimeUnit.SECONDS);

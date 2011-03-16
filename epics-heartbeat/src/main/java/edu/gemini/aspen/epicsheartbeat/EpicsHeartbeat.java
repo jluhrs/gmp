@@ -1,12 +1,11 @@
 package edu.gemini.aspen.epicsheartbeat;
 
-import edu.gemini.aspen.heartbeatdistributor.IHeartbeatConsumer;
+import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
 import edu.gemini.cas.IChannel;
 import edu.gemini.cas.IChannelAccessServer;
 import gov.aps.jca.CAException;
 import org.apache.felix.ipojo.annotations.*;
 
-import java.util.Dictionary;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
  */
 @Component
 @Provides
-public class EpicsHeartbeat implements IHeartbeatConsumer {
+public class EpicsHeartbeat implements HeartbeatConsumer {
     private static final Logger LOG = Logger.getLogger(EpicsHeartbeat.class.getName());
 
     @Requires
