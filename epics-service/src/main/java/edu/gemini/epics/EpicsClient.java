@@ -6,13 +6,13 @@ package edu.gemini.epics;
  * they are interested in via the property EPICS_CHANNELS, which should be an
  * array of Strings.
  */
-public interface IEpicsClient {
+public interface EpicsClient {
 
     /**
      * Service property for defining the channels that the client cares about.
      * Pass this as part of your registration as an array of Strings.
      */
-    String EPICS_CHANNELS = IEpicsClient.class.getName() + ".EPICS_CHANNELS";
+    String EPICS_CHANNELS = EpicsClient.class.getName() + ".EPICS_CHANNELS";
 
     /**
      * Called when the specified channel value changes.

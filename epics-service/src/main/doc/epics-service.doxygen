@@ -12,9 +12,9 @@
  * - \ref edu.gemini.epics.EpicsWriter "IEpicsWriter" A service to write double values to a specific epics channel. Double arrays are also supported
  *
  * \section epics-service_requires_sec Required Services
- * This bundle can use implementations of the \ref edu.gemini.epics.IEpicsClient "IEpicsClient" service. Implementations
- * subscribe to get updates when certain EPICS Channels are updated. An implementation of \ref edu.gemini.epics.IEpicsClient "IEpicsClient"
- * must inform what channels it wants to monitor by means of setting a service property named edu.gemini.epics.IEpicsClient.EPICS_CHANNELS
+ * This bundle can use implementations of the \ref edu.gemini.epics.EpicsClient "IEpicsClient" service. Implementations
+ * subscribe to get updates when certain EPICS Channels are updated. An implementation of \ref edu.gemini.epics.EpicsClient "IEpicsClient"
+ * must inform what channels it wants to monitor by means of setting a service property named edu.gemini.epics.EpicsClient.EPICS_CHANNELS
  * to an array of Strings, each representing a monitored channel.
  *
  * \section epics-service_configuration_sec Configuration

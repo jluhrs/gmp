@@ -1,6 +1,6 @@
 package edu.gemini.epics.impl;
 
-import edu.gemini.epics.IEpicsClient;
+import edu.gemini.epics.EpicsClient;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
@@ -27,13 +27,13 @@ import static org.mockito.Mockito.when;
 public class ChannelBindingSupportTest {
     private static final String CHANNEL_NAME = "tst:tst";
     private Context context;
-    private IEpicsClient epicsClient;
+    private EpicsClient epicsClient;
     private ChannelBindingSupport cbs;
     private Channel channel;
 
     @Before
     public void setUp() throws Exception {
-        epicsClient = mock(IEpicsClient.class);
+        epicsClient = mock(EpicsClient.class);
         context = mock(Context.class);
         cbs = new ChannelBindingSupport(context, epicsClient);
 

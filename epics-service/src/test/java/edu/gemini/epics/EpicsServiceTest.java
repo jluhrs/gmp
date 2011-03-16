@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class EpicsServiceTest {
-    private static final ImmutableMap<String,Object> CHANNELS_TO_READ = ImmutableMap.<String, Object>of(IEpicsClient.EPICS_CHANNELS, new String[] {"tst:tst"});
+    private static final ImmutableMap<String,Object> CHANNELS_TO_READ = ImmutableMap.<String, Object>of(EpicsClient.EPICS_CHANNELS, new String[] {"tst:tst"});
     private EpicsService epicsService;
 
     @Before
@@ -33,7 +33,7 @@ public class EpicsServiceTest {
     public void testBindingEpicsClient() {
         epicsService.startService();
 
-        IEpicsClient epicsClient = mock(IEpicsClient.class);
+        EpicsClient epicsClient = mock(EpicsClient.class);
         epicsService.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
 
         epicsService.stopService();
@@ -43,7 +43,7 @@ public class EpicsServiceTest {
 
     @Test
     public void testBindingEpicsClientBeforeStartingTheService() {
-        IEpicsClient epicsClient = mock(IEpicsClient.class);
+        EpicsClient epicsClient = mock(EpicsClient.class);
         epicsService.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
         
         verifyZeroInteractions(epicsClient);
@@ -56,7 +56,7 @@ public class EpicsServiceTest {
     @Test
     public void testUnbindingEpicsClient() {
         epicsService.startService();
-        IEpicsClient epicsClient = mock(IEpicsClient.class);
+        EpicsClient epicsClient = mock(EpicsClient.class);
         epicsService.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
         verify(epicsClient).connected();
 
@@ -69,7 +69,7 @@ public class EpicsServiceTest {
     @Test
     public void testUnbindingEpicsClientWhenStopping() {
         epicsService.startService();
-        IEpicsClient epicsClient = mock(IEpicsClient.class);
+        EpicsClient epicsClient = mock(EpicsClient.class);
         epicsService.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
         verify(epicsClient).connected();
 
@@ -80,7 +80,7 @@ public class EpicsServiceTest {
     @Test
     public void testUnbindingUnknownClient() {
         epicsService.startService();
-        IEpicsClient epicsClient = mock(IEpicsClient.class);
+        EpicsClient epicsClient = mock(EpicsClient.class);
         epicsService.unbindEpicsClient(epicsClient);
 
         epicsService.stopService();

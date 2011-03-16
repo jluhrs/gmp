@@ -3,7 +3,7 @@ package edu.gemini.epics.impl;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.IEpicsClient;
+import edu.gemini.epics.EpicsClient;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
@@ -29,7 +29,7 @@ public class ChannelBindingSupport {
     private static final Logger LOG = Logger.getLogger(ChannelBindingSupport.class.getName());
 
     private final Context _ctx;
-    private final IEpicsClient _epicsClient;
+    private final EpicsClient _epicsClient;
     private final Set<Channel> _channels = Sets.newHashSet();
     private boolean _closed;
 
@@ -123,7 +123,7 @@ public class ChannelBindingSupport {
         }
     };
 
-    public ChannelBindingSupport(Context ctx, IEpicsClient epicsClient) throws EpicsException {
+    public ChannelBindingSupport(Context ctx, EpicsClient epicsClient) throws EpicsException {
         Preconditions.checkArgument(ctx != null, "JCA Context cannot be null");
         Preconditions.checkArgument(epicsClient != null, "EpicsClient cannot be null");
         this._epicsClient = epicsClient;

@@ -5,7 +5,7 @@ import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
 import edu.gemini.aspen.gmp.epics.jms.EpicsConfigRequestConsumer;
 import edu.gemini.aspen.gmp.epics.jms.EpicsStatusUpdater;
-import edu.gemini.epics.IEpicsClient;
+import edu.gemini.epics.EpicsClient;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * This class monitors the EPICS channels acting as an IEpicsClient.
+ * This class monitors the EPICS channels acting as an EpicsClient.
  * The updates are delegated for further processing to an EpicsRegistrar
  * <p/>
  * <p/>
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 @Component(name = "epicsMonitor", managedservice = "edu.gemini.aspen.gmp.epics.EpicsMonitor")
 @Instantiate(name = "epicsMonitor")
 @Provides
-public class EpicsMonitor implements IEpicsClient {
+public class EpicsMonitor implements EpicsClient {
     private static final Logger LOG = Logger.getLogger(EpicsMonitor.class.getName());
     private volatile boolean connected = false;
 
@@ -38,7 +38,7 @@ public class EpicsMonitor implements IEpicsClient {
     @Requires
     private EpicsConfiguration _epicsConfig;
 
-    @ServiceProperty(name = "edu.gemini.epics.IEpicsClient.EPICS_CHANNELS")
+    @ServiceProperty(name = "edu.gemini.epics.EpicsClient.EPICS_CHANNELS")
     private String[] props;
 
     private EpicsConfigRequestConsumer _epicsRequestConsumer;

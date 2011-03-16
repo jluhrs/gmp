@@ -64,7 +64,7 @@ public class WeatherStationUpdatesIT {
         cbs.close();
     }
 
-    private class WeatherStationEpicsClient implements IEpicsClient {
+    private class WeatherStationEpicsClient implements EpicsClient {
         private List<double[]> results = Lists.newArrayList();
 
         public void channelChanged(String channel, Object value) {

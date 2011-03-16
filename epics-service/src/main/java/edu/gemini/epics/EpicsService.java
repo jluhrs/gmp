@@ -117,18 +117,18 @@ public class EpicsService implements JCAContextController {
     }
 
     /**
-     * Called when an IEpicsClient appears. It will try to bind to the client right away if possible or it will
+     * Called when an EpicsClient appears. It will try to bind to the client right away if possible or it will
      * save it to be started later on
      * <p/>
      * The services properties of the epicsClient will determine which channels will listen to
      *
-     * @param epicsClient       An OSGi service implementing IEpicsClient that appears in the system
+     * @param epicsClient       An OSGi service implementing EpicsClient that appears in the system
      * @param serviceProperties The properties of the service registration
      */
     @Bind(optional = true)
-    public void bindEpicsClient(IEpicsClient epicsClient, Map<String, Object> serviceProperties) {
+    public void bindEpicsClient(EpicsClient epicsClient, Map<String, Object> serviceProperties) {
         if (serviceHasValidProperties(serviceProperties)) {
-            String[] channels = (String[]) serviceProperties.get(IEpicsClient.EPICS_CHANNELS);
+            String[] channels = (String[]) serviceProperties.get(EpicsClient.EPICS_CHANNELS);
             if (isContextAvailable()) {
                 epicsClientsHolder.connectNewClient(_ctx, epicsClient, channels);
             } else {
@@ -139,16 +139,16 @@ public class EpicsService implements JCAContextController {
     }
 
     private boolean serviceHasValidProperties(Map<String, Object> serviceProperties) {
-        return serviceProperties.containsKey(IEpicsClient.EPICS_CHANNELS) && serviceProperties.get(IEpicsClient.EPICS_CHANNELS) instanceof String[];
+        return serviceProperties.containsKey(EpicsClient.EPICS_CHANNELS) && serviceProperties.get(EpicsClient.EPICS_CHANNELS) instanceof String[];
     }
 
     /**
-     * Called when an IEpicsClient disappears. This method will unbind the context to the client
+     * Called when an EpicsClient disappears. This method will unbind the context to the client
      *
-     * @param epicsClient An OSGi service implementing IEpicsClient that disappears
+     * @param epicsClient An OSGi service implementing EpicsClient that disappears
      */
     @Unbind
-    public void unbindEpicsClient(IEpicsClient epicsClient) {
+    public void unbindEpicsClient(EpicsClient epicsClient) {
         epicsClientsHolder.disconnectEpicsClient(epicsClient);
     }
 }

@@ -1,8 +1,8 @@
 package edu.gemini.epics.impl;
 
 import com.google.common.collect.Maps;
+import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.IEpicsClient;
 import gov.aps.jca.Context;
 
 import java.util.Arrays;
@@ -12,18 +12,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Utility class that keeps track of IEpicsClient so that keeps track of services that have been registered
+ * Utility class that keeps track of EpicsClient so that keeps track of services that have been registered
  * but not started as well as clients already started
  */
 public class EpicsClientsHolder {
     private static final Logger LOG = Logger.getLogger(EpicsClientsHolder.class.getName());
-    private final ConcurrentMap<IEpicsClient, String[]> pendingClients = Maps.newConcurrentMap();
-    private final ConcurrentMap<IEpicsClient, ChannelBindingSupport> startedClients = Maps.newConcurrentMap();
+    private final ConcurrentMap<EpicsClient, String[]> pendingClients = Maps.newConcurrentMap();
+    private final ConcurrentMap<EpicsClient, ChannelBindingSupport> startedClients = Maps.newConcurrentMap();
 
     /**
      * Connects a new client and saves it for future reference
      */
-    public void connectNewClient(Context ctx, IEpicsClient epicsClient, String[] channels) {
+    public void connectNewClient(Context ctx, EpicsClient epicsClient, String[] channels) {
         try {
             LOG.info("Binding client " + epicsClient + " to channels " + Arrays.toString(channels));
             ChannelBindingSupport cbs = new ChannelBindingSupport(ctx, epicsClient);
@@ -40,7 +40,7 @@ public class EpicsClientsHolder {
     /**
      * Stores a client to be started when the Context is made available
      */
-    public void saveClientForConnectionLater(IEpicsClient epicsClient, String[] channels) {
+    public void saveClientForConnectionLater(EpicsClient epicsClient, String[] channels) {
         LOG.info("Saving client " + epicsClient + " for binding channels " + Arrays.toString(channels));
         pendingClients.put(epicsClient, channels);
     }
@@ -48,9 +48,9 @@ public class EpicsClientsHolder {
     /**
      * Disconnect a specific client if known
      */
-    public void disconnectEpicsClient(IEpicsClient epicsClient) {
+    public void disconnectEpicsClient(EpicsClient epicsClient) {
         if (startedClients.containsKey(epicsClient)) {
-            LOG.info("IEpicsClient removed: " + epicsClient);
+            LOG.info("EpicsClient removed: " + epicsClient);
             ChannelBindingSupport cbs = startedClients.get(epicsClient);
             try {
                 cbs.close();
@@ -67,7 +67,7 @@ public class EpicsClientsHolder {
      */
     public void connectAllPendingClients(Context ctx) {
         // TODO Lock access to pendingClients
-        for (Map.Entry<IEpicsClient, String[]> pendingClient : pendingClients.entrySet()) {
+        for (Map.Entry<EpicsClient, String[]> pendingClient : pendingClients.entrySet()) {
             connectNewClient(ctx, pendingClient.getKey(), pendingClient.getValue());
         }
         pendingClients.clear();
@@ -77,7 +77,7 @@ public class EpicsClientsHolder {
      * Disconnect all known connected clients
      */
     public void disconnectAllClients() {
-        for(IEpicsClient client: startedClients.keySet()) {
+        for(EpicsClient client: startedClients.keySet()) {
             disconnectEpicsClient(client);
         }
     }
