@@ -10,13 +10,11 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -30,7 +28,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
     /**
      * Map to store topics associated to each sequence command
      */
-    private static final Map<SequenceCommand, String> TOPIC_MAP = new HashMap<SequenceCommand, String>();
+    private static final EnumMap<SequenceCommand, String> TOPIC_MAP = Maps.newEnumMap(SequenceCommand.class);
 
     /**
      * Topic map static initialization
@@ -48,7 +46,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
      */
     private final class ActionMessageImpl implements ActionMessage {
 
-        private final DestinationData dd;
+        private final String dd;
         private final ImmutableMap<String, Object> props;
         private final Map<String, Object> configurationElements;
 
@@ -64,7 +62,8 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
         public ActionMessageImpl(Action action, ConfigPath path) {
             Preconditions.checkArgument(action != null, "Cannot create a message for a null action");
             Preconditions.checkArgument(path != null, "Cannot create a message for a null path");
-            dd = new DestinationData(getTopicName(action, path), DestinationType.TOPIC);
+
+            dd = getTopicName(action.getCommand().getSequenceCommand(), path);
 
             props = ImmutableMap.<String, Object>of(JmsKeys.GMP_ACTIVITY_PROP,
                     action.getCommand().getActivity().getName(),
@@ -91,9 +90,9 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
             this(action, ConfigPath.EMPTY_PATH);
         }
 
-        private String getTopicName(Action action, ConfigPath path) {
+        private String getTopicName(SequenceCommand sequenceCommand, ConfigPath path) {
             //the destination changes if a config path is specified...
-            StringBuilder sb = new StringBuilder(TOPIC_MAP.get(action.getCommand().getSequenceCommand()));
+            StringBuilder sb = new StringBuilder(TOPIC_MAP.get(sequenceCommand));
             if (!path.equals(ConfigPath.EMPTY_PATH)) {
                 sb.append(JmsKeys.GMP_SEPARATOR);
                 sb.append(path.getName());
@@ -102,7 +101,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
         }
 
         @Override
-        public DestinationData getDestinationData() {
+        public String getDestinationName() {
             return dd;
         }
 

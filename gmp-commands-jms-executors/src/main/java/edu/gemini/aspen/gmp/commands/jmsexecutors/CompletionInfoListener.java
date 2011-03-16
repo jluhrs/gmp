@@ -21,6 +21,7 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -39,17 +40,18 @@ public class CompletionInfoListener implements MessageListener {
     public final static String QUEUE_NAME = JmsKeys.GMP_COMPLETION_INFO;
 
     private final CommandUpdater _commandUpdater;
+    private final BaseMessageConsumer _messageConsumer;
 
     private JmsProvider _provider;
-    private final BaseMessageConsumer _messageConsumer;
 
     public CompletionInfoListener(@Requires CommandUpdater updater, @Requires JmsProvider jmsProvider) {
         Preconditions.checkArgument(updater != null, "CommandUpdater cannot be null");
+        Preconditions.checkArgument(jmsProvider != null, "JmsProvider cannot be null");
         _commandUpdater = updater;
         _provider = jmsProvider;
 
-                _messageConsumer = new BaseMessageConsumer(
-               "JMS Completion Info Consumer",
+        _messageConsumer = new BaseMessageConsumer(
+                "JMS Completion Info Consumer",
                 new DestinationData(CompletionInfoListener.QUEUE_NAME,
                         DestinationType.QUEUE),
                 this
@@ -65,7 +67,7 @@ public class CompletionInfoListener implements MessageListener {
                 int actionId = m.getIntProperty(JmsKeys.GMP_ACTIONID_PROP);
                 HandlerResponse response = MessageBuilder.buildHandlerResponse(m);
                 LOG.info("Received Completion info for action ID " +
-                                actionId + " : " + response.toString());
+                        actionId + " : " + response.toString());
                 //Notify the OCS. Based on the action ID, we know who to notify
                 _commandUpdater.updateOcs(actionId, response);
             }
@@ -80,7 +82,7 @@ public class CompletionInfoListener implements MessageListener {
         try {
             _messageConsumer.startJms(_provider);
         } catch (JMSException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOG.log(Level.SEVERE, "Exception while starting the JMS connection");
         }
     }
 

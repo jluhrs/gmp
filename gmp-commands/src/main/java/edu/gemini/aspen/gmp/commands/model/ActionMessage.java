@@ -1,7 +1,5 @@
 package edu.gemini.aspen.gmp.commands.model;
 
-import edu.gemini.jms.api.DestinationData;
-
 import java.util.Map;
 
 /**
@@ -12,15 +10,15 @@ import java.util.Map;
 public interface ActionMessage {
 
     /**
-     * Return the destination data associated to this action message
-     * @return the destination data
+     * Return the destination name associated to this action message
+     * @return the destination name
      */
-    DestinationData getDestinationData();
+    String getDestinationName();
 
     /**
      * Get the message properties to be used in this message.
      * The Action ID and the activity of the action are encoded
-     * as properties. 
+     * as properties.
      * @return Map representing the properties of this message
      */
     Map<String, Object> getProperties();

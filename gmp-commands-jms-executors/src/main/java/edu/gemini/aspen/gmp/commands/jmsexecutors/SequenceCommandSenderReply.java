@@ -5,6 +5,8 @@ import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
+import edu.gemini.jms.api.DestinationData;
+import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsMapMessageSenderReply;
 import edu.gemini.jms.api.MessagingException;
@@ -55,7 +57,7 @@ public class SequenceCommandSenderReply extends JmsMapMessageSenderReply<Handler
     public HandlerResponse send(ActionMessage actionMessage, long timeout) {
         try {
             return sendMapMessageReply(
-                    actionMessage.getDestinationData(),
+                    new DestinationData(actionMessage.getDestinationName(), DestinationType.TOPIC),
                     actionMessage.getDataElements(),
                     actionMessage.getProperties(),
                     timeout);

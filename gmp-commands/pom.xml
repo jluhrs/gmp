@@ -36,10 +36,6 @@
             <artifactId>giapi</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.jms</groupId>
-            <artifactId>jms-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>

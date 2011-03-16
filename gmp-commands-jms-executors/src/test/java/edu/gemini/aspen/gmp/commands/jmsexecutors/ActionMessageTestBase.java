@@ -9,8 +9,6 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,15 +50,12 @@ public abstract class ActionMessageTestBase {
     public void testDestinationData() {
         for (Action a: _action) {
             ActionMessage am = getActionMessage(a);
-            DestinationData dd = am.getDestinationData();
-
-            //type must be topic
-            assertEquals(DestinationType.TOPIC, dd.getType());
+            String dd = am.getDestinationName();
 
             //name
             StringBuilder sb = new StringBuilder(JmsKeys.GMP_SEQUENCE_COMMAND_PREFIX);
             sb.append(a.getCommand().getSequenceCommand().getName());
-            assertEquals(sb.toString(), dd.getName());
+            assertEquals(sb.toString(), dd);
         }
     }
 
