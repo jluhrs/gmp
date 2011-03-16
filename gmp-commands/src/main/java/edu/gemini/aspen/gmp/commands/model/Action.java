@@ -26,7 +26,7 @@ public final class Action implements Comparable<Action> {
         _actionId = ID.incrementAndGet();
     }
 
-    Action(int actionId, Command command, CompletionListener listener) {
+    public Action(int actionId, Command command, CompletionListener listener) {
         Preconditions.checkArgument(command != null, "Action's command cannot be null");
         Preconditions.checkArgument(listener != null, "Action's listener cannot be null");
         this._command = command;

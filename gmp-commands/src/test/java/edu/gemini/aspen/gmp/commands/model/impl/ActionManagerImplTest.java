@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.model;
+package edu.gemini.aspen.gmp.commands.model.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -6,6 +6,7 @@ import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
 import org.junit.After;
 import org.junit.Before;

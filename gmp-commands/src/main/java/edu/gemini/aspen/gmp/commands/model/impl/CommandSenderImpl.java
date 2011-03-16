@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.impl;
+package edu.gemini.aspen.gmp.commands.model.impl;
 
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.Activity;

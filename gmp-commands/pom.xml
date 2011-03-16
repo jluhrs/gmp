@@ -11,7 +11,7 @@
 
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp.commands</bundle.symbolicName>
-        <bundle.namespace>edu.gemini.aspen.gmp.commands</bundle.namespace>
+        <bundle.namespace>edu.gemini.aspen.gmp.commands.model</bundle.namespace>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
