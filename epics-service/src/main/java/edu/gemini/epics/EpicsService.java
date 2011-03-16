@@ -1,19 +1,21 @@
 package edu.gemini.epics;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Splitter;
 import edu.gemini.epics.impl.EpicsClientsHolder;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import org.apache.felix.ipojo.annotations.Bind;
 import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Unbind;
 import org.apache.felix.ipojo.annotations.Validate;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,9 +28,8 @@ import java.util.logging.Logger;
  * a single parameter in the form of an IP address
  * 
  */
-@Component(managedservice = "edu.gemini.epics.EpicsService", publicFactory = false)
+@Component
 @Provides
-@Instantiate
 public class EpicsService implements JCAContextController {
     private static final Logger LOG = Logger.getLogger(EpicsService.class.getName());
     private static final String IPADDRESS_PATTERN =
@@ -110,9 +111,24 @@ public class EpicsService implements JCAContextController {
         try {
             _ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
             LOG.info("JCALibrary built connecting to: " + _addressList);
+
+            logContextInfo();
+
             epicsClientsHolder.connectAllPendingClients(_ctx);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, "Cannot start JCALibrary", e);
+        }
+    }
+
+    private void logContextInfo() {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(bos);
+        _ctx.printInfo(out);
+        
+        String ctxInfo = new String(bos.toByteArray());
+        Iterable<String> ctxInfoLines = Splitter.on('\n').trimResults().split(ctxInfo);
+        for(String line: ctxInfoLines) {
+            LOG.info("JCALibrary Info: " + line);
         }
     }
 
