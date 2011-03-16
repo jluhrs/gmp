@@ -7,6 +7,7 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
+import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -71,18 +72,7 @@ public class SequenceCommandSenderReplyTest {
     @Test
     public void testSend() throws JMSException {
         JmsProvider provider = mock(JmsProvider.class);
-        ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-        when(provider.getConnectionFactory()).thenReturn(connectionFactory);
-        Connection connection = mock(Connection.class);
-        when(connectionFactory.createConnection()).thenReturn(connection);
-        Session session = mock(Session.class);
-        when(connection.createSession(anyBoolean(), anyInt())).thenReturn(session);
-        MapMessage mapMessage = mock(MapMessage.class);
-        when(session.createMapMessage()).thenReturn(mapMessage);
-        MessageProducer producer = mock(MessageProducer.class);
-        when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
-        MessageConsumer consumer = mock(MessageConsumer.class);
-        when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
+        mockMessageAndDestinations(provider);
 
         SequenceCommandSenderReply senderReply = new SequenceCommandSenderReply(clientData);
         senderReply.startJms(provider);
@@ -90,9 +80,55 @@ public class SequenceCommandSenderReplyTest {
         JmsActionMessageBuilder messageBuilder = new JmsActionMessageBuilder();
         Action action = new Action(new Command(SequenceCommand.DATUM,
                 Activity.START, emptyConfiguration()), new CompletionListenerMock());
+
         ActionMessage actionMessage = messageBuilder.buildActionMessage(action);
         HandlerResponse response = senderReply.send(actionMessage);
 
         assertEquals(HandlerResponse.Response.NOANSWER, response.getResponse());
+    }
+
+    @Test(expected = SequenceCommandException.class)
+    public void testErrorWhileSending() throws JMSException {
+        JmsProvider provider = mock(JmsProvider.class);
+        Session session = mockSessionCreation(provider);
+        when(session.createMapMessage()).thenThrow(new JMSException(""));
+
+        SequenceCommandSenderReply senderReply = new SequenceCommandSenderReply(clientData);
+        senderReply.startJms(provider);
+
+        JmsActionMessageBuilder messageBuilder = new JmsActionMessageBuilder();
+        Action action = new Action(new Command(SequenceCommand.DATUM,
+                Activity.START, emptyConfiguration()), new CompletionListenerMock());
+
+        ActionMessage actionMessage = messageBuilder.buildActionMessage(action);
+        HandlerResponse response = senderReply.send(actionMessage);
+    }
+
+    private Session mockMessageAndDestinations(JmsProvider provider) throws JMSException {
+        Session session = mockSessionCreation(provider);
+
+        MapMessage mapMessage = mock(MapMessage.class);
+        when(session.createMapMessage()).thenReturn(mapMessage);
+        MessageProducer producer = mock(MessageProducer.class);
+        when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
+        MessageConsumer consumer = mock(MessageConsumer.class);
+        when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
+
+        return session;
+    }
+
+    private Session mockSessionCreation(JmsProvider provider) throws JMSException {
+        Session session = mock(Session.class);
+        // Mock connection factory
+        ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
+        when(provider.getConnectionFactory()).thenReturn(connectionFactory);
+
+        // Mock connection
+        Connection connection = mock(Connection.class);
+        when(connectionFactory.createConnection()).thenReturn(connection);
+
+        // Mock session
+        when(connection.createSession(anyBoolean(), anyInt())).thenReturn(session);
+        return session;
     }
 }
