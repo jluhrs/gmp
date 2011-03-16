@@ -1,6 +1,6 @@
 package edu.gemini.epics;
 
-import edu.gemini.epics.impl.EpicsWriter;
+import edu.gemini.epics.impl.EpicsWriterImpl;
 import gov.aps.jca.*;
 
 import java.util.*;
@@ -18,11 +18,11 @@ public class WriteTestValues {
         CHANNELS.put("tst:array.J", "Array 10 Elements");
     }
 
-    private IEpicsWriter _writer;
+    private EpicsWriter _writer;
 
     public WriteTestValues() throws CAException, EpicsException {
         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        _writer = new EpicsWriter(new EpicsService(context, "172.16.2.24"));
+        _writer = new EpicsWriterImpl(new EpicsService(context, "172.16.2.24"));
         for (String s : CHANNELS.keySet()) {
             _writer.bindChannel(s);
         }
@@ -38,7 +38,7 @@ public class WriteTestValues {
 
     @Override
     protected void finalize() throws Throwable {
-        ((EpicsWriter) _writer).close();
+        ((EpicsWriterImpl) _writer).close();
         super.finalize();
     }
 

@@ -2,7 +2,7 @@ package edu.gemini.epics.impl;
 
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.JCAContextController;
-import edu.gemini.epics.IEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import org.apache.felix.ipojo.annotations.Component;
@@ -18,11 +18,11 @@ import java.util.logging.Logger;
  */
 @Component
 @Instantiate
-@Provides(specifications = IEpicsWriter.class)
-public class EpicsWriter extends EpicsBase implements IEpicsWriter {
+@Provides(specifications = EpicsWriter.class)
+public class EpicsWriterImpl extends EpicsBase implements EpicsWriter {
     private static final Logger LOG = Logger.getLogger(EpicsWriter.class.getName());
 
-    public EpicsWriter(@Requires JCAContextController epicsService) throws CAException {
+    public EpicsWriterImpl(@Requires JCAContextController epicsService) throws CAException {
         super(epicsService);
         startEpicsWriter();
     }

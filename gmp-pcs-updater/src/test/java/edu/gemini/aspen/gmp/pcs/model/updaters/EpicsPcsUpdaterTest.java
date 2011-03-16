@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.pcs.model.updaters;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.IEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import org.junit.Test;
 
 import static org.mockito.Matchers.anyObject;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
  * @author cquiroz
  */
 public class EpicsPcsUpdaterTest {
-    private IEpicsWriter writer = mock(IEpicsWriter.class);
+    private EpicsWriter writer = mock(EpicsWriter.class);
     private String channel = "X.val1";
 
     @Test

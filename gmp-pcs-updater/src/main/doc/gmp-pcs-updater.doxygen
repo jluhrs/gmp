@@ -11,7 +11,7 @@
  * and writes them to the EPICS channel
  *
  * \section gmp-pcs-updater_requires_sec Required Services
- * This bundle requires the \ref import edu.gemini.epics.IEpicsWriter "EpicsWriter" OSGI service, provided by
+ * This bundle requires the \ref import edu.gemini.epics.EpicsWriter "EpicsWriter" OSGI service, provided by
  * \ref epics-service bundle.
  *
  * \section gmp-pcs-updater_configuration_sec Configuration

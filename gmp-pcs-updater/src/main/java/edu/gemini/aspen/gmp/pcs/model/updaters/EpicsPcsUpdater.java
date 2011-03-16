@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.pcs.model.updaters;
 
-import edu.gemini.epics.IEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdater;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
@@ -18,10 +18,10 @@ public class EpicsPcsUpdater implements PcsUpdater {
     private static final Logger LOG = Logger.getLogger(EpicsPcsUpdater.class.getName());
     private static final String TCS_ZERNIKES_CHANNEL = "tst:array.VALJ";
 
-    private final IEpicsWriter _writer;
+    private final EpicsWriter _writer;
     private final String _channel;
 
-    public EpicsPcsUpdater(IEpicsWriter writer, String channel) throws PcsUpdaterException {
+    public EpicsPcsUpdater(EpicsWriter writer, String channel) throws PcsUpdaterException {
         _writer = writer;
 
         /**
