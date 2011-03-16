@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-epics-access</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 
     <name>GMP Epics Access Service</name>
     <description>Epics Access Interface for Aspen Instruments</description>
