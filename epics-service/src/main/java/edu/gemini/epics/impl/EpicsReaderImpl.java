@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 @Component
 @Instantiate
 @Provides(specifications = EpicsReader.class)
-public class EpicsReaderImpl extends EpicsBase implements EpicsReader {
+public class EpicsReaderImpl extends EpicsBaseImpl implements EpicsReader {
     private static final Logger LOG = Logger.getLogger(EpicsReader.class.getName());
     private static final double[] EMPTY_CHANNEL_VALUE = new double[0];
 

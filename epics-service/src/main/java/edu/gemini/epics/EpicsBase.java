@@ -4,7 +4,7 @@ package edu.gemini.epics;
  * Base interface for Epics Access Objects. Allows the
  * binding of channel names to actual channels. 
  */
-public interface IEpicsBase {
+public interface EpicsBase {
     /**
      * Makes the connection of the specified channel name with an actual
      * EPICS channel.

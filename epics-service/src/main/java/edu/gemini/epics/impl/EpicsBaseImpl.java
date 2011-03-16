@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.JCAContextController;
-import edu.gemini.epics.IEpicsBase;
+import edu.gemini.epics.EpicsBase;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 /**
  * Base class for Epics Accessing Objects
  */
-public class EpicsBase implements IEpicsBase {
-    private static final Logger LOG = Logger.getLogger(EpicsBase.class.getName());
+public class EpicsBaseImpl implements EpicsBase {
+    private static final Logger LOG = Logger.getLogger(EpicsBaseImpl.class.getName());
 
     private final Context _ctx;
     private final Map<String, Channel> _channels = Maps.newTreeMap();
@@ -62,7 +62,7 @@ public class EpicsBase implements IEpicsBase {
     };
 
 
-    public EpicsBase(JCAContextController epicsService) {
+    public EpicsBaseImpl(JCAContextController epicsService) {
         Preconditions.checkArgument(epicsService != null, "Passed JCAContextController cannot be null");
         Preconditions.checkArgument(epicsService.getJCAContext() != null, "Passed JCA Context cannot be null");
         this._ctx = epicsService.getJCAContext();

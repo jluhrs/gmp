@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 @Component
 @Instantiate
 @Provides(specifications = EpicsWriter.class)
-public class EpicsWriterImpl extends EpicsBase implements EpicsWriter {
+public class EpicsWriterImpl extends EpicsBaseImpl implements EpicsWriter {
     private static final Logger LOG = Logger.getLogger(EpicsWriter.class.getName());
 
     public EpicsWriterImpl(@Requires JCAContextController epicsService) throws CAException {
