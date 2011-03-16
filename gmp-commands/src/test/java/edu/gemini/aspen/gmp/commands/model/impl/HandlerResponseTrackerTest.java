@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.impl;
 
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
+import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;

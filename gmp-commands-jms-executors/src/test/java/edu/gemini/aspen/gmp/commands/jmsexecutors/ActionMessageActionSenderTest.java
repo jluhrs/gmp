@@ -4,6 +4,7 @@ import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;

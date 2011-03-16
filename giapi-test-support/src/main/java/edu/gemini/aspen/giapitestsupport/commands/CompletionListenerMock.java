@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.test;
+package edu.gemini.aspen.giapitestsupport.commands;
 
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
@@ -6,7 +6,6 @@ import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import junit.framework.AssertionFailedError;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -41,7 +40,7 @@ public final class CompletionListenerMock implements CompletionListener {
             invocationLatch.await(timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             // Convert to runtime exception so tests will fail
-            throw new AssertionFailedError("Interrupted wait for invocation");
+            throw new RuntimeException("Interrupted wait for invocation");
         }
     }
 

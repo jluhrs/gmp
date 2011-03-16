@@ -11,7 +11,7 @@ import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.IActionManager;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
-import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
+import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import org.junit.Before;
 import org.junit.Test;
 

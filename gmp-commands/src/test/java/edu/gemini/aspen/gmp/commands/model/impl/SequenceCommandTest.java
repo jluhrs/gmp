@@ -9,7 +9,7 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
-import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
+import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.test.SequenceCommandExecutorMock;
 import org.junit.After;
 import org.junit.Before;

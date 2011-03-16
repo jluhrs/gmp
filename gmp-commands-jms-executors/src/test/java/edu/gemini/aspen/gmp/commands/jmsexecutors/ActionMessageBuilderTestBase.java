@@ -7,6 +7,7 @@ import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;

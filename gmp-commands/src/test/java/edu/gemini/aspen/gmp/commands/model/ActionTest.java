@@ -6,7 +6,7 @@ import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.test.CompletionListenerMock;
+import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import org.junit.Before;
 import org.junit.Test;
 
