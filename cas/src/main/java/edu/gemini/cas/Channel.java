@@ -32,4 +32,10 @@ public interface Channel<T> {
 
     String getName();
 
+    /**
+     * Register a listener to be notified every time the channel value changes
+     *
+     * @param listener
+     */
+    void registerListener(ChannelListener listener);
 }

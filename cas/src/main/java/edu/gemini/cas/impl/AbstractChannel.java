@@ -1,8 +1,10 @@
 package edu.gemini.cas.impl;
 
+import com.cosylab.epics.caj.cas.ProcessVariableEventDispatcher;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.Channel;
+import edu.gemini.cas.ChannelListener;
 import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
@@ -128,6 +130,13 @@ abstract class AbstractChannel<T> implements Channel<T> {
     @Override
     public String getName(){
         return pv.getName();
+    }
+
+    @Override
+    public void registerListener(ChannelListener listener) {
+        ProcessVariableEventDispatcher ed = new ProcessVariableEventDispatcher(pv);
+        ed.registerEventListener(new ProcessVariableEventListener(listener));
+        pv.setEventCallback(ed);
     }
 
     @Override
