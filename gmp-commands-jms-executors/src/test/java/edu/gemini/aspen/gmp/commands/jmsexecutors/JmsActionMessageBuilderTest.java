@@ -33,5 +33,10 @@ public class JmsActionMessageBuilderTest extends ActionMessageBuilderTestBase {
         c = messageBuilder.buildActionMessage(action);
 
         new EqualsTester(a, b, c, d);
+
+        action = new Action(new Command(SequenceCommand.ABORT, Activity.PRESET, config), new CompletionListenerMock());
+        c = messageBuilder.buildActionMessage(action);
+
+        new EqualsTester(a, b, c, d);
     }
 }

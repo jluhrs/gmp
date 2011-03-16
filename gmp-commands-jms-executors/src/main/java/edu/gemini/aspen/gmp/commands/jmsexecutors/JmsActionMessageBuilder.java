@@ -65,8 +65,8 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
 
             dd = getTopicName(action.getCommand().getSequenceCommand(), path);
 
-            props = ImmutableMap.<String, Object>of(JmsKeys.GMP_ACTIVITY_PROP,
-                    action.getCommand().getActivity().getName(),
+            props = ImmutableMap.<String, Object>of(
+                    JmsKeys.GMP_ACTIVITY_PROP, action.getCommand().getActivity().getName(),
                     JmsKeys.GMP_ACTIONID_PROP, action.getId());
 
             configurationElements = Maps.newHashMap();
