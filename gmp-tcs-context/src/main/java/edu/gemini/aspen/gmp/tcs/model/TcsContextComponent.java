@@ -9,6 +9,7 @@ import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.Bind;
 import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Modified;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Requires;
@@ -86,13 +87,22 @@ public class TcsContextComponent {
 
     @Validate
     public void validated() throws JMSException {
-        LOG.info("TcsContext validated, starting... ");
+        LOG.fine("TCS Context validated, starting... ");
         startJMSConsumers();
         if (simulation) {
             addSimulatedTcsContextFetcher();
         }
-        LOG.info("TCS Context Service started");
+        LOG.fine("TCS Context Service started");
     }
+
+    @Invalidate
+    public void stopComponent() throws JMSException {
+        LOG.fine("TCS Context stopped, disconnecting jms... ");
+        _dispatcher.stopJms();
+        _messageConsumer.stopJms();
+        LOG.fine("TCS Context Service Stopped");
+    }
+
 
     private void startJMSConsumers() {
         try {

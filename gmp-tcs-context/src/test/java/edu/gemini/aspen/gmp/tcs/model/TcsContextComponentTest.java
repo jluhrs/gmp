@@ -45,6 +45,14 @@ public class TcsContextComponentTest {
     }
 
     @Test
+    public void testInvalidation() throws JMSException {
+        TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
+        component.validated();
+        component.stopComponent();
+        verify(session, times(2)).close();
+    }
+
+    @Test
     public void testReaderAvailableAndValidation() throws JMSException, EpicsException {
         TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
 
