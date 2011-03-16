@@ -1,7 +1,11 @@
 package edu.gemini.aspen.gmp.commands.jmsexecutors;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import org.junit.Test;
@@ -22,6 +26,11 @@ public class JmsActionMessageBuilderTest extends ActionMessageBuilderTestBase {
         ActionMessage b = messageBuilder.buildActionMessage(action);
         ActionMessage c = messageBuilder.buildActionMessage(action, ConfigPath.configPath("Y"));
         ActionMessage d = null;
+
+        new EqualsTester(a, b, c, d);
+
+        action = new Action(new Command(SequenceCommand.APPLY, Activity.START, config), new CompletionListenerMock());
+        c = messageBuilder.buildActionMessage(action);
 
         new EqualsTester(a, b, c, d);
     }

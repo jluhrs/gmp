@@ -127,13 +127,13 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
 
             ActionMessageImpl that = (ActionMessageImpl) o;
 
-            if (configurationElements != null ? !configurationElements.equals(that.configurationElements) : that.configurationElements != null) {
+            if (!configurationElements.equals(that.configurationElements)) {
                 return false;
             }
-            if (dd != null ? !dd.equals(that.dd) : that.dd != null) {
+            if (!dd.equals(that.dd)) {
                 return false;
             }
-            if (props != null ? !props.equals(that.props) : that.props != null) {
+            if (!props.equals(that.props)) {
                 return false;
             }
             //same thing
@@ -142,9 +142,9 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
 
         @Override
         public int hashCode() {
-            int result = dd != null ? dd.hashCode() : 0;
-            result = 31 * result + (props != null ? props.hashCode() : 0);
-            result = 31 * result + (configurationElements != null ? configurationElements.hashCode() : 0);
+            int result = dd.hashCode();
+            result = 31 * result + props.hashCode();
+            result = 31 * result + configurationElements.hashCode();
             return result;
         }
 
