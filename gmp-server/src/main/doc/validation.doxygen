@@ -112,14 +112,13 @@ Of course, you can change these values and update the test application according
  \subsection obs_events_test Observation Events Integration Tests
 
         First, use the giapi-tester application to start listening for Observation Events
-          (see documentation for giapi-tester here):
 
           <tt>$ ./giapi-tester.sh -obsEvents</tt>
+
+        You will get an output similar to:
     \verbatim
     Feb 25, 2011 11:07:16 AM edu.gemini.jms.activemq.provider.ActiveMQJmsProvider __validated
     INFO: ActiveMQ JMS Provider setup with url: tcp://localhost:61616
-    log4j:WARN No appenders could be found for logger (org.apache.activemq.transport.WireFormatNegotiator).
-    log4j:WARN Please initialize the log4j system properly.
     Feb 25, 2011 11:07:17 AM edu.gemini.jms.api.BaseJmsArtifact startJms
     INFO: Started JMS Artifact [Observation Event Test Client]
     \endverbatim
@@ -337,7 +336,9 @@ Of course, you can change these values and update the test application according
 
        NOTE: We will update this test application to read all the properties.
 
-\subsection tcs_context_test TCS Context Integration Tests
+\subsection tcs_context_test TCS Context Service Integration Tests
+
+    <b>Test with internal simulation:</b>
 
     First, verify the GMP TCS context service is running in the GMP and
     it is configured in simulation:
@@ -346,14 +347,15 @@ Of course, you can change these values and update the test application according
 \verbatim
     # Indicates whether the TCS Context is in simulation mode
     simulation=true
-    # What epics channel is used by the TCS ContextUpdater
+    # EPICS used to obtain the TCS Context information
     tcsChannel=tc1:sad:astCtx
     # Configuration file pointing to the simulation data
     simulationData=${conf.base}/tcsCtx.data
 \endverbatim
-     If it's not configured in simulation, change it and restart the GMP.
+     If it's not configured in simulation, change it and restart the GMP. Note that
+     in this mode, the second parameter (tcsChannel) is not used.
 
-     Now, start the tcscontext application:
+     Now, start the tcscontext application in the GIAPI C++ Glue code:
 
      <tt>$ ./runExample.sh tcscontext</tt>
 
@@ -401,6 +403,87 @@ Of course, you can change these values and update the test application according
     Optical Distortions
        0       1       0       0       0       1
 \endverbatim
+
+
+   <b>Test with access to the TCS via EPICS:</b>
+
+   First, configure the TCS Context Service to not use simulation:
+
+   <tt>$ cat $GMP_HOME/conf/services/edu.gemini.aspen.gmp.tcs.model.TcsContextComponent-default.cfg</tt>
+   \verbatim
+       # Indicates whether the TCS Context is in simulation mode
+       simulation=false
+       # EPICS channel used to obtain the TCS Context information
+       tcsChannel=tcs:sad:astCtx
+       # Configuration file pointing to the simulation data
+       simulationData=${conf.base}/tcsCtx.data
+   \endverbatim
+
+   Now, you have to configure the Epics Service to be able to find the
+   TCS. For this, edit the file
+
+   <tt>$GMP_HOME/conf/services/edu.gemini.epics.EpicsService.cfg</tt>
+   \verbatim
+       # Address of the EPICS database to connect to
+       addressList=172.17.2.36
+   \endverbatim
+
+   Adjust the IP to the one used by the TCS. For full details about the
+   Epics Service, see the \ref epics-service documentation.
+
+   Now start the GMP server as indicated in the \ref user_manual.
+
+   And then start the tcscontext application in the GIAPI C++ Glue code:
+
+     <tt>$ ./runExample.sh tcscontext</tt>
+
+     Your output should be similar to the one shown below:
+\verbatim
+    Starting TCS Context Example
+    TCS Context:
+    =================
+    Raw Time        :     1298645243
+    Mount Flexure X :      -0.122335
+    Mount Flexure Y :       0.970269
+    Mount Flexure Z :       0.208836
+    =================
+    Telescope Parameters
+    Telescope focal length (mm)                   :         128000
+    Rotator mechanical angle (rads)               :       -1.02922
+    Azimuth axis tilt NS (rads)                   :   -0.000106659
+    Azimuth axis tilt EW (rads)                   :    0.000125809
+    Az/El nonperpendicularity (rads)              :   -2.62714e-05
+    Net left-right(horizontal) collimation (rads) :    0.000144038
+    Net up-down(vertical) collimation (rads)      :              0
+    Pointing origin x-component (mm)              :              0
+    Pointing origin y-component (mm)              :              0
+    =================
+    Apparent to Observed Parameters
+      -0.527798      -0.503632       0.863918      1.342e-06           2722
+         283.16            730            0.4            0.5         0.0065
+    0.000204089   -2.32164e-07              0        4.95851    -6.6214e-08
+    =================
+    M2 tip/tilt (3 chop states)
+    2.99898e-12    2.11159e-16
+    2.99895e-12    1.54401e-16
+    1.62883e-09    2.36088e-05
+    =================
+    Point Origins
+    Mount point origin in X            :     -0.0771683
+    Mount point origin in Y            :       -4.48684
+    Source chop A pointing origin in X :     -0.0771683
+    Source chop A pointing origin in Y :       -4.48684
+    Source chop B pointing origin in X :     -0.0771683
+    Source chop B pointing origin in Y :       -4.48684
+    Source chop C pointing origin in X :     -0.0771683
+    Source chop C pointing origin in Y :       -4.48684
+    =================
+    Optical Distortions
+       0       1       0       0       0       1
+\endverbatim
+
+If you don't get an output like this, either you don't have access to the TCS
+or your GMP configuration is incorrect.
 
 \subsection validation_testing_sec EPICS Status Service Integration Tests
 \li Start the GMP as indicated in the \ref user_manual.
@@ -458,21 +541,5 @@ example code should be something like:
 \li As you can see, the error message for alarm goes to a separate channel, with the same name as the main channel, followed by ".OMSS".
 The valid values for health, severity and alarm cause, can be found in the giapi_tester help.
 
-\subsection heartbeat_test_sec EPICS Heartbeat Test
-
-\li Start the GMP as indicated in the \ref user_manual.
-\li Check that <tt>$ camonitor gmp:heartbeat</tt> prints an increasing heartbeat number roughly every second:
-\verbatim
-    gmp:heartbeat                  2011-03-14 11:05:42.307000 9
-    gmp:heartbeat                  2011-03-14 11:05:43.307000 10
-    gmp:heartbeat                  2011-03-14 11:05:44.307000 11
-    gmp:heartbeat                  2011-03-14 11:05:45.307000 12
-    gmp:heartbeat                  2011-03-14 11:05:46.306000 13
-    gmp:heartbeat                  2011-03-14 11:05:47.307000 14
-    gmp:heartbeat                  2011-03-14 11:05:48.307000 15
-    gmp:heartbeat                  2011-03-14 11:05:49.307000 16
-    gmp:heartbeat                  2011-03-14 11:05:50.306000 17
-    ...
-\endverbatim
 
 */
