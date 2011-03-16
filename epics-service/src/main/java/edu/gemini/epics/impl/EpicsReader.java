@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 @Provides(specifications = IEpicsReader.class)
 public class EpicsReader extends EpicsBase implements IEpicsReader {
     private static final Logger LOG = Logger.getLogger(EpicsReader.class.getName());
+    private static final double[] EMPTY_CHANNEL_VALUE = new double[0];
 
     public EpicsReader(@Requires JCAContextController epicsService) {
         super(epicsService);
@@ -43,7 +44,7 @@ public class EpicsReader extends EpicsBase implements IEpicsReader {
         if (isChannelKnown(channelName)) {
             return readChannelValue(channelName);
         } else {
-            return null;
+            return EMPTY_CHANNEL_VALUE;
         }
     }
 

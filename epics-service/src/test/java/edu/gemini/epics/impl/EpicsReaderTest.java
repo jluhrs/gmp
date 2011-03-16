@@ -10,7 +10,6 @@ import gov.aps.jca.dbr.DBR_Float;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -42,7 +41,7 @@ public class EpicsReaderTest {
         EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
-        assertNull(value);
+        assertArrayEquals(new double[0], (double[])value, 0);
     }
 
     @Test(expected = EpicsException.class)
