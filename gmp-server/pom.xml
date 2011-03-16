@@ -175,7 +175,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
-            <version>0.3.0</version>
+            <version>0.4.0</version>
         </dependency>
         <!-- CAS -->
         <dependency>
@@ -213,6 +213,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>gmp-commands</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <!--dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands-jms-executors</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency-->
         <!-- GMP PCS Updater -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
