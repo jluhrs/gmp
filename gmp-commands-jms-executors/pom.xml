@@ -37,6 +37,15 @@
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-commands</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-jms-util</artifactId>
+            <version>0.10.0</version>
+        </dependency>
     </dependencies>
 
 </project>

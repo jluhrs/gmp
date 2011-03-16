@@ -4,9 +4,9 @@ import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.impl.CommandUpdaterImpl;
-import edu.gemini.aspen.gmp.commands.jms.CompletionInfoListener;
 import edu.gemini.aspen.gmp.commands.model.IActionManager;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
+import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,17 +22,19 @@ import static org.mockito.Mockito.when;
 public class CompletionInfoListenerTest {
     private IActionManager actionManager;
     private MapMessage message;
+    private JmsProvider jmsProvider;
 
     @Before
     public void setUp() throws Exception {
         actionManager = mock(IActionManager.class);
         message = mock(MapMessage.class);
+        jmsProvider = mock(JmsProvider.class);
     }
 
     @Test
     public void testOCSUpdate() throws JMSException {
         CommandUpdater commandUpdater = new CommandUpdaterImpl(actionManager);
-        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater);
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, jmsProvider);
         when(message.getIntProperty(JmsKeys.GMP_ACTIONID_PROP)).thenReturn(1);
         when(message.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenReturn(HandlerResponse.Response.COMPLETED.toString());
 
@@ -44,7 +46,7 @@ public class CompletionInfoListenerTest {
     @Test(expected = SequenceCommandException.class)
     public void testExceptionOnMessageQuerying() throws JMSException {
         CommandUpdater commandUpdater = new CommandUpdaterImpl(actionManager);
-        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater);
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, jmsProvider);
         when(message.getIntProperty(JmsKeys.GMP_ACTIONID_PROP)).thenThrow(new JMSException("exception"));
 
         listener.onMessage(message);
@@ -53,7 +55,7 @@ public class CompletionInfoListenerTest {
     @Test
     public void testNoMapMessage() throws JMSException {
         CommandUpdater commandUpdater = new CommandUpdaterImpl(actionManager);
-        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater);
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, jmsProvider);
         Message message = mock(Message.class);
 
         listener.onMessage(message);
