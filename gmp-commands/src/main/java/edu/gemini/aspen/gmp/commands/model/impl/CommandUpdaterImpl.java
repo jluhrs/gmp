@@ -11,7 +11,7 @@ import org.apache.felix.ipojo.annotations.Requires;
 
 /**
  * Implementation of the {@link edu.gemini.aspen.giapi.commands.CommandUpdater}
- * interface. It notifies {@link edu.gemini.aspen.gmp.commands.model.ActionManager}
+ * interface. It notifies {@link edu.gemini.aspen.gmp.commands.model.IActionManager}
  * whenever new updates are available to process. 
  */
 @Component

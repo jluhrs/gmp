@@ -5,7 +5,9 @@ import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.IActionManager;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Provides;
+import org.apache.felix.ipojo.annotations.Validate;
 
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
@@ -266,16 +268,16 @@ public class ActionManagerImpl implements IActionManager {
      * information invoking the <code>CompletionListener</code> handlers
      * registered.
      */
+    @Validate
     public void start() {
-
         //Submit the processor task for execution in a separate thread
         _executorService.submit(_processor);
-
     }
 
     /**
      * Stop the processing thread of this action manager.
      */
+    @Invalidate
     public void stop() {
         _processor.stop();
         _executorService.shutdown();
