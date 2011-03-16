@@ -7,6 +7,7 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
  * the network
  */
 public interface ActionSender {
+    int RESPONSE_WAIT_TIMEOUT = 500;
 
     /**
      * This method takes the given action and converts it into a message to

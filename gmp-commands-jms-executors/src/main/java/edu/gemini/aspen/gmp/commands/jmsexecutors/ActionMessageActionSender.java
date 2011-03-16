@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.commands.jmsexecutors;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
@@ -32,19 +33,18 @@ import javax.jms.JMSException;
 @Instantiate
 @Provides(specifications = {ActionSender.class})
 public class ActionMessageActionSender implements ActionSender {
-
-    public static final int RESPONSE_WAIT_TIMEOUT = 500;
     private final HandlerResponseSenderReply _messageSender = new HandlerResponseSenderReply(JmsKeys.GW_COMMAND_TOPIC);
     private final JmsProvider _provider;
 
     public ActionMessageActionSender(@Requires JmsProvider jmsProvider) {
-        super();
+        Preconditions.checkArgument(jmsProvider != null, "JmsProvider cannot be null");
         this._provider = jmsProvider;
     }
 
     @Override
     public HandlerResponse send(ActionMessage actionMessage)
             throws SequenceCommandException {
+        Preconditions.checkArgument(actionMessage != null, "Passed action message to send cannot be null");
         return send(actionMessage, RESPONSE_WAIT_TIMEOUT);
     }
 
