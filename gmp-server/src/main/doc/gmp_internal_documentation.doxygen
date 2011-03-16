@@ -12,7 +12,11 @@
  * - \subpage gmp-epics-simulator
  * - \subpage gmp-epics-access
  * - \subpage gmp-services
- *
+ * - \subpage gmp_heartbeat
+ * - \subpage heartbeat_distributor_service
+ * - \subpage epics_heartbeat
+ * - \subpage jms_activemq_broker
+ * - \subpage jms_activemq_provider
  * \section perf_tests_sec Performance and Testing
  * \li GMP EPICS Status Service and CAS performance tests at \subpage performance.
  * \li \subpage validation

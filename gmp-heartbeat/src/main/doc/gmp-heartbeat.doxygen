@@ -1,0 +1,20 @@
+/*!
+  \page gmp_heartbeat GMP Heartbeat
+
+  This bundle provides a heartbeat sent periodically via JMS.
+
+  \section gmp_heartbeat_provides_sec Provided Services
+  The \ref edu.gemini.aspen.gmp.heartbeat.Heartbeat "Heartbeat" class sends a JMS message with an integer
+  increasing every second, from 0 to Integer.MAX_VALUE, and then starting at 0 again. Also provided is the
+  \ref edu.gemini.aspen.gmp.heartbeat.jms.JmsHeartbeatConsumer "JmsHeartbeatConsumer" convenience class to help implement
+  classes that need to listen for the heartbeat.
+
+
+  \section cas_requires_sec Required Services
+  This bundle requires the service \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service, provided by, for
+  example, the \ref jms_activemq_provider bundle.
+
+  \section cas_configuration_sec Configuration
+  This bundle has no configuration options.
+
+ */
