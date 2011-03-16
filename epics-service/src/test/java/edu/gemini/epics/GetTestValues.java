@@ -1,7 +1,7 @@
 package edu.gemini.epics;
 
 import com.google.common.collect.Maps;
-import edu.gemini.epics.impl.EpicsReader;
+import edu.gemini.epics.impl.EpicsReaderImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
@@ -12,7 +12,7 @@ import java.util.Map;
  * An example to test the usage of the EpicsReader class.
  */
 public class GetTestValues {
-    private IEpicsReader _reader;
+    private EpicsReader _reader;
 
     /**
      * Map the channel names to friendly text names.
@@ -25,7 +25,7 @@ public class GetTestValues {
 
     public GetTestValues() throws CAException, EpicsException {
         Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        _reader = new EpicsReader(new EpicsService(context, "172.16.2.22"));
+        _reader = new EpicsReaderImpl(new EpicsService(context, "172.16.2.22"));
         for (String s : CHANNELS.keySet()) {
             _reader.bindChannel(s);
         }

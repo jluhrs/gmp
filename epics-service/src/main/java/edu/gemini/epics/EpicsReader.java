@@ -5,7 +5,7 @@ package edu.gemini.epics;
  * Before attempting to read, the channels must be
  * connected using the {@link #bindChannel(String)} method.
  */
-public interface IEpicsReader extends IEpicsBase {
+public interface EpicsReader extends IEpicsBase {
     /**
      * Synchronously reads a value from the specified channel. The channel
      * must have been previously connected using the

@@ -11,7 +11,7 @@
  * This bundle doesn't provide any services
  *
  * \section gmp-tcs-context_requires_sec Required Services
- * This bundle requires the \ref edu.gemini.epics.IEpicsReader "EpicsReader" OSGI service, provided by the
+ * This bundle requires the \ref edu.gemini.epics.EpicsReader "EpicsReader" OSGI service, provided by the
  * \ref epics-service bundle, to access the TCS via EPICS.
  *
  * It also requires a reference to the \ref edu.gemini.jms.api.JmsProvider "JmsProvider" service,

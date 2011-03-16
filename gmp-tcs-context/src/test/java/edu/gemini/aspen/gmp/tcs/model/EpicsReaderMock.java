@@ -1,12 +1,12 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
-import edu.gemini.epics.IEpicsReader;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsException;
 
 /**
  * A mockup Epics Reader for testing
  */
-public class EpicsReaderMock implements IEpicsReader {
+public class EpicsReaderMock implements EpicsReader {
     private String _channel;
     private final Object _context;
 

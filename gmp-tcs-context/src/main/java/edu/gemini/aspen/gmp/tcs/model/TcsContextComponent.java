@@ -2,12 +2,18 @@ package edu.gemini.aspen.gmp.tcs.model;
 
 import edu.gemini.aspen.gmp.tcs.jms.JmsTcsContextDispatcher;
 import edu.gemini.aspen.gmp.tcs.jms.TcsContextRequestListener;
-import edu.gemini.epics.IEpicsReader;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.*;
+import org.apache.felix.ipojo.annotations.Bind;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Modified;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Requires;
+import org.apache.felix.ipojo.annotations.Unbind;
+import org.apache.felix.ipojo.annotations.Validate;
 
 import javax.jms.JMSException;
 import java.io.FileInputStream;
@@ -19,13 +25,14 @@ import java.util.logging.Logger;
  * Interface to define a composite of several TCS Context objects
  */
 @Component
+//@Instantiate(name = "tcsContext")
 public class TcsContextComponent {
     private static final Logger LOG = Logger.getLogger(TcsContextComponent.class.getName());
 
-    @Property(name = "simulation", value = "yes", mandatory = true)
+    @Property(name = "simulation", value = "true", mandatory = true)
     private Boolean simulation;
 
-    @Property(name = "epicsChannel", value = "NOVALID", mandatory = true)
+    @Property(name = "tcsChannel", value = "NOVALID", mandatory = true)
     private String tcsChannel;
 
     @Property(name = "simulationData", value = "NOVALID", mandatory = true)
@@ -51,7 +58,7 @@ public class TcsContextComponent {
     private JmsProvider _provider;
 
     @Requires(id = "epicsReader")
-    private IEpicsReader _epicsReader;
+    private EpicsReader _epicsReader;
 
     private TcsContextFetcher fetcher;
 
@@ -68,7 +75,7 @@ public class TcsContextComponent {
         );
     }
 
-    protected TcsContextComponent(JmsProvider provider, IEpicsReader reader, String tcsChannel) {
+    protected TcsContextComponent(JmsProvider provider, EpicsReader reader, String tcsChannel) {
         this();
         this._provider = provider;
         this._epicsReader = reader;
@@ -115,7 +122,7 @@ public class TcsContextComponent {
 
     private void addNewTcsContextFetcher() {
         try {
-            LOG.info("New instance of EPICS reader registered");
+            LOG.info("New instance of EPICS reader registered, get tcsContext from " + tcsChannel);
             fetcher = new EpicsTcsContextFetcher(_epicsReader, tcsChannel);
             _listener.registerTcsContextFetcher(fetcher);
         } catch (TcsContextException e) {

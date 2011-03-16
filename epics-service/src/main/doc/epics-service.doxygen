@@ -7,7 +7,7 @@
  * This bundle provides the following OSGi services
  *
  * - \ref edu.gemini.epics.JCAContextController "JCAContextController" is a service that has a reference to a JCA-Context and takes care of creating and destroying it
- * - \ref edu.gemini.epics.IEpicsReader "IEpicsReader" this service allows to read a value from a given EPICS channel. For that it is necessary to
+ * - \ref edu.gemini.epics.EpicsReader "IEpicsReader" this service allows to read a value from a given EPICS channel. For that it is necessary to
  * pass the channel name
  * - \ref edu.gemini.epics.IEpicsWriter "IEpicsWriter" A service to write double values to a specific epics channel. Double arrays are also supported
  *

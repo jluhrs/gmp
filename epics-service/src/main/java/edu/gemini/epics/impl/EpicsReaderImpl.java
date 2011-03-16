@@ -1,8 +1,8 @@
 package edu.gemini.epics.impl;
 
 import edu.gemini.epics.EpicsException;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.JCAContextController;
-import edu.gemini.epics.IEpicsReader;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.TimeoutException;
@@ -22,12 +22,12 @@ import java.util.logging.Logger;
  */
 @Component
 @Instantiate
-@Provides(specifications = IEpicsReader.class)
-public class EpicsReader extends EpicsBase implements IEpicsReader {
+@Provides(specifications = EpicsReader.class)
+public class EpicsReaderImpl extends EpicsBase implements EpicsReader {
     private static final Logger LOG = Logger.getLogger(EpicsReader.class.getName());
     private static final double[] EMPTY_CHANNEL_VALUE = new double[0];
 
-    public EpicsReader(@Requires JCAContextController epicsService) {
+    public EpicsReaderImpl(@Requires JCAContextController epicsService) {
         super(epicsService);
         startEpicsReader();
     }

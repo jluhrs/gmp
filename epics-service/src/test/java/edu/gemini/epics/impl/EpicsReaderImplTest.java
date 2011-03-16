@@ -1,6 +1,7 @@
 package edu.gemini.epics.impl;
 
 import edu.gemini.epics.EpicsException;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsService;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class EpicsReaderTest {
+public class EpicsReaderImplTest {
     private static final String ADDRESS = "172.16.2.24";
     private static final String CHANNEL_NAME = "tst:tst";
     private final Context context = mock(Context.class);
@@ -29,7 +30,7 @@ public class EpicsReaderTest {
         when(channel.get()).thenReturn(new DBR_Float(simulatedValue));
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
@@ -38,10 +39,10 @@ public class EpicsReaderTest {
 
     @Test
     public void testReadValueOfUnknownChannel() throws CAException {
-        EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context, ADDRESS));
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
-        assertArrayEquals(new double[0], (double[])value, 0);
+        assertArrayEquals(new double[0], (double[]) value, 0);
     }
 
     @Test(expected = EpicsException.class)
@@ -49,7 +50,7 @@ public class EpicsReaderTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.get()).thenThrow(new CAException());
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         epicsReader.getValue(CHANNEL_NAME);
@@ -60,7 +61,7 @@ public class EpicsReaderTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReader(new EpicsService(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context, ADDRESS));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         doThrow(new TimeoutException()).when(context).pendIO(anyDouble());

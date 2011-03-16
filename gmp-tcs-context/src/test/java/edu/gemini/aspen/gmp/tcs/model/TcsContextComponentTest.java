@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.IEpicsReader;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class TcsContextComponentTest {
 
     private JmsProvider provider;
     private Session session;
-    private IEpicsReader reader;
+    private EpicsReader reader;
 
     @Before
     public void setUp() throws Exception {
@@ -32,7 +32,7 @@ public class TcsContextComponentTest {
         MessageProducer producer = mock(MessageProducer.class);
         when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
 
-        reader = mock(IEpicsReader.class);
+        reader = mock(EpicsReader.class);
     }
 
     @Test
