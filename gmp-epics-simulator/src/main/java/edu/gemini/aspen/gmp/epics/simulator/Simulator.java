@@ -23,9 +23,9 @@ public class Simulator {
     private final ScheduledExecutorService _executorService =
             Executors.newScheduledThreadPool(10);
 
-    private EpicsRegistrar _registrar;
+    private final EpicsRegistrar _registrar;
 
-    private List<ScheduledFuture<?>> _tasks = Lists.newArrayList();
+    private final List<ScheduledFuture<?>> _tasks = Lists.newArrayList();
 
 
     public Simulator(EpicsRegistrar registrar) {
