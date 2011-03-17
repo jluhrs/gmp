@@ -4,8 +4,10 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class HandlerResponseTest {
     @Test
@@ -16,6 +18,18 @@ public class HandlerResponseTest {
         assertEquals(errorMsg, error.getMessage());
         assertEquals(HandlerResponse.Response.ERROR, error.getResponse());
         assertEquals("ERROR", error.getResponse().getTag());
+    }
+
+    @Test
+    public void testHasErrorMessage() {
+        String errorMsg = "Error message";
+        HandlerResponse error = HandlerResponse.createError(errorMsg);
+        assertTrue(error.hasErrorMessage());
+
+        error = HandlerResponse.createError(null);
+        assertFalse(error.hasErrorMessage());
+
+        assertFalse(HandlerResponse.get(HandlerResponse.Response.ACCEPTED).hasErrorMessage());
     }
 
     @Test

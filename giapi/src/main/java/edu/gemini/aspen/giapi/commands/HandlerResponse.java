@@ -103,6 +103,10 @@ public final class HandlerResponse {
         return _response;
     }
 
+    public boolean hasErrorMessage() {
+        return _response == Response.ERROR && _message != null;
+    }
+
     /**
      * Return the message associated to this handler
      * response. If the response type is not ERROR,
