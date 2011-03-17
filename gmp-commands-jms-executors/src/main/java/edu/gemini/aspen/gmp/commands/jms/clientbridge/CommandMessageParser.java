@@ -76,15 +76,4 @@ public class CommandMessageParser {
         return builder.build();
 
     }
-
-    private void parseCompletionListener(MapMessage msg) throws FormatException {
-        try {
-            if (msg.getJMSReplyTo() == null) {
-                throw
-                        new FormatException("Completion information incomplete in message");
-            }
-        } catch (JMSException e) {
-            throw new FormatException("Message doesn't contain completion listener information");
-        }
-    }
 }

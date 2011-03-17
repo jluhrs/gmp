@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.commands.jms.clientbridge;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
@@ -22,10 +23,26 @@ import static org.mockito.Mockito.when;
 
 public class CommandMessageParserTest {
     private MapMessage msg;
+    private Configuration referenceConfiguration;
 
     @Before
     public void buildMocks() {
         msg = mock(MapMessage.class);
+        referenceConfiguration = configurationBuilder()
+                .withPath(configPath("x:A"), "1")
+                .withPath(configPath("x:B"), "2")
+                .build();
+    }
+
+    @Test
+    public void testReadCommand() throws JMSException {
+        when(msg.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY)).thenReturn(SequenceCommand.APPLY.toString());
+        when(msg.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY)).thenReturn(Activity.PRESET.toString());
+        addConfigurationEntriesToMsg();
+
+        Command command = CommandMessageParser.readCommand(msg);
+        Command referenceCommand = new Command(SequenceCommand.APPLY, Activity.PRESET, referenceConfiguration);
+        assertEquals(referenceCommand, command);
     }
 
     @Test
@@ -78,20 +95,19 @@ public class CommandMessageParserTest {
 
     @Test
     public void parseConfiguration() throws JMSException {
-        Configuration referenceConfiguration = configurationBuilder()
-                .withPath(configPath("x:A"), "1")
-                .withPath(configPath("x:B"), "2")
-                .build();
+        addConfigurationEntriesToMsg();
 
+        Configuration parsedConfiguration = CommandMessageParser.parseConfiguration(msg);
+        assertEquals(referenceConfiguration, parsedConfiguration);
+    }
+
+    private void addConfigurationEntriesToMsg() throws JMSException {
         ImmutableMap<String, String> configurationItems = ImmutableMap.of("x:A", "1", "x:B", "2");
         Enumeration mapNames = Iterators.asEnumeration(configurationItems.keySet().iterator());
         when(msg.getMapNames()).thenReturn(mapNames);
 
         when(msg.getString("x:A")).thenReturn("1");
         when(msg.getString("x:B")).thenReturn("2");
-
-        Configuration parsedConfiguration = CommandMessageParser.parseConfiguration(msg);
-        assertEquals(referenceConfiguration, parsedConfiguration);
     }
 
 }
