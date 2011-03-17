@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.jms.clientbridge;
 
 import com.google.common.base.Preconditions;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
@@ -67,17 +68,16 @@ public class CommandConsumer implements MessageListener {
         if (message instanceof MapMessage) {
             LOG.info(message.toString());
             try {
-                CommandMessage commandMessage =
-                        new CommandMessage((MapMessage)message);
+                Command command = CommandMessageParser.readCommand((MapMessage) message);
 //
 //                CompletionListener completionListener =
 //                        new GatewayCompletionListener(_session,
 //                                message.getJMSReplyTo());
 //
 //                HandlerResponse response = _commandSender.sendSequenceCommand(
-//                        commandMessage.getSequenceCommand(),
-//                        commandMessage.getActivity(),
-//                        commandMessage.getConfiguration(),
+//                        commandMessageParser.getSequenceCommand(),
+//                        commandMessageParser.getActivity(),
+//                        commandMessageParser.getConfiguration(),
 //                        completionListener
 //                );
 //
