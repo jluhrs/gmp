@@ -19,19 +19,20 @@ public class MessageBuilderTest {
     private Map<String, Object> messageContent = ImmutableMap.of("item1", (Object) "value1");
     private Map<String, Object> messageProperties = ImmutableMap.of("item1", (Object) "value1");
     private Map<String, String> stringMessageProperties = ImmutableMap.of("item1", "value1");
+    private Map<String, String> stringMessageContent = ImmutableMap.of("item1", "value1");
 
     @Test
-    public void testBuildMessage() throws JMSException {
-        messageBuilder.buildMapMessage(message, messageContent);
+    public void testFillStringBasedMessage() throws JMSException {
+        doThrow(new JMSException("Exception")).when(message).setObject(anyString(), Matchers.<Object>anyObject());
+        messageBuilder.fillStringBasedMapMessage(message, stringMessageContent);
 
-        verify(message, times(messageContent.size())).setObject(anyString(), Matchers.<Object>anyObject());
+        verify(message, times(messageContent.size())).setString(anyString(), anyString());
     }
 
-    @Test
-    public void testSetMessageProperties() throws JMSException {
-        messageBuilder.setMessageProperties(message, messageProperties);
-
-        verify(message, times(messageProperties.size())).setObjectProperty(anyString(), Matchers.<Object>anyObject());
+    @Test(expected = MessagingException.class)
+    public void testFillStringBasedMessageWithAnException() throws JMSException {
+        doThrow(new JMSException("Exception")).when(message).setString(anyString(), anyString());
+        messageBuilder.fillStringBasedMapMessage(message, stringMessageContent);
     }
 
     @Test
@@ -42,10 +43,17 @@ public class MessageBuilderTest {
     }
 
     @Test(expected = MessagingException.class)
-    public void testBuildMessageWithException() throws JMSException {
-        doThrow(new JMSException("Exception")).when(message).setObject(anyString(), Matchers.<Object>anyObject());
+    public void testSetStringMessagePropertiesWithException() throws JMSException {
+        doThrow(new JMSException("Exception")).when(message).setStringProperty(anyString(), anyString());
 
-        messageBuilder.buildMapMessage(message, messageContent);
+        messageBuilder.setStringMessageProperties(message, stringMessageProperties);
+    }
+
+    @Test
+    public void testSetMessageProperties() throws JMSException {
+        messageBuilder.setMessageProperties(message, messageProperties);
+
+        verify(message, times(messageProperties.size())).setObjectProperty(anyString(), Matchers.<Object>anyObject());
     }
 
     @Test(expected = MessagingException.class)
@@ -55,10 +63,17 @@ public class MessageBuilderTest {
         messageBuilder.setMessageProperties(message, messageProperties);
     }
 
-    @Test(expected = MessagingException.class)
-    public void testSetStringMessagePropertiesWithException() throws JMSException {
-        doThrow(new JMSException("Exception")).when(message).setStringProperty(anyString(), anyString());
+    @Test
+    public void testBuildMessage() throws JMSException {
+        messageBuilder.buildMapMessage(message, messageContent);
 
-        messageBuilder.setStringMessageProperties(message, stringMessageProperties);
+        verify(message, times(messageContent.size())).setObject(anyString(), Matchers.<Object>anyObject());
+    }
+
+    @Test(expected = MessagingException.class)
+    public void testBuildMessageWithException() throws JMSException {
+        doThrow(new JMSException("Exception")).when(message).setObject(anyString(), Matchers.<Object>anyObject());
+
+        messageBuilder.buildMapMessage(message, messageContent);
     }
 }

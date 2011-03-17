@@ -37,10 +37,12 @@ public class MessageBuilder {
     }
 
     public void fillStringBasedMapMessage(MapMessage mm, Map<String, String> message) {
-        try {
+        Preconditions.checkArgument(mm != null);
+        Preconditions.checkArgument(message != null);
 
+        try {
             for (String key : message.keySet()) {
-                mm.setObject(key, message.get(key));
+                mm.setString(key, message.get(key));
             }
         } catch (JMSException e) {
             throw new MessagingException("Unable to build message from " + message,
