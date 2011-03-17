@@ -8,6 +8,7 @@ import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
 import org.apache.felix.ipojo.annotations.*;
 
+import java.lang.Enum;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +122,10 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
             ch = createDoubleChannel(name, values.size());
         } else if (values.get(0) instanceof String) {
             ch = createStringChannel(name, values.size());
-        } else {
+        } else if (values.get(0) instanceof Enum){
+            Class<? extends Enum> clazz = (Class<? extends Enum>)values.get(0).getClass();
+            ch = createEnumChannel(name, values.size(), clazz);
+        }else{
             throw new IllegalArgumentException("Unsupported item type " + values.get(0).getClass());
         }
         ch.setValue(values);
@@ -147,7 +151,10 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
             ch = createDoubleAlarmChannel(name, values.size());
         } else if (values.get(0) instanceof String) {
             ch = createStringAlarmChannel(name, values.size());
-        } else {
+        } else if (values.get(0) instanceof Enum){
+            Class<? extends Enum> clazz = (Class<? extends Enum>)values.get(0).getClass();
+            ch = createEnumAlarmChannel(name, values.size(), clazz);
+        }else {
             throw new IllegalArgumentException("Unsupported item type " + values.get(0).getClass());
         }
         ch.setValue(values);
@@ -254,6 +261,31 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
         return ch;
     }
 
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Enum
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @param clazz the enum class
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    private <T extends Enum<T>> Channel<T> createEnumChannel(String name,int length, Class<T> clazz) {
+        if (channels.containsKey(name)) {
+            Channel ch = channels.get(name);
+            if (ch instanceof EnumChannel && ((EnumChannel) ch).getEnumClass().equals(clazz)){
+                return (EnumChannel<T>) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type EnumChannel<"+clazz.getSimpleName()+">");
+            }
+        }
+        EnumChannel<T> ch = new EnumChannel<T>(name, length, clazz);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Integer,
      * that is able to raise an alarm.
@@ -363,7 +395,32 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
         channels.put(name, ch);
         return ch;
     }
-
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Enum,
+     * that is able to raise an alarm.
+     *
+     *
+     * @param name name of the PV in EPICS
+     * @param length length of the PV data
+     * @param clazz the enum class
+     * @return the new channel
+     *
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    private <T extends Enum<T>> AlarmChannel<T> createEnumAlarmChannel(String name,int length, Class<T> clazz) {
+        if (channels.containsKey(name)) {
+            Channel ch = channels.get(name);
+            if (ch instanceof EnumAlarmChannel && ((EnumAlarmChannel) ch).getEnumClass().equals(clazz)){
+                return (EnumAlarmChannel<T>) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type EnumAlarmChannel<"+clazz.getSimpleName()+">");
+            }
+        }
+        EnumAlarmChannel<T> ch = new EnumAlarmChannel<T>(name, length, clazz);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
     /**
      * Removes channel from internal Map, unregisters from server and destroys PV
      *

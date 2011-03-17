@@ -2,10 +2,7 @@ package edu.gemini.cas;
 
 import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
-import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.dbr.STS;
-import gov.aps.jca.dbr.Severity;
-import gov.aps.jca.dbr.Status;
+import gov.aps.jca.dbr.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -274,6 +271,8 @@ public class CasTest {
         giapicas.destroyChannel(ch);
         ch = giapicas.createAlarmChannel("string","1");
         giapicas.destroyChannel(ch);
+        ch = giapicas.createAlarmChannel("enum",Dir.CLEAR);
+        giapicas.destroyChannel(ch);
     }
 
     @Test
@@ -323,7 +322,69 @@ public class CasTest {
         }
 
     }
+    private enum Dir{
+        MARK,
+        CLEAR,
+        PRESET,
+        START,
+        STOP
+    }
+    private enum State{
+        IDLE,
+        PAUSED,
+        BUSY,
+        ERROR
+    }
 
+    @Test
+    public void testEnumChannels() throws Exception{
+        Dir d = Dir.MARK;
+        Channel<Dir> ch=giapicas.createChannel("test", d);
+        DBR dbr = ch.getValue();
 
+        int num = dbr.getCount();
+        assertEquals(1, num);
+        Object obj = dbr.getValue();
+        short[] objarr = (short[]) obj;
+        assertEquals(d.ordinal(), objarr[0]);
+        obj = dbr.convert(DBRType.STRING).getValue();
+        assertEquals(d.name(), ((String[])obj)[0]);
 
+        d= Dir.PRESET;
+        ch.setValue(d);
+        dbr = ch.getValue();
+
+        num = dbr.getCount();
+        assertEquals(1, num);
+        obj = dbr.getValue();
+        objarr = (short[]) obj;
+        assertEquals(d.ordinal(), objarr[0]);
+        obj = dbr.convert(DBRType.STRING).getValue();
+        assertEquals(d.name(), ((String[])obj)[0]);
+    }
+
+    @Test
+    public void testEnumWrongType() throws Exception {
+        Channel ch = giapicas.createChannel("test", Dir.MARK);
+        try{
+            ch.setValue(State.BUSY);
+            fail();
+        }catch(IllegalArgumentException ex){
+            //OK
+        }
+    }
+
+    @Test
+    public void testWriteEnumAlarm() throws Exception {
+        AlarmChannel<Dir> ch = giapicas.createAlarmChannel(varname, Dir.CLEAR);
+        ch.setAlarm(Status.HIHI_ALARM, Severity.MAJOR_ALARM, "alarm message");
+        DBR dbr = ch.getValue();
+
+        assertEquals(Severity.MAJOR_ALARM, ((STS) dbr).getSeverity());
+        assertEquals(Status.HIHI_ALARM, ((STS) dbr).getStatus());
+        ch.clearAlarm();
+        dbr = ch.getValue();
+        assertEquals(Severity.NO_ALARM, ((STS) dbr).getSeverity());
+        assertEquals(Status.NO_ALARM, ((STS) dbr).getStatus());
+    }
 }

@@ -127,6 +127,16 @@ abstract class AbstractChannel<T> implements Channel<T> {
         return pv.getType().isSTRING();
     }
 
+    /**
+      * Checks if this channel represents an Enum
+      *
+      * @return true if Enum, false otherwise
+      */
+    public boolean isEnum(){
+        return pv.getType().isENUM();
+    }
+
+
     @Override
     public String getName(){
         return pv.getName();
@@ -171,4 +181,9 @@ abstract class AbstractChannel<T> implements Channel<T> {
         }
         return dbr;
     }
+
+    protected void setEnumLabels(String[] labels){
+        pv.setEnumLabels(labels);
+    }
+
 }
