@@ -1,6 +1,8 @@
 package edu.gemini.aspen.gmp.commands.jms.clientbridge;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.Configuration;
@@ -10,11 +12,10 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
-import java.util.Enumeration;
+import java.util.List;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 
 /**
  * Class that can parse a Map message sent over JMS and convert it into a
@@ -65,17 +66,12 @@ public class CommandMessageParser {
     }
 
     static Configuration parseConfiguration(MapMessage msg) throws FormatException, JMSException {
-        //Iterator<String> enumeration= Iterators.forEnumeration(msg.getMapNames());
-        Enumeration enumeration = msg.getMapNames();
-        Configuration config = emptyConfiguration();
-        DefaultConfiguration.Builder builder = copy(config);
+        List<String> enumeration= ImmutableList.copyOf(Iterators.forEnumeration(msg.getMapNames()));
 
-        while (enumeration.hasMoreElements()) {
-            Object o = enumeration.nextElement();
-            if (o instanceof String) {
-                String key = (String) o;
-                builder.withPath(configPath(key), msg.getString(key));
-            }
+        DefaultConfiguration.Builder builder = configurationBuilder();
+
+        for (String path: enumeration) {
+             builder.withPath(configPath(path), msg.getString(path));
         }
         return builder.build();
 
