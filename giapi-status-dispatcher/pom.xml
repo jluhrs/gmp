@@ -54,8 +54,7 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
-            <version>0.10.0</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>edu.gemini.jms</groupId>
@@ -70,9 +69,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>8.0.0</version>
         </dependency>
-
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-test-support</artifactId>

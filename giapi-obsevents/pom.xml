@@ -56,7 +56,6 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
-            <version>0.10.0</version>
         </dependency>
     </dependencies>
 
