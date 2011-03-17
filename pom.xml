@@ -113,6 +113,7 @@
         <module>gmp-commands</module>
         <module>gmp-commands-jms-executors</module>
         <module>gmp-commands-gateway</module>
+        <module>gmp-commands-records</module>
         <module>gmp-services</module>
         <module>gmp-pcs-updater</module>
         <module>gmp-status-gateway</module>
