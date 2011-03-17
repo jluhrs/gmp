@@ -8,12 +8,9 @@ import java.util.HashMap;
  * Implementation of a {@link edu.gemini.jms.api.MapMessageSender} using JMS.
  */
 public class JmsMapMessageSender extends BaseMessageProducer implements MapMessageSender {
-
     private MessageBuilder _messageBuilder;
     private DestinationBuilder _destinationBuilder;
-
     private Map<String, Destination> _destinationCache;
-
 
     /**
      * Utility types to create messages.
@@ -101,6 +98,28 @@ public class JmsMapMessageSender extends BaseMessageProducer implements MapMessa
             _messageBuilder.buildMapMessage(mm, message);
 
             _messageBuilder.setMessageProperties(mm, properties);
+
+            _producer.send(destination, mm);
+
+        } catch (JMSException e) {
+            throw new MessagingException("Unable to send message", e);
+        }
+        return mm;
+    }
+
+    protected MapMessage sendStringBasedMapMessage(Destination destination,
+                                        Map<String, String> message,
+                                        Map<String, String> properties,
+                                        MapMessageCreator creator) throws MessagingException {
+        if (!isConnected()) return null;
+
+        MapMessage mm;
+        try {
+            mm = creator.createMapMessage(_session);
+
+            _messageBuilder.fillStringBasedMapMessage(mm, message);
+
+            _messageBuilder.setStringMessageProperties(mm, properties);
 
             _producer.send(destination, mm);
 
