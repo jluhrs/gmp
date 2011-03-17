@@ -107,6 +107,12 @@ public class JmsMapMessageSender extends BaseMessageProducer implements MapMessa
         return mm;
     }
 
+    public MapMessage sendStringBasedMapMessage(Destination destination,
+                                        Map<String, String> message,
+                                        Map<String, String> properties) throws MessagingException {
+        return sendStringBasedMapMessage(destination, message, properties, JmsMapMessageSender.MapMessageCreator.NoReplyCreator);
+    }
+
     protected MapMessage sendStringBasedMapMessage(Destination destination,
                                         Map<String, String> message,
                                         Map<String, String> properties,

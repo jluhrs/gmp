@@ -41,8 +41,7 @@ public class JmsMapMessageSenderTest extends JmsArtifactTestBase {
         Map<String,String> properties = ImmutableMap.of();
         Destination destination = mock(Destination.class);
 
-        assertNotNull(sender.sendStringBasedMapMessage(destination, message, properties,
-                JmsMapMessageSender.MapMessageCreator.NoReplyCreator));
+        assertNotNull(sender.sendStringBasedMapMessage(destination, message, properties));
     }
 
 }
