@@ -23,6 +23,7 @@
     <name>GIAPI Test support classes</name>
 
     <packaging>bundle</packaging>
+    
     <dependencies>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
@@ -35,6 +36,11 @@
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.5</version>
         </dependency>
     </dependencies>
 </project>
