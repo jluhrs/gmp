@@ -1,17 +1,28 @@
 package edu.gemini.aspen.giapi.util.jms;
 
-import edu.gemini.aspen.giapi.commands.*;
+import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Sets;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.CompletionInformation;
+import edu.gemini.aspen.giapi.commands.ConfigPath;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.StatusVisitor;
 import edu.gemini.aspen.giapi.util.jms.status.StatusItemParser;
 import edu.gemini.aspen.giapi.util.jms.status.StatusSerializerVisitor;
 
-import javax.jms.*;
+import javax.jms.BytesMessage;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.Session;
 import java.util.Enumeration;
 import java.util.Set;
-import java.util.TreeSet;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
@@ -62,7 +73,7 @@ public final class MessageBuilder {
     }
 
 
-    public static HandlerResponse  buildHandlerResponse(Message m) throws JMSException {
+    public static HandlerResponse buildHandlerResponse(Message m) throws JMSException {
 
         if (!(m instanceof MapMessage))
             throw new JMSException(InvalidHandlerResponseMessage());
@@ -207,16 +218,18 @@ public final class MessageBuilder {
     }
 
     public static Set<String> buildStatusNames(Message m) throws JMSException {
-        if (!(m instanceof BytesMessage)) return null;
+        if (!(m instanceof BytesMessage)) {
+            return ImmutableSortedSet.of();
+        }
 
         BytesMessage bm = (BytesMessage) m;
 
-        Set<String> names = new TreeSet<String>();
+        Set<String> names = Sets.newTreeSet();
         int numNames = bm.readInt();
         for (int i = 0; i < numNames; i++) {
             names.add(bm.readUTF());
         }
-        return names;
+        return ImmutableSortedSet.copyOf(names);
     }
 
     public static StatusItem buildStatusItem(Message m) throws JMSException {
@@ -229,7 +242,6 @@ public final class MessageBuilder {
             return null;
         }
     }
-
 
     public static Message buildStatusItemMessage(Session session, StatusItem item) throws JMSException {
 

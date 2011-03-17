@@ -1,7 +1,13 @@
 package edu.gemini.aspen.giapi.util.jms;
 
 
-import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.CompletionInformation;
+import edu.gemini.aspen.giapi.commands.ConfigPath;
+import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import org.apache.activemq.command.ActiveMQBytesMessage;
@@ -14,15 +20,18 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
+import java.util.Set;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -203,6 +212,40 @@ public class MessageBuilderTest {
         verify(msg).writeByte((byte)2);
         verify(msg).writeUTF(statusName);
         verify(msg).writeFloat(statusValue);
+    }
+
+    @Test
+    public void testInvalidConfigurationMessage() {
+        // Rather test that the string is there than the actual content
+        assertFalse(MessageBuilder.InvalidConfigurationMessage().isEmpty());
+    }
+
+    @Test
+    public void testInvalidActivityMessage() {
+        // Rather test that the string is there than the actual content
+        assertTrue(MessageBuilder.InvalidActivityMessage("msg").contains("msg"));
+    }
+
+    @Test
+    public void testBuildStatusNames() throws JMSException {
+        BytesMessage m = mock(BytesMessage.class);
+        when(m.readInt()).thenReturn(2);
+        when(m.readUTF()).thenReturn("b", "a");
+
+        Set<String> statusNames = MessageBuilder.buildStatusNames(m);
+        
+        assertFalse(statusNames.isEmpty());
+        assertTrue(statusNames.contains("a"));
+        assertTrue(statusNames.contains("b"));
+    }
+
+    @Test
+    public void testBuildStatusNamesWithNoValidMessage() throws JMSException {
+        Message m = mock(Message.class);
+
+        Set<String> statusNames = MessageBuilder.buildStatusNames(m);
+        
+        assertTrue(statusNames.isEmpty());
     }
 
     @Test
