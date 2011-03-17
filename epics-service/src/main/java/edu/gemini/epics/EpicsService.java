@@ -149,7 +149,7 @@ public class EpicsService implements JCAContextController {
                 epicsClientsHolder.connectNewClient(_ctx, epicsClient, channels);
             } else {
                 // This may be called before or after the startService method
-                epicsClientsHolder.saveClientForConnectionLater(epicsClient, channels);
+                epicsClientsHolder.saveForLateConnection(epicsClient, channels);
             }
         }
     }

@@ -9,9 +9,16 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.ops4j.pax.exam.CoreOptions.felix;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
@@ -58,6 +65,38 @@ public class EpicsServiceIT {
     public void epicsServiceHasStarted() {
         ServiceReference reference = context.getServiceReference(JCAContextController.class.getName());
         assertNotNull(reference);
+    }
+
+    @Test
+    public void registerMockEpicsClient() throws InterruptedException {
+        EpicsClientMock epicsClient = new EpicsClientMock();
+
+        Dictionary<String, String[]> serviceProperties = new Hashtable<String, String[]>();
+        serviceProperties.put(EpicsClient.EPICS_CHANNELS, new String[] {"ws:wsFilter.VALM"});
+        ServiceRegistration serviceRegistration = context.registerService(EpicsClient.class.getName(), epicsClient, serviceProperties);
+
+        // Give it 3 seconds
+        TimeUnit.MILLISECONDS.sleep(3000);
+        assertTrue(epicsClient.wasConnectedCalled());
+        assertFalse(epicsClient.wasDisconnectedCalled());
+        assertTrue(epicsClient.getUpdatesCount() > 0);
+
+        serviceRegistration.unregister();
+        assertTrue(epicsClient.wasDisconnectedCalled());
+    }
+
+    @Test
+    public void registerMockEpicsClientWithNoProperties() throws InterruptedException {
+        EpicsClientMock epicsClient = new EpicsClientMock();
+
+        Dictionary<String, String[]> serviceProperties = new Hashtable<String, String[]>();
+        ServiceRegistration serviceRegistration = context.registerService(EpicsClient.class.getName(), epicsClient, serviceProperties);
+
+        // Wait a little bit
+        TimeUnit.MILLISECONDS.sleep(500);
+        assertFalse(epicsClient.wasConnectedCalled());
+
+        serviceRegistration.unregister();
     }
 
     private Bundle getEpicsServiceBundle() {

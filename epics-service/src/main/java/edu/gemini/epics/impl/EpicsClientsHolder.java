@@ -40,7 +40,7 @@ public class EpicsClientsHolder {
     /**
      * Stores a client to be started when the Context is made available
      */
-    public void saveClientForConnectionLater(EpicsClient epicsClient, String[] channels) {
+    public void saveForLateConnection(EpicsClient epicsClient, String[] channels) {
         LOG.info("Saving client " + epicsClient + " for binding channels " + Arrays.toString(channels));
         pendingClients.put(epicsClient, channels);
     }
