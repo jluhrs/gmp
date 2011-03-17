@@ -90,10 +90,10 @@ public class JmsMapMessageSender extends BaseMessageProducer implements MapMessa
     }
 
 
-    private MapMessage sendMapMessage(Destination destination,
-                                      Map<String, Object> message,
-                                      Map<String, Object> properties,
-                                      MapMessageCreator creator) throws MessagingException {
+    protected MapMessage sendMapMessage(Destination destination,
+                                        Map<String, Object> message,
+                                        Map<String, Object> properties,
+                                        MapMessageCreator creator) throws MessagingException {
         MapMessage mm;
         try {
             mm = creator.createMapMessage(_session);
