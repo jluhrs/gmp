@@ -67,7 +67,7 @@ public class StatusGetter extends BaseMessageProducer {
 
             tempConsumer.close();
             Set<String> names = MessageBuilder.buildStatusNames(reply);
-            if (names == null) {
+            if (names.isEmpty()) {
                 throw new TesterException("Message received was invalid.");
             }
             return names;
