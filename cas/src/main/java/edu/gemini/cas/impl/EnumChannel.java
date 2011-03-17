@@ -12,7 +12,7 @@ import java.util.List;
  * @author Nicolas A. Barriga
  *         Date: 3/16/11
  */
-public class EnumChannel<T extends Enum<T>> extends AbstractChannel<T> {
+class EnumChannel<T extends Enum<T>> extends AbstractChannel<T> {
     final private Class<T> clazz;
     EnumChannel(String name, int length, Class<T> clazz) {
         super(new AlarmMemoryProcessVariable(name,null, DBR_Enum.TYPE,new short[length]));
