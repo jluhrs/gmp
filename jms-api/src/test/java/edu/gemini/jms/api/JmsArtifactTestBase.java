@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapitestsupport.jms;
+package edu.gemini.jms.api;
 
 import edu.gemini.jms.api.JmsProvider;
 import org.mockito.Matchers;

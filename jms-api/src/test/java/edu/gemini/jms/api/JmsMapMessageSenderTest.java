@@ -1,7 +1,6 @@
 package edu.gemini.jms.api;
 
 import com.google.common.collect.ImmutableMap;
-import edu.gemini.aspen.giapitestsupport.jms.JmsArtifactTestBase;
 import org.junit.Test;
 
 import javax.jms.Destination;
