@@ -41,7 +41,7 @@ public class EpicsClientsHolder {
      * Stores a client to be started when the Context is made available
      */
     public void saveForLateConnection(EpicsClient epicsClient, String[] channels) {
-        LOG.info("Saving client " + epicsClient + " for binding channels " + Arrays.toString(channels));
+        LOG.fine("Saving client " + epicsClient + " for binding channels " + Arrays.toString(channels));
         pendingClients.put(epicsClient, channels);
     }
 
@@ -56,7 +56,7 @@ public class EpicsClientsHolder {
                 cbs.close();
                 epicsClient.disconnected();
             } catch (Exception e) {
-                LOG.log(Level.WARNING, "Could not close channel binder.", e);
+                LOG.log(Level.WARNING, "Could not close channel binder for client " + epicsClient, e);
             }
             startedClients.remove(epicsClient);
         }

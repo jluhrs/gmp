@@ -42,6 +42,18 @@ public class EpicsServiceTest {
     }
 
     @Test
+    public void testBindingEpicsClientWithNoChannelsProperty() {
+        epicsService.startService();
+
+        EpicsClient epicsClient = mock(EpicsClient.class);
+        epicsService.bindEpicsClient(epicsClient, ImmutableMap.<String, Object>of());
+
+        epicsService.stopService();
+
+        verifyZeroInteractions(epicsClient);
+    }
+
+    @Test
     public void testBindingEpicsClientBeforeStartingTheService() {
         EpicsClient epicsClient = mock(EpicsClient.class);
         epicsService.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
@@ -87,6 +99,11 @@ public class EpicsServiceTest {
         verifyZeroInteractions(epicsClient);
     }
 
+    @Test
+    public void testConstructorForIPojo() {
+        assertNotNull(new EpicsService());
+    }
+    
     @Test(expected = IllegalStateException.class)
     public void testGetContextBeforeReady() {
         epicsService.getJCAContext();

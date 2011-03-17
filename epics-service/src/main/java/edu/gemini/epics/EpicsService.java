@@ -151,6 +151,8 @@ public class EpicsService implements JCAContextController {
                 // This may be called before or after the startService method
                 epicsClientsHolder.saveForLateConnection(epicsClient, channels);
             }
+        } else {
+            LOG.warning("Attempt to register an EpicsClient " + epicsClient + " without the right service properties " + serviceProperties);
         }
     }
 

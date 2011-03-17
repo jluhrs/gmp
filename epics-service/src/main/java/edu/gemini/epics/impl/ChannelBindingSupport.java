@@ -173,7 +173,7 @@ public class ChannelBindingSupport {
             }
         }
         _channels.clear();
-        LOG.info("Closed channel binder. " + Arrays.toString(_ctx.getChannels()) + " channel(s) remaining in context.");
+        LOG.fine("Closed channel binder. " + Arrays.toString(_ctx.getChannels()) + " channel(s) remaining in context.");
     }
 
 }

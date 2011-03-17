@@ -2,15 +2,13 @@ package edu.gemini.epics.impl;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import edu.gemini.epics.EpicsBase;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.JCAContextController;
-import edu.gemini.epics.EpicsBase;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
 import gov.aps.jca.TimeoutException;
-import gov.aps.jca.event.ConnectionEvent;
-import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.ContextExceptionEvent;
 import gov.aps.jca.event.ContextExceptionListener;
 import gov.aps.jca.event.ContextMessageEvent;
@@ -34,7 +32,7 @@ public class EpicsBaseImpl implements EpicsBase {
 
     //TODO: The following code can be resucitated when more testing is done to define
     //      how to reconnect correctly in case of EPICS trouble.
-    private final ConnectionListener _connectionListener = new ConnectionListener() {
+    /*private final ConnectionListener _connectionListener = new ConnectionListener() {
         public void connectionChanged(ConnectionEvent ce) {
             Channel ch = (Channel) ce.getSource();
             LOG.fine("Channel was opened for " + ch.getName());
@@ -59,7 +57,7 @@ public class EpicsBaseImpl implements EpicsBase {
                 }
             }
         }
-    };
+    };*/
 
 
     public EpicsBaseImpl(JCAContextController epicsService) {
