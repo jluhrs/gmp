@@ -171,7 +171,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public Channel<Integer> createIntegerChannel(String name, int length) {
+    private Channel<Integer> createIntegerChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
             if (ch instanceof IntegerChannel) {
@@ -196,7 +196,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public Channel<Float> createFloatChannel(String name, int length) {
+    private Channel<Float> createFloatChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
             if (ch instanceof FloatChannel) {
@@ -221,7 +221,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public Channel<Double> createDoubleChannel(String name, int length) {
+    private Channel<Double> createDoubleChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
             if (ch instanceof DoubleChannel) {
@@ -246,7 +246,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public Channel<String> createStringChannel(String name, int length) {
+    private Channel<String> createStringChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
             if (ch instanceof StringChannel) {
@@ -298,7 +298,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public AlarmChannel<Integer> createIntegerAlarmChannel(String name, int length) {
+    private AlarmChannel<Integer> createIntegerAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
             if (ch instanceof IntegerAlarmChannel) {
@@ -325,7 +325,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public AlarmChannel<Float> createFloatAlarmChannel(String name, int length) {
+    private AlarmChannel<Float> createFloatAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
             if (ch instanceof FloatAlarmChannel) {
@@ -352,7 +352,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public AlarmChannel<Double> createDoubleAlarmChannel(String name, int length) {
+    private AlarmChannel<Double> createDoubleAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
             if (ch instanceof DoubleAlarmChannel) {
@@ -380,7 +380,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    public AlarmChannel<String> createStringAlarmChannel(String name, int length) {
+    private AlarmChannel<String> createStringAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
             if (ch instanceof StringAlarmChannel) {

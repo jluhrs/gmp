@@ -32,7 +32,7 @@ public class TestStress {
         cas = new ChannelAccessServerImpl();
         try {
             cas.start();
-            ch=cas.createIntegerChannel(varname,1);
+            ch=cas.createChannel(varname,1);
         } catch (CAException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
             fail();

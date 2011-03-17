@@ -66,28 +66,28 @@ public class CasTest {
         int[] objarr = (int[]) obj;
         assertEquals(2, objarr[0]);
 
-        Channel ch2 = giapicas.createIntegerChannel(varname, 1);
+        Channel ch2 = giapicas.createChannel(varname, 1);
         ch2.setValue(2);
         assertEquals(ch, ch2);
 
         giapicas.destroyChannel(ch);
         giapicas.destroyChannel(ch2);
         ch = giapicas.createChannel(varname, 2.0f);
-        ch2 = giapicas.createFloatChannel(varname, 1);
+        ch2 = giapicas.createChannel(varname, 1.0f);
         ch2.setValue(2.0f);
         assertEquals(ch, ch2);
 
         giapicas.destroyChannel(ch);
         giapicas.destroyChannel(ch2);
         ch = giapicas.createChannel(varname, 2.0);
-        ch2 = giapicas.createDoubleChannel(varname, 1);
+        ch2 = giapicas.createChannel(varname, 1.0);
         ch2.setValue(2.0);
         assertEquals(ch, ch2);
 
         giapicas.destroyChannel(ch);
         giapicas.destroyChannel(ch2);
         ch = giapicas.createChannel(varname, "2");
-        ch2 = giapicas.createStringChannel(varname, 1);
+        ch2 = giapicas.createChannel(varname, "1");
         ch2.setValue("2");
         assertEquals(ch, ch2);
         giapicas.destroyChannel(ch2);
@@ -102,7 +102,7 @@ public class CasTest {
     @Test
     public void testAddTwiceWrongType() throws Exception {
 
-        Channel ch = giapicas.createIntegerChannel(varname, 1);
+        Channel ch = giapicas.createChannel(varname, 0);
         DBR dbr = ch.getValue();
 
 
@@ -113,19 +113,19 @@ public class CasTest {
         assertEquals(0, objarr[0]);
 
         try {
-            Channel ch2 = giapicas.createFloatChannel(varname, 1);
+            Channel ch2 = giapicas.createChannel(varname, 1.0f);
             fail();
         } catch (RuntimeException ex) {
             //OK
         }
         try {
-            Channel ch2 = giapicas.createDoubleChannel(varname, 1);
+            Channel ch2 = giapicas.createChannel(varname, 1.0);
             fail();
         } catch (RuntimeException ex) {
             //OK
         }
         try {
-            Channel ch2 = giapicas.createStringChannel(varname, 1);
+            Channel ch2 = giapicas.createChannel(varname, "1");
             fail();
         } catch (RuntimeException ex) {
             //OK
@@ -140,7 +140,7 @@ public class CasTest {
      */
     @Test
     public void testWriteVar() throws Exception {
-        Channel<Integer> ch = giapicas.createIntegerChannel(varname, 1);
+        Channel<Integer> ch = giapicas.createChannel(varname, 1);
         ch.setValue(3);
 
         DBR dbr = ch.getValue();
@@ -159,7 +159,7 @@ public class CasTest {
      */
     @Test
     public void testWriteArray() throws Exception {
-        Channel<Integer> ch = giapicas.createIntegerChannel(varname, 3);
+        Channel<Integer> ch = giapicas.createChannel(varname, ImmutableList.of(0,0,0));
         ch.setValue(ImmutableList.of(3,4,5));
 
         DBR dbr = ch.getValue();
@@ -180,10 +180,10 @@ public class CasTest {
      */
     @Test
     public void testWriteVarAllTypes() throws Exception {
-        Channel<Integer> chI = giapicas.createIntegerChannel("nico:int", 1);
-        Channel<Float> chF = giapicas.createFloatChannel("nico:float", 1);
-        Channel<Double> chD = giapicas.createDoubleChannel("nico:double", 1);
-        Channel<String> chS = giapicas.createStringChannel("nico:string", 1);
+        Channel<Integer> chI = giapicas.createChannel("nico:int", 1);
+        Channel<Float> chF = giapicas.createChannel("nico:float", 1.0f);
+        Channel<Double> chD = giapicas.createChannel("nico:double", 1.0);
+        Channel<String> chS = giapicas.createChannel("nico:string", "1");
 
 
         chI.setValue(3);
@@ -215,7 +215,7 @@ public class CasTest {
      */
     @Test
     public void testWriteWrongType() throws Exception {
-        Channel ch = giapicas.createIntegerChannel(varname, 1);
+        Channel ch = giapicas.createChannel(varname, 1);
 
         int exceptions = 0;
 
@@ -255,13 +255,13 @@ public class CasTest {
 
     @Test
     public void testCreateAlarmChannels() throws Exception {
-        AlarmChannel ch = giapicas.createIntegerAlarmChannel("int", 1);
+        AlarmChannel ch = giapicas.createAlarmChannel("int", 1);
         giapicas.destroyChannel(ch);
-        ch = giapicas.createFloatAlarmChannel("float", 1);
+        ch = giapicas.createAlarmChannel("float", 1.0f);
         giapicas.destroyChannel(ch);
-        ch = giapicas.createDoubleAlarmChannel("double", 1);
+        ch = giapicas.createAlarmChannel("double", 1.0);
         giapicas.destroyChannel(ch);
-        ch = giapicas.createStringAlarmChannel("string", 1);
+        ch = giapicas.createAlarmChannel("string", "1");
         giapicas.destroyChannel(ch);
         ch = giapicas.createAlarmChannel("int",1);
         giapicas.destroyChannel(ch);
@@ -277,7 +277,7 @@ public class CasTest {
 
     @Test
     public void testWriteAlarm() throws Exception {
-        AlarmChannel<Integer> ch = giapicas.createIntegerAlarmChannel(varname, 1);
+        AlarmChannel<Integer> ch = giapicas.createAlarmChannel(varname, 1);
         ch.setAlarm(Status.HIHI_ALARM, Severity.MAJOR_ALARM, "alarm message");
         ch.setValue(3);
         DBR dbr = ch.getValue();
@@ -297,25 +297,25 @@ public class CasTest {
 
         //test add again
         {
-            Channel ch2 = giapicas.createIntegerAlarmChannel(varname, 1);
+            Channel ch2 = giapicas.createAlarmChannel(varname, 1);
             assertEquals(ch, ch2);
         }
 
         //test add with same name, wrong type
         try {
-            Channel ch2 = giapicas.createFloatAlarmChannel(varname, 1);
+            Channel ch2 = giapicas.createAlarmChannel(varname, 1.0f);
             fail();
         } catch (RuntimeException ex) {
             //OK
         }
         try {
-            Channel ch2 = giapicas.createDoubleAlarmChannel(varname, 1);
+            Channel ch2 = giapicas.createAlarmChannel(varname, 1.0);
             fail();
         } catch (RuntimeException ex) {
             //OK
         }
         try {
-            Channel ch2 = giapicas.createStringAlarmChannel(varname, 1);
+            Channel ch2 = giapicas.createAlarmChannel(varname, "1");
             fail();
         } catch (RuntimeException ex) {
             //OK
