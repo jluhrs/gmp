@@ -24,7 +24,7 @@ import java.util.Map;
 @Component
 @Provides
 @Instantiate
-public class JmsActionMessageBuilder implements ActionMessageBuilder {
+class JmsActionMessageBuilder implements ActionMessageBuilder {
     /**
      * Map to store topics associated to each sequence command
      */
@@ -44,7 +44,7 @@ public class JmsActionMessageBuilder implements ActionMessageBuilder {
      * A simple implementation of the Action Message. Not to be exposed to
      * other classes.
      */
-    private final class ActionMessageImpl implements ActionMessage {
+    private static final class ActionMessageImpl implements ActionMessage {
 
         private final String dd;
         private final ImmutableMap<String, Object> props;

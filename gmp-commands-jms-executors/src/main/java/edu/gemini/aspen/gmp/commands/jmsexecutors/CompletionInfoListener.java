@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  */
 @Component
 @Instantiate
-public class CompletionInfoListener implements MessageListener {
+class CompletionInfoListener implements MessageListener {
     private static final Logger LOG = Logger.getLogger(
             CompletionInfoListener.class.getName());
 

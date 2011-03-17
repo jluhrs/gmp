@@ -32,7 +32,7 @@ import javax.jms.JMSException;
 @Component
 @Instantiate
 @Provides(specifications = {ActionSender.class})
-public class ActionMessageActionSender implements ActionSender {
+class ActionMessageActionSender implements ActionSender {
     private final HandlerResponseSenderReply _messageSender = new HandlerResponseSenderReply(JmsKeys.GW_COMMAND_TOPIC);
     private final JmsProvider _provider;
 
