@@ -10,7 +10,7 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>edu.gemini.aspen.gmp.commands</bundle.symbolicName>
+        <bundle.symbolicName>edu.gemini.aspen.gmp.commands.model</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.commands.model</bundle.namespace>
     </properties>
 

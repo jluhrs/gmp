@@ -1,6 +1,7 @@
-package edu.gemini.aspen.gmp.commands.model;
+package edu.gemini.aspen.gmp.commands.model.impl;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.model.Action;
 
 /**
  * ActionManager defines an internal interface to a service that keeps track
