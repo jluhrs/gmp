@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
-import edu.gemini.aspen.gmp.commands.model.IActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 import edu.gemini.aspen.gmp.commands.model.reboot.LogRebootManager;
@@ -32,7 +32,7 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
      * @param manager the Action Manager that keeps track of the actions
      */
     public SequenceCommandExecutorStrategy(@Requires ActionMessageBuilder builder,
-                                           @Requires IActionManager manager) {
+                                           @Requires ActionManager manager) {
         _defaultExecutor = new DefaultSenderExecutor(builder);
         _applyExecutor = new ApplySenderExecutor(builder, manager);
         _rebootExecutor = new RebootSenderExecutor(new LogRebootManager()

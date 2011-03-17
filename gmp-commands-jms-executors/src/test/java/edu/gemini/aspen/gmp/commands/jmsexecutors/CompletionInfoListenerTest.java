@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.jmsexecutors;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.gmp.commands.model.IActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.commands.model.impl.CommandUpdaterImpl;
 import edu.gemini.jms.api.JmsProvider;
@@ -25,14 +25,14 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class CompletionInfoListenerTest {
-    private IActionManager actionManager;
+    private ActionManager actionManager;
     private MapMessage message;
     private JmsProvider jmsProvider;
     private CommandUpdater commandUpdater;
 
     @Before
     public void setUp() throws Exception {
-        actionManager = mock(IActionManager.class);
+        actionManager = mock(ActionManager.class);
         message = mock(MapMessage.class);
         jmsProvider = mock(JmsProvider.class);
         commandUpdater = new CommandUpdaterImpl(actionManager);

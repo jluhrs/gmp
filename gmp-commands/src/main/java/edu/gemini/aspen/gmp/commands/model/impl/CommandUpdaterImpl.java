@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.model.impl;
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.gmp.commands.model.IActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
@@ -11,7 +11,7 @@ import org.apache.felix.ipojo.annotations.Requires;
 
 /**
  * Implementation of the {@link edu.gemini.aspen.giapi.commands.CommandUpdater}
- * interface. It notifies {@link edu.gemini.aspen.gmp.commands.model.IActionManager}
+ * interface. It notifies {@link ActionManager}
  * whenever new updates are available to process. 
  */
 @Component
@@ -19,9 +19,9 @@ import org.apache.felix.ipojo.annotations.Requires;
 @Provides
 public class CommandUpdaterImpl implements CommandUpdater {
 
-    private final IActionManager _manager;
+    private final ActionManager _manager;
 
-    public CommandUpdaterImpl(@Requires IActionManager manager) {
+    public CommandUpdaterImpl(@Requires ActionManager manager) {
         Preconditions.checkArgument(manager != null, "ActionManager cannot be null");
         _manager = manager;
     }

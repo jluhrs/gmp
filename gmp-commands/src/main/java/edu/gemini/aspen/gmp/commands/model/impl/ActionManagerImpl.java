@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.impl;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.IActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Invalidate;
@@ -29,10 +29,10 @@ import java.util.logging.Logger;
 @Component
 @Provides
 @Instantiate
-public class ActionManagerImpl implements IActionManager {
+public class ActionManagerImpl implements ActionManager {
 
     private static final Logger LOG = Logger.getLogger(
-            IActionManager.class.getName());
+            ActionManager.class.getName());
 
     /**
      * The Action Queue stores the actions initiated when a sequence command
@@ -231,20 +231,11 @@ public class ActionManagerImpl implements IActionManager {
         _actionQueue.remove(action);
     }
 
-    /**
-     * Acquire the updater processor lock. This way, the update processor
-     * can't notify handler until the lock is released
-     */
     @Override
     public void lock() {
         _lock.lock();
     }
 
-    /**
-     * Release the lock of the update processor thread. The update
-     * processor thread will resume execution as soon as reacquires the
-     * lock. 
-     */
     @Override
     public void unlock() {
         _lock.unlock();

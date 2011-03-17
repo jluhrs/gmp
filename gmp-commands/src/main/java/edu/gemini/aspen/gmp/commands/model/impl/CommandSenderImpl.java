@@ -10,7 +10,7 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
-import edu.gemini.aspen.gmp.commands.model.IActionManager;
+import edu.gemini.aspen.gmp.commands.model.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
@@ -29,7 +29,7 @@ public class CommandSenderImpl implements CommandSender {
      * Holds state of the actions being tracked in the system
      */
     //@Requires
-    private final IActionManager _manager;
+    private final ActionManager _manager;
 
     /**
      * Process the actions received by the system using
@@ -53,7 +53,7 @@ public class CommandSenderImpl implements CommandSender {
      * @param executor the executor that will be in charge
      *                 of processing the actions using the given sender.
      */
-    public CommandSenderImpl(@Requires IActionManager manager,
+    public CommandSenderImpl(@Requires ActionManager manager,
                              @Requires ActionSender sender,
                              @Requires SequenceCommandExecutor executor) {
         Preconditions.checkArgument(manager != null, "ActionManager cannot be null");

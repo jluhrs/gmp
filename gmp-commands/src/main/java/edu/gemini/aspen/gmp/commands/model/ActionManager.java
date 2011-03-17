@@ -3,13 +3,12 @@ package edu.gemini.aspen.gmp.commands.model;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 
 /**
- * Created by IntelliJ IDEA.
- * User: cquiroz
- * Date: 3/15/11
- * Time: 5:03 PM
- * To change this template use File | Settings | File Templates.
+ * ActionManager defines an internal interface to a service that keeps track
+ * of the set of submitted action and handles the logic of keeping track of their IDs
+ *
+ * This service shouldn't be called from outside this bundle
  */
-public interface IActionManager {
+public interface ActionManager {
     /**
      * Register that there is a future {@link edu.gemini.aspen.giapi.commands.HandlerResponse}
      * to be received for the given APPLY action. If the action is not an APPLY, this method does nothing.
@@ -48,7 +47,16 @@ public interface IActionManager {
     void registerCompletionInformation(int actionId,
                                        HandlerResponse response);
 
+    /**
+     * Acquire the updater processor lock. This way, the update processor
+     * can't notify handler until the lock is released
+     */
     void lock();
 
+    /**
+     * Release the lock of the update processor thread. The update
+     * processor thread will resume execution as soon as reacquires the
+     * lock.
+     */
     void unlock();
 }
