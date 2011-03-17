@@ -39,7 +39,7 @@ public class BridgeCompletionListener extends JmsMapMessageSender implements Com
         super.sendStringBasedMapMessage(_destination, message, properties);
     }
 
-    private Map<String, String> buildMessageContent(Configuration config) {
+    protected Map<String, String> buildMessageContent(Configuration config) {
         Preconditions.checkArgument(config != null);
         Map<String, String> content = Maps.newHashMap();
 
@@ -49,7 +49,7 @@ public class BridgeCompletionListener extends JmsMapMessageSender implements Com
         return content;
     }
 
-    private Map<String, String> buildProperties(HandlerResponse response, Command command) {
+    protected Map<String, String> buildProperties(HandlerResponse response, Command command) {
         Map<String, String> properties = Maps.newHashMap();
         properties.put(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
         if (response.hasErrorMessage()) {

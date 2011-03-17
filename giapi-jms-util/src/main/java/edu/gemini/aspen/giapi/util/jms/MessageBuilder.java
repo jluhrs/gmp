@@ -98,6 +98,7 @@ public final class MessageBuilder {
         return HandlerResponse.get(response);
     }
 
+    @Deprecated
     public static Message buildHandlerResponseMessage(Session session, HandlerResponse response) throws JMSException {
         MapMessage message = session.createMapMessage();
 
@@ -112,6 +113,7 @@ public final class MessageBuilder {
         return message;
     }
 
+    @Deprecated
     public static Message buildCompletionInformationMessage(Session session, CompletionInformation info) throws JMSException {
 
         MapMessage reply = session.createMapMessage();

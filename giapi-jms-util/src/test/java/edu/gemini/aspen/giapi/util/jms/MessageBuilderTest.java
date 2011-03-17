@@ -3,7 +3,6 @@ package edu.gemini.aspen.giapi.util.jms;
 
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.CompletionInformation;
-import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
@@ -23,7 +22,6 @@ import javax.jms.Session;
 import java.util.Set;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -121,49 +119,6 @@ public class MessageBuilderTest {
 
         assertEquals(response.getResponse().name(), m.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
         assertNull(m.getString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY));
-    }
-
-    @Test
-    public void testBuildCompletionInformationMessage() throws JMSException {
-        Configuration config = copy(emptyConfiguration())
-                .withPath(configPath("gpi:dc.value1"), "one")
-                .withPath(configPath("gpi:dc.value2"), "two")
-                .build();
-
-        CompletionInformation ci = new CompletionInformation(
-                HandlerResponse.STARTED,
-                SequenceCommand.INIT,
-                Activity.START,
-                config
-        );
-
-        MapMessage m = (MapMessage) MessageBuilder.buildCompletionInformationMessage(_mockedSession, ci);
-
-        assertEquals(HandlerResponse.STARTED.getResponse().name(), m.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
-        assertEquals(SequenceCommand.INIT.name(), m.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY));
-        assertEquals(Activity.START.name(), m.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY));
-
-        for (ConfigPath path : config.getKeys()) {
-            assertEquals(config.getValue(path), m.getString(path.getName()));
-        }
-    }
-
-    @Test
-    public void testBuildCompletionInformationMessageOnHandlerError() throws JMSException {
-        String errorMsg = "Error Message";
-        CompletionInformation ci = new CompletionInformation(
-                HandlerResponse.createError(errorMsg),
-                SequenceCommand.INIT,
-                Activity.START,
-                emptyConfiguration()
-        );
-
-        MapMessage m = (MapMessage) MessageBuilder.buildCompletionInformationMessage(_mockedSession, ci);
-
-        assertEquals(HandlerResponse.Response.ERROR.toString(), m.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
-        assertEquals(errorMsg, m.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY));
-        assertEquals(SequenceCommand.INIT.name(), m.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY));
-        assertEquals(Activity.START.name(), m.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY));
     }
 
     @Test
