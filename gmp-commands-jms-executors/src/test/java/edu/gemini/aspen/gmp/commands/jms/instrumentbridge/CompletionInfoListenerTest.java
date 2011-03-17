@@ -3,7 +3,6 @@ package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.gmp.commands.jms.instrumentbridge.CompletionInfoListener;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
@@ -60,6 +59,16 @@ public class CompletionInfoListenerTest {
     public void testNoMapMessage() throws JMSException {
         CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, jmsProvider);
         Message message = mock(Message.class);
+
+        listener.onMessage(message);
+
+        verifyZeroInteractions(commandUpdater);
+    }
+
+    @Test
+    public void testMessageMissingActionId() throws JMSException {
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, jmsProvider);
+        MapMessage message = mock(MapMessage.class);
 
         listener.onMessage(message);
 
