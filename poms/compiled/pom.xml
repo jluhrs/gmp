@@ -48,6 +48,11 @@
                 <version>0.9.2</version>
             </dependency>
             <dependency>
+                <groupId>edu.gemini.aspen</groupId>
+                <artifactId>giapi-jms-util</artifactId>
+                <version>0.10.0</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo.annotations</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
