@@ -8,6 +8,7 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
@@ -18,6 +19,8 @@ public class MockedJmsArtifactsTestBase {
     protected ConnectionFactory connectionFactory;
     protected Session session;
     protected JmsProvider provider;
+    protected MessageProducer producer;
+    protected MessageConsumer consumer;
 
     public void createMockedObjects() {
         provider = Mockito.mock(JmsProvider.class);
@@ -33,10 +36,13 @@ public class MockedJmsArtifactsTestBase {
     protected void mockSessionProducerAndConsumer() throws JMSException {
         session = mockSessionCreation();
 
-        MessageProducer producer = Mockito.mock(MessageProducer.class);
+        producer = Mockito.mock(MessageProducer.class);
         Mockito.when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
-        MessageConsumer consumer = Mockito.mock(MessageConsumer.class);
+        consumer = Mockito.mock(MessageConsumer.class);
         Mockito.when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
+
+        MapMessage mapMessage = Mockito.mock(MapMessage.class);
+        Mockito.when(session.createMapMessage()).thenReturn(mapMessage);
     }
 
     private Session mockSessionCreation() throws JMSException {

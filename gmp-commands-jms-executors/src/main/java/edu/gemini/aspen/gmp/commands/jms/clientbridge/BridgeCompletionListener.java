@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 
 /**
  * This class is an internal listener that gets notified when an Action is completed
- * and forwards the completion message to a client in reply of the command request
+ * and then forwards the completion message to a client to the destination in the
+ * reply of the command request
  */
 public class BridgeCompletionListener extends JmsMapMessageSender implements CompletionListener {
     private static final Logger LOG = Logger.getLogger(BridgeCompletionListener.class.getName());
@@ -34,7 +35,8 @@ public class BridgeCompletionListener extends JmsMapMessageSender implements Com
         Map<String, String> message = buildMessageContent(command.getConfiguration());
         Map<String, String> properties = buildProperties(response, command);
 
-        super.sendStringBasedMapMessage(_destination, message, properties, MapMessageCreator.NoReplyCreator);
+        // Send the reply message
+        super.sendStringBasedMapMessage(_destination, message, properties);
     }
 
     private Map<String, String> buildMessageContent(Configuration config) {
@@ -49,13 +51,9 @@ public class BridgeCompletionListener extends JmsMapMessageSender implements Com
 
     private Map<String, String> buildProperties(HandlerResponse response, Command command) {
         Map<String, String> properties = Maps.newHashMap();
-        if (response != null) {
-            properties.put(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
-            if (response.getResponse() == HandlerResponse.Response.ERROR) {
-                if (response.getMessage() != null) {
-                    properties.put(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
-                }
-            }
+        properties.put(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
+        if (response.hasErrorMessage()) {
+            properties.put(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
         }
 
         SequenceCommand sc = command.getSequenceCommand();
@@ -67,6 +65,7 @@ public class BridgeCompletionListener extends JmsMapMessageSender implements Com
         return properties;
     }
 
+    @Deprecated
     public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
         onHandlerResponse(response, new Command(command, activity, config));
     }
