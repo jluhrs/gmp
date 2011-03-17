@@ -1,8 +1,9 @@
-package edu.gemini.aspen.gmp.commands.jmsexecutors;
+package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.gmp.commands.jms.instrumentbridge.CompletionInfoListener;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;

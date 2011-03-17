@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.jmsexecutors;
+package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.jms.api.JmsMapMessageSenderReply;

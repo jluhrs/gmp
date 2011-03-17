@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.jmsexecutors;
+package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;

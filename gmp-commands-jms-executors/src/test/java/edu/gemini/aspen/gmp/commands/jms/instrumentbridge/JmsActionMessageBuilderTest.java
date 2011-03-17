@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.jmsexecutors;
+package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
 import edu.gemini.aspen.giapi.commands.Activity;

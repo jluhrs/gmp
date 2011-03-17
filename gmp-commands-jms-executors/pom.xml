@@ -11,7 +11,7 @@
 
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp-commands-jms-executors</bundle.symbolicName>
-        <bundle.namespace>edu.gemini.aspen.gmp.commands.jmsexecutors</bundle.namespace>
+        <bundle.namespace>edu.gemini.aspen.gmp.commands.jms</bundle.namespace>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>

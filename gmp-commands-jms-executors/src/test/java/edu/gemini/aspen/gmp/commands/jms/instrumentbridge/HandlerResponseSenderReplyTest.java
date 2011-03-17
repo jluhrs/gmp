@@ -1,7 +1,8 @@
-package edu.gemini.aspen.gmp.commands.jmsexecutors;
+package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.gmp.commands.jms.instrumentbridge.HandlerResponseSenderReply;
 import org.junit.Test;
 
 import javax.jms.JMSException;
