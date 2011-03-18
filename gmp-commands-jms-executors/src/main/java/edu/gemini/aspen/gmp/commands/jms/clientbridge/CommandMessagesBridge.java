@@ -2,7 +2,6 @@ package edu.gemini.aspen.gmp.commands.jms.clientbridge;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
@@ -29,7 +28,7 @@ import java.util.logging.Logger;
 
 /**
  * This component listens to commands sent over JMS and forwards them to CommandSender
- *
+ * <p/>
  * It also creates listeners to track responses to the commands
  */
 @Component
@@ -92,20 +91,13 @@ public class CommandMessagesBridge implements MessageListener {
         }
     }
 
-
     private void sendResponse(Destination destination, HandlerResponse response) throws JMSException {
-        Map<String,String> content = Maps.newHashMap();
-        content.put(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
-
-        if (response.getResponse() == HandlerResponse.Response.ERROR) {
-            if (response.getMessage() != null) {
-                content.put(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
-            }
-        }
+        Map<String, String> content = CommandMessageSerializer.convertHandlerResponseToProperties(response);
 
         JmsMapMessageSender messageSender = new JmsMapMessageSender("");
         messageSender.startJms(_jmsProvider);
         messageSender.sendStringBasedMapMessage(destination, content, ImmutableMap.<String, String>of());
         messageSender.stopJms();
     }
+
 }

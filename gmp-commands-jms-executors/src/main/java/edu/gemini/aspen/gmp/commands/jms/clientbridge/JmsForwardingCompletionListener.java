@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * This class is an internal listener that gets notified when an Action is completed
  * and then forwards the completion message to a client to the destination in the
  * reply of the command request
- *
+ * <p/>
  * TODO This class has two responsibilities - separate them
  */
 public class JmsForwardingCompletionListener extends JmsMapMessageSender implements CompletionListener {
@@ -57,6 +57,7 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
 
     /**
      * Translates the response and properties
+     *
      * @param response
      * @param command
      * @return
@@ -64,29 +65,19 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
     protected Map<String, String> convertResponseAndCommandToProperties(HandlerResponse response, Command command) {
         Map<String, String> properties = Maps.newHashMap();
 
-        properties.putAll(convertHandlerResponseToProperties(response));
+        properties.putAll(CommandMessageSerializer.convertHandlerResponseToProperties(response));
         properties.putAll(convertCommandToProperties(command));
 
         return ImmutableMap.copyOf(properties);
     }
 
-    private Map<String, String>  convertCommandToProperties(Command command) {
+    private Map<String, String> convertCommandToProperties(Command command) {
         SequenceCommand sc = command.getSequenceCommand();
         Activity activity = command.getActivity();
 
         return ImmutableMap.of(
                 JmsKeys.GMP_SEQUENCE_COMMAND_KEY, sc.name(),
                 JmsKeys.GMP_ACTIVITY_KEY, activity.name());
-    }
-
-    private Map<String, String> convertHandlerResponseToProperties(HandlerResponse response) {
-        Map<String, String> properties = Maps.newHashMap();
-        
-        properties.put(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
-        if (response.hasErrorMessage()) {
-            properties.put(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
-        }
-        return properties;
     }
 
     @Deprecated
