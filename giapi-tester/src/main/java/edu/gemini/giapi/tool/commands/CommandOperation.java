@@ -1,7 +1,6 @@
 package edu.gemini.giapi.tool.commands;
 
 import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapitestsupport.TesterException;
@@ -45,8 +44,8 @@ public class CommandOperation implements Operation {
 
         try {
             ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
-            provider.validated();
-            CommandSender senderClient = new CommandSenderClient(provider);
+            provider.startConnection();
+            CommandSenderClient senderClient = new CommandSenderClient(provider);
 
             Configuration config = (_config != null) ? _config.getConfiguration() : emptyConfiguration();
 
@@ -66,6 +65,8 @@ public class CommandOperation implements Operation {
                     System.out.println("Completion Information: " + response);
                 }
             }
+
+            senderClient.stopJms();
         } catch (TesterException ex) {
             LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
         } finally {

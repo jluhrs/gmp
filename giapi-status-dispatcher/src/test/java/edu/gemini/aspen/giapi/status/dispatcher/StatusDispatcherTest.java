@@ -120,7 +120,7 @@ public class StatusDispatcherTest {
     public void testUpdateViaJms() throws Exception {
         //create jms provider
         ActiveMQJmsProvider provider = new ActiveMQJmsProvider("vm://StatusDispatcherTest");
-        provider.validated();
+        provider.startConnection();
 
         //create status service connected to the jms provider
         StatusHandlerAggregate agg = new StatusHandlerAggregateImpl();
