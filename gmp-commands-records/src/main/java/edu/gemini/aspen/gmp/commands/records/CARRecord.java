@@ -19,15 +19,32 @@ import java.util.logging.Logger;
 public class CARRecord {
     private static final Logger LOG = Logger.getLogger(CARRecord.class.getName());
     enum Val{
+        UNAVAILABLE,
         IDLE,
         PAUSED,
+        ERR,
         BUSY,
-        ERROR
+        UNKNOWN
     }
+
+    /**
+     * Current state
+     */
     private Channel<Val> val;
+    /**
+     * Output message
+     */
     private Channel<String> omss;
-    private Channel<String> oerr;
-    private Channel<String> clid;
+    /**
+     * Output error code
+     */
+    //private Channel<Long> oerr;
+    private Channel<Integer> oerr;
+    /**
+     * Value of the latest client ID
+     */
+    //private Channel<Long> clid;
+    private Channel<Integer> clid;
 
     @Requires
     private ChannelAccessServer cas;
@@ -35,17 +52,19 @@ public class CARRecord {
     private CARRecord() {
     }
 
-    public CARRecord(ChannelAccessServer cas){
+    private String prefix;
+    public CARRecord(ChannelAccessServer cas, String prefix){
         this.cas=cas;
+        this.prefix=prefix;
     }
 
     @Validate
     public void start() {
         try {
-            val = cas.createChannel("gpi:applyC.VAL", Val.IDLE);
-            omss = cas.createChannel("gpi:applyC.OMSS", "");
-            oerr = cas.createChannel("gpi:applyC.OERR", "");
-            clid = cas.createChannel("gpi:applyC.CLID", "");
+            val = cas.createChannel(prefix+".VAL", Val.IDLE);
+            omss = cas.createChannel(prefix+".OMSS", "");
+            oerr = cas.createChannel(prefix+".OERR", 0);
+            clid = cas.createChannel(prefix+".CLID", 0);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -59,7 +78,12 @@ public class CARRecord {
         cas.destroyChannel(clid);
     }
 
-    void changeState(Val state) throws CAException {
+    void changeState(Val state, String message, int errorCode, int clientId) throws CAException {
+        //todo: only update if state or clientId are different from the previous
         val.setValue(state);
+        omss.setValue(message);
+        oerr.setValue(errorCode);
+        clid.setValue(clientId);
     }
+
 }
