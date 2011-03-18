@@ -363,15 +363,10 @@ public class CasTest {
         assertEquals(d.name(), ((String[])obj)[0]);
     }
 
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void testEnumWrongType() throws Exception {
         Channel ch = giapicas.createChannel("test", Dir.MARK);
-        try{
-            ch.setValue(State.BUSY);
-            fail();
-        }catch(IllegalArgumentException ex){
-            //OK
-        }
+        ch.setValue(State.BUSY);
     }
 
     @Test

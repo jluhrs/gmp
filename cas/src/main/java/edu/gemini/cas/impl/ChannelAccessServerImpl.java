@@ -110,7 +110,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
 
     @Override
     public <T> Channel<T> createChannel(String name, List<T> values) throws CAException {
-        if(values.isEmpty()){
+        if(values == null || values.isEmpty()){
             throw new IllegalArgumentException("At least one value must be passed");
         }
         Channel ch = null;
@@ -139,7 +139,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
 
     @Override
     public <T> AlarmChannel<T> createAlarmChannel(String name, List<T> values) throws CAException {
-        if(values.isEmpty()){
+        if(values == null || values.isEmpty()){
             throw new IllegalArgumentException("At least one value must be passed");
         }
         AlarmChannel ch = null;
