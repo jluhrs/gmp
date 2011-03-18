@@ -30,7 +30,9 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
         CommandMessagesBridge messagesBridge = new CommandMessagesBridge(provider, commandsSender);
 
         messagesBridge.startListeningForMessages();
-
         verify(session).createConsumer(Mockito.<Destination>any());
+
+        messagesBridge.stopListeningForMessages();
+        verify(session).close();
     }
 }

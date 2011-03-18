@@ -11,8 +11,12 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
+import javax.jms.Queue;
 import javax.jms.Session;
+import javax.jms.Topic;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class MockedJmsArtifactsTestBase {
@@ -53,6 +57,12 @@ public class MockedJmsArtifactsTestBase {
         when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
         consumer = Mockito.mock(MessageConsumer.class);
         when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
+
+        Queue queue = mock(Queue.class);
+        when(session.createQueue(anyString())).thenReturn(queue);
+
+        Topic topic = mock(Topic.class);
+        when(session.createTopic(anyString())).thenReturn(topic);
 
         MapMessage mapMessage = Mockito.mock(MapMessage.class);
         when(session.createMapMessage()).thenReturn(mapMessage);
