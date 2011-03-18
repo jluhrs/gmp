@@ -1,10 +1,10 @@
 package edu.gemini.giapi.tool.arguments;
 
 import edu.gemini.aspen.giapi.commands.Activity;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ActivityArgumentTest {
@@ -14,6 +14,8 @@ public class ActivityArgumentTest {
         activityArgument.parseParameter("PRESET");
 
         assertTrue(activityArgument.requireParameter());
+        assertFalse(activityArgument.getInvalidArgumentMsg().isEmpty());
+
         assertEquals(Activity.PRESET, activityArgument.getActivity());
     }
 }

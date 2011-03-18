@@ -8,8 +8,6 @@ import edu.gemini.giapi.tool.parser.Util;
  * A Sequence Command argument
  */
 public class SequenceCommandArgument extends AbstractArgument {
-
-
     private SequenceCommand sc;
 
     public SequenceCommandArgument() {
@@ -37,5 +35,4 @@ public class SequenceCommandArgument extends AbstractArgument {
         return sc;
     }
 
- 
 }

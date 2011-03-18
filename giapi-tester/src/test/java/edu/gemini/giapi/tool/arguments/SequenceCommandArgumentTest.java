@@ -4,6 +4,7 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class SequenceCommandArgumentTest {
@@ -13,6 +14,7 @@ public class SequenceCommandArgumentTest {
         sequenceCommandArgument.parseParameter("PARK");
 
         assertTrue(sequenceCommandArgument.requireParameter());
+
         assertEquals(SequenceCommand.PARK, sequenceCommandArgument.getSequenceCommand());
     }
 }

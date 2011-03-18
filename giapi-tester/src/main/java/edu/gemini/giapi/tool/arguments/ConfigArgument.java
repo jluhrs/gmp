@@ -58,5 +58,4 @@ public class ConfigArgument extends AbstractArgument {
         return _config;
     }
 
-
 }

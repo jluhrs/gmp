@@ -8,8 +8,6 @@ import edu.gemini.giapi.tool.parser.Util;
  * An argument representing the activity of a sequence command
  */
 public class ActivityArgument extends AbstractArgument {
-
-
     private Activity _activity;
 
     public ActivityArgument() {
