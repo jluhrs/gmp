@@ -139,7 +139,7 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-test-support</artifactId>
-            <version>0.1.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
