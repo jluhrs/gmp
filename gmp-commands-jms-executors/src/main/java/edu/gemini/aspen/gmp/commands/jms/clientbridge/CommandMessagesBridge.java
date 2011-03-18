@@ -82,6 +82,8 @@ public class CommandMessagesBridge implements MessageListener {
             Command command = CommandMessageParser.readCommand((MapMessage) message);
             LOG.info("New command arrived: " + command);
 
+            // TODO The listeners should be released at some point. We need to create an entity to keep
+            // track of the listeners and release them when the command is effectively completed
             JmsForwardingCompletionListener listener = setupCompletionListener(message.getJMSReplyTo());
 
             HandlerResponse response = _commandSender.sendCommand(command, listener);
