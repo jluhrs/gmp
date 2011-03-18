@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.CompletionInformation;
-import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
@@ -111,40 +110,6 @@ public final class MessageBuilder {
             }
         }
         return message;
-    }
-
-    @Deprecated
-    public static Message buildCompletionInformationMessage(Session session, CompletionInformation info) throws JMSException {
-
-        MapMessage reply = session.createMapMessage();
-
-        HandlerResponse response = info.getHandlerResponse();
-        if (response != null) {
-            reply.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
-            if (response.getResponse() == HandlerResponse.Response.ERROR) {
-                if (response.getMessage() != null) {
-                    reply.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
-                }
-            }
-        }
-
-        SequenceCommand command = info.getSequenceCommand();
-        if (command != null) {
-            reply.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, command.name());
-        }
-
-        Activity activity = info.getActivity();
-        if (activity != null) {
-            reply.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, activity.name());
-        }
-
-        Configuration config = info.getConfiguration();
-        if (config != null) {
-            for (ConfigPath path : config.getKeys()) {
-                reply.setString(path.getName(), config.getValue(path));
-            }
-        }
-        return reply;
     }
 
     public static CompletionInformation buildCompletionInformation(Message m) throws JMSException {
