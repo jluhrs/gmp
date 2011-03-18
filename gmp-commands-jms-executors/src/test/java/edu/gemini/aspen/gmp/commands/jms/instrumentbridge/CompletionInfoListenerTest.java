@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapitestsupport.jms.MockedJmsArtifactsTestBase;
+import edu.gemini.aspen.gmp.commands.jms.MockedJmsArtifactsTestBase;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapitestsupport.jms;
+package edu.gemini.aspen.gmp.commands.jms;
 
 import edu.gemini.jms.api.JmsProvider;
 import org.mockito.Matchers;
@@ -37,12 +37,12 @@ public class MockedJmsArtifactsTestBase {
         session = mockSessionCreation();
 
         producer = Mockito.mock(MessageProducer.class);
-        Mockito.when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
+        when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
         consumer = Mockito.mock(MessageConsumer.class);
-        Mockito.when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
+        when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
 
         MapMessage mapMessage = Mockito.mock(MapMessage.class);
-        Mockito.when(session.createMapMessage()).thenReturn(mapMessage);
+        when(session.createMapMessage()).thenReturn(mapMessage);
     }
 
     private Session mockSessionCreation() throws JMSException {
@@ -52,10 +52,10 @@ public class MockedJmsArtifactsTestBase {
 
         // Mock connection
         Connection connection = Mockito.mock(Connection.class);
-        Mockito.when(connectionFactory.createConnection()).thenReturn(connection);
+        when(connectionFactory.createConnection()).thenReturn(connection);
 
         // Mock session
-        Mockito.when(connection.createSession(Matchers.anyBoolean(), Matchers.anyInt())).thenReturn(session);
+        when(connection.createSession(Matchers.anyBoolean(), Matchers.anyInt())).thenReturn(session);
         return session;
     }
 }

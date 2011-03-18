@@ -7,7 +7,7 @@ import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapitestsupport.jms.MockedJmsArtifactsTestBase;
+import edu.gemini.aspen.gmp.commands.jms.MockedJmsArtifactsTestBase;
 import org.junit.Test;
 
 import javax.jms.Destination;
