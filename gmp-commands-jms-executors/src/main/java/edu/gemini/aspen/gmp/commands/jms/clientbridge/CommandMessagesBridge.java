@@ -70,28 +70,47 @@ public class CommandMessagesBridge implements MessageListener {
     }
 
     public void onMessage(Message message) {
-        if (message instanceof MapMessage) {
-            try {
-                Command command = CommandMessageParser.readCommand((MapMessage) message);
-                LOG.info("New command arrived: " + command);
-
-                Destination replyDestination = message.getJMSReplyTo();
-                JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(replyDestination);
-                listener.startJms(_jmsProvider);
-                HandlerResponse response = _commandSender.sendCommand(command, listener);
-
-                //send response back to the client
-                sendResponse(message.getJMSReplyTo(), response);
-            } catch (FormatException e) {
-                LOG.log(Level.WARNING, "Message did not contain a command message: " + e.getMessage());
-            } catch (JMSException e) {
-                //this is produced when sending reply back to the client
-                LOG.log(Level.WARNING, "Problem sending response back to client ", e);
-            }
+        try {
+            decodeMessageAndProcess(message);
+        } catch (FormatException e) {
+            LOG.log(Level.WARNING, "Message did not contain a command message: " + e.getMessage());
+        } catch (JMSException e) {
+            //this is produced when sending reply back to the client
+            LOG.log(Level.WARNING, "Problem sending response back to client ", e);
         }
     }
 
-    private void sendResponse(Destination destination, HandlerResponse response) throws JMSException {
+    private void decodeMessageAndProcess(Message message) throws JMSException {
+        if (isValidCommandMessage(message)) {
+            Command command = CommandMessageParser.readCommand((MapMessage) message);
+            LOG.info("New command arrived: " + command);
+
+            JmsForwardingCompletionListener listener = setupCompletionListener(message.getJMSReplyTo());
+
+            HandlerResponse response = _commandSender.sendCommand(command, listener);
+
+            sendImmediateResponse(message.getJMSReplyTo(), response);
+        }
+    }
+
+    private boolean isValidCommandMessage(Message message) throws JMSException {
+        return message instanceof MapMessage && message.getJMSReplyTo() != null;
+    }
+
+    private JmsForwardingCompletionListener setupCompletionListener(Destination replyDestination) throws JMSException {
+        JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(replyDestination);
+        listener.startJms(_jmsProvider);
+        return listener;
+    }
+
+    /**
+     * This method sends the immediate response to the client
+     * 
+     * @param destination
+     * @param response
+     * @throws JMSException
+     */
+    private void sendImmediateResponse(Destination destination, HandlerResponse response) throws JMSException {
         Map<String, String> content = CommandMessageSerializer.convertHandlerResponseToProperties(response);
 
         JmsMapMessageSender messageSender = new JmsMapMessageSender("");

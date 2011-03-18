@@ -10,17 +10,20 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.jms.MockedJmsArtifactsTestBase;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
+    private Destination replyDestination;
 
     @Test
     public void testOnMessageWithImmediateResponse() throws JMSException {
@@ -33,12 +36,14 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
         ArgumentCaptor<CompletionListener> listenerCaptor = ArgumentCaptor.forClass(CompletionListener.class);
 
         HandlerResponse response = HandlerResponse.get(HandlerResponse.Response.ACCEPTED);
-        when(commandsSender.sendCommand(commandCaptor.capture(),listenerCaptor.capture())).thenReturn(response);
+        when(commandsSender.sendCommand(commandCaptor.capture(), listenerCaptor.capture())).thenReturn(response);
 
         MapMessage message = createApplyCommandMessage();
         messagesBridge.onMessage(message);
 
-        verify(commandsSender).sendCommand(commandCaptor.getValue(), listenerCaptor.getValue());
+        verify(commandsSender).sendCommand(commandCaptor.capture(), listenerCaptor.capture());
+
+        verify(producer).send(eq(replyDestination), Matchers.<MapMessage>anyObject());
     }
 
     private MapMessage createApplyCommandMessage() throws JMSException {
@@ -46,6 +51,9 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
         when(message.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY)).thenReturn(SequenceCommand.APPLY.toString());
         when(message.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY)).thenReturn(Activity.PRESET.toString());
         CommandMessageParserTest.addConfigurationEntriesToMsg(message);
+
+        replyDestination = mock(Destination.class);
+        when(message.getJMSReplyTo()).thenReturn(replyDestination);
         return message;
     }
 
