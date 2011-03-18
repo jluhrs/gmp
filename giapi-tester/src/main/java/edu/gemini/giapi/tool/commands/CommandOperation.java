@@ -1,15 +1,22 @@
 package edu.gemini.giapi.tool.commands;
 
 import edu.gemini.aspen.giapi.commands.CompletionInformation;
+import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapitestsupport.TesterException;
+import edu.gemini.giapi.tool.arguments.ActivityArgument;
+import edu.gemini.giapi.tool.arguments.ConfigArgument;
+import edu.gemini.giapi.tool.arguments.HostArgument;
+import edu.gemini.giapi.tool.arguments.RepetitionArgument;
+import edu.gemini.giapi.tool.arguments.SequenceCommandArgument;
+import edu.gemini.giapi.tool.arguments.TimeoutArgument;
 import edu.gemini.giapi.tool.jms.BrokerConnection;
-import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.giapi.tool.parser.Argument;
-import edu.gemini.giapi.tool.arguments.*;
-import edu.gemini.aspen.giapi.commands.Configuration;
+import edu.gemini.giapi.tool.parser.Operation;
 
 import java.util.logging.Logger;
+
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 
 /**
  * Provides the operation to send sequence commands to the GMP
@@ -39,7 +46,7 @@ public class CommandOperation implements Operation {
             connection.start();
             CommandSender sender = new CommandSender(connection);
 
-            Configuration config = (_config != null) ? _config.getConfiguration() : null;
+            Configuration config = (_config != null) ? _config.getConfiguration() : emptyConfiguration();
                     
 
             for (int x = 0; x < repetitions; x++) {
@@ -82,9 +89,7 @@ public class CommandOperation implements Operation {
     }
 
     public boolean isReady() {
-
-        return ((_sc != null) && (_activity != null));
-
+        return (_sc != null && _activity != null);
     }
 
 }
