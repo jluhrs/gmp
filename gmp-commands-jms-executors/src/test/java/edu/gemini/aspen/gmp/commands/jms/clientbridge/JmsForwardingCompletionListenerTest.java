@@ -24,13 +24,13 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class BridgeCompletionListenerTest extends MockedJmsArtifactsTestBase {
+public class JmsForwardingCompletionListenerTest extends MockedJmsArtifactsTestBase {
     @Test
     public void testOnHandlerResponse() throws JMSException {
         super.createMockedObjects();
 
         Destination destination = mock(Destination.class);
-        BridgeCompletionListener completionListener = new BridgeCompletionListener(destination);
+        JmsForwardingCompletionListener completionListener = new JmsForwardingCompletionListener(destination);
 
         completionListener.startJms(provider);
 
@@ -50,7 +50,7 @@ public class BridgeCompletionListenerTest extends MockedJmsArtifactsTestBase {
         super.createMockedObjects();
 
         Destination destination = mock(Destination.class);
-        BridgeCompletionListener completionListener = new BridgeCompletionListener(destination);
+        JmsForwardingCompletionListener completionListener = new JmsForwardingCompletionListener(destination);
 
         completionListener.startJms(provider);
 
@@ -66,15 +66,15 @@ public class BridgeCompletionListenerTest extends MockedJmsArtifactsTestBase {
     }
 
     @Test
-    public void testBuildContentFromConfiguration() throws JMSException {
+    public void testConvertConfigurationToProperties() throws JMSException {
         Configuration config = configurationBuilder()
                 .withPath(configPath("gpi:dc.value1"), "one")
                 .withPath(configPath("gpi:dc.value2"), "two")
                 .build();
 
         Destination destination = mock(Destination.class);
-        BridgeCompletionListener completionListener = new BridgeCompletionListener(destination);
-        Map<String, String> contentsMap = completionListener.buildMessageContent(config);
+        JmsForwardingCompletionListener completionListener = new JmsForwardingCompletionListener(destination);
+        Map<String, String> contentsMap = completionListener.convertConfigurationToProperties(config);
 
         for (ConfigPath path : config.getKeys()) {
             assertEquals(config.getValue(path), contentsMap.get(path.getName()));
@@ -93,8 +93,8 @@ public class BridgeCompletionListenerTest extends MockedJmsArtifactsTestBase {
         );
 
         Destination destination = mock(Destination.class);
-        BridgeCompletionListener completionListener = new BridgeCompletionListener(destination);
-        Map<String, String> m = completionListener.buildProperties(response, command);
+        JmsForwardingCompletionListener completionListener = new JmsForwardingCompletionListener(destination);
+        Map<String, String> m = completionListener.convertResponseAndCommandToProperties(response, command);
 
         assertEquals(HandlerResponse.Response.ERROR.toString(), m.get(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
         assertEquals(errorMsg, m.get(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY));

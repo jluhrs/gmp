@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
-import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.BaseMessageConsumer;
@@ -77,7 +76,7 @@ public class CommandConsumer implements MessageListener {
                 LOG.info("New command arrived: " + command);
 
                 Destination destination = message.getJMSReplyTo();
-                BridgeCompletionListener listener = new BridgeCompletionListener(destination);
+                JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(destination);
                 listener.startJms(_jmsProvider);
                 HandlerResponse response = _commandSender.sendCommand(command,
                         listener
