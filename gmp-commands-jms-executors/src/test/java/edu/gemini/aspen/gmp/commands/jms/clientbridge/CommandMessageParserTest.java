@@ -38,7 +38,7 @@ public class CommandMessageParserTest {
     public void testReadCommand() throws JMSException {
         when(msg.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY)).thenReturn(SequenceCommand.APPLY.toString());
         when(msg.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY)).thenReturn(Activity.PRESET.toString());
-        addConfigurationEntriesToMsg();
+        addConfigurationEntriesToMsg(msg);
 
         Command command = CommandMessageParser.readCommand(msg);
         Command referenceCommand = new Command(SequenceCommand.APPLY, Activity.PRESET, referenceConfiguration);
@@ -95,13 +95,13 @@ public class CommandMessageParserTest {
 
     @Test
     public void parseConfiguration() throws JMSException {
-        addConfigurationEntriesToMsg();
+        addConfigurationEntriesToMsg(msg);
 
         Configuration parsedConfiguration = CommandMessageParser.parseConfiguration(msg);
         assertEquals(referenceConfiguration, parsedConfiguration);
     }
 
-    private void addConfigurationEntriesToMsg() throws JMSException {
+    protected static void addConfigurationEntriesToMsg(MapMessage msg) throws JMSException {
         ImmutableMap<String, String> configurationItems = ImmutableMap.of("x:A", "1", "x:B", "2");
         Enumeration mapNames = Iterators.asEnumeration(configurationItems.keySet().iterator());
         when(msg.getMapNames()).thenReturn(mapNames);
