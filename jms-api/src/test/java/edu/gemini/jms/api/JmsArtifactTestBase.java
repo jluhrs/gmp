@@ -1,6 +1,6 @@
 package edu.gemini.jms.api;
 
-import edu.gemini.jms.api.JmsProvider;
+import org.junit.Before;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
@@ -12,25 +12,37 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 
+/**
+ * Basically a duplicate of MockedJmsArtifactsTestBase but cannot be the same class to avoid
+ * introducing a circular dependency
+ */
 public class JmsArtifactTestBase {
-    protected JmsProvider provider;
+    protected ConnectionFactory connectionFactory;
+    protected Session session;
 
-    protected Session mockSessionProducerAndConsumer(JmsProvider provider) throws JMSException {
-        Session session = mockSessionCreation(provider);
+    @Before
+    public void setupSession() {
+        try {
+            mockSessionProducerAndConsumer();
+        } catch (JMSException e) {
+            // Shouldn't happen as we are mocking
+            e.printStackTrace();
+        }
+    }
+
+    protected void mockSessionProducerAndConsumer() throws JMSException {
+        session = mockSessionCreation();
 
         MessageProducer producer = Mockito.mock(MessageProducer.class);
         Mockito.when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
         MessageConsumer consumer = Mockito.mock(MessageConsumer.class);
         Mockito.when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
-
-        return session;
     }
 
-    private Session mockSessionCreation(JmsProvider provider) throws JMSException {
+    private Session mockSessionCreation() throws JMSException {
         Session session = Mockito.mock(Session.class);
         // Mock connection factory
-        ConnectionFactory connectionFactory = Mockito.mock(ConnectionFactory.class);
-        Mockito.when(provider.getConnectionFactory()).thenReturn(connectionFactory);
+        connectionFactory = Mockito.mock(ConnectionFactory.class);
 
         // Mock connection
         Connection connection = Mockito.mock(Connection.class);

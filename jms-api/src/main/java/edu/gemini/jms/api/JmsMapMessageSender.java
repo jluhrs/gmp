@@ -58,19 +58,21 @@ public class JmsMapMessageSender extends BaseMessageProducer implements MapMessa
      * to construct the actual JMS destination where the message should
      * be sent. The destinations are cached so there is no need to
      * reconstruct them every time
-     * @param destination where to send the message
-     * @param message the message content
-     * @param properties message properties
-     * @param mapMessageCreator defines how to construct the message.
      *
+     * @param destination       where to send the message
+     * @param message           the message content
+     * @param properties        message properties
+     * @param mapMessageCreator defines how to construct the message.
      * @return the Message that was sent, in case it is required for
-     * the caller code. Usually this is needed for request-reply communications.
+     *         the caller code. Usually this is needed for request-reply communications.
      */
     protected Message sendMapMessageWithCreator(DestinationData destination,
-                                              Map<String, Object> message,
-                                              Map<String, Object> properties,
-                                              MapMessageCreator mapMessageCreator) {
-        if (!isConnected()) return null; //don't do anything if there is no connection
+                                                Map<String, Object> message,
+                                                Map<String, Object> properties,
+                                                MapMessageCreator mapMessageCreator) {
+        if (!isConnected()) {
+            return null; //don't do anything if there is no connection
+        }
 
         try {
 
@@ -108,16 +110,41 @@ public class JmsMapMessageSender extends BaseMessageProducer implements MapMessa
     }
 
     public MapMessage sendStringBasedMapMessage(Destination destination,
-                                        Map<String, String> message,
-                                        Map<String, String> properties) throws MessagingException {
+                                                Map<String, String> message,
+                                                Map<String, String> properties) throws MessagingException {
         return sendStringBasedMapMessage(destination, message, properties, JmsMapMessageSender.MapMessageCreator.NoReplyCreator);
     }
 
+   protected Message sendStringBasedMapMessage(DestinationData destination,
+                                               Map<String, String> message,
+                                               Map<String, String> properties,
+                                               MapMessageCreator mapMessageCreator) {
+       if (!isConnected()) {
+           return null; //don't do anything if there is no connection
+       }
+
+       try {
+
+           Destination d = _destinationCache.get(destination.getName());
+           if (d == null) {
+               d = _destinationBuilder.newDestination(destination, _session);
+               _destinationCache.put(destination.getName(), d);
+           }
+
+           return sendStringBasedMapMessage(d, message, properties, mapMessageCreator);
+       } catch (JMSException e) {
+           throw new MessagingException("Unable to send message", e);
+       }
+   }
+
+
     protected MapMessage sendStringBasedMapMessage(Destination destination,
-                                        Map<String, String> message,
-                                        Map<String, String> properties,
-                                        MapMessageCreator creator) throws MessagingException {
-        if (!isConnected()) return null;
+                                                   Map<String, String> message,
+                                                   Map<String, String> properties,
+                                                   MapMessageCreator creator) throws MessagingException {
+        if (!isConnected()) {
+            return null;
+        }
 
         MapMessage mm;
         try {

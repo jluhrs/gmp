@@ -43,10 +43,10 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
     }
 
     public void sendImmediateHandlerResponse(HandlerResponse response) {
-        Map<String, String> properties = CommandMessageSerializer.convertHandlerResponseToProperties(response);
+        Map<String, String> message = CommandMessageSerializer.convertHandlerResponseToProperties(response);
 
         // Send the reply message as a map message
-        super.sendStringBasedMapMessage(_replyDestination, properties, ImmutableMap.<String, String>of());
+        super.sendStringBasedMapMessage(_replyDestination, message, ImmutableMap.<String, String>of());
     }
 
     /**

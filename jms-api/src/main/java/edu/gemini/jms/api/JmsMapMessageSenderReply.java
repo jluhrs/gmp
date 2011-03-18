@@ -31,11 +31,32 @@ public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
 
     }
 
+    public T sendStringBasedMapMessageReply(DestinationData destination,
+                                      Map<String, String> message,
+                                      Map<String, String> properties,
+                                      long timeout) throws MessagingException {
+        Message m = sendStringBasedRequest(destination, message, properties);
+
+        try {
+            return waitForReply(m, timeout);
+        } catch (JMSException e) {
+            throw new MessagingException("Problem receiving reply", e);
+        }
+
+    }
+
     private Message sendRequest(DestinationData destination, Map<String, Object> message, Map<String, Object> properties) {
         return sendMapMessageWithCreator(destination,
                     message,
                     properties,
                     MapMessageCreator.ReplyCreator);
+    }
+
+    private Message sendStringBasedRequest(DestinationData destination, Map<String, String> message, Map<String, String> properties) {
+        return sendStringBasedMapMessage(destination,
+                message,
+                properties,
+                MapMessageCreator.ReplyCreator);
     }
 
     private T waitForReply(Message m, long timeout) throws JMSException {

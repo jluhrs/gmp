@@ -6,7 +6,6 @@ import org.junit.Test;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
-import javax.jms.Session;
 import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
@@ -27,10 +26,12 @@ public class JmsMapMessageSenderTest extends JmsArtifactTestBase {
 
     @Test
     public void testSendStringBasedMapMessage() throws JMSException {
-        JmsMapMessageSender sender = new JmsMapMessageSender("GMP.TOPIC");
-        provider = mock(JmsProvider.class);
+        mockSessionProducerAndConsumer();
 
-        Session session = mockSessionProducerAndConsumer(provider);
+        JmsMapMessageSender sender = new JmsMapMessageSender("GMP.TOPIC");
+        JmsProvider provider = mock(JmsProvider.class);
+        when(provider.getConnectionFactory()).thenReturn(connectionFactory);
+
 
         MapMessage mapMessage = mock(MapMessage.class);
         when(session.createMapMessage()).thenReturn(mapMessage);
