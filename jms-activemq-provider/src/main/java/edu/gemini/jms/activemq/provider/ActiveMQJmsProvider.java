@@ -34,7 +34,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     @Validate
     public void startConnection() {
-        if (_factory != null) {
+        if (_factory == null) {
             // Setup the connection factory
             LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
             _factory = new ActiveMQConnectionFactory(brokerUrl);
