@@ -25,6 +25,7 @@ public class MockedJmsArtifactsTestBase {
     protected JmsProvider provider;
     protected MessageProducer producer;
     protected MessageConsumer consumer;
+    protected MapMessage mapMessage;
 
     public void createMockedObjects() {
         provider = Mockito.mock(JmsProvider.class);
@@ -64,7 +65,7 @@ public class MockedJmsArtifactsTestBase {
         Topic topic = mock(Topic.class);
         when(session.createTopic(anyString())).thenReturn(topic);
 
-        MapMessage mapMessage = Mockito.mock(MapMessage.class);
+        mapMessage = Mockito.mock(MapMessage.class);
         when(session.createMapMessage()).thenReturn(mapMessage);
     }
 

@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.commands.jms.clientbridge;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
@@ -9,7 +8,6 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.JmsMapMessageSender;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
@@ -22,7 +20,6 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,7 +86,7 @@ public class CommandMessagesBridge implements MessageListener {
 
             HandlerResponse response = _commandSender.sendCommand(command, listener);
 
-            sendImmediateResponse(message.getJMSReplyTo(), response);
+            listener.sendImmediateHandlerResponse(response);
         }
     }
 
@@ -101,22 +98,6 @@ public class CommandMessagesBridge implements MessageListener {
         JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(replyDestination);
         listener.startJms(_jmsProvider);
         return listener;
-    }
-
-    /**
-     * This method sends the immediate response to the client
-     * 
-     * @param destination
-     * @param response
-     * @throws JMSException
-     */
-    private void sendImmediateResponse(Destination destination, HandlerResponse response) throws JMSException {
-        Map<String, String> content = CommandMessageSerializer.convertHandlerResponseToProperties(response);
-
-        JmsMapMessageSender messageSender = new JmsMapMessageSender("");
-        messageSender.startJms(_jmsProvider);
-        messageSender.sendStringBasedMapMessage(destination, content, ImmutableMap.<String, String>of());
-        messageSender.stopJms();
     }
 
 }

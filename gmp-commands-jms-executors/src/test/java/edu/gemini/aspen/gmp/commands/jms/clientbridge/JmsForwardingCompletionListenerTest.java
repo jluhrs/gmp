@@ -20,8 +20,11 @@ import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class JmsForwardingCompletionListenerTest extends MockedJmsArtifactsTestBase {
@@ -63,6 +66,46 @@ public class JmsForwardingCompletionListenerTest extends MockedJmsArtifactsTestB
         completionListener.onHandlerResponse(HandlerResponse.createError("Error Message"), referenceCommand);
 
         verify(producer).send(eq(destination), any(MapMessage.class));
+    }
+
+    @Test
+    public void testSendImmediateHandlerResponse() throws JMSException {
+        super.createMockedObjects();
+
+        Destination destination = mock(Destination.class);
+        JmsForwardingCompletionListener completionListener = new JmsForwardingCompletionListener(destination);
+
+        completionListener.startJms(provider);
+
+        HandlerResponse response = HandlerResponse.get(HandlerResponse.Response.COMPLETED);
+        completionListener.sendImmediateHandlerResponse(response);
+
+        verify(producer).send(eq(destination), any(MapMessage.class));
+        // Verify that 1 string has been set in the reply message
+        verify(mapMessage, times(1)).setString(anyString(), anyString());
+
+        // Verify that no properties have been set in the reply message
+        verify(mapMessage, never()).setStringProperty(anyString(), anyString());
+    }
+
+    @Test
+    public void testSendImmediateErrorHandlerResponse() throws JMSException {
+        super.createMockedObjects();
+
+        Destination destination = mock(Destination.class);
+        JmsForwardingCompletionListener completionListener = new JmsForwardingCompletionListener(destination);
+
+        completionListener.startJms(provider);
+
+        HandlerResponse response = HandlerResponse.createError("Error Message");
+        completionListener.sendImmediateHandlerResponse(response);
+
+        verify(producer).send(eq(destination), any(MapMessage.class));
+        // Verify that 2 strings has been set in the reply message, including response and error message
+        verify(mapMessage, times(2)).setString(anyString(), anyString());
+
+        // Verify that no properties have been set in the reply message
+        verify(mapMessage, never()).setStringProperty(anyString(), anyString());
     }
 
     @Test
