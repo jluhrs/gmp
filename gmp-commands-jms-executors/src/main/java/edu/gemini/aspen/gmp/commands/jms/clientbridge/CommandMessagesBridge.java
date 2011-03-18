@@ -28,12 +28,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This component listens to requests sent over JMS and forwards them to CommandSender
+ * This component listens to commands sent over JMS and forwards them to CommandSender
+ *
+ * It also creates listeners to track responses to the commands
  */
 @Component
 @Instantiate
-public class CommandConsumer implements MessageListener {
-    private static final Logger LOG = Logger.getLogger(CommandConsumer.class.getName());
+public class CommandMessagesBridge implements MessageListener {
+    private static final Logger LOG = Logger.getLogger(CommandMessagesBridge.class.getName());
 
     private final JmsProvider _jmsProvider;
     private final CommandSender _commandSender;
@@ -41,7 +43,7 @@ public class CommandConsumer implements MessageListener {
     private final BaseMessageConsumer _messageConsumer;
     private static final String CONSUMER_NAME = "Gateway Command Consumer";
 
-    public CommandConsumer(@Requires JmsProvider jmsProvider, @Requires CommandSender commandSender) {
+    public CommandMessagesBridge(@Requires JmsProvider jmsProvider, @Requires CommandSender commandSender) {
         Preconditions.checkArgument(jmsProvider != null, "JMS Provider cannot be null");
         Preconditions.checkArgument(commandSender != null, "CommandSender cannot be null");
         _jmsProvider = jmsProvider;
@@ -70,17 +72,14 @@ public class CommandConsumer implements MessageListener {
 
     public void onMessage(Message message) {
         if (message instanceof MapMessage) {
-            LOG.info(message.toString());
             try {
                 Command command = CommandMessageParser.readCommand((MapMessage) message);
                 LOG.info("New command arrived: " + command);
 
-                Destination destination = message.getJMSReplyTo();
-                JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(destination);
+                Destination replyDestination = message.getJMSReplyTo();
+                JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(replyDestination);
                 listener.startJms(_jmsProvider);
-                HandlerResponse response = _commandSender.sendCommand(command,
-                        listener
-                );
+                HandlerResponse response = _commandSender.sendCommand(command, listener);
 
                 //send response back to the client
                 sendResponse(message.getJMSReplyTo(), response);

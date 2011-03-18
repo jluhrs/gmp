@@ -33,6 +33,19 @@ public class MockedJmsArtifactsTestBase {
         }
     }
 
+    public void createMockedObjectsThatThrowJMSException() {
+        provider = Mockito.mock(JmsProvider.class);
+        try {
+            connectionFactory = Mockito.mock(ConnectionFactory.class);
+
+            // Mock connection
+            when(connectionFactory.createConnection()).thenThrow(new JMSException(""));
+        } catch (JMSException e) {
+            // Shouldn't happen as we are mocking
+            e.printStackTrace();
+        }
+    }
+
     protected void mockSessionProducerAndConsumer() throws JMSException {
         session = mockSessionCreation();
 
