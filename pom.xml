@@ -111,7 +111,7 @@
         <module>gmp-tcs-context</module>
         <module>gmp-logging</module>
         <module>gmp-commands</module>
-        <module>gmp-commands-jms-executors</module>
+        <module>gmp-commands-jms-bridge</module>
         <module>gmp-commands-records</module>
         <module>gmp-services</module>
         <module>gmp-pcs-updater</module>
