@@ -38,4 +38,5 @@ public interface Channel<T> {
      * @param listener
      */
     void registerListener(ChannelListener listener);
+    void unRegisterListener(ChannelListener listener);
 }

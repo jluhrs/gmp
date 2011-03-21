@@ -32,6 +32,11 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     }
 
     @Override
+    public void unRegisterListener(ChannelListener listener) {
+        ch.unRegisterListener(listener);
+    }
+
+    @Override
     public void setValue(T value) throws CAException {
         ch.setValue(value);
     }

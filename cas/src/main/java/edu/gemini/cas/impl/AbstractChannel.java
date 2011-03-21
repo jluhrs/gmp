@@ -9,9 +9,12 @@ import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
+import gov.aps.jca.cas.ProcessVariableEventCallback;
 import gov.aps.jca.dbr.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class AbstractChannel
@@ -21,9 +24,12 @@ import java.util.List;
  */
 abstract class AbstractChannel<T> implements Channel<T> {
     private AlarmMemoryProcessVariable pv;
+    private final Map<ChannelListener, ProcessVariableEventCallback> eventCallbacks = new HashMap<ChannelListener, ProcessVariableEventCallback>();
 
     protected AbstractChannel(AlarmMemoryProcessVariable pv) {
         this.pv = pv;
+        ProcessVariableEventDispatcher ed = new ProcessVariableEventDispatcher(pv);
+        pv.setEventCallback(ed);
     }
 
     /**
@@ -144,18 +150,24 @@ abstract class AbstractChannel<T> implements Channel<T> {
 
     @Override
     public void registerListener(ChannelListener listener) {
-        ProcessVariableEventDispatcher ed = new ProcessVariableEventDispatcher(pv);
-        ed.registerEventListener(new ProcessVariableEventListener(listener));
-        pv.setEventCallback(ed);
+        ProcessVariableEventCallback ec = new ProcessVariableEventListener(listener);
+        eventCallbacks.put(listener, ec);
+        ((ProcessVariableEventDispatcher) pv.getEventCallback()).registerEventListener(ec);
+    }
+
+    @Override
+    public void unRegisterListener(ChannelListener listener) {
+        ((ProcessVariableEventDispatcher) pv.getEventCallback()).unregisterEventListener(eventCallbacks.get(listener));
     }
 
     @Override
     public void setValue(T value) throws CAException {
         setValue(ImmutableList.of(value));
     }
+
     @Override
     public void setValue(List<T> values) throws CAException {
-        if (values==null || values.isEmpty()){
+        if (values == null || values.isEmpty()) {
             throw new IllegalArgumentException("Trying to write 0 values.");
         }
         if (!validateArgument(values)) {

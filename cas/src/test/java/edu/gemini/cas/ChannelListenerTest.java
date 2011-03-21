@@ -46,4 +46,38 @@ public class ChannelListenerTest {
         cas.stop();
 
     }
+
+    @Test
+    public  void test2listeners() throws CAException, InterruptedException {
+
+        ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
+        cas.start();
+        Channel<Double> ch=cas.createChannel("test", 1.0);
+        TestChannelListener chListener = new TestChannelListener(1);
+        ch.registerListener(chListener);
+        TestChannelListener chListener2 = new TestChannelListener(1);
+        ch.registerListener(chListener2);
+        ch.setValue(2.0);
+        assertTrue(chListener.await(1, TimeUnit.SECONDS));
+        assertTrue(chListener2.await(1, TimeUnit.SECONDS));
+        assertEquals(new Double(2.0), new Double(((double[]) ch.getValue().getValue())[0]));
+        cas.stop();
+
+    }
+
+    @Test
+    public  void testUnregisterListener() throws CAException, InterruptedException {
+
+        ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
+        cas.start();
+        Channel<Double> ch=cas.createChannel("test", 1.0);
+        TestChannelListener chListener = new TestChannelListener(1);
+        ch.registerListener(chListener);
+        ch.unRegisterListener(chListener);
+        ch.setValue(2.0);
+        assertFalse(chListener.await(1, TimeUnit.SECONDS));
+        assertEquals(new Double(2.0), new Double(((double[]) ch.getValue().getValue())[0]));
+        cas.stop();
+
+    }
 }
