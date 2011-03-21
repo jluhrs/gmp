@@ -52,6 +52,10 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     }
 
     @Override
+    public List<T> getVal() throws CAException {
+        return ch.extractValues(getValue());
+    }
+    @Override
     public String getName() {
         return ch.getName();
     }

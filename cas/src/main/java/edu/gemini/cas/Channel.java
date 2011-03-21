@@ -21,6 +21,7 @@ public interface Channel<T> {
      */
     void setValue(T value) throws CAException;
     void setValue(List<T> values) throws CAException;
+
     /**
      * Retrieves a value from a PV
      *
@@ -29,6 +30,14 @@ public interface Channel<T> {
      * @throws IllegalStateException if Channel is not correctly initialized
      */
     DBR getValue() throws CAException;
+
+    /**
+     * Convenience method to retrieve a value from a PV in a List<T>
+     * @return a List<T> containing the value(s) of the process variable
+     * @throws CAException if read couldn't be completed
+     * @throws IllegalStateException if Channel is not correctly initialized
+     */
+    List<T> getVal() throws CAException;
 
     String getName();
 

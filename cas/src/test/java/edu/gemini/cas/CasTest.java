@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -381,5 +382,18 @@ public class CasTest {
         dbr = ch.getValue();
         assertEquals(Severity.NO_ALARM, ((STS) dbr).getSeverity());
         assertEquals(Status.NO_ALARM, ((STS) dbr).getStatus());
+    }
+
+    @Test
+    public void testGetVal() throws Exception {
+        Channel<Integer> ch = giapicas.createChannel(varname, 1);
+        ch.setValue(3);
+
+        List<Integer> values= ch.getVal();
+
+
+        assertEquals(1, values.size());
+        assertEquals(new Integer(3), values.get(0));
+
     }
 }
