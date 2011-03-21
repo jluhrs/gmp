@@ -52,14 +52,18 @@ public class CommandSenderClient extends JmsMapMessageSenderReply<HandlerRespons
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener) {
+        return sendCommandIfPossible(command, 1000);
+    }
+
+    private HandlerResponse sendCommandIfPossible(Command command, long timeout) {
         if (isConnected()) {
-            return sendCommandAndWaitForReply(command);
+            return sendCommandAndWaitForReply(command, timeout);
         } else {
             return HandlerResponse.createError("Not connected");
         }
     }
 
-    private HandlerResponse sendCommandAndWaitForReply(Command command) {
+    private HandlerResponse sendCommandAndWaitForReply(Command command, long timeout) {
         DestinationData destination = new DestinationData(JmsKeys.GW_COMMAND_TOPIC, DestinationType.TOPIC);
         Map<String, String> message = ImmutableMap.of();
         Map<String, String> properties = ImmutableMap.of(
@@ -67,13 +71,13 @@ public class CommandSenderClient extends JmsMapMessageSenderReply<HandlerRespons
                 JmsKeys.GMP_ACTIVITY_KEY, command.getActivity().name()
         );
 
-        HandlerResponse handlerResponse = super.sendStringBasedMapMessageReply(destination, message, properties, 1000);
+        HandlerResponse handlerResponse = super.sendStringBasedMapMessageReply(destination, message, properties, timeout);
         return handlerResponse;
     }
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return sendCommandIfPossible(command, timeout);
     }
 
     @Override

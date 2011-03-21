@@ -42,10 +42,11 @@ public class CommandOperation implements Operation {
     public void execute() throws Exception {
         String url = "tcp://" + host + ":61616";
 
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
+        provider.startConnection();
+        CommandSenderClient senderClient = null;
         try {
-            ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
-            provider.startConnection();
-            CommandSenderClient senderClient = new CommandSenderClient(provider);
+            senderClient = new CommandSenderClient(provider);
 
             Configuration config = (_config != null) ? _config.getConfiguration() : emptyConfiguration();
 
@@ -66,10 +67,10 @@ public class CommandOperation implements Operation {
                 }
             }
 
-            senderClient.stopJms();
         } catch (TesterException ex) {
             LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
         } finally {
+            senderClient.stopJms();
         }
     }
 
