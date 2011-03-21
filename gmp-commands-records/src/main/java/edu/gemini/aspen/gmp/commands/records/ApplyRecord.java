@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.commands.records;
 
-import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
@@ -17,7 +16,6 @@ import java.util.logging.Level;
  *         Date: 3/17/11
  */
 @Component
-@Instantiate
 public class ApplyRecord extends Record{
 
     @Override
@@ -36,16 +34,14 @@ public class ApplyRecord extends Record{
         int id = getClientId();
         boolean error=false;
         for(CADRecord cad:cads){
-            cad.clid.setValue(id);
-            cad.dir.setValue(dir);
-            DBR dbr = cad.val.getValue();
+            cad.setClid(id);
+            cad.setDir(dir);
 
             //wait for VAL change, use a listener
-            int cadVal = ((int[])dbr.getValue())[0];
+            int cadVal = cad.getVal().get(0);
             if(cadVal<0){
                 val.setValue(cadVal);
-                dbr=cad.mess.getValue();
-                setMessage(((String[])dbr.getValue())[0]);
+                setMessage(cad.getMess().get(0));
                 error=true;
                 break;
             }else{
@@ -95,20 +91,24 @@ public class ApplyRecord extends Record{
     //private ChannelAccessServer cas;
 
     private ApplyRecord(@Requires ChannelAccessServer cas) {
-        super(cas,"gpi:apply");
+        super(cas);
+        LOG.info("Constructor");
 
     }
+    @Property(name = "prefix", value = "INVALID", mandatory = true)
+    private String myPrefix;
+    @Property(name = "recordname", value = "INVALID", mandatory = true)
+    private String myRecordname;
 
     @Validate
     public void start() {
+        LOG.info("Validate");
         try {
-            super.start();
+            super.start(myPrefix,myRecordname);
 
-            clid = cas.createChannel(prefix+".CLID", 0);
+            clid = cas.createChannel(prefix + recordname +".CLID", 0);
 
-            CADRecord cad = new CADRecord(cas,3);
-            cad.start();
-            cads.add(cad);
+
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -116,13 +116,27 @@ public class ApplyRecord extends Record{
 
     @Invalidate
     public void stop(){
+        LOG.info("InValidate");
         super.stop();
         cas.destroyChannel(clid);
-        for(CADRecord cad:cads){
-            cad.stop();
-        }
+//        for(CADRecord cad:cads){
+//            cad.stop();
+//        }
     }
 
+    @Bind(aggregate=true,optional=true)
+    public void bindCAD(CADRecord cad){
+        LOG.info("Bind");
+
+            cads.add(cad);
+    }
+
+    @Unbind(aggregate=true,optional=true)
+    public void unBindCAD(CADRecord cad){
+        LOG.info("Unbind");
+
+            cads.remove(cad);
+    }
     private int incAndGetClientId() throws CAException {
         int value = getClientId();
         clid.setValue(++value);

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  */
 public abstract class Record {
     protected static final Logger LOG = Logger.getLogger(Record.class.getName());
-    protected String prefix;
 
     enum Dir {
         MARK,
@@ -56,9 +55,11 @@ public abstract class Record {
 
     protected ChannelAccessServer cas;
 
-    protected Record(ChannelAccessServer cas, String prefix) {
+    protected String prefix;
+    protected String recordname;
+
+    protected Record(ChannelAccessServer cas) {
         this.cas = cas;
-        this.prefix = prefix;
     }
 
     /**
@@ -70,13 +71,16 @@ public abstract class Record {
      */
     protected abstract boolean processDir(Dir dir) throws CAException;
 
-    protected void start() throws CAException {
-        dir = cas.createChannel(prefix + ".DIR", Dir.CLEAR);
+    protected void start(String prefix, String recordname) throws CAException {
+        this.prefix=prefix;
+        this.recordname=recordname;
+
+        dir = cas.createChannel(prefix + recordname + ".DIR", Dir.CLEAR);
         dir.registerListener(new DirListener());
-        val = cas.createChannel(prefix + ".VAL", 0);
-        mess = cas.createChannel(prefix + ".MESS", "");
-        omss = cas.createChannel(prefix + ".OMSS", "");
-        car = new CARRecord(cas,prefix+"C");
+        val = cas.createChannel(prefix + recordname + ".VAL", 0);
+        mess = cas.createChannel(prefix + recordname + ".MESS", "");
+        omss = cas.createChannel(prefix + recordname + ".OMSS", "");
+        car = new CARRecord(cas,prefix + recordname + "C");
         car.start();
     }
 
