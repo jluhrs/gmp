@@ -7,19 +7,22 @@ import org.mockito.Matchers;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
 import javax.jms.Topic;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class JmsMapMessageSenderTest extends JmsArtifactTestBase {
+public class JmsMapMessageSenderReplyTest extends JmsArtifactTestBase {
 
     protected DestinationData destinationData = new DestinationData("GMP.TOPIC", DestinationType.TOPIC);
+    protected final String replyTo = "GMP.REPLY_TOPIC";
     protected Map<String, String> messageBody;
     protected Map<String, String> messageProperties;
     protected AtomicBoolean called;
@@ -46,7 +49,7 @@ public class JmsMapMessageSenderTest extends JmsArtifactTestBase {
     @Test(expected = MessagingException.class)
     public void testSendMapMessageWhenNotConnected() {
         MapMessageBuilder mapMessageBuilder = mock(MapMessageBuilder.class);
-        JmsMapMessageSender sender = new JmsMapMessageSender("GMP.TOPIC");
+        JmsMapMessageSenderReply<String> sender = new StringSenderReply("GMP.TOPIC");
 
         sender.sendMapMessage(destinationData, mapMessageBuilder);
     }
@@ -55,18 +58,35 @@ public class JmsMapMessageSenderTest extends JmsArtifactTestBase {
     public void testSendStringBasedMapMessage() throws JMSException {
         mockSessionProducerAndConsumer();
 
-        JmsMapMessageSender sender = new JmsMapMessageSender("GMP.TOPIC");
+        JmsMapMessageSenderReply<String> sender = new StringSenderReply("GMP.TOPIC");
         sender.startJms(provider);
 
-        // Attempt to send the message
-        MapMessage sentMessage = sender.sendMapMessage(destinationData, mapMessageBuilder);
+        String reply = sender.sendMessageWithReply(destinationData, mapMessageBuilder, 1000);
 
-        // Verify the message has been sent
-        assertNotNull(sentMessage);
+        assertEquals("GMP.TOPIC", reply);
         verify(producer).send(Matchers.<Topic>anyObject(), eq(mapMessage));
-        assertTrue(called.get());
 
-        sender.stopJms();
+        assertTrue(called.get());
+    }
+
+    /**
+     * Class that extends JmsMapMessageSenderReply for testing
+     */
+    private class StringSenderReply extends JmsMapMessageSenderReply<String> {
+
+        public StringSenderReply(String clientName) {
+            super(clientName);
+        }
+
+        @Override
+        protected MessageConsumer createReplyConsumer(Message requestMessage) throws JMSException {
+            return super._session.createConsumer(requestMessage.getJMSReplyTo());
+        }
+
+        @Override
+        protected String buildResponse(Message reply) throws JMSException {
+            return super._clientName;
+        }
     }
 
 }
