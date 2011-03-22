@@ -26,6 +26,9 @@ import static org.mockito.Mockito.when;
 public class JmsArtifactTestBase {
     protected ConnectionFactory connectionFactory;
     protected Session session;
+    protected MessageProducer producer;
+    protected JmsProvider provider;
+    protected MapMessage mapMessage;
 
     @Before
     public void setupSession() {
@@ -40,7 +43,7 @@ public class JmsArtifactTestBase {
     protected void mockSessionProducerAndConsumer() throws JMSException {
         session = mockSessionCreation();
 
-        MessageProducer producer = Mockito.mock(MessageProducer.class);
+        producer = Mockito.mock(MessageProducer.class);
         Mockito.when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
         MessageConsumer consumer = Mockito.mock(MessageConsumer.class);
         Mockito.when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
@@ -51,7 +54,7 @@ public class JmsArtifactTestBase {
         Topic topic = mock(Topic.class);
         when(session.createTopic(anyString())).thenReturn(topic);
 
-        MapMessage mapMessage = Mockito.mock(MapMessage.class);
+        mapMessage = Mockito.mock(MapMessage.class);
         when(session.createMapMessage()).thenReturn(mapMessage);
     }
 
@@ -59,6 +62,8 @@ public class JmsArtifactTestBase {
         Session session = Mockito.mock(Session.class);
         // Mock connection factory
         connectionFactory = Mockito.mock(ConnectionFactory.class);
+        provider = mock(JmsProvider.class);
+        when(provider.getConnectionFactory()).thenReturn(connectionFactory);
 
         // Mock connection
         Connection connection = Mockito.mock(Connection.class);
