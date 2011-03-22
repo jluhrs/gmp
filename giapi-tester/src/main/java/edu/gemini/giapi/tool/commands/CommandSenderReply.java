@@ -43,7 +43,7 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
     public HandlerResponse sendCommandMessage(Command command, long timeout) {
         if (isConnected()) {
             HandlerResponse initialResponse = state.sendCommandMessage(command, timeout);
-            if (initialResponse == HandlerResponse.COMPLETED) {
+            if (initialResponse == HandlerResponse.COMPLETED || initialResponse.getResponse() == HandlerResponse.Response.ERROR) {
                 state = new CompletedCommandSenderState(this);
                 completionReceived();
             } else {

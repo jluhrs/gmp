@@ -72,6 +72,21 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
         assertTrue(completionListener.wasInvoked());
     }
 
+    @Test
+    public void testSendApplyWithoutConfiguration() throws TesterException, JMSException {
+        mockInitialResponseMessage("ERROR");
+
+        ArgumentCaptor<MessageListener> listenerCaptor = ArgumentCaptor.forClass(MessageListener.class);
+
+        Command command = new Command(SequenceCommand.APPLY, Activity.START, emptyConfiguration());
+
+        // Simulate that a reply was sent later on
+        HandlerResponse response = senderClient.sendCommand(command, completionListener);
+        assertEquals(HandlerResponse.Response.ERROR, response.getResponse());
+
+        verify(session).close();
+    }
+
     private MapMessage mockCompletionInformationMessage() throws JMSException {
         MapMessage replyMessage = mock(MapMessage.class);
         when(replyMessage.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenReturn("COMPLETED");
