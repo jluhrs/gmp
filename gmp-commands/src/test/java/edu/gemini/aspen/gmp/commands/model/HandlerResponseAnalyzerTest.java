@@ -11,9 +11,9 @@ import java.util.HashMap;
 /**
  * A test suite for the handler response analizer
  */
-public class HandlerResponseAnalizerTest {
+public class HandlerResponseAnalyzerTest {
 
-    HandlerResponseAnalizer _analizer;
+    HandlerResponseAnalyzer _analyzer;
 
     HandlerResponse[] _responses;
     
@@ -21,7 +21,7 @@ public class HandlerResponseAnalizerTest {
 
     @Before
     public void setUp() {
-        _analizer = new HandlerResponseAnalizer();
+        _analyzer = new HandlerResponseAnalyzer();
         _responses = new HandlerResponse[] {
                 HandlerResponse.ACCEPTED,
                 HandlerResponse.STARTED,
@@ -45,9 +45,9 @@ public class HandlerResponseAnalizerTest {
     @Test
     public void testResultsWithOneEntry() {
         for (HandlerResponse response: _responses) {
-            HandlerResponseAnalizer analizer = new HandlerResponseAnalizer();
-            analizer.addResponse(response);
-            assertEquals(response, analizer.getSummaryResponse());
+            HandlerResponseAnalyzer analyzer = new HandlerResponseAnalyzer();
+            analyzer.addResponse(response);
+            assertEquals(response, analyzer.getSummaryResponse());
         }
     }
 
@@ -61,11 +61,11 @@ public class HandlerResponseAnalizerTest {
 
         for (HandlerResponse.Response response: HandlerResponse.Response.values()) {
 
-            HandlerResponseAnalizer analizer = new HandlerResponseAnalizer();
+            HandlerResponseAnalyzer analyzer = new HandlerResponseAnalyzer();
             for (int i = 0; i < nElem ; i++) {
-                analizer.addResponse(_responseMap.get(response));
+                analyzer.addResponse(_responseMap.get(response));
             }
-            assertEquals(_responseMap.get(response), analizer.getSummaryResponse());
+            assertEquals(_responseMap.get(response), analyzer.getSummaryResponse());
         }
     }
 
@@ -78,10 +78,10 @@ public class HandlerResponseAnalizerTest {
     public void testGetNoAnswer() {
 
         for (HandlerResponse.Response response: HandlerResponse.Response.values()) {
-            _analizer.addResponse(_responseMap.get(response));
+            _analyzer.addResponse(_responseMap.get(response));
         }
 
-        assertEquals(_responseMap.get(HandlerResponse.Response.NOANSWER), _analizer.getSummaryResponse());
+        assertEquals(_responseMap.get(HandlerResponse.Response.NOANSWER), _analyzer.getSummaryResponse());
     }
 
 
@@ -95,10 +95,10 @@ public class HandlerResponseAnalizerTest {
 
         for (HandlerResponse.Response response: HandlerResponse.Response.values()) {
             if (response != HandlerResponse.Response.NOANSWER)
-                _analizer.addResponse(_responseMap.get(response));
+                _analyzer.addResponse(_responseMap.get(response));
         }
 
-        assertEquals(_responseMap.get(HandlerResponse.Response.ERROR), _analizer.getSummaryResponse());
+        assertEquals(_responseMap.get(HandlerResponse.Response.ERROR), _analyzer.getSummaryResponse());
     }
 
 
@@ -107,12 +107,12 @@ public class HandlerResponseAnalizerTest {
      */
     @Test
     public void testStarted() {
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.STARTED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.ACCEPTED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.ACCEPTED));
-        assertEquals(_responseMap.get(HandlerResponse.Response.STARTED), _analizer.getSummaryResponse());
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.STARTED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.ACCEPTED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.ACCEPTED));
+        assertEquals(_responseMap.get(HandlerResponse.Response.STARTED), _analyzer.getSummaryResponse());
 
     }
 
@@ -121,11 +121,11 @@ public class HandlerResponseAnalizerTest {
      */
     @Test
     public void testAccepted() {
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.ACCEPTED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.ACCEPTED));
-        assertEquals(_responseMap.get(HandlerResponse.Response.ACCEPTED), _analizer.getSummaryResponse());
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.ACCEPTED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.ACCEPTED));
+        assertEquals(_responseMap.get(HandlerResponse.Response.ACCEPTED), _analyzer.getSummaryResponse());
 
     }
 
@@ -134,10 +134,10 @@ public class HandlerResponseAnalizerTest {
      */
     @Test
     public void testCompleted() {
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
-        _analizer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
-        assertEquals(_responseMap.get(HandlerResponse.Response.COMPLETED), _analizer.getSummaryResponse());
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
+        _analyzer.addResponse(_responseMap.get(HandlerResponse.Response.COMPLETED));
+        assertEquals(_responseMap.get(HandlerResponse.Response.COMPLETED), _analyzer.getSummaryResponse());
 
     }
 

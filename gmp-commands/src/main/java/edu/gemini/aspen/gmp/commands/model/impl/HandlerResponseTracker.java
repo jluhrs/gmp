@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.impl;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.HandlerResponseAnalizer;
+import edu.gemini.aspen.gmp.commands.model.HandlerResponseAnalyzer;
 
 import java.util.Map;
 import java.util.Collections;
@@ -34,7 +34,7 @@ class HandlerResponseTracker {
         /**
          * Keeps track of the received answers and can produce a summary out of them.
          */
-        HandlerResponseAnalizer analizer = new HandlerResponseAnalizer();
+        HandlerResponseAnalyzer analyzer = new HandlerResponseAnalyzer();
 
         private AtomicInteger pendingResponses = new AtomicInteger(); //how many responses are required to complete the request
 
@@ -44,7 +44,7 @@ class HandlerResponseTracker {
          * @param response new response to be considered in the final result
          */
         public void addResponse(HandlerResponse response) {
-            analizer.addResponse(response);
+            analyzer.addResponse(response);
             pendingResponses.decrementAndGet();
         }
 
@@ -66,7 +66,7 @@ class HandlerResponseTracker {
          */
         public HandlerResponse getResponse() {
             if (hasNoPendingResponses()) {
-                return analizer.getSummaryResponse();
+                return analyzer.getSummaryResponse();
             }
             else {
                 int pending = pendingResponses.get();

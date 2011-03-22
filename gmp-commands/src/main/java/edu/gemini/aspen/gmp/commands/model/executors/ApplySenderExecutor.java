@@ -65,7 +65,7 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
         }
 
         //this analyzer will get the result answer from this part of the configuration
-        HandlerResponseAnalizer analyzer = new HandlerResponseAnalizer();
+        HandlerResponseAnalyzer analyzer = new HandlerResponseAnalyzer();
 
         for (ConfigPath cp : configPathSet) {
             //get the subconfiguration

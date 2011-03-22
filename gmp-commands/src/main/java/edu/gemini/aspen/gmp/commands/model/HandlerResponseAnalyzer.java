@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * A class to analize handler responses and return a single representation when
+ * A class to analyze handler responses and return a single representation when
  * multiple responses are obtained.
  */
-public class HandlerResponseAnalizer {
+public class HandlerResponseAnalyzer {
 
 
     private final List<HandlerResponse> _responses = new ArrayList<HandlerResponse>();
