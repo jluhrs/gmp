@@ -1,13 +1,10 @@
 package edu.gemini.giapi.tool.commands;
 
 import com.google.common.base.Preconditions;
-import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
-import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.jms.api.JmsProvider;
 
@@ -70,16 +67,6 @@ public class CommandSenderClient implements CommandSender {
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
         return sendCommandIfPossible(command, timeout, listener);
-    }
-
-    @Override
-    public HandlerResponse sendSequenceCommand(SequenceCommand command, Activity activity, CompletionListener listener) {
-        throw new UnsupportedOperationException("Use sendCommand instead");
-    }
-
-    @Override
-    public HandlerResponse sendSequenceCommand(SequenceCommand command, Activity activity, Configuration config, CompletionListener listener) {
-        throw new UnsupportedOperationException("Use sendCommand instead");
     }
 
 }

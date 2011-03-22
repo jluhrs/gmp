@@ -1,13 +1,10 @@
 package edu.gemini.aspen.gmp.commands.model.impl;
 
 import com.google.common.base.Preconditions;
-import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
-import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
@@ -150,19 +147,4 @@ public class CommandSenderImpl implements CommandSender {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    @Override
-    public HandlerResponse sendSequenceCommand(SequenceCommand command,
-                                               Activity activity,
-                                               CompletionListener listener) {
-        return sendSequenceCommand(command, activity, null, listener);
-
-    }
-
-    @Override
-    public HandlerResponse sendSequenceCommand(SequenceCommand command,
-                                               Activity activity,
-                                               Configuration config,
-                                               CompletionListener listener) {
-        return sendCommand(new Command(command, activity, config), listener);
-    }
 }
