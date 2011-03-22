@@ -64,4 +64,10 @@ public final class DestinationData {
     public DestinationType getType() {
         return _type;
     }
+
+    @Override
+    public String toString() {
+        return "Destination {type=" + _type +
+                " name=" + _name + '}';
+    }
 }

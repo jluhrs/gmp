@@ -1,16 +1,20 @@
 package edu.gemini.jms.api;
 
-import javax.jms.*;
-import java.util.Map;
-import java.util.HashMap;
+import com.google.common.collect.Maps;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Session;
+import javax.jms.TemporaryQueue;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Implementation of a {@link edu.gemini.jms.api.MapMessageSender} using JMS.
  */
 public class JmsMapMessageSender extends BaseMessageProducer implements MapMessageSender {
-    private MessageBuilder _messageBuilder;
     private DestinationBuilder _destinationBuilder;
-    private Map<String, Destination> _destinationCache;
+    private ConcurrentMap<String, Destination> _destinationCache;
 
     /**
      * Utility types to create messages.
@@ -26,7 +30,8 @@ public class JmsMapMessageSender extends BaseMessageProducer implements MapMessa
         ReplyCreator {
             public MapMessage createMapMessage(Session session) throws JMSException {
                 MapMessage m = session.createMapMessage();
-                m.setJMSReplyTo(session.createTemporaryQueue());
+                TemporaryQueue temporaryQueue = session.createTemporaryQueue();
+                m.setJMSReplyTo(temporaryQueue);
                 return m;
             }
         };
@@ -34,133 +39,48 @@ public class JmsMapMessageSender extends BaseMessageProducer implements MapMessa
         abstract MapMessage createMapMessage(Session session) throws JMSException;
     }
 
-    public JmsMapMessageSender(String clientData) {
-        super(clientData, null);
-        _messageBuilder = new MessageBuilder();
+    public JmsMapMessageSender(String clientName) {
+        super(clientName, null);
         _destinationBuilder = new DestinationBuilder();
-        _destinationCache = new HashMap<String, Destination>();
-
+        _destinationCache = Maps.newConcurrentMap();
     }
 
-    public void sendMapMessage(DestinationData destination,
-                               Map<String, Object> message,
-                               Map<String, Object> properties) throws MessagingException {
-        sendMapMessageWithCreator(destination,
-                message,
-                properties,
-                MapMessageCreator.NoReplyCreator);
-    }
-
-
-    /**
-     * Auxiliary method to send a Map message using the specified
-     * mapMessageCreator. This method uses the destingation data object
-     * to construct the actual JMS destination where the message should
-     * be sent. The destinations are cached so there is no need to
-     * reconstruct them every time
-     *
-     * @param destination       where to send the message
-     * @param message           the message content
-     * @param properties        message properties
-     * @param mapMessageCreator defines how to construct the message.
-     * @return the Message that was sent, in case it is required for
-     *         the caller code. Usually this is needed for request-reply communications.
-     */
-    protected Message sendMapMessageWithCreator(DestinationData destination,
-                                                Map<String, Object> message,
-                                                Map<String, Object> properties,
-                                                MapMessageCreator mapMessageCreator) {
-        if (!isConnected()) {
-            return null; //don't do anything if there is no connection
+    @Override
+    public MapMessage sendMapMessage(DestinationData destinationData, MapMessageBuilder messageBuilder) throws MessagingException {
+        if (isConnected()) {
+            return sendMapMessage(destinationData, messageBuilder, MapMessageCreator.NoReplyCreator);
+        } else {
+            throw new MessagingException("Attempt to send a message when the sender is not ready");
         }
+    }
 
+    private MapMessage sendMapMessage(DestinationData destinationData, MapMessageBuilder messageBuilder,
+                                      MapMessageCreator creator) throws MessagingException {
+        Destination destination = null;
         try {
-
-            Destination d = _destinationCache.get(destination.getName());
-            if (d == null) {
-                d = _destinationBuilder.newDestination(destination, _session);
-                _destinationCache.put(destination.getName(), d);
-            }
-
-            return sendMapMessage(d, message, properties, mapMessageCreator);
+            destination = createDestination(destinationData);
+            return doMessageSending(destination, messageBuilder, creator);
         } catch (JMSException e) {
-            throw new MessagingException("Unable to send message", e);
+            throw new MessagingException("Unable to send message to destination " + destinationData, e);
         }
     }
 
+    private MapMessage doMessageSending(Destination destination, MapMessageBuilder messageBuilder, MapMessageCreator creator) throws JMSException {
+        MapMessage mm = creator.createMapMessage(_session);
 
-    protected MapMessage sendMapMessage(Destination destination,
-                                        Map<String, Object> message,
-                                        Map<String, Object> properties,
-                                        MapMessageCreator creator) throws MessagingException {
-        MapMessage mm;
-        try {
-            mm = creator.createMapMessage(_session);
+        // Delegate the construction of the map message
+        messageBuilder.constructMessageBody(mm);
+        _producer.send(destination, mm);
 
-            _messageBuilder.buildMapMessage(mm, message);
-
-            _messageBuilder.setMessageProperties(mm, properties);
-
-            _producer.send(destination, mm);
-
-        } catch (JMSException e) {
-            throw new MessagingException("Unable to send message", e);
-        }
         return mm;
     }
 
-    public MapMessage sendStringBasedMapMessage(Destination destination,
-                                                Map<String, String> message,
-                                                Map<String, String> properties) throws MessagingException {
-        return sendStringBasedMapMessage(destination, message, properties, JmsMapMessageSender.MapMessageCreator.NoReplyCreator);
-    }
-
-   protected Message sendStringBasedMapMessage(DestinationData destination,
-                                               Map<String, String> message,
-                                               Map<String, String> properties,
-                                               MapMessageCreator mapMessageCreator) {
-       if (!isConnected()) {
-           return null; //don't do anything if there is no connection
-       }
-
-       try {
-
-           Destination d = _destinationCache.get(destination.getName());
-           if (d == null) {
-               d = _destinationBuilder.newDestination(destination, _session);
-               _destinationCache.put(destination.getName(), d);
-           }
-
-           return sendStringBasedMapMessage(d, message, properties, mapMessageCreator);
-       } catch (JMSException e) {
-           throw new MessagingException("Unable to send message", e);
-       }
-   }
-
-
-    protected MapMessage sendStringBasedMapMessage(Destination destination,
-                                                   Map<String, String> message,
-                                                   Map<String, String> properties,
-                                                   MapMessageCreator creator) throws MessagingException {
-        if (!isConnected()) {
-            return null;
+    protected Destination createDestination(DestinationData destination) throws JMSException {
+        Destination d = _destinationCache.get(destination.getName());
+        if (d == null) {
+            d = _destinationBuilder.newDestination(destination, _session);
+            _destinationCache.put(destination.getName(), d);
         }
-
-        MapMessage mm;
-        try {
-            mm = creator.createMapMessage(_session);
-
-            _messageBuilder.fillStringBasedMapMessage(mm, message);
-
-            _messageBuilder.setStringMessageProperties(mm, properties);
-
-            _producer.send(destination, mm);
-
-        } catch (JMSException e) {
-            throw new MessagingException("Unable to send message", e);
-        }
-        return mm;
+        return d;
     }
-
-
 }

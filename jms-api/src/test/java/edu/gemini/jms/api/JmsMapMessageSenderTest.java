@@ -3,7 +3,6 @@ package edu.gemini.jms.api;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import java.util.Map;
@@ -14,24 +13,23 @@ import static org.mockito.Mockito.when;
 
 public class JmsMapMessageSenderTest extends JmsArtifactTestBase {
 
-    @Test
-    public void testSendMapMessage() {
+    @Test(expected = MessagingException.class)
+    public void testSendMapMessageWhenNotConnected() {
+        MapMessageBuilder mapMessageBuilder = mock(MapMessageBuilder.class);
         JmsMapMessageSender sender = new JmsMapMessageSender("GMP.TOPIC");
-        Map<String,Object> message = ImmutableMap.of();
-        Map<String,Object> properties = ImmutableMap.of();
         DestinationData destination = new DestinationData("GMP.TOPIC", DestinationType.TOPIC);
 
-        sender.sendMapMessage(destination, message, properties);
+        sender.sendMapMessage(destination, mapMessageBuilder);
     }
 
     @Test
     public void testSendStringBasedMapMessage() throws JMSException {
         mockSessionProducerAndConsumer();
+        MapMessageBuilder mapMessageBuilder = mock(MapMessageBuilder.class);
 
         JmsMapMessageSender sender = new JmsMapMessageSender("GMP.TOPIC");
         JmsProvider provider = mock(JmsProvider.class);
         when(provider.getConnectionFactory()).thenReturn(connectionFactory);
-
 
         MapMessage mapMessage = mock(MapMessage.class);
         when(session.createMapMessage()).thenReturn(mapMessage);
@@ -40,9 +38,9 @@ public class JmsMapMessageSenderTest extends JmsArtifactTestBase {
 
         Map<String,String> message = ImmutableMap.of();
         Map<String,String> properties = ImmutableMap.of();
-        Destination destination = mock(Destination.class);
+        DestinationData destinationData = new DestinationData("GMP.TOPIC", DestinationType.TOPIC);
 
-        assertNotNull(sender.sendStringBasedMapMessage(destination, message, properties));
+        assertNotNull(sender.sendMapMessage(destinationData, mapMessageBuilder));
     }
 
 }

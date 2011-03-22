@@ -1,12 +1,13 @@
 package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.jms.api.JmsMapMessageSenderReply;
 import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
+import edu.gemini.jms.api.JmsMapMessageSenderReply;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
+import javax.jms.MessageConsumer;
 
 /**
  * Extension of {@link edu.gemini.jms.api.JmsMapMessageSenderReply} that can understand and decode a
@@ -26,4 +27,14 @@ class HandlerResponseSenderReply extends JmsMapMessageSenderReply<HandlerRespons
             return HandlerResponse.NOANSWER;
         }
     }
+
+    /**
+     * This SenderReply object will listen based only on the temporary topic created to get responses
+     * and set in the getJmsReplyTo method
+     */
+    @Override
+    protected MessageConsumer createReplyConsumer(Message requestMessage) throws JMSException {
+        return _session.createConsumer(requestMessage.getJMSReplyTo());
+    }
+
 }

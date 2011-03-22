@@ -16,6 +16,7 @@ public class JmsKeys {
     public final static String GMP_ACTIVITY_PROP = "GMP_ACTIVITY_PROP";
     public final static String GMP_ACTIONID_PROP = "GMP_ACTIONID";
 
+
     //Handler Response Keys
     public final static String GMP_HANDLER_RESPONSE_KEY = "GMP_HANDLER_RESPONSE";
     public final static String GMP_HANDLER_RESPONSE_ERROR_KEY = "GMP_HANDLER_RESPONSE_ERROR";
@@ -53,6 +54,7 @@ public class JmsKeys {
 
     //Gateway Command Keys
     public final static String GW_COMMAND_TOPIC = GW_PREFIX + GMP_SEPARATOR + "SC";
+    public final static String GW_COMMAND_REPLY_TOPIC = GW_PREFIX + GMP_SEPARATOR + "COMMAND_REPLY";
 
 
     //EPICS Interface Keys

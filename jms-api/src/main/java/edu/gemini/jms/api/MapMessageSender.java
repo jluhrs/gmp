@@ -1,6 +1,6 @@
 package edu.gemini.jms.api;
 
-import java.util.Map;
+import javax.jms.MapMessage;
 
 /**
  * A simplifying interface to send a message (described by a map) and its
@@ -15,12 +15,9 @@ public interface MapMessageSender {
      * primitive types for the content.
      *
      * @param destination where the message will be send to
-     * @param message     a map describing the content of the message
-     * @param properties  properties to be set in the message
+     * @param messageBuilder     An object capable of building a message
      * @throws MessagingException in case there is a problem sending the message
      */
-    void sendMapMessage(DestinationData destination,
-                        Map<String, Object> message,
-                        Map<String, Object> properties)
+    MapMessage sendMapMessage(DestinationData destination, MapMessageBuilder messageBuilder)
             throws MessagingException;
 }

@@ -1,7 +1,6 @@
 package edu.gemini.giapi.tool.commands;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
@@ -9,18 +8,11 @@ import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.aspen.giapitestsupport.TesterException;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.JmsMapMessageSenderReply;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
-import java.util.Map;
-import java.util.logging.Level;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -33,51 +25,51 @@ import java.util.logging.Logger;
  * <p/>
  * Instead it is meant to be used as a standalone client
  */
-public class CommandSenderClient extends JmsMapMessageSenderReply<HandlerResponse> implements CommandSender {
+public class CommandSenderClient implements CommandSender {
     private static final Logger LOG = Logger.getLogger(CommandSenderClient.class.getName());
-
-    private JmsProvider _provider;
+    private final JmsProvider provider;
 
     public CommandSenderClient(JmsProvider provider) throws TesterException {
-        super("");
+        this.provider = provider;
         Preconditions.checkArgument(provider != null, "Provider cannot be null");
-        this._provider = provider;
-
-        try {
-            startJms(provider);
-        } catch (JMSException e) {
-            LOG.log(Level.SEVERE, "Exception when connecting to the JMS broker", e);
-        }
     }
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener) {
-        return sendCommandIfPossible(command, 1000);
+        return sendCommandIfPossible(command, 5000, listener);
     }
 
-    private HandlerResponse sendCommandIfPossible(Command command, long timeout) {
-        if (isConnected()) {
-            return sendCommandAndWaitForReply(command, timeout);
-        } else {
+    private HandlerResponse sendCommandIfPossible(Command command, long timeout, CompletionListener listener) {
+        String correlationID = UUID.randomUUID().toString();
+        CommandSenderReply commandSenderReply = new CommandSenderReply(correlationID);
+        try {
+            commandSenderReply.startJms(provider);
+        } catch (JMSException e) {
             return HandlerResponse.createError("Not connected");
         }
-    }
 
-    private HandlerResponse sendCommandAndWaitForReply(Command command, long timeout) {
-        DestinationData destination = new DestinationData(JmsKeys.GW_COMMAND_TOPIC, DestinationType.TOPIC);
-        Map<String, String> message = ImmutableMap.of();
-        Map<String, String> properties = ImmutableMap.of(
-                JmsKeys.GMP_SEQUENCE_COMMAND_KEY, command.getSequenceCommand().name(),
-                JmsKeys.GMP_ACTIVITY_KEY, command.getActivity().name()
-        );
+        HandlerResponse initialResponse = commandSenderReply.sendCommandMessage(command, timeout);
 
-        HandlerResponse handlerResponse = super.sendStringBasedMapMessageReply(destination, message, properties, timeout);
-        return handlerResponse;
+        if (!initialResponse.equals(HandlerResponse.Response.COMPLETED)) {
+            commandSenderReply.waitForCompletionResponse(listener);
+            //System.out.println("Completion Information: " + completionResponse);
+            /*DestinationData replyDestination = new DestinationData(JmsKeys.GW_COMMAND_REPLY_TOPIC, DestinationType.TOPIC);
+            DestinationBuilder builder = new DestinationBuilder();
+            try {
+                System.out.println(this.waitForReplyMessage(builder.newDestination(replyDestination, this._session), timeout));
+            } catch (JMSException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }*/
+            //HandlerResponse lateResponse = this.waitForReply(, timeout);
+        } else {
+            commandSenderReply.stopJms();
+        }
+        return initialResponse;
     }
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
-        return sendCommandIfPossible(command, timeout);
+        return sendCommandIfPossible(command, timeout, listener);
     }
 
     @Override
@@ -88,11 +80,6 @@ public class CommandSenderClient extends JmsMapMessageSenderReply<HandlerRespons
     @Override
     public HandlerResponse sendSequenceCommand(SequenceCommand command, Activity activity, Configuration config, CompletionListener listener) {
         throw new UnsupportedOperationException("Use sendCommand instead");
-    }
-
-    @Override
-    protected HandlerResponse buildResponse(Message reply) throws JMSException {
-        return MessageBuilder.buildHandlerResponse(reply);
     }
 
 }

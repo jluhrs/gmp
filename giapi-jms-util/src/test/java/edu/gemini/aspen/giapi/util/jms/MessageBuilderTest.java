@@ -2,6 +2,7 @@ package edu.gemini.aspen.giapi.util.jms;
 
 
 import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
@@ -226,7 +227,7 @@ public class MessageBuilderTest {
         mm.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
         CompletionInformation completionInformation = MessageBuilder.buildCompletionInformation(mm);
 
-        assertEquals(new CompletionInformation(HandlerResponse.ACCEPTED, SequenceCommand.APPLY, Activity.PRESET, emptyConfiguration()), completionInformation);
+        assertEquals(new CompletionInformation(HandlerResponse.ACCEPTED, new Command(SequenceCommand.APPLY, Activity.PRESET, emptyConfiguration())), completionInformation);
     }
 
     @Test
@@ -243,7 +244,7 @@ public class MessageBuilderTest {
                 .withPath(configPath("x:A"), "1")
                 .withPath(configPath("x:B"), "2")
                 .build();
-        assertEquals(new CompletionInformation(HandlerResponse.ACCEPTED, SequenceCommand.APPLY, Activity.PRESET, config), completionInformation);
+        assertEquals(new CompletionInformation(HandlerResponse.ACCEPTED, new Command(SequenceCommand.APPLY, Activity.PRESET, config)), completionInformation);
     }
 
     @Test
@@ -254,7 +255,7 @@ public class MessageBuilderTest {
         mm.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
         CompletionInformation completionInformation = MessageBuilder.buildCompletionInformation(mm);
 
-        assertEquals(new CompletionInformation(HandlerResponse.createError("Error message"), SequenceCommand.APPLY, Activity.PRESET, emptyConfiguration()), completionInformation);
+        assertEquals(new CompletionInformation(HandlerResponse.createError("Error message"), new Command(SequenceCommand.APPLY, Activity.PRESET, emptyConfiguration())), completionInformation);
     }
 
     @Test(expected = JMSException.class)

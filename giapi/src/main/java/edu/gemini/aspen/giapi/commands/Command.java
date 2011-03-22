@@ -11,23 +11,38 @@ public class Command {
     private final SequenceCommand _sequenceCommand;
     private final Activity _activity;
     private final Configuration _config;
+    private static final Command NO_COMMAND = new Command();
+
+    public static Command noCommand() {
+        return NO_COMMAND;
+    }
+
+    /**
+     * Private constructor used only to create the noCommand constant
+     */
+    private Command() {
+        this._sequenceCommand = null;
+        this._activity = null;
+        this._config = emptyConfiguration();
+    }
+
 
     /**
      * Builds a new immutable Command object.
      * <p/>
      * Null parameters are not allowed.
-     *
+     * <p/>
      * Commands that need to pass a configuration like REBOOT and APPLY should use the
      * constructor {@link edu.gemini.aspen.giapi.commands.Command(SequenceCommand command, Activity activity, Configuration config)}
      *
-     * @param sequenceCommand  The Sequence sequenceCommand to send, like INIT or REBOOT
-     * @param activity The associated activities to be executed for the
-     *                 specified sequence sequenceCommand, like PRESET or START
+     * @param sequenceCommand The Sequence sequenceCommand to send, like INIT or REBOOT
+     * @param activity        The associated activities to be executed for the
+     *                        specified sequence sequenceCommand, like PRESET or START
      */
     public Command(SequenceCommand sequenceCommand, Activity activity) {
         checkArgument(sequenceCommand != null, "Command cannot be null");
         checkArgument(activity != null, "Activity cannot be null");
-        checkArgument(!(sequenceCommand.equals(SequenceCommand.APPLY) ||  sequenceCommand.equals(SequenceCommand.REBOOT)), "Activity with no configuration cannot be APPLY or REBOOT");
+        checkArgument(!(sequenceCommand.equals(SequenceCommand.APPLY) || sequenceCommand.equals(SequenceCommand.REBOOT)), "Activity with no configuration cannot be APPLY or REBOOT");
 
         this._sequenceCommand = sequenceCommand;
         this._activity = activity;
@@ -39,11 +54,11 @@ public class Command {
      * <p/>
      * Null parameters are not allowed.
      *
-     * @param sequenceCommand  The Sequence sequenceCommand to send, like INIT or REBOOT
-     * @param activity The associated activities to be executed for the
-     *                 specified sequence sequenceCommand, like PRESET or START
-     * @param config   the configuration that will be sent along with the
-     *                 sequence sequenceCommand
+     * @param sequenceCommand The Sequence sequenceCommand to send, like INIT or REBOOT
+     * @param activity        The associated activities to be executed for the
+     *                        specified sequence sequenceCommand, like PRESET or START
+     * @param config          the configuration that will be sent along with the
+     *                        sequence sequenceCommand
      */
     public Command(SequenceCommand sequenceCommand, Activity activity, Configuration config) {
         checkArgument(sequenceCommand != null, "Command cannot be null");
@@ -105,10 +120,10 @@ public class Command {
 
     @Override
     public String toString() {
-        return "Command{" +
-                "sequence=" + _sequenceCommand +
-                ", activity=" + _activity +
-                (_config.isEmpty()?"":", _config=" + _config )+
-                '}';
+        return "[command=" + _sequenceCommand +
+                "][activity=" + _activity +
+                "][" + _config +
+                "]";
     }
+
 }

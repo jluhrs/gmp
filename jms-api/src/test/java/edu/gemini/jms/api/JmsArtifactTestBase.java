@@ -8,9 +8,16 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
+import javax.jms.Queue;
 import javax.jms.Session;
+import javax.jms.Topic;
+
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Basically a duplicate of MockedJmsArtifactsTestBase but cannot be the same class to avoid
@@ -37,6 +44,15 @@ public class JmsArtifactTestBase {
         Mockito.when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
         MessageConsumer consumer = Mockito.mock(MessageConsumer.class);
         Mockito.when(session.createConsumer(Matchers.<Destination>anyObject())).thenReturn(consumer);
+
+        Queue queue = mock(Queue.class);
+        when(session.createQueue(anyString())).thenReturn(queue);
+
+        Topic topic = mock(Topic.class);
+        when(session.createTopic(anyString())).thenReturn(topic);
+
+        MapMessage mapMessage = Mockito.mock(MapMessage.class);
+        when(session.createMapMessage()).thenReturn(mapMessage);
     }
 
     private Session mockSessionCreation() throws JMSException {

@@ -17,8 +17,8 @@ import org.mockito.Mockito;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
+import javax.jms.Topic;
 
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -48,7 +48,7 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
 
         verify(commandsSender).sendCommand(commandCaptor.capture(), listenerCaptor.capture());
 
-        verify(producer).send(eq(replyDestination), Matchers.<MapMessage>anyObject());
+        verify(producer).send(Matchers.<Topic>anyObject(), Matchers.<MapMessage>anyObject());
     }
 
     private MapMessage mockApplyAndResponse() throws JMSException {
@@ -65,13 +65,13 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
 
         verify(commandsSender).sendCommand(commandCaptor.capture(), listenerCaptor.capture());
 
-        verify(producer).send(eq(replyDestination), Matchers.<MapMessage>anyObject());
+        verify(producer).send(Matchers.<Topic>anyObject(), Matchers.<MapMessage>anyObject());
 
         // Now send the complete
         listenerCaptor.getValue().onHandlerResponse(HandlerResponse.get(HandlerResponse.Response.COMPLETED), commandCaptor.getValue());
 
         // A new message should have been sent over JMS
-        verify(producer, times(2)).send(eq(replyDestination), Matchers.<MapMessage>anyObject());
+        verify(producer, times(2)).send(Matchers.<Topic>anyObject(), Matchers.<MapMessage>anyObject());
     }
 
     private MapMessage createApplyCommandMessage() throws JMSException {
@@ -80,8 +80,7 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
         when(message.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY)).thenReturn(Activity.PRESET.toString());
         CommandMessageParserTest.addConfigurationEntriesToMsg(message);
 
-        replyDestination = mock(Destination.class);
-        when(message.getJMSReplyTo()).thenReturn(replyDestination);
+        when(message.getJMSCorrelationID()).thenReturn("123");
         return message;
     }
 

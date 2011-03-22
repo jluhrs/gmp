@@ -11,9 +11,10 @@ import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.JmsMapMessageSender;
+import edu.gemini.jms.api.MapMessageBuilder;
 
-import javax.jms.Destination;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -26,27 +27,36 @@ import java.util.logging.Logger;
  */
 public class JmsForwardingCompletionListener extends JmsMapMessageSender implements CompletionListener {
     private static final Logger LOG = Logger.getLogger(JmsForwardingCompletionListener.class.getName());
-    private final Destination _replyDestination;
+    private final DestinationData _replyDestination;
+    private final String correlationID;
 
-    public JmsForwardingCompletionListener(Destination replyDestination) {
+    public JmsForwardingCompletionListener(DestinationData replyDestination, String correlationID) {
         super("");
         _replyDestination = replyDestination;
+        this.correlationID = correlationID;
+    }
+
+    public void sendInitialResponse(HandlerResponse response) {
+        LOG.info("Sent initial response " + response + " to " + _replyDestination + " " + correlationID);
+        Map<String, String> messageBody = CommandMessageSerializer.convertHandlerResponseToProperties(response);
+
+        // Send the reply properties as a map properties
+        MapMessageBuilder messageBuilder = new CommandReplyMapMessageBuilder(correlationID, messageBody, ImmutableMap.<String, String>of());
+        super.sendMapMessage(_replyDestination, messageBuilder);
     }
 
     @Override
     public void onHandlerResponse(HandlerResponse response, Command command) {
+        LOG.info("Arrived response " + response + " forward to " + _replyDestination);
+        sendCompletionResponse(response, command);
+    }
+
+    private void sendCompletionResponse(HandlerResponse response, Command command) {
         Map<String, String> message = convertConfigurationToProperties(command.getConfiguration());
         Map<String, String> properties = convertResponseAndCommandToProperties(response, command);
 
-        // Send the reply message as a map message
-        super.sendStringBasedMapMessage(_replyDestination, message, properties);
-    }
-
-    public void sendImmediateHandlerResponse(HandlerResponse response) {
-        Map<String, String> message = CommandMessageSerializer.convertHandlerResponseToProperties(response);
-
-        // Send the reply message as a map message
-        super.sendStringBasedMapMessage(_replyDestination, message, ImmutableMap.<String, String>of());
+        MapMessageBuilder messageBuilder = new CommandReplyMapMessageBuilder(correlationID, message, properties);
+        super.sendMapMessage(_replyDestination, messageBuilder);
     }
 
     /**
@@ -60,6 +70,11 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
             content.put(path.getName(), config.getValue(path));
         }
         return content;
+    }
+
+    @Override
+    public String toString() {
+        return "ForwardingCompletionListener on " + _replyDestination.getName();
     }
 
     /**
@@ -91,4 +106,5 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
     public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
         onHandlerResponse(response, new Command(command, activity, config));
     }
+
 }

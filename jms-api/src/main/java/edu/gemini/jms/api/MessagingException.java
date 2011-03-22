@@ -9,5 +9,8 @@ public class MessagingException extends RuntimeException {
         super(message, cause);
     }
 
+    public MessagingException(String message) {
+        super(message);
+    }
 
 }

@@ -2,6 +2,7 @@ package edu.gemini.giapi.tool.commands;
 
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import org.junit.Test;
@@ -18,9 +19,9 @@ public class WaitingCompletionListenerTest {
 
         long start = System.currentTimeMillis();
         // No responses will arrive in this case
-        HandlerResponse response = completionListener.waitForResponse(TIMEOUT);
+        CompletionInformation completionInformation = completionListener.waitForResponse(TIMEOUT);
 
-        assertEquals(HandlerResponse.createError("Response not arrived in time: " + TIMEOUT), response);
+        assertEquals(HandlerResponse.createError("Response not arrived in time: " + TIMEOUT), completionInformation.getHandlerResponse());
         assertTrue((System.currentTimeMillis() - start)>=TIMEOUT);
     }
 
@@ -35,9 +36,9 @@ public class WaitingCompletionListenerTest {
 
         completionListener.onHandlerResponse(response, command);
         // No responses will be sent in this case
-        HandlerResponse arrivedResponse = completionListener.waitForResponse(TIMEOUT);
+        CompletionInformation completionInformation = completionListener.waitForResponse(TIMEOUT);
 
-        assertEquals(HandlerResponse.get(HandlerResponse.Response.COMPLETED), arrivedResponse);
+        assertEquals(HandlerResponse.get(HandlerResponse.Response.COMPLETED), completionInformation.getHandlerResponse());
 
         assertTrue((System.currentTimeMillis() - start)<TIMEOUT);
     }

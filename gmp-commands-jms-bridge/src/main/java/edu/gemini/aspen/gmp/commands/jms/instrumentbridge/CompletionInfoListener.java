@@ -81,7 +81,7 @@ class CompletionInfoListener implements MessageListener {
             int actionId = message.getIntProperty(JmsKeys.GMP_ACTIONID_PROP);
             HandlerResponse response = MessageBuilder.buildHandlerResponse(message);
 
-            LOG.fine("Received Completion info for action ID " +
+            LOG.info("Received Completion info for action ID " +
                     actionId + " : " + response.toString());
 
             //Notify the CommandUpdater

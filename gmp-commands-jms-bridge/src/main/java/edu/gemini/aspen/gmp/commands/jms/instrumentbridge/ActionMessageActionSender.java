@@ -25,9 +25,6 @@ import javax.jms.JMSException;
  * the {@link edu.gemini.aspen.gmp.commands.model.ActionSender} interface
  * to simplify the usage (and consistency) across the different
  * {@link edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor}
- * <p/>
- * It also implements {@link edu.gemini.jms.api.JmsArtifact} to get a reference
- * of a {@link edu.gemini.jms.api.JmsProvider}
  */
 @Component
 @Instantiate
@@ -45,20 +42,26 @@ class ActionMessageActionSender implements ActionSender {
     public HandlerResponse send(ActionMessage actionMessage)
             throws SequenceCommandException {
         Preconditions.checkArgument(actionMessage != null, "Passed action message to send cannot be null");
+
         return send(actionMessage, RESPONSE_WAIT_TIMEOUT);
     }
 
     @Override
     public HandlerResponse send(ActionMessage actionMessage, long timeout) {
         try {
-            return _messageSender.sendMapMessageReply(
-                    new DestinationData(actionMessage.getDestinationName(), DestinationType.TOPIC),
-                    actionMessage.getDataElements(),
-                    actionMessage.getProperties(),
-                    timeout);
+            return sendMessageAndWaitForReply(actionMessage, timeout);
         } catch (MessagingException e) {
             throw new SequenceCommandException("Unable to send action", e);
         }
+    }
+
+    private HandlerResponse sendMessageAndWaitForReply(ActionMessage actionMessage, long timeout) {
+        DestinationData destinationData = new DestinationData(actionMessage.getDestinationName(), DestinationType.TOPIC);
+        CommandSendingMapMessageBuilder messageBuilder = new CommandSendingMapMessageBuilder(
+                actionMessage.getDataElements(),
+                actionMessage.getProperties());
+
+        return _messageSender.sendMessageWithReply(destinationData, messageBuilder, timeout);
     }
 
     @Validate

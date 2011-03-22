@@ -1,9 +1,10 @@
 package edu.gemini.jms.api;
 
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
-import javax.jms.JMSException;
-import java.util.Map;
 
 /**
  * Base class to model a request/reply communication using JMS.
@@ -11,68 +12,67 @@ import java.util.Map;
  * reply message in the communication as an Object.
  */
 public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
-        implements MapMessageSenderReply {
+        implements MapMessageSenderReply<T> {
 
-    public JmsMapMessageSenderReply(String clientData) {
-        super(clientData);
+    public JmsMapMessageSenderReply(String clientName) {
+        super(clientName);
     }
 
-    public T sendMapMessageReply(DestinationData destination,
-                                      Map<String, Object> message,
-                                      Map<String, Object> properties,
-                                      long timeout) throws MessagingException {
-        Message m = sendRequest(destination, message, properties);
+    @Override
+    public T sendMessageWithReply(DestinationData destination,
+                                  MapMessageBuilder messageBuilder,
+                                  long timeout) throws MessagingException {
+        Message m = sendMapMessageWithReply(destination, messageBuilder);
+        return waitForReply(m, timeout);
 
+    }
+
+    private MapMessage sendMapMessageWithReply(DestinationData destinationData, MapMessageBuilder messageBuilder) throws MessagingException {
+        MapMessage mm;
         try {
-            return waitForReply(m, timeout);
+            Destination destination = createDestination(destinationData);
+            mm = MapMessageCreator.ReplyCreator.createMapMessage(_session);
+
+            messageBuilder.constructMessageBody(mm);
+
+            _producer.send(destination, mm);
+        } catch (JMSException e) {
+            throw new MessagingException("Unable to send message", e);
+        }
+        return mm;
+    }
+
+    private T waitForReply(Message requestMessage, long timeout) {
+        try {
+            return waitForReplyMessage(requestMessage, timeout);
         } catch (JMSException e) {
             throw new MessagingException("Problem receiving reply", e);
         }
-
     }
 
-    public T sendStringBasedMapMessageReply(DestinationData destination,
-                                      Map<String, String> message,
-                                      Map<String, String> properties,
-                                      long timeout) throws MessagingException {
-        Message m = sendStringBasedRequest(destination, message, properties);
-
-        try {
-            return waitForReply(m, timeout);
-        } catch (JMSException e) {
-            throw new MessagingException("Problem receiving reply", e);
-        }
-
-    }
-
-    private Message sendRequest(DestinationData destination, Map<String, Object> message, Map<String, Object> properties) {
-        return sendMapMessageWithCreator(destination,
-                    message,
-                    properties,
-                    MapMessageCreator.ReplyCreator);
-    }
-
-    private Message sendStringBasedRequest(DestinationData destination, Map<String, String> message, Map<String, String> properties) {
-        return sendStringBasedMapMessage(destination,
-                message,
-                properties,
-                MapMessageCreator.ReplyCreator);
-    }
-
-    private T waitForReply(Message m, long timeout) throws JMSException {
-        MessageConsumer tempConsumer = _session.createConsumer(m.getJMSReplyTo());
+    protected T waitForReplyMessage(Message requestMessage, long timeout) throws JMSException {
+        MessageConsumer tempConsumer = createReplyConsumer(requestMessage);
         Message reply = tempConsumer.receive(timeout);
         tempConsumer.close();
         return buildResponse(reply);
     }
 
     /**
+     * Creates a consumer that is able to accept replies to the request message
+     *
+     * @param requestMessage
+     * @return a Message Consumer listening for replies to the request message
+     * @throws JMSException
+     */
+    protected abstract MessageConsumer createReplyConsumer(Message requestMessage) throws JMSException;
+
+    /**
      * Reconstruct the reply object from the reply message
+     *
      * @param reply message representing the answer to the request
      * @return object representing the reply.
-     *
      * @throws JMSException if there is a problem decoding the
-     * reply
+     *                      reply
      */
     protected abstract T buildResponse(Message reply) throws JMSException;
 }

@@ -3,6 +3,7 @@ package edu.gemini.aspen.giapi.util.jms;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
 import edu.gemini.aspen.giapi.commands.Activity;
+import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
@@ -181,7 +182,7 @@ public final class MessageBuilder {
             config = builder.build();
         }
 
-        return new CompletionInformation(handlerResponse, sc, activity, config);
+        return new CompletionInformation(handlerResponse, new Command(sc, activity, config));
     }
 
     public static Set<String> buildStatusNames(Message m) throws JMSException {

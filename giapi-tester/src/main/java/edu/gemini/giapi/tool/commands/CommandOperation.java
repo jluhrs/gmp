@@ -1,6 +1,7 @@
 package edu.gemini.giapi.tool.commands;
 
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapitestsupport.TesterException;
@@ -36,8 +37,7 @@ public class CommandOperation implements Operation {
     private String host = "localhost";
 
     private int repetitions = 1;
-    private long timeout = 0;
-
+    private long timeout = 25000;
 
     public void execute() throws Exception {
         String url = "tcp://" + host + ":61616";
@@ -55,22 +55,22 @@ public class CommandOperation implements Operation {
                     config);
 
             for (int x = 0; x < repetitions; x++) {
-                HandlerResponse response = senderClient.sendCommand(command, null);
+                WaitingCompletionListener listener = new WaitingCompletionListener();
+                HandlerResponse response = senderClient.sendCommand(command, listener);
 
                 System.out.println("Response Received: " + response);
 
                 if (response == HandlerResponse.STARTED) {
                     //now, wait for the answer, synchronously
-                    /*CompletionInformation info = senderClient.receiveCompletionInformation(
-                            timeout);*/
-                    System.out.println("Completion Information: " + response);
+                    CompletionInformation completionInformation
+                             = listener.waitForResponse(timeout);
+                    System.out.println("Completion Information: " + completionInformation);
                 }
             }
 
         } catch (TesterException ex) {
             LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
         } finally {
-            senderClient.stopJms();
         }
     }
 

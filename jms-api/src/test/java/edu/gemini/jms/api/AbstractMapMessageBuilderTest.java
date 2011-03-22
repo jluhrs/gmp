@@ -12,9 +12,16 @@ import java.util.Map;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
-public class MessageBuilderTest {
+public class AbstractMapMessageBuilderTest {
 
-    private MessageBuilder messageBuilder = new MessageBuilder();
+    private AbstractMapMessageBuilder messageBuilder = new AbstractMapMessageBuilder() {
+
+        @Override
+        public MapMessage constructMessageBody(MapMessage message) {
+            // Not used in this test
+            return null;
+        }
+    };
     private MapMessage message = mock(MapMessage.class);
     private Map<String, Object> messageContent = ImmutableMap.of("item1", (Object) "value1");
     private Map<String, Object> messageProperties = ImmutableMap.of("item1", (Object) "value1");
@@ -24,7 +31,7 @@ public class MessageBuilderTest {
     @Test
     public void testFillStringBasedMessage() throws JMSException {
         doThrow(new JMSException("Exception")).when(message).setObject(anyString(), Matchers.<Object>anyObject());
-        messageBuilder.fillStringBasedMapMessage(message, stringMessageContent);
+        messageBuilder.setStringBasedMessageBody(message, stringMessageContent);
 
         verify(message, times(messageContent.size())).setString(anyString(), anyString());
     }
@@ -32,7 +39,7 @@ public class MessageBuilderTest {
     @Test(expected = MessagingException.class)
     public void testFillStringBasedMessageWithAnException() throws JMSException {
         doThrow(new JMSException("Exception")).when(message).setString(anyString(), anyString());
-        messageBuilder.fillStringBasedMapMessage(message, stringMessageContent);
+        messageBuilder.setStringBasedMessageBody(message, stringMessageContent);
     }
 
     @Test
@@ -65,7 +72,7 @@ public class MessageBuilderTest {
 
     @Test
     public void testBuildMessage() throws JMSException {
-        messageBuilder.buildMapMessage(message, messageContent);
+        messageBuilder.setMessageBody(message, messageContent);
 
         verify(message, times(messageContent.size())).setObject(anyString(), Matchers.<Object>anyObject());
     }
@@ -74,6 +81,6 @@ public class MessageBuilderTest {
     public void testBuildMessageWithException() throws JMSException {
         doThrow(new JMSException("Exception")).when(message).setObject(anyString(), Matchers.<Object>anyObject());
 
-        messageBuilder.buildMapMessage(message, messageContent);
+        messageBuilder.setMessageBody(message, messageContent);
     }
 }

@@ -15,7 +15,6 @@ import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
@@ -38,6 +37,7 @@ public class CommandMessagesBridge implements MessageListener {
 
     private final BaseMessageConsumer _messageConsumer;
     private static final String CONSUMER_NAME = "Gateway Command Consumer";
+    private static final DestinationData REPLY_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_REPLY_TOPIC, DestinationType.QUEUE);
 
     public CommandMessagesBridge(@Requires JmsProvider jmsProvider, @Requires CommandSender commandSender) {
         Preconditions.checkArgument(jmsProvider != null, "JMS Provider cannot be null");
@@ -80,24 +80,24 @@ public class CommandMessagesBridge implements MessageListener {
     private void decodeMessageAndProcess(Message message) throws JMSException {
         if (isValidCommandMessage(message)) {
             Command command = CommandMessageParser.readCommand((MapMessage) message);
-            LOG.info("New command arrived: " + command);
+            LOG.info("New command arrived: " + command + " with correlationID " + message.getJMSCorrelationID());
 
             // TODO The listeners should be released at some point. We need to create an entity to keep
             // track of the listeners and release them when the command is effectively completed
-            JmsForwardingCompletionListener listener = setupCompletionListener(message.getJMSReplyTo());
+            JmsForwardingCompletionListener listener = setupCompletionListener(message.getJMSCorrelationID());
 
             HandlerResponse response = _commandSender.sendCommand(command, listener);
 
-            listener.sendImmediateHandlerResponse(response);
+            listener.sendInitialResponse(response);
         }
     }
 
     private boolean isValidCommandMessage(Message message) throws JMSException {
-        return message instanceof MapMessage && message.getJMSReplyTo() != null;
+        return message instanceof MapMessage && message.getJMSCorrelationID() != null;
     }
 
-    private JmsForwardingCompletionListener setupCompletionListener(Destination replyDestination) throws JMSException {
-        JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(replyDestination);
+    private JmsForwardingCompletionListener setupCompletionListener(String correlationID) throws JMSException {
+        JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(REPLY_DESTINATION, correlationID);
         listener.startJms(_jmsProvider);
         return listener;
     }
