@@ -1,11 +1,8 @@
 package edu.gemini.aspen.giapitestsupport.commands;
 
-import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
-import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -24,15 +21,6 @@ public final class CompletionListenerMock implements CompletionListener {
     public void onHandlerResponse(HandlerResponse response, Command command) {
             lastResponse = response;
             invocationLatch.countDown();
-    }
-
-    @Override
-    @Deprecated
-    public void onHandlerResponse(HandlerResponse response,
-                                  SequenceCommand command,
-                                  Activity activity,
-                                  Configuration config) {
-        onHandlerResponse(response, new Command(command, activity, config));
     }
 
     public void waitForCompletion(long timeout) {
