@@ -158,6 +158,7 @@ abstract class AbstractChannel<T> implements Channel<T> {
     @Override
     public void unRegisterListener(ChannelListener listener) {
         ((ProcessVariableEventDispatcher) pv.getEventCallback()).unregisterEventListener(eventCallbacks.get(listener));
+        eventCallbacks.remove(listener);
     }
 
     @Override
