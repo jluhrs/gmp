@@ -7,10 +7,10 @@ import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.jms.api.JmsProvider;
+import edu.gemini.jms.api.MessagingException;
 
 import javax.jms.JMSException;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 /**
  * This class sends sequence commands to the GMP using the bridge
@@ -23,50 +23,37 @@ import java.util.logging.Logger;
  * Instead it is meant to be used as a standalone client
  */
 public class CommandSenderClient implements CommandSender {
-    private static final Logger LOG = Logger.getLogger(CommandSenderClient.class.getName());
+    private static final int DEFAULT_TIMEOUT = 5000;
     private final JmsProvider provider;
 
     public CommandSenderClient(JmsProvider provider) throws TesterException {
-        this.provider = provider;
         Preconditions.checkArgument(provider != null, "Provider cannot be null");
+        this.provider = provider;
     }
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener) {
-        return sendCommandIfPossible(command, 5000, listener);
+        return sendCommandAndWaitResponse(command, listener, DEFAULT_TIMEOUT);
     }
 
-    private HandlerResponse sendCommandIfPossible(Command command, long timeout, CompletionListener listener) {
+    @Override
+    public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
+        return sendCommandAndWaitResponse(command, listener, timeout);
+    }
+
+    private HandlerResponse sendCommandAndWaitResponse(Command command, CompletionListener listener, long timeout) {
         String correlationID = UUID.randomUUID().toString();
         CommandSenderReply commandSenderReply = new CommandSenderReply(correlationID);
         try {
             commandSenderReply.startJms(provider);
         } catch (JMSException e) {
-            return HandlerResponse.createError("Not connected");
+            throw new MessagingException("Exception while starting the JMS provider", e);
         }
 
         HandlerResponse initialResponse = commandSenderReply.sendCommandMessage(command, timeout);
+        commandSenderReply.setupCompletionListener(listener);
 
-        if (!initialResponse.equals(HandlerResponse.Response.COMPLETED)) {
-            commandSenderReply.waitForCompletionResponse(listener);
-            //System.out.println("Completion Information: " + completionResponse);
-            /*DestinationData replyDestination = new DestinationData(JmsKeys.GW_COMMAND_REPLY_QUEUE, DestinationType.TOPIC);
-            DestinationBuilder builder = new DestinationBuilder();
-            try {
-                System.out.println(this.waitForReplyMessage(builder.newDestination(replyDestination, this._session), timeout));
-            } catch (JMSException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }*/
-            //HandlerResponse lateResponse = this.waitForReply(, timeout);
-        } else {
-            commandSenderReply.stopJms();
-        }
         return initialResponse;
-    }
-
-    @Override
-    public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
-        return sendCommandIfPossible(command, timeout, listener);
     }
 
 }
