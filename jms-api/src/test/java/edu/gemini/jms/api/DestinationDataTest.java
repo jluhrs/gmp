@@ -4,6 +4,7 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DestinationDataTest {
     @Test
@@ -38,18 +39,11 @@ public class DestinationDataTest {
         new EqualsTester(a, b, c, null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void buildWithNullName() {
-        new DestinationData(null, DestinationType.QUEUE);
+    @Test
+    public void testToString() {
+        DestinationData a = new DestinationData("topic1", DestinationType.TOPIC);
+
+        assertTrue(a.toString().contains("topic1"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void buildWithEmptyName() {
-        new DestinationData("", DestinationType.QUEUE);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void buildWithNullType() {
-        new DestinationData("queue1", null);
-    }
 }
