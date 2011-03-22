@@ -102,9 +102,4 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
                 JmsKeys.GMP_ACTIVITY_KEY, activity.name());
     }
 
-    @Deprecated
-    public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
-        onHandlerResponse(response, new Command(command, activity, config));
-    }
-
 }

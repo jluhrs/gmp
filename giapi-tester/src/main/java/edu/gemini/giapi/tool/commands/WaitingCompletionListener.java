@@ -1,12 +1,9 @@
 package edu.gemini.giapi.tool.commands;
 
-import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
-import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -27,11 +24,6 @@ public class WaitingCompletionListener implements CompletionListener {
     public void onHandlerResponse(HandlerResponse response, Command command) {
         this.response.set(new CompletionInformation(response, command));
         latch.countDown();
-    }
-
-    @Override
-    public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
-        throw new UnsupportedOperationException("");
     }
 
     /**

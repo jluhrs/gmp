@@ -3,10 +3,11 @@ package edu.gemini.aspen.gmp.commands.model;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * A test suite for the handler response analizer
@@ -38,7 +39,6 @@ public class HandlerResponseAnalyzerTest {
         _responseMap.put(HandlerResponse.Response.ERROR, _responses[4]);
     }
 
-
     /**
      * Check that the analizer works with a single entry on it
      */
@@ -69,7 +69,6 @@ public class HandlerResponseAnalyzerTest {
         }
     }
 
-
     /**
      * If there is one no-answer within the responses, then the whole response
      * is no-answer, regardless of the rest
@@ -83,8 +82,6 @@ public class HandlerResponseAnalyzerTest {
 
         assertEquals(_responseMap.get(HandlerResponse.Response.NOANSWER), _analyzer.getSummaryResponse());
     }
-
-
 
     /**
      * If there is an error then the whole response
@@ -100,7 +97,6 @@ public class HandlerResponseAnalyzerTest {
 
         assertEquals(_responseMap.get(HandlerResponse.Response.ERROR), _analyzer.getSummaryResponse());
     }
-
 
     /**
      * This test assumes we get COMPLETED, ACCEPTED and STARTED responses.
@@ -140,11 +136,5 @@ public class HandlerResponseAnalyzerTest {
         assertEquals(_responseMap.get(HandlerResponse.Response.COMPLETED), _analyzer.getSummaryResponse());
 
     }
-
-
-
-
-
-
 }
 

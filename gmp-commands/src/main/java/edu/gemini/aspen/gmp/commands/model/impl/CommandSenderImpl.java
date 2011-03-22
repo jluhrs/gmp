@@ -92,11 +92,6 @@ public class CommandSenderImpl implements CommandSender {
         }
 
         @Override
-        public void onHandlerResponse(HandlerResponse response, SequenceCommand command, Activity activity, Configuration config) {
-            onHandlerResponse(response, new Command(command, activity, config));
-        }
-
-        @Override
         public String toString() {
             return _listener.toString();
         }
