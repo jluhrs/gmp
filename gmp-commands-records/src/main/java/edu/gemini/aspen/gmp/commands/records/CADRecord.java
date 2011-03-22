@@ -12,7 +12,10 @@ import java.util.List;
  */
 public interface CADRecord {
     void setClid(Integer id) throws CAException;
+
     void setDir(Record.Dir d) throws CAException;
+
     List<Integer> getVal() throws CAException;
+
     List<String> getMess() throws CAException;
 }

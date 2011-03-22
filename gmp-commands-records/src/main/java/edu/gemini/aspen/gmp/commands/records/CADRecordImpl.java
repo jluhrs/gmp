@@ -19,7 +19,7 @@ import java.util.logging.Level;
  */ //todo:make listeners, and maybe records, thread safe
 @Component
 @Provides
-public class CADRecordImpl extends Record implements CADRecord{
+public class CADRecordImpl extends Record implements CADRecord {
     private static char[] letters = new char[]{'A', 'B', 'C', 'D', 'E'};
 
     @Override
@@ -43,7 +43,7 @@ public class CADRecordImpl extends Record implements CADRecord{
     }
 
 
-    private class AttributeListener implements ChannelListener{
+    private class AttributeListener implements ChannelListener {
 
         @Override
         public void valueChange(DBR dbr) {
@@ -55,39 +55,9 @@ public class CADRecordImpl extends Record implements CADRecord{
             }
         }
     }
-    //in
-    /**
-     * The directive to execute. This may be one of the following enumerated list values: MARK , CLEAR , PRESET ,
-     * START , or STOP .
-     */
-    //Channel<ApplyRecord.Dir> dir;
-    /**
-     * An integer value to be associated with the current command.
-     */
-    //private Channel<Long> icid;
-    //Channel<Integer> icid;
-      Channel<Integer> ocid;
 
-    //out
-    /**
-     * The return value is set within the user-supplied processing subroutine. Conventionally, a return value of zero
-     * indicates success, while a non-zero value shows an error has occurred.
-     */
-    //private Channel<Long> val;
-   // Channel<Integer> val;
-    /**
-     * A return message from the CAD. This string will be empty if the return value is zero.
-     */
-    //Channel<String> mess;
-    /**
-     * The previous message.
-     */
-    //private Channel<String> omss;
-    /**
-     * This field shows the current state of the CAD. It can be zero, indicating no MARK has been done; one, showing a
-     * MARK; or two, showing a PRESET has been done.
-     */
-    //private Channel<Short> mark;
+    Channel<Integer> ocid;
+
     private Channel<Integer> mark;
 
     /**
@@ -102,7 +72,6 @@ public class CADRecordImpl extends Record implements CADRecord{
 
     @Property(name = "numAttributes", value = "0", mandatory = true)
     private Integer numAttributes;
-    //private CARRecord car;
 
     public CADRecordImpl(@Requires ChannelAccessServer cas) {
         super(cas);
@@ -121,47 +90,47 @@ public class CADRecordImpl extends Record implements CADRecord{
                         (dir == ApplyRecord.Dir.STOP))) {
             return true;
         }
-        boolean noError=true;
+        boolean noError = true;
         switch (dir) {
             case MARK://mark
-                noError=doMark();
+                noError = doMark();
                 copyIcidToOcid();
                 setState(1);
                 break;
             case CLEAR://clear
-                noError=doClear();
+                noError = doClear();
                 copyIcidToOcid();
                 setState(0);
                 break;
             case PRESET://preset
-                noError=doPreset();
+                noError = doPreset();
                 copyIcidToOcid();
                 setState(2);
                 break;
             case START://start
                 if (getState() == 1) {
-                    noError=doPreset();
+                    noError = doPreset();
                     copyIcidToOcid();
                     setState(2);
-                    if(!noError){
+                    if (!noError) {
                         break;
                     }
                 }
-                noError=doStart();
+                noError = doStart();
                 copyIcidToOcid();
                 setState(0);
                 break;
             case STOP://stop
-                noError=doStop();
+                noError = doStop();
                 copyIcidToOcid();
                 setState(0);
                 break;
         }
-        if(noError){
-            setIfDifferent(mess,"");
+        if (noError) {
+            setIfDifferent(mess, "");
             val.setValue(0);
             return true;
-        }else{
+        } else {
             val.setValue(-1);
             return false;
         }
@@ -172,12 +141,12 @@ public class CADRecordImpl extends Record implements CADRecord{
         LOG.info("Validate");
 
         try {
-            super.start(myPrefix,myRecordname);
-            clid = cas.createChannel(prefix + recordname +".ICID", 0);
-            ocid = cas.createChannel(prefix + recordname +".OCID", 0);
-            mark = cas.createChannel(prefix + recordname +".MARK", 0);
+            super.start(myPrefix, myRecordname);
+            clid = cas.createChannel(prefix + recordname + ".ICID", 0);
+            ocid = cas.createChannel(prefix + recordname + ".OCID", 0);
+            mark = cas.createChannel(prefix + recordname + ".MARK", 0);
             for (int i = 0; i < numAttributes; i++) {
-                Channel<String> ch = cas.createChannel(prefix + recordname +"." + letters[i], "");
+                Channel<String> ch = cas.createChannel(prefix + recordname + "." + letters[i], "");
                 ch.registerListener(new AttributeListener());
                 attributes.add(ch);
 

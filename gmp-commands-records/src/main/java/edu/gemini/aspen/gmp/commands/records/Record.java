@@ -72,15 +72,15 @@ public abstract class Record {
     protected abstract boolean processDir(Dir dir) throws CAException;
 
     protected void start(String prefix, String recordname) throws CAException {
-        this.prefix=prefix;
-        this.recordname=recordname;
+        this.prefix = prefix;
+        this.recordname = recordname;
 
         dir = cas.createChannel(prefix + recordname + ".DIR", Dir.CLEAR);
         dir.registerListener(new DirListener());
         val = cas.createChannel(prefix + recordname + ".VAL", 0);
         mess = cas.createChannel(prefix + recordname + ".MESS", "");
         omss = cas.createChannel(prefix + recordname + ".OMSS", "");
-        car = new CARRecord(cas,prefix + recordname + "C");
+        car = new CARRecord(cas, prefix + recordname + "C");
         car.start();
     }
 
@@ -89,13 +89,15 @@ public abstract class Record {
         car.stop();
 
     }
+
     protected int getClientId() throws CAException {
-         return clid.getVal().get(0);
+        return clid.getVal().get(0);
     }
+
     protected void setMessage(String message) throws CAException {
-        DBR dbr=mess.getValue();
-        String oldMessage = ((String[])dbr.getValue())[0];
-        if(setIfDifferent(mess,message)){
+        DBR dbr = mess.getValue();
+        String oldMessage = ((String[]) dbr.getValue())[0];
+        if (setIfDifferent(mess, message)) {
             omss.setValue(oldMessage);
         }
     }
@@ -109,11 +111,11 @@ public abstract class Record {
      * @return true if channel was written to, false otherwise
      * @throws CAException
      */
-    protected <T> boolean setIfDifferent(Channel<T> ch, T value) throws CAException {
-        if(!value.equals(ch.getVal().get(0))){
+    static protected <T> boolean setIfDifferent(Channel<T> ch, T value) throws CAException {
+        if (!value.equals(ch.getVal().get(0))) {
             ch.setValue(value);
             return true;
-        }else{
+        } else {
             return false;
         }
     }

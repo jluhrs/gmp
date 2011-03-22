@@ -3,9 +3,6 @@ package edu.gemini.aspen.gmp.commands.records;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import gov.aps.jca.CAException;
-import org.apache.felix.ipojo.annotations.Invalidate;
-import org.apache.felix.ipojo.annotations.Requires;
-import org.apache.felix.ipojo.annotations.Validate;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +15,8 @@ import java.util.logging.Logger;
  */
 public class CARRecord {
     private static final Logger LOG = Logger.getLogger(CARRecord.class.getName());
-    enum Val{
+
+    enum Val {
         UNAVAILABLE,
         IDLE,
         PAUSED,
@@ -46,32 +44,27 @@ public class CARRecord {
     //private Channel<Long> clid;
     private Channel<Integer> clid;
 
-    @Requires
     private ChannelAccessServer cas;
 
-    private CARRecord() {
-    }
-
     private String prefix;
-    public CARRecord(ChannelAccessServer cas, String prefix){
-        this.cas=cas;
-        this.prefix=prefix;
+
+    public CARRecord(ChannelAccessServer cas, String prefix) {
+        this.cas = cas;
+        this.prefix = prefix;
     }
 
-    @Validate
     public void start() {
         try {
-            val = cas.createChannel(prefix+".VAL", Val.IDLE);
-            omss = cas.createChannel(prefix+".OMSS", "");
-            oerr = cas.createChannel(prefix+".OERR", 0);
-            clid = cas.createChannel(prefix+".CLID", 0);
+            val = cas.createChannel(prefix + ".VAL", Val.IDLE);
+            omss = cas.createChannel(prefix + ".OMSS", "");
+            oerr = cas.createChannel(prefix + ".OERR", 0);
+            clid = cas.createChannel(prefix + ".CLID", 0);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
-    @Invalidate
-    public void stop(){
+    public void stop() {
         cas.destroyChannel(val);
         cas.destroyChannel(omss);
         cas.destroyChannel(oerr);
@@ -79,11 +72,12 @@ public class CARRecord {
     }
 
     void changeState(Val state, String message, int errorCode, int clientId) throws CAException {
-        //todo: only update if state or clientId are different from the previous
-        val.setValue(state);
-        omss.setValue(message);
-        oerr.setValue(errorCode);
-        clid.setValue(clientId);
+        if (!val.getVal().get(0).equals(state) || !clid.getVal().get(0).equals(clientId)) {
+            val.setValue(state);
+            omss.setValue(message);
+            oerr.setValue(errorCode);
+            clid.setValue(clientId);
+        }
     }
 
 }
