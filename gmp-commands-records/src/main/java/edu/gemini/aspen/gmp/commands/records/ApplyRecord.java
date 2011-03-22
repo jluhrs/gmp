@@ -19,13 +19,27 @@ public class ApplyRecord extends Record {
 
     @Override
     protected boolean processDir(Dir dir) throws CAException {
+        if (dir == Dir.START) {
+            incAndGetClientId();
+        }
+        car.changeState(CARRecord.Val.BUSY, "", 0, getClientId());
+        boolean retVal = processInternal(dir);
+
+        if (retVal) {
+            car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
+        } else {
+            car.changeState(CARRecord.Val.ERR, ((String[]) mess.getValue().getValue())[0], ((int[]) val.getValue().getValue())[0], getClientId());
+        }
+        return retVal;
+    }
+
+    private boolean processInternal(Dir dir) throws CAException {
         if (dir == Dir.MARK) {
             return false;
         }
         setMessage("");
         if (dir == Dir.START) {
-            incAndGetClientId();
-            if (!processDir(Dir.PRESET)) {
+            if (!processInternal(Dir.PRESET)) {
                 return false;
             }
         }

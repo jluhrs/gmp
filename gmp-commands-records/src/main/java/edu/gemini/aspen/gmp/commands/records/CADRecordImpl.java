@@ -86,64 +86,73 @@ public class CADRecordImpl extends Record implements CADRecord {
         if (numAttributes > letters.length) {
             throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
         }
-        myPrefix=prefix;
-        myRecordname=recordname;
-        this.numAttributes=numAttributes;
+        myPrefix = prefix;
+        myRecordname = recordname;
+        this.numAttributes = numAttributes;
         LOG.info("Constructor");
 
     }
+
     @Override
     protected boolean processDir(Dir dir) throws CAException {
+        car.changeState(CARRecord.Val.BUSY, "", 0, getClientId());
+        boolean noError = true;
+
         if (getState() == 0 &&
                 ((dir == ApplyRecord.Dir.PRESET) ||
                         (dir == ApplyRecord.Dir.START) ||
                         (dir == ApplyRecord.Dir.STOP))) {
-            return true;
-        }
-        boolean noError = true;
-        switch (dir) {
-            case MARK://mark
-                noError = doMark();
-                copyIcidToOcid();
-                setState(1);
-                break;
-            case CLEAR://clear
-                noError = doClear();
-                copyIcidToOcid();
-                setState(0);
-                break;
-            case PRESET://preset
-                noError = doPreset();
-                copyIcidToOcid();
-                setState(2);
-                break;
-            case START://start
-                if (getState() == 1) {
+            //do nothing
+        } else {
+            switch (dir) {
+                case MARK://mark
+                    noError = doMark();
+                    copyIcidToOcid();
+                    setState(1);
+                    break;
+                case CLEAR://clear
+                    noError = doClear();
+                    copyIcidToOcid();
+                    setState(0);
+                    break;
+                case PRESET://preset
                     noError = doPreset();
                     copyIcidToOcid();
                     setState(2);
-                    if (!noError) {
-                        break;
+                    break;
+                case START://start
+                    if (getState() == 1) {
+                        noError = doPreset();
+                        copyIcidToOcid();
+                        setState(2);
+                        if (!noError) {
+                            break;
+                        }
                     }
-                }
-                noError = doStart();
-                copyIcidToOcid();
-                setState(0);
-                break;
-            case STOP://stop
-                noError = doStop();
-                copyIcidToOcid();
-                setState(0);
-                break;
+                    noError = doStart();
+                    copyIcidToOcid();
+                    setState(0);
+                    break;
+                case STOP://stop
+                    noError = doStop();
+                    copyIcidToOcid();
+                    setState(0);
+                    break;
+            }
+            if (noError) {
+                setIfDifferent(mess, "");
+                val.setValue(0);
+            } else {
+                val.setValue(-1);
+                mess.setValue("Unknown error occurred");
+            }
         }
         if (noError) {
-            setIfDifferent(mess, "");
-            val.setValue(0);
-            return true;
+            car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
         } else {
-            val.setValue(-1);
-            return false;
+            car.changeState(CARRecord.Val.ERR, ((String[]) mess.getValue().getValue())[0], ((int[]) val.getValue().getValue())[0], getClientId());
         }
+        return noError;
     }
 
     @Validate
@@ -219,7 +228,7 @@ public class CADRecordImpl extends Record implements CADRecord {
 
     private boolean doStop() throws CAException {
         LOG.info("STOP: values: " + getInputValues());
-        return false;
+        return true;
     }
 
     private void copyIcidToOcid() throws CAException {

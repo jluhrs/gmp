@@ -31,13 +31,7 @@ public abstract class Record {
         @Override
         public void valueChange(DBR dbr) {
             try {
-                car.changeState(CARRecord.Val.BUSY, "", 0, getClientId());
-
-                if (processDir(Dir.values()[((short[]) dbr.getValue())[0]])) {
-                    car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
-                } else {
-                    car.changeState(CARRecord.Val.ERR, ((String[]) mess.getValue().getValue())[0], ((int[]) val.getValue().getValue())[0], getClientId());
-                }
+                processDir(Dir.values()[((short[]) dbr.getValue())[0]]);
 
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
