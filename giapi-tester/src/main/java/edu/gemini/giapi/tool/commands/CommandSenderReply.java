@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse> {
     static final DestinationData REQUESTS_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_TOPIC, DestinationType.TOPIC);
-    private static final DestinationData REQUESTS_REPLY_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_REPLY_TOPIC, DestinationType.QUEUE);
+    private static final DestinationData REQUESTS_REPLY_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_REPLY_QUEUE, DestinationType.QUEUE);
     private final String correlationID;
 
     public CommandSenderReply(String correlationID) {

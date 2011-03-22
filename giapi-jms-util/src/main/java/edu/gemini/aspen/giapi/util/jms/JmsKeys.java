@@ -54,7 +54,7 @@ public class JmsKeys {
 
     //Gateway Command Keys
     public final static String GW_COMMAND_TOPIC = GW_PREFIX + GMP_SEPARATOR + "SC";
-    public final static String GW_COMMAND_REPLY_TOPIC = GW_PREFIX + GMP_SEPARATOR + "COMMAND_REPLY";
+    public final static String GW_COMMAND_REPLY_QUEUE = GW_PREFIX + GMP_SEPARATOR + "COMMAND_REPLY";
 
 
     //EPICS Interface Keys

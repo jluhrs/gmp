@@ -53,7 +53,7 @@ public class CommandSenderClient implements CommandSender {
         if (!initialResponse.equals(HandlerResponse.Response.COMPLETED)) {
             commandSenderReply.waitForCompletionResponse(listener);
             //System.out.println("Completion Information: " + completionResponse);
-            /*DestinationData replyDestination = new DestinationData(JmsKeys.GW_COMMAND_REPLY_TOPIC, DestinationType.TOPIC);
+            /*DestinationData replyDestination = new DestinationData(JmsKeys.GW_COMMAND_REPLY_QUEUE, DestinationType.TOPIC);
             DestinationBuilder builder = new DestinationBuilder();
             try {
                 System.out.println(this.waitForReplyMessage(builder.newDestination(replyDestination, this._session), timeout));

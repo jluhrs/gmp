@@ -37,7 +37,7 @@ public class CommandMessagesBridge implements MessageListener {
 
     private final BaseMessageConsumer _messageConsumer;
     private static final String CONSUMER_NAME = "Gateway Command Consumer";
-    private static final DestinationData REPLY_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_REPLY_TOPIC, DestinationType.QUEUE);
+    private static final DestinationData REPLY_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_REPLY_QUEUE, DestinationType.QUEUE);
 
     public CommandMessagesBridge(@Requires JmsProvider jmsProvider, @Requires CommandSender commandSender) {
         Preconditions.checkArgument(jmsProvider != null, "JMS Provider cannot be null");
