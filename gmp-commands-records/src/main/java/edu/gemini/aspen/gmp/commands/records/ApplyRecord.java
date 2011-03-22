@@ -57,7 +57,13 @@ public class ApplyRecord extends Record {
         LOG.info("Constructor");
 
     }
+    protected ApplyRecord(ChannelAccessServer cas, String prefix, String recordname) {
+        super(cas);
+        myPrefix=prefix;
+        myRecordname=recordname;
+        LOG.info("Constructor");
 
+    }
     @Property(name = "prefix", value = "INVALID", mandatory = true)
     private String myPrefix;
     @Property(name = "recordname", value = "INVALID", mandatory = true)

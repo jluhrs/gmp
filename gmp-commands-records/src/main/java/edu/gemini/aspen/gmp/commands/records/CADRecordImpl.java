@@ -73,7 +73,7 @@ public class CADRecordImpl extends Record implements CADRecord {
     @Property(name = "numAttributes", value = "0", mandatory = true)
     private Integer numAttributes;
 
-    public CADRecordImpl(@Requires ChannelAccessServer cas) {
+    private CADRecordImpl(@Requires ChannelAccessServer cas) {
         super(cas);
         if (numAttributes > letters.length) {
             throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
@@ -81,7 +81,17 @@ public class CADRecordImpl extends Record implements CADRecord {
         LOG.info("Constructor");
 
     }
+    public CADRecordImpl(@Requires ChannelAccessServer cas, String prefix, String recordname, Integer numAttributes) {
+        super(cas);
+        if (numAttributes > letters.length) {
+            throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
+        }
+        myPrefix=prefix;
+        myRecordname=recordname;
+        this.numAttributes=numAttributes;
+        LOG.info("Constructor");
 
+    }
     @Override
     protected boolean processDir(Dir dir) throws CAException {
         if (getState() == 0 &&
