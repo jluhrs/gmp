@@ -23,7 +23,7 @@ class CompletedCommandSenderState extends CommandSenderState {
         throw new IllegalStateException("Cannot create a new reply consumer of a completed command");
     }
 
-        @Override
+    @Override
     public HandlerResponse sendCommandMessage(Command command, long timeout) {
         throw new IllegalStateException("Cannot send command message when the command has completed");
     }

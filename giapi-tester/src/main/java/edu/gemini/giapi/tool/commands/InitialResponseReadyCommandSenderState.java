@@ -30,4 +30,9 @@ class InitialResponseReadyCommandSenderState extends CommandSenderState {
     public HandlerResponse sendCommandMessage(Command command, long timeout) {
         throw new IllegalStateException("Cannot send command message when the first reply has arrived");
     }
+
+    @Override
+    public void completionReceived() {
+        commandSenderReply.stopJms();
+    }
 }

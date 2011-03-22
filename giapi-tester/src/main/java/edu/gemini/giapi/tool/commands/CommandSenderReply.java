@@ -45,6 +45,7 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
             HandlerResponse initialResponse = state.sendCommandMessage(command, timeout);
             if (initialResponse == HandlerResponse.COMPLETED) {
                 state = new CompletedCommandSenderState(this);
+                completionReceived();
             } else {
                 state = new InitialResponseReadyCommandSenderState(this);
             }
@@ -81,7 +82,11 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
         return MessageBuilder.buildHandlerResponse(reply);
     }
 
-    public String getCorrelationID() {
+    String getCorrelationID() {
         return correlationID;
+    }
+
+    void completionReceived() {
+        state.completionReceived();
     }
 }

@@ -26,7 +26,7 @@ class CommandCompletionMessageListener implements MessageListener {
         } catch (JMSException e) {
             e.printStackTrace();
         } finally {
-            commandSenderReply.stopJms();
+            commandSenderReply.completionReceived();
         }
     }
 }

@@ -19,4 +19,6 @@ abstract class CommandSenderState {
     public abstract MessageConsumer buildReplyConsumer() throws JMSException;
 
     public abstract HandlerResponse sendCommandMessage(Command command, long timeout);
+
+    public void completionReceived() {}
 }
