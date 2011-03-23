@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.commands.records;
 
 import edu.gemini.cas.Channel;
-import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import gov.aps.jca.CAException;
@@ -56,10 +55,10 @@ public class RecordsTest {
         Channel<Integer> clid = cas.createChannel(carPrefix+".CLID",0);
 
         car.changeState(CARRecord.Val.BUSY, "a",-1,1);
-        assertEquals(CARRecord.Val.BUSY, val.getVal().get(0));
-        assertEquals("a",omss.getVal().get(0));
-        assertEquals(new Integer(-1),oerr.getVal().get(0));
-        assertEquals(new Integer(1),clid.getVal().get(0));
+        assertEquals(CARRecord.Val.BUSY, val.getFirst());
+        assertEquals("a",omss.getFirst());
+        assertEquals(new Integer(-1),oerr.getFirst());
+        assertEquals(new Integer(1),clid.getFirst());
 
         car.stop();
 
@@ -128,7 +127,7 @@ public class RecordsTest {
         a.setValue("anything");
 
         if(listener.await(1, TimeUnit.SECONDS)){
-            assertEquals(new Integer(1), mark.getVal().get(0));
+            assertEquals(new Integer(1), mark.getFirst());
         }else{
             fail();
         }
@@ -150,7 +149,7 @@ public class RecordsTest {
         mark.registerListener(listener);
         dir.setValue(d);
         if (listener.await(1, TimeUnit.SECONDS)) {
-            assertEquals(expectedState, mark.getVal().get(0));
+            assertEquals(expectedState, mark.getFirst());
         } else {
             fail();
         }
@@ -236,11 +235,23 @@ public class RecordsTest {
     }
 
     @Test
-    public void applyTest(){
+    public void applyTest() throws CAException {
         ApplyRecord apply = new ApplyRecord(cas,prefix,applyName);
         apply.start();
-        //test transitions and cad state changes
+        Channel<Record.Dir> dir = cas.createChannel(prefix+applyName+".DIR",Record.Dir.CLEAR);
+        CADRecordImpl cad = new CADRecordImpl(cas,prefix,cadName,3);
+        cad.start();
+        apply.bindCAD(cad);
 
+
+        //test cad state changes
+        cad.setDir(Record.Dir.MARK);
+        dir.setValue(Record.Dir.START);
+        assertEquals(1,cad.getClientId());
+        assertEquals(new Integer(0), cad.getVal());
+
+        apply.unBindCAD(cad);
+        cad.stop();
         apply.stop();
     }
 }

@@ -15,7 +15,7 @@ public interface CADRecord {
 
     void setDir(Record.Dir d) throws CAException;
 
-    List<Integer> getVal() throws CAException;
+    Integer getVal() throws CAException;
 
-    List<String> getMess() throws CAException;
+    String getMess() throws CAException;
 }

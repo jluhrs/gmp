@@ -51,10 +51,10 @@ public class ApplyRecord extends Record {
             cad.setDir(dir);
 
             //wait for VAL change, use a listener
-            int cadVal = cad.getVal().get(0);
+            int cadVal = cad.getVal();
             if (cadVal < 0) {
                 val.setValue(cadVal);
-                setMessage(cad.getMess().get(0));
+                setMessage(cad.getMess());
                 error = true;
                 break;
             } else {

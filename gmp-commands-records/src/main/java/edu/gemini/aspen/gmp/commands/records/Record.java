@@ -85,7 +85,7 @@ public abstract class Record {
     }
 
     protected int getClientId() throws CAException {
-        return clid.getVal().get(0);
+        return clid.getFirst();
     }
 
     protected void setMessage(String message) throws CAException {
@@ -106,7 +106,7 @@ public abstract class Record {
      * @throws CAException
      */
     static protected <T> boolean setIfDifferent(Channel<T> ch, T value) throws CAException {
-        if (!value.equals(ch.getVal().get(0))) {
+        if (!value.equals(ch.getFirst())) {
             ch.setValue(value);
             return true;
         } else {

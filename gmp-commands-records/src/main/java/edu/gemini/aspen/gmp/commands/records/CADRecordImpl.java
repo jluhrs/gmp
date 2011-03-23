@@ -33,13 +33,13 @@ public class CADRecordImpl extends Record implements CADRecord {
     }
 
     @Override
-    public List<Integer> getVal() throws CAException {
-        return val.getVal();
+    public Integer getVal() throws CAException {
+        return val.getFirst();
     }
 
     @Override
-    public List<String> getMess() throws CAException {
-        return mess.getVal();
+    public String getMess() throws CAException {
+        return mess.getFirst();
     }
 
 
@@ -232,7 +232,7 @@ public class CADRecordImpl extends Record implements CADRecord {
     }
 
     private void copyIcidToOcid() throws CAException {
-        ocid.setValue(clid.getVal());
+        ocid.setValue(clid.getFirst());
     }
 
 

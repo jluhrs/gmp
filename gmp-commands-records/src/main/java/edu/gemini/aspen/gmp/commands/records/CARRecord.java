@@ -72,7 +72,7 @@ public class CARRecord {
     }
 
     void changeState(Val state, String message, int errorCode, int clientId) throws CAException {
-        if (!val.getVal().get(0).equals(state) || !clid.getVal().get(0).equals(clientId)) {
+        if (!val.getFirst().equals(state) || !clid.getFirst().equals(clientId)) {
             val.setValue(state);
             omss.setValue(message);
             oerr.setValue(errorCode);
