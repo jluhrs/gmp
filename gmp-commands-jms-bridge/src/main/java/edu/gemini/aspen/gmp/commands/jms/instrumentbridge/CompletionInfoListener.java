@@ -21,7 +21,6 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -96,12 +95,8 @@ class CompletionInfoListener implements MessageListener {
     }
 
     @Validate
-    public void startListening() {
-        try {
-            _messageConsumer.startJms(_provider);
-        } catch (JMSException e) {
-            LOG.log(Level.SEVERE, "Exception while starting the JMS connection");
-        }
+    public void startListening() throws JMSException {
+        _messageConsumer.startJms(_provider);
     }
 
     @Invalidate
