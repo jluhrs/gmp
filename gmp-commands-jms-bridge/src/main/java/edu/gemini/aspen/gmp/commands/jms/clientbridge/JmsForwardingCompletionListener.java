@@ -38,18 +38,20 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
     }
 
     public void sendInitialResponse(HandlerResponse response) {
-        LOG.info("Sent initial response " + response + " to " + _replyDestination + " " + correlationID);
+        LOG.fine("Sent initial response " + response + " to " + _replyDestination + " " + correlationID);
         Map<String, String> messageBody = CommandMessageSerializer.convertHandlerResponseToProperties(response);
 
-        // Send the reply properties as a map properties
         MapMessageBuilder messageBuilder = new CommandReplyMapMessageBuilder(correlationID, messageBody, ImmutableMap.<String, String>of());
         super.sendMapMessage(_replyDestination, messageBuilder);
     }
 
     @Override
     public void onHandlerResponse(HandlerResponse response, Command command) {
-        LOG.info("Arrived response " + response + " forward to " + _replyDestination);
+        LOG.fine("Arrived response " + response + " forward to " + _replyDestination);
         sendCompletionResponse(response, command);
+
+        // Stop listening
+        this.stopJms();
     }
 
     private void sendCompletionResponse(HandlerResponse response, Command command) {
