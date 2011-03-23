@@ -55,7 +55,8 @@ public class CommandMessagesBridge implements MessageListener {
     @Override
     public void onMessage(Message message) {
         try {
-            decodeMessageAndProcess(message);
+            Command command = decodeMessage(message);
+            sendCommandAndEvaluateResponse(command, message.getJMSCorrelationID());
         } catch (FormatException e) {
             LOG.log(Level.WARNING, "Message did not contain a command message: " + e.getMessage());
         } catch (JMSException e) {
@@ -64,21 +65,22 @@ public class CommandMessagesBridge implements MessageListener {
         }
     }
 
-    private void decodeMessageAndProcess(Message message) throws JMSException {
+    private Command decodeMessage(Message message) throws JMSException {
         CommandMessageParser messageParser = new CommandMessageParser(message);
-        if (messageParser.doesMessageContainACommand()) {
-            Command command = messageParser.readCommand();
-            LOG.info("New command arrived: " + command + " with correlationID " + message.getJMSCorrelationID());
+        Command command = messageParser.readCommand();
+        LOG.info("New command arrived: " + command + " with correlationID " + message.getJMSCorrelationID());
+        return command;
+    }
 
-            // TODO The listeners should be released at some point. We need to create an entity to keep
-            // track of the listeners and release them when the command is effectively completed
-            JmsForwardingCompletionListener listener = setupCompletionListener(message.getJMSCorrelationID());
+    private void sendCommandAndEvaluateResponse(Command command, String correlationID) throws JMSException {
+        JmsForwardingCompletionListener listener = setupCompletionListener(correlationID);
 
-            HandlerResponse response = _commandSender.sendCommand(command, listener);
+        HandlerResponse response = _commandSender.sendCommand(command, listener);
 
-            listener.sendInitialResponse(response);
-        } else {
-            LOG.warning("Invalid Command message arrived: " + message);
+        listener.sendInitialResponse(response);
+        // If the response is not STARTED the listener should clear itself
+        if (response.getResponse() != HandlerResponse.Response.STARTED) {
+           listener.stopListeningForResponses();
         }
     }
 
@@ -95,7 +97,7 @@ public class CommandMessagesBridge implements MessageListener {
 
     @Invalidate
     public void stopListeningForMessages() {
-        this._messageConsumer.stopJms();
+        _messageConsumer.stopJms();
     }
 
 }

@@ -33,14 +33,6 @@ class CommandMessageParser {
         this.mapMessage = (MapMessage)mapMessage;
     }
 
-    public boolean doesMessageContainACommand() {
-        try {
-            return mapMessage.getJMSCorrelationID() != null;
-        } catch (JMSException e) {
-            return false;
-        }
-    }
-
     public Command readCommand() throws FormatException {
         try {
             return parseCommand();
@@ -54,6 +46,9 @@ class CommandMessageParser {
     }
 
     private Command parseCommand() throws JMSException {
+        if (mapMessage.getJMSCorrelationID() == null) {
+            throw new FormatException("Cannot process a message without correlationID");
+        }
         SequenceCommand sequenceCommand = parseSequenceCommand();
         Activity activity = parseActivity();
         Configuration configuration = parseConfiguration();

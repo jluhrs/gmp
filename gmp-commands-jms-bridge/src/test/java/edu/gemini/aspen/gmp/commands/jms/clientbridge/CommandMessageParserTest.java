@@ -34,6 +34,7 @@ public class CommandMessageParserTest {
         msg.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
         msg.setString("x:A", "1");
         msg.setString("x:B", "2");
+        msg.setJMSCorrelationID("1");
 
         Command command = new CommandMessageParser(msg).readCommand();
         Command referenceCommand = new Command(SequenceCommand.APPLY, Activity.PRESET, referenceConfiguration);
@@ -47,4 +48,10 @@ public class CommandMessageParserTest {
         new CommandMessageParser(msg).readCommand();
     }
 
+    @Test(expected = FormatException.class)
+    public void parseMessageWithoutCorrelationID() throws JMSException {
+        msg.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.DATUM.toString());
+        msg.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
+        new CommandMessageParser(msg).readCommand();
+    }
 }

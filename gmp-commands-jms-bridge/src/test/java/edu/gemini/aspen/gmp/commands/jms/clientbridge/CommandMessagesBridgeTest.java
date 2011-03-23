@@ -26,7 +26,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
-    private Destination replyDestination;
     protected CommandSender commandsSender;
     protected CommandMessagesBridge messagesBridge;
     protected ArgumentCaptor<Command> commandCaptor;
@@ -38,44 +37,67 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
 
         commandsSender = mock(CommandSender.class);
         messagesBridge = new CommandMessagesBridge(provider, commandsSender);
+
         commandCaptor = ArgumentCaptor.forClass(Command.class);
         listenerCaptor = ArgumentCaptor.forClass(CompletionListener.class);
     }
 
     @Test
-    public void testOnMessageWithImmediateResponse() throws JMSException {
-        MapMessage message = mockApplyAndResponse();
+    public void testOnMessageWithAcceptedResponse() throws JMSException {
+        mockCommandResponse(HandlerResponse.Response.ACCEPTED);
+        MapMessage message = createClientApplyCommandMessage();
+
         messagesBridge.onMessage(message);
 
-        verify(commandsSender).sendCommand(commandCaptor.capture(), listenerCaptor.capture());
-
-        verify(producer).send(Matchers.<Topic>anyObject(), Matchers.<MapMessage>anyObject());
+        verifyCommandWasCalled();
+        // Check the reply message was sent
+        verifyReplyToClientSent(1);
+        // Check the listener closed itself
+        verifyListenerClosedItself();
     }
 
-    private MapMessage mockApplyAndResponse() throws JMSException {
-        HandlerResponse response = HandlerResponse.get(HandlerResponse.Response.ACCEPTED);
-        when(commandsSender.sendCommand(commandCaptor.capture(), listenerCaptor.capture())).thenReturn(response);
+    private void verifyListenerClosedItself() throws JMSException {
+        verify(session).close();
+    }
 
-        return createApplyCommandMessage();
+    private void verifyReplyToClientSent(int times) throws JMSException {
+        verify(producer, times(times)).send(Matchers.<Topic>anyObject(), Matchers.<MapMessage>anyObject());
+    }
+
+    /**
+     * Mocks the response of an APPLY message sent to CommandSender
+     */
+    private void mockCommandResponse(HandlerResponse.Response response) throws JMSException {
+        HandlerResponse handlerResponse = HandlerResponse.get(response);
+        when(commandsSender.sendCommand(commandCaptor.capture(), listenerCaptor.capture())).thenReturn(handlerResponse);
     }
 
     @Test
-    public void testOnMessageWithImmediateAndSecondResponse() throws JMSException {
-        MapMessage message = mockApplyAndResponse();
+    public void testOnMessageWithStartedAndSecondResponse() throws JMSException {
+        mockCommandResponse(HandlerResponse.Response.STARTED);
+        MapMessage message = createClientApplyCommandMessage();
         messagesBridge.onMessage(message);
 
-        verify(commandsSender).sendCommand(commandCaptor.capture(), listenerCaptor.capture());
+        verifyCommandWasCalled();
 
-        verify(producer).send(Matchers.<Topic>anyObject(), Matchers.<MapMessage>anyObject());
+        verifyReplyToClientSent(1);
 
-        // Now send the complete
+        // Now send a completion, this should happen when the instrument completes and responds
         listenerCaptor.getValue().onHandlerResponse(HandlerResponse.get(HandlerResponse.Response.COMPLETED), commandCaptor.getValue());
 
         // A new message should have been sent over JMS
-        verify(producer, times(2)).send(Matchers.<Topic>anyObject(), Matchers.<MapMessage>anyObject());
+        verifyReplyToClientSent(2);
+
+        // Check the listener closed itself
+        verifyListenerClosedItself();
+
     }
 
-    private MapMessage createApplyCommandMessage() throws JMSException {
+    private void verifyCommandWasCalled() {
+        verify(commandsSender).sendCommand(commandCaptor.capture(), listenerCaptor.capture());
+    }
+
+    private MapMessage createClientApplyCommandMessage() throws JMSException {
         MapMessage message = new MapMessageMock();
         message.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.APPLY.toString());
         message.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
@@ -92,6 +114,6 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
         verify(session).createConsumer(Mockito.<Destination>any());
 
         messagesBridge.stopListeningForMessages();
-        verify(session).close();
+        verifyListenerClosedItself();
     }
 }

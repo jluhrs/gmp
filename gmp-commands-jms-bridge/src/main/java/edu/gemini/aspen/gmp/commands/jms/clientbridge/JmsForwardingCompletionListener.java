@@ -55,7 +55,10 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
         LOG.fine("Arrived response " + response + " forward to " + _replyDestination);
         sendCompletionResponse(response, command);
 
-        // Stop listening
+        stopListeningForResponses();
+    }
+
+    void stopListeningForResponses() {
         this.stopJms();
     }
 
