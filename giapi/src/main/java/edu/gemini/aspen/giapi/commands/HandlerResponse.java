@@ -6,7 +6,6 @@ package edu.gemini.aspen.giapi.commands;
  */
 public final class HandlerResponse {
 
-
     /**
      * The Accepted Handler Response
      */
@@ -15,19 +14,16 @@ public final class HandlerResponse {
     /**
      * The Started Handler Response
      */
-
     public static HandlerResponse STARTED = new HandlerResponse(Response.STARTED);
 
     /**
      * The Completed Handler Response
      */
-
     public static HandlerResponse COMPLETED = new HandlerResponse(Response.COMPLETED);
 
     /**
      * The No Answer Handler Response
      */
-
     public static HandlerResponse NOANSWER = new HandlerResponse(Response.NOANSWER);
 
     /**

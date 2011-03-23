@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.commands.jms.client;
 
+import edu.gemini.aspen.giapitestsupport.jms.MapMessageMock;
 import edu.gemini.jms.api.JmsProvider;
 import org.mockito.Matchers;
 
@@ -14,6 +15,7 @@ import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.Topic;
 
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +25,7 @@ public class MockedJMSArtifactsBase {
     protected JmsProvider provider;
     protected MessageProducer producer;
     protected MessageConsumer consumer;
-    protected MapMessage mapMessage;
+    protected MapMessageMock mapMessage;
 
     public void createMockedObjects() throws JMSException {
         provider = mock(JmsProvider.class);
@@ -46,7 +48,7 @@ public class MockedJMSArtifactsBase {
         Topic topic = mock(Topic.class);
         when(session.createTopic(Matchers.anyString())).thenReturn(topic);
 
-        mapMessage = mock(MapMessage.class);
+        mapMessage = new MapMessageMock();
         when(session.createMapMessage()).thenReturn(mapMessage);
     }
 
@@ -62,5 +64,21 @@ public class MockedJMSArtifactsBase {
         // Mock session
         when(connection.createSession(Matchers.anyBoolean(), Matchers.anyInt())).thenReturn(session);
         return session;
+    }
+
+    /**
+     * This method allows tests to define what reply message a consumer will return
+     * <p/>
+     * It is useful to simulate responses to a given command
+     * <p/>
+     * Call it after you have called the createMockedObjects
+     *
+     * @param message
+     * @throws JMSException
+     */
+    protected void mockReplyMessage(MapMessage message) throws JMSException {
+        if (consumer != null) {
+            when(consumer.receive(anyLong())).thenReturn(message);
+        }
     }
 }

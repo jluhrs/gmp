@@ -34,6 +34,7 @@ class InitCommandSenderState extends CommandSenderState {
 
     @Override
     public HandlerResponse sendCommandMessage(Command command, long timeout) {
+        // FIXME
         Map<String, String> message = ImmutableMap.of();
         Map<String, String> properties = ImmutableMap.of(
                 JmsKeys.GMP_SEQUENCE_COMMAND_KEY, command.getSequenceCommand().name(),
