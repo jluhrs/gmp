@@ -5,6 +5,7 @@ import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.jms.client.internal.CommandSenderReply;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.MessagingException;
 

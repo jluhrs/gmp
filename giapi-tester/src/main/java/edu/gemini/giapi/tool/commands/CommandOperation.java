@@ -5,7 +5,6 @@ import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.jms.client.CommandSenderClient;
-import edu.gemini.aspen.gmp.commands.jms.client.WaitingCompletionListener;
 import edu.gemini.giapi.tool.arguments.ActivityArgument;
 import edu.gemini.giapi.tool.arguments.ConfigArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
@@ -24,16 +23,14 @@ import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfigur
  * Provides the operation to send sequence commands to the GMP
  */
 public class CommandOperation implements Operation {
-
-
     private static final Logger LOG = Logger.getLogger(
             CommandOperation.class.getName());
 
-    private SequenceCommandArgument _sc;
+    private SequenceCommandArgument _scArgument;
 
-    private ActivityArgument _activity;
+    private ActivityArgument _activityArgument;
 
-    private ConfigArgument _config;
+    private ConfigArgument _configArgument;
 
     private String host = "localhost";
 
@@ -45,13 +42,13 @@ public class CommandOperation implements Operation {
 
         ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
         provider.startConnection();
-        CommandSenderClient senderClient = null;
-        senderClient = new CommandSenderClient(provider);
+        CommandSenderClient senderClient = new CommandSenderClient(provider);
 
-        Configuration config = (_config != null) ? _config.getConfiguration() : emptyConfiguration();
+        Configuration config = (_configArgument != null) ? _configArgument.getConfiguration() : emptyConfiguration();
 
-        Command command = new Command(_sc.getSequenceCommand(),
-                _activity.getActivity(),
+        Command command = new Command(
+                _scArgument.getSequenceCommand(),
+                _activityArgument.getActivity(),
                 config);
 
         for (int x = 0; x < repetitions; x++) {
@@ -59,26 +56,25 @@ public class CommandOperation implements Operation {
             HandlerResponse response = senderClient.sendCommand(command, listener);
 
             listener.waitForResponse(timeout);
-            System.out.println("Response Received: " + response);
+            LOG.info("Response Received: " + response);
 
             if (response == HandlerResponse.STARTED) {
                 //now, wait for the answer, synchronously
                 CompletionInformation completionInformation
                         = listener.waitForResponse(timeout);
-                System.out.println("Completion Information: " + completionInformation);
+                LOG.info("Completion Information: " + completionInformation);
             }
         }
 
     }
 
     public void setArgument(Argument arg) {
-
         if (arg instanceof SequenceCommandArgument) {
-            _sc = (SequenceCommandArgument) arg;
+            _scArgument = (SequenceCommandArgument) arg;
         } else if (arg instanceof ActivityArgument) {
-            _activity = (ActivityArgument) arg;
+            _activityArgument = (ActivityArgument) arg;
         } else if (arg instanceof ConfigArgument) {
-            _config = (ConfigArgument) arg;
+            _configArgument = (ConfigArgument) arg;
         } else if (arg instanceof TimeoutArgument) {
             timeout = ((TimeoutArgument) arg).getTimeout();
         } else if (arg instanceof HostArgument) {
@@ -86,11 +82,10 @@ public class CommandOperation implements Operation {
         } else if (arg instanceof RepetitionArgument) {
             repetitions = ((RepetitionArgument) arg).getRepetitions();
         }
-
     }
 
     public boolean isReady() {
-        return (_sc != null && _activity != null);
+        return (_scArgument != null && _activityArgument != null);
     }
 
 }

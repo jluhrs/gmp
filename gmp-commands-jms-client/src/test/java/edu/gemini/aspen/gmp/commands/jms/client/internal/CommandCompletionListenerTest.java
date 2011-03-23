@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.jms.client;
+package edu.gemini.aspen.gmp.commands.jms.client.internal;
 
 import com.google.common.collect.Iterators;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
