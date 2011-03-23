@@ -2,12 +2,12 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
-import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
+import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.reboot.LogRebootManager;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
@@ -17,6 +17,8 @@ import org.apache.felix.ipojo.annotations.Requires;
 /**
  * This is a high order Sequence Command Executor. It will delegate
  * the actual execution to a more specific executor.
+ *
+ * As this class is exported as an OSGi service it will be used by ActionManager
  */
 @Component
 @Instantiate
@@ -41,15 +43,16 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
 
     @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
-        if (action == null)
+        if (action == null) {
             throw new SequenceCommandException("Null action received for execution");
+        }
 
         Command command = action.getCommand();
-        return findCommandExecutor(command).execute(action, sender);
+        return findCommandExecutor(command.getSequenceCommand()).execute(action, sender);
     }
 
-    private SequenceCommandExecutor findCommandExecutor(Command sequenceCommand) {
-        switch (sequenceCommand.getSequenceCommand()) {
+    private SequenceCommandExecutor findCommandExecutor(SequenceCommand sequenceCommand) {
+        switch (sequenceCommand) {
             case APPLY:
                 return _applyExecutor;
             case REBOOT:

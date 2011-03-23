@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
-import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
+import edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutor;
 
 import static org.junit.Assert.fail;
 

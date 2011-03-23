@@ -7,14 +7,16 @@ import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
-import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
+import edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutor;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
 
 /**
- * Command Sender implementation
+ * Command Sender implementation.
+ * This is the implementation used by OSGi clients to send commands
+ * down to the client
  */
 @Component
 @Instantiate
@@ -24,7 +26,6 @@ public class CommandSenderImpl implements CommandSender {
     /**
      * Holds state of the actions being tracked in the system
      */
-    //@Requires
     private final ActionManager _manager;
 
     /**
@@ -55,52 +56,24 @@ public class CommandSenderImpl implements CommandSender {
         Preconditions.checkArgument(manager != null, "ActionManager cannot be null");
         Preconditions.checkArgument(sender != null, "ActionSender cannot be null");
         Preconditions.checkArgument(executor != null, "SequenceCommandExecutor cannot be null");
+
         _manager = manager;
         _executor = executor;
         _sender = sender;
     }
 
 
-    /**
-     * A decorator for the Completion Listener that will be used. This
-     * provides a mechanism to recover the response provided
-     * for and action, in case that answer arrives _before_ we
-     * provide an answer to the system
-     */
-    public class CompletionListenerDecorator implements CompletionListener {
-
-        private CompletionListener _listener;
-        private HandlerResponse _response;
-
-        public CompletionListenerDecorator(CompletionListener listener) {
-            Preconditions.checkArgument(listener != null, "Completion Listener cannot be null");
-            _listener = listener;
-        }
-
-        HandlerResponse getResponse() {
-            return _response;
-        }
-
-        @Override
-        public void onHandlerResponse(HandlerResponse response, Command command) {
-            _listener.onHandlerResponse(response, command);
-            //register the response received.
-            _response = response;
-        }
-
-        @Override
-        public String toString() {
-            return _listener.toString();
-        }
+    @Override
+    public HandlerResponse sendCommand(Command command, CompletionListener listener) {
+        return sendCommand(command, listener, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
     }
 
     @Override
-    public HandlerResponse sendCommand(Command command, CompletionListener listener) {
+    public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
         CompletionListenerDecorator decoratorListener =
                 new CompletionListenerDecorator(listener);
 
-        Action action = new Action(command,
-                decoratorListener);
+        Action action = new Action(command, decoratorListener, timeout);
 
         //first, register the action even if it's something that
         //will complete immediately.
@@ -140,11 +113,6 @@ public class CommandSenderImpl implements CommandSender {
             }
         }
         return response;
-    }
-
-    @Override
-    public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 }

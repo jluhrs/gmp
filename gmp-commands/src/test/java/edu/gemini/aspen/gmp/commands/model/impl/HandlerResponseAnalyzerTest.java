@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.model;
+package edu.gemini.aspen.gmp.commands.model.impl;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import org.junit.Before;

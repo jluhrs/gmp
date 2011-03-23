@@ -3,7 +3,6 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
-import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 
@@ -13,7 +12,7 @@ import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
  */
 public class DefaultSenderExecutor implements SequenceCommandExecutor {
 
-    ActionMessageBuilder _actionMessageBuilder;
+    private ActionMessageBuilder _actionMessageBuilder;
 
     public DefaultSenderExecutor(ActionMessageBuilder builder) {
         _actionMessageBuilder = builder;
@@ -21,13 +20,9 @@ public class DefaultSenderExecutor implements SequenceCommandExecutor {
 
     @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
-
         ActionMessage m = _actionMessageBuilder.buildActionMessage(action);
 
-        return sender.send(m);
-
+        return sender.send(m, action.getTimeout());
     }
-    
-
 
 }

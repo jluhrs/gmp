@@ -3,12 +3,11 @@ package edu.gemini.aspen.gmp.commands.model;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 
 /**
- *  An Action Sender is in charge of sending a given action message over
- * the network
+ * An Action Sender is in charge of sending a given action message to
+ * an entity that can execute them. For example they could be sent over JMS
+ * or in memory
  */
 public interface ActionSender {
-    int RESPONSE_WAIT_TIMEOUT = 500;
-
     /**
      * This method takes the given action and converts it into a message to
      * be dispatched over the network
@@ -18,7 +17,7 @@ public interface ActionSender {
      * @return HandlerResponse associated to the given action. If no response is
      *         received, a NO_ANSWER HandlerResponse is returned
      */
-    HandlerResponse send(ActionMessage message);
+    HandlerResponse send(ActionMessage message) throws SequenceCommandException;
 
     /**
      * This method takes the given action and converts it into a message to
@@ -30,6 +29,6 @@ public interface ActionSender {
      * @return HandlerResponse associated to the given action. If no response is
      *         received, a NO_ANSWER HandlerResponse is returned
      */
-    HandlerResponse send(ActionMessage message, long timeout);
+    HandlerResponse send(ActionMessage message, long timeout) throws SequenceCommandException;
     
 }

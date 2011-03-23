@@ -37,7 +37,7 @@ public class ActionTest {
                 new Command(SequenceCommand.ABORT,
                 Activity.PRESET,
                 config1),
-                listener1);
+                listener1, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
 
         //Though this action looks "equals", it's not as the action id
         //should change.

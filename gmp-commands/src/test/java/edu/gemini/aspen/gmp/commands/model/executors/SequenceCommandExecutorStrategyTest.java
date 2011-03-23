@@ -53,13 +53,11 @@ public class SequenceCommandExecutorStrategyTest {
     @Test
     public void testExecuteReboot() {
         Configuration configuration = emptyConfiguration();
-        Action action = new Action(new Command(SequenceCommand.REBOOT, Activity.PRESET_START, configuration), listener);
+        Action action = new Action(new Command(SequenceCommand.REBOOT, Activity.PRESET_START, configuration), listener, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
         HandlerResponse response = strategy.execute(action, new ActionSenderMock(HandlerResponse.COMPLETED) {
         });
         assertEquals(HandlerResponse.COMPLETED, response);
     }
-
-
 
     @Test(expected = SequenceCommandException.class)
     public void testExecuteNullAction() {

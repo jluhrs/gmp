@@ -11,6 +11,7 @@ import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.impl.ActionManagerImpl;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,13 +32,17 @@ public class ApplySenderExecutorTest {
     private HandlerResponse[] _responses;
 
     private Configuration _applyConfig;
+    private ActionManagerImpl actionManager;
 
     @Before
     public void setUp() {
-        ActionManagerImpl actionManager = new ActionManagerImpl();
-        actionManager.start();
         ActionMessageBuilder builder = mock(ActionMessageBuilder.class);
+
+        actionManager = new ActionManagerImpl();
+        actionManager.start();
+
         _executor = new ApplySenderExecutor(builder, actionManager);
+
         _responses = new HandlerResponse[] {
                 HandlerResponse.COMPLETED,
                 HandlerResponse.STARTED,
@@ -61,6 +66,14 @@ public class ApplySenderExecutorTest {
                 .build();
     }
 
+    @After
+    public void shutDown() {
+        actionManager.stop();
+    }
+
+    /**
+     * Test that an APPLY command without configuration will produce an ERROR response
+     */
     @Test
     public void testEmptyConfiguration() {
         Action action = new Action(new Command(SequenceCommand.APPLY,
@@ -77,9 +90,12 @@ public class ApplySenderExecutorTest {
      */
     @Test
     public void testCorrectHandlerResponse() {
-        Action action = new Action(new Command(SequenceCommand.APPLY,
+        Command command = new Command(
+                SequenceCommand.APPLY,
                 Activity.START,
-                _applyConfig), new CompletionListenerMock());
+                _applyConfig);
+        
+        Action action = new Action(command, new CompletionListenerMock());
 
         for (HandlerResponse response: _responses) {
             ActionSender sender = new ActionSenderMock(response);

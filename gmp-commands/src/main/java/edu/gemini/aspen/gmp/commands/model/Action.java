@@ -9,28 +9,41 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
- * Actions are used to keep track of sequence command progress.
+ * Actions are used internally by ActionManager to keep track
+ * of sequence command progress.
+ *
+ * The Action's ID must grow and rules are defined to accept responses
+ * to Actions only on certain allowed order
  */
 public final class Action implements Comparable<Action> {
     private static AtomicInteger ID = new AtomicInteger();
+    public static final int DEFAULT_COMMAND_RESPONSE_TIMEOUT = 500;
 
     private final int _actionId;
     private final Command _command;
     private final CompletionListener _listener;
+    private final long timeout;
 
     public Action(Command command, CompletionListener listener) {
+        this(command, listener, DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+    }
+
+    public Action(Command command, CompletionListener listener, long timeout) {
         Preconditions.checkArgument(command != null, "Action's command cannot be null");
         Preconditions.checkArgument(listener != null, "Action's listener cannot be null");
         this._command = command;
         this._listener = listener;
+        this.timeout = timeout;
         _actionId = ID.incrementAndGet();
     }
 
-    public Action(int actionId, Command command, CompletionListener listener) {
+    public Action(int actionId, Command command, CompletionListener listener, long timeout) {
         Preconditions.checkArgument(command != null, "Action's command cannot be null");
         Preconditions.checkArgument(listener != null, "Action's listener cannot be null");
         this._command = command;
         this._listener = listener;
+        this.timeout = timeout;
+
         _actionId = actionId;
     }
 
@@ -40,6 +53,10 @@ public final class Action implements Comparable<Action> {
 
     public int getId() {
         return _actionId;
+    }
+
+    public long getTimeout() {
+        return timeout;
     }
 
     public Command getCommand() {

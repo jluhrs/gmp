@@ -45,8 +45,7 @@ public interface ActionManager {
      * @param response the completion information to be sent to the clients.
      */
 
-    void registerCompletionInformation(int actionId,
-                                       HandlerResponse response);
+    void registerCompletionInformation(int actionId, HandlerResponse response);
 
     /**
      * Acquire the updater processor lock. This way, the update processor

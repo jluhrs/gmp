@@ -1,6 +1,8 @@
-package edu.gemini.aspen.gmp.commands.model;
+package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.gmp.commands.model.Action;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
 
 /**
  * This interface defines a method to dispatch an action using

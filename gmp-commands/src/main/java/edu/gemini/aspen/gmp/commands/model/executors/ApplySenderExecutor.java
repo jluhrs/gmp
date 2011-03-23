@@ -4,6 +4,7 @@ import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
+import edu.gemini.aspen.gmp.commands.model.impl.HandlerResponseAnalyzer;
 
 import java.util.Set;
 
@@ -29,7 +30,6 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
 
     @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
-
         Configuration config = action.getCommand().getConfiguration();
         if (config.isEmpty()) {
             return HandlerResponse.createError(ERROR_MSG);
@@ -38,10 +38,10 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
         }
     }
 
-
     /**
      * Auxiliary method to recursively decompose a Configuration to be sent to
      * the appropriate handlers.
+     *
      *
      * @param action The action to be sent
      * @param config current configuration being analyzed
@@ -68,12 +68,12 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
         HandlerResponseAnalyzer analyzer = new HandlerResponseAnalyzer();
 
         for (ConfigPath cp : configPathSet) {
-            //get the subconfiguration
+            //get the sub-configuration
             Configuration c = config.getSubConfiguration(cp);
 
             ActionMessage am = _actionMessageBuilder.buildActionMessage(action, cp);
 
-            HandlerResponse response = sender.send(am);
+            HandlerResponse response = sender.send(am, action.getTimeout());
 
             //if the response is started, there is one handler that will
             //provide answer to this action later. Notify the action

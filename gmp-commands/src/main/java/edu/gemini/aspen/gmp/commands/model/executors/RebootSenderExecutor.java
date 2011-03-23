@@ -6,7 +6,6 @@ import edu.gemini.aspen.giapi.commands.RebootArgument;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.RebootManager;
-import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
 
 /**
  * An executor for the REBOOT sequence command.It will initiate the reboot
@@ -19,13 +18,11 @@ import edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor;
  * before passing them to the {@link RebootManager}.
  */
 public class RebootSenderExecutor implements SequenceCommandExecutor {
-
     private final RebootManager _rebootManager;
 
     public RebootSenderExecutor(RebootManager rebootManager) {
         _rebootManager = rebootManager;
     }
-
 
     @Override
     public HandlerResponse execute(Action action, ActionSender sender) {
@@ -35,12 +32,13 @@ public class RebootSenderExecutor implements SequenceCommandExecutor {
             return HandlerResponse.createError("Invalid argument for the REBOOT sequence command: " + action.getCommand().getConfiguration());
         }
 
-        if (action.getCommand().getActivity() == Activity.PRESET)
+        Activity rebootActivity = action.getCommand().getActivity();
+        if (rebootActivity == Activity.PRESET) {
             return HandlerResponse.ACCEPTED;
-        if (action.getCommand().getActivity() == Activity.CANCEL) {
+        }
+        if (rebootActivity == Activity.CANCEL) {
             return HandlerResponse.createError("Can't cancel a REBOOT sequence command");
         }
-
 
         //We have a START or PRESET_START. Let's initiate the reboot in a different thread
         new Thread() {

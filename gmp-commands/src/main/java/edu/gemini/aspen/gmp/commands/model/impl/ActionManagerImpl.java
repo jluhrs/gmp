@@ -61,7 +61,6 @@ public class ActionManagerImpl implements ActionManager {
     private final ExecutorService _executorService =
             Executors.newSingleThreadExecutor();
 
-
     /**
      * A Lock to synchronize the action manager with the command sender.
      */
@@ -85,19 +84,18 @@ public class ActionManagerImpl implements ActionManager {
         }
     }
 
-    @Override
-    public void increaseRequiredResponses(Action action) {
-        if (action != null && action.getCommand().isApply()) {
-            _handlerResponseTracker.increaseRequiredResponses(action);
-        }
-    }
-
     /**
      * Constructor.
      */
     public ActionManagerImpl() {
     }
 
+    @Override
+    public void increaseRequiredResponses(Action action) {
+        if (action != null && action.getCommand().isApply()) {
+            _handlerResponseTracker.increaseRequiredResponses(action);
+        }
+    }
 
     /**
      * The UpdateProcessor is in charge of collecting the update request from
@@ -270,6 +268,10 @@ public class ActionManagerImpl implements ActionManager {
     @Invalidate
     public void stop() {
         _processor.stop();
+        stopExecutionService();
+    }
+
+    private void stopExecutionService() {
         _executorService.shutdown();
         try {
             if (!_executorService.awaitTermination(1000, TimeUnit.MILLISECONDS)) {

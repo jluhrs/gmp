@@ -273,7 +273,7 @@ public class ActionManagerImplTest {
                 new Command(SequenceCommand.APPLY,
                         Activity.PRESET_START,
                         emptyConfiguration()),
-                cl);
+                cl, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
 
         manager.registerAction(fakedAction);
         //An action started has been registered.
@@ -296,7 +296,7 @@ public class ActionManagerImplTest {
                 new Command(SequenceCommand.GUIDE,
                         Activity.PRESET_START,
                         emptyConfiguration()),
-                cl);
+                cl, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
         //register this action with the manager
         manager.registerAction(fakedAction);
 
