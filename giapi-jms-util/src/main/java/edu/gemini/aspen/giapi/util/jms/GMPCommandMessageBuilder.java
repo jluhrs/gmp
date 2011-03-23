@@ -1,5 +1,6 @@
 package edu.gemini.aspen.giapi.util.jms;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.jms.api.MapMessageBuilder;
 
 import javax.jms.JMSException;
@@ -16,6 +17,11 @@ public class GMPCommandMessageBuilder implements MapMessageBuilder {
     private final Map<String, String> messageProperties;
 
     public GMPCommandMessageBuilder(String correlationID, Map<String, String> messageBody, Map<String, String> messageProperties) {
+        Preconditions.checkArgument(correlationID != null, "CorrelationID cannot be null");
+        Preconditions.checkArgument(!correlationID.isEmpty(), "CorrelationID cannot be empty");
+        Preconditions.checkArgument(messageBody != null, "Message body components cannot be null");
+        Preconditions.checkArgument(messageProperties != null, "Message properties cannot be null");
+        
         this.correlationID = correlationID;
         this.messageBody = messageBody;
         this.messageProperties = messageProperties;

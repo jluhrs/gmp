@@ -13,7 +13,7 @@ public class CommandMessageSerializerTest {
     public void testConvertHandlerResponseToProperties() {
         HandlerResponse response = HandlerResponse.get(HandlerResponse.Response.ACCEPTED);
 
-        Map<String, String> messageContents = CommandMessageSerializer.convertHandlerResponseToProperties(response);
+        Map<String, String> messageContents = JmsForwardingCompletionListener.convertHandlerResponseToProperties(response);
 
         assertEquals(HandlerResponse.Response.ACCEPTED.toString(), messageContents.get(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
     }
@@ -24,7 +24,7 @@ public class CommandMessageSerializerTest {
 
         HandlerResponse response = HandlerResponse.createError(errorMsg);
 
-        Map<String, String> messageContents = CommandMessageSerializer.convertHandlerResponseToProperties(response);
+        Map<String, String> messageContents = JmsForwardingCompletionListener.convertHandlerResponseToProperties(response);
 
         assertEquals(HandlerResponse.Response.ERROR.toString(), messageContents.get(JmsKeys.GMP_HANDLER_RESPONSE_KEY));
         assertEquals(errorMsg, messageContents.get(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY));

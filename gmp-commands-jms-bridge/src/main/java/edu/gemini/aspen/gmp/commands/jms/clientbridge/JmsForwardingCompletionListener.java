@@ -29,20 +29,25 @@ import java.util.logging.Logger;
 public class JmsForwardingCompletionListener extends JmsMapMessageSender implements CompletionListener {
     private static final Logger LOG = Logger.getLogger(JmsForwardingCompletionListener.class.getName());
     private final DestinationData _replyDestination;
-    private final String correlationID;
+    private final String _correlationID;
 
     public JmsForwardingCompletionListener(DestinationData replyDestination, String correlationID) {
         super("");
+        Preconditions.checkArgument(replyDestination != null, "Destination to send responses cannot be null");
+        Preconditions.checkArgument(correlationID != null && !correlationID.isEmpty(), "All Command messages require a _correlationID");
+
         _replyDestination = replyDestination;
-        this.correlationID = correlationID;
+        this._correlationID = correlationID;
     }
 
-    public void sendInitialResponse(HandlerResponse response) {
-        LOG.fine("Sent initial response " + response + " to " + _replyDestination + " " + correlationID);
-        Map<String, String> messageBody = CommandMessageSerializer.convertHandlerResponseToProperties(response);
+    static Map<String, String> convertHandlerResponseToProperties(HandlerResponse response) {
+        Map<String, String> properties = Maps.newHashMap();
 
-        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(correlationID, messageBody, ImmutableMap.<String, String>of());
-        super.sendMapMessage(_replyDestination, messageBuilder);
+        properties.put(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
+        if (response.hasErrorMessage()) {
+            properties.put(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
+        }
+        return properties;
     }
 
     @Override
@@ -54,11 +59,24 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
         this.stopJms();
     }
 
+    /**
+     * Sends to the client that sent the command the initial response to the request
+     *
+     * @param response The initial response returned by CommandSender.sendCommand
+     */
+    void sendInitialResponse(HandlerResponse response) {
+        LOG.fine("Sent initial response " + response + " to " + _replyDestination + " " + _correlationID);
+        Map<String, String> messageBody = convertHandlerResponseToProperties(response);
+
+        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(_correlationID, messageBody, ImmutableMap.<String, String>of());
+        super.sendMapMessage(_replyDestination, messageBuilder);
+    }
+
     private void sendCompletionResponse(HandlerResponse response, Command command) {
         Map<String, String> message = convertConfigurationToProperties(command.getConfiguration());
         Map<String, String> properties = convertResponseAndCommandToProperties(response, command);
 
-        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(correlationID, message, properties);
+        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(_correlationID, message, properties);
         super.sendMapMessage(_replyDestination, messageBuilder);
     }
 
@@ -90,7 +108,7 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
     protected Map<String, String> convertResponseAndCommandToProperties(HandlerResponse response, Command command) {
         Map<String, String> properties = Maps.newHashMap();
 
-        properties.putAll(CommandMessageSerializer.convertHandlerResponseToProperties(response));
+        properties.putAll(convertHandlerResponseToProperties(response));
         properties.putAll(convertCommandToProperties(command));
 
         return ImmutableMap.copyOf(properties);

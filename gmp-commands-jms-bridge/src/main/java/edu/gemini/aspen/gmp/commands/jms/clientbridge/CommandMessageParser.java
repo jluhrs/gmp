@@ -12,6 +12,7 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
+import javax.jms.Message;
 import java.util.List;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
@@ -21,57 +22,62 @@ import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration
  * Class that can parse a Map message sent over JMS and convert it into a
  * {@link edu.gemini.aspen.giapi.commands.Command}
  */
-public class CommandMessageParser {
+class CommandMessageParser {
+    private final MapMessage mapMessage;
 
-    private CommandMessageParser() {
+    CommandMessageParser(Message mapMessage) throws FormatException {
+        Preconditions.checkArgument(mapMessage != null, "Message cannot be null");
+        if (!(mapMessage instanceof MapMessage)) {
+            throw new FormatException("Cannot process a non map message");
+        }
+        this.mapMessage = (MapMessage)mapMessage;
     }
 
-    public static Command readCommand(MapMessage msg) throws FormatException {
-        Preconditions.checkArgument(msg != null, "Message cannot be null");
+    public boolean doesMessageContainACommand() {
         try {
-            return parseCommand(msg);
+            return mapMessage.getJMSCorrelationID() != null;
         } catch (JMSException e) {
-            throw new FormatException("JMS Exception while decoding the message", e);
+            return false;
         }
     }
 
-    private static Command parseCommand(MapMessage msg) throws JMSException {
-        SequenceCommand sequenceCommand = parseSequenceCommand(msg);
-        Activity activity = parseActivity(msg);
-        Configuration configuration = parseConfiguration(msg);
-        
+    public Command readCommand() throws FormatException {
+        try {
+            return parseCommand();
+        } catch (JMSException e) {
+            throw new FormatException("JMS Exception while decoding the message", e);
+        } catch (IllegalArgumentException e) {
+            throw new FormatException("Message contains an invalid command");
+        } catch (NullPointerException e) {
+            throw new FormatException("Message didn't contain a command");
+        }
+    }
+
+    private Command parseCommand() throws JMSException {
+        SequenceCommand sequenceCommand = parseSequenceCommand();
+        Activity activity = parseActivity();
+        Configuration configuration = parseConfiguration();
+
         return new Command(sequenceCommand, activity, configuration);
     }
 
-    static SequenceCommand parseSequenceCommand(MapMessage msg) throws FormatException, JMSException {
-        try {
-            String sequenceCommand = msg.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY);
-            return SequenceCommand.valueOf(sequenceCommand);
-        } catch (IllegalArgumentException e) {
-            throw new FormatException("Message contains an invalid sequence command");
-        } catch (NullPointerException e) {
-            throw new FormatException("Message didn't contain a sequence command");
-        }
+    private SequenceCommand parseSequenceCommand() throws FormatException, JMSException {
+        String sequenceCommand = mapMessage.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY);
+        return SequenceCommand.valueOf(sequenceCommand);
     }
 
-    static Activity parseActivity(MapMessage msg) throws FormatException, JMSException {
-        try {
-            String activity = msg.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY);
-            return Activity.valueOf(activity);
-        } catch (IllegalArgumentException e) {
-            throw new FormatException("Message contains an invalid activity");
-        } catch (NullPointerException e) {
-            throw new FormatException("Message didn't contain an activity");
-        }
+    private Activity parseActivity() throws FormatException, JMSException {
+        String activity = mapMessage.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY);
+        return Activity.valueOf(activity);
     }
 
-    static Configuration parseConfiguration(MapMessage msg) throws FormatException, JMSException {
-        List<String> enumeration= ImmutableList.copyOf(Iterators.forEnumeration(msg.getMapNames()));
+    private Configuration parseConfiguration() throws FormatException, JMSException {
+        List<String> mapProperties = ImmutableList.copyOf(Iterators.forEnumeration(mapMessage.getMapNames()));
 
         DefaultConfiguration.Builder builder = configurationBuilder();
 
-        for (String path: enumeration) {
-             builder.withPath(configPath(path), msg.getString(path));
+        for (String path : mapProperties) {
+            builder.withPath(configPath(path), mapMessage.getString(path));
         }
         return builder.build();
 

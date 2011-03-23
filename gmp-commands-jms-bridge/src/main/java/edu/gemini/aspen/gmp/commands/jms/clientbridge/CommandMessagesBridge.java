@@ -16,7 +16,6 @@ import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 
 import javax.jms.JMSException;
-import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import java.util.logging.Level;
@@ -45,6 +44,7 @@ public class CommandMessagesBridge implements MessageListener {
         _jmsProvider = jmsProvider;
         _commandSender = commandSender;
 
+        // Listen for incoming messages in GW_COMMAND_TOPIC
         _messageConsumer = new BaseMessageConsumer(
                 CONSUMER_NAME,
                 new DestinationData(JmsKeys.GW_COMMAND_TOPIC, DestinationType.TOPIC),
@@ -52,34 +52,22 @@ public class CommandMessagesBridge implements MessageListener {
         );
     }
 
-    @Validate
-    public void startListeningForMessages() {
-        try {
-            _messageConsumer.startJms(_jmsProvider);
-        } catch (JMSException e) {
-            LOG.log(Level.SEVERE, "Exception while starting the provider", e);
-        }
-    }
-
-    @Invalidate
-    public void stopListeningForMessages() {
-        this._messageConsumer.stopJms();
-    }
-
+    @Override
     public void onMessage(Message message) {
         try {
             decodeMessageAndProcess(message);
         } catch (FormatException e) {
             LOG.log(Level.WARNING, "Message did not contain a command message: " + e.getMessage());
         } catch (JMSException e) {
-            //this is produced when sending reply back to the client
+            //this is produced when sending initial reply back to the client
             LOG.log(Level.WARNING, "Problem sending response back to client ", e);
         }
     }
 
     private void decodeMessageAndProcess(Message message) throws JMSException {
-        if (isValidCommandMessage(message)) {
-            Command command = CommandMessageParser.readCommand((MapMessage) message);
+        CommandMessageParser messageParser = new CommandMessageParser(message);
+        if (messageParser.doesMessageContainACommand()) {
+            Command command = messageParser.readCommand();
             LOG.info("New command arrived: " + command + " with correlationID " + message.getJMSCorrelationID());
 
             // TODO The listeners should be released at some point. We need to create an entity to keep
@@ -89,17 +77,25 @@ public class CommandMessagesBridge implements MessageListener {
             HandlerResponse response = _commandSender.sendCommand(command, listener);
 
             listener.sendInitialResponse(response);
+        } else {
+            LOG.warning("Invalid Command message arrived: " + message);
         }
-    }
-
-    private boolean isValidCommandMessage(Message message) throws JMSException {
-        return message instanceof MapMessage && message.getJMSCorrelationID() != null;
     }
 
     private JmsForwardingCompletionListener setupCompletionListener(String correlationID) throws JMSException {
         JmsForwardingCompletionListener listener = new JmsForwardingCompletionListener(REPLY_DESTINATION, correlationID);
         listener.startJms(_jmsProvider);
         return listener;
+    }
+
+    @Validate
+    public void startListeningForMessages() throws JMSException {
+        _messageConsumer.startJms(_jmsProvider);
+    }
+
+    @Invalidate
+    public void stopListeningForMessages() {
+        this._messageConsumer.stopJms();
     }
 
 }

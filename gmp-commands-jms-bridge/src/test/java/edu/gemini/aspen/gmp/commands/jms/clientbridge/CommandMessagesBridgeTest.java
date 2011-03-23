@@ -7,6 +7,7 @@ import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
 import edu.gemini.aspen.gmp.commands.jms.MockedJmsArtifactsTestBase;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,12 +76,13 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
     }
 
     private MapMessage createApplyCommandMessage() throws JMSException {
-        MapMessage message = mock(MapMessage.class);
-        when(message.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY)).thenReturn(SequenceCommand.APPLY.toString());
-        when(message.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY)).thenReturn(Activity.PRESET.toString());
-        CommandMessageParserTest.addConfigurationEntriesToMsg(message);
+        MapMessage message = new MapMessageMock();
+        message.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.APPLY.toString());
+        message.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
+        message.setString("x:A", "1");
+        message.setString("x:B", "2");
 
-        when(message.getJMSCorrelationID()).thenReturn("123");
+        message.setJMSCorrelationID("123");
         return message;
     }
 
