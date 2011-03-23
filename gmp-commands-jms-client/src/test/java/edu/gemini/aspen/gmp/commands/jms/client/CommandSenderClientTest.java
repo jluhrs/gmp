@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.commands.jms.client;
 
-import com.google.common.collect.Iterators;
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
@@ -9,20 +8,18 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
+import edu.gemini.aspen.giapitestsupport.jms.MapMessageMock;
 import edu.gemini.jms.api.MessagingException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.MessageListener;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class CommandSenderClientTest extends MockedJMSArtifactsBase {
     private CommandSenderClient senderClient;
@@ -37,7 +34,8 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
 
     @Test
     public void testSendParkCommand() throws TesterException, JMSException {
-        mockInitialResponseMessage("COMPLETED");
+        HandlerResponseMapMessage completedReply = new HandlerResponseMapMessage(HandlerResponse.get(HandlerResponse.Response.COMPLETED));
+        mockReplyMessage(completedReply);
 
         Command command = new Command(SequenceCommand.PARK, Activity.START);
         HandlerResponse response = senderClient.sendCommand(command, completionListener);
@@ -45,16 +43,10 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
         Assert.assertEquals(HandlerResponse.COMPLETED, response);
     }
 
-    private void mockInitialResponseMessage(String responseType) throws JMSException {
-        MapMessage message = mock(MapMessage.class);
-        when(message.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenReturn(responseType);
-
-        when(consumer.receive(Matchers.anyInt())).thenReturn(message);
-    }
-
     @Test
     public void testSendApplyWithLateResponse() throws TesterException, JMSException {
-        mockInitialResponseMessage("STARTED");
+        HandlerResponseMapMessage completedReply = new HandlerResponseMapMessage(HandlerResponse.get(HandlerResponse.Response.STARTED));
+        mockReplyMessage(completedReply);
 
         ArgumentCaptor<MessageListener> listenerCaptor = ArgumentCaptor.forClass(MessageListener.class);
 
@@ -73,9 +65,8 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
 
     @Test
     public void testSendApplyWithoutConfiguration() throws TesterException, JMSException {
-        mockInitialResponseMessage("ERROR");
-
-        ArgumentCaptor<MessageListener> listenerCaptor = ArgumentCaptor.forClass(MessageListener.class);
+        HandlerResponseMapMessage completedReply = new HandlerResponseMapMessage(HandlerResponse.get(HandlerResponse.Response.ERROR));
+        mockReplyMessage(completedReply);
 
         Command command = new Command(SequenceCommand.APPLY, Activity.START, DefaultConfiguration.emptyConfiguration());
 
@@ -87,11 +78,10 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
     }
 
     private MapMessage mockCompletionInformationMessage() throws JMSException {
-        MapMessage replyMessage = mock(MapMessage.class);
-        when(replyMessage.getStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenReturn("COMPLETED");
-        when(replyMessage.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY)).thenReturn("APPLY");
-        when(replyMessage.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY)).thenReturn("START");
-        when(replyMessage.getMapNames()).thenReturn(Iterators.asEnumeration(Iterators.<Object>emptyIterator()));
+        MapMessageMock replyMessage = new MapMessageMock();
+        replyMessage.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, "COMPLETED");
+        replyMessage.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, "APPLY");
+        replyMessage.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, "START");
         return replyMessage;
     }
 
