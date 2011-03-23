@@ -10,7 +10,7 @@ import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.giapi.util.jms.CommandReplyMapMessageBuilder;
+import edu.gemini.aspen.giapi.util.jms.GMPCommandMessageBuilder;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.JmsMapMessageSender;
@@ -41,7 +41,7 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
         LOG.fine("Sent initial response " + response + " to " + _replyDestination + " " + correlationID);
         Map<String, String> messageBody = CommandMessageSerializer.convertHandlerResponseToProperties(response);
 
-        MapMessageBuilder messageBuilder = new CommandReplyMapMessageBuilder(correlationID, messageBody, ImmutableMap.<String, String>of());
+        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(correlationID, messageBody, ImmutableMap.<String, String>of());
         super.sendMapMessage(_replyDestination, messageBuilder);
     }
 
@@ -58,7 +58,7 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
         Map<String, String> message = convertConfigurationToProperties(command.getConfiguration());
         Map<String, String> properties = convertResponseAndCommandToProperties(response, command);
 
-        MapMessageBuilder messageBuilder = new CommandReplyMapMessageBuilder(correlationID, message, properties);
+        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(correlationID, message, properties);
         super.sendMapMessage(_replyDestination, messageBuilder);
     }
 

@@ -6,12 +6,16 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import java.util.Map;
 
-public class CommandReplyMapMessageBuilder implements MapMessageBuilder {
+/**
+ * This class can construct a JMS message representing a command in the protocol between a client
+ * and the CommandSender.
+ */
+public class GMPCommandMessageBuilder implements MapMessageBuilder {
     private final String correlationID;
     private final Map<String, String> messageBody;
     private final Map<String, String> messageProperties;
 
-    public CommandReplyMapMessageBuilder(String correlationID, Map<String, String> messageBody, Map<String, String> messageProperties) {
+    public GMPCommandMessageBuilder(String correlationID, Map<String, String> messageBody, Map<String, String> messageProperties) {
         this.correlationID = correlationID;
         this.messageBody = messageBody;
         this.messageProperties = messageProperties;
