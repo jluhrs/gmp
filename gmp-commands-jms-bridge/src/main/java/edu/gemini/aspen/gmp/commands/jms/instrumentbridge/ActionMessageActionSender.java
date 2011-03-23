@@ -56,11 +56,11 @@ class ActionMessageActionSender implements ActionSender {
 
     private HandlerResponse sendMessageAndWaitForReply(ActionMessage actionMessage, long timeout) {
         DestinationData destinationData = new DestinationData(actionMessage.getDestinationName(), DestinationType.TOPIC);
-        CommandSendingMapMessageBuilder messageBuilder = new CommandSendingMapMessageBuilder(
+        InstrumentCommandMessageBuilder instrumentMessageBuilder = new InstrumentCommandMessageBuilder(
                 actionMessage.getDataElements(),
                 actionMessage.getProperties());
 
-        return _messageSender.sendMessageWithReply(destinationData, messageBuilder, timeout);
+        return _messageSender.sendMessageWithReply(destinationData, instrumentMessageBuilder, timeout);
     }
 
     @Validate
