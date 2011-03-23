@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.jms.clientbridge;
+package edu.gemini.aspen.giapi.util.jms;
 
 import edu.gemini.jms.api.MapMessageBuilder;
 

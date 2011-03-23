@@ -1,4 +1,4 @@
-package edu.gemini.giapi.tool.commands;
+package edu.gemini.aspen.gmp.commands.jms.client;
 
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.Command;

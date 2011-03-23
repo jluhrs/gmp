@@ -1,11 +1,10 @@
-package edu.gemini.giapi.tool.commands;
+package edu.gemini.aspen.gmp.commands.jms.client;
 
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.MessagingException;
 
@@ -26,7 +25,7 @@ public class CommandSenderClient implements CommandSender {
     private static final int DEFAULT_TIMEOUT = 5000;
     private final JmsProvider provider;
 
-    public CommandSenderClient(JmsProvider provider) throws TesterException {
+    public CommandSenderClient(JmsProvider provider) {
         Preconditions.checkArgument(provider != null, "Provider cannot be null");
         this.provider = provider;
     }

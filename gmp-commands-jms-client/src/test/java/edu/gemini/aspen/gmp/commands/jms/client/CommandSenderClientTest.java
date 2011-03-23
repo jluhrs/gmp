@@ -1,26 +1,25 @@
-package edu.gemini.giapi.tool.commands;
+package edu.gemini.aspen.gmp.commands.jms.client;
 
 import com.google.common.collect.Iterators;
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.jms.api.MessagingException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.MessageListener;
 
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,14 +42,14 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
         Command command = new Command(SequenceCommand.PARK, Activity.START);
         HandlerResponse response = senderClient.sendCommand(command, completionListener);
 
-        assertEquals(HandlerResponse.COMPLETED, response);
+        Assert.assertEquals(HandlerResponse.COMPLETED, response);
     }
 
     private void mockInitialResponseMessage(String responseType) throws JMSException {
         MapMessage message = mock(MapMessage.class);
         when(message.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenReturn(responseType);
 
-        when(consumer.receive(anyInt())).thenReturn(message);
+        when(consumer.receive(Matchers.anyInt())).thenReturn(message);
     }
 
     @Test
@@ -59,17 +58,17 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
 
         ArgumentCaptor<MessageListener> listenerCaptor = ArgumentCaptor.forClass(MessageListener.class);
 
-        Command command = new Command(SequenceCommand.APPLY, Activity.START, emptyConfiguration());
+        Command command = new Command(SequenceCommand.APPLY, Activity.START, DefaultConfiguration.emptyConfiguration());
 
         // Simulate that a reply was sent later on
         HandlerResponse response = senderClient.sendCommand(command, completionListener);
-        assertEquals(HandlerResponse.STARTED, response);
+        Assert.assertEquals(HandlerResponse.STARTED, response);
 
         verify(consumer).setMessageListener(listenerCaptor.capture());
         MapMessage replyMessage = mockCompletionInformationMessage();
 
         listenerCaptor.getValue().onMessage(replyMessage);
-        assertTrue(completionListener.wasInvoked());
+        Assert.assertTrue(completionListener.wasInvoked());
     }
 
     @Test
@@ -78,11 +77,11 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
 
         ArgumentCaptor<MessageListener> listenerCaptor = ArgumentCaptor.forClass(MessageListener.class);
 
-        Command command = new Command(SequenceCommand.APPLY, Activity.START, emptyConfiguration());
+        Command command = new Command(SequenceCommand.APPLY, Activity.START, DefaultConfiguration.emptyConfiguration());
 
         // Simulate that a reply was sent later on
         HandlerResponse response = senderClient.sendCommand(command, completionListener);
-        assertEquals(HandlerResponse.Response.ERROR, response.getResponse());
+        Assert.assertEquals(HandlerResponse.Response.ERROR, response.getResponse());
 
         verify(session).close();
     }

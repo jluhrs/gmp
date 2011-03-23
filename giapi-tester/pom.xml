@@ -69,6 +69,10 @@
             <artifactId>gmp-commands-jms-bridge</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands-jms-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-service</artifactId>
             <version>0.1.0</version>

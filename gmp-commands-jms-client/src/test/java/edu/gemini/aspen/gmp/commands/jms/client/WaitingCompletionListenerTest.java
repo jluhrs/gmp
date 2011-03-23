@@ -1,4 +1,4 @@
-package edu.gemini.giapi.tool.commands;
+package edu.gemini.aspen.gmp.commands.jms.client;
 
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
@@ -22,7 +22,7 @@ public class WaitingCompletionListenerTest {
         CompletionInformation completionInformation = completionListener.waitForResponse(TIMEOUT);
 
         assertEquals(HandlerResponse.createError("Response not arrived in time: " + TIMEOUT), completionInformation.getHandlerResponse());
-        assertTrue((System.currentTimeMillis() - start)>=TIMEOUT);
+        assertTrue((System.currentTimeMillis() - start) >= TIMEOUT);
     }
 
     @Test
@@ -40,6 +40,6 @@ public class WaitingCompletionListenerTest {
 
         assertEquals(HandlerResponse.get(HandlerResponse.Response.COMPLETED), completionInformation.getHandlerResponse());
 
-        assertTrue((System.currentTimeMillis() - start)<TIMEOUT);
+        assertTrue((System.currentTimeMillis() - start) < TIMEOUT);
     }
 }

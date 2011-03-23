@@ -1,4 +1,4 @@
-package edu.gemini.giapi.tool.commands;
+package edu.gemini.aspen.gmp.commands.jms.client;
 
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionListener;

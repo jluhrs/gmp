@@ -1,8 +1,7 @@
-package edu.gemini.giapi.tool.commands;
+package edu.gemini.aspen.gmp.commands.jms.client;
 
 import edu.gemini.jms.api.JmsProvider;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -15,10 +14,8 @@ import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.Topic;
 
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 
 public class MockedJMSArtifactsBase {
     protected ConnectionFactory connectionFactory;
@@ -29,7 +26,7 @@ public class MockedJMSArtifactsBase {
     protected MapMessage mapMessage;
 
     public void createMockedObjects() throws JMSException {
-        provider = Mockito.mock(JmsProvider.class);
+        provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
         when(provider.getConnectionFactory()).thenReturn(connectionFactory);
     }
@@ -37,29 +34,29 @@ public class MockedJMSArtifactsBase {
     protected void mockSessionProducerAndConsumer() throws JMSException {
         session = mockSessionCreation();
 
-        producer = Mockito.mock(MessageProducer.class);
+        producer = mock(MessageProducer.class);
         when(session.createProducer(Matchers.<Destination>anyObject())).thenReturn(producer);
-        consumer = Mockito.mock(MessageConsumer.class);
-        when(session.createConsumer(Matchers.<Destination>anyObject(), anyString())).thenReturn(consumer);
+        consumer = mock(MessageConsumer.class);
+        when(session.createConsumer(Matchers.<Destination>anyObject(), Matchers.anyString())).thenReturn(consumer);
 
         Queue queue = mock(Queue.class);
-        when(session.createQueue(anyString())).thenReturn(queue);
+        when(session.createQueue(Matchers.anyString())).thenReturn(queue);
         System.out.println(queue);
 
         Topic topic = mock(Topic.class);
-        when(session.createTopic(anyString())).thenReturn(topic);
+        when(session.createTopic(Matchers.anyString())).thenReturn(topic);
 
-        mapMessage = Mockito.mock(MapMessage.class);
+        mapMessage = mock(MapMessage.class);
         when(session.createMapMessage()).thenReturn(mapMessage);
     }
 
     private Session mockSessionCreation() throws JMSException {
-        Session session = Mockito.mock(Session.class);
+        Session session = mock(Session.class);
         // Mock connection factory
-        connectionFactory = Mockito.mock(ConnectionFactory.class);
+        connectionFactory = mock(ConnectionFactory.class);
 
         // Mock connection
-        Connection connection = Mockito.mock(Connection.class);
+        Connection connection = mock(Connection.class);
         when(connectionFactory.createConnection()).thenReturn(connection);
 
         // Mock session

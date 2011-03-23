@@ -8,8 +8,14 @@ import javax.jms.MessageConsumer;
 
 /**
  * Base class to model a request/reply communication using JMS.
+ *
  * Implementations of this class need to define how to reconstruct the
- * reply message in the communication as an Object.
+ * reply message in the communication as an Object with the method buildResponse
+ *
+ * Also they need to customize what kind of consumer will be used to get the reply
+ * overriding the method createReplyConsumer. For example the reply could be a temporary
+ * queue or a fixed queue with a correlationID selector
+ *
  */
 public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
         implements MapMessageSenderReply<T> {

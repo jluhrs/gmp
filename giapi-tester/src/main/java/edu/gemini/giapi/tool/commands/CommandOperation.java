@@ -4,7 +4,8 @@ import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapitestsupport.TesterException;
+import edu.gemini.aspen.gmp.commands.jms.client.CommandSenderClient;
+import edu.gemini.aspen.gmp.commands.jms.client.WaitingCompletionListener;
 import edu.gemini.giapi.tool.arguments.ActivityArgument;
 import edu.gemini.giapi.tool.arguments.ConfigArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
@@ -45,33 +46,29 @@ public class CommandOperation implements Operation {
         ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
         provider.startConnection();
         CommandSenderClient senderClient = null;
-        try {
-            senderClient = new CommandSenderClient(provider);
+        senderClient = new CommandSenderClient(provider);
 
-            Configuration config = (_config != null) ? _config.getConfiguration() : emptyConfiguration();
+        Configuration config = (_config != null) ? _config.getConfiguration() : emptyConfiguration();
 
-            Command command = new Command(_sc.getSequenceCommand(),
-                    _activity.getActivity(),
-                    config);
+        Command command = new Command(_sc.getSequenceCommand(),
+                _activity.getActivity(),
+                config);
 
-            for (int x = 0; x < repetitions; x++) {
-                WaitingCompletionListener listener = new WaitingCompletionListener();
-                HandlerResponse response = senderClient.sendCommand(command, listener);
+        for (int x = 0; x < repetitions; x++) {
+            WaitingCompletionListener listener = new WaitingCompletionListener();
+            HandlerResponse response = senderClient.sendCommand(command, listener);
 
-                System.out.println("Response Received: " + response);
+            listener.waitForResponse(timeout);
+            System.out.println("Response Received: " + response);
 
-                if (response == HandlerResponse.STARTED) {
-                    //now, wait for the answer, synchronously
-                    CompletionInformation completionInformation
-                             = listener.waitForResponse(timeout);
-                    System.out.println("Completion Information: " + completionInformation);
-                }
+            if (response == HandlerResponse.STARTED) {
+                //now, wait for the answer, synchronously
+                CompletionInformation completionInformation
+                        = listener.waitForResponse(timeout);
+                System.out.println("Completion Information: " + completionInformation);
             }
-
-        } catch (TesterException ex) {
-            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-        } finally {
         }
+
     }
 
     public void setArgument(Argument arg) {
