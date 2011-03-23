@@ -1,5 +1,9 @@
 package edu.gemini.aspen.gmp.commands.records;
 
+import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CommandSender;
+import edu.gemini.aspen.giapi.commands.CompletionListener;
+import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelListener;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
@@ -10,12 +14,14 @@ import gov.aps.jca.dbr.DBRType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
  * Class RecordsTest
@@ -28,15 +34,18 @@ public class RecordsTest {
 
     private ChannelAccessServerImpl cas;
     private final String carPrefix =  "gpitest:applyC";
-    private final String prefix = "gpitest:";
+    private final String prefix = "gpitest";
     private final String cadName = "observe";
-    private final String applyName = "apply";
+    private CommandSender cs;
 
 
     @Before
     public void setup() throws CAException {
         cas = new ChannelAccessServerImpl();
         cas.start();
+        cs = mock(CommandSender.class);
+        when(cs.sendCommand(Matchers.<Command>any(), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.COMPLETED);
+        when(cs.sendCommand(Matchers.<Command>any(), Matchers.<CompletionListener>any(), anyLong())).thenReturn(HandlerResponse.COMPLETED);
     }
 
     @After
@@ -86,13 +95,13 @@ public class RecordsTest {
 
     @Test
     public void CADTest() throws CAException, InterruptedException {
-        CADRecordImpl cad = new CADRecordImpl(cas,prefix,cadName,3);
+        CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
         cad.start();
 
         //test mark
-        Channel<String> a = cas.createChannel(prefix+cadName+".A","");
-        Channel<Integer> mark = cas.createChannel(prefix+cadName+".MARK",0);
-        Channel<CARRecord.Val> carVal = cas.createChannel(prefix+cadName+"C.VAL",CARRecord.Val.IDLE);
+        Channel<String> a = cas.createChannel(prefix+":"+cadName+".A","");
+        Channel<Integer> mark = cas.createChannel(prefix+":"+cadName+".MARK",0);
+        Channel<CARRecord.Val> carVal = cas.createChannel(prefix+":"+cadName+"C.VAL",CARRecord.Val.IDLE);
 
 
         ChangeListener listener = new ChangeListener();
@@ -133,7 +142,7 @@ public class RecordsTest {
         }
 
         //test CAR
-        Channel<Record.Dir> dir = cas.createChannel(prefix+cadName+".DIR",Record.Dir.CLEAR);
+        Channel<Record.Dir> dir = cas.createChannel(prefix+":"+cadName+".DIR",Record.Dir.CLEAR);
         dir.setValue(Record.Dir.MARK);
         if(!carListener.await(1, TimeUnit.SECONDS)){
             fail();
@@ -158,11 +167,11 @@ public class RecordsTest {
 
     @Test
     public void CADStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
-        CADRecordImpl cad = new CADRecordImpl(cas,prefix,cadName,3);
+        CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
         cad.start();
 
-        Channel<Record.Dir> dir = cas.createChannel(prefix+cadName+".DIR",Record.Dir.CLEAR);
-        Channel<Integer> mark = cas.createChannel(prefix+cadName+".MARK",0);
+        Channel<Record.Dir> dir = cas.createChannel(prefix+":"+cadName+".DIR",Record.Dir.CLEAR);
+        Channel<Integer> mark = cas.createChannel(prefix+":"+cadName+".MARK",0);
 
 
         //0 -> clear -> 0
@@ -236,10 +245,11 @@ public class RecordsTest {
 
     @Test
     public void applyTest() throws CAException {
-        ApplyRecord apply = new ApplyRecord(cas,prefix,applyName);
+        ApplyRecord apply = new ApplyRecord(cas,prefix);
         apply.start();
-        Channel<Record.Dir> dir = cas.createChannel(prefix+applyName+".DIR",Record.Dir.CLEAR);
-        CADRecordImpl cad = new CADRecordImpl(cas,prefix,cadName,3);
+        Channel<Record.Dir> dir = cas.createChannel(prefix+":apply.DIR",Record.Dir.CLEAR);
+
+        CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
         cad.start();
         apply.bindCAD(cad);
 

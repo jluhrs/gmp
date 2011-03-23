@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.commands.records;
 
+import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
@@ -49,7 +50,7 @@ public class CADRecordImpl extends Record implements CADRecord {
         public void valueChange(DBR dbr) {
             LOG.info("Attribute Received: " + ((String[]) dbr.getValue())[0]);
             try {
-                mark.setValue(1);
+                processInternal(Dir.MARK);
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
@@ -65,107 +66,113 @@ public class CADRecordImpl extends Record implements CADRecord {
      */
     private List<Channel<String>> attributes = new ArrayList<Channel<String>>();
 
-    @Property(name = "prefix", value = "INVALID", mandatory = true)
-    private String myPrefix;
-    @Property(name = "recordname", value = "INVALID", mandatory = true)
-    private String myRecordname;
-
-    @Property(name = "numAttributes", value = "0", mandatory = true)
     private Integer numAttributes;
 
-    private CADRecordImpl(@Requires ChannelAccessServer cas) {
-        super(cas);
+
+    private CommandSender cs;
+    private SequenceCommand seqCom;
+    protected CADRecordImpl(@Requires ChannelAccessServer cas,
+                          @Requires CommandSender cs,
+                          @Property(name = "prefix", value = "INVALID", mandatory = true)String prefix,
+                          @Property(name = "name", value = "INVALID", mandatory = true)String command,
+                          @Property(name = "numAttributes", value = "0", mandatory = true)Integer numAttributes) {
+        super(cas,prefix,command.toLowerCase());
         if (numAttributes > letters.length) {
             throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
         }
+        this.cs=cs;
+        this.numAttributes=numAttributes;
+        seqCom=SequenceCommand.valueOf(name.toUpperCase());
         LOG.info("Constructor");
-
     }
-    public CADRecordImpl(@Requires ChannelAccessServer cas, String prefix, String recordname, Integer numAttributes) {
-        super(cas);
-        if (numAttributes > letters.length) {
-            throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
-        }
-        myPrefix = prefix;
-        myRecordname = recordname;
-        this.numAttributes = numAttributes;
-        LOG.info("Constructor");
 
-    }
 
     @Override
     protected boolean processDir(Dir dir) throws CAException {
         car.changeState(CARRecord.Val.BUSY, "", 0, getClientId());
-        boolean noError = true;
-
+        HandlerResponse response = null;
         if (getState() == 0 &&
                 ((dir == ApplyRecord.Dir.PRESET) ||
                         (dir == ApplyRecord.Dir.START) ||
                         (dir == ApplyRecord.Dir.STOP))) {
-            //do nothing
+            car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
+            return true;
         } else {
-            switch (dir) {
-                case MARK://mark
-                    noError = doMark();
-                    copyIcidToOcid();
-                    setState(1);
-                    break;
-                case CLEAR://clear
-                    noError = doClear();
-                    copyIcidToOcid();
-                    setState(0);
-                    break;
-                case PRESET://preset
-                    noError = doPreset();
-                    copyIcidToOcid();
-                    setState(2);
-                    break;
-                case START://start
-                    if (getState() == 1) {
-                        noError = doPreset();
-                        copyIcidToOcid();
-                        setState(2);
-                        if (!noError) {
-                            break;
-                        }
-                    }
-                    noError = doStart();
-                    copyIcidToOcid();
-                    setState(0);
-                    break;
-                case STOP://stop
-                    noError = doStop();
-                    copyIcidToOcid();
-                    setState(0);
-                    break;
-            }
-            if (noError) {
+            response=processInternal(dir);
+            if (!response.getResponse().equals(HandlerResponse.Response.ERROR)&&
+                    !response.getResponse().equals(HandlerResponse.Response.NOANSWER)) { //no error
                 setIfDifferent(mess, "");
                 val.setValue(0);
-            } else {
+                if(response.getResponse().equals(HandlerResponse.Response.ACCEPTED)||
+                        response.getResponse().equals(HandlerResponse.Response.COMPLETED)){ //action ready
+                    car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
+                }
+                return true;
+            } else { //error
                 val.setValue(-1);
-                mess.setValue("Unknown error occurred");
+                mess.setValue(response.hasErrorMessage()?response.getMessage():"");
+                car.changeState(CARRecord.Val.ERR, ((String[]) mess.getValue().getValue())[0], ((int[]) val.getValue().getValue())[0], getClientId());
+                return false;
             }
         }
-        if (noError) {
-            car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
-        } else {
-            car.changeState(CARRecord.Val.ERR, ((String[]) mess.getValue().getValue())[0], ((int[]) val.getValue().getValue())[0], getClientId());
-        }
-        return noError;
     }
 
+    private HandlerResponse processInternal(Dir dir) throws CAException {
+        HandlerResponse response = HandlerResponse.NOANSWER;//to avoid inittializing to null;
+        switch (dir) {
+            case MARK://mark
+                LOG.info("MARK: values: " + getInputValues());
+                response = HandlerResponse.ACCEPTED;
+                copyIcidToOcid();
+                setState(1);
+                break;
+            case CLEAR://clear
+                LOG.info("CLEAR: values: " + getInputValues());
+                response = HandlerResponse.ACCEPTED;
+                copyIcidToOcid();
+                setState(0);
+                break;
+            case PRESET://preset
+                LOG.info("PRESET: values: " + getInputValues());
+                response = doActivity(Activity.PRESET);
+                copyIcidToOcid();
+                setState(2);
+                break;
+            case START://start
+                LOG.info("START: values: " + getInputValues());
+                if (getState() == 1) {
+                    response = doActivity(Activity.PRESET);
+                    copyIcidToOcid();
+                    setState(2);
+                    if (response.getResponse().equals(HandlerResponse.Response.ERROR) ||
+                            response.getResponse().equals(HandlerResponse.Response.NOANSWER)) {
+                        break;
+                    }
+                }
+                response = doActivity(Activity.START);
+                copyIcidToOcid();
+                setState(0);
+                break;
+            case STOP://stop
+                LOG.info("STOP: values: " + getInputValues());
+                response = doActivity(Activity.CANCEL);//todo: is it ok to map STOP to CANCEL?
+                copyIcidToOcid();
+                setState(0);
+                break;
+        }
+        return response;
+    }
     @Validate
     public void start() {
         LOG.info("Validate");
 
         try {
-            super.start(myPrefix, myRecordname);
-            clid = cas.createChannel(prefix + recordname + ".ICID", 0);
-            ocid = cas.createChannel(prefix + recordname + ".OCID", 0);
-            mark = cas.createChannel(prefix + recordname + ".MARK", 0);
+            super.start();
+            clid = cas.createChannel(prefix +":"+ name + ".ICID", 0);
+            ocid = cas.createChannel(prefix +":"+ name + ".OCID", 0);
+            mark = cas.createChannel(prefix +":"+ name + ".MARK", 0);
             for (int i = 0; i < numAttributes; i++) {
-                Channel<String> ch = cas.createChannel(prefix + recordname + "." + letters[i], "");
+                Channel<String> ch = cas.createChannel(prefix +":"+ name + "." + letters[i], "");
                 ch.registerListener(new AttributeListener());
                 attributes.add(ch);
 
@@ -206,34 +213,33 @@ public class CADRecordImpl extends Record implements CADRecord {
         return values;
     }
 
-    private boolean doMark() throws CAException {
-        LOG.info("MARK: values: " + getInputValues());
-        return true;
+    private HandlerResponse doActivity(Activity activity) throws CAException {
+        return cs.sendCommand(new Command(seqCom,activity), new CADCompletionListener(getClientId()));
     }
 
-    private boolean doClear() throws CAException {
-        LOG.info("CLEAR: values: " + getInputValues());
-        return true;
-    }
-
-    private boolean doPreset() throws CAException {
-        LOG.info("PRESET: values: " + getInputValues());
-        return true;
-    }
-
-    private boolean doStart() throws CAException {
-        LOG.info("START: values: " + getInputValues());
-        return true;
-    }
-
-    private boolean doStop() throws CAException {
-        LOG.info("STOP: values: " + getInputValues());
-        return true;
-    }
 
     private void copyIcidToOcid() throws CAException {
         ocid.setValue(clid.getFirst());
     }
 
+    private class CADCompletionListener implements CompletionListener {
+        final private Integer clientId;
 
+        CADCompletionListener(Integer clientId) {
+            this.clientId = clientId;
+        }
+
+        @Override
+        public void onHandlerResponse(HandlerResponse response, Command command) {
+            try {
+                if (response.getResponse().equals(HandlerResponse.Response.ERROR)) {
+                    car.changeState(CARRecord.Val.ERR, response.hasErrorMessage()?"":response.getMessage(), -1, clientId);
+                } else {
+                    car.changeState(CARRecord.Val.IDLE, response.hasErrorMessage()?"":response.getMessage(), 0, clientId);
+                }
+            } catch (CAException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+    }
 }

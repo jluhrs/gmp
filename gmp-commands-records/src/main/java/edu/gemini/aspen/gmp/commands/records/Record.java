@@ -5,7 +5,6 @@ import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.dbr.DBRType;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,10 +49,13 @@ public abstract class Record {
     protected ChannelAccessServer cas;
 
     protected String prefix;
-    protected String recordname;
+    protected String name;
 
-    protected Record(ChannelAccessServer cas) {
+    protected Record(ChannelAccessServer cas, String prefix, String name) {
         this.cas = cas;
+        this.prefix = prefix;
+        this.name = name;
+
     }
 
     /**
@@ -65,16 +67,13 @@ public abstract class Record {
      */
     protected abstract boolean processDir(Dir dir) throws CAException;
 
-    protected void start(String prefix, String recordname) throws CAException {
-        this.prefix = prefix;
-        this.recordname = recordname;
-
-        dir = cas.createChannel(prefix + recordname + ".DIR", Dir.CLEAR);
+    protected void start() throws CAException {
+        dir = cas.createChannel(prefix +":"+ name + ".DIR", Dir.CLEAR);
         dir.registerListener(new DirListener());
-        val = cas.createChannel(prefix + recordname + ".VAL", 0);
-        mess = cas.createChannel(prefix + recordname + ".MESS", "");
-        omss = cas.createChannel(prefix + recordname + ".OMSS", "");
-        car = new CARRecord(cas, prefix + recordname + "C");
+        val = cas.createChannel(prefix +":"+ name + ".VAL", 0);
+        mess = cas.createChannel(prefix +":"+ name + ".MESS", "");
+        omss = cas.createChannel(prefix +":"+ name + ".OMSS", "");
+        car = new CARRecord(cas, prefix +":"+ name + "C");
         car.start();
     }
 

@@ -66,30 +66,21 @@ public class ApplyRecord extends Record {
 
     private List<CADRecord> cads = new ArrayList<CADRecord>();
 
-    private ApplyRecord(@Requires ChannelAccessServer cas) {
-        super(cas);
+    protected ApplyRecord(@Requires ChannelAccessServer cas,
+                        @Property(name = "prefix", value = "INVALID", mandatory = true)String prefix) {
+        super(cas,prefix,"apply");
         LOG.info("Constructor");
 
     }
-    protected ApplyRecord(ChannelAccessServer cas, String prefix, String recordname) {
-        super(cas);
-        myPrefix=prefix;
-        myRecordname=recordname;
-        LOG.info("Constructor");
 
-    }
-    @Property(name = "prefix", value = "INVALID", mandatory = true)
-    private String myPrefix;
-    @Property(name = "recordname", value = "INVALID", mandatory = true)
-    private String myRecordname;
 
     @Validate
     public void start() {
         LOG.info("Validate");
         try {
-            super.start(myPrefix, myRecordname);
+            super.start();
 
-            clid = cas.createChannel(prefix + recordname + ".CLID", 0);
+            clid = cas.createChannel(prefix +":"+ name + ".CLID", 0);
 
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
