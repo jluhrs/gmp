@@ -8,7 +8,6 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.jms.client.HandlerResponseMapMessage;
 import edu.gemini.aspen.gmp.commands.jms.client.MockedJMSArtifactsBase;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.jms.JMSException;
@@ -41,7 +40,6 @@ public class InitCommandSenderTest extends MockedJMSArtifactsBase {
     }
 
     @Test
-    @Ignore
     public void testSendStartCommandWithApply() throws JMSException {
         super.createMockedObjects();
 
