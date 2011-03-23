@@ -55,7 +55,6 @@ public class CommandOperation implements Operation {
             WaitingCompletionListener listener = new WaitingCompletionListener();
             HandlerResponse response = senderClient.sendCommand(command, listener);
 
-            listener.waitForResponse(timeout);
             LOG.info("Response Received: " + response);
 
             if (response == HandlerResponse.STARTED) {
