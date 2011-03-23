@@ -194,6 +194,8 @@ public class ActionManagerImpl implements ActionManager {
                 } catch (InterruptedException e) {
                     LOG.info("Update Processor Thread interrupted. Exiting");
                     return;
+                } catch(Exception ex){
+                    LOG.log(Level.SEVERE,ex.getMessage(),ex);
                 }
             }
         }
