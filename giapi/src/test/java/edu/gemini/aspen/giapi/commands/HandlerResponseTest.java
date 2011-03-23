@@ -6,7 +6,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class HandlerResponseTest {
@@ -64,7 +63,7 @@ public class HandlerResponseTest {
     private void testResponseType(HandlerResponse.Response responseType) {
         HandlerResponse handlerResponse = HandlerResponse.get(responseType);
         assertNotNull(handlerResponse);
-        assertNull(handlerResponse.getMessage());
+        assertNotNull(handlerResponse.getMessage());
         assertEquals(responseType, handlerResponse.getResponse());
         assertEquals(responseType.getTag(), handlerResponse.getResponse().getTag());
     }

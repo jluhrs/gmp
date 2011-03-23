@@ -1,5 +1,7 @@
 package edu.gemini.aspen.giapi.commands;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Handler response interface. Contains an enumerated response type
  * and a message when an error is produced.
@@ -35,7 +37,7 @@ public final class HandlerResponse {
      *         set.
      */
     public static HandlerResponse createError(String errorMsg) {
-        return new HandlerResponse(errorMsg);
+        return new HandlerResponse(errorMsg != null?errorMsg:"");
     }
 
     public enum Response {
@@ -75,12 +77,15 @@ public final class HandlerResponse {
     }
 
     private HandlerResponse(Response response, String message) {
+        Preconditions.checkArgument(response != null, "Cannot create a HandlerResponse without a response type");
+        Preconditions.checkArgument(message != null, "Cannot create a HandlerResponse without a message");
+
         _response = response;
         _message = message;
     }
 
     private HandlerResponse(Response response) {
-        this(response, null);
+        this(response, "");
     }
 
     private HandlerResponse(String message) {
@@ -100,7 +105,7 @@ public final class HandlerResponse {
     }
 
     public boolean hasErrorMessage() {
-        return _response == Response.ERROR && _message != null;
+        return _response == Response.ERROR && !_message.isEmpty();
     }
 
     /**

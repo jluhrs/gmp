@@ -75,14 +75,17 @@ public final class MessageBuilder {
 
     public static HandlerResponse buildHandlerResponse(Message m) throws JMSException {
 
-        if (!(m instanceof MapMessage))
+        if (!(m instanceof MapMessage)) {
             throw new JMSException(InvalidHandlerResponseMessage());
+        }
 
         MapMessage msg = (MapMessage) m;
 
         String responseType = msg.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY);
 
-        if (responseType == null) throw new JMSException(InvalidResponseTypeMessage());
+        if (responseType == null) {
+            throw new JMSException(InvalidResponseTypeMessage());
+        }
 
         HandlerResponse.Response response;
         try {
@@ -98,17 +101,14 @@ public final class MessageBuilder {
         return HandlerResponse.get(response);
     }
 
-    @Deprecated
     public static Message buildHandlerResponseMessage(Session session, HandlerResponse response) throws JMSException {
         MapMessage message = session.createMapMessage();
 
         //fill in the message
         message.setString(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
 
-        if (response.getResponse() == HandlerResponse.Response.ERROR) {
-            if (response.getMessage() != null) {
-                message.setString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
-            }
+        if (response.hasErrorMessage()) {
+            message.setString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
         }
         return message;
     }
@@ -168,7 +168,7 @@ public final class MessageBuilder {
         Enumeration names = msg.getMapNames();
 
         // FIXME Here is a potential NPE
-        if (names.hasMoreElements()) {  
+        if (names.hasMoreElements()) {
             DefaultConfiguration.Builder builder = copy(config);
             while (names.hasMoreElements()) {
                 Object o = names.nextElement();
@@ -201,7 +201,9 @@ public final class MessageBuilder {
     }
 
     public static StatusItem buildStatusItem(Message m) throws JMSException {
-        if (!(m instanceof BytesMessage)) return null;
+        if (!(m instanceof BytesMessage)) {
+            return null;
+        }
 
         BytesMessage bm = (BytesMessage) m;
         try {
@@ -215,7 +217,9 @@ public final class MessageBuilder {
 
         BytesMessage bm = session.createBytesMessage();
 
-        if (item == null) return bm; //an empty message. 
+        if (item == null) {
+            return bm; //an empty message.
+        }
 
         StatusVisitor serializer = new StatusSerializerVisitor(bm);
 
