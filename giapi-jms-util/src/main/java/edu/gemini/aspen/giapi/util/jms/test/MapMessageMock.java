@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapitestsupport.jms;
+package edu.gemini.aspen.giapi.util.jms.test;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;

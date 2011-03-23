@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.commands.jms.client;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapitestsupport.jms.MapMessageMock;
+import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
 
 import javax.jms.JMSException;
 

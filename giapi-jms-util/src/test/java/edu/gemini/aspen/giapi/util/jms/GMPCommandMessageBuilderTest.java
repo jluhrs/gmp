@@ -1,7 +1,7 @@
 package edu.gemini.aspen.giapi.util.jms;
 
 import com.google.common.collect.ImmutableMap;
-import edu.gemini.aspen.giapitestsupport.jms.MapMessageMock;
+import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
 import org.junit.Test;
 
 import javax.jms.JMSException;
