@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
@@ -53,7 +54,7 @@ public class SequenceCommandExecutorStrategyTest {
     @Test
     public void testExecuteReboot() {
         Configuration configuration = emptyConfiguration();
-        Action action = new Action(new Command(SequenceCommand.REBOOT, Activity.PRESET_START, configuration), listener, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+        Action action = new Action(new Command(SequenceCommand.REBOOT, Activity.PRESET_START, configuration), listener, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
         HandlerResponse response = strategy.execute(action, new ActionSenderMock(HandlerResponse.COMPLETED) {
         });
         assertEquals(HandlerResponse.COMPLETED, response);

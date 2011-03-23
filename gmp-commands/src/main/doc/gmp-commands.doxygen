@@ -1,0 +1,26 @@
+/*!
+ * \page gmp-commands GMP Commands
+ *
+ * \section gmp-commands_provides_sec Provided Services
+ * This bundle provides several services most of them are internal.  the following services
+ *
+ * - EpicsConfiguration implemented by \ref edu.gemini.aspen.gmp.epics.impl.ChannelListConfiguration it reads the list
+ * of epics channels that will be made available to other services. The address of the XML file has to be passed as
+ * a configuration variable
+ * - IEpicsClient implemented by \ref edu.gemini.aspen.gmp.epics.impl.EpicsMonitor
+ * - EpicsRegistrar implemented by \ref edu.gemini.aspen.gmp.epics.impl.EpicsUpdaterThread
+ *
+ * \section gmp-commands_requires_sec Required Services
+ * This bundle requires the service \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service
+ *
+ * \section gmp-commands_configuration_sec Configuration
+ * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.epics.impl.ChannelListConfiguration-default.cfg
+ *
+ * There, you can set only one property:
+ *
+ * - configurationFile: This property points to a XML file containing a list of channels made available to GMP
+ *
+ * The XML file mentioned in the configurationFile should list the EPICS channels that are authorized to be
+ * monitored by the instrument.
+ * As a reference you can see the example \ref epics-channels.xml
+ */

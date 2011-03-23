@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.model;
 
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 
@@ -12,12 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Actions are used internally by ActionManager to keep track
  * of sequence command progress.
  *
- * The Action's ID must grow and rules are defined to accept responses
- * to Actions only on certain allowed order
+ * The Action's ID must grow monotonically with each new action,
+ * and there rules are defined to accept responses
+ * to Actions only on certain allowed order.
+ *
+ * ActionManagerImpl takes care of handling that logic
  */
 public final class Action implements Comparable<Action> {
     private static AtomicInteger ID = new AtomicInteger();
-    public static final int DEFAULT_COMMAND_RESPONSE_TIMEOUT = 500;
 
     private final int _actionId;
     private final Command _command;
@@ -25,7 +28,7 @@ public final class Action implements Comparable<Action> {
     private final long timeout;
 
     public Action(Command command, CompletionListener listener) {
-        this(command, listener, DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+        this(command, listener, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
     }
 
     public Action(Command command, CompletionListener listener, long timeout) {

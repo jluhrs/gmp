@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
 import com.google.common.base.Preconditions;
+import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
@@ -39,7 +39,7 @@ class ActionMessageActionSender implements ActionSender {
 
     @Override
     public HandlerResponse send(ActionMessage actionMessage) throws SequenceCommandException {
-        return send(actionMessage, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+        return send(actionMessage, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
     }
 
     @Override

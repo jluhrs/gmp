@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.commands.model;
 import com.gargoylesoftware.base.testing.EqualsTester;
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
@@ -37,7 +38,7 @@ public class ActionTest {
                 new Command(SequenceCommand.ABORT,
                 Activity.PRESET,
                 config1),
-                listener1, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+                listener1, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
 
         //Though this action looks "equals", it's not as the action id
         //should change.

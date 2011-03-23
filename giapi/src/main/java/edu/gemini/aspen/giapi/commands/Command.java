@@ -1,7 +1,6 @@
 package edu.gemini.aspen.giapi.commands;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 
 /**
@@ -21,19 +20,19 @@ public class Command {
      * Private constructor used only to create the noCommand constant
      */
     private Command() {
+        // TODO These should not be null
         this._sequenceCommand = null;
         this._activity = null;
         this._config = emptyConfiguration();
     }
-
 
     /**
      * Builds a new immutable Command object.
      * <p/>
      * Null parameters are not allowed.
      * <p/>
-     * Commands that need to pass a configuration like REBOOT and APPLY should use the
-     * constructor {@link edu.gemini.aspen.giapi.commands.Command(SequenceCommand command, Activity activity, Configuration config)}
+     * Commands that need to pass a configuration like REBOOT and APPLY should use other
+     * constructor
      *
      * @param sequenceCommand The Sequence sequenceCommand to send, like INIT or REBOOT
      * @param activity        The associated activities to be executed for the

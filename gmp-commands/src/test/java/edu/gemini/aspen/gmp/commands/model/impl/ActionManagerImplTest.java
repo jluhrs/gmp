@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
@@ -273,7 +274,7 @@ public class ActionManagerImplTest {
                 new Command(SequenceCommand.APPLY,
                         Activity.PRESET_START,
                         emptyConfiguration()),
-                cl, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+                cl, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
 
         manager.registerAction(fakedAction);
         //An action started has been registered.
@@ -296,7 +297,7 @@ public class ActionManagerImplTest {
                 new Command(SequenceCommand.GUIDE,
                         Activity.PRESET_START,
                         emptyConfiguration()),
-                cl, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+                cl, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
         //register this action with the manager
         manager.registerAction(fakedAction);
 

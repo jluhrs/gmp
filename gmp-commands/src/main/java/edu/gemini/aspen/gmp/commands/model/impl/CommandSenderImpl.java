@@ -65,7 +65,7 @@ public class CommandSenderImpl implements CommandSender {
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener) {
-        return sendCommand(command, listener, Action.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+        return sendCommand(command, listener, DEFAULT_COMMAND_RESPONSE_TIMEOUT);
     }
 
     @Override
