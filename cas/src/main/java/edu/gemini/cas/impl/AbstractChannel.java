@@ -200,6 +200,11 @@ abstract class AbstractChannel<T> implements Channel<T> {
         return extractValues(getValue());
     }
 
+    @Override
+    public T getFirst() throws CAException {
+        return extractValues(getValue()).get(0);
+    }
+
     protected void setEnumLabels(String[] labels){
         pv.setEnumLabels(labels);
     }

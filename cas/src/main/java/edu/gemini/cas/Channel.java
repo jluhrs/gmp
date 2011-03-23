@@ -33,11 +33,22 @@ public interface Channel<T> {
 
     /**
      * Convenience method to retrieve a value from a PV in a List<T>
+     *
      * @return a List<T> containing the value(s) of the process variable
      * @throws CAException if read couldn't be completed
      * @throws IllegalStateException if Channel is not correctly initialized
      */
     List<T> getVal() throws CAException;
+
+    /**
+      * Convenience method to retrieve a value from a PV. This method is provided because all of our PVs have only
+      * one value.
+      *
+      * @return a T containing the first value of the process variable
+      * @throws CAException if read couldn't be completed
+      * @throws IllegalStateException if Channel is not correctly initialized
+      */
+    T getFirst() throws CAException;
 
     String getName();
 
