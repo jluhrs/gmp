@@ -52,8 +52,7 @@ public class ConfigArgument extends AbstractArgument {
                         item + "' not in the form 'key=value'");
             if (_config == null)
                 _config = emptyConfiguration();
-            DefaultConfiguration dc = (DefaultConfiguration) _config;
-            _config = DefaultConfiguration.copy(_config).withPath(configPath(arg[0]), arg[1]).build();
+            _config =DefaultConfiguration.copy(_config).withPath(configPath(arg[0]), arg[1]).build();
         }
         return _config;
     }

@@ -40,7 +40,6 @@ class InitCommandSenderState extends CommandSenderState {
                 JmsKeys.GMP_ACTIVITY_KEY, command.getActivity().name()
         );
         MapMessageBuilder messageBuilder = new CommandReplyMapMessageBuilder(commandSenderReply.getCorrelationID(), message, properties);
-        HandlerResponse initialResponse = commandSenderReply.sendMessageWithReply(REQUESTS_DESTINATION, messageBuilder, timeout);
-        return initialResponse;
+        return commandSenderReply.sendMessageWithReply(REQUESTS_DESTINATION, messageBuilder, timeout);
     }
 }

@@ -56,7 +56,7 @@ public class JmsMapMessageSender extends BaseMessageProducer implements MapMessa
 
     private MapMessage sendMapMessage(DestinationData destinationData, MapMessageBuilder messageBuilder,
                                       MapMessageCreator creator) throws MessagingException {
-        Destination destination = null;
+        Destination destination;
         try {
             destination = createDestination(destinationData);
             return doMessageSending(destination, messageBuilder, creator);
