@@ -6,7 +6,6 @@ import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,14 +17,6 @@ import java.util.logging.Logger;
  */
 public abstract class Record {
     protected static final Logger LOG = Logger.getLogger(Record.class.getName());
-
-    enum Dir {
-        MARK,
-        CLEAR,
-        PRESET,
-        START,
-        STOP
-    }
 
     private class DirListener implements ChannelListener {
         @Override

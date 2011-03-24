@@ -33,8 +33,8 @@ public class ApplyRecord extends Record {
 
         if (retVal) {
             boolean idle=true;
-            for (CADRecord cad : cads) {
-                if (cad.getCAR().val.getFirst() != CARRecord.Val.IDLE) {
+            for (CARRecord otherCar : cars) {
+                if (otherCar.getState() != CARRecord.Val.IDLE) {
                     idle=false;
                 }
             }
@@ -66,24 +66,22 @@ public class ApplyRecord extends Record {
         }
 
     }
-    void reflectState(CARRecord.Val state, String message, Integer errorCode, Integer id) throws CAException {
-        if(state==CARRecord.Val.ERR || state==CARRecord.Val.BUSY){
-            car.changeState(state,message,errorCode,id);
-        }
-        if (!processing && state == CARRecord.Val.IDLE) {
-            for (CADRecord cad : cads) {
-                if (cad.getCAR().val.getFirst() != CARRecord.Val.IDLE) {
-                    return;
-                }
-            }
-            car.changeState(state,message,errorCode,id);
-        }
-    }
-    private class CARListener implements CARRecord.CARListener{
+
+    private class CARListener implements CARRecord.CARListener {
         @Override
         public void update(CARRecord.Val state, String message, Integer errorCode, Integer id) {
             try {
-                reflectState(state,message,errorCode,id);
+                if (state == CARRecord.Val.ERR || state == CARRecord.Val.BUSY) {
+                    car.changeState(state, message, errorCode, id);
+                }
+                if (!processing && state == CARRecord.Val.IDLE) {
+                    for (CARRecord otherCar : cars) {
+                        if (otherCar.getState() != CARRecord.Val.IDLE) {
+                            return;
+                        }
+                    }
+                    car.changeState(state, message, errorCode, id);
+                }
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -102,13 +100,12 @@ public class ApplyRecord extends Record {
         //set clid and dir on all CADs
         int id = getClientId();
         boolean error = false;
-        for (CADRecord cad : cads) {
+        for (EpicsCad cad : cads) {
             UpdateListener listener = new UpdateListener();
             cad.registerValListener(listener);
             LOG.info("listener registered");
 
-            cad.setClid(id);
-            cad.setDir(dir);
+            cad.setDir(dir,id);
             LOG.info("commands sent");
             Integer value = -1;
 
@@ -138,7 +135,8 @@ public class ApplyRecord extends Record {
         return !error;
     }
 
-    private List<CADRecord> cads = new ArrayList<CADRecord>();
+    private List<EpicsCad> cads = new ArrayList<EpicsCad>();
+    private List<CARRecord> cars = new ArrayList<CARRecord>();
 
     protected ApplyRecord(@Requires ChannelAccessServer cas,
                         @Property(name = "prefix", value = "INVALID", mandatory = true)String prefix) {
@@ -175,15 +173,18 @@ public class ApplyRecord extends Record {
     public void bindCAD(CADRecord cad) {
         LOG.info("Bind");
 
-        cads.add(cad);
-        cad.registerCARListener(new CARListener());
+        cads.add(cad.getEpicsCad());
+        cars.add(cad.getCAR());
+        LOG.info(cars.toString());
+        cad.getCAR().registerListener(new CARListener());
     }
 
     @Unbind(aggregate = true, optional = true)
     public void unBindCAD(CADRecord cad) {
         LOG.info("Unbind");
 
-        cads.remove(cad);
+        cads.remove(cad.getEpicsCad());
+        cars.remove(cad.getCAR());
     }
 
     private int incAndGetClientId() throws CAException {

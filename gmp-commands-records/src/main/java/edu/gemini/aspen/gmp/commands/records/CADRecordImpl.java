@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.commands.records;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.CAException;
@@ -11,261 +10,334 @@ import org.apache.felix.ipojo.annotations.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class CADRecordImpl
  *
  * @author Nicolas A. Barriga
- *         Date: 3/17/11
- */ //todo:make listeners, and maybe records, thread safe
+ *         Date: 3/24/11
+ */
 @Component
 @Provides
-public class CADRecordImpl extends Record implements CADRecord {
-    private static char[] letters = new char[]{'A', 'B', 'C', 'D', 'E'};
+public class CADRecordImpl implements CADRecord {
+    private static final Logger LOG = Logger.getLogger(CADRecordImpl.class.getName());
 
     @Override
-    public void setClid(Integer id) throws CAException {
-        clid.setValue(id);
+    public EpicsCad getEpicsCad() {
+        return epicsCad;
     }
 
     @Override
-    public void setDir(Dir d) throws CAException {
-        dir.setValue(d);
-    }
-
-    @Override
-    public Integer getVal() throws CAException {
-        return val.getFirst();
-    }
-
-    @Override
-    public String getMess() throws CAException {
-        return mess.getFirst();
-    }
-
-    @Override
-    public void registerValListener(ChannelListener listener) {
-        val.registerListener(listener);
-    }
-
-    @Override
-    public void unRegisterValListener(ChannelListener listener) {
-        val.unRegisterListener(listener);
-    }
-
-    @Override
-    public void registerCARListener(CARRecord.CARListener listener) {
-        car.registerListener(listener);
-    }
-
-    @Override
-    public void unRegisterCARListener(CARRecord.CARListener listener) {
-        car.unRegisterListener(listener);
-    }
-
-    @Override
-    public CARRecord getCAR(){
+    public CARRecord getCAR() {
         return car;
     }
 
-
-    private class AttributeListener implements ChannelListener {
-
-        @Override
-        public void valueChange(DBR dbr) {
-            LOG.info("Attribute Received: " + ((String[]) dbr.getValue())[0]);
-            try {
-                processInternal(Dir.MARK);
-            } catch (CAException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            }
-        }
-    }
-
-    Channel<Integer> ocid;
-
-    private Channel<Integer> mark;
-
-    /**
-     * The 20 string input arguments.
-     */
-    private List<Channel<String>> attributes = new ArrayList<Channel<String>>();
-
-    private Integer numAttributes;
-
-
-    private CommandSender cs;
-    private SequenceCommand seqCom;
-    protected CADRecordImpl(@Requires ChannelAccessServer cas,
-                          @Requires CommandSender cs,
-                          @Property(name = "prefix", value = "INVALID", mandatory = true)String prefix,
-                          @Property(name = "name", value = "INVALID", mandatory = true)String command,
-                          @Property(name = "numAttributes", value = "0", mandatory = true)Integer numAttributes) {
-        super(cas,prefix,command.toLowerCase());
-        if (numAttributes > letters.length) {
-            throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
-        }
-        this.cs=cs;
-        this.numAttributes=numAttributes;
-        seqCom=SequenceCommand.valueOf(name.toUpperCase());
-        LOG.info("Constructor");
-    }
-
-
-    @Override
-    protected boolean processDir(Dir dir) throws CAException {
-        car.changeState(CARRecord.Val.BUSY, "", 0, getClientId());
-        HandlerResponse response = null;
-        if (getState() == 0 &&
-                ((dir == ApplyRecord.Dir.PRESET) ||
-                        (dir == ApplyRecord.Dir.START) ||
-                        (dir == ApplyRecord.Dir.STOP))) {
-            val.setValue(0);
-            car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
-            return true;
-        } else {
-            response=processInternal(dir);
-            if (!response.getResponse().equals(HandlerResponse.Response.ERROR)&&
-                    !response.getResponse().equals(HandlerResponse.Response.NOANSWER)) { //no error
-                setIfDifferent(mess, "");
-                val.setValue(0);
-                if(response.getResponse().equals(HandlerResponse.Response.ACCEPTED)||
-                        response.getResponse().equals(HandlerResponse.Response.COMPLETED)){ //action ready
-                    car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
+    enum CadState {
+        CLEAR {
+            @Override
+            public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car) {
+                car.setBusy(epicsCad.getClid());
+                car.setIdle(epicsCad.getClid());
+                epicsCad.setVal(0);
+                try {
+                    epicsCad.post();
+                } catch (CAException e) {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
                 }
-                return true;
-            } else { //error
-                val.setValue(-1);
-                mess.setValue(response.hasErrorMessage()?response.getMessage():"");
-                car.changeState(CARRecord.Val.ERR, ((String[]) mess.getValue().getValue())[0], ((int[]) val.getValue().getValue())[0], getClientId());
-                return false;
-            }
-        }
-    }
-
-    private HandlerResponse processInternal(Dir dir) throws CAException {
-        HandlerResponse response = HandlerResponse.NOANSWER;//to avoid inittializing to null;
-        switch (dir) {
-            case MARK://mark
-                LOG.info("MARK: values: " + getInputValues());
-                response = HandlerResponse.ACCEPTED;
-                copyIcidToOcid();
-                setState(1);
-                break;
-            case CLEAR://clear
-                LOG.info("CLEAR: values: " + getInputValues());
-                response = HandlerResponse.ACCEPTED;
-                copyIcidToOcid();
-                setState(0);
-                break;
-            case PRESET://preset
-                LOG.info("PRESET: values: " + getInputValues());
-                response = doActivity(Activity.PRESET);
-                copyIcidToOcid();
-                setState(2);
-                break;
-            case START://start
-                LOG.info("START: values: " + getInputValues());
-                if (getState() == 1) {
-                    response = doActivity(Activity.PRESET);
-                    copyIcidToOcid();
-                    setState(2);
-                    if (response.getResponse().equals(HandlerResponse.Response.ERROR) ||
-                            response.getResponse().equals(HandlerResponse.Response.NOANSWER)) {
-                        break;
-                    }
+                switch (dir) {
+                    case MARK:
+                        return MARKED;
+                    case CLEAR:
+                        return CLEAR;
+                    case PRESET:
+                    case START:
+                    case STOP:
+                        //do nothing
+                        return CLEAR;
+                    default://just so the compiler doesn't complain
+                        return CLEAR;
                 }
-                response = doActivity(Activity.START);
-                copyIcidToOcid();
-                setState(0);
-                break;
-            case STOP://stop
-                LOG.info("STOP: values: " + getInputValues());
-                response = doActivity(Activity.CANCEL);//todo: is it ok to map STOP to CANCEL?
-                copyIcidToOcid();
-                setState(0);
-                break;
-        }
-        return response;
-    }
-    @Validate
-    public void start() {
-        LOG.info("Validate");
-
-        try {
-            super.start();
-            clid = cas.createChannel(prefix +":"+ name + ".ICID", 0);
-            ocid = cas.createChannel(prefix +":"+ name + ".OCID", 0);
-            mark = cas.createChannel(prefix +":"+ name + ".MARK", 0);
-            for (int i = 0; i < numAttributes; i++) {
-                Channel<String> ch = cas.createChannel(prefix +":"+ name + "." + letters[i], "");
-                ch.registerListener(new AttributeListener());
-                attributes.add(ch);
-
             }
+        },
+        MARKED {
+            @Override
+            public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car) {
+                car.setBusy(epicsCad.getClid());
 
-        } catch (CAException e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+                HandlerResponse resp;
+                switch (dir) {
+                    case MARK:
+                        epicsCad.setVal(0);
+                        try {
+                            epicsCad.post();
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        car.setIdle(epicsCad.getClid());
+                        return MARKED;
+                    case CLEAR:
+                        epicsCad.setVal(0);
+                        try {
+                            epicsCad.post();
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        car.setIdle(epicsCad.getClid());
+                        return CLEAR;
+                    case PRESET:
+                        resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car);
+                        try {
+                            if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
+                                epicsCad.setVal(0);
+                                epicsCad.post();
+                                car.setIdle(epicsCad.getClid());
+                                return IS_PRESET;
+                            } else {
+                                epicsCad.setVal(-1);
+                                epicsCad.setMess(resp.getMessage());
+                                epicsCad.post();
+                                car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                                return CLEAR;
+                            }
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                            return CLEAR;
+                        }
+                    case START:
+                        resp = doActivity(Activity.PRESET_START, cs, seqCom, epicsCad.getClid(), car);
+                        try {
+                            if (resp.getResponse().equals(HandlerResponse.Response.STARTED)) {
+                                epicsCad.setVal(0);
+                                epicsCad.post();
+                            } else if (resp.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
+                                epicsCad.setVal(0);
+                                epicsCad.post();
+                                car.setIdle(epicsCad.getClid());
+                            } else {
+                                epicsCad.setVal(-1);
+                                epicsCad.setMess(resp.getMessage());
+                                epicsCad.post();
+                                car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            }
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        return CLEAR;
+                    case STOP:
+                        resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car);
+                        try {
+                            if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
+                                epicsCad.setVal(0);
+                                epicsCad.post();
+                                car.setIdle(epicsCad.getClid());
+                            } else {
+                                epicsCad.setVal(-1);
+                                epicsCad.setMess(resp.getMessage());
+                                epicsCad.post();
+                                car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            }
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        return CLEAR;
+                    default://just so the compiler doesn't complain
+                        return CLEAR;
+                }
+            }
+        },
+        IS_PRESET {
+            @Override
+            public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car) {
+                car.setBusy(epicsCad.getClid());
+                HandlerResponse resp;
+                switch (dir) {
+                    case MARK:
+                        epicsCad.setVal(0);
+                        try {
+                            epicsCad.post();
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        return MARKED;
+                    case CLEAR:
+                        epicsCad.setVal(0);
+                        try {
+                            epicsCad.post();
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        return CLEAR;
+                    case PRESET:
+                        resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car);
+                        try {
+                            if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
+                                epicsCad.setVal(0);
+                                epicsCad.post();
+                                car.setIdle(epicsCad.getClid());
+                                return IS_PRESET;
+                            } else {
+                                epicsCad.setVal(-1);
+                                epicsCad.setMess(resp.getMessage());
+                                epicsCad.post();
+                                car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                                return CLEAR;
+                            }
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                            return CLEAR;
+                        }
+                    case START:
+                        resp = doActivity(Activity.START, cs, seqCom, epicsCad.getClid(), car);
+                        try {
+                            if (resp.getResponse().equals(HandlerResponse.Response.STARTED)) {
+                                epicsCad.setVal(0);
+                                epicsCad.post();
+                            } else if (resp.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
+                                epicsCad.setVal(0);
+                                epicsCad.post();
+                                car.setIdle(epicsCad.getClid());
+                            } else {
+                                epicsCad.setVal(-1);
+                                epicsCad.setMess(resp.getMessage());
+                                epicsCad.post();
+                                car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            }
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        return CLEAR;
+                    case STOP:
+                        resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car);
+                        try {
+                            if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
+                                epicsCad.setVal(0);
+                                epicsCad.post();
+                                car.setIdle(epicsCad.getClid());
+                            } else {
+                                epicsCad.setVal(-1);
+                                epicsCad.setMess(resp.getMessage());
+                                epicsCad.post();
+                                car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            }
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        return CLEAR;
+                    default://just so the compiler doesn't complain
+                        return CLEAR;
+                }
+            }
+        };
+
+        public abstract CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car);
+
+        private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CARRecord car) {
+            HandlerResponse resp = cs.sendCommand(new Command(seqCom, activity), new CADCompletionListener(id, car));
+            LOG.info("Activity: "+activity+" ClientID: "+id+" Response: "+resp.getResponse().toString());
+            return resp;
+
         }
     }
 
-    @Invalidate
-    public void stop() {
-        LOG.info("InValidate");
-
-        super.stop();
-        cas.destroyChannel(clid);
-        cas.destroyChannel(ocid);
-        cas.destroyChannel(mark);
-        for (Channel<?> ch : attributes) {
-            cas.destroyChannel(ch);
-        }
-    }
-
-    private int getState() throws CAException {
-        DBR dbr = mark.getValue();
-        return ((int[]) dbr.getValue())[0];
-    }
-
-    private void setState(int state) throws CAException {
-        mark.setValue(state);
-    }
-
-    private List<String> getInputValues() throws CAException {
-        List<String> values = new ArrayList<String>();
-        for (Channel<String> ch : attributes) {
-            values.add(((String[]) ch.getValue().getValue())[0]);
-        }
-        return values;
-    }
-
-    private HandlerResponse doActivity(Activity activity) throws CAException {
-        return cs.sendCommand(new Command(seqCom,activity), new CADCompletionListener(getClientId()));
-    }
-
-
-    private void copyIcidToOcid() throws CAException {
-        ocid.setValue(clid.getFirst());
-    }
-
-    private class CADCompletionListener implements CompletionListener {
+    static private class CADCompletionListener implements CompletionListener {
         final private Integer clientId;
+        final private CARRecord car;
 
-        CADCompletionListener(Integer clientId) {
+        CADCompletionListener(Integer clientId, CARRecord car) {
             this.clientId = clientId;
+            this.car = car;
         }
 
         @Override
         public void onHandlerResponse(HandlerResponse response, Command command) {
             try {
-                if (response.getResponse().equals(HandlerResponse.Response.ERROR)) {
-                    car.changeState(CARRecord.Val.ERR, response.hasErrorMessage()?"":response.getMessage(), -1, clientId);
+                if (response.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
+                    car.changeState(CARRecord.Val.IDLE, response.hasErrorMessage() ? "" : response.getMessage(), 0, clientId);
                 } else {
-                    car.changeState(CARRecord.Val.IDLE, response.hasErrorMessage()?"":response.getMessage(), 0, clientId);
+                    car.changeState(CARRecord.Val.ERR, response.hasErrorMessage() ? "" : response.getMessage(), -1, clientId);
                 }
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
     }
+
+    private CadState state = CADRecordImpl.CadState.CLEAR;
+
+
+    private static String[] letters = new String[]{"A", "B", "C", "D", "E"};
+    private CommandSender cs;
+    private SequenceCommand seqCom;
+    private EpicsCad epicsCad;
+    private ChannelAccessServer cas;
+
+    private String prefix;
+    private String name;
+    private Integer numAttributes;
+    private List<String> attributeNames = new ArrayList<String>();
+    private CARRecord car;
+
+    protected CADRecordImpl(@Requires ChannelAccessServer cas,
+                            @Requires CommandSender cs,
+                            @Property(name = "prefix", value = "INVALID", mandatory = true) String prefix,
+                            @Property(name = "name", value = "INVALID", mandatory = true) String name,
+                            @Property(name = "numAttributes", value = "0", mandatory = true) Integer numAttributes) {
+        if (numAttributes > letters.length) {
+            throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
+        }
+        this.cs = cs;
+        this.numAttributes = numAttributes;
+        this.cas = cas;
+        this.prefix = prefix.toLowerCase();
+        this.name = name.toLowerCase();
+        seqCom = SequenceCommand.valueOf(name.toUpperCase());
+        for (int i = 0; i < numAttributes; i++) {
+            attributeNames.add(letters[i]);
+        }
+        epicsCad = new EpicsCad();
+        car = new CARRecord(cas, prefix.toLowerCase() + ":" + name.toLowerCase() + "C");
+        LOG.info("Constructor");
+    }
+
+    @Validate
+    public synchronized void start() {
+        LOG.info("Validate");
+
+        epicsCad.start(cas, prefix, name, new AttributeListener(), new DirListener(), attributeNames);
+        car.start();
+    }
+
+    @Invalidate
+    public synchronized void stop() {
+        LOG.info("InValidate");
+        epicsCad.stop(cas);
+        car.stop();
+
+    }
+
+    private synchronized CadState processDir(Dir dir){
+        LOG.info("State: "+state+" Directive: "+dir);
+        CadState newState = state.processDir(dir, epicsCad, cs, seqCom, car);
+        LOG.info("State: "+newState);
+        return newState;
+    }
+    private class AttributeListener implements ChannelListener {
+        @Override
+        public void valueChange(DBR dbr) {
+            LOG.info("Attribute Received: " + ((String[]) dbr.getValue())[0]);
+            state = processDir(Dir.MARK);
+        }
+    }
+
+    private class DirListener implements ChannelListener {
+        @Override
+        public void valueChange(DBR dbr) {
+            state = processDir(Dir.values()[((short[]) dbr.getValue())[0]]);
+        }
+    }
+    CadState getState(){
+        return state;
+    }
+
 }

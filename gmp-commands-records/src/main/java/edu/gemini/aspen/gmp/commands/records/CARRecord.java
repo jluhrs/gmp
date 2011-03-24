@@ -30,32 +30,35 @@ public class CARRecord {
     /**
      * Current state
      */
-    protected Channel<Val> val;
+    private Channel<Val> val;
     /**
      * Output message
      */
-    protected Channel<String> omss;
+    private Channel<String> omss;
     /**
      * Output error code
      */
     //private Channel<Long> oerr;
-    protected Channel<Integer> oerr;
+    private Channel<Integer> oerr;
     /**
      * Value of the latest client ID
      */
     //private Channel<Long> clid;
-    protected Channel<Integer> clid;
+    private Channel<Integer> clid;
 
     private ChannelAccessServer cas;
 
     private String prefix;
 
     public CARRecord(ChannelAccessServer cas, String prefix) {
+        LOG.info("CAR constructor: "+prefix);
         this.cas = cas;
         this.prefix = prefix;
     }
 
-    public void start() {
+    public synchronized void start() {
+        LOG.info("CAR start: "+prefix);
+
         try {
             val = cas.createChannel(prefix + ".VAL", Val.IDLE);
             omss = cas.createChannel(prefix + ".OMSS", "");
@@ -66,14 +69,15 @@ public class CARRecord {
         }
     }
 
-    public void stop() {
+    public synchronized void stop() {
+        LOG.info("CAR stop: "+prefix);
         cas.destroyChannel(val);
         cas.destroyChannel(omss);
         cas.destroyChannel(oerr);
         cas.destroyChannel(clid);
     }
 
-    void changeState(Val state, String message, int errorCode, int clientId) throws CAException {
+    synchronized void changeState(Val state, String message, int errorCode, int clientId) throws CAException {
         if (!val.getFirst().equals(state) || !clid.getFirst().equals(clientId)) {
             val.setValue(state);
             omss.setValue(message);
@@ -91,11 +95,34 @@ public class CARRecord {
     interface CARListener{
         void update(Val state, String message, Integer errorCode, Integer id);
     }
-    void registerListener(CARListener listener){
+    synchronized void registerListener(CARListener listener){
         listeners.add(listener);
     }
-    void unRegisterListener(CARListener listener){
+    synchronized void unRegisterListener(CARListener listener){
         listeners.remove(listener);
     }
+    synchronized void setBusy(Integer id){
+        try {
+            changeState(Val.BUSY,"",0,id);
+        } catch (CAException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 
+    synchronized void setIdle(Integer id){
+        try {
+            changeState(Val.IDLE,"",0,id);
+        } catch (CAException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
+    public synchronized Val getState(){
+        try {
+            return val.getFirst();
+        } catch (CAException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+            return Val.UNKNOWN;
+        }
+    }
 }
