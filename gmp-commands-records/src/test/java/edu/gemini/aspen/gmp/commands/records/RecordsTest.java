@@ -131,7 +131,7 @@ public class RecordsTest {
 
         a.setValue("anything");
 
-        assertEquals(CADRecordImpl.CadState.MARKED, cad.getState());
+        assertEquals(CadState.MARKED, cad.getState());
 
 
         //test CAR
@@ -148,7 +148,7 @@ public class RecordsTest {
 
     private void setDir(Dir d, Integer  expectedState, Channel<Dir> dir, CADRecordImpl cad) throws BrokenBarrierException, InterruptedException, CAException {
         dir.setValue(d);
-        assertEquals(CADRecordImpl.CadState.values()[expectedState], cad.getState());
+        assertEquals(CadState.values()[expectedState], cad.getState());
 
     }
 
@@ -173,7 +173,7 @@ public class RecordsTest {
         //1 -> stop -> 0
         setDir(Dir.STOP,0,dir,cad);
         //0 -> mark -> 1
-        setDir(Dir.MARK,1,dir,cad);
+        setDir(Dir.MARK, 1, dir, cad);
         //1 -> preset -> 2
         setDir(Dir.PRESET,2,dir,cad);
         //2 -> clear -> 0
