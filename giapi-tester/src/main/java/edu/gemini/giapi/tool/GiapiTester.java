@@ -11,6 +11,9 @@ import edu.gemini.giapi.tool.status.GetStatusOperation;
 import edu.gemini.giapi.tool.obsevents.MonitorObsEventOperation;
 import edu.gemini.giapi.tool.status.SetStatusOperation;
 
+import java.io.IOException;
+import java.util.logging.LogManager;
+
 
 /**
  * The GIAPI Tester main class. 
@@ -18,6 +21,7 @@ import edu.gemini.giapi.tool.status.SetStatusOperation;
 public class GiapiTester {
 
     public static void main(String[] args) throws Exception {
+        initializeLogging();
 
         //register the default message to show in case of problems
         Util.registerDefaultMessage("Let me help you. Try: java -jar giapi-tester.jar -?");
@@ -63,6 +67,18 @@ public class GiapiTester {
             op.execute();
         } else {
             Util.die("I'm sorry, what operation do you mean?");
+        }
+    }
+
+    private static void initializeLogging() {
+        if (!System.getProperties().containsKey("java.util.logging.config.file") && !System.getProperties().containsKey("java.util.logging.config.file")) {
+            // If JULI is not already configured, do a very limited configuration locally
+            LogManager logManager = LogManager.getLogManager();
+            try {
+                logManager.readConfiguration(GiapiTester.class.getResourceAsStream("logging.properties"));
+            } catch (IOException e) {
+                System.err.println("Couldn't read logging configuration");
+            }
         }
     }
 
