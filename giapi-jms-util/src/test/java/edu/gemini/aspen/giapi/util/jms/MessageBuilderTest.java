@@ -10,7 +10,6 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
-import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.apache.activemq.command.ActiveMQMapMessage;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,50 +44,6 @@ public class MessageBuilderTest {
         _mockedSession = mock(Session.class);
         when(_mockedSession.createMapMessage()).thenReturn(new ActiveMQMapMessage());
         mm = new ActiveMQMapMessage();
-    }
-
-    @Test
-    public void testWrongMessageTypeToBuildHandlerResponse() {
-        try {
-            MessageBuilder.buildHandlerResponse(new ActiveMQBytesMessage());
-        } catch (JMSException e) {
-            assertEquals(MessageBuilder.InvalidHandlerResponseMessage(), e.getMessage());
-        }
-    }
-
-    @Test
-    public void testNullResponseType() {
-        try {
-            MessageBuilder.buildHandlerResponse(mm);
-        } catch (JMSException e) {
-            assertEquals(MessageBuilder.InvalidResponseTypeMessage(), e.getMessage());
-        }
-    }
-
-    @Test
-    public void testInvalidResponseType() {
-        try {
-            mm.setString(JmsKeys.GMP_HANDLER_RESPONSE_KEY, "INVALID");
-            MessageBuilder.buildHandlerResponse(mm);
-        } catch (JMSException e) {
-            assertEquals(MessageBuilder.InvalidResponseTypeMessage("INVALID"), e.getMessage());
-        }
-    }
-
-    @Test
-    public void testValidHandlerResponse() throws JMSException {
-        mm.setString(JmsKeys.GMP_HANDLER_RESPONSE_KEY, "STARTED");
-
-        HandlerResponse response = MessageBuilder.buildHandlerResponse(mm);
-        assertEquals(HandlerResponse.STARTED, response);
-    }
-
-    @Test
-    public void testErrorHandlerResponse() throws JMSException {
-        mm.setString(JmsKeys.GMP_HANDLER_RESPONSE_KEY, "ERROR");
-        mm.setString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, "Error Message");
-        HandlerResponse response = MessageBuilder.buildHandlerResponse(mm);
-        assertEquals(HandlerResponse.createError("Error Message"), response);
     }
 
     @Test

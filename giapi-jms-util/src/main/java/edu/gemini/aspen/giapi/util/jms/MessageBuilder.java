@@ -72,35 +72,6 @@ public final class MessageBuilder {
         return sb.toString();
     }
 
-
-    public static HandlerResponse buildHandlerResponse(Message m) throws JMSException {
-
-        if (!(m instanceof MapMessage)) {
-            throw new JMSException(InvalidHandlerResponseMessage());
-        }
-
-        MapMessage msg = (MapMessage) m;
-
-        String responseType = msg.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY);
-
-        if (responseType == null) {
-            throw new JMSException(InvalidResponseTypeMessage());
-        }
-
-        HandlerResponse.Response response;
-        try {
-            response = HandlerResponse.Response.valueOf(responseType);
-        } catch (IllegalArgumentException ex) {
-            throw new JMSException(InvalidResponseTypeMessage(responseType));
-        }
-
-        if (response == HandlerResponse.Response.ERROR) {
-            String errorMsg = msg.getString(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY);
-            return HandlerResponse.createError(errorMsg);
-        }
-        return HandlerResponse.get(response);
-    }
-
     public static Message buildHandlerResponseMessage(Session session, HandlerResponse response) throws JMSException {
         MapMessage message = session.createMapMessage();
 
