@@ -80,7 +80,7 @@ public class JmsForwardingCompletionListenerTest extends MockedJmsArtifactsTestB
         completionListener.startJms(provider);
 
         HandlerResponse response = HandlerResponse.get(HandlerResponse.Response.COMPLETED);
-        completionListener.sendInitialResponse(response);
+        completionListener.sendInitialResponseToClient(response);
 
         verify(producer).send(Matchers.<Destination>anyObject(), any(MapMessage.class));
         // Verify that 1 string has been set in the reply message
@@ -99,7 +99,7 @@ public class JmsForwardingCompletionListenerTest extends MockedJmsArtifactsTestB
         completionListener.startJms(provider);
 
         HandlerResponse response = HandlerResponse.createError("Error Message");
-        completionListener.sendInitialResponse(response);
+        completionListener.sendInitialResponseToClient(response);
 
         verify(producer).send(Matchers.<Destination>anyObject(), any(MapMessage.class));
         // Verify that 2 strings has been set in the reply message, including response and error message

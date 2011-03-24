@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
+package edu.gemini.aspen.giapi.util.jms.messagebuilders;
 
 import com.google.common.base.Preconditions;
 import edu.gemini.jms.api.AbstractMapMessageBuilder;
@@ -8,15 +8,16 @@ import javax.jms.MapMessage;
 import java.util.Map;
 
 /**
- * This class is able to create a message representing a command to be sent
- * to the instrument. The GIAPI-GLUE is able to deconstruct this message
- * and direct its execution
+ * This class is able to create a message containing a given set of body properties
+ * and strings
+ * It can be used, for example to build message to communicate between GMP-commands and an
+ * instrument.
  */
-class InstrumentCommandMessageBuilder extends AbstractMapMessageBuilder {
+public class ObjectBasedMessageBuilder extends AbstractMapMessageBuilder {
     private final Map<String, Object> messageBody;
     private final Map<String, Object> properties;
 
-    public InstrumentCommandMessageBuilder(Map<String, Object> messageBody, Map<String, Object> properties) {
+    public ObjectBasedMessageBuilder(Map<String, Object> messageBody, Map<String, Object> properties) {
         super();
         Preconditions.checkArgument(messageBody != null);
         Preconditions.checkArgument(properties != null);

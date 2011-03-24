@@ -6,7 +6,7 @@ import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.util.jms.StringBasedWithCorrelationIDMessageBuilder;
+import edu.gemini.aspen.giapi.util.jms.messagebuilders.StringBasedWithCorrelationIDMessageBuilder;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;

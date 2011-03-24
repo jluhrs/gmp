@@ -13,13 +13,12 @@ import edu.gemini.jms.api.MapMessageBuilder;
 import java.util.logging.Logger;
 
 /**
- * This class is an internal listener that gets notified when an Action is completed
- * and then forwards the completion message to a client to the destination in the
- * reply of the command request
- * <p/>
- * TODO This class has two responsibilities - separate them
+ * This class is an internal listener CompletionListener that gets notified when a Command is completed
+ *
+ * Upon completion the listener forwards the result to a JMS client using the given replyDestination and
+ * correlationID
  */
-public class JmsForwardingCompletionListener extends JmsMapMessageSender implements CompletionListener {
+class JmsForwardingCompletionListener extends JmsMapMessageSender implements CompletionListener {
     private static final Logger LOG = Logger.getLogger(JmsForwardingCompletionListener.class.getName());
     private final DestinationData _replyDestination;
     private final String _correlationID;
@@ -34,25 +33,20 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
     }
 
     /**
-     * Sends to the client that sent the command the initial response to the request
+     * Sends the client the result of submitting the command synchronously
      *
      * @param response The initial response returned by CommandSender.sendCommand
      */
-    void sendInitialResponse(HandlerResponse response) {
+    void sendInitialResponseToClient(HandlerResponse response) {
         logSendingReply(response);
 
         MapMessageBuilder responseMessageBuilder = MessageBuilderFactory.newMessageBuilder(response, _correlationID);
         super.sendMapMessage(_replyDestination, responseMessageBuilder);
     }
 
-    private void logSendingReply(Object objectToSend) {
-        LOG.fine("Sent initial response " + objectToSend+ " to " + _replyDestination + " " + _correlationID);
-    }
-
-    void stopListeningForResponses() {
-        super.stopJms();
-    }
-
+    /**
+     * Called upon completion of the Command, submitted asynchronously
+     */
     @Override
     public void onHandlerResponse(HandlerResponse response, Command command) {
         sendCompletionResponse(new CompletionInformation(response, command));
@@ -65,6 +59,14 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
 
         MapMessageBuilder messageBuilder = MessageBuilderFactory.newMessageBuilder(completionInformation, _correlationID);
         super.sendMapMessage(_replyDestination, messageBuilder);
+    }
+
+    private void logSendingReply(Object objectToSend) {
+        LOG.fine("Sent initial response " + objectToSend+ " to " + _replyDestination + " " + _correlationID);
+    }
+
+    void stopListeningForResponses() {
+        super.stopJms();
     }
 
     @Override

@@ -10,6 +10,7 @@ import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.util.jms.messagebuilders.StringBasedWithCorrelationIDMessageBuilder;
 import edu.gemini.jms.api.MapMessageBuilder;
 
 import java.util.Map;

@@ -19,7 +19,8 @@ import java.util.Map;
 
 /**
  * Helper class to construct {@link edu.gemini.aspen.gmp.commands.model.ActionMessage}
- * objects based on a given Action, using JMS objects
+ * objects based on a given Action.
+ * This service is required by SequenceCommandExecutors
  */
 @Component
 @Provides

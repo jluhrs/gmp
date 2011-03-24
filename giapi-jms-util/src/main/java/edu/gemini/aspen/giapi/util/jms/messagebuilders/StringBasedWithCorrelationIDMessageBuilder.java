@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapi.util.jms;
+package edu.gemini.aspen.giapi.util.jms.messagebuilders;
 
 import com.google.common.base.Preconditions;
 import edu.gemini.jms.api.MapMessageBuilder;

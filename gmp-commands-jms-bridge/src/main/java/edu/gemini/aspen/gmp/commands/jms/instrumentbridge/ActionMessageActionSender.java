@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.giapi.util.jms.messagebuilders.ObjectBasedMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
@@ -24,6 +25,7 @@ import javax.jms.JMSException;
  * This is the implementation of an ActionSender that uses JMS to send the
  * sequence commands to the down to the instrument. This class implements
  * the {@link edu.gemini.aspen.gmp.commands.model.ActionSender} interface
+ * that is required by the SequenceCommandExecutor
  */
 @Component
 @Instantiate
@@ -54,9 +56,13 @@ class ActionMessageActionSender implements ActionSender {
         }
     }
 
+    /**
+     * Does the actual sending of the message down to the instrument, and waits for the initial response
+     * the specified timeout
+     */
     private HandlerResponse sendMessageAndWaitForReply(ActionMessage actionMessage, long timeout) {
         DestinationData destinationData = new DestinationData(actionMessage.getDestinationName(), DestinationType.TOPIC);
-        InstrumentCommandMessageBuilder instrumentMessageBuilder = new InstrumentCommandMessageBuilder(
+        ObjectBasedMessageBuilder instrumentMessageBuilder = new ObjectBasedMessageBuilder(
                 actionMessage.getDataElements(),
                 actionMessage.getProperties());
 

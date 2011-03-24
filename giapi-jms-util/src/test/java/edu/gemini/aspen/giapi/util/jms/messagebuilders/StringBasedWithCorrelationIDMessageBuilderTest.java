@@ -1,6 +1,7 @@
-package edu.gemini.aspen.giapi.util.jms;
+package edu.gemini.aspen.giapi.util.jms.messagebuilders;
 
 import com.google.common.collect.ImmutableMap;
+import edu.gemini.aspen.giapi.util.jms.messagebuilders.StringBasedWithCorrelationIDMessageBuilder;
 import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
 import org.junit.Test;
 

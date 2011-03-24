@@ -15,7 +15,6 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import java.util.List;
 
-import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 
 /**
@@ -33,7 +32,7 @@ class CommandMessageParser {
         this.mapMessage = (MapMessage)mapMessage;
     }
 
-    public Command readCommand() throws FormatException {
+    Command readCommand() throws FormatException {
         try {
             return parseCommand();
         } catch (JMSException e) {
@@ -72,7 +71,7 @@ class CommandMessageParser {
         DefaultConfiguration.Builder builder = configurationBuilder();
 
         for (String path : mapProperties) {
-            builder.withPath(configPath(path), mapMessage.getString(path));
+            builder.withConfiguration(path, mapMessage.getString(path));
         }
         return builder.build();
 
