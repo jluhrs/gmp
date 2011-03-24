@@ -8,6 +8,7 @@ import java.util.SortedMap;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.*;
@@ -39,7 +40,7 @@ public class DefaultConfigurationTest {
     }
 
     @Test
-    public void testBuilder() {
+    public void testBuilderWithPath() {
         Configuration configuration = configuration(configPath("X"), "value1");
         Configuration copy = copy(configuration).build();
         assertEquals(configuration, copy);
@@ -51,6 +52,19 @@ public class DefaultConfigurationTest {
         Configuration referenceConfig = new DefaultConfiguration(baseConfig);
 
         assertEquals(modifiedCopy, referenceConfig);
+    }
+
+    @Test
+    public void testBuilderWithConfiguration() {
+        SortedMap<ConfigPath, String> baseConfig = ImmutableSortedMap.of(configPath("X"), "value1", configPath("Y"), "value2");
+        Configuration referenceConfig = new DefaultConfiguration(baseConfig);
+
+        Configuration config = configurationBuilder()
+                .withConfiguration("X", "value1")
+                .withConfiguration("Y", "value2")
+                .build();
+
+        assertEquals(referenceConfig, config);
     }
 
     @Test

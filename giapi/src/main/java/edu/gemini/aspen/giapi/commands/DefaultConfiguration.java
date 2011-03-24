@@ -6,6 +6,8 @@ import com.google.common.collect.Maps;
 import java.util.Set;
 import java.util.SortedMap;
 
+import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+
 /**
  * A straightforward implementation of {@link Configuration}
  *
@@ -117,6 +119,10 @@ public final class DefaultConfiguration implements Configuration {
         public Builder withPath(ConfigPath configPath, String value) {
             _baseConfiguration.put(configPath, value);
             return this;
+        }
+
+        public Builder withConfiguration(String path, String value) {
+            return withPath(configPath(path), value);
         }
 
         public Configuration build() {
