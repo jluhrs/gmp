@@ -6,6 +6,7 @@ import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +38,8 @@ public abstract class Record {
             }
         }
     }
+
+
 
     protected Channel<Dir> dir;
     protected Channel<Integer> val;

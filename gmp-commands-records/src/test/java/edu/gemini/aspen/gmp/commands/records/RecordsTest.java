@@ -248,6 +248,7 @@ public class RecordsTest {
         ApplyRecord apply = new ApplyRecord(cas,prefix);
         apply.start();
         Channel<Record.Dir> dir = cas.createChannel(prefix+":apply.DIR",Record.Dir.CLEAR);
+        Channel<Integer> val = cas.createChannel(prefix+":apply.VAL",0);
 
         CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
         cad.start();
@@ -259,6 +260,14 @@ public class RecordsTest {
         dir.setValue(Record.Dir.START);
         assertEquals(1,cad.getClientId());
         assertEquals(new Integer(0), cad.getVal());
+        assertEquals(new Integer(1),val.getFirst());
+
+
+        cad.setDir(Record.Dir.MARK);
+        dir.setValue(Record.Dir.START);
+        assertEquals(2,cad.getClientId());
+        assertEquals(new Integer(0), cad.getVal());
+        assertEquals(new Integer(2),val.getFirst());
 
         apply.unBindCAD(cad);
         cad.stop();

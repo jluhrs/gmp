@@ -4,6 +4,8 @@ import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import gov.aps.jca.CAException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,21 +30,21 @@ public class CARRecord {
     /**
      * Current state
      */
-    private Channel<Val> val;
+    protected Channel<Val> val;
     /**
      * Output message
      */
-    private Channel<String> omss;
+    protected Channel<String> omss;
     /**
      * Output error code
      */
     //private Channel<Long> oerr;
-    private Channel<Integer> oerr;
+    protected Channel<Integer> oerr;
     /**
      * Value of the latest client ID
      */
     //private Channel<Long> clid;
-    private Channel<Integer> clid;
+    protected Channel<Integer> clid;
 
     private ChannelAccessServer cas;
 
@@ -77,7 +79,23 @@ public class CARRecord {
             omss.setValue(message);
             oerr.setValue(errorCode);
             clid.setValue(clientId);
+            notifyListeners();
         }
+    }
+    private List<CARListener> listeners = new ArrayList<CARListener>();
+    private void notifyListeners() throws CAException {
+        for(CARListener listener:listeners){
+            listener.update(val.getFirst(), omss.getFirst(), oerr.getFirst(), clid.getFirst());
+        }
+    }
+    interface CARListener{
+        void update(Val state, String message, Integer errorCode, Integer id);
+    }
+    void registerListener(CARListener listener){
+        listeners.add(listener);
+    }
+    void unRegisterListener(CARListener listener){
+        listeners.remove(listener);
     }
 
 }

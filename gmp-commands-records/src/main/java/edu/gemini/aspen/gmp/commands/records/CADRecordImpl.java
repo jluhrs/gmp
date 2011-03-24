@@ -43,6 +43,31 @@ public class CADRecordImpl extends Record implements CADRecord {
         return mess.getFirst();
     }
 
+    @Override
+    public void registerValListener(ChannelListener listener) {
+        val.registerListener(listener);
+    }
+
+    @Override
+    public void unRegisterValListener(ChannelListener listener) {
+        val.unRegisterListener(listener);
+    }
+
+    @Override
+    public void registerCARListener(CARRecord.CARListener listener) {
+        car.registerListener(listener);
+    }
+
+    @Override
+    public void unRegisterCARListener(CARRecord.CARListener listener) {
+        car.unRegisterListener(listener);
+    }
+
+    @Override
+    public CARRecord getCAR(){
+        return car;
+    }
+
 
     private class AttributeListener implements ChannelListener {
 
@@ -95,6 +120,7 @@ public class CADRecordImpl extends Record implements CADRecord {
                 ((dir == ApplyRecord.Dir.PRESET) ||
                         (dir == ApplyRecord.Dir.START) ||
                         (dir == ApplyRecord.Dir.STOP))) {
+            val.setValue(0);
             car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
             return true;
         } else {
