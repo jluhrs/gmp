@@ -9,6 +9,7 @@ import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.jms.api.FormatException;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;

@@ -6,14 +6,17 @@ import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
+import edu.gemini.jms.api.FormatException;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.jms.JMSException;
+import javax.jms.Message;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class CommandMessageParserTest {
     private MapMessageMock msg;
@@ -53,5 +56,11 @@ public class CommandMessageParserTest {
         msg.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, SequenceCommand.DATUM.toString());
         msg.setStringProperty(JmsKeys.GMP_ACTIVITY_KEY, Activity.PRESET.toString());
         new CommandMessageParser(msg).readCommand();
+    }
+
+    @Test(expected = FormatException.class)
+    public void parseNonMapMessage() throws JMSException {
+        Message msg = mock(Message.class);
+        new CommandMessageParser(msg);
     }
 }

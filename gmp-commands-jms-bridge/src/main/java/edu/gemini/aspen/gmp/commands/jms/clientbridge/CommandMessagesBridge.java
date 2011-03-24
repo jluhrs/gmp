@@ -8,6 +8,7 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.FormatException;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;

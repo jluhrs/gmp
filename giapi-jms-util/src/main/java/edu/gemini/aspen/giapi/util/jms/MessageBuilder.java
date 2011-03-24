@@ -45,7 +45,7 @@ public final class MessageBuilder {
         return format("Invalid response type contained in the reply", key);
     }
 
-    static String InvalidResponseTypeMessage() {
+    public static String InvalidResponseTypeMessage() {
         return InvalidResponseTypeMessage(null);
     }
 

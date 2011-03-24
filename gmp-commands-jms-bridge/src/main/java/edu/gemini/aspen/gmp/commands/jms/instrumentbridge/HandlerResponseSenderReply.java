@@ -22,7 +22,8 @@ class HandlerResponseSenderReply extends JmsMapMessageSenderReply<HandlerRespons
     @Override
     public HandlerResponse buildResponse(Message reply) throws JMSException {
         if (reply instanceof MapMessage) {
-            return MessageBuilder.buildHandlerResponse(reply);
+            HandleResponseMessageParser messageParser = new HandleResponseMessageParser(reply);
+            return messageParser.readResponse();
         } else {
             return HandlerResponse.NOANSWER;
         }

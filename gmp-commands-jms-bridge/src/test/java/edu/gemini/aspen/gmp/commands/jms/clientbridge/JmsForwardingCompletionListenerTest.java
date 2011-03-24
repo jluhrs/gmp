@@ -18,6 +18,7 @@ import javax.jms.MapMessage;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
@@ -107,6 +108,14 @@ public class JmsForwardingCompletionListenerTest extends MockedJmsArtifactsTestB
 
         // Verify that no properties have been set in the reply message
         verify(mapMessage, never()).setStringProperty(anyString(), anyString());
+    }
+
+    @Test
+    public void testToString() throws JMSException {
+        super.createMockedObjects();
+
+        JmsForwardingCompletionListener completionListener = new JmsForwardingCompletionListener(destination, correlationID);
+        assertNotNull(completionListener.toString());
     }
 
 }
