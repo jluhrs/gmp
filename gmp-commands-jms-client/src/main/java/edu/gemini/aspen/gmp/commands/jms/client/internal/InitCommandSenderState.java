@@ -6,7 +6,7 @@ import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.util.jms.GMPCommandMessageBuilder;
+import edu.gemini.aspen.giapi.util.jms.StringBasedWithCorrelationIDMessageBuilder;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
@@ -46,7 +46,7 @@ class InitCommandSenderState extends CommandSenderState {
                 JmsKeys.GMP_SEQUENCE_COMMAND_KEY, command.getSequenceCommand().name(),
                 JmsKeys.GMP_ACTIVITY_KEY, command.getActivity().name()
         );
-        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(commandSenderReply.getCorrelationID(), message, properties);
+        MapMessageBuilder messageBuilder = new StringBasedWithCorrelationIDMessageBuilder(commandSenderReply.getCorrelationID(), message, properties);
         return commandSenderReply.sendMessageWithReply(REQUESTS_DESTINATION, messageBuilder, timeout);
     }
 }

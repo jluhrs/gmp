@@ -11,7 +11,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class GMPCommandMessageBuilderTest {
+public class StringBasedWithCorrelationIDMessageBuilderTest {
     private String correlationID = "1";
 
     @Test
@@ -19,7 +19,7 @@ public class GMPCommandMessageBuilderTest {
         MapMessageMock mockMessage = new MapMessageMock();
         Map<String, String> messageBody = ImmutableMap.of("A", "b");
         Map<String, String> properties = ImmutableMap.of();
-        GMPCommandMessageBuilder messageBuilder = new GMPCommandMessageBuilder(correlationID, messageBody, properties);
+        StringBasedWithCorrelationIDMessageBuilder messageBuilder = new StringBasedWithCorrelationIDMessageBuilder(correlationID, messageBody, properties);
         MapMessage resultMessage = messageBuilder.constructMessageBody(mockMessage);
 
         assertEquals(correlationID, resultMessage.getJMSCorrelationID());
@@ -30,7 +30,7 @@ public class GMPCommandMessageBuilderTest {
         MapMessageMock mockMessage = new MapMessageMock();
         Map<String, String> messageBody = ImmutableMap.of("A", "b");
         Map<String, String> properties = ImmutableMap.of();
-        GMPCommandMessageBuilder messageBuilder = new GMPCommandMessageBuilder(correlationID, messageBody, properties);
+        StringBasedWithCorrelationIDMessageBuilder messageBuilder = new StringBasedWithCorrelationIDMessageBuilder(correlationID, messageBody, properties);
         MapMessage resultMessage = messageBuilder.constructMessageBody(mockMessage);
 
         assertEquals("b", resultMessage.getString("A"));
@@ -43,7 +43,7 @@ public class GMPCommandMessageBuilderTest {
         Map<String, String> messageBody = ImmutableMap.of();
         Map<String, String> properties = ImmutableMap.of("A", "b");
 
-        GMPCommandMessageBuilder messageBuilder = new GMPCommandMessageBuilder(correlationID, messageBody, properties);
+        StringBasedWithCorrelationIDMessageBuilder messageBuilder = new StringBasedWithCorrelationIDMessageBuilder(correlationID, messageBody, properties);
         MapMessage resultMessage = messageBuilder.constructMessageBody(mockMessage);
 
         assertEquals("b", resultMessage.getStringProperty("A"));

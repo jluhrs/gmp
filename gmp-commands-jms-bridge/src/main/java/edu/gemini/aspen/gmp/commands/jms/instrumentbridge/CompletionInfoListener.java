@@ -86,7 +86,7 @@ class CompletionInfoListener implements MessageListener {
             //Notify the CommandUpdater
             _commandUpdater.updateOcs(actionId, response);
         } else {
-            LOG.warning("Cannot process reply message without ActionID");
+            LOG.warning("Cannot process reply message without Action ID");
         }
     }
 

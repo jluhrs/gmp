@@ -1,22 +1,15 @@
 package edu.gemini.aspen.gmp.commands.jms.clientbridge;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CompletionInformation;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
-import edu.gemini.aspen.giapi.commands.ConfigPath;
-import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.giapi.util.jms.GMPCommandMessageBuilder;
-import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.giapi.util.jms.MessageBuilderFactory;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.JmsMapMessageSender;
 import edu.gemini.jms.api.MapMessageBuilder;
 
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -32,34 +25,12 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
     private final String _correlationID;
 
     public JmsForwardingCompletionListener(DestinationData replyDestination, String correlationID) {
-        super("");
+        super("ForwardingListener on correlationID: " + correlationID);
         Preconditions.checkArgument(replyDestination != null, "Destination to send responses cannot be null");
         Preconditions.checkArgument(correlationID != null && !correlationID.isEmpty(), "All Command messages require a _correlationID");
 
         _replyDestination = replyDestination;
         this._correlationID = correlationID;
-    }
-
-    static Map<String, String> convertHandlerResponseToProperties(HandlerResponse response) {
-        Map<String, String> properties = Maps.newHashMap();
-
-        properties.put(JmsKeys.GMP_HANDLER_RESPONSE_KEY, response.getResponse().name());
-        if (response.hasErrorMessage()) {
-            properties.put(JmsKeys.GMP_HANDLER_RESPONSE_ERROR_KEY, response.getMessage());
-        }
-        return properties;
-    }
-
-    @Override
-    public void onHandlerResponse(HandlerResponse response, Command command) {
-        LOG.fine("Arrived response " + response + " forward to " + _replyDestination);
-        sendCompletionResponse(response, command);
-
-        stopListeningForResponses();
-    }
-
-    void stopListeningForResponses() {
-        this.stopJms();
     }
 
     /**
@@ -68,62 +39,37 @@ public class JmsForwardingCompletionListener extends JmsMapMessageSender impleme
      * @param response The initial response returned by CommandSender.sendCommand
      */
     void sendInitialResponse(HandlerResponse response) {
-        LOG.fine("Sent initial response " + response + " to " + _replyDestination + " " + _correlationID);
-        Map<String, String> messageBody = convertHandlerResponseToProperties(response);
+        logSendingReply(response);
 
-        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(_correlationID, messageBody, ImmutableMap.<String, String>of());
-        super.sendMapMessage(_replyDestination, messageBuilder);
+        MapMessageBuilder responseMessageBuilder = MessageBuilderFactory.newMessageBuilder(response, _correlationID);
+        super.sendMapMessage(_replyDestination, responseMessageBuilder);
     }
 
-    private void sendCompletionResponse(HandlerResponse response, Command command) {
-        Map<String, String> message = convertConfigurationToProperties(command.getConfiguration());
-        Map<String, String> properties = convertResponseAndCommandToProperties(response, command);
-
-        MapMessageBuilder messageBuilder = new GMPCommandMessageBuilder(_correlationID, message, properties);
-        super.sendMapMessage(_replyDestination, messageBuilder);
+    private void logSendingReply(Object objectToSend) {
+        LOG.fine("Sent initial response " + objectToSend+ " to " + _replyDestination + " " + _correlationID);
     }
 
-    /**
-     * Translates a configuration into properties that will be included in the JMS Message body
-     */
-    protected Map<String, String> convertConfigurationToProperties(Configuration config) {
-        Preconditions.checkArgument(config != null);
-        Map<String, String> content = Maps.newHashMap();
+    void stopListeningForResponses() {
+        super.stopJms();
+    }
 
-        for (ConfigPath path : config.getKeys()) {
-            content.put(path.getName(), config.getValue(path));
-        }
-        return content;
+    @Override
+    public void onHandlerResponse(HandlerResponse response, Command command) {
+        sendCompletionResponse(new CompletionInformation(response, command));
+
+        stopListeningForResponses();
+    }
+
+    private void sendCompletionResponse(CompletionInformation completionInformation) {
+        logSendingReply(completionInformation);
+
+        MapMessageBuilder messageBuilder = MessageBuilderFactory.newMessageBuilder(completionInformation, _correlationID);
+        super.sendMapMessage(_replyDestination, messageBuilder);
     }
 
     @Override
     public String toString() {
         return "ForwardingCompletionListener on " + _replyDestination.getName();
-    }
-
-    /**
-     * Translates the response and properties
-     *
-     * @param response
-     * @param command
-     * @return
-     */
-    protected Map<String, String> convertResponseAndCommandToProperties(HandlerResponse response, Command command) {
-        Map<String, String> properties = Maps.newHashMap();
-
-        properties.putAll(convertHandlerResponseToProperties(response));
-        properties.putAll(convertCommandToProperties(command));
-
-        return ImmutableMap.copyOf(properties);
-    }
-
-    private Map<String, String> convertCommandToProperties(Command command) {
-        SequenceCommand sc = command.getSequenceCommand();
-        Activity activity = command.getActivity();
-
-        return ImmutableMap.of(
-                JmsKeys.GMP_SEQUENCE_COMMAND_KEY, sc.name(),
-                JmsKeys.GMP_ACTIVITY_KEY, activity.name());
     }
 
 }

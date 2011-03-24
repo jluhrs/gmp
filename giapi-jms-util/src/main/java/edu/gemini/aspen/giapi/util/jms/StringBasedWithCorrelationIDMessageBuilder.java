@@ -8,15 +8,17 @@ import javax.jms.MapMessage;
 import java.util.Map;
 
 /**
- * This class can construct a JMS message representing a command in the protocol between a client
- * and the CommandSender.
+ * This class can construct a JMS message using just string and it contains also a
+ * a correlationID
+ *
+ * For example this can build message used for JMS-based command interaction
  */
-public class GMPCommandMessageBuilder implements MapMessageBuilder {
+public class StringBasedWithCorrelationIDMessageBuilder implements MapMessageBuilder {
     private final String correlationID;
     private final Map<String, String> messageBody;
     private final Map<String, String> messageProperties;
 
-    public GMPCommandMessageBuilder(String correlationID, Map<String, String> messageBody, Map<String, String> messageProperties) {
+    public StringBasedWithCorrelationIDMessageBuilder(String correlationID, Map<String, String> messageBody, Map<String, String> messageProperties) {
         Preconditions.checkArgument(correlationID != null, "CorrelationID cannot be null");
         Preconditions.checkArgument(!correlationID.isEmpty(), "CorrelationID cannot be empty");
         Preconditions.checkArgument(messageBody != null, "Message body components cannot be null");
