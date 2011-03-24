@@ -51,11 +51,11 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
     }
 
     private void changeState(HandlerResponse initialResponse) {
-        if (initialResponse == HandlerResponse.COMPLETED || initialResponse.getResponse() == HandlerResponse.Response.ERROR) {
+        if (initialResponse == HandlerResponse.STARTED) {
+            state = new InitialResponseReadyCommandSenderState(this);
+        } else {
             state = new CompletedCommandSenderState(this);
             completionReceived();
-        } else {
-            state = new InitialResponseReadyCommandSenderState(this);
         }
     }
 

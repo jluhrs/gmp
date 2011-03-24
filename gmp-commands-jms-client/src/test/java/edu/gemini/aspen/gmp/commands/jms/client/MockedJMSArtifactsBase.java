@@ -43,7 +43,6 @@ public class MockedJMSArtifactsBase {
 
         Queue queue = mock(Queue.class);
         when(session.createQueue(Matchers.anyString())).thenReturn(queue);
-        System.out.println(queue);
 
         Topic topic = mock(Topic.class);
         when(session.createTopic(Matchers.anyString())).thenReturn(topic);

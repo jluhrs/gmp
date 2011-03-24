@@ -18,7 +18,9 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.MessageListener;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CommandSenderClientTest extends MockedJMSArtifactsBase {
     private CommandSenderClient senderClient;
@@ -84,10 +86,13 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
         return replyMessage;
     }
 
-//    @Test(expected = MessagingException.class)
-//    public void testSendCommandWhenDisconnected() throws TesterException, JMSException {
-//        Command command = new Command(SequenceCommand.PARK, Activity.START);
-//        senderClient.sendCommand(command, completionListener);
-//    }
+    @Test
+    public void testSendCommandWhenDisconnected() throws TesterException, JMSException {
+        when(connectionFactory.createConnection()).thenThrow(new JMSException("Error"));
+
+        Command command = new Command(SequenceCommand.PARK, Activity.START);
+        HandlerResponse response = senderClient.sendCommand(command, completionListener);
+        assertEquals(HandlerResponse.Response.ERROR, response.getResponse());
+    }
 
 }

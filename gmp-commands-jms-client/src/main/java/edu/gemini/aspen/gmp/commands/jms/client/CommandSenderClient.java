@@ -33,12 +33,24 @@ public class CommandSenderClient implements CommandSender {
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener) {
-        return sendCommandAndWaitResponse(command, listener, DEFAULT_TIMEOUT);
+        return connectAndSendCommand(command, listener, DEFAULT_TIMEOUT);
     }
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener, long timeout) {
-        return sendCommandAndWaitResponse(command, listener, timeout);
+        return connectAndSendCommand(command, listener, timeout);
+    }
+
+    private HandlerResponse connectAndSendCommand(Command command, CompletionListener listener, long timeout) {
+        try {
+            return sendCommandAndWaitResponse(command, listener, timeout);
+        } catch (MessagingException e) {
+            // If there is an error capture it here and return it as a HandlerResponse
+            return HandlerResponse.createError(e.getMessage());
+        } catch (Exception e) {
+            // If there is an error capture it here and return it as a HandlerResponse
+            return HandlerResponse.createError(e.getMessage());
+        }
     }
 
     private HandlerResponse sendCommandAndWaitResponse(Command command, CompletionListener listener, long timeout) {
