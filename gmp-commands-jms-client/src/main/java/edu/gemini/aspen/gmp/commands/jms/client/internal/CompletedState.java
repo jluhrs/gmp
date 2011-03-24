@@ -7,8 +7,8 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 
-class CompletedCommandSenderState extends CommandSenderState {
-    CompletedCommandSenderState(CommandSenderReply commandSenderReply) {
+class CompletedState extends CommandSenderState {
+    CompletedState(CommandSenderReply commandSenderReply) {
         super(commandSenderReply);
     }
 

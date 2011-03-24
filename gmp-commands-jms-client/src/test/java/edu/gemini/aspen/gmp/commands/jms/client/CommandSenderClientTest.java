@@ -9,7 +9,6 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
 import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -17,14 +16,21 @@ import org.mockito.ArgumentCaptor;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.MessageListener;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CommandSenderClientTest extends MockedJMSArtifactsBase {
     private CommandSenderClient senderClient;
     private CompletionListenerMock completionListener;
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     @Before
     public void setUp() throws JMSException, TesterException {
@@ -35,45 +41,74 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
 
     @Test
     public void testSendParkCommand() throws TesterException, JMSException {
-        HandlerResponseMapMessage completedReply = new HandlerResponseMapMessage(HandlerResponse.get(HandlerResponse.Response.COMPLETED));
-        mockReplyMessage(completedReply);
+        buildSimulatedInitialReply(HandlerResponse.Response.COMPLETED);
 
         Command command = new Command(SequenceCommand.PARK, Activity.START);
-        HandlerResponse response = senderClient.sendCommand(command, completionListener);
+        HandlerResponse response = senderClient.sendCommand(command, completionListener, 1000);
 
-        Assert.assertEquals(HandlerResponse.COMPLETED, response);
+        // Initial response
+        assertEquals(HandlerResponse.COMPLETED, response);
+        // No later command
+        assertFalse(completionListener.wasInvoked());
+    }
+
+    private void buildSimulatedInitialReply(HandlerResponse.Response replyResponse) throws JMSException {
+        HandlerResponseMapMessage completedReply = new HandlerResponseMapMessage(HandlerResponse.get(replyResponse));
+        mockReplyMessage(completedReply);
     }
 
     @Test
-    public void testSendApplyWithLateResponse() throws TesterException, JMSException {
-        HandlerResponseMapMessage completedReply = new HandlerResponseMapMessage(HandlerResponse.get(HandlerResponse.Response.STARTED));
-        mockReplyMessage(completedReply);
+    public void testSendApplyWithLateResponse() throws TesterException, JMSException, InterruptedException {
+        buildSimulatedInitialReply(HandlerResponse.Response.STARTED);
 
-        ArgumentCaptor<MessageListener> listenerCaptor = ArgumentCaptor.forClass(MessageListener.class);
+        final ArgumentCaptor<MessageListener> listenerCaptor = ArgumentCaptor.forClass(MessageListener.class);
 
         Command command = new Command(SequenceCommand.APPLY, Activity.START, DefaultConfiguration.emptyConfiguration());
 
-        // Simulate that a reply was sent later on
         HandlerResponse response = senderClient.sendCommand(command, completionListener);
-        Assert.assertEquals(HandlerResponse.STARTED, response);
+        assertEquals(HandlerResponse.STARTED, response);
 
-        verify(consumer).setMessageListener(listenerCaptor.capture());
-        MapMessage replyMessage = mockCompletionInformationMessage();
+        // Simulate that a reply was sent later on in a separate thread
+        executor.execute(new Runnable() {
 
-        listenerCaptor.getValue().onMessage(replyMessage);
-        Assert.assertTrue(completionListener.wasInvoked());
+            @Override
+            public void run() {
+                try {
+                    verify(consumer).setMessageListener(listenerCaptor.capture());
+                    MapMessage replyMessage = mockCompletionInformationMessage();
+
+                    listenerCaptor.getValue().onMessage(replyMessage);
+                } catch (JMSException e) {
+                    fail();
+                }
+            }
+        });
+
+        TimeUnit.MILLISECONDS.sleep(200L);
+
+        assertTrue(completionListener.wasInvoked());
+    }
+
+    @Test
+    public void testSendApplyWithImmediateCompletion() throws TesterException, JMSException {
+        buildSimulatedInitialReply(HandlerResponse.Response.COMPLETED);
+
+        Command command = new Command(SequenceCommand.APPLY, Activity.START, DefaultConfiguration.emptyConfiguration());
+
+        HandlerResponse response = senderClient.sendCommand(command, completionListener);
+        assertEquals(HandlerResponse.COMPLETED, response);
+
+        assertFalse(completionListener.wasInvoked());
     }
 
     @Test
     public void testSendApplyWithoutConfiguration() throws TesterException, JMSException {
-        HandlerResponseMapMessage completedReply = new HandlerResponseMapMessage(HandlerResponse.get(HandlerResponse.Response.ERROR));
-        mockReplyMessage(completedReply);
+        buildSimulatedInitialReply(HandlerResponse.Response.ERROR);
 
         Command command = new Command(SequenceCommand.APPLY, Activity.START, DefaultConfiguration.emptyConfiguration());
 
-        // Simulate that a reply was sent later on
         HandlerResponse response = senderClient.sendCommand(command, completionListener);
-        Assert.assertEquals(HandlerResponse.Response.ERROR, response.getResponse());
+        assertEquals(HandlerResponse.Response.ERROR, response.getResponse());
 
         verify(session).close();
     }
@@ -89,6 +124,15 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
     @Test
     public void testSendCommandWhenDisconnected() throws TesterException, JMSException {
         when(connectionFactory.createConnection()).thenThrow(new JMSException("Error"));
+
+        Command command = new Command(SequenceCommand.PARK, Activity.START);
+        HandlerResponse response = senderClient.sendCommand(command, completionListener);
+        assertEquals(HandlerResponse.Response.ERROR, response.getResponse());
+    }
+
+    @Test
+    public void testSendCommandWithASpuriousException() throws TesterException, JMSException {
+        when(connectionFactory.createConnection()).thenThrow(new RuntimeException("Error"));
 
         Command command = new Command(SequenceCommand.PARK, Activity.START);
         HandlerResponse response = senderClient.sendCommand(command, completionListener);

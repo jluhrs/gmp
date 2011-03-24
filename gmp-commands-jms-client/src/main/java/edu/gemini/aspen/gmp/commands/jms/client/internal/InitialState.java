@@ -17,10 +17,10 @@ import javax.jms.MessageConsumer;
 import java.util.Map;
 import java.util.Set;
 
-class InitCommandSenderState extends CommandSenderState {
+class InitialState extends CommandSenderState {
     private static final DestinationData REQUESTS_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_TOPIC, DestinationType.TOPIC);
 
-    InitCommandSenderState(CommandSenderReply commandSenderReply) {
+    InitialState(CommandSenderReply commandSenderReply) {
         super(commandSenderReply);
     }
 

@@ -29,6 +29,7 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
     private final String correlationID;
     private final static DestinationBuilder destinationBuilder = new DestinationBuilder();
 
+    // This object has a state that changes upon receiving responses
     private CommandSenderState state;
 
     public CommandSenderReply(String correlationID) {
@@ -37,30 +38,31 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
         Preconditions.checkArgument(!correlationID.isEmpty(), "Correlation ID cannot be empty");
         
         this.correlationID = correlationID;
-        state = new InitCommandSenderState(this);
+        state = new InitialState(this);
     }
 
     public HandlerResponse sendCommandMessage(Command command, long timeout) {
         if (isConnected()) {
             HandlerResponse initialResponse = state.sendCommandMessage(command, timeout);
-            changeState(initialResponse);
+            switchState(initialResponse);
+
             return initialResponse;
         } else {
             return HandlerResponse.createError("Not connected");
         }
     }
 
-    private void changeState(HandlerResponse initialResponse) {
+    private void switchState(HandlerResponse initialResponse) {
         if (initialResponse == HandlerResponse.STARTED) {
-            state = new InitialResponseReadyCommandSenderState(this);
+            state = new WaitingNextResponseState(this);
         } else {
-            state = new CompletedCommandSenderState(this);
+            state = new CompletedState(this);
             completionReceived();
         }
     }
 
     public void setupCompletionListener(CompletionListener listener) {
-        state.setupCompletionListener(listener);
+         state.setupCompletionListener(listener);
     }
 
     @Override

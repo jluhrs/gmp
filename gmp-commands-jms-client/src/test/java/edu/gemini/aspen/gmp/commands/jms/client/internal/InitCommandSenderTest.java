@@ -27,7 +27,7 @@ public class InitCommandSenderTest extends MockedJMSArtifactsBase {
         CommandSenderReply commandSenderReply = new CommandSenderReply(correlationID);
         commandSenderReply.startJms(provider);
 
-        InitCommandSenderState senderState = new InitCommandSenderState(commandSenderReply);
+        InitialState senderState = new InitialState(commandSenderReply);
         Command command = new Command(SequenceCommand.INIT, Activity.START);
 
         mockReplyMessage(new HandlerResponseMapMessage(HandlerResponse.get(HandlerResponse.Response.COMPLETED)));
@@ -46,7 +46,7 @@ public class InitCommandSenderTest extends MockedJMSArtifactsBase {
         CommandSenderReply commandSenderReply = new CommandSenderReply(correlationID);
         commandSenderReply.startJms(provider);
 
-        InitCommandSenderState senderState = new InitCommandSenderState(commandSenderReply);
+        InitialState senderState = new InitialState(commandSenderReply);
         Configuration configuration = configurationBuilder()
                 .withPath(configPath("x:A.v"), "1")
                 .withPath(configPath("x:B.v"), "2")

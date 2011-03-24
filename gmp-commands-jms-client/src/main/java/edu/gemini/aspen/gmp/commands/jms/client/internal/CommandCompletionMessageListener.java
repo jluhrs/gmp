@@ -29,13 +29,17 @@ class CommandCompletionMessageListener implements MessageListener {
             completionInformation = MessageBuilder.buildCompletionInformation(message);
             listener.onHandlerResponse(completionInformation.getHandlerResponse(), completionInformation.getCommand());
         } catch (Exception e) {
-            if (completionInformation != null) {
-                listener.onHandlerResponse(completionInformation.getHandlerResponse(), completionInformation.getCommand());
-            } else {
-                listener.onHandlerResponse(HandlerResponse.createError(e.getMessage()), Command.noCommand());
-            }
+            reportExceptionToListener(completionInformation, e);
         } finally {
             commandSenderReply.completionReceived();
+        }
+    }
+
+    private void reportExceptionToListener(CompletionInformation completionInformation, Exception e) {
+        if (completionInformation != null) {
+            listener.onHandlerResponse(completionInformation.getHandlerResponse(), completionInformation.getCommand());
+        } else {
+            listener.onHandlerResponse(HandlerResponse.createError(e.getMessage()), Command.noCommand());
         }
     }
 }

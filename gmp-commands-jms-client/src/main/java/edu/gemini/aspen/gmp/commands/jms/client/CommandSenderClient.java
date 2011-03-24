@@ -13,7 +13,7 @@ import javax.jms.JMSException;
 import java.util.UUID;
 
 /**
- * This class sends sequence commands to the GMP using the bridge
+ * This class sends sequence commands to the GMP using the jms-client bridge
  * interface over JMS but it implements by itself the {@link edu.gemini.aspen.giapi.commands.CommandSender}
  * interface hiding whether the connection is local or remote
  * <p/>

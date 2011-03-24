@@ -2,9 +2,11 @@ package edu.gemini.aspen.gmp.commands.jms.client.internal;
 
 import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
+import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.jms.client.HandlerResponseMapMessage;
 import edu.gemini.aspen.gmp.commands.jms.client.MockedJMSArtifactsBase;
 import edu.gemini.jms.api.MessagingException;
