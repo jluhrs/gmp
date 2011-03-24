@@ -9,7 +9,6 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
 import edu.gemini.aspen.giapitestsupport.TesterException;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
-import edu.gemini.jms.api.MessagingException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,10 +84,10 @@ public class CommandSenderClientTest extends MockedJMSArtifactsBase {
         return replyMessage;
     }
 
-    @Test(expected = MessagingException.class)
-    public void testSendCommandWhenDisconnected() throws TesterException, JMSException {
-        Command command = new Command(SequenceCommand.PARK, Activity.START);
-        senderClient.sendCommand(command, completionListener);
-    }
+//    @Test(expected = MessagingException.class)
+//    public void testSendCommandWhenDisconnected() throws TesterException, JMSException {
+//        Command command = new Command(SequenceCommand.PARK, Activity.START);
+//        senderClient.sendCommand(command, completionListener);
+//    }
 
 }

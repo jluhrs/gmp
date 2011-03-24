@@ -4,12 +4,13 @@ package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.util.jms.HandlerResponseMessageParser;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.FormatException;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
@@ -61,6 +62,9 @@ class CompletionInfoListener implements MessageListener {
     public void onMessage(Message message) {
         try {
             processIncomingMessage(message);
+        } catch (FormatException e) {
+            throw new SequenceCommandException(
+                    "Unable to update OCS with completion information", e);
         } catch (JMSException e) {
             throw new SequenceCommandException(
                     "Unable to update OCS with completion information", e);
@@ -78,7 +82,8 @@ class CompletionInfoListener implements MessageListener {
     private void decodeMessageAndNotify(MapMessage message) throws JMSException {
         if (messageContainsActionId(message)) {
             int actionId = message.getIntProperty(JmsKeys.GMP_ACTIONID_PROP);
-            HandlerResponse response = MessageBuilder.buildHandlerResponse(message);
+            HandlerResponseMessageParser parser = new HandlerResponseMessageParser(message);
+            HandlerResponse response = parser.readResponse();
 
             LOG.info("Received Completion info for action ID " +
                     actionId + " : " + response.toString());

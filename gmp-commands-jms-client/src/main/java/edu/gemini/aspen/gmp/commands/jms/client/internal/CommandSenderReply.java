@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.util.jms.HandlerResponseMessageParser;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.jms.api.DestinationBuilder;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
@@ -43,15 +43,19 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
     public HandlerResponse sendCommandMessage(Command command, long timeout) {
         if (isConnected()) {
             HandlerResponse initialResponse = state.sendCommandMessage(command, timeout);
-            if (initialResponse == HandlerResponse.COMPLETED || initialResponse.getResponse() == HandlerResponse.Response.ERROR) {
-                state = new CompletedCommandSenderState(this);
-                completionReceived();
-            } else {
-                state = new InitialResponseReadyCommandSenderState(this);
-            }
+            changeState(initialResponse);
             return initialResponse;
         } else {
             return HandlerResponse.createError("Not connected");
+        }
+    }
+
+    private void changeState(HandlerResponse initialResponse) {
+        if (initialResponse == HandlerResponse.COMPLETED || initialResponse.getResponse() == HandlerResponse.Response.ERROR) {
+            state = new CompletedCommandSenderState(this);
+            completionReceived();
+        } else {
+            state = new InitialResponseReadyCommandSenderState(this);
         }
     }
 
@@ -78,8 +82,9 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
     }
 
     @Override
-    protected HandlerResponse buildResponse(Message reply) throws JMSException {
-        return MessageBuilder.buildHandlerResponse(reply);
+    protected HandlerResponse buildResponse(Message reply) throws MessagingException {
+        HandlerResponseMessageParser parser = new HandlerResponseMessageParser(reply);
+        return parser.readResponse();
     }
 
     String getCorrelationID() {

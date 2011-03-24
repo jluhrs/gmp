@@ -44,16 +44,22 @@ public class CommandSenderClient implements CommandSender {
     private HandlerResponse sendCommandAndWaitResponse(Command command, CompletionListener listener, long timeout) {
         String correlationID = UUID.randomUUID().toString();
         CommandSenderReply commandSenderReply = new CommandSenderReply(correlationID);
+
+        startConnection(commandSenderReply);
+
+        HandlerResponse initialResponse = commandSenderReply.sendCommandMessage(command, timeout);
+
+        commandSenderReply.setupCompletionListener(listener);
+
+        return initialResponse;
+    }
+
+    private void startConnection(CommandSenderReply commandSenderReply) {
         try {
             commandSenderReply.startJms(provider);
         } catch (JMSException e) {
             throw new MessagingException("Exception while starting the JMS provider", e);
         }
-
-        HandlerResponse initialResponse = commandSenderReply.sendCommandMessage(command, timeout);
-        commandSenderReply.setupCompletionListener(listener);
-
-        return initialResponse;
     }
 
 }

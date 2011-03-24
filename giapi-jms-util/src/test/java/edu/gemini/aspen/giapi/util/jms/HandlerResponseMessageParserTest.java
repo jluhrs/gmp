@@ -1,6 +1,7 @@
-package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
+package edu.gemini.aspen.giapi.util.jms;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.util.jms.HandlerResponseMessageParser;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
 import edu.gemini.jms.api.FormatException;

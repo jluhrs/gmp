@@ -1,9 +1,8 @@
-package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
+package edu.gemini.aspen.giapi.util.jms;
 
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.FormatException;
 
 import javax.jms.JMSException;
@@ -14,10 +13,10 @@ import javax.jms.Message;
  * Class that can parse a Map message sent over JMS and convert it into a
  * {@link Command}
  */
-class HandlerResponseMessageParser {
+public class HandlerResponseMessageParser {
     private final MapMessage mapMessage;
 
-    HandlerResponseMessageParser(Message mapMessage) throws FormatException {
+    public HandlerResponseMessageParser(Message mapMessage) throws FormatException {
         Preconditions.checkArgument(mapMessage != null, "Message cannot be null");
         if (!(mapMessage instanceof MapMessage)) {
             throw new FormatException("Cannot process a non map message");
@@ -25,7 +24,7 @@ class HandlerResponseMessageParser {
         this.mapMessage = (MapMessage)mapMessage;
     }
 
-    HandlerResponse readResponse() throws FormatException {
+    public HandlerResponse readResponse() throws FormatException {
         try {
             return parseResponse();
         } catch (JMSException e) {
