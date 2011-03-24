@@ -14,10 +14,10 @@ import javax.jms.Message;
  * Class that can parse a Map message sent over JMS and convert it into a
  * {@link Command}
  */
-class HandleResponseMessageParser {
+class HandlerResponseMessageParser {
     private final MapMessage mapMessage;
 
-    HandleResponseMessageParser(Message mapMessage) throws FormatException {
+    HandlerResponseMessageParser(Message mapMessage) throws FormatException {
         Preconditions.checkArgument(mapMessage != null, "Message cannot be null");
         if (!(mapMessage instanceof MapMessage)) {
             throw new FormatException("Cannot process a non map message");

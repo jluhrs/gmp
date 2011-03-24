@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.jms.api.JmsMapMessageSenderReply;
 
 import javax.jms.JMSException;
@@ -22,7 +21,7 @@ class HandlerResponseSenderReply extends JmsMapMessageSenderReply<HandlerRespons
     @Override
     public HandlerResponse buildResponse(Message reply) throws JMSException {
         if (reply instanceof MapMessage) {
-            HandleResponseMessageParser messageParser = new HandleResponseMessageParser(reply);
+            HandlerResponseMessageParser messageParser = new HandlerResponseMessageParser(reply);
             return messageParser.readResponse();
         } else {
             return HandlerResponse.NOANSWER;
