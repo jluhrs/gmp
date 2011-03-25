@@ -5,9 +5,6 @@ import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.giapi.tool.parser.AbstractArgument;
 import edu.gemini.giapi.tool.parser.Util;
 
-import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
-
 /**
  * Argument to get a Configuration
  */
@@ -40,9 +37,11 @@ public class ConfigArgument extends AbstractArgument {
     }
 
     private Configuration _parseConfiguration(String val) throws IllegalArgumentException {
-
-        if (val == null)
+        if (val == null) {
             throw new IllegalArgumentException("Empty configuration");
+        }
+
+        DefaultConfiguration.Builder builder = DefaultConfiguration.configurationBuilder();
 
         String[] items = val.split("\\s+");
         for (String item : items) {
@@ -50,10 +49,9 @@ public class ConfigArgument extends AbstractArgument {
             if (arg.length != 2)
                 throw new IllegalArgumentException("Configuration item '" +
                         item + "' not in the form 'key=value'");
-            if (_config == null)
-                _config = emptyConfiguration();
-            _config =DefaultConfiguration.copy(_config).withPath(configPath(arg[0]), arg[1]).build();
+            builder.withConfiguration(arg[0], arg[1]);
         }
+        _config = builder.build();
         return _config;
     }
 

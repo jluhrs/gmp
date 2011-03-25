@@ -7,7 +7,7 @@ import java.util.logging.LogRecord;
 
 import static org.junit.Assert.assertTrue;
 
-public class GiapiTesterFormatterLog {
+public class GiapiTesterFormatterTest {
     @Test
     public void testFormat() {
         String message = "Message";
