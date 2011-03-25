@@ -76,7 +76,7 @@ public class RecordsTest {
         car.stop();
 
         try{
-            val.getVal();
+            val.getAll();
             fail();
         }catch(IllegalStateException e){
             //ok

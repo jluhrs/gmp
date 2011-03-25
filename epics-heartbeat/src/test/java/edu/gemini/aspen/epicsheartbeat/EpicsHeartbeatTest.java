@@ -63,7 +63,7 @@ public class EpicsHeartbeatTest {
 
         Thread.sleep(1200);
 
-        assertNotSame(0,((int[])ch.getValue().getValue())[0]);
+        assertNotSame(0,((int[])ch.getDBR().getValue())[0]);
 
         hbDist.unbindHeartbeatConsumer(ehb);
         ehb.shutdown();

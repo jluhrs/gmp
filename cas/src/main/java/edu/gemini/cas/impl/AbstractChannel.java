@@ -182,7 +182,7 @@ abstract class AbstractChannel<T> implements Channel<T> {
     }
 
     @Override
-    public DBR getValue() throws CAException {
+    public DBR getDBR() throws CAException {
         if (pv == null) {
             throw new IllegalStateException("Channel not initialized");
         }
@@ -196,13 +196,13 @@ abstract class AbstractChannel<T> implements Channel<T> {
     }
 
     @Override
-    public List<T> getVal() throws CAException {
-        return extractValues(getValue());
+    public List<T> getAll() throws CAException {
+        return extractValues(getDBR());
     }
 
     @Override
     public T getFirst() throws CAException {
-        return extractValues(getValue()).get(0);
+        return extractValues(getDBR()).get(0);
     }
 
     protected void setEnumLabels(String[] labels){

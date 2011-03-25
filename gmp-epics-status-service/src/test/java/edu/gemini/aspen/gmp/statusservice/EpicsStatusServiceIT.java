@@ -83,22 +83,22 @@ public class EpicsStatusServiceIT extends TestCase {
         //update channels
         StatusItem<Integer> si = new BasicStatus<Integer>("giapinameint", 1);
         ess.update(si);
-        assertEquals(1, ((int[]) nc.get("giapinameint").getValue().getValue())[0]);
+        assertEquals(1, ((int[]) nc.get("giapinameint").getDBR().getValue())[0]);
 
         StatusItem<Double> asi = new AlarmStatus<Double>("giapialarmdouble", 2.0, AlarmSeverity.ALARM_FAILURE, AlarmCause.ALARM_CAUSE_HI);
         ess.update(asi);
-        assertEquals(2.0, ((double[]) ac.get("giapialarmdouble").getValue().getValue())[0]);
-        assertEquals(Severity.MAJOR_ALARM, ((DBR_STS_Double) ac.get("giapialarmdouble").getValue()).getSeverity());
-        assertEquals(Status.HIGH_ALARM, ((DBR_STS_Double) ac.get("giapialarmdouble").getValue()).getStatus());
+        assertEquals(2.0, ((double[]) ac.get("giapialarmdouble").getDBR().getValue())[0]);
+        assertEquals(Severity.MAJOR_ALARM, ((DBR_STS_Double) ac.get("giapialarmdouble").getDBR()).getSeverity());
+        assertEquals(Status.HIGH_ALARM, ((DBR_STS_Double) ac.get("giapialarmdouble").getDBR()).getStatus());
 
 
-        assertEquals(Health.BAD.name(), ((String[]) hc.get("giapihealth1").getValue().getValue())[0]);
+        assertEquals(Health.BAD.name(), ((String[]) hc.get("giapihealth1").getDBR().getValue())[0]);
         StatusItem<Health> hsi = new HealthStatus("giapihealth1", Health.GOOD);
         ess.update(hsi);
-        assertEquals(Health.GOOD.name(), ((String[]) hc.get("giapihealth1").getValue().getValue())[0]);
+        assertEquals(Health.GOOD.name(), ((String[]) hc.get("giapihealth1").getDBR().getValue())[0]);
         hsi = new HealthStatus("giapihealth1", Health.WARNING);
         ess.update(hsi);
-        assertEquals(Health.WARNING.name(), ((String[]) hc.get("giapihealth1").getValue().getValue())[0]);
+        assertEquals(Health.WARNING.name(), ((String[]) hc.get("giapihealth1").getDBR().getValue())[0]);
 
         //shutdown and check channels get deleted
         ess.shutdown();

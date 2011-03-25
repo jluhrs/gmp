@@ -58,7 +58,7 @@ public class CasTest {
     public void testAddTwice() throws Exception {
 
         Channel ch = giapicas.createChannel(varname, 2);
-        DBR dbr = ch.getValue();
+        DBR dbr = ch.getDBR();
 
 
         int num = dbr.getCount();
@@ -93,7 +93,7 @@ public class CasTest {
         assertEquals(ch, ch2);
         giapicas.destroyChannel(ch2);
         try {
-            ch.getValue();
+            ch.getDBR();
             fail();
         } catch (RuntimeException ex) {
             //OK
@@ -104,7 +104,7 @@ public class CasTest {
     public void testAddTwiceWrongType() throws Exception {
 
         Channel ch = giapicas.createChannel(varname, 0);
-        DBR dbr = ch.getValue();
+        DBR dbr = ch.getDBR();
 
 
         int num = dbr.getCount();
@@ -144,7 +144,7 @@ public class CasTest {
         Channel<Integer> ch = giapicas.createChannel(varname, 1);
         ch.setValue(3);
 
-        DBR dbr = ch.getValue();
+        DBR dbr = ch.getDBR();
 
 
         int num = dbr.getCount();
@@ -163,7 +163,7 @@ public class CasTest {
         Channel<Integer> ch = giapicas.createChannel(varname, ImmutableList.of(0,0,0));
         ch.setValue(ImmutableList.of(3,4,5));
 
-        DBR dbr = ch.getValue();
+        DBR dbr = ch.getDBR();
 
 
         int num = dbr.getCount();
@@ -194,10 +194,10 @@ public class CasTest {
 
 
         DBR dbr[] = new DBR[4];
-        dbr[0] = chI.getValue();
-        dbr[1] = chF.getValue();
-        dbr[2] = chD.getValue();
-        dbr[3] = chS.getValue();
+        dbr[0] = chI.getDBR();
+        dbr[1] = chF.getDBR();
+        dbr[2] = chD.getDBR();
+        dbr[3] = chS.getDBR();
         Object ret[] = new Object[4];
 
         for (int i = 0; i < 4; i++) {
@@ -281,12 +281,12 @@ public class CasTest {
         AlarmChannel<Integer> ch = giapicas.createAlarmChannel(varname, 1);
         ch.setAlarm(Status.HIHI_ALARM, Severity.MAJOR_ALARM, "alarm message");
         ch.setValue(3);
-        DBR dbr = ch.getValue();
+        DBR dbr = ch.getDBR();
 
         assertEquals(Severity.MAJOR_ALARM, ((STS) dbr).getSeverity());
         assertEquals(Status.HIHI_ALARM, ((STS) dbr).getStatus());
         ch.clearAlarm();
-        dbr = ch.getValue();
+        dbr = ch.getDBR();
         assertEquals(Severity.NO_ALARM, ((STS) dbr).getSeverity());
         assertEquals(Status.NO_ALARM, ((STS) dbr).getStatus());
 
@@ -341,7 +341,7 @@ public class CasTest {
     public void testEnumChannels() throws Exception{
         Dir d = Dir.MARK;
         Channel<Dir> ch=giapicas.createChannel("test", d);
-        DBR dbr = ch.getValue();
+        DBR dbr = ch.getDBR();
 
         int num = dbr.getCount();
         assertEquals(1, num);
@@ -353,7 +353,7 @@ public class CasTest {
 
         d= Dir.PRESET;
         ch.setValue(d);
-        dbr = ch.getValue();
+        dbr = ch.getDBR();
 
         num = dbr.getCount();
         assertEquals(1, num);
@@ -374,12 +374,12 @@ public class CasTest {
     public void testWriteEnumAlarm() throws Exception {
         AlarmChannel<Dir> ch = giapicas.createAlarmChannel(varname, Dir.CLEAR);
         ch.setAlarm(Status.HIHI_ALARM, Severity.MAJOR_ALARM, "alarm message");
-        DBR dbr = ch.getValue();
+        DBR dbr = ch.getDBR();
 
         assertEquals(Severity.MAJOR_ALARM, ((STS) dbr).getSeverity());
         assertEquals(Status.HIHI_ALARM, ((STS) dbr).getStatus());
         ch.clearAlarm();
-        dbr = ch.getValue();
+        dbr = ch.getDBR();
         assertEquals(Severity.NO_ALARM, ((STS) dbr).getSeverity());
         assertEquals(Status.NO_ALARM, ((STS) dbr).getStatus());
     }
@@ -389,7 +389,7 @@ public class CasTest {
         Channel<Integer> ch = giapicas.createChannel(varname, 1);
         ch.setValue(3);
 
-        List<Integer> values= ch.getVal();
+        List<Integer> values= ch.getAll();
 
 
         assertEquals(1, values.size());

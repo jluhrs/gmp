@@ -1,6 +1,5 @@
 package edu.gemini.cas.impl;
 
-import com.cosylab.epics.caj.cas.ProcessVariableEventDispatcher;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import edu.gemini.cas.AlarmChannel;
 import edu.gemini.cas.ChannelListener;
@@ -47,13 +46,13 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     }
 
     @Override
-    public DBR getValue() throws CAException {
-        return ch.getValue();
+    public DBR getDBR() throws CAException {
+        return ch.getDBR();
     }
 
     @Override
-    public List<T> getVal() throws CAException {
-        return ch.getVal();
+    public List<T> getAll() throws CAException {
+        return ch.getAll();
     }
 
     @Override
@@ -85,7 +84,7 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     public void setAlarm(Status status, Severity severity, String message) throws CAException{
         ch.setAlarmState(status,severity);
 
-        ch.setValue(ch.extractValues(ch.getValue()));
+        ch.setValue(ch.extractValues(ch.getDBR()));
 
         alarmCh.setValue(message!=null?message:"");
     }

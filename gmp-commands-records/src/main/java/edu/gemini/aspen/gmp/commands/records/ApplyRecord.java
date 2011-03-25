@@ -136,7 +136,7 @@ public class ApplyRecord {
             }
             if (idle) car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
         } else {
-            car.changeState(CARRecord.Val.ERR, ((String[]) mess.getValue().getValue())[0], ((int[]) val.getValue().getValue())[0], getClientId());
+            car.changeState(CARRecord.Val.ERR, ((String[]) mess.getDBR().getValue())[0], ((int[]) val.getDBR().getValue())[0], getClientId());
         }
         processing = false;
         return retVal;
@@ -197,7 +197,7 @@ public class ApplyRecord {
     }
 
     private void setMessage(String message) throws CAException {
-        DBR dbr = mess.getValue();
+        DBR dbr = mess.getDBR();
         String oldMessage = ((String[]) dbr.getValue())[0];
         if (setIfDifferent(mess, message)) {
             omss.setValue(oldMessage);

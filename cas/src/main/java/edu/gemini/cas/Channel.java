@@ -29,7 +29,7 @@ public interface Channel<T> {
      * @throws CAException if read couldn't be completed
      * @throws IllegalStateException if Channel is not correctly initialized
      */
-    DBR getValue() throws CAException;
+    DBR getDBR() throws CAException;
 
     /**
      * Convenience method to retrieve a value from a PV in a List<T>
@@ -38,7 +38,7 @@ public interface Channel<T> {
      * @throws CAException if read couldn't be completed
      * @throws IllegalStateException if Channel is not correctly initialized
      */
-    List<T> getVal() throws CAException;
+    List<T> getAll() throws CAException;
 
     /**
       * Convenience method to retrieve a value from a PV. This method is provided because all of our PVs have only
@@ -50,6 +50,11 @@ public interface Channel<T> {
       */
     T getFirst() throws CAException;
 
+    /**
+     * Returns the Channel name
+     *
+     * @return the Channel name
+     */
     String getName();
 
     /**
