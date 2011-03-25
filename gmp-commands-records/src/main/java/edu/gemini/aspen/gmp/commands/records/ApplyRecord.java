@@ -50,7 +50,7 @@ public class ApplyRecord {
 
 
     @Validate
-    public void start() {
+    public synchronized void start() {
         LOG.info("Validate");
         try {
             dir = cas.createChannel(prefix + ":" + name + ".DIR", Dir.CLEAR);
@@ -69,7 +69,7 @@ public class ApplyRecord {
     }
 
     @Invalidate
-    public void stop() {
+    public synchronized void stop() {
         LOG.info("InValidate");
         cas.destroyChannel(dir);
         cas.destroyChannel(val);
@@ -84,7 +84,7 @@ public class ApplyRecord {
 
 
     @Bind(aggregate = true, optional = true)
-    public void bindCAD(CADRecord cad) {
+    public synchronized void bindCAD(CADRecord cad) {
         LOG.info("Bind");
 
         cads.add(cad.getEpicsCad());
@@ -94,14 +94,14 @@ public class ApplyRecord {
     }
 
     @Unbind(aggregate = true, optional = true)
-    public void unBindCAD(CADRecord cad) {
+    public synchronized void unBindCAD(CADRecord cad) {
         LOG.info("Unbind");
 
         cads.remove(cad.getEpicsCad());
         cars.remove(cad.getCAR());
     }
 
-    private boolean processDir(Dir dir) throws CAException {
+    private synchronized boolean processDir(Dir dir) throws CAException {
         processing = true;
         if (dir == Dir.START) {
             incAndGetClientId();
@@ -227,20 +227,22 @@ public class ApplyRecord {
     private class CARListener implements CARRecord.CARListener {
         @Override
         public void update(CARRecord.Val state, String message, Integer errorCode, Integer id) {
-            try {
-                if (state == CARRecord.Val.ERR || state == CARRecord.Val.BUSY) {
-                    car.changeState(state, message, errorCode, id);
-                }
-                if (!processing && state == CARRecord.Val.IDLE) {
-                    for (CARRecord otherCar : cars) {
-                        if (otherCar.getState() != CARRecord.Val.IDLE) {
-                            return;
-                        }
+            synchronized (ApplyRecord.this) {
+                try {
+                    if (state == CARRecord.Val.ERR || state == CARRecord.Val.BUSY) {
+                        car.changeState(state, message, errorCode, id);
                     }
-                    car.changeState(state, message, errorCode, id);
+                    if (!processing && state == CARRecord.Val.IDLE) {
+                        for (CARRecord otherCar : cars) {
+                            if (otherCar.getState() != CARRecord.Val.IDLE) {
+                                return;
+                            }
+                        }
+                        car.changeState(state, message, errorCode, id);
+                    }
+                } catch (CAException e) {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
                 }
-            } catch (CAException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
             }
         }
     }
