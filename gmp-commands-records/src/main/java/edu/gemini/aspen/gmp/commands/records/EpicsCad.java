@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * This class represents the EPICS part of the CAD record. It doesn't have much logic, it is just to reflect the
- * CADRecordImpl status and communicate to the outside world.
+ * CadRecordImpl status and communicate to the outside world.
  *
  * @author Nicolas A. Barriga
  *         Date: 3/24/11

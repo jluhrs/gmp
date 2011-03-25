@@ -14,13 +14,13 @@ import java.util.logging.Logger;
 * @author Nicolas A. Barriga
 *         Date: 3/24/11
 */
-class CADCompletionListener implements CompletionListener {
-    private static final Logger LOG = Logger.getLogger(CADCompletionListener.class.getName());
+class CadCompletionListener implements CompletionListener {
+    private static final Logger LOG = Logger.getLogger(CadCompletionListener.class.getName());
 
     final private Integer clientId;
-    final private CARRecord car;
+    final private CarRecord car;
 
-    CADCompletionListener(Integer clientId, CARRecord car) {
+    CadCompletionListener(Integer clientId, CarRecord car) {
         this.clientId = clientId;
         this.car = car;
     }
@@ -29,9 +29,9 @@ class CADCompletionListener implements CompletionListener {
     public void onHandlerResponse(HandlerResponse response, Command command) {
         try {
             if (response.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
-                car.changeState(CARRecord.Val.IDLE, response.hasErrorMessage() ? "" : response.getMessage(), 0, clientId);
+                car.changeState(CarRecord.Val.IDLE, response.hasErrorMessage() ? "" : response.getMessage(), 0, clientId);
             } else {
-                car.changeState(CARRecord.Val.ERR, response.hasErrorMessage() ? "" : response.getMessage(), -1, clientId);
+                car.changeState(CarRecord.Val.ERR, response.hasErrorMessage() ? "" : response.getMessage(), -1, clientId);
             }
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);

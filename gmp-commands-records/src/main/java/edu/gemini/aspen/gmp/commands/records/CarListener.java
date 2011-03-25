@@ -6,6 +6,6 @@ package edu.gemini.aspen.gmp.commands.records;
 * @author Nicolas A. Barriga
 *         Date: 3/25/11
 */
-interface CARListener {
-    void update(CARRecord.Val state, String message, Integer errorCode, Integer id);
+interface CarListener {
+    void update(CarRecord.Val state, String message, Integer errorCode, Integer id);
 }

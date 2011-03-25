@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Class CADRecordImpl
+ * Class CadRecordImpl
  *
  * @author Nicolas A. Barriga
  *         Date: 3/24/11
  */
 @Component
 @Provides
-public class CADRecordImpl implements CADRecord {
-    private static final Logger LOG = Logger.getLogger(CADRecordImpl.class.getName());
+public class CadRecordImpl implements CadRecord {
+    private static final Logger LOG = Logger.getLogger(CadRecordImpl.class.getName());
 
 
     private CadState state = CadState.CLEAR;
@@ -33,7 +33,7 @@ public class CADRecordImpl implements CADRecord {
     final private String prefix;
     final private String name;
     final private List<String> attributeNames = new ArrayList<String>();
-    final private CARRecord car;
+    final private CarRecord car;
 
     /**
      * Constructor
@@ -44,7 +44,7 @@ public class CADRecordImpl implements CADRecord {
      * @param name CAD name. ex.: "park"
      * @param numAttributes number of attributes this CAD has.//todo: see if this can be changed to a list of names
      */
-    protected CADRecordImpl(@Requires ChannelAccessServer cas,
+    protected CadRecordImpl(@Requires ChannelAccessServer cas,
                             @Requires CommandSender cs,
                             @Property(name = "prefix", value = "INVALID", mandatory = true) String prefix,
                             @Property(name = "name", value = "INVALID", mandatory = true) String name,
@@ -60,7 +60,7 @@ public class CADRecordImpl implements CADRecord {
             attributeNames.add(letters[i]);
         }
         epicsCad = new EpicsCad(cas);
-        car = new CARRecord(cas, prefix.toLowerCase() + ":" + name.toLowerCase() + "C");
+        car = new CarRecord(cas, prefix.toLowerCase() + ":" + name.toLowerCase() + "C");
         LOG.info("Constructor");
     }
 
@@ -86,7 +86,7 @@ public class CADRecordImpl implements CADRecord {
     }
 
     @Override
-    public CARRecord getCAR() {
+    public CarRecord getCAR() {
         return car;
     }
 

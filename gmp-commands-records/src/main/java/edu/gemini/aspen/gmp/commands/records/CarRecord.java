@@ -15,8 +15,8 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 3/17/11
  */
-public class CARRecord {
-    private static final Logger LOG = Logger.getLogger(CARRecord.class.getName());
+public class CarRecord {
+    private static final Logger LOG = Logger.getLogger(CarRecord.class.getName());
 
     enum Val {
         UNAVAILABLE,
@@ -56,7 +56,7 @@ public class CARRecord {
      * @param cas Channel Access server to use
      * @param prefix name of the CAR. ex.: "gpi:applyC"
      */
-    public CARRecord(ChannelAccessServer cas, String prefix) {
+    public CarRecord(ChannelAccessServer cas, String prefix) {
         LOG.info("CAR constructor: "+prefix);
         this.cas = cas;
         this.prefix = prefix;
@@ -107,9 +107,9 @@ public class CARRecord {
             notifyListeners();
         }
     }
-    private List<CARListener> listeners = new ArrayList<CARListener>();
+    private List<CarListener> listeners = new ArrayList<CarListener>();
     private void notifyListeners() throws CAException {
-        for(CARListener listener:listeners){
+        for(CarListener listener:listeners){
             listener.update(val.getFirst(), omss.getFirst(), oerr.getFirst(), clid.getFirst());
         }
     }
@@ -119,7 +119,7 @@ public class CARRecord {
      *
      * @param listener to be notified when the CAR state changes
      */
-    synchronized void registerListener(CARListener listener){
+    synchronized void registerListener(CarListener listener){
         listeners.add(listener);
     }
 
@@ -128,7 +128,7 @@ public class CARRecord {
      *
      * @param listener to unregister
      */
-    synchronized void unRegisterListener(CARListener listener){
+    synchronized void unRegisterListener(CarListener listener){
         listeners.remove(listener);
     }
 

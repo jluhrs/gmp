@@ -29,14 +29,14 @@ public class ApplyRecord {
     private Channel<String> omss;
     private Channel<Integer> clid;
 
-    final private CARRecord car;
+    final private CarRecord car;
 
     final private ChannelAccessServer cas;
 
     final private String prefix;
     final private String name;
     final private List<EpicsCad> cads = new ArrayList<EpicsCad>();
-    final private List<CARRecord> cars = new ArrayList<CARRecord>();
+    final private List<CarRecord> cars = new ArrayList<CarRecord>();
 
     /**
      * Constructor
@@ -49,7 +49,7 @@ public class ApplyRecord {
         this.cas = cas;
         this.prefix = prefix;
         this.name = "apply";
-        car = new CARRecord(cas, prefix + ":" + name + "C");
+        car = new CarRecord(cas, prefix + ":" + name + "C");
         LOG.info("Constructor");
 
     }
@@ -87,7 +87,7 @@ public class ApplyRecord {
         cas.destroyChannel(omss);
         car.stop();
         cas.destroyChannel(clid);
-//        for(CADRecord cad:cads){
+//        for(CadRecord cad:cads){
 //            cad.stop();
 //        }
     }
@@ -98,17 +98,17 @@ public class ApplyRecord {
      * @param cad
      */
     @Bind(aggregate = true, optional = true)
-    public synchronized void bindCAD(CADRecord cad) {
+    public synchronized void bindCad(CadRecord cad) {
         LOG.info("Bind");
 
         cads.add(cad.getEpicsCad());
         cars.add(cad.getCAR());
         LOG.info(cars.toString());
-        cad.getCAR().registerListener(new CARListener());
+        cad.getCAR().registerListener(new CarListener());
     }
 
     @Unbind(aggregate = true, optional = true)
-    public synchronized void unBindCAD(CADRecord cad) {
+    public synchronized void unBindCad(CadRecord cad) {
         LOG.info("Unbind");
 
         cads.remove(cad.getEpicsCad());
@@ -124,19 +124,19 @@ public class ApplyRecord {
         if (dir == Dir.START) {
             incAndGetClientId();
         }
-        car.changeState(CARRecord.Val.BUSY, "", 0, getClientId());
+        car.changeState(CarRecord.Val.BUSY, "", 0, getClientId());
         boolean retVal = processInternal(dir);
 
         if (retVal) {
             boolean idle = true;
-            for (CARRecord otherCar : cars) {
-                if (otherCar.getState() != CARRecord.Val.IDLE) {
+            for (CarRecord otherCar : cars) {
+                if (otherCar.getState() != CarRecord.Val.IDLE) {
                     idle = false;
                 }
             }
-            if (idle) car.changeState(CARRecord.Val.IDLE, "", 0, getClientId());
+            if (idle) car.changeState(CarRecord.Val.IDLE, "", 0, getClientId());
         } else {
-            car.changeState(CARRecord.Val.ERR, ((String[]) mess.getDBR().getValue())[0], ((int[]) val.getDBR().getValue())[0], getClientId());
+            car.changeState(CarRecord.Val.ERR, ((String[]) mess.getDBR().getValue())[0], ((int[]) val.getDBR().getValue())[0], getClientId());
         }
         processing = false;
         return retVal;
@@ -248,17 +248,17 @@ public class ApplyRecord {
     /**
      * This listener will be invoked when any CAR changes state, and will reflect the states in the main CAR
      */
-    private class CARListener implements edu.gemini.aspen.gmp.commands.records.CARListener {
+    private class CarListener implements edu.gemini.aspen.gmp.commands.records.CarListener {
         @Override
-        public void update(CARRecord.Val state, String message, Integer errorCode, Integer id) {
+        public void update(CarRecord.Val state, String message, Integer errorCode, Integer id) {
             synchronized (ApplyRecord.this) {
                 try {
-                    if (state == CARRecord.Val.ERR || state == CARRecord.Val.BUSY) {
+                    if (state == CarRecord.Val.ERR || state == CarRecord.Val.BUSY) {
                         car.changeState(state, message, errorCode, id);
                     }
-                    if (!processing && state == CARRecord.Val.IDLE) {
-                        for (CARRecord otherCar : cars) {
-                            if (otherCar.getState() != CARRecord.Val.IDLE) {
+                    if (!processing && state == CarRecord.Val.IDLE) {
+                        for (CarRecord otherCar : cars) {
+                            if (otherCar.getState() != CarRecord.Val.IDLE) {
                                 return;
                             }
                         }

@@ -1,8 +1,5 @@
 package edu.gemini.aspen.gmp.commands.records;
 
-import edu.gemini.cas.ChannelListener;
-import gov.aps.jca.CAException;
-
 /**
  * This is the interface exposed by the CAD records to OSGI. The apply record uses it to gain access to the CAD and CAR
  * EPICS records.
@@ -10,7 +7,7 @@ import gov.aps.jca.CAException;
  * @author Nicolas A. Barriga
  *         Date: 3/21/11
  */
-public interface CADRecord {
+public interface CadRecord {
     /**
      * Get the EPICS CAD.
      *
@@ -23,5 +20,5 @@ public interface CADRecord {
      *
      * @return the CAR record associated with this CAD
      */
-    CARRecord getCAR();
+    CarRecord getCAR();
 }

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 enum CadState {
     CLEAR {
         @Override
-        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car) {
+        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
             car.setBusy(epicsCad.getClid());
             car.setIdle(epicsCad.getClid());
             epicsCad.setVal(0);
@@ -41,7 +41,7 @@ enum CadState {
     },
     MARKED {
         @Override
-        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car) {
+        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
             car.setBusy(epicsCad.getClid());
 
             HandlerResponse resp;
@@ -76,7 +76,7 @@ enum CadState {
                             epicsCad.setVal(-1);
                             epicsCad.setMess(resp.getMessage());
                             epicsCad.post();
-                            car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            car.changeState(CarRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
                             return CLEAR;
                         }
                     } catch (CAException e) {
@@ -97,7 +97,7 @@ enum CadState {
                             epicsCad.setVal(-1);
                             epicsCad.setMess(resp.getMessage());
                             epicsCad.post();
-                            car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            car.changeState(CarRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
@@ -114,7 +114,7 @@ enum CadState {
                             epicsCad.setVal(-1);
                             epicsCad.setMess(resp.getMessage());
                             epicsCad.post();
-                            car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            car.changeState(CarRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
@@ -127,7 +127,7 @@ enum CadState {
     },
     IS_PRESET {
         @Override
-        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car) {
+        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
             car.setBusy(epicsCad.getClid());
             HandlerResponse resp;
             switch (dir) {
@@ -159,7 +159,7 @@ enum CadState {
                             epicsCad.setVal(-1);
                             epicsCad.setMess(resp.getMessage());
                             epicsCad.post();
-                            car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            car.changeState(CarRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
                             return CLEAR;
                         }
                     } catch (CAException e) {
@@ -180,7 +180,7 @@ enum CadState {
                             epicsCad.setVal(-1);
                             epicsCad.setMess(resp.getMessage());
                             epicsCad.post();
-                            car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            car.changeState(CarRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
@@ -197,7 +197,7 @@ enum CadState {
                             epicsCad.setVal(-1);
                             epicsCad.setMess(resp.getMessage());
                             epicsCad.post();
-                            car.changeState(CARRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
+                            car.changeState(CarRecord.Val.ERR, resp.getMessage(), -1, epicsCad.getClid());
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
@@ -220,10 +220,10 @@ enum CadState {
      * @param car the CAR associated with the given CAD
      * @return the new state after processing the directive
      */
-    public abstract CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car);
+    public abstract CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car);
 
-    private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CARRecord car) {
-        HandlerResponse resp = cs.sendCommand(new Command(seqCom, activity), new CADCompletionListener(id, car));
+    private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CarRecord car) {
+        HandlerResponse resp = cs.sendCommand(new Command(seqCom, activity), new CadCompletionListener(id, car));
         LOG.info("Activity: "+activity+" ClientID: "+id+" Response: "+resp.getResponse().toString());
         return resp;
 

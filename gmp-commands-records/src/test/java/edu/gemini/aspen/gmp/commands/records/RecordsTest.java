@@ -58,17 +58,17 @@ public class RecordsTest {
     }
 
     @Test
-    public void CARTest() throws CAException {
-        CARRecord car = new CARRecord(cas, carPrefix);
+    public void CarTest() throws CAException {
+        CarRecord car = new CarRecord(cas, carPrefix);
         car.start();
 
-        Channel<CARRecord.Val> val = cas.createChannel(carPrefix+".VAL",CARRecord.Val.UNKNOWN);
+        Channel<CarRecord.Val> val = cas.createChannel(carPrefix+".VAL", CarRecord.Val.UNKNOWN);
         Channel<String> omss = cas.createChannel(carPrefix+".OMSS","");
         Channel<Integer> oerr = cas.createChannel(carPrefix+".OERR",0);
         Channel<Integer> clid = cas.createChannel(carPrefix+".CLID",0);
 
-        car.changeState(CARRecord.Val.BUSY, "a",-1,1);
-        assertEquals(CARRecord.Val.BUSY, val.getFirst());
+        car.changeState(CarRecord.Val.BUSY, "a",-1,1);
+        assertEquals(CarRecord.Val.BUSY, val.getFirst());
         assertEquals("a",omss.getFirst());
         assertEquals(new Integer(-1),oerr.getFirst());
         assertEquals(new Integer(1),clid.getFirst());
@@ -98,18 +98,18 @@ public class RecordsTest {
     }
 
     @Test
-    public void CADTest() throws CAException, InterruptedException {
-        CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
+    public void CadTest() throws CAException, InterruptedException {
+        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,3);
         cad.start();
 
         //test mark
         Channel<String> a = cas.createChannel(prefix+":"+cadName+".A","");
-        Channel<CARRecord.Val> carVal = cas.createChannel(prefix+":"+cadName+"C.VAL",CARRecord.Val.IDLE);
+        Channel<CarRecord.Val> carVal = cas.createChannel(prefix+":"+cadName+"C.VAL", CarRecord.Val.IDLE);
 
 
-        class CARListener extends CountDownLatch implements ChannelListener {
+        class CarListener extends CountDownLatch implements ChannelListener {
 
-            public CARListener() {
+            public CarListener() {
                 super(2);
             }
 
@@ -130,7 +130,7 @@ public class RecordsTest {
 
         }
 
-        CARListener carListener = new CARListener();
+        CarListener carListener = new CarListener();
         carVal.registerListener(carListener);
 
         a.setValue("anything");
@@ -150,15 +150,15 @@ public class RecordsTest {
 
     }
 
-    private void setDir(Dir d, Integer  expectedState, Channel<Dir> dir, CADRecordImpl cad) throws BrokenBarrierException, InterruptedException, CAException {
+    private void setDir(Dir d, Integer  expectedState, Channel<Dir> dir, CadRecordImpl cad) throws BrokenBarrierException, InterruptedException, CAException {
         dir.setValue(d);
         assertEquals(CadState.values()[expectedState], cad.getState());
 
     }
 
     @Test
-    public void CADStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
-        CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
+    public void CadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
+        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,3);
         cad.start();
 
         Channel<Dir> dir = cas.createChannel(prefix+":"+cadName+".DIR", Dir.CLEAR);
@@ -217,9 +217,9 @@ public class RecordsTest {
         Channel<Integer> clid = cas.createChannel(prefix+":apply.CLID",0);
         Channel<Integer> cadClid = cas.createChannel(prefix+":"+cadName+".ICID",0);
 
-        CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
+        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,3);
         cad.start();
-        apply.bindCAD(cad);
+        apply.bindCad(cad);
 
 
         //test cad state changes
@@ -236,7 +236,7 @@ public class RecordsTest {
         assertEquals(new Integer(0), cadVal.getFirst());
         assertEquals(new Integer(2),val.getFirst());
 
-        apply.unBindCAD(cad);
+        apply.unBindCad(cad);
         cad.stop();
         apply.stop();
     }
