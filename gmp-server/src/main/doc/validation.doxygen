@@ -262,6 +262,40 @@ Of course, you can change these values and update the test application according
         The same results should be obtained if we send PRESET or START as the activity, though in
         a real-life application, the PRESET should return right away.
 
+\subsection apply_commands_test  Apply Command Integration Tests
+
+        First, start the apply-command application:
+
+        <tt>$ ./runExample.sh apply-command</tt>
+
+        You will see:
+
+\verbatim
+    2011-03-24 16:22:02,809 [0x7fff70808ca0] INFO  giapi.LogCommandUtil - Registering handler to apply prefix gpi
+    2011-03-24 16:22:02,809 [0x7fff70808ca0] DEBUG giapi::SequenceCommandConsumer - Starting consumer for topic GMP.SC.APPLY.gpi/GMP_ACTIVITY_PROP IN ('PRESET','START','PRESET/START')
+\endverbatim
+
+
+        This will start listening for the APPLY Command with the PRESET/START activity and will accept configurations with
+         gpi prefix. The handler will accept the apply send a STARTED responses and COMPLETE after some 10 seconds.
+
+        To confirm this is working, use the giapi-tester to send this command to the application.
+
+        <tt>$ ./giapi-tester.sh -sc APPLY -activity START -config "gpi:cc.V=1"</tt>
+\verbatim
+    Response Received: [COMPLETED]
+    Completion Information: [[response=[COMPLETED]][command=APPLY][activity=START][{config={gpi:cc.V=1}}]]
+\endverbatim
+
+        If you run it again with a non actionable configuration, you should see:
+        <tt>$ ./giapi-tester.sh -sc APPLY -activity START -config "unknown:cc.V=1"</tt>
+\verbatim
+    Response Received: [NOANSWER]
+\endverbatim
+
+        The same results will be obtained we send PRESET as the activity, though in
+        a real-life application, the PRESET should return right away.
+
 \subsection status_test  Status Service Integration Tests
 
         First start the giapi-tester to monitor all the status items:
