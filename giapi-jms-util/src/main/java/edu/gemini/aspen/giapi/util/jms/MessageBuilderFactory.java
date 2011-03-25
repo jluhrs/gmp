@@ -14,6 +14,7 @@ import edu.gemini.aspen.giapi.util.jms.messagebuilders.StringBasedWithCorrelatio
 import edu.gemini.jms.api.MapMessageBuilder;
 
 import java.util.Map;
+import java.util.Set;
 
 public class MessageBuilderFactory {
     public static MapMessageBuilder newMessageBuilder(HandlerResponse response, String correlationID) {
@@ -78,4 +79,13 @@ public class MessageBuilderFactory {
                 JmsKeys.GMP_ACTIVITY_KEY, activity.name());
     }
 
+    public static MapMessageBuilder newMessageBuilder(Command command, String correlationID) {
+        Map<String, String> messageBody = Maps.newHashMap();
+        Set<ConfigPath> paths = command.getConfiguration().getKeys();
+        for (ConfigPath path : paths) {
+            messageBody.put(path.getName(), command.getConfiguration().getValue(path));
+        }
+        Map<String, String> properties = convertCommandToProperties(command);
+        return new StringBasedWithCorrelationIDMessageBuilder(correlationID, messageBody, properties);
+    }
 }

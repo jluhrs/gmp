@@ -17,7 +17,7 @@ class WaitingNextResponseState extends CommandSenderState {
         try {
             commandSenderReply.buildReplyConsumerOnCorrelationID().setMessageListener(new CommandCompletionMessageListener(commandSenderReply, listener));
         } catch (JMSException e) {
-            e.printStackTrace();
+            listener.onHandlerResponse(HandlerResponse.createError(e.getMessage()), Command.noCommand());
         }
     }
 
