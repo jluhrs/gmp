@@ -1,9 +1,6 @@
 package edu.gemini.aspen.gmp.commands.records;
 
-import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.CommandSender;
-import edu.gemini.aspen.giapi.commands.CompletionListener;
-import edu.gemini.aspen.giapi.commands.HandlerResponse;
+import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelListener;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
@@ -44,7 +41,10 @@ public class RecordsTest {
         cas = new ChannelAccessServerImpl();
         cas.start();
         cs = mock(CommandSender.class);
-        when(cs.sendCommand(Matchers.<Command>any(), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);
+        Command start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.START);
+        Command preset = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET);
+        when(cs.sendCommand(eq(preset), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);
+        when(cs.sendCommand(eq(start), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.COMPLETED);
         when(cs.sendCommand(Matchers.<Command>any(), Matchers.<CompletionListener>any(), anyLong())).thenReturn(HandlerResponse.ACCEPTED);
     }
 
@@ -203,34 +203,37 @@ public class RecordsTest {
 
     }
 
-//    @Test
-//    public void applyTest() throws CAException {
-//        ApplyRecord apply = new ApplyRecord(cas,prefix);
-//        apply.start();
-//        Channel<Dir> dir = cas.createChannel(prefix+":apply.DIR", Dir.CLEAR);
-//        Channel<Integer> val = cas.createChannel(prefix+":apply.VAL",0);
-//
-//        CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
-//        cad.start();
-//        apply.bindCAD(cad);
-//
-//
-//        //test cad state changes
-//        cad.getEpicsCad().setDir(Dir.MARK,);
-//        dir.setValue(Dir.START);
-//        assertEquals(1, cad.getClientId());
-//        assertEquals(new Integer(0), cad.getVal());
-//        assertEquals(new Integer(1), val.getFirst());
-//
-//
-//        cad.setDir(Dir.MARK);
-//        dir.setValue(Dir.START);
-//        assertEquals(2,cad.getClientId());
-//        assertEquals(new Integer(0), cad.getVal());
-//        assertEquals(new Integer(2),val.getFirst());
-//
-//        apply.unBindCAD(cad);
-//        cad.stop();
-//        apply.stop();
-//    }
+    @Test
+    public void applyTest() throws CAException, InterruptedException {
+        ApplyRecord apply = new ApplyRecord(cas,prefix);
+        apply.start();
+        Channel<Dir> dir = cas.createChannel(prefix+":apply.DIR", Dir.CLEAR);
+        Channel<Integer> val = cas.createChannel(prefix+":apply.VAL",0);
+        Channel<Integer> cadVal = cas.createChannel(prefix+":"+cadName+".VAL",0);
+        Channel<Integer> clid = cas.createChannel(prefix+":apply.CLID",0);
+        Channel<Integer> cadClid = cas.createChannel(prefix+":"+cadName+".ICID",0);
+
+        CADRecordImpl cad = new CADRecordImpl(cas,cs,prefix,cadName,3);
+        cad.start();
+        apply.bindCAD(cad);
+
+
+        //test cad state changes
+        cad.getEpicsCad().setDir(Dir.MARK, clid.getFirst());
+        dir.setValue(Dir.START);
+        assertEquals(new Integer(1), clid.getFirst());
+        assertEquals(new Integer(0), cadVal.getFirst());
+        assertEquals(new Integer(1), val.getFirst());
+
+
+        cad.getEpicsCad().setDir(Dir.MARK, clid.getFirst());
+        dir.setValue(Dir.START);
+        assertEquals(new Integer(2), cadClid.getFirst());
+        assertEquals(new Integer(0), cadVal.getFirst());
+        assertEquals(new Integer(2),val.getFirst());
+
+        apply.unBindCAD(cad);
+        cad.stop();
+        apply.stop();
+    }
 }
