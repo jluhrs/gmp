@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
-* Class CadState
+* This enum represent the three possible states a CAD record can be in, manages the transitions, and sends the commands.
 *
 * @author Nicolas A. Barriga
 *         Date: 3/24/11
@@ -210,6 +210,16 @@ enum CadState {
     };
     private static final Logger LOG = Logger.getLogger(CadState.class.getName());
 
+    /**
+     * Process a given directive, send a command, update CAD and CAR.
+     *
+     * @param dir directive to process
+     * @param epicsCad the CAD that received the directive
+     * @param cs the command sender to use
+     * @param seqCom the sequence command this CAD represents
+     * @param car the CAR associated with the given CAD
+     * @return the new state after processing the directive
+     */
     public abstract CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CARRecord car);
 
     private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CARRecord car) {

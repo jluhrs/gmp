@@ -25,18 +25,25 @@ public class CADRecordImpl implements CADRecord {
     private CadState state = CadState.CLEAR;
 
 
-    private static String[] letters = new String[]{"A", "B", "C", "D", "E"};
-    private CommandSender cs;
-    private SequenceCommand seqCom;
-    private EpicsCad epicsCad;
-    private ChannelAccessServer cas;
+    final private static String[] letters = new String[]{"A", "B", "C", "D", "E"};
+    final private CommandSender cs;
+    final private SequenceCommand seqCom;
+    final private EpicsCad epicsCad;
 
-    private String prefix;
-    private String name;
-    private Integer numAttributes;
-    private List<String> attributeNames = new ArrayList<String>();
-    private CARRecord car;
+    final private String prefix;
+    final private String name;
+    final private List<String> attributeNames = new ArrayList<String>();
+    final private CARRecord car;
 
+    /**
+     * Constructor
+     *
+     * @param cas Channel Access Server to pass to CAR and EpicsCad
+     * @param cs Command Sender to use
+     * @param prefix instrument prefix. ex.: "gpi"
+     * @param name CAD name. ex.: "park"
+     * @param numAttributes number of attributes this CAD has.//todo: see if this can be changed to a list of names
+     */
     protected CADRecordImpl(@Requires ChannelAccessServer cas,
                             @Requires CommandSender cs,
                             @Property(name = "prefix", value = "INVALID", mandatory = true) String prefix,
@@ -46,15 +53,13 @@ public class CADRecordImpl implements CADRecord {
             throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
         }
         this.cs = cs;
-        this.numAttributes = numAttributes;
-        this.cas = cas;
         this.prefix = prefix.toLowerCase();
         this.name = name.toLowerCase();
         seqCom = SequenceCommand.valueOf(name.toUpperCase());
         for (int i = 0; i < numAttributes; i++) {
             attributeNames.add(letters[i]);
         }
-        epicsCad = new EpicsCad();
+        epicsCad = new EpicsCad(cas);
         car = new CARRecord(cas, prefix.toLowerCase() + ":" + name.toLowerCase() + "C");
         LOG.info("Constructor");
     }
@@ -63,14 +68,14 @@ public class CADRecordImpl implements CADRecord {
     public synchronized void start() {
         LOG.info("Validate");
 
-        epicsCad.start(cas, prefix, name, new AttributeListener(), new DirListener(), attributeNames);
+        epicsCad.start(prefix, name, new AttributeListener(), new DirListener(), attributeNames);
         car.start();
     }
 
     @Invalidate
     public synchronized void stop() {
         LOG.info("InValidate");
-        epicsCad.stop(cas);
+        epicsCad.stop();
         car.stop();
 
     }

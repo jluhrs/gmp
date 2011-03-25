@@ -6,7 +6,7 @@ import gov.aps.jca.dbr.DBR;
 import java.util.concurrent.CountDownLatch;
 
 /**
-* Class UpdateListener
+* This listener is to be used when someone wants to wait for a value change in any Channel.
 *
 * @author Nicolas A. Barriga
 *         Date: 3/24/11

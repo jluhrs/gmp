@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class CARRecord
+ * Represents a CAR Record. Mostly encapsulating EPICS access.
  *
  * @author Nicolas A. Barriga
  *         Date: 3/17/11
@@ -46,16 +46,25 @@ public class CARRecord {
     //private Channel<Long> clid;
     private Channel<Integer> clid;
 
-    private ChannelAccessServer cas;
+    final private ChannelAccessServer cas;
 
-    private String prefix;
+    final private String prefix;
 
+    /**
+     * Constructor
+     *
+     * @param cas Channel Access server to use
+     * @param prefix name of the CAR. ex.: "gpi:applyC"
+     */
     public CARRecord(ChannelAccessServer cas, String prefix) {
         LOG.info("CAR constructor: "+prefix);
         this.cas = cas;
         this.prefix = prefix;
     }
 
+    /**
+     * Create Channels
+     */
     public synchronized void start() {
         LOG.info("CAR start: "+prefix);
 
@@ -69,6 +78,9 @@ public class CARRecord {
         }
     }
 
+    /**
+     * Destroy Channels
+     */
     public synchronized void stop() {
         LOG.info("CAR stop: "+prefix);
         cas.destroyChannel(val);
@@ -77,6 +89,15 @@ public class CARRecord {
         cas.destroyChannel(clid);
     }
 
+    /**
+     * Switch to a new state and notify listeners.
+     *
+     * @param state new state to switch to
+     * @param message error message
+     * @param errorCode error code
+     * @param clientId client ID for the command we are providing feedback
+     * @throws CAException if there is a problem accessing EPICS
+     */
     synchronized void changeState(Val state, String message, int errorCode, int clientId) throws CAException {
         if (!val.getFirst().equals(state) || !clid.getFirst().equals(clientId)) {
             val.setValue(state);
@@ -92,15 +113,30 @@ public class CARRecord {
             listener.update(val.getFirst(), omss.getFirst(), oerr.getFirst(), clid.getFirst());
         }
     }
-    interface CARListener{
-        void update(Val state, String message, Integer errorCode, Integer id);
-    }
+
+    /**
+     * Register a listener.
+     *
+     * @param listener to be notified when the CAR state changes
+     */
     synchronized void registerListener(CARListener listener){
         listeners.add(listener);
     }
+
+    /**
+     * Unregister a listener
+     *
+     * @param listener to unregister
+     */
     synchronized void unRegisterListener(CARListener listener){
         listeners.remove(listener);
     }
+
+    /**
+     * Convenience method to set CAR to BUSY
+     *
+     * @param id client ID for the command we are providing feedback
+     */
     synchronized void setBusy(Integer id){
         try {
             changeState(Val.BUSY,"",0,id);
@@ -109,6 +145,11 @@ public class CARRecord {
         }
     }
 
+    /**
+     * Convenience method to set CAR to IDLE
+     *
+     * @param id client ID for the command we are providing feedback
+     */
     synchronized void setIdle(Integer id){
         try {
             changeState(Val.IDLE,"",0,id);
@@ -117,6 +158,12 @@ public class CARRecord {
         }
 
     }
+
+    /**
+     * Get the state of the CAR
+     *
+     * @return state of the CAR
+     */
     public synchronized Val getState(){
         try {
             return val.getFirst();

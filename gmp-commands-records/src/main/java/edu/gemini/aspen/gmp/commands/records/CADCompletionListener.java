@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
-* Class CADCompletionListener
+* This Listener updates the CAR record when completion information for a command is received.
 *
 * @author Nicolas A. Barriga
 *         Date: 3/24/11

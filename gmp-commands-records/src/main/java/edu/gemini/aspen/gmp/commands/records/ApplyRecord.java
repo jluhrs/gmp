@@ -29,26 +29,34 @@ public class ApplyRecord {
     private Channel<String> omss;
     private Channel<Integer> clid;
 
-    private CARRecord car;
+    final private CARRecord car;
 
-    private ChannelAccessServer cas;
+    final private ChannelAccessServer cas;
 
-    private String prefix;
-    private String name;
-    private boolean processing = false;
-    private List<EpicsCad> cads = new ArrayList<EpicsCad>();
-    private List<CARRecord> cars = new ArrayList<CARRecord>();
+    final private String prefix;
+    final private String name;
+    final private List<EpicsCad> cads = new ArrayList<EpicsCad>();
+    final private List<CARRecord> cars = new ArrayList<CARRecord>();
 
+    /**
+     * Constructor
+     *
+     * @param cas Channel Access Server to use
+     * @param prefix instrument prefix. ex.: "gpi"
+     */
     protected ApplyRecord(@Requires ChannelAccessServer cas,
                           @Property(name = "prefix", value = "INVALID", mandatory = true) String prefix) {
         this.cas = cas;
         this.prefix = prefix;
         this.name = "apply";
+        car = new CARRecord(cas, prefix + ":" + name + "C");
         LOG.info("Constructor");
 
     }
 
-
+    /**
+     * Create Channels and start CAR
+     */
     @Validate
     public synchronized void start() {
         LOG.info("Validate");
@@ -58,7 +66,6 @@ public class ApplyRecord {
             val = cas.createChannel(prefix + ":" + name + ".VAL", 0);
             mess = cas.createChannel(prefix + ":" + name + ".MESS", "");
             omss = cas.createChannel(prefix + ":" + name + ".OMSS", "");
-            car = new CARRecord(cas, prefix + ":" + name + "C");
             car.start();
 
             clid = cas.createChannel(prefix + ":" + name + ".CLID", 0);
@@ -68,6 +75,9 @@ public class ApplyRecord {
         }
     }
 
+    /**
+     * Destroy Channels and stop CAR
+     */
     @Invalidate
     public synchronized void stop() {
         LOG.info("InValidate");
@@ -82,7 +92,11 @@ public class ApplyRecord {
 //        }
     }
 
-
+    /**
+     * Add a CAD to the list of CADs to be notified of new directives
+     *
+     * @param cad
+     */
     @Bind(aggregate = true, optional = true)
     public synchronized void bindCAD(CADRecord cad) {
         LOG.info("Bind");
@@ -101,6 +115,10 @@ public class ApplyRecord {
         cars.remove(cad.getCAR());
     }
 
+    /**
+     * indicates that the record is currently processing a directive
+     */
+    private boolean processing = false;
     private synchronized boolean processDir(Dir dir) throws CAException {
         processing = true;
         if (dir == Dir.START) {
@@ -212,6 +230,9 @@ public class ApplyRecord {
 
     }
 
+    /**
+     * This listener will be called when a directive is written to the DIR field
+     */
     private class DirListener implements ChannelListener {
         @Override
         public void valueChange(DBR dbr) {
@@ -224,7 +245,10 @@ public class ApplyRecord {
         }
     }
 
-    private class CARListener implements CARRecord.CARListener {
+    /**
+     * This listener will be invoked when any CAR changes state, and will reflect the states in the main CAR
+     */
+    private class CARListener implements edu.gemini.aspen.gmp.commands.records.CARListener {
         @Override
         public void update(CARRecord.Val state, String message, Integer errorCode, Integer id) {
             synchronized (ApplyRecord.this) {

@@ -12,7 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class EpicsCad
+ * This class represents the EPICS part of the CAD record. It doesn't have much logic, it is just to reflect the
+ * CADRecordImpl status and communicate to the outside world.
  *
  * @author Nicolas A. Barriga
  *         Date: 3/24/11
@@ -28,11 +29,22 @@ public class EpicsCad {
     //private Channel<Integer> ocid;
     //private Channel<Integer> mark;
 
-    private List<Channel<String>> attributes = new ArrayList<Channel<String>>();
+    final private List<Channel<String>> attributes = new ArrayList<Channel<String>>();
+    final private ChannelAccessServer cas;
+    EpicsCad(ChannelAccessServer cas){
+        this.cas=cas;
+    }
 
-    EpicsCad(){}
-
-    public synchronized void start(ChannelAccessServer cas, String prefix, String name, ChannelListener attributeListener, ChannelListener dirListener, List<String> attributeNames){
+    /**
+     * Create Channels
+     *
+     * @param prefix of the instrument. ex.: "gpi"
+     * @param name of the CAD. ex.: "observe"
+     * @param attributeListener listener to be notified when any attribute is written to
+     * @param dirListener listener to be notified when the DIR field is written to
+     * @param attributeNames list of attribute names. Each will be an EPICS channel.
+     */
+    public synchronized void start(String prefix, String name, ChannelListener attributeListener, ChannelListener dirListener, List<String> attributeNames){
         LOG.info("EpicsCad start: "+prefix+":"+name);
         try {
             dir = cas.createChannel(prefix + ":" + name + ".DIR", Dir.CLEAR);
@@ -53,7 +65,12 @@ public class EpicsCad {
         }
 
     }
-    public synchronized void stop(ChannelAccessServer cas){
+
+    /**
+     * Destroy Channels
+     *
+     */
+    public synchronized void stop(){
         LOG.info("EpicsCad stop: "+dir.getName());
         cas.destroyChannel(dir);
         cas.destroyChannel(val);
@@ -68,17 +85,22 @@ public class EpicsCad {
     }
     private Integer v=0;
     private String m="";
+
     public synchronized void setVal(Integer v){
         this.v=v;
     }
     public synchronized void setMess(String m){
         this.m=m;
     }
+
+    /**
+     * Write val and message to EPICS.
+     * @throws CAException
+     */
     public synchronized void post() throws CAException {
-        val.setValue(v);
         setMessage(m);
         m="";
-
+        val.setValue(v);
     }
     private void setMessage(String message) throws CAException {
         String oldMessage = mess.getFirst();
@@ -94,6 +116,12 @@ public class EpicsCad {
             return false;
         }
     }
+
+    /**
+     * Get the CAD's client ID
+     *
+     * @return client ID
+     */
     public synchronized Integer getClid(){
         try {
             return clid.getFirst();
@@ -102,19 +130,43 @@ public class EpicsCad {
             return -1;
         }
     }
+
+    /**
+     * Write DIR and CLID Channels
+     *
+     * @param d Directive to write
+     * @param id client ID
+     * @throws CAException
+     */
     public synchronized void setDir(Dir d, Integer id) throws CAException {
         clid.setValue(id);
         dir.setValue(d);
     }
 
+    /**
+     * Get the CAD's message field
+     *
+     * @return message
+     * @throws CAException
+     */
     public String getMess() throws CAException {
         return mess.getFirst();
     }
 
+    /**
+     * Register a listener to be notified when the VAL field changes
+     *
+     * @param listener to be notified
+     */
     public void registerValListener(ChannelListener listener) {
         val.registerListener(listener);
     }
 
+    /**
+     * Unregister a listener for the VAL field
+     *
+     * @param listener to be unregistered
+     */
     public void unRegisterValListener(ChannelListener listener) {
         val.unRegisterListener(listener);
     }

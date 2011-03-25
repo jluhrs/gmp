@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.commands.records;
 
 /**
-* Class Dir
+* These are all the Directives accepted by CAD and APPLY records.
 *
 * @author Nicolas A. Barriga
 *         Date: 3/24/11

@@ -4,24 +4,24 @@ import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.CAException;
 
 /**
- * Interface CADRecord
+ * This is the interface exposed by the CAD records to OSGI. The apply record uses it to gain access to the CAD and CAR
+ * EPICS records.
  *
  * @author Nicolas A. Barriga
  *         Date: 3/21/11
  */
 public interface CADRecord {
-
+    /**
+     * Get the EPICS CAD.
+     *
+     * @return a class representing the EPICS part of the CAD
+     */
     EpicsCad getEpicsCad();
 
-    //void setDir(Dir dir, Integer id) throws CAException;
-
-
-    //String getMess() throws CAException;
-
-    //void registerValListener(ChannelListener listener);
-    //void unRegisterValListener(ChannelListener listener);
-    //void registerCARListener(CARRecord.CARListener listener);
-    //void unRegisterCARListener(CARRecord.CARListener listener);
-    //CARRecord getCAR();
+    /**
+     * Get the CAR record
+     *
+     * @return the CAR record associated with this CAD
+     */
     CARRecord getCAR();
 }
