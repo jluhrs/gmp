@@ -29,14 +29,14 @@ public class ApplyRecord {
     private Channel<String> omss;
     private Channel<Integer> clid;
 
-    final private CarRecord car;
+    private final CarRecord car;
 
-    final private ChannelAccessServer cas;
+    private final ChannelAccessServer cas;
 
-    final private String prefix;
-    final private String name;
-    final private List<EpicsCad> cads = new ArrayList<EpicsCad>();
-    final private List<CarRecord> cars = new ArrayList<CarRecord>();
+    private final String prefix;
+    private final String name;
+    private final List<EpicsCad> cads = new ArrayList<EpicsCad>();
+    private final List<CarRecord> cars = new ArrayList<CarRecord>();
 
     /**
      * Constructor

@@ -29,8 +29,8 @@ public class EpicsCad {
     //private Channel<Integer> ocid;
     //private Channel<Integer> mark;
 
-    final private List<Channel<String>> attributes = new ArrayList<Channel<String>>();
-    final private ChannelAccessServer cas;
+    private final List<Channel<String>> attributes = new ArrayList<Channel<String>>();
+    private final ChannelAccessServer cas;
     EpicsCad(ChannelAccessServer cas){
         this.cas=cas;
     }

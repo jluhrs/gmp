@@ -17,8 +17,8 @@ import java.util.logging.Logger;
 class CadCompletionListener implements CompletionListener {
     private static final Logger LOG = Logger.getLogger(CadCompletionListener.class.getName());
 
-    final private Integer clientId;
-    final private CarRecord car;
+    private final Integer clientId;
+    private final CarRecord car;
 
     CadCompletionListener(Integer clientId, CarRecord car) {
         this.clientId = clientId;

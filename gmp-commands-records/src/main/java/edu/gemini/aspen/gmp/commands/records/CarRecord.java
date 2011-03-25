@@ -46,9 +46,9 @@ public class CarRecord {
     //private Channel<Long> clid;
     private Channel<Integer> clid;
 
-    final private ChannelAccessServer cas;
+    private final ChannelAccessServer cas;
 
-    final private String prefix;
+    private final String prefix;
 
     /**
      * Constructor
