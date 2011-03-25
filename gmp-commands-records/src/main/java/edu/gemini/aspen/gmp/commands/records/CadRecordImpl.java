@@ -86,7 +86,7 @@ public class CadRecordImpl implements CadRecord {
     }
 
     @Override
-    public CarRecord getCAR() {
+    public CarRecord getCar() {
         return car;
     }
 

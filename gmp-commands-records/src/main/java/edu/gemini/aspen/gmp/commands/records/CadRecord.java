@@ -20,5 +20,5 @@ public interface CadRecord {
      *
      * @return the CAR record associated with this CAD
      */
-    CarRecord getCAR();
+    CarRecord getCar();
 }

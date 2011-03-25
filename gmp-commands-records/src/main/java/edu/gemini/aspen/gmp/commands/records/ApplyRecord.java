@@ -102,9 +102,9 @@ public class ApplyRecord {
         LOG.info("Bind");
 
         cads.add(cad.getEpicsCad());
-        cars.add(cad.getCAR());
+        cars.add(cad.getCar());
         LOG.info(cars.toString());
-        cad.getCAR().registerListener(new CarListener());
+        cad.getCar().registerListener(new CarListener());
     }
 
     @Unbind(aggregate = true, optional = true)
@@ -112,7 +112,7 @@ public class ApplyRecord {
         LOG.info("Unbind");
 
         cads.remove(cad.getEpicsCad());
-        cars.remove(cad.getCAR());
+        cars.remove(cad.getCar());
     }
 
     /**
