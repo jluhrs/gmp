@@ -1,0 +1,38 @@
+/*!
+ * \page gmp-commands-jms-bridge GMP Commands JMS Bridge
+ *
+ * This bundle contains two parts that communicate the \ref gmp-commands kernel with the rest of the world
+ *
+ * The overall architecture of these modules can be shown in the image below:
+ *
+ * \image html "commands_handling_design.jpg"
+ *
+ * \section gmp-commands-jms-bridge_instrumentbridge Instrument Bridge
+ *
+ * Provides services that gmp-commands uses to communicate with an instrument. Specifically it uses
+ * JMS to send commands to the instrument code with the protocol provided by GIAPI-GLUE.
+ *
+ * \section gmp-commands-jms-bridge_clientbridge Client Bridge
+ * Provides a JMS endpoint that can be used by JMS clients to send commands. An implementation of the client
+ * is provided in \ref gmp-commands-jms-client.
+ *
+ * \section gmp-commands-jms-bridge_provides_sec Provided Services
+ * This bundle provides the following services
+ *
+ * - \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender" implemented by \ref edu.gemini.aspen.gmp.commands.jms.instrumentbridge.ActionMessageActionSender "ActionMessageActionSender". It is a simple
+ * JmsEndpoint that forwards incoming Actions to the GIAPI-GLUE code and setups a listener for the response
+ * - \ref edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder "ActionMessagesBuilder" implemented by \ref edu.gemini.aspen.gmp.commands.jms.instrumentbridge.JmsActionMessageBuilder "JmsActionMessageBuilder". It
+ * is a factory used by GMP Commands to create messages encapsulating a command.
+ *
+ * \section gmp-commands-jms-bridge_requires_sec Required Services
+ * This bundle requires the following services:
+ *
+ * - \ref edu.gemini.jms.api.JmsProvider "JmsProvider" Used by both parts to get a reference to the local Jms Broker
+ * - \ref edu.gemini.aspen.giapi.commands.CommandUpdater "CommandUpdater" This service is used by the instrument bridge to inform
+ * GMP Commands that a command has completed.
+ * - \ref edu.gemini.aspen.giapi.commands.CommandSender "CommandSender" This is used by the client bridge part to execute commands
+ * using the local CommandSender
+ *
+ * \section gmp-commands-jms-bridge_configuration_sec Configuration
+ * This bundle has no configurable properties
+ */
