@@ -17,6 +17,9 @@
  * - \subpage epics_heartbeat
  * - \subpage jms_activemq_broker
  * - \subpage jms_activemq_provider
+ * - \subpage gmp-commands
+ * - \subpage gmp-commands-jms-bridge
+ * - \subpage gmp-commands-jms-client
  * \section perf_tests_sec Performance and Testing
  * \li GMP EPICS Status Service and CAS performance tests at \subpage performance.
  * \li \subpage validation

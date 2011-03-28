@@ -1,26 +1,104 @@
 /*!
  * \page gmp-commands GMP Commands
+ * This bundle contains the logic to process commands sent either by an internal or a remote client.
+ * The GMP Commands module follows the GIAPI specification to process command requests sent by a client, which are then then
+ * forwarded to the instrument. The Commands can either be completed immediately or later and their completion is tracked
+ * by GMP Commands to notify result to the original requester.
+ *
+ * The most important service provided by this bundle is \ref edu.gemini.aspen.giapi.commands.CommandSender "CommandSender",
+ * which allows clients to send \ref edu.gemini.aspen.giapi.commands.Command "Commands" objects to the instrument, get a
+ * synchronous notification of their acceptance and, if needed be, wait for their completion asynchronously. Asynchronous
+ * completion of a command is notified using a \ref edu.gemini.aspen.giapi.commands.CompletionListener "CompletionListener"
+ *
+ * In either case responses are represented by a \ref edu.gemini.aspen.giapi.commands.HandlerResponse
+ * "HandlerResponse" object. In case there are exceptions while doing command processing, those are not propagated to the
+ * client but instead a \ref edu.gemini.aspen.giapi.commands.HandlerResponse
+ * "HandlerResponse" with an Error is returned or passed to the \ref edu.gemini.aspen.giapi.commands.CompletionListener
+ * "CompletionListener"
+ *
+ * \section gmp-commands-synchronous-commands Synchronous Commands
+ *
+ * Synchronous commands are characterized by an initial HandlerResponse that is not \b STARTED. That response is the only
+ * one that indicates that later responses will arrive. An example in code:
+ *
+ * \code Command command = new Command(SequenceCommand.PARK, Activity.START);
+ * HandlerResponse response = commandSender.sendCommand(command, completionListener);
+ * if (response.getResponse() != HandlerResponse.Response.STARTED) {
+ *     // completionListener is never called as this message completed in some manner
+ * }
+ * \endcode
+ *
+ * The interaction sequence is demonstrated on the image below:
+ *
+ * \image html synchronous_command.jpg
+ *
+ * \section gmp-commands-asynchronous-commands Asynchronous Commands
+ *
+ * Asynchronous commands are characterized by an initial HandlerResponse \b STARTED. That response indicates that there will
+ * be a while before the command actually completes. The STARTED response indicates that the command was ok and that the
+ * instrument has started doing the work required to complete the action. When the action has completed the instrument will
+ * inform GMP about it and it will in turn inform the original issues through the CompletionListener
+ * An example of this interaction in code:
+ *
+ * \code Command command = new Command(SequenceCommand.APPLY, Activity.START, configuration);
+ * HandlerResponse response = commandSender.sendCommand(command, new CompletionListener() {
+        void onHandlerResponse(HandlerResponse response, Command command) {
+           if (response.getResponse() == HandlerResponse.Response.COMPLETED) {
+              System.out.println("Command " + command + " has completed");
+           }
+        }
+      });
+ * if (response.getResponse() == HandlerResponse.Response.STARTED) {
+ *     // The method above should be called with an COMPLETED status or an ERROR
+ * }
+ * \endcode
+ *
+ * The interaction sequence is demonstrated on the image below:
+ *
+ * \image html asynchronous_command.jpg
+ *
+ * \section gmp-related-bundles GMP Commands related bundles
+ *
+ * The GMP Commands bundle is transport agnostic as it doesn't provide any specific way to communicate with remote clients
+ * or instruments. Instead other bundles can provide a client interface, using \ref edu.gemini.aspen.giapi.commands.CommandSender "CommandSender"
+ * or to the instrument by implementing \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender".
+ *
+ * In the case of GPI there are 2 other bundles that provide communication over JMS:
+ * - \ref gmp-commands-jms-bridge Provides for remote clients that can send commands over JMS and the ability to send commands
+ * to the instrument over JMS.
+ * - \ref gmp-commands-jms-client Complements jms-bridge by providing a client side component to send commands over JMS
+ *
+ * This architecture can be better explained with the following diagram:
+ *
+ * \image html "commands_handling_design.jpg"
  *
  * \section gmp-commands_provides_sec Provided Services
- * This bundle provides several services most of them are internal.  the following services
+ * This bundle provides several services, some of them are for internal use, but some are required for other command related
+ * bundles.
  *
- * - EpicsConfiguration implemented by \ref edu.gemini.aspen.gmp.epics.impl.ChannelListConfiguration it reads the list
- * of epics channels that will be made available to other services. The address of the XML file has to be passed as
- * a configuration variable
- * - IEpicsClient implemented by \ref edu.gemini.aspen.gmp.epics.impl.EpicsMonitor
- * - EpicsRegistrar implemented by \ref edu.gemini.aspen.gmp.epics.impl.EpicsUpdaterThread
+ * The most important service that can be used by any other bundle to send commands to an instrument is CommandSender,
+ * implemented in this bundle by \ref edu.gemini.aspen.gmp.commands.model.CommandSenderImpl
+ *
+ * A full summary of the services provided by this bundle is included below:
+ *
+ * - CommandSender implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.CommandSenderImpl has the ability to process
+ * Commands and forward them to the instrument. This bundle doesn't specify how the message is actually
+ * sent but instead but instead it requires an \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender"
+ * service to forward the commands down to the client. An example of such service is contained in \ref gmp-commands-jms-bridge
+ * - CommandUpdater implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.CommandUpdaterImpl "CommandUpdater" is a service
+ * used as a back channel from \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender" to inform the commands module 
+ * when a command has completed or failed
+ * - ActionManager implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.ActionManagerImpl is a service used
+ * internally by gmp-commands to keep track of command execution
+ * - SequenceCommandExecutor implemented by \ref edu.gemini.aspen.commands.model.executors.SequenceCommandExecutorStrategy
+ * is used internally by ActionManager to perform different types of commands like REBOOT or PARK
  *
  * \section gmp-commands_requires_sec Required Services
- * This bundle requires the service \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service
+ * This bundle requires the following services to operate:
+ *
+ * - \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender"
+ * - \ref edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder "ActionMessageBuilder"
  *
  * \section gmp-commands_configuration_sec Configuration
- * This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.epics.impl.ChannelListConfiguration-default.cfg
- *
- * There, you can set only one property:
- *
- * - configurationFile: This property points to a XML file containing a list of channels made available to GMP
- *
- * The XML file mentioned in the configurationFile should list the EPICS channels that are authorized to be
- * monitored by the instrument.
- * As a reference you can see the example \ref epics-channels.xml
+ * This bundle doesn't have any configurable properties
  */
