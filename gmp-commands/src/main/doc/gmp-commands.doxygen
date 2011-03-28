@@ -77,20 +77,20 @@
  * bundles.
  *
  * The most important service that can be used by any other bundle to send commands to an instrument is CommandSender,
- * implemented in this bundle by \ref edu.gemini.aspen.gmp.commands.model.CommandSenderImpl
+ * implemented in this bundle by \ref edu.gemini.aspen.gmp.commands.model.CommandSenderImpl "CommandSenderImpl"
  *
  * A full summary of the services provided by this bundle is included below:
  *
- * - CommandSender implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.CommandSenderImpl has the ability to process
+ * - \ref edu.gemini.aspen.giapi.commands.CommandSender "CommandSender" implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.CommandSenderImpl "CommandSenderImpl" has the ability to process
  * Commands and forward them to the instrument. This bundle doesn't specify how the message is actually
  * sent but instead but instead it requires an \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender"
  * service to forward the commands down to the client. An example of such service is contained in \ref gmp-commands-jms-bridge
- * - CommandUpdater implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.CommandUpdaterImpl "CommandUpdater" is a service
+ * - \ref edu.gemini.aspen.giapi.commands.CommandUpdater "CommandUpdater" implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.CommandUpdaterImpl "CommandUpdater" is a service
  * used as a back channel from \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender" to inform the commands module 
  * when a command has completed or failed
- * - ActionManager implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.ActionManagerImpl is a service used
+ * - \ref edu.gemini.aspen.gmp.commands.model.ActionManager "ActionManager" implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.ActionManagerImpl "ActionManagerImpl" is a service used
  * internally by gmp-commands to keep track of command execution
- * - SequenceCommandExecutor implemented by \ref edu.gemini.aspen.commands.model.executors.SequenceCommandExecutorStrategy
+ * - \ref edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor "SequenceCommandExecutor" implemented by \ref edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutorStrategy "SequenceCommandExecutorStrategy"
  * is used internally by ActionManager to perform different types of commands like REBOOT or PARK
  *
  * \section gmp-commands_requires_sec Required Services

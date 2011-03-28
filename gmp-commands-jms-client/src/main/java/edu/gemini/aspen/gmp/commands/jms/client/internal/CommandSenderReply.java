@@ -26,8 +26,8 @@ import javax.jms.MessageConsumer;
  */
 public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse> {
     private static final DestinationData REQUESTS_REPLY_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_REPLY_QUEUE, DestinationType.QUEUE);
+    private final static DestinationBuilder DESTINATION_BUILDER = new DestinationBuilder();
     private final String correlationID;
-    private final static DestinationBuilder destinationBuilder = new DestinationBuilder();
 
     // This object has a state that changes upon receiving responses
     private CommandSenderState state;
@@ -76,7 +76,7 @@ public class CommandSenderReply extends JmsMapMessageSenderReply<HandlerResponse
 
     MessageConsumer buildReplyConsumerOnCorrelationID() throws MessagingException {
         try {
-            Destination replyDestination = destinationBuilder.newDestination(REQUESTS_REPLY_DESTINATION, _session);
+            Destination replyDestination = DESTINATION_BUILDER.newDestination(REQUESTS_REPLY_DESTINATION, _session);
             return _session.createConsumer(replyDestination, "JMSCorrelationID=\'" + correlationID + "\'");
         } catch (JMSException e) {
             throw new MessagingException("Exception when building the reply consumer", e);

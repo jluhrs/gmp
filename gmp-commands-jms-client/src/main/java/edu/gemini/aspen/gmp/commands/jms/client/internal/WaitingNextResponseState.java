@@ -7,6 +7,9 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 
+/**
+ * CommandSenderReply state after a STARTED response has been received but further responses are expected
+ */
 class WaitingNextResponseState extends CommandSenderState {
     WaitingNextResponseState(CommandSenderReply commandSenderReply) {
         super(commandSenderReply);

@@ -6,14 +6,15 @@
  * giapi-tester uses this bundle instantiating the objects directly.
  *
  * The bundle contains logic to connect to the GMP Commands JMS Bridge and can send commands and wait for the answer as specified.
- * The Commands and Responses are sent back and forth in a predefined format inside in a map-like message. Each command request has a unique id, or correlationID in JMS nomenclature, that is used to correlate requests and responses. For more details check \ref gmp-commands-jms-bridge_clientbridge
+ * The Commands and Responses are sent back and forth in a predefined format inside in a map-like message. Each command request
+ * has a unique id, or correlationID in JMS nomenclature, that is used to correlate requests and responses. For more details check \ref gmp-commands-jms-bridge_clientbridge "Jms Client Bridge"
  *
  * \section gmp-commands-jms-client_provides_sec Provided Services
- * This bundle doesn't provides any service. There is an implementation of \ref edu.gemini.aspen.giapi.commands.CommandSender
+ * This bundle doesn't provides any services. There is an implementation of \ref edu.gemini.aspen.giapi.commands.CommandSender
  * "CommandSender" but it should not be registered as an OSGi Service
  *
  * \section gmp-commands-jms-client_requires_sec Required Services
- * This bundle dosn't require any service in OSGi terms but it needs a reference to an \ref edu.gemini.jms.api.JmsProvider
+ * This bundle dosn't require any services in OSGi terms but it needs a reference to an \ref edu.gemini.jms.api.JmsProvider
  * "JmsProvider" service, normally directly instantiated
  *
  * \section gmp-commands-jms-client_configuration_sec Configuration

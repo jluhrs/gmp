@@ -12,6 +12,9 @@ import edu.gemini.jms.api.MessagingException;
 
 import javax.jms.MessageConsumer;
 
+/**
+ * The initial state of a CommandSender before sending a request
+ */
 class InitialState extends CommandSenderState {
     private static final DestinationData REQUESTS_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_TOPIC, DestinationType.TOPIC);
 

@@ -7,6 +7,9 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 
+/**
+ * State after a COMPLETED handler response has arrived. At this state no further messages can be sent
+ */
 class CompletedState extends CommandSenderState {
     CompletedState(CommandSenderReply commandSenderReply) {
         super(commandSenderReply);

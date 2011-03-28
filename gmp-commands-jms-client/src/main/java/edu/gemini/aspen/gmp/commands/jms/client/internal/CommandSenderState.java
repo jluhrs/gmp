@@ -7,6 +7,9 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 
+/**
+ * An CommandSenderState represents the current state of a CommandSenderReply
+ */
 public abstract class CommandSenderState {
     protected final CommandSenderReply commandSenderReply;
 

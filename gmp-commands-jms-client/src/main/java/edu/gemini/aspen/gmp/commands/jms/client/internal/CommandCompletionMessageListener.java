@@ -10,6 +10,10 @@ import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
+/**
+ * These objects will get JMS Messages with Completion Information and will forward them
+ * to the CompletionListener after decoding.
+ */
 class CommandCompletionMessageListener implements MessageListener {
     private final CompletionListener listener;
     private CommandSenderReply commandSenderReply;
@@ -26,6 +30,7 @@ class CommandCompletionMessageListener implements MessageListener {
     public void onMessage(Message message) {
         CompletionInformation completionInformation = null;
         try {
+            // Decode message and pass it forward
             completionInformation = MessageBuilder.buildCompletionInformation(message);
             listener.onHandlerResponse(completionInformation.getHandlerResponse(), completionInformation.getCommand());
         } catch (Exception e) {
