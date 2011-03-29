@@ -1,0 +1,636 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; SunOS 5.6 sun4u) [Netscape]">
+</head>
+<body>
+
+<h1>
+
+<hr WIDTH="100%"><a NAME="2apply"></a>2.0 apply - Apply Record</h1>
+The apply record executes data links to other records. Its primary purpose
+is to process CAD records in a fixed order, and return the results of processing
+those records. There may be up to eight sets of links to other records.
+The links in each set pass the directive field (DIR to OUTA through OUTH)
+and client ID field (CLID to OCLA through OCLH), and receive the result
+value (INPA through INPH to VAL) and error message (INMA through INMH to
+MESS).
+<p>The apply record accepts the same directives as the CAD, namely: MARK,
+CLEAR, PRESET, START, and STOP. Writing a value to the directive field
+(DIR) starts the processing of the record and, except for the MARK directive,
+subsequent processing of all attached records. Writing the START directive
+forces the PRESET directive to be sent to all links before the START directive
+is sent. This insures that all CAD records linked to the apply record have
+valid arguments.
+<p>Values returned through the INPx links are inspected by the apply record
+for negative values. If any link returns a negative value, the associated
+INMx link is read. The negative value and error message are copied to the
+VAL and MESS fields, monitors are posted, and the processing halts. No
+further links are processed once an error has been returned. If the value
+returned through all INPx fields are zero then the value for the client
+ID field (CLID) is returned in VAL.
+<p>The use of the apply record is required for all principal systems databases,
+including the TCS, CICS, and all instruments. There must be one, and only
+one, top level apply record in the database, although there may be cascaded
+apply records. All principal systems CAD records must be linked to the
+apply record and must be processed through this record. Links from the
+apply record outputs may go to records other than CAD records, such as
+calc, sub, or mosub records.
+<br>&nbsp;
+<h2>
+<a NAME="2fldsum"></a>2.1 Field Summary</h2>
+
+<table BORDER >
+<tr>
+<th>
+<div CLASS="CellHeading">Field</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Type</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">DCT</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Initial</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Access</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Modify</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Rec Proc Monitor</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">PP</div>
+</th>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">DIR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">RECCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">CLID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OUTx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">OUTLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OCLx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">OUTLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INMx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="2flddesc"></a>2.2 Field Descriptions</h2>
+
+<table BORDER >
+<tr>
+<th>
+<div CLASS="CellHeading">Name</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Summary</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Description</div>
+</th>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Value</div>
+</td>
+
+<td>
+<div CLASS="CellBody">This is the return value from the input links. If
+any link returns a non-zero, processing stops and the last value is returned.
+If all links return zero, the value of the client ID field (CLID) is returned.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">DIR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Directive</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The value of this field is passed to all OUTx output
+links. If the directive is START, the directive PRESET is first passed
+to all output links. If the directive is MARK, it is not sent to the OUTx
+fields and processing stops.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">CLID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Client ID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">This number is incremented every time a directive
+is loaded. The value is passed to all OCLx output links.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Message</div>
+</td>
+
+<td>
+<div CLASS="CellBody">This is the return message from an INMx input link.
+If the return value is 0, this field is empty. Otherwise, it reads the
+error message from the INMx link.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Old Message</div>
+</td>
+
+<td>
+<div CLASS="CellBody">This is the old message string.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OUTx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Output directive link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">There are eight output links OUTA-OUTH which pass
+the value of the DIR field to a record field.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OCLx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Output client ID link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">There are eight output links OUMA-OUMH which pass
+the value of the CLID field to a record field.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input result link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">There are eight input links INPA-INPH which read
+a value from a record field. A non-zero value halts the processing sequence.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INMx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input message link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">There are eight input links INMA-INMH which read
+a value from a record field. The link is read only for the corresponding
+INPx link which returned a non-zero value.</div>
+</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="2recsup"></a>2.3 Record Support Routines</h2>
+
+<h3>
+2.3.1 init_record</h3>
+This routine initializes the apply record. All OUTx links are forced to
+be process passive; all OUMx, INPx, and INMx links are forced to be non-process
+passive.
+<h3>
+2.3.2 process</h3>
+See the next section.
+<h3>
+2.3.3 get_value</h3>
+This routine fills the values of struct valueDes so that they refer to
+VAL.
+<h3>
+2.3.4 get_enum_str</h3>
+This routine converts the long integer values 0 through 4 into the strings
+"MARK", "CLEAR", PRESET", "START", and "STOP", respectively.
+<h3>
+2.3.5 get_enum_strs</h3>
+This routine returns all five of the above strings.
+<h3>
+2.3.6 put_enum_str</h3>
+This routine converts the above strings into the long integer values 0
+through 4.
+<h3>
+<a NAME="2recproc"></a>2.4 Record Processing</h3>
+This routine processes the record whenever requested. Processing will occur
+whenever a value is written to the DIR field.
+<ul>
+<li>
+All MARK directives are ignored and processing exits.</li>
+
+<li>
+The return message field is cleared.</li>
+
+<li>
+If the directive is START:</li>
+
+<li>
+increment the client ID,</li>
+
+<li>
+recursively call this procedure with PRESET,</li>
+
+<li>
+exit if an error occurred during PRESET.</li>
+
+<li>
+for each existing set of links A-H:</li>
+
+<li>
+send CLID and DIR to OCLx and OUTx links,</li>
+
+<li>
+get VAL from INPx link,</li>
+
+<li>
+if VAL is negative, get MESS from OUMx link and stop looping</li>
+
+<li>
+if VAL is zero, set VAL equal to CLID</li>
+
+<li>
+post monitor on VAL field.</li>
+
+<li>
+if VAL is negative and MESS is different than OMSS:</li>
+
+<li>
+post monitor on MESS field.</li>
+</ul>
+
+<h2>
+<a NAME="2devsup"></a>2.5 Device Support</h2>
+There is no device support available.
+<h2>
+<a NAME="2capfast"></a>2.6 CapFast</h2>
+There is one CapFast symbol for the Apply record.
+<br>&nbsp;
+<br>&nbsp;
+<center><table BORDER NOSAVE >
+<tr NOSAVE>
+<td NOSAVE><img SRC="gem-apply.gif" ALT="apply capfast symbol" NOSAVE height=189 width=487></td>
+</tr>
+</table></center>
+
+<center>
+<p><i><b>FIGURE 2.1</b> CapFast eapply symbol</i></center>
+
+</body>
+</html>

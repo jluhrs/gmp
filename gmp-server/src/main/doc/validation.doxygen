@@ -576,4 +576,7 @@ example code should be something like:
 The valid values for health, severity and alarm cause, can be found in the giapi_tester help.
 
 
+\subsection comm_records_testing_sec GMP Commands Records Integration Tests
+TODO
+
 */

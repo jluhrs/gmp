@@ -1,0 +1,1388 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; SunOS 5.6 sun4u) [Netscape]">
+</head>
+<body>
+
+<h1>
+
+<hr WIDTH="100%"><a NAME="7lutin"></a>7.0 lutin - Lookup Table Input Record</h1>
+The lutin record converts up to four input values into a character string.
+The input values can be any of string, double-precision, or long integer
+data types, determined from the FTVA, FTVB. FTVC, and FTVD fields. The
+conversion type must match the value found in the lookup table, thus if
+the type is a long integer, the corresponding lookup table value must also
+be an integer. For integer and double-precision values, the value is matched
+to within the low and high tolerances given in the lookup table. This feature
+supports any hysteresis or jitter associated with the sampled value. The
+low and high tolerances can be individually adjusted to accommodate nonlinear
+or preloaded systems.
+<p>The SELB field allows only the specified input fields to be used in
+the conversion. If the selection bit mask is 1, the first configuration
+that matches only the VALA field is returned. If the mask is 3, the VALA
+and VALB fields are the only ones tested. For a mask of 15, all input fields
+are used. The NVAL field returns the number of fields that were successfully
+matched. An NVAL field of zero will generate a SOFT alarm of INVALID.
+<br>The lookup table can be reread from the file by writing a one to the
+LOAD field.
+<p>A lutin record can reference another lutout or lutin record's lookup
+table by making a connection between its LLNK field and the other record's
+LTBL field. The record can now find a tag in either its lookup table or
+the table from the other record. This feature can only work within an IOC;
+it will not work across channel access. [This feature is not yet implemented].
+<p>More information and examples can be found in the lutin manual[3].
+<h2>
+<a NAME="7fldsum"></a>7.1 Field Summary</h2>
+
+<table BORDER >
+<tr>
+<th>
+<div CLASS="CellHeading">Field</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Type</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Initial</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Access</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Modify</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Monitor</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">PP</div>
+</th>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">NVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ONVL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SELB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">15</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">PREC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">2</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FDIR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FNAM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">LTBL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">LLNK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">LOAD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Special</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPA</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALA</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OLDA</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OLDB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OLDC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OLDD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVA</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="7flddesc"></a>7.2 Field Description</h2>
+
+<table BORDER >
+<tr>
+<th>
+<div CLASS="CellHeading">Name</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Summary</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Description</div>
+</th>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Result</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The character string of the configuration that matches
+the inputs.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Old Result</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The old VAL. Used to trigger monitors.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">NVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Result Code</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The number of values that were used in the match.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ONVL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Old Result Code</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The old NVAL. Used to trigger monitors.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SELB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Selection Bits</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The bit mask of the input values to use for testing.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">PREC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Precision</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The precision of double-precision values.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FDIR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Init File Directory</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The name of the directory of the ASCII configuration
+file.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FNAM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Init File Name</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The name of the file of the ASCII configuration file.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">LTBL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Lookup Table</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The address of the storage of the lookup table.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">LLNK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Lookup Table Link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">A link to another record's lookup table.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">LOAD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Reload Table</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Any nonzero value written to this field will force
+the reloading of the lookup table from the configuration file defined by
+FDIR and FNAM.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPA</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input link.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input link.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input link.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input link.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALA</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Value of Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input value.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Value of Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input value.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Value of Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input value.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Value of Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input value.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OLDA</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Old Value of Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The old value. Used to trigger monitors.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OLDB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Old Value of Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The old value. Used to trigger monitors.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OLDC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Old Value of Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The old value. Used to trigger monitors.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OLDD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Old Value of Input</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The old value. Used to trigger monitors.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVA</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Type of Value</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The data type of the input value. May be either STRING,
+DOUBLE, or LONG.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVB</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Type of Value</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The data type of the input value. May be either STRING,
+DOUBLE, or LONG.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Type of Value</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The data type of the input value. May be either STRING,
+DOUBLE, or LONG.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVD</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Type of Value</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The data type of the input value. May be either STRING,
+DOUBLE, or LONG.</div>
+</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="7recsup"></a>7.3 Record Support Routines</h2>
+
+<h3>
+7.3.1 init_record</h3>
+During the first initialization pass the ASCII configuration file is read
+and stored in LTBL. Space is allocated for the VAL[A-D] and OLD[A-D] fields.
+On the second pass, device support initialization is performed.
+<h3>
+7.3.2 process</h3>
+See next section.
+<h3>
+7.3.3 special</h3>
+If the LOAD field is nonzero, the existing lookup table is cleared and
+a new table is read from the file described by the FDIR and FNAM fields.
+<h3>
+7.3.4 get_value</h3>
+This routine fills in the values of struct valueDes so that they refer
+to VAL.
+<h3>
+7.3.5 get_precision</h3>
+This routine returns the value of PREC.
+<h3>
+7.3.6 get_enum_strs</h3>
+All tags are returned by this routine.
+<h3>
+7.3.7 cvt_dbaddr</h3>
+This routine converts the input strings into the appropriate data type
+defined by FTV[A-D].
+<h2>
+<a NAME="7recproc"></a>7.4 Record Processing</h2>
+The processing algorithm performs the following steps:
+<ol>
+<li>
+Checks to see the appropriate device support module exists. If it doesn't,
+an error message is issued and processing is terminated with the PACT field
+set to TRUE.</li>
+
+<li>
+The device support read function is called. The return status value is
+set from the return value of this function.</li>
+
+<li>
+If the device support did not complete processing, the PACT field is left
+TRUE and processing terminates. It is assumed the device support callback
+will reenter the processing routine and complete at a later time.</li>
+
+<li>
+The processing flag is set to TRUE.</li>
+
+<li>
+Check for alarms. If the NVAL field is equal to zero, SOFT_ALARM is set
+to INVALID.</li>
+
+<li>
+Check for monitors. If any value in the fields VAL, NVAL, VALA, VALB, VALC,
+VALD has changed a monitor event is posted for that field.</li>
+
+<li>
+Process the forward link.</li>
+
+<li>
+Set PACT to FALSE and exit.</li>
+</ol>
+
+<h2>
+<a NAME="7devsup"></a>7.5 Device Support</h2>
+The only device currently supported is Soft Channel.
+<h2>
+<a NAME="7capfast"></a>7.6 CapFast</h2>
+There are two CapFast symbols for the lutin record: elutins.sym and elutin.sym.
+These symbols are part of the epics3.12.2Gem.4 and later distributions.
+The symbols are shown in Figure 8 on page 31.
+<br>&nbsp;
+<br>&nbsp;
+<center><table BORDER NOSAVE >
+<tr>
+<td><img SRC="gemlutin.gif" ALT="lutin capfast symbol" NOSAVE height=145 width=487></td>
+</tr>
+</table></center>
+
+<center>
+<p><i><b>FIGURE 7.1</b> CapFast elutins and elutin symbols</i></center>
+
+<h2>
+<a NAME="7future"></a>7.7 Future Enhancements</h2>
+Some future enhancements the lutin record may be:
+<ul>
+<li>
+Access of LTBL across a network.</li>
+
+<li>
+Support for more data types.</li>
+
+<li>
+Per-item additions to the lookup table.</li>
+
+<li>
+Better return of the list of tags.</li>
+</ul>
+
+</body>
+</html>

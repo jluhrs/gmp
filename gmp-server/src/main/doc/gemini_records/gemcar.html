@@ -1,0 +1,1186 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; SunOS 5.6 sun4u) [Netscape]">
+</head>
+<body>
+
+<h1>
+
+<hr WIDTH="100%"><a NAME="4car"></a>4.0 CAR - Command Action Response Record</h1>
+The CAR record provides information about the state of a particular action
+occurring within a database. Possible states of the CAR record are UNAVAILABLE,
+IDLE, BUSY, PAUSED, and ERR. The allowable transitions between the states
+are illustrated in Figure 4.
+<br>&nbsp;
+<center><table BORDER NOSAVE >
+<tr>
+<td><img SRC="gemcar1.gif" ALT="car transitions" NOSAVE height=246 width=352></td>
+</tr>
+</table></center>
+
+<center>
+<p><i><b>FIGURE 4.1</b> CAR transitions</i></center>
+
+<h2>
+<a NAME="4fldsum"></a>4.1 Field Summary</h2>
+
+<table BORDER >
+<tr>
+<th>
+<div CLASS="CellHeading">Field</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Type</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">DCT</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Initial</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Access</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Modify</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Rec Proc Monitor</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">PP</div>
+</th>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">RECCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Idle</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">CLID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OERR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">IVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ICID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">IMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">IERR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">AVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ACID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MCID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">AMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">AERR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MERR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ERSV</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIOL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIML</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIMM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">RECCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIMS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="4flddesc"></a>4.2 Field Descriptions</h2>
+
+<table BORDER >
+<tr>
+<th>
+<div CLASS="CellHeading">Name</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Summary</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Description</div>
+</th>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">State</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Current state</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">CLID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Client ID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Value of the latest client ID</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Message (out)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Output message</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OERR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Error Code (out)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Output error code</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">IVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">State (in)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input state transition</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ICID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Client ID (in)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Link to client ID</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">IMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Message (in)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input message</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">IERR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Error Code (in)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input error code</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">AVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Last State Archived</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The last state value which was archived</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Last State Monitored</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The last state value which generated a monitor event</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ACID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Last Client ID Archived</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The last Client ID which generated an archive event</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MCID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Last Client ID Monitored</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The last Client ID which generated a monitor event</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">AMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Last Message Archived</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The last message which generated an archive event</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Last Message Monitored</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The last message which generated a monitor event</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">AERR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Last Error Code Archived</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The last error code which generated an archive event</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MERR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Last Error Code Monitored</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The last error code which generated a monitor event</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ERSV</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Error Alarm Severity</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The severity code of the error alarm</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIOL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Error Link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation mode variables. Refer to reference (See
+EPICS Input Output Controller Record Reference Manual, Janet B. Anderson
+and Martin R. Kraimer, Argonne National Laboratory, Dec 1, 1994. , chapter
+3).</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Error</div>
+</td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIML</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Mode Link</div>
+</td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIMM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Mode</div>
+</td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIMS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Mode Alarm Severity</div>
+</td>
+
+<td></td>
+</tr>
+</table>
+
+<h2>
+<a NAME="4recsup"></a>4.3 Record Support Routines</h2>
+
+<h3>
+4.3.1 init_record</h3>
+This routine sets the current state to IDLE and clears the input message
+and error code. Any simulation modes or links are also initialized.
+<h3>
+4.3.2 process</h3>
+See the next section.
+<h3>
+4.3.3 get_value</h3>
+This routine fills the values of struct valueDes so that they refer to
+VAL.
+<h3>
+4.3.4 get_enum_str</h3>
+This routine converts the long integer values 0 through 5 into the strings
+"UNAVAILABLE", "IDLE", "PAUSED", "ERR", "BUSY", and "UNKNOWN" respectively.
+<h3>
+4.3.5 get_enum_strs</h3>
+This routine returns all of the above strings.
+<h3>
+4.3.6 put_enum_str</h3>
+This routine converts the state strings into values 0 through 5.
+<h3>
+<a NAME="4recproc"></a>4.4 Record Processing</h3>
+Record processing begins when a value is written into the IVAL field. The
+client ID is read from the ICID link and put into CLID. The input value
+is used to transition the CAR state machine and the input message and input
+error code are placed into the output message and output error code fields.
+If the state machine transitions to the ERROR state an alarm is generated.
+<br>Monitors are posted if the output value is different than the last
+output value or the client ID is different than the old client ID. Monitors
+are posted on the VAL, CLID, OMSS, and OERR fields.
+<h3>
+<a NAME="4devsup"></a>4.5 Device Support</h3>
+There is no device support available.
+<h3>
+<a NAME="4capfast"></a>4.6 CapFast</h3>
+There is one CapFast symbol for the CAR record.
+<br>&nbsp;
+<center><table BORDER NOSAVE >
+<tr>
+<td><img SRC="gemcar2.gif" ALT="car capfast symbol" height=141 width=487></td>
+</tr>
+</table></center>
+
+<center>
+<p><i><b>FIGURE 4.2</b> CapFast ecars symbol</i></center>
+
+</body>
+</html>

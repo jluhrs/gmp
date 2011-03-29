@@ -20,6 +20,7 @@
  * - \subpage gmp-commands
  * - \subpage gmp-commands-jms-bridge
  * - \subpage gmp-commands-jms-client
+ * - \subpage comm_records
  * \section perf_tests_sec Performance and Testing
  * \li GMP EPICS Status Service and CAS performance tests at \subpage performance.
  * \li \subpage validation

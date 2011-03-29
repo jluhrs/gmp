@@ -1,0 +1,106 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; SunOS 5.6 sun4u) [Netscape]">
+</head>
+<body>
+&nbsp;
+<table BORDER NOSAVE >
+<tr NOSAVE>
+<td NOSAVE><img SRC="gemtitle.gif" NOSAVE height=353 width=175></td>
+
+<td NOSAVE>
+<h1>
+Gemini Record Reference Manual</h1>
+
+<h2>
+Bret Goodrich and Andy Foster</h2>
+SPE-C-G0070/03
+<br>&nbsp;
+<h3>
+This document decribes the EPICS records created by the Gemini Project.</h3>
+&nbsp;
+<p>&nbsp;
+<p>&nbsp;</td>
+</tr>
+</table>
+
+<p>
+<hr WIDTH="100%">
+<h1>
+Table Of Contents</h1>
+<a href="gemintro.html#1intro">1.0 Introduction</a>
+<br><a href="gemintro.html#1purpose">1.1 Purpose</a>
+<br><a href="gemintro.html#1scope">1.2 Scope</a>
+<br><a href="gemintro.html#1references">1.3 References</a>
+<br><a href="gemintro.html#1revisions">1.4 Revisions</a>
+<p><a href="gemapply.html#2apply">2.0 apply - Apply Record</a>
+<br><a href="gemapply.html#2fldsum">2.1 Field Summary</a>
+<br><a href="gemapply.html#2flddesc">2.2 Field Descriptions</a>
+<br><a href="gemapply.html#2recsup">2.3 Record Support Routines</a>
+<br><a href="gemapply.html#2recproc">2.4 Record Processing</a>
+<br><a href="gemapply.html#2devsup">2.5 Device Support</a>
+<br><a href="gemapply.html#2capfast">2.6 CapFast</a>
+<p><a href="gemcad.html#3cad">3.0 CAD - Command Action Directive Record</a>
+<br><a href="gemcad.html#3fldsum">3.1 Field Summary</a>
+<br><a href="gemcad.html#3flddesc">3.2 Field Descriptions</a>
+<br><a href="gemcad.html#3recsup">3.3 Record Support Routines</a>
+<br><a href="gemcad.html#3recproc">3.4 Record Processing</a>
+<br><a href="gemcad.html#3devsup">3.5 Device Support</a>
+<br><a href="gemcad.html#3capfast">3.6 CapFast</a>
+<p><a href="gemcar.html#4car">4.0 CAR - Command Action Response Record</a>
+<br><a href="gemcar.html#4fldsum">4.1 Field Summary</a>
+<br><a href="gemcar.html#4flddesc">4.2 Field Descriptions</a>
+<br><a href="gemcar.html#4recsup">4.3 Record Support Routines</a>
+<br><a href="gemcar.html#4recproc">4.4 Record Processing</a>
+<br><a href="gemcar.html#4devsup">4.5 Device Support</a>
+<br><a href="gemcar.html#4capfast">4.6 CapFast</a>
+<p><a href="gemsir.html#5sir">5.0 SIR - Status Information Record</a>
+<br><a href="gemsir.html#5fldsum">5.1 Field Summary</a>
+<br><a href="gemsir.html#5flddesc">5.2 Field Descriptions</a>
+<br><a href="gemsir.html#5recsup">5.3 Record Support Routines</a>
+<br><a href="gemsir.html#5recproc">5.4 Record Processing</a>
+<br><a href="gemsir.html#5decsup">5.5 Device Support</a>
+<br><a href="gemsir.html#5capfast">5.6 CapFast</a>
+<p><a href="gemlutout.html#6lutout">6.0 lutout - Lookup Table Output Record</a>
+<br><a href="gemlutout.html#6fldsum">6.1 Field Summary</a>
+<br><a href="gemlutout.html#6flddesc">6.2 Field Description</a>
+<br><a href="gemlutout.html#6recsup">6.3 Record Support Routines</a>
+<br><a href="gemlutout.html#6recproc">6.4 Record Processing</a>
+<br><a href="gemlutout.html#6devsup">6.5 Device Support</a>
+<br><a href="gemlutout.html#6capfast">6.6 CapFast</a>
+<br><a href="gemlutout.html#6future">6.7 Future Enhancements</a>
+<p><a href="gemlutin.html#7lutin">7.0 lutin - Lookup Table Input Record</a>
+<br><a href="gemlutin.html#7fldsum">7.1 Field Summary</a>
+<br><a href="gemlutin.html#7flddesc">7.2 Field Description</a>
+<br><a href="gemlutin.html#7recsup">7.3 Record Support Routines</a>
+<br><a href="gemlutin.html#7recproc">7.4 Record Processing</a>
+<br><a href="gemlutin.html#7devsup">7.5 Device Support</a>
+<br><a href="gemlutin.html#7capfast">7.6 CapFast</a>
+<br><a href="gemlutin.html#7future">7.7 Future Enhancements</a>
+<p><a href="gemmosub.html#8mosub">8.0 mosub - Multiple Output Subroutine
+Record</a>
+<br><a href="gemmosub.html#8intro">8.1 Introduction</a>
+<br><a href="gemmosub.html#8fldsum">8.2 Field Summary</a>
+<br><a href="gemmosub.html#8flddesc">8.3 Field Descriptions</a>
+<br><a href="gemmosub.html#8recsup">8.4 Record Support Routines</a>
+<p><a href="gemgensub.html#9gensub">9.0 GenSub - The General Subroutine
+Record</a>
+<br><a href="gemgensub.html#9intro">9.1 Introduction</a>
+<br><a href="gemgensub.html#9fldsum">9.2 Field Summary</a>
+<br><a href="gemgensub.html#9flddesc">9.3 Field Descriptions</a>
+<br><a href="gemgensub.html#9recsup">9.4 Record Support Routines</a>
+<br><a href="gemgensub.html#9userec">9.5 Use of the `GenSub' Record</a>
+<br><a href="gemgensub.html#9usestruc">9.6 Use of User Defined Structures</a>
+<br><a href="gemgensub.html#9changeusersub">9.7 Dynamically Changing the
+User Routine called during Record Processing</a>
+<p><a href="gemasir.html#10asir">10.0 ASIR - Array Status Information Record</a>
+<br><a href="gemasir.html#10fldsum">10.1 Field Summary</a>
+<br><a href="gemasir.html#10flddesc">10.2 Field Descriptions</a>
+<br><a href="gemasir.html#10recsup">10.3 Record Support Routines</a>
+<br><a href="gemasir.html#10recproc">10.4 Record Processing</a>
+<br><a href="gemasir.html#10devsup">10.5 Device Support</a>
+<br><a href="gemasir.html#10capfast">10.6 CapFast</a>
+</body>
+</html>

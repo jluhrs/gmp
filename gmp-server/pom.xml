@@ -59,7 +59,8 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                     <htmlFooter>${basedir}/src/main/doc/footer.html</htmlFooter>
                     <stripFromPath>${basedir}</stripFromPath>
                     <extractAll>true</extractAll>
-                    <imagePath>src/main/doc/</imagePath>
+                    <imagePath>src/main/doc/ src/main/doc/gemini_records/</imagePath>
+                    <examplePath>src/main/doc/gemini_records</examplePath>
                 </configuration>
             </plugin>
             <plugin>
@@ -84,6 +85,12 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                             <includes>
                                 <include>gpidoc.css</include>
                                 <include>gemini.jpg</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>src/main/doc/gemini_records</directory>
+                            <includes>
+                                <include>gem*.gif</include>
                             </includes>
                         </resource>
                     </resources>

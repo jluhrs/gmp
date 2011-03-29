@@ -1,0 +1,1800 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; SunOS 5.6 sun4u) [Netscape]">
+</head>
+<body>
+
+<h1>
+
+<hr WIDTH="100%"><a NAME="3cad"></a>3.0 CAD - Command Action Directive
+Record</h1>
+The CAD record initiates processing of Gemini commands. Attributes of the
+command are either loaded into fields A through T, or read from input links
+INPA through INPT. Processing begins when a directive is received in the
+DIR field. Subroutine calls may be made during initialization and processing.
+Each directive also has an associated link which is processed when the
+directive is received. A return value from the processing subroutine is
+returned in the VAL field.
+<p>There are five valid directives: MARK, CLEAR, PRESET, START, and STOP.
+The MARK directive forces the CAD state machine into state 1. This directive
+is also executed through special processing if any of fields A through
+T are modified. The CLEAR directive forces the state machine into state
+0, clearing any prior mark or preset. The PRESET directive moves the state
+machine from state 1 to state 2. The START directive either moves the state
+machine from state 2 to state 0, or executes a PRESET directive then moves
+from state 2 to state 0. In all cases except PRESET, START, and STOP in
+state 0 the processing subroutine SNAM is called and the corresponding
+directive link is processed.
+<p>The CAD record can be in one of three states, given by the value of
+the MARK field. In state 0, the CAD record is considered to be cleared.
+In state 1, it is considered to be marked as ready to preset. In state
+2, it is considered to be preset and ready to activate. Figure 1 shows
+the state diagram for the CAD record, with the edges identified as possible
+directive commands.
+<br>&nbsp;
+<br>&nbsp;
+<center><table BORDER NOSAVE >
+<tr>
+<td><img SRC="gemcad1.gif" NOSAVE height=246 width=352></td>
+</tr>
+</table></center>
+
+<center>
+<p><i><b>FIGURE 3.1</b> CAD Record state transition diagram</i></center>
+
+<h2>
+<a NAME="3fldsum"></a>3.1 Field Summary</h2>
+
+<table BORDER >
+<tr>
+<th>
+<div CLASS="CellHeading">Field</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Type</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">DCT</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Initial</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Access</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Modify</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Rec Proc Monitor</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">PP</div>
+</th>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SNAM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SADR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">STYP</div>
+</td>
+
+<td>
+<div CLASS="CellBody">SHORT</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INAM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">DIR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">RECCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">1</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ICID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Null</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">CTYP</div>
+</td>
+
+<td>
+<div CLASS="CellBody">SHORT</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">2</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">PREC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">SHORT</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MLNK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">FWDLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">CLNK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">FWDLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">PLNK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">FWDLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">STLK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">FWDLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SPLK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">FWDLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OCID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OSIM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">RECCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">None</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">NARG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">SHORT</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MARK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">SHORT</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ERSV</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIOL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">LONG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIML</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIMM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">RECCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">None</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIMS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">INLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OUTx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">OUTLINK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">A - T</div>
+</td>
+
+<td>
+<div CLASS="CellBody">STRING</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Spec</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">NOACCESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">0</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">GBLCHOICE</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">String</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Yes</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No</div>
+</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="3flddesc"></a>3.2 Field Descriptions</h2>
+
+<table BORDER >
+<tr>
+<th>
+<div CLASS="CellHeading">Name</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Summary</div>
+</th>
+
+<th>
+<div CLASS="CellHeading">Description</div>
+</th>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Return Error Code</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The return value is set within the user-supplied
+processing subroutine. Conventionally, a return value of zero indicates
+success, while a non-zero value shows an error has occurred.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SNAM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Subroutine Name</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The name of a VxWorks subroutine to execute during
+processing.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SADR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Subroutine Address</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The internal representation of the subroutine address.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">STYP</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Subroutine symbol type</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Not used.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INAM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Init Routine Name</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The name of a VxWorks subroutine to execute during
+initialization.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">DIR</div>
+</td>
+
+<td>
+<div CLASS="CellBody">CAD Directive</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The directive to execute. This may be one of the
+following enumerated list values: <i>MARK</i> ,
+<i>CLEAR</i> , <i>PRESET</i>
+, <i>START</i> , or <i>STOP</i> .</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ICID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Client ID (In)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">An integer value to be associated with the current
+command.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MESS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Message</div>
+</td>
+
+<td>
+<div CLASS="CellBody">A return message from the CAD. This string will be
+empty if the return value is zero.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OMSS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Old Message</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The previous message.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">CTYP</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Number of CAD Args</div>
+</td>
+
+<td>
+<div CLASS="CellBody">This value should be set to the maximum number of
+arguments a CAD record will use. The value is usually set by the selected
+CapFast symbol.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">PREC</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Display Precision</div>
+</td>
+
+<td>
+<div CLASS="CellBody">This value is used for the precision of double-precision
+outputs.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MLNK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Mark Link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">If the directive is <i>MARK</i> , this forward link
+is processed.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">CLNK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Clear Link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">If the directive is <i>CLEAR</i> , this forward link
+is processed.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">PLNK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Preset Link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">If the directive is <i>PRESET</i> , this forward
+link is processed.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">STLK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Start Link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">If the directive is <i>START</i> , this forward link
+is processed.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SPLK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Stop Link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">If the directive is <i>STOP</i> , this forward link
+is processed.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OCID</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Client ID (Out)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The input client ID is sent out this field.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OSIM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Mode (Out)</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The simulation mode is sent out this field.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">NARG</div>
+</td>
+
+<td>
+<div CLASS="CellBody">No. Inputs used</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The actual number of arguments used is set in this
+field.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">MARK</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Is Record Preset?</div>
+</td>
+
+<td>
+<div CLASS="CellBody">This field shows the current state of the CAD. It
+can be zero, indicating no MARK has been done; one, showing a MARK; or
+two, showing a PRESET has been done.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">ERSV</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Error Alarm Severity</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The severity of an alarm.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIOL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Error Link</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation mode variables. Refer to reference (See
+EPICS Input Output Controller Record Reference Manual, Janet B. Anderson
+and Martin R. Kraimer, Argonne National Laboratory, Dec 1, 1994. , chapter
+3).</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SVAL</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Error</div>
+</td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIML</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Mode Link</div>
+</td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIMM</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Mode</div>
+</td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">SIMS</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Simulation Mode Alarm Severity</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The value for the simulated alarm.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">INPx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Input Link A-T</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The 20 input links for the arguments to the record.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">OUTx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Output Link A-T</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The 20 outputs are sent across these links.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">A - T</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Value of Input A-T</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The 20 string input arguments.</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">VALx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Value of Output A-T</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The 20 output values.&nbsp;</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div CLASS="CellBody">FTVx</div>
+</td>
+
+<td>
+<div CLASS="CellBody">Type of Value A-T</div>
+</td>
+
+<td>
+<div CLASS="CellBody">The types for the 20 output values. The type may
+be one of <i>STRING</i> , <i>LONG</i> , or <i>DOUBLE</i> .</div>
+</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="3recsup"></a>3.3 Record Support Routines</h2>
+
+<h3>
+3.3.1 init_record</h3>
+During the first initialization pass, the output types are determined from
+the FTVx fields and appropriate space is created for the VALx fields. During
+the second pass, input and output links are initialized, the initialization
+routine is called, and the processing subroutine is readied. The directive
+field is set to CLEAR, and the mark field is set to zero.
+<h3>
+3.3.2 process</h3>
+See the next section.
+<h3>
+3.3.3 special</h3>
+The special processing is called when a value is put to one of the twenty
+fields A through T. The mark flag is set to one.
+<h3>
+3.3.4 get_value</h3>
+This routine fills the values of struct valueDes so that they refer to
+VAL.
+<h3>
+3.3.5 get_precision</h3>
+This routine retrieves PREC.
+<h3>
+3.3.6 get_enum_str</h3>
+This routine converts the long integer values 0 through 4 into the strings
+"MARK", "CLEAR", PRESET", "START", and "STOP", respectively.
+<h3>
+3.3.7 get_enum_strs</h3>
+This routine returns all five of the above strings.
+<h3>
+3.3.8 put_enum_str</h3>
+This routine converts the above strings into the long integer values 0
+through 4.
+<h3>
+<a NAME="3recproc"></a>3.4 Record Processing</h3>
+Record processing is very dependent upon the directive given to process
+and the value of the mark field in the state machine. The algorithm is:
+<ul>
+<li>
+If PRESET, START, or STOP with MARK==0, then return</li>
+
+<li>
+If simulation, process simulation links.</li>
+
+<li>
+Process all input links.</li>
+
+<li>
+Process requested directive (see next sections for details).</li>
+
+<li>
+Enforce rule that MESS is empty if VAL is 0.</li>
+
+<li>
+Put the values on the output links.</li>
+
+<li>
+Raise monitors on fields VAL, MESS, OSIM, OCID, MARK.</li>
+
+<li>
+Process directive link (MLNK, CLNK, PLNK, STLK, SPLK).</li>
+
+<li>
+Process forward link.</li>
+</ul>
+
+<h3>
+3.4.1 Mark Directive Processing</h3>
+
+<ul>
+<li>
+Call user subroutine, return value in VAL.</li>
+
+<li>
+Copy ICID to OCID.</li>
+
+<li>
+Set mark field to 1.</li>
+</ul>
+
+<h3>
+3.4.2 Clear Directive Processing</h3>
+
+<ul>
+<li>
+Call user subroutine, return value in VAL.</li>
+
+<li>
+Copy ICID to OCID.</li>
+
+<li>
+Set mark field to 0.</li>
+</ul>
+
+<h3>
+3.4.3 Preset Directive Processing</h3>
+
+<ul>
+<li>
+Call user subroutine, return value in VAL.</li>
+
+<li>
+Copy ICID to OCID.</li>
+
+<li>
+Set mark field to 2.</li>
+</ul>
+
+<h3>
+3.4.4 Start Directive Processing</h3>
+
+<ul>
+<li>
+If mark field is 1:</li>
+
+<li>
+Set directive to PRESET.</li>
+
+<li>
+Call user subroutine, return value in VAL.</li>
+
+<li>
+Copy ICID to OCID.</li>
+
+<li>
+Process PLNK link.</li>
+
+<li>
+Set mark field to 2.</li>
+
+<li>
+Put the values on the output links.</li>
+
+<li>
+Raise monitors.</li>
+
+<li>
+set directive to START.</li>
+
+<li>
+Call user subroutine, return value in VAL.</li>
+
+<li>
+Copy ICID to OCID.</li>
+
+<li>
+Set mark field to 0.</li>
+
+<li>
+</li>
+</ul>
+
+<h3>
+3.4.5 Stop Directive Processing</h3>
+
+<ul>
+<li>
+If mark field is not 0:</li>
+
+<li>
+Call user subroutine, return value in VAL.</li>
+
+<li>
+Copy ICID to OCID.</li>
+
+<li>
+Set mark field to 0.</li>
+</ul>
+
+<h2>
+<a NAME="3devsup"></a>3.5 Device Support</h2>
+There is no device support available.
+<h2>
+<a NAME="3capfast"></a>3.6 CapFast</h2>
+There are four CapFast symbols for the CAD record.
+<br>&nbsp;
+<center><table BORDER NOSAVE >
+<tr>
+<td><img SRC="gemcad2.gif" ALT="cad capfast symbol" NOSAVE height=314 width=487></td>
+</tr>
+</table></center>
+
+<center>
+<p><i><b>FIGURE 3.2</b> CapFast ecad2, ecad4, ecad8, and ecad20 symbols</i></center>
+
+<p><br>
+</body>
+</html>
