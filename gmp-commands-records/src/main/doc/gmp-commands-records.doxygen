@@ -14,7 +14,20 @@ This bundle requires the \ref edu.gemini.cas.ChannelAccessServer "ChannelAccessS
 \ref cas bundle.
 
 \section comm_records_configuration_sec Configuration
-TODO
+There are 2 types of configuration files for this module: /conf/services/edu.gemini.aspen.gmp.commands.records.ApplyRecord-default.cfg
+and /conf/services/edu.gemini.aspen.gmp.commands.records.CadRecordImpl-XXX.cfg. The first one consists of only one entry,
+the instrument prefix for the EPICS channels. For every file of the second type, there will be one CAD record
+instantiated, with the specified configuration. The parameters it has are "prefix", "name" and "numAttributes". The prefix
+has to be the same as in the APPLY record configuration. The name if the name of the CAD record, and the numAttributes
+ indicates how many attribute channels will be created. For instance, a config file like:
+ \verbatim
+ prefix=gpi
+ name=Park
+ numAttributes=3
+\endverbatim
+ will create the gpi:park CAD record, linked to the PARK sequence command, with attributes gpi:park.A, gpi:park.B and
+ gpi:park.C.
+
 
 */
 
