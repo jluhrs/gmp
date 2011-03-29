@@ -577,6 +577,32 @@ The valid values for health, severity and alarm cause, can be found in the giapi
 
 
 \subsection comm_records_testing_sec GMP Commands Records Integration Tests
-TODO
-
+\li Start the GMP as indicated in the \ref user_manual.
+\li For this test you will also need tcl code in http://source.gemini.edu/software/giapi/giapi-eng/ocs-test-scripts/trunk.
+\li Check the code to a directory we'll call ocs-test-scripts/
+\li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh seq-command</tt>.
+\li In ocs-test-scripts/, run <tt>$ ./commandTest -config test.ca -cs park -params "A 300"<tt>. Remember to set the
+\c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
+\li The command should take about 10 seconds before exiting without any exceptions (a message like "epicsThreadOnceOsd
+epicsMutexLock failed." is normal).
+\li In the C++ example code that's running you should see something like:
+\verbatim
+    Starting Sequence Commands Example
+    2011-03-29 10:52:02,144 [0x2b1639af83b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.PARK
+    Configuration
+    Configuration
+    Starting worker thread
+    Worker Thread started!
+    Messages processed = 0
+    Messages processed = 1
+    Messages processed = 2
+    Messages processed = 3
+    Messages processed = 4
+    Messages processed = 5
+    Messages processed = 6
+    Messages processed = 7
+    Messages processed = 8
+    Messages processed = 9
+    2011-03-29 10:52:20,483 [0x44976940] INFO  giapi.LogCommandUtil - Posting completion info for action id  2
+\endverbatim
 */
