@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.epics.jms;
 
-import edu.gemini.jms.api.JmsProvider;
+import edu.gemini.jms.api.*;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
 
@@ -17,29 +17,22 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
 
     private static final Logger LOG = Logger.getLogger(EpicsConfigRequestConsumer.class.getName());
 
-    private Connection _connection;
-    private Session _session;
-    private MessageConsumer _consumer;
+
+    private final BaseMessageConsumer _messageConsumer;
+    private final ReplyMessageSender _replySender;
 
     private EpicsConfiguration _epicsConfiguration;
 
     public EpicsConfigRequestConsumer(JmsProvider provider, EpicsConfiguration config) {
 
-        ConnectionFactory factory = provider.getConnectionFactory();
         _epicsConfiguration = config;
-         try {
-            _connection = factory.createConnection();
-            _connection.setClientID("Epics Configuration Request Consumer");
-            _connection.start();
-            _connection.setExceptionListener(this);
-            _session = _connection.createSession(false,
-                    Session.AUTO_ACKNOWLEDGE);
-            //Requests come from a queue
-            Destination destination = _session.createQueue(
-                    JmsKeys.GMP_GEMINI_EPICS_REQUEST_DESTINATION);
-            _consumer = _session.createConsumer(destination);
-            _consumer.setMessageListener(this);
-
+        _messageConsumer = new BaseMessageConsumer("Epics Configuration Request Consumer",
+                new DestinationData(JmsKeys.GMP_GEMINI_EPICS_REQUEST_DESTINATION, DestinationType.QUEUE),
+                this);
+        _replySender = new ReplyMessageSender("Epics Configuration Request Reply");
+        try {
+            _messageConsumer.startJms(provider);
+            _replySender.startJms(provider);
             LOG.info(
                     "Message Consumer started to receive epics config requests");
         } catch (JMSException e) {
@@ -48,11 +41,27 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
 
     }
 
+    private static class ReplyMessageSender extends BaseMessageProducer {
+
+        public ReplyMessageSender(String clientName) {
+            super(clientName, null);
+        }
+
+        public void send(Destination d, Iterable<String> validChannelsNames) throws JMSException {
+            MapMessage replyMessage = _session.createMapMessage();
+
+            for (String name : validChannelsNames) {
+                replyMessage.setBoolean(name, true);
+            }
+            _producer.send(d, replyMessage);
+        }
+    }
+
     public void onMessage(Message message) {
 
         try {
             //let's see if it contains a valid request
-            
+
             boolean isEpicsRequest = message.getBooleanProperty(JmsKeys.GMP_GEMINI_EPICS_CHANNEL_PROPERTY);
 
             if (!isEpicsRequest) return;
@@ -64,15 +73,7 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
                 return;
             }
 
-            MessageProducer replyProducer = _session.createProducer(destination);
-
-            MapMessage replyMessage = _session.createMapMessage();
-
-            for(String name: _epicsConfiguration.getValidChannelsNames()) {
-                replyMessage.setBoolean(name, true);
-            }
-
-            replyProducer.send(replyMessage);
+            _replySender.send(destination, _epicsConfiguration.getValidChannelsNames());
         } catch (InvalidDestinationException ex) {
             LOG.log(Level.WARNING, "Destination has been destroyed", ex);
         } catch (JMSException e) {
@@ -87,16 +88,7 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
     }
 
     public void close() {
-        try {
-            if (_consumer != null)
-                _consumer.close();
-            if (_session != null)
-                _session.close();
-            if (_connection != null)
-                _connection.close();
-            
-        } catch (JMSException e) {
-            LOG.log(Level.WARNING, "Exception closing Epics Config Request Consumer: ", e);
-        }
+        _messageConsumer.stopJms();
+        _replySender.stopJms();
     }
 }

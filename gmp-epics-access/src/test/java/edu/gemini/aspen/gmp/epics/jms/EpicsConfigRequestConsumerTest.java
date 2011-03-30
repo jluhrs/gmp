@@ -37,6 +37,7 @@ public class EpicsConfigRequestConsumerTest {
         when(session.createQueue(anyString())).thenReturn(destination);
         MessageConsumer messageConsumer = mock(MessageConsumer.class);
         when(session.createConsumer(destination)).thenReturn(messageConsumer);
+
         configuration = new EpicsConfiguration() {
             @Override
             public Set<String> getValidChannelsNames() {
@@ -53,6 +54,11 @@ public class EpicsConfigRequestConsumerTest {
 
     @Test
     public void onMessage() throws JMSException {
+        MessageProducer messageProducer = mock(MessageProducer.class);
+        when(session.createProducer(null)).thenReturn(messageProducer);
+        MapMessage replyMessage = mock(MapMessage.class);
+        when(session.createMapMessage()).thenReturn(replyMessage);
+
         EpicsConfigRequestConsumer consumer = new EpicsConfigRequestConsumer(provider, configuration);
         Message message = mock(Message.class);
 
@@ -60,15 +66,12 @@ public class EpicsConfigRequestConsumerTest {
         Destination destination = mock(Destination.class);
         when(message.getJMSReplyTo()).thenReturn(destination);
 
-        MessageProducer replyProducer = mock(MessageProducer.class);
-        when(session.createProducer(destination)).thenReturn(replyProducer);
-        MapMessage replyMessage = mock(MapMessage.class);
-        when(session.createMapMessage()).thenReturn(replyMessage);
+
 
         consumer.onMessage(message);
         
         verify(replyMessage).setBoolean(channelName, true);
-        verify(replyProducer).send(replyMessage);
+        verify(messageProducer).send(destination,replyMessage);
     }
 
     @Test

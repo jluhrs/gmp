@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.epics.jms;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.jms.api.BaseMessageProducer;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateListener;
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
@@ -22,31 +23,32 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
 
     private static final Logger LOG = Logger.getLogger(EpicsStatusUpdater.class.getName());
 
-    private Connection _connection;
-    private Session _session;
+    private final UnidentifiedMessageSender _sender;
 
-    private MessageProducer _producer;
+    private Map<String, String> _topicMap = new TreeMap<String, String>();
 
+    private static class UnidentifiedMessageSender extends BaseMessageProducer {
 
-    private Map<String, Destination> _destinationMap = new TreeMap<String, Destination>();
+        public UnidentifiedMessageSender(String clientName) {
+            super(clientName, null);
+        }
 
+        public void send(String topic, EpicsUpdate update) throws JMSException {
+            _producer.send(_session.createTopic(topic),
+                    EpicsJmsFactory.createMessage(_session, update));
+        }
+    }
 
     public EpicsStatusUpdater(JmsProvider provider, EpicsConfiguration config) {
+        _sender = new UnidentifiedMessageSender("Epics Status Updater");
 
-        ConnectionFactory connectionFactory = provider.getConnectionFactory();
         try {
-            _connection = connectionFactory.createConnection();
-            _connection.setClientID("Epics Status Updater");
-            _connection.start();
-            _connection.setExceptionListener(this);
-            _session = _connection.createSession(false,
-                    Session.AUTO_ACKNOWLEDGE);
-            _producer = _session.createProducer(null);
-            //Create destinations for all the channels to be broadcasted to the instrument
+            _sender.startJms(provider);
 
+            //Create destinations for all the channels to be broadcasted to the instrument
             for (String channelName : config.getValidChannelsNames()) {
                 String topic = JmsKeys.GMP_GEMINI_EPICS_TOPIC_PREFIX + channelName.toUpperCase();
-                _destinationMap.put(channelName, _session.createTopic(topic));
+                _topicMap.put(channelName, topic);
             }
 
         } catch (JMSException e) {
@@ -57,16 +59,8 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
 
 
     public void close() {
-        try {
-            if (_producer != null)
-                _producer.close();
-            if (_session != null)
-                _session.close();
-            if (_connection != null)
-                _connection.close();
-        } catch (JMSException e) {
-            LOG.log(Level.WARNING, "Exception closing Epics Status Updater : ", e);
-        }
+        _sender.stopJms();
+
     }
 
 
@@ -78,17 +72,13 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
 
         try {
             //send the update via JMS
-            Destination d = _destinationMap.get(update.getChannelName());
+            String topic = _topicMap.get(update.getChannelName());
 
-            if (d != null) {
-                Message m = EpicsJmsFactory.createMessage(_session, update);
-                if (m != null) {
-                    LOG.fine("Updating channel: " + update.getChannelName() + " to " + d);
-                    _producer.send(d, m);
-                }
+            if (topic != null) {
+                LOG.fine("Updating channel: " + update.getChannelName() + " to " + topic);
+                _sender.send(topic, update);
             }
-        }
-        catch (JMSException e) {
+        } catch (JMSException e) {
             LOG.log(Level.WARNING, "Problem sending Epics Status Update via JMS: ", e);
         }
 
