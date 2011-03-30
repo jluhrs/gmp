@@ -19,7 +19,7 @@ import java.util.TreeMap;
  * dispatch queue, where an internal thread will be taking the updates and
  * dispatching them via JMS.
  */
-public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListener {
+public class EpicsStatusUpdater implements EpicsUpdateListener {
 
     private static final Logger LOG = Logger.getLogger(EpicsStatusUpdater.class.getName());
 
@@ -64,10 +64,7 @@ public class EpicsStatusUpdater implements ExceptionListener, EpicsUpdateListene
     }
 
 
-    public void onException(JMSException e) {
-        LOG.log(Level.WARNING, "Exception on Epics Status Updater", e);
-    }
-
+    @Override
     public void onEpicsUpdate(EpicsUpdate update) {
 
         try {

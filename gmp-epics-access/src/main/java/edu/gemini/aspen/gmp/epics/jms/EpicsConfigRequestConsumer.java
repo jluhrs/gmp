@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * the instrument code. Returns the list of the valid (authorized) epics
  * channels that can be monitored through the GMP.
  */
-public class EpicsConfigRequestConsumer implements MessageListener, ExceptionListener {
+public class EpicsConfigRequestConsumer implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(EpicsConfigRequestConsumer.class.getName());
 
@@ -21,7 +21,7 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
     private final BaseMessageConsumer _messageConsumer;
     private final ReplyMessageSender _replySender;
 
-    private EpicsConfiguration _epicsConfiguration;
+    private final EpicsConfiguration _epicsConfiguration;
 
     public EpicsConfigRequestConsumer(JmsProvider provider, EpicsConfiguration config) {
 
@@ -57,6 +57,7 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
         }
     }
 
+    @Override
     public void onMessage(Message message) {
 
         try {
@@ -81,10 +82,6 @@ public class EpicsConfigRequestConsumer implements MessageListener, ExceptionLis
         }
 
 
-    }
-
-    public void onException(JMSException e) {
-        LOG.log(Level.WARNING, "Exception on Epics Config Request Consumer", e);
     }
 
     public void close() {
