@@ -86,15 +86,27 @@ public class EpicsCad {
     private Integer v=0;
     private String m="";
 
+    /**
+     * Set a value for the VAL field to be set to, after a post().
+     *
+     * @param v the value to set VAL to
+     */
     public synchronized void setVal(Integer v){
         this.v=v;
     }
+
+    /**
+     * Set a value for the MESS field to be set to, after a post().
+     *
+     * @param m the value to set MESS to
+     */
     public synchronized void setMess(String m){
         this.m=m;
     }
 
     /**
-     * Write val and message to EPICS.
+     * Write saved values for VAL and MESS EPICS fields.
+     *
      * @throws CAException
      */
     public synchronized void post() throws CAException {
