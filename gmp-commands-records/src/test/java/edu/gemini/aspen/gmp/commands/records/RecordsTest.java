@@ -41,10 +41,26 @@ public class RecordsTest {
         cas = new ChannelAccessServerImpl();
         cas.start();
         cs = mock(CommandSender.class);
-        Command start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.START);
-        Command preset = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET);
-        Command cancel = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.CANCEL);
-        Command preset_start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET_START);
+        Command start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.START, DefaultConfiguration.configurationBuilder().
+                withConfiguration("gpitest:observe.A","").
+                withConfiguration("gpitest:observe.B","").
+                withConfiguration("gpitest:observe.C","").
+                build());
+        Command preset = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET, DefaultConfiguration.configurationBuilder().
+                withConfiguration("gpitest:observe.A","").
+                withConfiguration("gpitest:observe.B","").
+                withConfiguration("gpitest:observe.C","").
+                build());
+        Command cancel = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.CANCEL, DefaultConfiguration.configurationBuilder().
+                withConfiguration("gpitest:observe.A","").
+                withConfiguration("gpitest:observe.B","").
+                withConfiguration("gpitest:observe.C","").
+                build());
+        Command preset_start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET_START, DefaultConfiguration.configurationBuilder().
+                withConfiguration("gpitest:observe.A","").
+                withConfiguration("gpitest:observe.B","").
+                withConfiguration("gpitest:observe.C","").
+                build());
         when(cs.sendCommand(eq(preset), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);
         when(cs.sendCommand(eq(start), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.COMPLETED);
         when(cs.sendCommand(eq(cancel), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);

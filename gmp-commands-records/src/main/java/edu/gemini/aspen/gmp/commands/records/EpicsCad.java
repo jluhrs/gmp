@@ -7,7 +7,9 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -183,4 +185,20 @@ public class EpicsCad {
         val.unRegisterListener(listener);
     }
 
+    /**
+     * Get the attribute names and current values
+     *
+     * @return  A Map containing names and values
+     */
+    public Map<String,String> getConfig(){
+        Map<String,String> map = new HashMap<String,String>();
+        for(Channel<String> ch: attributes){
+            try {
+                map.put(ch.getName(),ch.getFirst());
+            } catch (CAException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+        return map;
+    }
 }

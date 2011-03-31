@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.commands.records;
 import edu.gemini.aspen.giapi.commands.*;
 import gov.aps.jca.CAException;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,7 +64,7 @@ enum CadState {
                     }
                     return CLEAR;
                 case PRESET:
-                    resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car);
+                    resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
@@ -77,7 +78,7 @@ enum CadState {
                         return CLEAR;
                     }
                 case START:
-                    resp = doActivity(Activity.PRESET_START, cs, seqCom, epicsCad.getClid(), car);
+                    resp = doActivity(Activity.PRESET_START, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.STARTED)) {
                             endButStillBusy(epicsCad);
@@ -91,7 +92,7 @@ enum CadState {
                     }
                     return CLEAR;
                 case STOP:
-                    resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car);
+                    resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
@@ -133,7 +134,7 @@ enum CadState {
                     }
                     return CLEAR;
                 case PRESET:
-                    resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car);
+                    resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
@@ -147,7 +148,7 @@ enum CadState {
                         return CLEAR;
                     }
                 case START:
-                    resp = doActivity(Activity.START, cs, seqCom, epicsCad.getClid(), car);
+                    resp = doActivity(Activity.START, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.STARTED)) {
                             endButStillBusy(epicsCad);
@@ -161,7 +162,7 @@ enum CadState {
                     }
                     return CLEAR;
                 case STOP:
-                    resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car);
+                    resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
@@ -191,8 +192,18 @@ enum CadState {
      */
     public abstract CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car);
 
-    private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CarRecord car) {
-        HandlerResponse resp = cs.sendCommand(new Command(seqCom, activity), new CadCompletionListener(id, car));
+    private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CarRecord car, EpicsCad epicsCad) {
+        HandlerResponse resp;
+        Map<String, String> config = epicsCad.getConfig();
+        if (!config.isEmpty()) {
+            DefaultConfiguration.Builder builder = DefaultConfiguration.configurationBuilder();
+            for (String name : config.keySet()) {
+                builder.withConfiguration(name, config.get(name));
+            }
+            resp = cs.sendCommand(new Command(seqCom, activity, builder.build()), new CadCompletionListener(id, car));
+        }else{
+            resp = cs.sendCommand(new Command(seqCom, activity), new CadCompletionListener(id, car));
+        }
         LOG.info("Activity: " + activity + " ClientID: " + id + " Response: " + resp.getResponse().toString());
         return resp;
     }
