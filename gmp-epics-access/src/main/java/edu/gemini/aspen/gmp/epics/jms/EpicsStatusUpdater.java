@@ -44,15 +44,13 @@ public class EpicsStatusUpdater implements EpicsUpdateListener {
 
         try {
             _sender.startJms(provider);
-
-            //Create destinations for all the channels to be broadcasted to the instrument
-            for (String channelName : config.getValidChannelsNames()) {
-                String topic = JmsKeys.GMP_GEMINI_EPICS_TOPIC_PREFIX + channelName.toUpperCase();
-                _topicMap.put(channelName, topic);
-            }
-
         } catch (JMSException e) {
             LOG.warning("exception : " + e);
+        }
+        //Create destinations for all the channels to be broadcasted to the instrument
+        for (String channelName : config.getValidChannelsNames()) {
+            String topic = JmsKeys.GMP_GEMINI_EPICS_TOPIC_PREFIX + channelName.toUpperCase();
+            _topicMap.put(channelName, topic);
         }
         LOG.info("Epics Status Updater started");
     }
@@ -69,9 +67,8 @@ public class EpicsStatusUpdater implements EpicsUpdateListener {
 
         try {
             //send the update via JMS
-            String topic = _topicMap.get(update.getChannelName());
-
-            if (topic != null) {
+            if (_topicMap.containsKey(update.getChannelName())) {
+                String topic = _topicMap.get(update.getChannelName());
                 LOG.fine("Updating channel: " + update.getChannelName() + " to " + topic);
                 _sender.send(topic, update);
             }
