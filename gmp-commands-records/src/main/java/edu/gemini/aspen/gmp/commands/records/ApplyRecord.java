@@ -118,7 +118,7 @@ public class ApplyRecord {
     /**
      * indicates that the record is currently processing a directive
      */
-    private boolean processing = false;
+    volatile private boolean processing = false;
     private synchronized boolean processDir(Dir dir) throws CAException {
         processing = true;
         if (dir == Dir.START) {
@@ -134,7 +134,9 @@ public class ApplyRecord {
                     idle = false;
                 }
             }
-            if (idle) car.changeState(CarRecord.Val.IDLE, "", 0, getClientId());
+            if (idle){
+                car.changeState(CarRecord.Val.IDLE, "", 0, getClientId());
+            }
         } else {
             car.changeState(CarRecord.Val.ERR, ((String[]) mess.getDBR().getValue())[0], ((int[]) val.getDBR().getValue())[0], getClientId());
         }
@@ -253,7 +255,7 @@ public class ApplyRecord {
         public void update(CarRecord.Val state, String message, Integer errorCode, Integer id) {
             synchronized (ApplyRecord.this) {
                 try {
-                    if (state == CarRecord.Val.ERR || state == CarRecord.Val.BUSY) {
+                    if (state == CarRecord.Val.ERR) {
                         car.changeState(state, message, errorCode, id);
                     }
                     if (!processing && state == CarRecord.Val.IDLE) {
