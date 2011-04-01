@@ -41,23 +41,17 @@ public class CadRecordImpl implements CadRecord {
      * @param cs Command Sender to use
      * @param prefix instrument prefix. ex.: "gpi"
      * @param name CAD name. ex.: "park"
-     * @param numAttributes number of attributes this CAD has.//todo: see if this can be changed to a list of names
+     * @param attributes attribute names this CAD has.
      */
     protected CadRecordImpl(@Requires ChannelAccessServer cas,
                             @Requires CommandSender cs,
                             @Property(name = "prefix", value = "INVALID", mandatory = true) String prefix,
                             @Property(name = "name", value = "INVALID", mandatory = true) String name,
                             @Property(name = "attributes", value = "", mandatory = true) String attributes) {
-//        if (numAttributes > letters.length) {
-//            throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
-//        }
         this.cs = cs;
         this.prefix = prefix.toLowerCase();
         this.name = name.toLowerCase();
         seqCom = SequenceCommand.valueOf(name.toUpperCase());
-//        for (int i = 0; i < numAttributes; i++) {
-//            attributeNames.add(letters[i]);
-//        }
         for(String att: attributes.split(",")){
             attributeNames.add(att.trim());
         }
