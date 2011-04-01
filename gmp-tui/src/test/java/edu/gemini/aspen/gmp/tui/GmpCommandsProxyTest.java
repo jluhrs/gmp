@@ -58,9 +58,31 @@ public class GmpCommandsProxyTest {
     }
 
     @Test
-    public void testTestCommands() {
-        commandsProxy.test("START");
+    public void testVerifyCommands() {
+        commandsProxy.verify("START");
 
-        verifyCommand(SequenceCommand.TEST);
+        verifyCommand(SequenceCommand.VERIFY);
     }
+
+    @Test
+    public void testEndVerifyCommands() {
+        commandsProxy.endVerify("START");
+
+        verifyCommand(SequenceCommand.END_VERIFY);
+    }
+
+    @Test
+    public void testGuideCommands() {
+        commandsProxy.guide("START");
+
+        verifyCommand(SequenceCommand.GUIDE);
+    }
+
+    @Test
+    public void testEndGuideCommands() {
+        commandsProxy.endGuide("START");
+
+        verifyCommand(SequenceCommand.END_GUIDE);
+    }
+
 }

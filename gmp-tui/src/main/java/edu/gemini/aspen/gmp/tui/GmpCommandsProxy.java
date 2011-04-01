@@ -22,7 +22,7 @@ public class GmpCommandsProxy {
     @ServiceProperty(name = "osgi.command.scope", value = "gmp")
     private final String SCOPE = "gmp";
     @ServiceProperty(name = "osgi.command.function")
-    private final String[] FUNCTIONS = new String[]{"command", "test", "init", "park", "datum", "apply"};
+    private final String[] FUNCTIONS = new String[]{"command", "test", "init", "park", "datum", "verify", "endVerify", "guide", "endGuide", "apply"};
 
     private final CommandSender commandSender;
     private final GenericCompletionListener completionListener = new GenericCompletionListener();
@@ -42,6 +42,11 @@ public class GmpCommandsProxy {
         return new Command(sequenceCommand, activity);
     }
 
+    private void issueCommand(Command command) {
+        HandlerResponse initialResponse = commandSender.sendCommand(command, completionListener);
+        completionListener.printCompletion(initialResponse, command);
+    }
+
     @Descriptor("Issues a test command over GMP")
     public void test(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
         issueCommand(buildCommand(SequenceCommand.TEST, activityArg));
@@ -57,9 +62,24 @@ public class GmpCommandsProxy {
         issueCommand(buildCommand(SequenceCommand.DATUM, activityArg));
     }
 
-    private void issueCommand(Command command) {
-        HandlerResponse initialResponse = commandSender.sendCommand(command, completionListener);
-        completionListener.printCompletion(initialResponse, command);
+    @Descriptor("Issues a verify command over GMP")
+    public void verify(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
+        issueCommand(buildCommand(SequenceCommand.VERIFY, activityArg));
+    }
+
+    @Descriptor("Issues an endVerify command over GMP")
+    public void endVerify(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
+        issueCommand(buildCommand(SequenceCommand.END_VERIFY, activityArg));
+    }
+
+    @Descriptor("Issues a guide command over GMP")
+    public void guide(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
+        issueCommand(buildCommand(SequenceCommand.GUIDE, activityArg));
+    }
+
+    @Descriptor("Issues an endGuide command over GMP")
+    public void endGuide(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
+        issueCommand(buildCommand(SequenceCommand.END_GUIDE, activityArg));
     }
 
     @Descriptor("Issues an apply command over GMP")
