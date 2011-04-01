@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.commands.records;
 
+import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelListener;
@@ -44,7 +45,7 @@ public class RecordsTest {
         Command start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.START, DefaultConfiguration.configurationBuilder().
                 withConfiguration("gpitest:observe.A","").
                 withConfiguration("gpitest:observe.B","").
-                withConfiguration("gpitest:observe.C","").
+                withConfiguration("gpitest:observe.C", "").
                 build());
         Command preset = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET, DefaultConfiguration.configurationBuilder().
                 withConfiguration("gpitest:observe.A","").
@@ -115,7 +116,7 @@ public class RecordsTest {
 
     @Test
     public void CadTest() throws CAException, InterruptedException {
-        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,3);
+        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,"A,B,C");
         cad.start();
 
         //test mark
@@ -174,7 +175,7 @@ public class RecordsTest {
 
     @Test
     public void CadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
-        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,3);
+        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,"A,B,C");
         cad.start();
 
         Channel<Dir> dir = cas.createChannel(prefix+":"+cadName+".DIR", Dir.CLEAR);
@@ -233,7 +234,7 @@ public class RecordsTest {
         Channel<Integer> clid = cas.createChannel(prefix+":apply.CLID",0);
         Channel<Integer> cadClid = cas.createChannel(prefix+":"+cadName+".ICID",0);
 
-        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,3);
+        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName, "A,B,C");
         cad.start();
         apply.bindCad(cad);
 

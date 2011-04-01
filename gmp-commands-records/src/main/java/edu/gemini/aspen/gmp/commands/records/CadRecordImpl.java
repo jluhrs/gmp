@@ -25,7 +25,6 @@ public class CadRecordImpl implements CadRecord {
     private CadState state = CadState.CLEAR;
 
 
-    final private static String[] letters = new String[]{"A", "B", "C", "D", "E"};
     final private CommandSender cs;
     final private SequenceCommand seqCom;
     final private EpicsCad epicsCad;
@@ -48,16 +47,19 @@ public class CadRecordImpl implements CadRecord {
                             @Requires CommandSender cs,
                             @Property(name = "prefix", value = "INVALID", mandatory = true) String prefix,
                             @Property(name = "name", value = "INVALID", mandatory = true) String name,
-                            @Property(name = "numAttributes", value = "0", mandatory = true) Integer numAttributes) {
-        if (numAttributes > letters.length) {
-            throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
-        }
+                            @Property(name = "attributes", value = "", mandatory = true) String attributes) {
+//        if (numAttributes > letters.length) {
+//            throw new IllegalArgumentException("Number of attributes must be less or equal than " + letters.length);
+//        }
         this.cs = cs;
         this.prefix = prefix.toLowerCase();
         this.name = name.toLowerCase();
         seqCom = SequenceCommand.valueOf(name.toUpperCase());
-        for (int i = 0; i < numAttributes; i++) {
-            attributeNames.add(letters[i]);
+//        for (int i = 0; i < numAttributes; i++) {
+//            attributeNames.add(letters[i]);
+//        }
+        for(String att: attributes.split(",")){
+            attributeNames.add(att.trim());
         }
         epicsCad = new EpicsCad(cas);
         car = new CarRecord(cas, prefix.toLowerCase() + ":" + name.toLowerCase() + "C");
