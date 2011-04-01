@@ -18,8 +18,7 @@ enum CadState {
         @Override
         public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
             try {
-                startProcessing(epicsCad, car);
-                endProcessing(epicsCad, car);
+                endProcessingNoCarUpdate(epicsCad);
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -41,29 +40,30 @@ enum CadState {
     MARKED {
         @Override
         public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
-            try {
-                startProcessing(epicsCad, car);
-            } catch (CAException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
-            }
+
 
             HandlerResponse resp;
             switch (dir) {
                 case MARK:
                     try {
-                        endProcessing(epicsCad, car);
+                        endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
                     }
                     return MARKED;
                 case CLEAR:
                     try {
-                        endProcessing(epicsCad, car);
+                        endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
                     }
                     return CLEAR;
                 case PRESET:
+                    try {
+                        startProcessing(epicsCad, car);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                    }
                     resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
@@ -78,10 +78,15 @@ enum CadState {
                         return CLEAR;
                     }
                 case START:
+                    try {
+                        startProcessing(epicsCad, car);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                    }
                     resp = doActivity(Activity.PRESET_START, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.STARTED)) {
-                            endButStillBusy(epicsCad);
+                            endProcessingNoCarUpdate(epicsCad);
                         } else if (resp.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
                             endProcessing(epicsCad, car);
                         } else {
@@ -92,6 +97,11 @@ enum CadState {
                     }
                     return CLEAR;
                 case STOP:
+                    try {
+                        startProcessing(epicsCad, car);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                    }
                     resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
@@ -111,29 +121,29 @@ enum CadState {
     IS_PRESET {
         @Override
         public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
-            try {
-                startProcessing(epicsCad, car);
-            } catch (CAException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
-            }
 
             HandlerResponse resp;
             switch (dir) {
                 case MARK:
                     try {
-                        endProcessing(epicsCad, car);
+                        endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
                     }
                     return MARKED;
                 case CLEAR:
                     try {
-                        endProcessing(epicsCad, car);
+                        endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
                     }
                     return CLEAR;
                 case PRESET:
+                    try {
+                        startProcessing(epicsCad, car);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                    }
                     resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
@@ -148,10 +158,15 @@ enum CadState {
                         return CLEAR;
                     }
                 case START:
+                    try {
+                        startProcessing(epicsCad, car);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                    }
                     resp = doActivity(Activity.START, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.STARTED)) {
-                            endButStillBusy(epicsCad);
+                            endProcessingNoCarUpdate(epicsCad);
                         } else if (resp.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
                             endProcessing(epicsCad, car);
                         } else {
@@ -162,6 +177,11 @@ enum CadState {
                     }
                     return CLEAR;
                 case STOP:
+                    try {
+                        startProcessing(epicsCad, car);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                    }
                     resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
@@ -201,7 +221,7 @@ enum CadState {
                 builder.withConfiguration(name, config.get(name));
             }
             resp = cs.sendCommand(new Command(seqCom, activity, builder.build()), new CadCompletionListener(id, car));
-        }else{
+        } else {
             resp = cs.sendCommand(new Command(seqCom, activity), new CadCompletionListener(id, car));
         }
         LOG.info("Activity: " + activity + " ClientID: " + id + " Response: " + resp.getResponse().toString());
@@ -218,7 +238,7 @@ enum CadState {
         car.setIdle(epicsCad.getClid());
     }
 
-    private static void endButStillBusy(EpicsCad epicsCad) throws CAException {
+    private static void endProcessingNoCarUpdate(EpicsCad epicsCad) throws CAException {
         epicsCad.setVal(0);
         epicsCad.post();
     }

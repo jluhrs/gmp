@@ -150,7 +150,7 @@ public class RecordsTest {
         CarListener carListener = new CarListener();
         carVal.registerListener(carListener);
 
-        a.setValue("anything");
+        a.setValue("");
 
         assertEquals(CadState.MARKED, cad.getState());
 
@@ -158,6 +158,7 @@ public class RecordsTest {
         //test CAR
         Channel<Dir> dir = cas.createChannel(prefix+":"+cadName+".DIR", Dir.CLEAR);
         dir.setValue(Dir.MARK);
+        dir.setValue(Dir.PRESET);
         if(!carListener.await(1, TimeUnit.SECONDS)){
             fail();
         }
