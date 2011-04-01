@@ -20,9 +20,10 @@ public class GmpCommandsProxy {
     @ServiceProperty(name = "osgi.command.scope", value = "gmp")
     private final String SCOPE = "gmp";
     @ServiceProperty(name = "osgi.command.function")
-    private final String[] FUNCTIONS = new String[]{"park", "apply"};
+    private final String[] FUNCTIONS = new String[]{"command", "park", "apply"};
 
     private final CommandSender commandSender;
+    private GenericCompletionListener completionListener = new GenericCompletionListener();
 
     public GmpCommandsProxy(@Requires CommandSender commandSender) {
         this.commandSender = commandSender;
@@ -30,34 +31,53 @@ public class GmpCommandsProxy {
 
     @Descriptor("Issues a park command over GMP")
     public void park(@Descriptor("activity: START, PRESET, START_PRESET, CANCEL") String activityArg) {
-        System.out.println("Call activity on " + activityArg + " " + commandSender);
-        Activity activity = Activity.valueOf(activityArg);
+        Activity activity = Activity.valueOf(activityArg.toUpperCase());
 
         Command command = new Command(SequenceCommand.PARK, activity);
 
-        HandlerResponse initialResponse = commandSender.sendCommand(command, new CompletionListener() {
-            @Override
-            public void onHandlerResponse(HandlerResponse response, Command command) {
-                System.out.println(response);
-            }
-        });
-        System.out.println(initialResponse);
+        issueCommand(command);
+    }
+
+    private void issueCommand(Command command) {
+        HandlerResponse initialResponse = commandSender.sendCommand(command, completionListener);
+        completionListener.printCompletion(initialResponse, command);
     }
 
     @Descriptor("Issues an apply command over GMP")
     public void apply(@Descriptor("activity: START, PRESET, START_PRESET, CANCEL") String activityArg,
                       @Descriptor("configuration: {path:value,path:value}") String configurationArg) {
-        System.out.println("Call activity on " + activityArg + " " + commandSender);
-        Activity activity = Activity.valueOf(activityArg);
+        Activity activity = Activity.valueOf(activityArg.toUpperCase());
 
         Command command = new Command(SequenceCommand.PARK, activity);
 
-        HandlerResponse initialResponse = commandSender.sendCommand(command, new CompletionListener() {
-            @Override
-            public void onHandlerResponse(HandlerResponse response, Command command) {
-                System.out.println(response);
-            }
-        });
-        System.out.println(initialResponse);
+        issueCommand(command);
+    }
+
+    @Descriptor("Issues an generic command with no configuration over GMP")
+    public void command(@Descriptor("command: TEST, INIT, DATUM, PARK") String commandArg,
+                      @Descriptor("activity: START, PRESET, START_PRESET, CANCEL") String activityArg) {
+        Activity activity = Activity.valueOf(activityArg.toUpperCase());
+        SequenceCommand sequenceCommand = SequenceCommand.valueOf(commandArg.toUpperCase());
+
+        Command command = new Command(sequenceCommand, activity);
+
+        issueCommand(command);
+    }
+
+@Descriptor("Issues an generic command with no configuration over GMP")
+    public void command(@Descriptor("command: TEST, INIT, DATUM, PARK") String commandArg,
+                      @Descriptor("activity: START, PRESET, START_PRESET, CANCEL") String activityArg,
+                      @Descriptor("configuration: {path:value,path:value}") String configurationArg) {
+}
+
+    private static class GenericCompletionListener implements CompletionListener {
+        @Override
+        public void onHandlerResponse(HandlerResponse response, Command command) {
+            printCompletion(response, command);
+        }
+
+        public void printCompletion(HandlerResponse response, Command command) {
+            System.out.println(command + " -> " + response);
+        }
     }
 }
