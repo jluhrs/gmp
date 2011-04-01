@@ -17,25 +17,44 @@ import org.apache.felix.service.command.Descriptor;
 @Instantiate
 @Provides
 public class GmpCommandsProxy {
+    private static final String ACTIVITY_DESCRIPTION = "activity: START, PRESET, START_PRESET, CANCEL";
+    
     @ServiceProperty(name = "osgi.command.scope", value = "gmp")
     private final String SCOPE = "gmp";
     @ServiceProperty(name = "osgi.command.function")
-    private final String[] FUNCTIONS = new String[]{"command", "park", "apply"};
+    private final String[] FUNCTIONS = new String[]{"command", "test", "init", "park", "datum", "apply"};
 
     private final CommandSender commandSender;
-    private GenericCompletionListener completionListener = new GenericCompletionListener();
+    private final GenericCompletionListener completionListener = new GenericCompletionListener();
 
     public GmpCommandsProxy(@Requires CommandSender commandSender) {
         this.commandSender = commandSender;
     }
 
     @Descriptor("Issues a park command over GMP")
-    public void park(@Descriptor("activity: START, PRESET, START_PRESET, CANCEL") String activityArg) {
+    public void park(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
+        issueCommand(buildCommand(SequenceCommand.PARK, activityArg));
+    }
+
+    private Command buildCommand(SequenceCommand sequenceCommand, String activityArg) {
         Activity activity = Activity.valueOf(activityArg.toUpperCase());
 
-        Command command = new Command(SequenceCommand.PARK, activity);
+        return new Command(sequenceCommand, activity);
+    }
 
-        issueCommand(command);
+    @Descriptor("Issues a test command over GMP")
+    public void test(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
+        issueCommand(buildCommand(SequenceCommand.TEST, activityArg));
+    }
+
+    @Descriptor("Issues an init command over GMP")
+    public void init(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
+        issueCommand(buildCommand(SequenceCommand.INIT, activityArg));
+    }
+
+    @Descriptor("Issues a datum command over GMP")
+    public void datum(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
+        issueCommand(buildCommand(SequenceCommand.DATUM, activityArg));
     }
 
     private void issueCommand(Command command) {
@@ -44,18 +63,16 @@ public class GmpCommandsProxy {
     }
 
     @Descriptor("Issues an apply command over GMP")
-    public void apply(@Descriptor("activity: START, PRESET, START_PRESET, CANCEL") String activityArg,
+    public void apply(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg,
                       @Descriptor("configuration: {path:value,path:value}") String configurationArg) {
-        Activity activity = Activity.valueOf(activityArg.toUpperCase());
-
-        Command command = new Command(SequenceCommand.PARK, activity);
+        Command command = buildCommand(SequenceCommand.PARK, activityArg);
 
         issueCommand(command);
     }
 
     @Descriptor("Issues an generic command with no configuration over GMP")
     public void command(@Descriptor("command: TEST, INIT, DATUM, PARK") String commandArg,
-                      @Descriptor("activity: START, PRESET, START_PRESET, CANCEL") String activityArg) {
+                        @Descriptor(ACTIVITY_DESCRIPTION) String activityArg) {
         Activity activity = Activity.valueOf(activityArg.toUpperCase());
         SequenceCommand sequenceCommand = SequenceCommand.valueOf(commandArg.toUpperCase());
 
@@ -64,11 +81,11 @@ public class GmpCommandsProxy {
         issueCommand(command);
     }
 
-@Descriptor("Issues an generic command with no configuration over GMP")
+    @Descriptor("Issues an generic command with no configuration over GMP")
     public void command(@Descriptor("command: TEST, INIT, DATUM, PARK") String commandArg,
-                      @Descriptor("activity: START, PRESET, START_PRESET, CANCEL") String activityArg,
-                      @Descriptor("configuration: {path:value,path:value}") String configurationArg) {
-}
+                        @Descriptor(ACTIVITY_DESCRIPTION) String activityArg,
+                        @Descriptor("configuration: {path:value,path:value}") String configurationArg) {
+    }
 
     private static class GenericCompletionListener implements CompletionListener {
         @Override
