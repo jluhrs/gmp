@@ -65,7 +65,8 @@ public class EpicsServiceIT {
     }
 
     @Test
-    public void epicsServiceHasStarted() {
+    public void epicsServiceHasStarted() throws InterruptedException {
+        TimeUnit.MILLISECONDS.sleep(300);
         ServiceReference reference = context.getServiceReference(JCAContextController.class.getName());
         assertNotNull(reference);
     }
