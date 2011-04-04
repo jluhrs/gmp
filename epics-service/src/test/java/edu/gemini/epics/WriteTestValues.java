@@ -21,8 +21,9 @@ public class WriteTestValues {
     private EpicsWriter _writer;
 
     public WriteTestValues() throws CAException, EpicsException {
-        Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        _writer = new EpicsWriterImpl(new EpicsService(context, "172.16.2.24"));
+        EpicsService epicsService = new EpicsService("172.16.2.24");
+        epicsService.startService();
+        _writer = new EpicsWriterImpl(epicsService);
         for (String s : CHANNELS.keySet()) {
             _writer.bindChannel(s);
         }

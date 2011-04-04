@@ -2,33 +2,31 @@ package edu.gemini.epics;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
-import edu.gemini.epics.impl.EpicsClientsHolder;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
-import org.apache.felix.ipojo.annotations.Bind;
 import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Unbind;
+import org.apache.felix.ipojo.annotations.Updated;
 import org.apache.felix.ipojo.annotations.Validate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Map;
+import java.util.Dictionary;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * The EpicsService is an iPojo Component that has a reference to a JCAContext
- * and that lets EpicsClients to receive updates when an EPICS channel changes
- * <p/>
- * The Service can be configured using the ConfigAdmin service and it takes
- * a single parameter in the form of an IP address
+ * that other services need to use to talk to JCA
+ * It manages the life cycle of the context
  */
-@Component
+@Component(managedservice = "edu.gemini.epics.EpicsService", publicFactory = false)
 @Provides
+@Instantiate(name="epicsService")
 public class EpicsService implements JCAContextController {
     private static final Logger LOG = Logger.getLogger(EpicsService.class.getName());
     private static final String IPADDRESS_PATTERN =
@@ -36,37 +34,30 @@ public class EpicsService implements JCAContextController {
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+    private static final String PROPERTY_ADDRESS_LIST = "addressList";
 
-    @Property(name = "addressList", value = "127.0.0.1", mandatory = true)
     private String _addressList;
 
-    @Property(name = "pid", value = "epicsService", mandatory = true)
-    private String _pid = "epicsService";
-
     private Context _ctx;
-    private final EpicsClientsHolder epicsClientsHolder = new EpicsClientsHolder();
 
     /**
      * For iPojo
      */
-    protected EpicsService() {
+    protected EpicsService(@Property(name = PROPERTY_ADDRESS_LIST, value = "127.0.0.1", mandatory = true) String addressList) {
+        LOG.info("EpicsService created with " + addressList);
+        validateAddressToConnect(addressList);
+        this._addressList = addressList;
     }
 
-    public EpicsService(Context context, String addressList) {
+    public EpicsService(Context context) {
         Preconditions.checkArgument(context != null, "JCAContext cannot be null");
-        validateAddressToConnect(addressList);
         _ctx = context;
-        this._addressList = addressList;
+        this._addressList = null;
     }
 
     private void validateAddressToConnect(String addressList) {
         Preconditions.checkArgument(addressList != null, "Address to connect cannot be null");
         Preconditions.checkArgument(addressList.matches(IPADDRESS_PATTERN), "Address list should be an IP address: " + addressList);
-    }
-
-    public EpicsService(String addressList) {
-        validateAddressToConnect(addressList);
-        this._addressList = addressList;
     }
 
     @Override
@@ -77,8 +68,16 @@ public class EpicsService implements JCAContextController {
         return _ctx;
     }
 
-    private boolean isContextAvailable() {
+    public boolean isContextAvailable() {
         return _ctx != null;
+    }
+
+    @Updated
+    public void changedAddress(Dictionary<String, String> properties) {
+        if (properties.get(PROPERTY_ADDRESS_LIST) != null) {
+            this._addressList = properties.get(PROPERTY_ADDRESS_LIST);
+            LOG.info("Address List changed, update JCA Context to " + this._addressList);
+        }
     }
 
     /**
@@ -87,7 +86,6 @@ public class EpicsService implements JCAContextController {
     @Invalidate
     public void stopService() {
         if (isContextAvailable()) {
-            epicsClientsHolder.disconnectAllClients();
             try {
                 _ctx.destroy();
                 _ctx = null;
@@ -102,6 +100,10 @@ public class EpicsService implements JCAContextController {
      */
     @Validate
     public void startService() {
+        if (isContextAvailable()) {
+            stopService();
+        }
+        LOG.info("EpicsService Validated, starting with:" + _ctx + " " + _addressList);
         validateAddressToConnect(_addressList);
 
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", _addressList);
@@ -109,14 +111,14 @@ public class EpicsService implements JCAContextController {
 
         try {
             _ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+            _ctx.initialize();
             LOG.info("JCALibrary built connecting to: " + _addressList);
 
             logContextInfo();
-
-            epicsClientsHolder.connectAllPendingClients(_ctx);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, "Cannot start JCALibrary", e);
         }
+        LOG.info("Epics Service started on : " + _addressList);
     }
 
     private void logContextInfo() {
@@ -133,41 +135,4 @@ public class EpicsService implements JCAContextController {
         }
     }
 
-    /**
-     * Called when an EpicsClient appears. It will try to bind to the client right away if possible or it will
-     * save it to be started later on
-     * <p/>
-     * The services properties of the epicsClient will determine which channels will listen to
-     *
-     * @param epicsClient       An OSGi service implementing EpicsClient that appears in the system
-     * @param serviceProperties The properties of the service registration
-     */
-    @Bind(optional = true)
-    public void bindEpicsClient(EpicsClient epicsClient, Map<String, Object> serviceProperties) {
-        if (serviceHasValidProperties(serviceProperties)) {
-            String[] channels = (String[]) serviceProperties.get(EpicsClient.EPICS_CHANNELS);
-            if (isContextAvailable()) {
-                epicsClientsHolder.connectNewClient(_ctx, epicsClient, channels);
-            } else {
-                // This may be called before or after the startService method
-                epicsClientsHolder.saveForLateConnection(epicsClient, channels);
-            }
-        } else {
-            LOG.warning("Attempt to register an EpicsClient " + epicsClient + " without the right service properties " + serviceProperties);
-        }
-    }
-
-    private boolean serviceHasValidProperties(Map<String, Object> serviceProperties) {
-        return serviceProperties.containsKey(EpicsClient.EPICS_CHANNELS) && serviceProperties.get(EpicsClient.EPICS_CHANNELS) instanceof String[];
-    }
-
-    /**
-     * Called when an EpicsClient disappears. This method will unbind the context to the client
-     *
-     * @param epicsClient An OSGi service implementing EpicsClient that disappears
-     */
-    @Unbind
-    public void unbindEpicsClient(EpicsClient epicsClient) {
-        epicsClientsHolder.disconnectEpicsClient(epicsClient);
-    }
 }

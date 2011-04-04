@@ -28,7 +28,6 @@ public class EpicsBaseImpl implements EpicsBase {
 
     private final Context _ctx;
     private final Map<String, Channel> _channels = Maps.newTreeMap();
-    private boolean closed = false;
 
     //TODO: The following code can be resucitated when more testing is done to define
     //      how to reconnect correctly in case of EPICS trouble.
@@ -120,7 +119,6 @@ public class EpicsBaseImpl implements EpicsBase {
     }
 
     public void close() throws IllegalStateException, CAException {
-        closed = true;
         for (String channelName : _channels.keySet()) {
             Channel ch = _channels.get(channelName);
             try {

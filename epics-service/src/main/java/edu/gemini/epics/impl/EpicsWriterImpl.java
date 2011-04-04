@@ -1,8 +1,8 @@
 package edu.gemini.epics.impl;
 
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.JCAContextController;
 import edu.gemini.epics.EpicsWriter;
+import edu.gemini.epics.JCAContextController;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import org.apache.felix.ipojo.annotations.Component;

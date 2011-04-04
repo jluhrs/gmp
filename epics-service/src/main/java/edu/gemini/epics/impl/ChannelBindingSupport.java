@@ -50,9 +50,8 @@ public class ChannelBindingSupport {
         }
 
         private void reconnectChannel(Channel ch) {
-            LOG.warning("Connection was _closed for " + ch.getName());
+            LOG.warning("Connection was closed for " + ch.getName());
             try {
-
                 LOG.info("Destroying channel " + ch.getName() + ", state is " + ch.getConnectionState());
                 ch.destroy();
 

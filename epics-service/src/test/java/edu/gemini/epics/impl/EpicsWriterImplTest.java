@@ -15,7 +15,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class EpicsWriterImplTest {
-    private static final String ADDRESS = "172.16.2.24";
     private static final String CHANNEL_NAME = "tst:tst";
     private final Context context = mock(Context.class);
     private final Channel channel = mock(Channel.class);
@@ -28,7 +27,7 @@ public class EpicsWriterImplTest {
 
         when(channel.getContext()).thenReturn(context);
 
-        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context, ADDRESS));
+        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, simulatedValue);
@@ -37,7 +36,7 @@ public class EpicsWriterImplTest {
 
     @Test
     public void testWriteValueToUnknownChannel() throws CAException {
-        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context, ADDRESS));
+        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
 
         epicsWriter.write(CHANNEL_NAME, simulatedValue);
         verifyZeroInteractions(channel);
@@ -49,7 +48,7 @@ public class EpicsWriterImplTest {
 
         when(channel.getContext()).thenReturn(context);
 
-        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context, ADDRESS));
+        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         Double[] valuesAsObject = new Double[] {1., 2.};
@@ -64,7 +63,7 @@ public class EpicsWriterImplTest {
 
         when(channel.getContext()).thenReturn(context);
 
-        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context, ADDRESS));
+        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, singleValue);
@@ -73,7 +72,7 @@ public class EpicsWriterImplTest {
 
     @Test
     public void testWriteSingleValueToUnknownChannel() throws CAException {
-        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context, ADDRESS));
+        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
 
         epicsWriter.write(CHANNEL_NAME, singleValue);
         verifyZeroInteractions(channel);
@@ -85,7 +84,7 @@ public class EpicsWriterImplTest {
 
         doThrow(new CAException()).when(channel).put(singleValue);
 
-        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context, ADDRESS));
+        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, singleValue);
@@ -97,7 +96,7 @@ public class EpicsWriterImplTest {
 
         doThrow(new CAException()).when(channel).put(simulatedValue);
 
-        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context, ADDRESS));
+        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, simulatedValue);

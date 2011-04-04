@@ -1,0 +1,30 @@
+package edu.gemini.epics;
+
+/**
+ * This interface defines a service that can register listeners to specific EPICS channels
+ *
+ * This is similar to the role of {@link EpicsClient} but instead of using OSGi services
+ * it can be used programatically
+ *
+ */
+public interface EpicsObserver {
+    /**
+     * Request that the passed client gets updates on the list of channels
+     *
+     * Unknown channels are ignored
+     *
+     * @param client A Valid EpicsClient object
+     * @param channels A list of channels the Client will get updates for
+     */
+    void registerEpicsClient(EpicsClient client, Iterable<String> channels);
+
+    /**
+     * The counter part to (@link registerEpicsClient}, it will stop sending
+     * updates to the client.
+     *
+     * If a previously unknown client is passed the request is ignored
+     * 
+     * @param client
+     */
+    void unregisterEpicsClient(EpicsClient client);
+}

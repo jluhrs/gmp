@@ -19,7 +19,6 @@ import static org.mockito.Mockito.when;
 
 public class EpicsBaseImplTest {
     private static final String CHANNEL_NAME = "tst:tst";
-    private static final String ADDRESS = "172.16.2.24";
     private final Context context = mock(Context.class);
     private final Channel channel = mock(Channel.class);
 
@@ -27,7 +26,7 @@ public class EpicsBaseImplTest {
     public void testChannelBinding() throws CAException {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
-        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context, ADDRESS));
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
         epicsBase.bindChannel(CHANNEL_NAME);
 
         assertNotNull(epicsBase.getChannel(CHANNEL_NAME));
@@ -35,14 +34,14 @@ public class EpicsBaseImplTest {
 
     @Test
     public void testFindUnknownChannel() {
-        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context, ADDRESS));
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
 
         assertNull(epicsBase.getChannel(CHANNEL_NAME));
     }
 
     @Test
     public void testIsChannelKnown() {
-        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context, ADDRESS));
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
 
         assertFalse(epicsBase.isChannelKnown(CHANNEL_NAME));
 
@@ -56,7 +55,7 @@ public class EpicsBaseImplTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         // Bind a channel
-        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context, ADDRESS));
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
         epicsBase.bindChannel(CHANNEL_NAME);
 
         // close
@@ -68,7 +67,7 @@ public class EpicsBaseImplTest {
     public void testCAExceptionWhileBindingChannel() throws CAException {
         when(context.createChannel(CHANNEL_NAME)).thenThrow(new CAException());
 
-        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context, ADDRESS));
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
         epicsBase.bindChannel(CHANNEL_NAME);
     }
 
@@ -77,7 +76,7 @@ public class EpicsBaseImplTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         doThrow(new TimeoutException()).when(context).pendIO(anyDouble());
 
-        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context, ADDRESS));
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
         epicsBase.bindChannel(CHANNEL_NAME);
     }
 }

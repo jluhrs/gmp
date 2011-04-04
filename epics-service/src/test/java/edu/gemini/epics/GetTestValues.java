@@ -24,8 +24,9 @@ public class GetTestValues {
     }
 
     public GetTestValues() throws CAException, EpicsException {
-        Context context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        _reader = new EpicsReaderImpl(new EpicsService(context, "172.16.2.22"));
+        EpicsService epicsService = new EpicsService("172.16.2.24");
+        epicsService.startService();
+        _reader = new EpicsReaderImpl(epicsService);
         for (String s : CHANNELS.keySet()) {
             _reader.bindChannel(s);
         }

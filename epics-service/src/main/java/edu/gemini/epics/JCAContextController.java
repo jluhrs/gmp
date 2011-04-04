@@ -13,4 +13,6 @@ public interface JCAContextController {
      * @throws IllegalStateException In case the Context is not available
      */
     Context getJCAContext() throws IllegalStateException;
+
+    boolean isContextAvailable();
 }

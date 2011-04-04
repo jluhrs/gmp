@@ -8,6 +8,7 @@ import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Integration test that verifies that we get updates from the Weather Station
  */
+@Ignore
 public  class WeatherStationUpdatesIT {
     /**
      * Map the channel names to friendly text names.

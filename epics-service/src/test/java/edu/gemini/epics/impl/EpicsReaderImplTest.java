@@ -17,7 +17,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EpicsReaderImplTest {
-    private static final String ADDRESS = "172.16.2.24";
     private static final String CHANNEL_NAME = "tst:tst";
     private final Context context = mock(Context.class);
     private final Channel channel = mock(Channel.class);
@@ -30,7 +29,7 @@ public class EpicsReaderImplTest {
         when(channel.get()).thenReturn(new DBR_Float(simulatedValue));
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
@@ -39,7 +38,7 @@ public class EpicsReaderImplTest {
 
     @Test
     public void testReadValueOfUnknownChannel() throws CAException {
-        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context));
 
         Object value = epicsReader.getValue(CHANNEL_NAME);
         assertArrayEquals(new double[0], (double[]) value, 0);
@@ -50,7 +49,7 @@ public class EpicsReaderImplTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.get()).thenThrow(new CAException());
 
-        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         epicsReader.getValue(CHANNEL_NAME);
@@ -61,7 +60,7 @@ public class EpicsReaderImplTest {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context, ADDRESS));
+        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context));
         epicsReader.bindChannel(CHANNEL_NAME);
 
         doThrow(new TimeoutException()).when(context).pendIO(anyDouble());
