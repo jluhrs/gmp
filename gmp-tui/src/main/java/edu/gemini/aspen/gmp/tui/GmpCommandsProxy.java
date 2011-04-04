@@ -84,7 +84,9 @@ public class GmpCommandsProxy {
 
     @Descriptor("Issues an apply command over GMP")
     public void apply(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg,
-                      @Descriptor("configuration: {path:value,path:value}") String configurationArg) {
+                      @Descriptor("configuration: {path=value, path=value}") String configurationArg) {
+        System.out.println(configurationArg);
+        //new ConfigurationParser(configurationArg);
         Command command = buildCommand(SequenceCommand.PARK, activityArg);
 
         issueCommand(command);
