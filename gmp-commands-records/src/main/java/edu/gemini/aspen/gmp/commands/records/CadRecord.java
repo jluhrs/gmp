@@ -21,6 +21,14 @@ public interface CadRecord {
      * @return the CAR record associated with this CAD
      */
     CarRecord getCar();
+
+    /**
+     * Create the EPICS channels
+     */
     void start();
+
+    /**
+     * Destroy the EPICS channels.
+     */
     void stop();
 }
