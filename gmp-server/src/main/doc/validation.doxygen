@@ -580,18 +580,36 @@ The valid values for health, severity and alarm cause, can be found in the giapi
 \li Start the GMP as indicated in the \ref user_manual.
 \li For this test you will also need tcl code in http://source.gemini.edu/software/giapi/giapi-eng/ocs-test-scripts/trunk.
 \li Check the code to a directory we'll call ocs-test-scripts/
-\li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh seq-command</tt>.
-\li In ocs-test-scripts/, run <tt>$ ./commandTest -config test.ca -cs park -params "A 300"<tt>. Remember to set the
+\li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh any-command</tt>.
+\li In ocs-test-scripts/, run <tt>$ ./commandTest -config test.ca -cs observe -params "DATA_LABEL test_data_label"<tt>. Remember to set the
 \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
 \li The command should take about 10 seconds before exiting without any exceptions (a message like "epicsThreadOnceOsd
 epicsMutexLock failed." is normal).
 \li In the C++ example code that's running you should see something like:
 \verbatim
-    Starting Sequence Commands Example
-    2011-03-29 10:52:02,144 [0x2b1639af83b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.PARK
+    $ sh runExample.sh any-command
+    Starting Accepting Any Sequence Commands Example
+    2011-04-04 13:59:07,636 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.TEST
+    2011-04-04 13:59:07,643 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.INIT
+    2011-04-04 13:59:07,649 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.DATUM
+    2011-04-04 13:59:07,656 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.PARK
+    2011-04-04 13:59:07,662 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.VERIFY
+    2011-04-04 13:59:07,673 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.END_VERIFY
+    2011-04-04 13:59:07,680 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.GUIDE
+    2011-04-04 13:59:07,685 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.END_GUIDE
+    2011-04-04 13:59:07,690 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.OBSERVE
+    2011-04-04 13:59:07,700 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.END_OBSERVE
+    2011-04-04 13:59:07,705 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.PAUSE
+    2011-04-04 13:59:07,714 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.CONTINUE
+    2011-04-04 13:59:07,722 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.STOP
+    2011-04-04 13:59:07,727 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.ABORT
+    2011-04-04 13:59:07,733 [0x2b0f1ba4b3b0] INFO  giapi.LogCommandUtil - Registering handler to apply prefix gpi
     Configuration
+    {gpi:observe.DATA_LABEL : test_data_label}
+    Response to caller 0
     Configuration
-    Starting worker thread
+    {gpi:observe.DATA_LABEL : test_data_label}
+    Starting worker thread for 6
     Worker Thread started!
     Messages processed = 0
     Messages processed = 1
@@ -603,6 +621,6 @@ epicsMutexLock failed." is normal).
     Messages processed = 7
     Messages processed = 8
     Messages processed = 9
-    2011-03-29 10:52:20,483 [0x44976940] INFO  giapi.LogCommandUtil - Posting completion info for action id  2
+    2011-04-04 13:59:16,455 [0x4e77c940] INFO  giapi.LogCommandUtil - Posting completion info for action id  6
 \endverbatim
 */
