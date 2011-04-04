@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Integration test that verifies that we get updates from the Weather Station
  */
-public class WeatherStationUpdatesIT {
+public  class WeatherStationUpdatesIT {
     /**
      * Map the channel names to friendly text names.
      */

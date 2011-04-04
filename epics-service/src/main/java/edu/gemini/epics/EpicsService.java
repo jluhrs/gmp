@@ -23,10 +23,9 @@ import java.util.logging.Logger;
 /**
  * The EpicsService is an iPojo Component that has a reference to a JCAContext
  * and that lets EpicsClients to receive updates when an EPICS channel changes
- *
+ * <p/>
  * The Service can be configured using the ConfigAdmin service and it takes
  * a single parameter in the form of an IP address
- * 
  */
 @Component
 @Provides
@@ -124,11 +123,13 @@ public class EpicsService implements JCAContextController {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(bos);
         _ctx.printInfo(out);
-        
+
         String ctxInfo = new String(bos.toByteArray());
         Iterable<String> ctxInfoLines = Splitter.on('\n').trimResults().split(ctxInfo);
-        for(String line: ctxInfoLines) {
-            LOG.info("JCALibrary Info: " + line);
+        for (String line : ctxInfoLines) {
+            if (!line.isEmpty()) {
+                LOG.info("JCALibrary Info: " + line);
+            }
         }
     }
 
