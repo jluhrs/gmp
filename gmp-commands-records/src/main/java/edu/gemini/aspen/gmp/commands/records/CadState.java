@@ -69,8 +69,11 @@ enum CadState {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
                             return IS_PRESET;
-                        } else {
+                        } else if (resp.getResponse().equals(HandlerResponse.Response.ERROR)) {
                             endInError(epicsCad, car, resp.getMessage());
+                            return CLEAR;
+                        } else {
+                            endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                             return CLEAR;
                         }
                     } catch (CAException e) {
@@ -89,8 +92,10 @@ enum CadState {
                             endProcessingNoCarUpdate(epicsCad);
                         } else if (resp.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
                             endProcessing(epicsCad, car);
-                        } else {
+                        } else if (resp.getResponse().equals(HandlerResponse.Response.ERROR)) {
                             endInError(epicsCad, car, resp.getMessage());
+                        } else {
+                            endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
@@ -106,8 +111,10 @@ enum CadState {
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
-                        } else {
+                        } else if (resp.getResponse().equals(HandlerResponse.Response.ERROR)) {
                             endInError(epicsCad, car, resp.getMessage());
+                        } else {
+                            endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
@@ -149,8 +156,11 @@ enum CadState {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
                             return IS_PRESET;
-                        } else {
+                        } else if (resp.getResponse().equals(HandlerResponse.Response.ERROR)) {
                             endInError(epicsCad, car, resp.getMessage());
+                            return CLEAR;
+                        } else {
+                            endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                             return CLEAR;
                         }
                     } catch (CAException e) {
@@ -169,8 +179,10 @@ enum CadState {
                             endProcessingNoCarUpdate(epicsCad);
                         } else if (resp.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
                             endProcessing(epicsCad, car);
-                        } else {
+                        } else if (resp.getResponse().equals(HandlerResponse.Response.ERROR)) {
                             endInError(epicsCad, car, resp.getMessage());
+                        } else {
+                            endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
@@ -186,8 +198,10 @@ enum CadState {
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
-                        } else {
+                        } else if (resp.getResponse().equals(HandlerResponse.Response.ERROR)) {
                             endInError(epicsCad, car, resp.getMessage());
+                        } else {
+                            endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.

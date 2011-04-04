@@ -87,6 +87,7 @@ public class ApplyRecord {
             car.start();
             for (CadRecord cad : cads) {
                 cad.start();
+                cad.getCar().registerListener(new CarListener());
             }
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
@@ -258,6 +259,7 @@ public class ApplyRecord {
     private class DirListener implements ChannelListener {
         @Override
         public void valueChange(DBR dbr) {
+            LOG.info("Received DIR write: "+ Dir.values()[((short[]) dbr.getValue())[0]]);
             try {
                 processDir(Dir.values()[((short[]) dbr.getValue())[0]]);
 
@@ -274,6 +276,7 @@ public class ApplyRecord {
         @Override
         public void update(CarRecord.Val state, String message, Integer errorCode, Integer id) {
             synchronized (ApplyRecord.this) {
+                LOG.info("Received CAR status change: "+ state);
                 try {
                     if (state == CarRecord.Val.ERR) {
                         car.changeState(state, message, errorCode, id);
