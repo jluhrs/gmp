@@ -57,7 +57,7 @@ public class EpicsCad {
             //ocid = cas.createChannel(top +":"+ name + ".OCID", 0);
             //mark = cas.createChannel(top +":"+ name + ".MARK", 0);
             for (String attribute: attributeNames) {
-                Channel<String> ch = cas.createChannel(top +":"+ name + "." + attribute, "");
+                Channel<String> ch = cas.createChannel(top +":"+ attribute, "");
                 ch.registerListener(attributeListener);
                 attributes.add(ch);
             }

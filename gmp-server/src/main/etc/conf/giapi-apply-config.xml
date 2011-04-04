@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ConfigSets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="giapi-apply-config.xsd">
+    <ConfigSet>
+        <name>configAO</name>
+        <field>useAO</field>
+        <field>magnitudeI</field>
+    </ConfigSet>
+
+</ConfigSets>

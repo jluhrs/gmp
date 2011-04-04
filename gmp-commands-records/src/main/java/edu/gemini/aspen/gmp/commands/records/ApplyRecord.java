@@ -1,15 +1,25 @@
 package edu.gemini.aspen.gmp.commands.records;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.records.generated.ConfigSetType;
+import edu.gemini.aspen.gmp.commands.records.generated.ConfigSets;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 import org.apache.felix.ipojo.annotations.*;
+import org.xml.sax.SAXException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +32,6 @@ import java.util.logging.Logger;
  *         Date: 3/17/11
  */
 @Component
-@Instantiate
 public class ApplyRecord {
     private static final Logger LOG = Logger.getLogger(ApplyRecord.class.getName());
     private final String name = "apply";
@@ -44,26 +53,162 @@ public class ApplyRecord {
      * Constructor
      *
      * @param cas Channel Access Server to use
-     * @param cs Command Sender to use
+     * @param cs  Command Sender to use
      */
     protected ApplyRecord(@Requires ChannelAccessServer cas,
-                          @Requires CommandSender cs) {
+                          @Requires CommandSender cs,
+                          @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
+                          @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
         LOG.info("Constructor");
         this.cas = cas;
         this.cs = cs;
         car = new CarRecord(cas, epicsTop + ":" + name + "C");
-
-        for (SequenceCommand seq:SequenceCommand.values()) {
+        ConfigSets configSets = new ConfigSets();
+        try {
+            JAXBContext jc = JAXBContext.newInstance(ConfigSets.class);
+            Unmarshaller um = jc.createUnmarshaller();
+            SchemaFactory factory =
+                    SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+            Schema schema = factory.newSchema(new File(xsdFileName));
+            um.setSchema(schema); //to enable validation
+            configSets = (ConfigSets) um.unmarshal(new File(xmlFileName));
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Error parsing xml file " + xmlFileName, ex);
+            throw new IllegalArgumentException("Problem parsing XML", ex);
+        }
+        for (SequenceCommand seq : SequenceCommand.values()) {
             if (seq.equals(SequenceCommand.APPLY)) {
                 List<String> attributes = new ArrayList<String>();
+                for(ConfigSetType conf:configSets.getConfigSet()){
+                    for(String field:conf.getField()){
+                        attributes.add(conf.getName()+"."+field);
+                    }
+                }
+//                gpi:configAo
+//                        useAo
+//                        magnitudeI
+//                        r0
+//                        optimize
+//                        useLastVals
+//
+//                gpi:configCal
+//                        useCal
+//                        magnitudeH
+//
+//                gpi:configIfs
+//                        integrationTime
+//                        readoutMode
+//                        numReads
+//                        numCoadds
+//                        startx
+//                        starty
+//                        endx
+//                        endy
+//
+//                gpi:configFOVIfsOffset
+//                        xTarget
+//                        yTarget
+//
+//                gpi:configPolarizer
+//                        deploy
+//                        angle
+//
+//                gpi:observationMode
+//                        modeName
+//                gpi:selectAdc
+//                        deploy
+//                        overrideCas
+//                        overrideZen
+//                        orientation
+//                        power
+//
+//                gpi:selectPupilCamera
+//                        deploy
+//                gpi:selectSource
+//                        source
+//                        intensity
+//
+//                gpi:selectShutter
+//                        entranceShutter
+//                        calExitShutter
+//                        calEntranceShutter
+//                        calReferenceShutter
+//                        calScienceShutter
+//
+//                gpi:takeExposure
+//                        selection
+//                        intTime
+//                        filename
+//                //Apply Sequence Command Calibration Sets
+//                cal:acquireWhiteFringe
+//                        mark
+//                gpi:calToAoAlign
+//                        phase
+//                gpi:centerPinhole
+//                        mark
+//                ao:dmShape
+//                        filename
+//                        dmFlag
+//
+//                ao:measureAOWFSCentroids
+//                        mark
+//                cal:measureCalCentroids
+//                        mark
+//                cal:measureHowfsOffsets
+//                        filename
+//                gpi:takeDark
+//                        selection
+//                        intTime
+//                        filename
+//
+//                gpi:takeFlat
+//                        selection
+//                        intTime
+//                        filename
+//
+//                cal:transMaps
+//                        filename
+//                //Apply Sequence Command Engineering Sets (Miscellaneous access functions)
+//                gpi:configAoSpatialFilter
+//                        mode
+//                        target
+//                        now
+//
+//                gpi:configSteeringMirrors
+//                        selection
+//                        track
+//                        tip
+//                        tilt
+//                        focus
+//
+//                gpi:correct
+//                        selection
+//                ifs:log
+//                        temperatures
+//                        filename
+//                        rate
+//
+//                ifs:selectIfsFilter
+//                        maskStr
+//                gpi:selectFocalPlaneMask
+//                        maskStr
+//                gpi:selectLyotMask
+//                        maskStr
+//                gpi:selectPupilPlaneMask
+//                        maskStr
+//                gpi:statistics
+//                        statStat
+//                        statName
+//                        statSelected
+
 
                 //implement apply attributes
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, "config", attributes));
             } else if (seq.equals(SequenceCommand.OBSERVE)) {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList("DATA_LABEL")));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase()+".DATA_LABEL")));
             } else if (seq.equals(SequenceCommand.REBOOT)) {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList("REBOOT_OPT")));
-            }else{
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase()+".REBOOT_OPT")));
+            } else {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), new ArrayList<String>()));
             }
 
@@ -259,7 +404,7 @@ public class ApplyRecord {
     private class DirListener implements ChannelListener {
         @Override
         public void valueChange(DBR dbr) {
-            LOG.info("Received DIR write: "+ Dir.values()[((short[]) dbr.getValue())[0]]);
+            LOG.info("Received DIR write: " + Dir.values()[((short[]) dbr.getValue())[0]]);
             try {
                 processDir(Dir.values()[((short[]) dbr.getValue())[0]]);
 
@@ -276,7 +421,7 @@ public class ApplyRecord {
         @Override
         public void update(CarRecord.Val state, String message, Integer errorCode, Integer id) {
             synchronized (ApplyRecord.this) {
-                LOG.info("Received CAR status change: "+ state);
+                LOG.info("Received CAR status change: " + state);
                 try {
                     if (state == CarRecord.Val.ERR) {
                         car.changeState(state, message, errorCode, id);

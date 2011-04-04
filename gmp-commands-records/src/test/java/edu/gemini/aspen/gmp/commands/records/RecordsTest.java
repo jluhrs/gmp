@@ -14,7 +14,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
+import java.io.*;
 import java.util.concurrent.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
@@ -29,6 +31,42 @@ import static org.mockito.Mockito.*;
  */
 public class RecordsTest {
     private static final Logger LOG = Logger.getLogger(RecordsTest.class.getName());
+    public static final String xmlStr;
+
+    public static final String xsdStr;
+
+
+    static {
+        BufferedReader in = new BufferedReader(new InputStreamReader(RecordsTest.class.getResourceAsStream("../../../../../../giapi-apply-config.xml")));
+        String xml = "";
+        try {
+
+            String line = in.readLine();
+            while (line != null) {
+                xml += line;
+                line = in.readLine();
+
+            }
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        xmlStr = xml;
+
+        in = new BufferedReader(new InputStreamReader(RecordsTest.class.getResourceAsStream("../../../../../../giapi-apply-config.xsd")));
+        String xsd = "";
+        try {
+            String line = in.readLine();
+            while (line != null) {
+                xsd += line;
+                line = in.readLine();
+
+            }
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        xsdStr = xsd;
+
+    }
 
     private ChannelAccessServerImpl cas;
     private final String carPrefix = "gpi:applyC";
@@ -108,7 +146,7 @@ public class RecordsTest {
 
     @Test
     public void CadTest() throws CAException, InterruptedException {
-        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList("DATA_LABEL"));
+        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName+".DATA_LABEL"));
         cad.start();
 
         //test mark
@@ -168,7 +206,7 @@ public class RecordsTest {
 
     @Test
     public void CadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
-        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList("DATA_LABEL"));
+        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName+".DATA_LABEL"));
         cad.start();
 
         Channel<Dir> dir = cas.createChannel(epicsTop + ":" + cadName + ".DIR", Dir.CLEAR);
@@ -218,8 +256,24 @@ public class RecordsTest {
     }
 
     @Test
-    public void applyTest() throws CAException, InterruptedException {
-        ApplyRecord apply = new ApplyRecord(cas, cs);
+    public void applyTest() throws CAException, InterruptedException, IOException {
+        File xml = null;
+
+        xml = File.createTempFile("ApplyTest", ".xml");
+
+        File xsd = null;
+        xsd = File.createTempFile("ApplyTest", ".xsd");
+
+        FileWriter xmlWrt = new FileWriter(xml);
+        FileWriter xsdWrt = new FileWriter(xsd);
+
+        xmlWrt.write(xmlStr);
+        xsdWrt.write(xsdStr);
+        xmlWrt.close();
+        xsdWrt.close();
+
+
+        ApplyRecord apply = new ApplyRecord(cas, cs, xml.getPath(), xsd.getPath());
         apply.start();
         Channel<Dir> dir = cas.createChannel(epicsTop + ":apply.DIR", Dir.CLEAR);
         Channel<Integer> val = cas.createChannel(epicsTop + ":apply.VAL", 0);
@@ -228,13 +282,7 @@ public class RecordsTest {
         Channel<Integer> cadClid = cas.createChannel(epicsTop + ":" + cadName + ".ICID", 0);
         Channel<String> data_label = cas.createChannel(epicsTop + ":" + cadName + ".DATA_LABEL", "");
 
-//        CadRecordImpl cad = new CadRecordImpl(cas,cs,epicsTop,cadName, Lists.newArrayList("A","B","C"));
-//        cad.start();
-//        apply.bindCad(cad);
 
-
-        //test cad state changes
-        //cad.getEpicsCad().setDir(Dir.MARK, clid.getFirst());
         data_label.setValue("");
         dir.setValue(Dir.START);
         assertEquals(new Integer(1), clid.getFirst());
@@ -242,15 +290,12 @@ public class RecordsTest {
         assertEquals(new Integer(1), val.getFirst());
 
 
-        //cad.getEpicsCad().setDir(Dir.MARK, clid.getFirst());
         data_label.setValue("");
         dir.setValue(Dir.START);
         assertEquals(new Integer(2), cadClid.getFirst());
         assertEquals(new Integer(0), cadVal.getFirst());
         assertEquals(new Integer(2), val.getFirst());
-//
-//        apply.unBindCad(cad);
-//        cad.stop();
+
         apply.stop();
     }
 }

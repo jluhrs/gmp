@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>
+            Schema file defining the structure of the configuration file used by the gmp-epics-status-service
+            to create epics channels and map them to GIAPI status items.
+        </xs:documentation>
+    </xs:annotation>
+    <xs:element name="ConfigSets">
+        <xs:annotation>
+            <xs:documentation>
+                The 'ConfigSets' root element, can have any number of 'ConfigSetType' child elements.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ConfigSet" type="ConfigSetType" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="ConfigSetType">
+        <xs:annotation>
+            <xs:documentation>
+                The 'ConfigSet' element, must have one 'name' and at least one 'field'.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="field" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
