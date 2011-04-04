@@ -24,6 +24,7 @@ import static org.ops4j.pax.exam.CoreOptions.felix;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
+import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
 
 /**
@@ -39,8 +40,10 @@ public class EpicsServiceIT {
         return options(
                 felix(),
                 cleanCaches(),
+                waitForFrameworkStartup(),
                 systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + "/src/test/resources/conf/services"),
                 systemProperty("felix.fileinstall.noInitialDelay").value("true"),
+                systemProperty("ipojo.log.level").value("debug"),
                 mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").version("4.2.0"),
                 mavenBundle().artifactId("org.apache.felix.configadmin").groupId("org.apache.felix").versionAsInProject(),
