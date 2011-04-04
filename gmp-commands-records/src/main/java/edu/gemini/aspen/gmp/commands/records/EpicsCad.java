@@ -4,7 +4,6 @@ import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.CAException;
-import gov.aps.jca.dbr.DBR;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,25 +39,25 @@ public class EpicsCad {
     /**
      * Create Channels
      *
-     * @param prefix of the instrument. ex.: "gpi"
+     * @param top of the instrument. ex.: "gpi"
      * @param name of the CAD. ex.: "observe"
      * @param attributeListener listener to be notified when any attribute is written to
      * @param dirListener listener to be notified when the DIR field is written to
      * @param attributeNames list of attribute names. Each will be an EPICS channel.
      */
-    public synchronized void start(String prefix, String name, ChannelListener attributeListener, ChannelListener dirListener, List<String> attributeNames){
-        LOG.info("EpicsCad start: "+prefix+":"+name);
+    public synchronized void start(String top, String name, ChannelListener attributeListener, ChannelListener dirListener, List<String> attributeNames){
+        LOG.info("EpicsCad start: "+ top +":"+name);
         try {
-            dir = cas.createChannel(prefix + ":" + name + ".DIR", Dir.CLEAR);
+            val = cas.createChannel(top + ":" + name + ".VAL", 0);
+            clid = cas.createChannel(top +":"+ name + ".ICID", 0);
+            dir = cas.createChannel(top + ":" + name + ".DIR", Dir.CLEAR);
             dir.registerListener(dirListener);
-            val = cas.createChannel(prefix + ":" + name + ".VAL", 0);
-            mess = cas.createChannel(prefix + ":" + name + ".MESS", "");
-            omss = cas.createChannel(prefix + ":" + name + ".OMSS", "");
-            clid = cas.createChannel(prefix +":"+ name + ".ICID", 0);
-            //ocid = cas.createChannel(prefix +":"+ name + ".OCID", 0);
-            //mark = cas.createChannel(prefix +":"+ name + ".MARK", 0);
+            mess = cas.createChannel(top + ":" + name + ".MESS", "");
+            omss = cas.createChannel(top + ":" + name + ".OMSS", "");
+            //ocid = cas.createChannel(top +":"+ name + ".OCID", 0);
+            //mark = cas.createChannel(top +":"+ name + ".MARK", 0);
             for (String attribute: attributeNames) {
-                Channel<String> ch = cas.createChannel(prefix +":"+ name + "." + attribute, "");
+                Channel<String> ch = cas.createChannel(top +":"+ name + "." + attribute, "");
                 ch.registerListener(attributeListener);
                 attributes.add(ch);
             }

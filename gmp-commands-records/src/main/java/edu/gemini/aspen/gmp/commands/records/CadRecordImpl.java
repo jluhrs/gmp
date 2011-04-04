@@ -16,8 +16,6 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 3/24/11
  */
-@Component
-@Provides
 public class CadRecordImpl implements CadRecord {
     private static final Logger LOG = Logger.getLogger(CadRecordImpl.class.getName());
 
@@ -29,7 +27,7 @@ public class CadRecordImpl implements CadRecord {
     final private SequenceCommand seqCom;
     final private EpicsCad epicsCad;
 
-    final private String prefix;
+    final private String epicsTop;
     final private String name;
     final private List<String> attributeNames = new ArrayList<String>();
     final private CarRecord car;
@@ -39,36 +37,40 @@ public class CadRecordImpl implements CadRecord {
      *
      * @param cas Channel Access Server to pass to CAR and EpicsCad
      * @param cs Command Sender to use
-     * @param prefix instrument prefix. ex.: "gpi"
+     * @param epicsTop instrument epicsTop. ex.: "gpi"
      * @param name CAD name. ex.: "park"
      * @param attributes attribute names this CAD has.
      */
-    protected CadRecordImpl(@Requires ChannelAccessServer cas,
-                            @Requires CommandSender cs,
-                            @Property(name = "prefix", value = "INVALID", mandatory = true) String prefix,
-                            @Property(name = "name", value = "INVALID", mandatory = true) String name,
-                            @Property(name = "attributes", value = "", mandatory = true) String attributes) {
+    protected CadRecordImpl(ChannelAccessServer cas,
+                            CommandSender cs,
+                            String epicsTop,
+                            String name,
+                            Iterable<String> attributes) {
         this.cs = cs;
-        this.prefix = prefix.toLowerCase();
+        this.epicsTop = epicsTop.toLowerCase();
         this.name = name.toLowerCase();
-        seqCom = SequenceCommand.valueOf(name.toUpperCase());
-        for(String att: attributes.split(",")){
-            attributeNames.add(att.trim());
+        if(name.equalsIgnoreCase("config")){
+            seqCom = SequenceCommand.valueOf("APPLY");
+        }else{
+            seqCom = SequenceCommand.valueOf(name.toUpperCase());
+        }
+        for(String att: attributes){
+            attributeNames.add(att);
         }
         epicsCad = new EpicsCad(cas);
-        car = new CarRecord(cas, prefix.toLowerCase() + ":" + name.toLowerCase() + "C");
+        car = new CarRecord(cas, epicsTop.toLowerCase() + ":" + name.toLowerCase() + "C");
         LOG.info("Constructor");
     }
 
-    @Validate
+    @Override
     public synchronized void start() {
         LOG.info("Validate");
 
-        epicsCad.start(prefix, name, new AttributeListener(), new DirListener(), attributeNames);
+        epicsCad.start(epicsTop, name, new AttributeListener(), new DirListener(), attributeNames);
         car.start();
     }
 
-    @Invalidate
+    @Override
     public synchronized void stop() {
         LOG.info("InValidate");
         epicsCad.stop();

@@ -271,13 +271,13 @@ Of course, you can change these values and update the test application according
         You will see:
 
 \verbatim
-    2011-03-24 16:22:02,809 [0x7fff70808ca0] INFO  giapi.LogCommandUtil - Registering handler to apply prefix gpi
+    2011-03-24 16:22:02,809 [0x7fff70808ca0] INFO  giapi.LogCommandUtil - Registering handler to apply epicsTop gpi
     2011-03-24 16:22:02,809 [0x7fff70808ca0] DEBUG giapi::SequenceCommandConsumer - Starting consumer for topic GMP.SC.APPLY.gpi/GMP_ACTIVITY_PROP IN ('PRESET','START','PRESET/START')
 \endverbatim
 
 
         This will start listening for the APPLY Command with the PRESET/START activity and will accept configurations with
-         gpi prefix. The handler will accept the apply send a STARTED responses and COMPLETE after some 10 seconds.
+         gpi epicsTop. The handler will accept the apply send a STARTED responses and COMPLETE after some 10 seconds.
 
         To confirm this is working, use the giapi-tester to send this command to the application.
 

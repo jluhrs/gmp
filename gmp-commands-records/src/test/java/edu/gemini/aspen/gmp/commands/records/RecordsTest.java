@@ -31,8 +31,8 @@ public class RecordsTest {
     private static final Logger LOG = Logger.getLogger(RecordsTest.class.getName());
 
     private ChannelAccessServerImpl cas;
-    private final String carPrefix =  "gpitest:applyC";
-    private final String prefix = "gpitest";
+    private final String carPrefix = "gpi:applyC";
+    private final String epicsTop = "gpi";
     private final String cadName = "observe";
     private CommandSender cs;
 
@@ -43,24 +43,16 @@ public class RecordsTest {
         cas.start();
         cs = mock(CommandSender.class);
         Command start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.START, DefaultConfiguration.configurationBuilder().
-                withConfiguration("gpitest:observe.A","").
-                withConfiguration("gpitest:observe.B","").
-                withConfiguration("gpitest:observe.C", "").
+                withConfiguration(epicsTop + ":" + cadName + ".DATA_LABEL", "").
                 build());
         Command preset = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET, DefaultConfiguration.configurationBuilder().
-                withConfiguration("gpitest:observe.A","").
-                withConfiguration("gpitest:observe.B","").
-                withConfiguration("gpitest:observe.C","").
+                withConfiguration(epicsTop + ":" + cadName + ".DATA_LABEL", "").
                 build());
         Command cancel = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.CANCEL, DefaultConfiguration.configurationBuilder().
-                withConfiguration("gpitest:observe.A","").
-                withConfiguration("gpitest:observe.B","").
-                withConfiguration("gpitest:observe.C","").
+                withConfiguration(epicsTop + ":" + cadName + ".DATA_LABEL", "").
                 build());
         Command preset_start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET_START, DefaultConfiguration.configurationBuilder().
-                withConfiguration("gpitest:observe.A","").
-                withConfiguration("gpitest:observe.B","").
-                withConfiguration("gpitest:observe.C","").
+                withConfiguration(epicsTop + ":" + cadName + ".DATA_LABEL", "").
                 build());
         when(cs.sendCommand(eq(preset), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);
         when(cs.sendCommand(eq(start), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.COMPLETED);
@@ -79,29 +71,29 @@ public class RecordsTest {
         CarRecord car = new CarRecord(cas, carPrefix);
         car.start();
 
-        Channel<CarRecord.Val> val = cas.createChannel(carPrefix+".VAL", CarRecord.Val.UNKNOWN);
-        Channel<String> omss = cas.createChannel(carPrefix+".OMSS","");
-        Channel<Integer> oerr = cas.createChannel(carPrefix+".OERR",0);
-        Channel<Integer> clid = cas.createChannel(carPrefix+".CLID",0);
+        Channel<CarRecord.Val> val = cas.createChannel(carPrefix + ".VAL", CarRecord.Val.UNKNOWN);
+        Channel<String> omss = cas.createChannel(carPrefix + ".OMSS", "");
+        Channel<Integer> oerr = cas.createChannel(carPrefix + ".OERR", 0);
+        Channel<Integer> clid = cas.createChannel(carPrefix + ".CLID", 0);
 
-        car.changeState(CarRecord.Val.BUSY, "a",-1,1);
+        car.changeState(CarRecord.Val.BUSY, "a", -1, 1);
         assertEquals(CarRecord.Val.BUSY, val.getFirst());
-        assertEquals("a",omss.getFirst());
-        assertEquals(new Integer(-1),oerr.getFirst());
-        assertEquals(new Integer(1),clid.getFirst());
+        assertEquals("a", omss.getFirst());
+        assertEquals(new Integer(-1), oerr.getFirst());
+        assertEquals(new Integer(1), clid.getFirst());
 
         car.stop();
 
-        try{
+        try {
             val.getAll();
             fail();
-        }catch(IllegalStateException e){
+        } catch (IllegalStateException e) {
             //ok
         }
 
     }
 
-    private class ChangeListener extends CountDownLatch implements ChannelListener{
+    private class ChangeListener extends CountDownLatch implements ChannelListener {
 
         public ChangeListener() {
             super(1);
@@ -109,19 +101,19 @@ public class RecordsTest {
 
         @Override
         public void valueChange(DBR dbr) {
-           countDown();
+            countDown();
         }
 
     }
 
     @Test
     public void CadTest() throws CAException, InterruptedException {
-        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,"A,B,C");
+        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList("DATA_LABEL"));
         cad.start();
 
         //test mark
-        Channel<String> a = cas.createChannel(prefix+":"+cadName+".A","");
-        Channel<CarRecord.Val> carVal = cas.createChannel(prefix+":"+cadName+"C.VAL", CarRecord.Val.IDLE);
+        Channel<String> a = cas.createChannel(epicsTop + ":" + cadName + ".DATA_LABEL", "");
+        Channel<CarRecord.Val> carVal = cas.createChannel(epicsTop + ":" + cadName + "C.VAL", CarRecord.Val.IDLE);
 
 
         class CarListener extends CountDownLatch implements ChannelListener {
@@ -156,10 +148,10 @@ public class RecordsTest {
 
 
         //test CAR
-        Channel<Dir> dir = cas.createChannel(prefix+":"+cadName+".DIR", Dir.CLEAR);
+        Channel<Dir> dir = cas.createChannel(epicsTop + ":" + cadName + ".DIR", Dir.CLEAR);
         dir.setValue(Dir.MARK);
         dir.setValue(Dir.PRESET);
-        if(!carListener.await(1, TimeUnit.SECONDS)){
+        if (!carListener.await(1, TimeUnit.SECONDS)) {
             fail();
         }
 
@@ -168,7 +160,7 @@ public class RecordsTest {
 
     }
 
-    private void setDir(Dir d, Integer  expectedState, Channel<Dir> dir, CadRecordImpl cad) throws BrokenBarrierException, InterruptedException, CAException {
+    private void setDir(Dir d, Integer expectedState, Channel<Dir> dir, CadRecordImpl cad) throws BrokenBarrierException, InterruptedException, CAException {
         dir.setValue(d);
         assertEquals(CadState.values()[expectedState], cad.getState());
 
@@ -176,86 +168,89 @@ public class RecordsTest {
 
     @Test
     public void CadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
-        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName,"A,B,C");
+        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList("DATA_LABEL"));
         cad.start();
 
-        Channel<Dir> dir = cas.createChannel(prefix+":"+cadName+".DIR", Dir.CLEAR);
+        Channel<Dir> dir = cas.createChannel(epicsTop + ":" + cadName + ".DIR", Dir.CLEAR);
 
 
         //0 -> clear -> 0
         setDir(Dir.CLEAR, 0, dir, cad);
         //0 -> mark -> 1
-        setDir(Dir.MARK,1,dir,cad);
+        setDir(Dir.MARK, 1, dir, cad);
         //1 -> mark -> 1
-        setDir(Dir.MARK,1,dir,cad);
+        setDir(Dir.MARK, 1, dir, cad);
         //1 -> clear -> 0
-        setDir(Dir.CLEAR,0,dir,cad);
+        setDir(Dir.CLEAR, 0, dir, cad);
         //0 -> mark -> 1
-        setDir(Dir.MARK,1,dir,cad);
+        setDir(Dir.MARK, 1, dir, cad);
         //1 -> stop -> 0
-        setDir(Dir.STOP,0,dir,cad);
+        setDir(Dir.STOP, 0, dir, cad);
         //0 -> mark -> 1
         setDir(Dir.MARK, 1, dir, cad);
         //1 -> preset -> 2
-        setDir(Dir.PRESET,2,dir,cad);
+        setDir(Dir.PRESET, 2, dir, cad);
         //2 -> clear -> 0
-        setDir(Dir.CLEAR,0,dir,cad);
+        setDir(Dir.CLEAR, 0, dir, cad);
         //0 -> mark -> 1
-        setDir(Dir.MARK,1,dir,cad);
+        setDir(Dir.MARK, 1, dir, cad);
         //1 -> preset -> 2
-        setDir(Dir.PRESET,2,dir,cad);
+        setDir(Dir.PRESET, 2, dir, cad);
         //2 -> stop -> 0
-        setDir(Dir.STOP,0,dir,cad);
+        setDir(Dir.STOP, 0, dir, cad);
         //0 -> mark -> 1
-        setDir(Dir.MARK,1,dir,cad);
+        setDir(Dir.MARK, 1, dir, cad);
         //1 -> preset -> 2
-        setDir(Dir.PRESET,2,dir,cad);
+        setDir(Dir.PRESET, 2, dir, cad);
         //2 -> mark -> 1
-        setDir(Dir.MARK,1,dir,cad);
+        setDir(Dir.MARK, 1, dir, cad);
         //1 -> preset -> 2
-        setDir(Dir.PRESET,2,dir,cad);
+        setDir(Dir.PRESET, 2, dir, cad);
         //2 -> preset -> 2
-        setDir(Dir.PRESET,2,dir,cad);
+        setDir(Dir.PRESET, 2, dir, cad);
         //2 -> start -> 0
-        setDir(Dir.START,0,dir,cad);
+        setDir(Dir.START, 0, dir, cad);
         //0 -> mark -> 1
-        setDir(Dir.MARK,1,dir,cad);
+        setDir(Dir.MARK, 1, dir, cad);
         //1 -> start -> 2->0
-        setDir(Dir.START,0,dir,cad);
+        setDir(Dir.START, 0, dir, cad);
 
     }
 
     @Test
     public void applyTest() throws CAException, InterruptedException {
-        ApplyRecord apply = new ApplyRecord(cas,prefix);
+        ApplyRecord apply = new ApplyRecord(cas, cs);
         apply.start();
-        Channel<Dir> dir = cas.createChannel(prefix+":apply.DIR", Dir.CLEAR);
-        Channel<Integer> val = cas.createChannel(prefix+":apply.VAL",0);
-        Channel<Integer> cadVal = cas.createChannel(prefix+":"+cadName+".VAL",0);
-        Channel<Integer> clid = cas.createChannel(prefix+":apply.CLID",0);
-        Channel<Integer> cadClid = cas.createChannel(prefix+":"+cadName+".ICID",0);
+        Channel<Dir> dir = cas.createChannel(epicsTop + ":apply.DIR", Dir.CLEAR);
+        Channel<Integer> val = cas.createChannel(epicsTop + ":apply.VAL", 0);
+        Channel<Integer> cadVal = cas.createChannel(epicsTop + ":" + cadName + ".VAL", 0);
+        Channel<Integer> clid = cas.createChannel(epicsTop + ":apply.CLID", 0);
+        Channel<Integer> cadClid = cas.createChannel(epicsTop + ":" + cadName + ".ICID", 0);
+        Channel<String> data_label = cas.createChannel(epicsTop + ":" + cadName + ".DATA_LABEL", "");
 
-        CadRecordImpl cad = new CadRecordImpl(cas,cs,prefix,cadName, "A,B,C");
-        cad.start();
-        apply.bindCad(cad);
+//        CadRecordImpl cad = new CadRecordImpl(cas,cs,epicsTop,cadName, Lists.newArrayList("A","B","C"));
+//        cad.start();
+//        apply.bindCad(cad);
 
 
         //test cad state changes
-        cad.getEpicsCad().setDir(Dir.MARK, clid.getFirst());
+        //cad.getEpicsCad().setDir(Dir.MARK, clid.getFirst());
+        data_label.setValue("");
         dir.setValue(Dir.START);
         assertEquals(new Integer(1), clid.getFirst());
         assertEquals(new Integer(0), cadVal.getFirst());
         assertEquals(new Integer(1), val.getFirst());
 
 
-        cad.getEpicsCad().setDir(Dir.MARK, clid.getFirst());
+        //cad.getEpicsCad().setDir(Dir.MARK, clid.getFirst());
+        data_label.setValue("");
         dir.setValue(Dir.START);
         assertEquals(new Integer(2), cadClid.getFirst());
         assertEquals(new Integer(0), cadVal.getFirst());
-        assertEquals(new Integer(2),val.getFirst());
-
-        apply.unBindCad(cad);
-        cad.stop();
+        assertEquals(new Integer(2), val.getFirst());
+//
+//        apply.unBindCad(cad);
+//        cad.stop();
         apply.stop();
     }
 }
