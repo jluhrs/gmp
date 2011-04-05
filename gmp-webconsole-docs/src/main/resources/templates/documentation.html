@@ -1,0 +1,27 @@
+<script type="text/javascript" src="${appRoot}/res/ui/ui.tabs.paging.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabs').tabs();
+    });
+</script>
+<div id="documentationContent">
+    <div id="fPidsSelect" class="ui-widget-header ui-corner-top buttonGroup">
+        GMP Help and Documentation
+    </div>
+    <div id="tabs"> <!-- tabs container -->
+        <ul> <!-- tabs on top -->
+            <li>
+                <a href="#doc-tabs-help">Help</a>
+            </li>
+            <li>
+                <a href="#doc-tabs-docs">Documentation</a>
+            </li>
+        </ul>
+        <div id="doc-tabs-help">
+            HELP
+        </div>
+        <div id="doc-tabs-docs">
+            <iframe src="doc/index.html"/>
+        </div>
+    </div>
+</div>
