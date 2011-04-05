@@ -4,6 +4,7 @@ import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
+import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import org.apache.felix.ipojo.annotations.Component;
@@ -85,11 +86,16 @@ public class GmpCommandsProxy {
     @Descriptor("Issues an apply command over GMP")
     public void apply(@Descriptor(ACTIVITY_DESCRIPTION) String activityArg,
                       @Descriptor("configuration: {path=value, path=value}") String configurationArg) {
-        System.out.println(configurationArg);
-        //new ConfigurationParser(configurationArg);
-        Command command = buildCommand(SequenceCommand.PARK, activityArg);
+        Command command = buildCommand(SequenceCommand.APPLY, activityArg, configurationArg);
 
         issueCommand(command);
+    }
+
+    private Command buildCommand(SequenceCommand sequenceCommand, String activityArg, String configurationArg) {
+        Activity activity = Activity.valueOf(activityArg.toUpperCase());
+        Configuration configuration = new ConfigurationParser(configurationArg).parse();
+
+        return new Command(sequenceCommand, activity, configuration);
     }
 
     @Descriptor("Issues an generic command with no configuration over GMP")

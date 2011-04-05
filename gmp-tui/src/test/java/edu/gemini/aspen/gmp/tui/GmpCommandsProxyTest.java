@@ -4,11 +4,13 @@ import edu.gemini.aspen.giapi.commands.Activity;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
+import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -85,4 +87,18 @@ public class GmpCommandsProxyTest {
         verifyCommand(SequenceCommand.END_GUIDE);
     }
 
+    @Test
+    public void testApplyCommands() {
+        Configuration configuration = configurationBuilder()
+                .withConfiguration("gpi:cc.x", "1")
+                .build();
+
+        commandsProxy.apply("START", "gpi:cc.x=1");
+        verifyCommand(SequenceCommand.APPLY, configuration);
+    }
+
+    private void verifyCommand(SequenceCommand sequenceCommand, Configuration configuration) {
+        Command command = new Command(sequenceCommand, Activity.START, configuration);
+        verify(sender).sendCommand(eq(command), Matchers.<CompletionListener>anyObject());
+    }
 }

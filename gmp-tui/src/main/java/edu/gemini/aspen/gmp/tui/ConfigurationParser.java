@@ -22,7 +22,7 @@ public class ConfigurationParser {
 
         DefaultConfiguration.Builder builder = configurationBuilder();
 
-        Iterable<String> splitOnComma = Splitter.on(",").trimResults().split(_configurationArg);
+        Iterable<String> splitOnComma    = Splitter.on(",").trimResults().split(_configurationArg);
         for (String configurationPair : splitOnComma) {
             Matcher matcher = CONFIGURATION_ITEM_PARSER.matcher(configurationPair);
             if (matcher.matches()) {

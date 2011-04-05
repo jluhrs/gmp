@@ -55,6 +55,17 @@ public class ConfigurationParserTest {
     }
 
     @Test
+    public void parseTopConfiguration() {
+        Configuration referenceConfiguration = DefaultConfiguration.configurationBuilder()
+                .withConfiguration("X", "1")
+                .build();
+
+        Configuration configuration = new ConfigurationParser("X=1").parse();
+
+        assertEquals(referenceConfiguration, configuration);
+    }
+
+    @Test
     public void parseBadConfiguration() {
         Configuration referenceConfiguration = emptyConfiguration();
 
