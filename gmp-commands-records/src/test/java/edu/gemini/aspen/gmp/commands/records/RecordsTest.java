@@ -146,7 +146,7 @@ public class RecordsTest {
 
     @Test
     public void CadTest() throws CAException, InterruptedException {
-        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName+".DATA_LABEL"));
+        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
 
         //test mark
@@ -206,7 +206,7 @@ public class RecordsTest {
 
     @Test
     public void CadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
-        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName+".DATA_LABEL"));
+        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
 
         Channel<Dir> dir = cas.createChannel(epicsTop + ":" + cadName + ".DIR", Dir.CLEAR);
@@ -286,11 +286,17 @@ public class RecordsTest {
         data_label.setValue("");
         dir.setValue(Dir.START);
         assertEquals(new Integer(1), clid.getFirst());
+        assertEquals(new Integer(1), cadClid.getFirst());
         assertEquals(new Integer(0), cadVal.getFirst());
         assertEquals(new Integer(1), val.getFirst());
 
+        //special record apply/config.
+        Channel<String> useAo = cas.createChannel(epicsTop + ":configAo:useAo", "");
+        cadClid = cas.createChannel(epicsTop + ":config.ICID", 0);
+        cadVal = cas.createChannel(epicsTop + ":config.VAL", 0);
 
-        data_label.setValue("");
+
+        useAo.setValue("1");
         dir.setValue(Dir.START);
         assertEquals(new Integer(2), cadClid.getFirst());
         assertEquals(new Integer(0), cadVal.getFirst());

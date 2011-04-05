@@ -63,7 +63,7 @@ public class ApplyRecord {
         this.cas = cas;
         this.cs = cs;
         car = new CarRecord(cas, epicsTop + ":" + name + "C");
-        ConfigSets configSets = new ConfigSets();
+        ConfigSets configSets;
         try {
             JAXBContext jc = JAXBContext.newInstance(ConfigSets.class);
             Unmarshaller um = jc.createUnmarshaller();
@@ -84,125 +84,6 @@ public class ApplyRecord {
                         attributes.add(conf.getName()+"."+field);
                     }
                 }
-//                gpi:configAo
-//                        useAo
-//                        magnitudeI
-//                        r0
-//                        optimize
-//                        useLastVals
-//
-//                gpi:configCal
-//                        useCal
-//                        magnitudeH
-//
-//                gpi:configIfs
-//                        integrationTime
-//                        readoutMode
-//                        numReads
-//                        numCoadds
-//                        startx
-//                        starty
-//                        endx
-//                        endy
-//
-//                gpi:configFOVIfsOffset
-//                        xTarget
-//                        yTarget
-//
-//                gpi:configPolarizer
-//                        deploy
-//                        angle
-//
-//                gpi:observationMode
-//                        modeName
-//                gpi:selectAdc
-//                        deploy
-//                        overrideCas
-//                        overrideZen
-//                        orientation
-//                        power
-//
-//                gpi:selectPupilCamera
-//                        deploy
-//                gpi:selectSource
-//                        source
-//                        intensity
-//
-//                gpi:selectShutter
-//                        entranceShutter
-//                        calExitShutter
-//                        calEntranceShutter
-//                        calReferenceShutter
-//                        calScienceShutter
-//
-//                gpi:takeExposure
-//                        selection
-//                        intTime
-//                        filename
-//                //Apply Sequence Command Calibration Sets
-//                cal:acquireWhiteFringe
-//                        mark
-//                gpi:calToAoAlign
-//                        phase
-//                gpi:centerPinhole
-//                        mark
-//                ao:dmShape
-//                        filename
-//                        dmFlag
-//
-//                ao:measureAOWFSCentroids
-//                        mark
-//                cal:measureCalCentroids
-//                        mark
-//                cal:measureHowfsOffsets
-//                        filename
-//                gpi:takeDark
-//                        selection
-//                        intTime
-//                        filename
-//
-//                gpi:takeFlat
-//                        selection
-//                        intTime
-//                        filename
-//
-//                cal:transMaps
-//                        filename
-//                //Apply Sequence Command Engineering Sets (Miscellaneous access functions)
-//                gpi:configAoSpatialFilter
-//                        mode
-//                        target
-//                        now
-//
-//                gpi:configSteeringMirrors
-//                        selection
-//                        track
-//                        tip
-//                        tilt
-//                        focus
-//
-//                gpi:correct
-//                        selection
-//                ifs:log
-//                        temperatures
-//                        filename
-//                        rate
-//
-//                ifs:selectIfsFilter
-//                        maskStr
-//                gpi:selectFocalPlaneMask
-//                        maskStr
-//                gpi:selectLyotMask
-//                        maskStr
-//                gpi:selectPupilPlaneMask
-//                        maskStr
-//                gpi:statistics
-//                        statStat
-//                        statName
-//                        statSelected
-
-
-                //implement apply attributes
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, "config", attributes));
             } else if (seq.equals(SequenceCommand.OBSERVE)) {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase()+".DATA_LABEL")));

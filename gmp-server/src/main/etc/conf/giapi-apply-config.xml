@@ -2,9 +2,194 @@
 <ConfigSets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="giapi-apply-config.xsd">
     <ConfigSet>
-        <name>configAO</name>
-        <field>useAO</field>
+        <name>configAo</name>
+        <field>useAo</field>
         <field>magnitudeI</field>
+        <field>r0</field>
+        <field>optimize</field>
+        <field>useLastVals</field>
     </ConfigSet>
 
+    <ConfigSet>
+        <name>configCal</name>
+        <field>useCal</field>
+        <field>magnitudeH</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>configIfs</name>
+        <field>integrationTime</field>
+        <field>readoutMode</field>
+        <field>numReads</field>
+        <field>numCoadds</field>
+        <field>startx</field>
+        <field>starty</field>
+        <field>endx</field>
+        <field>endy</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>configFOVIfsOffset</name>
+        <field>xTarget</field>
+        <field>yTarget</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>configPolarizer</name>
+        <field>deploy</field>
+        <field>angle</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>observationMode</name>
+        <field>modeName</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>selectAdc</name>
+        <field>deploy</field>
+        <field>overrideCas</field>
+        <field>overrideZen</field>
+        <field>orientation</field>
+        <field>power</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>selectPupilCamera</name>
+        <field>deploy</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>selectSource</name>
+        <field>source</field>
+        <field>intensity</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>selectShutter</name>
+        <field>entranceShutter</field>
+        <field>calExitShutter</field>
+        <field>calEntranceShutter</field>
+        <field>calReferenceShutter</field>
+        <field>calScienceShutter</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>takeExposure</name>
+        <field>selection</field>
+        <field>intTime</field>
+        <field>filename</field>
+    </ConfigSet>
+    <!--Apply Sequence Command Calibration Sets -->
+
+    <ConfigSet>
+        <name>cal:acquireWhiteFringe</name>
+        <field>mark</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>calToAoAlign</name>
+        <field>phase</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>centerPinhole</name>
+        <field>mark</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>ao:dmShape</name>
+        <field>filename</field>
+        <field>dmFlag</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>ao:measureAOWFSCentroids</name>
+        <field>mark</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>cal:measureCalCentroids</name>
+        <field>mark</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>cal:measureHowfsOffsets</name>
+        <field>filename</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>takeDark</name>
+        <field>selection</field>
+        <field>intTime</field>
+        <field>filename</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>takeFlat</name>
+        <field>selection</field>
+        <field>intTime</field>
+        <field>filename</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>cal:transMaps</name>
+        <field>filename</field>
+    </ConfigSet>
+    <!--Apply Sequence Command Engineering Sets (Miscellaneous access functions)-->
+
+    <ConfigSet>
+        <name>configAoSpatialFilter</name>
+        <field>mode</field>
+        <field>target</field>
+        <field>now</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>configSteeringMirrors</name>
+        <field>selection</field>
+        <field>track</field>
+        <field>tip</field>
+        <field>tilt</field>
+        <field>focus</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>correct</name>
+        <field>selection</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>ifs:log</name>
+        <field>temperatures</field>
+        <field>filename</field>
+        <field>rate</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>ifs:selectIfsFilter</name>
+        <field>maskStr</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>selectFocalPlaneMask</name>
+        <field>maskStr</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>selectLyotMask</name>
+        <field>maskStr</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>selectPupilPlaneMask</name>
+        <field>maskStr</field>
+    </ConfigSet>
+
+    <ConfigSet>
+        <name>statistics</name>
+        <field>statStat</field>
+        <field>statName</field>
+        <field>statSelected</field>
+    </ConfigSet>
 </ConfigSets>
