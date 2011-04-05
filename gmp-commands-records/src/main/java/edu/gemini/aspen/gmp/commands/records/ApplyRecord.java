@@ -79,16 +79,16 @@ public class ApplyRecord {
         for (SequenceCommand seq : SequenceCommand.values()) {
             if (seq.equals(SequenceCommand.APPLY)) {
                 List<String> attributes = new ArrayList<String>();
-                for(ConfigSetType conf:configSets.getConfigSet()){
-                    for(String field:conf.getField()){
-                        attributes.add(conf.getName()+"."+field);
+                for (ConfigSetType conf : configSets.getConfigSet()) {
+                    for (String field : conf.getField()) {
+                        attributes.add(conf.getName() + "." + field);
                     }
                 }
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, "config", attributes));
             } else if (seq.equals(SequenceCommand.OBSERVE)) {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase()+".DATA_LABEL")));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase() + ".DATA_LABEL")));
             } else if (seq.equals(SequenceCommand.REBOOT)) {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase()+".REBOOT_OPT")));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase() + ".REBOOT_OPT")));
             } else {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), new ArrayList<String>()));
             }
@@ -100,23 +100,25 @@ public class ApplyRecord {
      * Create Channels and start CAR
      */
     @Validate
-    public synchronized void start() {
-        LOG.info("Validate");
-        try {
-            dir = cas.createChannel(epicsTop + ":" + name + ".DIR", Dir.CLEAR);
-            dir.registerListener(new DirListener());
-            val = cas.createChannel(epicsTop + ":" + name + ".VAL", 0);
-            mess = cas.createChannel(epicsTop + ":" + name + ".MESS", "");
-            omss = cas.createChannel(epicsTop + ":" + name + ".OMSS", "");
-            clid = cas.createChannel(epicsTop + ":" + name + ".CLID", 0);
+    public void start() {
+        synchronized (car) {
+            LOG.info("Validate");
+            try {
+                dir = cas.createChannel(epicsTop + ":" + name + ".DIR", Dir.CLEAR);
+                dir.registerListener(new DirListener());
+                val = cas.createChannel(epicsTop + ":" + name + ".VAL", 0);
+                mess = cas.createChannel(epicsTop + ":" + name + ".MESS", "");
+                omss = cas.createChannel(epicsTop + ":" + name + ".OMSS", "");
+                clid = cas.createChannel(epicsTop + ":" + name + ".CLID", 0);
 
-            car.start();
-            for (CadRecord cad : cads) {
-                cad.start();
-                cad.getCar().registerListener(new CarListener());
+                car.start();
+                for (CadRecord cad : cads) {
+                    cad.start();
+                    cad.getCar().registerListener(new CarListener());
+                }
+            } catch (CAException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
-        } catch (CAException e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -124,17 +126,19 @@ public class ApplyRecord {
      * Destroy Channels and stop CAR
      */
     @Invalidate
-    public synchronized void stop() {
-        LOG.info("InValidate");
-        cas.destroyChannel(dir);
-        cas.destroyChannel(val);
-        cas.destroyChannel(mess);
-        cas.destroyChannel(omss);
-        cas.destroyChannel(clid);
+    public void stop() {
+        synchronized (car) {
+            LOG.info("InValidate");
+            cas.destroyChannel(dir);
+            cas.destroyChannel(val);
+            cas.destroyChannel(mess);
+            cas.destroyChannel(omss);
+            cas.destroyChannel(clid);
 
-        car.stop();
-        for (CadRecord cad : cads) {
-            cad.stop();
+            car.stop();
+            for (CadRecord cad : cads) {
+                cad.stop();
+            }
         }
     }
 
@@ -166,29 +170,31 @@ public class ApplyRecord {
      */
     volatile private boolean processing = false;
 
-    private synchronized boolean processDir(Dir dir) throws CAException {
-        processing = true;
-        if (dir == Dir.START) {
-            incAndGetClientId();
-        }
-        car.changeState(CarRecord.Val.BUSY, "", 0, getClientId());
-        boolean retVal = processInternal(dir);
+    private boolean processDir(Dir dir) throws CAException {
+        synchronized (car) {
+            processing = true;
+            if (dir == Dir.START) {
+                incAndGetClientId();
+            }
+            car.changeState(CarRecord.Val.BUSY, "", 0, getClientId());
+            boolean retVal = processInternal(dir);
 
-        if (retVal) {
-            boolean idle = true;
-            for (CadRecord cad : cads) {
-                if (cad.getCar().getState() != CarRecord.Val.IDLE) {
-                    idle = false;
+            if (retVal) {
+                boolean idle = true;
+                for (CadRecord cad : cads) {
+                    if (cad.getCar().getState() != CarRecord.Val.IDLE) {
+                        idle = false;
+                    }
                 }
+                if (idle) {
+                    car.changeState(CarRecord.Val.IDLE, "", 0, getClientId());
+                }
+            } else {
+                car.changeState(CarRecord.Val.ERR, ((String[]) mess.getDBR().getValue())[0], ((int[]) val.getDBR().getValue())[0], getClientId());
             }
-            if (idle) {
-                car.changeState(CarRecord.Val.IDLE, "", 0, getClientId());
-            }
-        } else {
-            car.changeState(CarRecord.Val.ERR, ((String[]) mess.getDBR().getValue())[0], ((int[]) val.getDBR().getValue())[0], getClientId());
+            processing = false;
+            return retVal;
         }
-        processing = false;
-        return retVal;
     }
 
 
@@ -301,11 +307,11 @@ public class ApplyRecord {
     private class CarListener implements edu.gemini.aspen.gmp.commands.records.CarListener {
         @Override
         public void update(CarRecord.Val state, String message, Integer errorCode, Integer id) {
-            synchronized (ApplyRecord.this) {
+            synchronized (car) {
                 LOG.info("Received CAR status change: " + state);
                 try {
                     if (state == CarRecord.Val.ERR) {
-                        car.changeState(state, message, errorCode, id);
+                        car.changeState(state, message, errorCode, Math.max(id,car.getClId()));
                     }
                     if (!processing && state == CarRecord.Val.IDLE) {
                         for (CadRecord cad : cads) {
@@ -313,7 +319,7 @@ public class ApplyRecord {
                                 return;
                             }
                         }
-                        car.changeState(state, message, errorCode, id);
+                        car.changeState(state, message, errorCode, Math.max(id,car.getClId()));
                     }
                 } catch (CAException e) {
                     LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
