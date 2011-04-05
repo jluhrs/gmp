@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 
 
 /**
- *  Test class for the sender of APPLY sequence commands.
+ * Test class for the sender of APPLY sequence commands.
  */
 public class ApplySenderExecutorTest {
 
@@ -43,7 +43,7 @@ public class ApplySenderExecutorTest {
 
         _executor = new ApplySenderExecutor(builder, actionManager);
 
-        _responses = new HandlerResponse[] {
+        _responses = new HandlerResponse[]{
                 HandlerResponse.COMPLETED,
                 HandlerResponse.STARTED,
                 HandlerResponse.ACCEPTED,
@@ -85,6 +85,23 @@ public class ApplySenderExecutorTest {
     }
 
     /**
+     * Test that an APPLY command with a non hierarchical configuration will be handled correctly
+     */
+    @Test
+    public void testSimpleConfiguration() {
+        Configuration basicConfiguration = configurationBuilder()
+                .withConfiguration("X", "1")
+                .build();
+
+        Action action = new Action(new Command(SequenceCommand.APPLY,
+                Activity.START,
+                basicConfiguration), new CompletionListenerMock());
+        ActionSender sender = new ActionSenderMock(HandlerResponse.NOANSWER);
+        HandlerResponse response = _executor.execute(action, sender);
+        assertEquals(HandlerResponse.get(HandlerResponse.Response.NOANSWER), response);
+    }
+
+    /**
      * This test verifies that the handler response produced
      * by the execute() method is the correct one.
      */
@@ -94,10 +111,10 @@ public class ApplySenderExecutorTest {
                 SequenceCommand.APPLY,
                 Activity.START,
                 _applyConfig);
-        
+
         Action action = new Action(command, new CompletionListenerMock());
 
-        for (HandlerResponse response: _responses) {
+        for (HandlerResponse response : _responses) {
             ActionSender sender = new ActionSenderMock(response);
             HandlerResponse myResponse = _executor.execute(action, sender);
             assertEquals(response, myResponse);

@@ -6,28 +6,60 @@ import org.junit.Test;
 
 import java.util.SortedMap;
 
+import static edu.gemini.aspen.giapi.commands.ConfigPath.EMPTY_PATH;
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.copy;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the {@link DefaultConfiguration} class
  */
 public class DefaultConfigurationTest {
     @Test
-    public void testBasicConfiguration() {
+    public void testBasicConfigurationWithSimplePath() {
         Configuration configuration = configuration(configPath("X"), "value1");
         assertEquals(1, configuration.getKeys().size());
         assertEquals("{config={X=value1}}", configuration.toString());
         assertEquals("value1", configuration.getValue(configPath("X")));
-        assertNull("value1", configuration.getValue(configPath("Y")));
+        assertNull(configuration.getValue(configPath("Y")));
         assertTrue(configuration.getKeys().contains(configPath("X")));
         assertFalse(configuration.getKeys().contains(configPath("Y")));
-        assertEquals(configuration, configuration.getSubConfiguration(configPath("X")));
-        assertEquals(emptyConfiguration(), configuration.getSubConfiguration(null));
+        assertEquals(emptyConfiguration(), configuration.getSubConfiguration(configPath("X")));
+        assertEquals(emptyConfiguration(), configuration.getSubConfiguration(EMPTY_PATH));
+    }
+
+    @Test
+    public void testBasicConfigurationWithHierarchicalPath() {
+        Configuration configuration = configurationBuilder()
+                .withPath(configPath("gpi:cc"), "value1")
+                .withPath(configPath("gpi:aoc"), "value2")
+                .build();
+        assertEquals(2, configuration.getKeys().size());
+        assertEquals("value1", configuration.getValue(configPath("gpi:cc")));
+        assertEquals("value2", configuration.getValue(configPath("gpi:aoc")));
+        assertNull(configuration.getValue(configPath("Y")));
+        assertTrue(configuration.getKeys().contains(configPath("gpi:cc")));
+        assertTrue(configuration.getKeys().contains(configPath("gpi:aoc")));
+        assertFalse(configuration.getKeys().contains(configPath("Y")));
+
+        assertEquals(emptyConfiguration(), configuration.getSubConfiguration(configPath("X")));
+        assertEquals(configuration, configuration.getSubConfiguration(configPath("gpi")));
+
+        Configuration ccConfiguration = configurationBuilder()
+                .withPath(configPath("gpi:cc"), "value1")
+                .build();
+        assertEquals(ccConfiguration, configuration.getSubConfiguration(configPath("gpi:cc")));
+
+        Configuration aocConfiguration = configurationBuilder()
+                .withPath(configPath("gpi:aoc"), "value2")
+                .build();
+        assertEquals(aocConfiguration, configuration.getSubConfiguration(configPath("gpi:aoc")));
     }
 
     @Test
@@ -74,4 +106,5 @@ public class DefaultConfigurationTest {
         assertEquals(emptyConfiguration(), emptyConfiguration().getSubConfiguration(null));
         assertTrue(emptyConfiguration().isEmpty());
     }
+
 }

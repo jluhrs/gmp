@@ -202,7 +202,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
         return new ConfigPath(path, rest);
     }
 
-
+    @Override
     public int compareTo(ConfigPath that) {
         return _path.compareTo(that._path);
     }

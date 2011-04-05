@@ -79,7 +79,9 @@ public class CommandSenderImpl implements CommandSender {
         //will complete immediately.
         _manager.registerAction(action);
 
+        System.out.println("ACTION REGISTERED " + action);
         HandlerResponse response = _executor.execute(action, _sender);
+        System.out.println("ACTION EXECUTED " + action);
 
         //The only response that indicates actions have started is
         //STARTED. The other three do not result in any ongoing actions

@@ -53,14 +53,13 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
      *         this call will try to decompose the configuration in smaller units
      *         in an attempt to see if it can be handled by other handlers.
      */
-
     private HandlerResponse getResponse(Action action, Configuration config,
                                         ConfigPath path, ActionSender sender) {
 
         ConfigPathNavigator navigator = new ConfigPathNavigator(config);
         Set<ConfigPath> configPathSet = navigator.getChildPaths(path);
 
-        if (configPathSet.size() <= 0) {
+        if (configPathSet.isEmpty()) {
             return HandlerResponse.NOANSWER;
         }
 

@@ -150,6 +150,8 @@ public class ActionManagerImpl implements ActionManager {
                     return;
                 }
 
+                System.out.println("PUSH " + action);
+
                 _lock.lock(); //acquire the lock before start updating
 
                 try {
