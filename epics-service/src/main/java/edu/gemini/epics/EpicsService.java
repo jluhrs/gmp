@@ -43,7 +43,7 @@ public class EpicsService implements JCAContextController {
     /**
      * For iPojo
      */
-    protected EpicsService(@Property(name = PROPERTY_ADDRESS_LIST, value = "127.0.0.1", mandatory = true) String addressList) {
+    public EpicsService(@Property(name = PROPERTY_ADDRESS_LIST, value = "127.0.0.1", mandatory = true) String addressList) {
         LOG.info("EpicsService created with " + addressList);
         validateAddressToConnect(addressList);
         this._addressList = addressList;
