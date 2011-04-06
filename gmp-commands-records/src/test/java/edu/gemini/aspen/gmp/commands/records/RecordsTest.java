@@ -31,9 +31,11 @@ import static org.mockito.Mockito.*;
  */
 public class RecordsTest {
     private static final Logger LOG = Logger.getLogger(RecordsTest.class.getName());
-    public static final String xmlStr;
+    private static final String xmlStr;
 
-    public static final String xsdStr;
+    private static final String xsdStr;
+    private static File xsdFile = null;
+    private static File xmlFile = null;
 
 
     static {
@@ -66,6 +68,22 @@ public class RecordsTest {
         }
         xsdStr = xsd;
 
+        try {
+            xmlFile = File.createTempFile("ApplyTest", ".xml");
+
+
+            xsdFile = File.createTempFile("ApplyTest", ".xsd");
+
+            FileWriter xmlWrt = new FileWriter(xmlFile);
+            FileWriter xsdWrt = new FileWriter(xsdFile);
+
+            xmlWrt.write(xmlStr);
+            xsdWrt.write(xsdStr);
+            xmlWrt.close();
+            xsdWrt.close();
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     private ChannelAccessServerImpl cas;
@@ -257,23 +275,7 @@ public class RecordsTest {
 
     @Test
     public void applyTest() throws CAException, InterruptedException, IOException {
-        File xml = null;
-
-        xml = File.createTempFile("ApplyTest", ".xml");
-
-        File xsd = null;
-        xsd = File.createTempFile("ApplyTest", ".xsd");
-
-        FileWriter xmlWrt = new FileWriter(xml);
-        FileWriter xsdWrt = new FileWriter(xsd);
-
-        xmlWrt.write(xmlStr);
-        xsdWrt.write(xsdStr);
-        xmlWrt.close();
-        xsdWrt.close();
-
-
-        ApplyRecord apply = new ApplyRecord(cas, cs, xml.getPath(), xsd.getPath());
+        ApplyRecord apply = new ApplyRecord(cas, cs, xmlFile.getPath(), xsdFile.getPath());
         apply.start();
         Channel<Dir> dir = cas.createChannel(epicsTop + ":apply.DIR", Dir.CLEAR);
         Channel<Integer> val = cas.createChannel(epicsTop + ":apply.VAL", 0);
