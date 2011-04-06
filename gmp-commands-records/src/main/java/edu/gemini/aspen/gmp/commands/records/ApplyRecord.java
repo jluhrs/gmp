@@ -6,6 +6,7 @@ import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.records.generated.ConfigSetType;
 import edu.gemini.aspen.gmp.commands.records.generated.ConfigSets;
+import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
@@ -35,7 +36,9 @@ import java.util.logging.Logger;
 public class ApplyRecord {
     private static final Logger LOG = Logger.getLogger(ApplyRecord.class.getName());
     private final String name = "apply";
-    private final String epicsTop = "gpi";//to be read from elsewhere(cas?);
+    //private final String epicsTop = "gpi";//to be read from elsewhere(cas?);
+
+    private final EpicsTop epicsTop;
 
     private Channel<Dir> dir;
     private Channel<Integer> val;
@@ -57,12 +60,14 @@ public class ApplyRecord {
      */
     protected ApplyRecord(@Requires ChannelAccessServer cas,
                           @Requires CommandSender cs,
+                          @Requires EpicsTop epicsTop,
                           @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
                           @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
         LOG.info("Constructor");
         this.cas = cas;
         this.cs = cs;
-        car = new CarRecord(cas, epicsTop + ":" + name + "C");
+        this.epicsTop = epicsTop;
+        car = new CarRecord(cas, epicsTop.buildChannelName(name + "C"));
         ConfigSets configSets;
         try {
             JAXBContext jc = JAXBContext.newInstance(ConfigSets.class);
@@ -104,12 +109,12 @@ public class ApplyRecord {
         synchronized (car) {
             LOG.info("Validate");
             try {
-                dir = cas.createChannel(epicsTop + ":" + name + ".DIR", Dir.CLEAR);
+                dir = cas.createChannel(epicsTop.buildChannelName(name + ".DIR"), Dir.CLEAR);
                 dir.registerListener(new DirListener());
-                val = cas.createChannel(epicsTop + ":" + name + ".VAL", 0);
-                mess = cas.createChannel(epicsTop + ":" + name + ".MESS", "");
-                omss = cas.createChannel(epicsTop + ":" + name + ".OMSS", "");
-                clid = cas.createChannel(epicsTop + ":" + name + ".CLID", 0);
+                val = cas.createChannel(epicsTop.buildChannelName(name + ".VAL"), 0);
+                mess = cas.createChannel(epicsTop.buildChannelName(name + ".MESS"), "");
+                omss = cas.createChannel(epicsTop.buildChannelName(name + ".OMSS"), "");
+                clid = cas.createChannel(epicsTop.buildChannelName(name + ".CLID"), 0);
 
                 car.start();
                 for (CadRecord cad : cads) {
@@ -311,7 +316,7 @@ public class ApplyRecord {
                 LOG.info("Received CAR status change: " + state);
                 try {
                     if (state == CarRecord.Val.ERR) {
-                        car.changeState(state, message, errorCode, Math.max(id,car.getClId()));
+                        car.changeState(state, message, errorCode, Math.max(id, car.getClId()));
                     }
                     if (!processing && state == CarRecord.Val.IDLE) {
                         for (CadRecord cad : cads) {
@@ -319,7 +324,7 @@ public class ApplyRecord {
                                 return;
                             }
                         }
-                        car.changeState(state, message, errorCode, Math.max(id,car.getClId()));
+                        car.changeState(state, message, errorCode, Math.max(id, car.getClId()));
                     }
                 } catch (CAException e) {
                     LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.

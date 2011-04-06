@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.records;
 
 import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.dbr.DBR;
@@ -27,7 +28,7 @@ public class CadRecordImpl implements CadRecord {
     final private SequenceCommand seqCom;
     final private EpicsCad epicsCad;
 
-    final private String epicsTop;
+    final private EpicsTop epicsTop;
     final private String name;
     final private List<String> attributeNames = new ArrayList<String>();
     final private CarRecord car;
@@ -37,17 +38,17 @@ public class CadRecordImpl implements CadRecord {
      *
      * @param cas Channel Access Server to pass to CAR and EpicsCad
      * @param cs Command Sender to use
-     * @param epicsTop instrument epicsTop. ex.: "gpi"
+     * @param epicsTop
      * @param name CAD name. ex.: "park"
      * @param attributes attribute names this CAD has.
      */
     protected CadRecordImpl(ChannelAccessServer cas,
                             CommandSender cs,
-                            String epicsTop,
+                            EpicsTop epicsTop,
                             String name,
                             Iterable<String> attributes) {
         this.cs = cs;
-        this.epicsTop = epicsTop.toLowerCase();
+        this.epicsTop = epicsTop;
         this.name = name.toLowerCase();
         if(name.equalsIgnoreCase("config")){
             seqCom = SequenceCommand.valueOf("APPLY");
@@ -58,7 +59,7 @@ public class CadRecordImpl implements CadRecord {
             attributeNames.add(att);
         }
         epicsCad = new EpicsCad(cas);
-        car = new CarRecord(cas, epicsTop.toLowerCase() + ":" + name.toLowerCase() + "C");
+        car = new CarRecord(cas, epicsTop.buildChannelName(name.toLowerCase() + "C"));
         LOG.info("Constructor");
     }
 

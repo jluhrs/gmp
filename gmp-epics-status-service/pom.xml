@@ -46,6 +46,11 @@
             <version>0.1.4</version>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-top</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>jca-lib</artifactId>
             <version>1.0.0</version>
@@ -62,7 +67,7 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>

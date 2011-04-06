@@ -5,6 +5,8 @@ import edu.gemini.aspen.giapi.status.*;
 import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
+import edu.gemini.aspen.gmp.epics.top.EpicsTop;
+import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.cas.*;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
@@ -40,7 +42,7 @@ public class EpicsStatusServiceTest extends TestCase {
     private ChannelAccessServer cas;
     private File xml = null;
     private File xsd = null;
-
+    private EpicsTop epicsTop;
     @Before
     public void setUp() throws Exception {
         cas = mock(ChannelAccessServerImpl.class);
@@ -67,11 +69,13 @@ public class EpicsStatusServiceTest extends TestCase {
         xsdWrt.write(EpicsStatusServiceConfigurationTest.xsdStr);
         xmlWrt.close();
         xsdWrt.close();
+
+        epicsTop = new EpicsTopImpl("gpi");
     }
 
     @Test
     public void testBasic() {
-        EpicsStatusService ess = new EpicsStatusService(cas, xml.getPath(), xsd.getPath());
+        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath(), xsd.getPath());
 
         //LOG.info("Service name: "+ess.getName());
 
@@ -107,7 +111,7 @@ public class EpicsStatusServiceTest extends TestCase {
         EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
 
 
-        EpicsStatusService ess = new EpicsStatusService(cas, xml.getPath(), xsd.getPath());
+        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath(), xsd.getPath());
         ess.initialize();
         Map<String, AlarmChannel<?>> ac = ess.getAlarmChannels();
 

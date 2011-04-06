@@ -8,6 +8,8 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
+import edu.gemini.aspen.gmp.epics.top.EpicsTop;
+import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
@@ -51,13 +53,14 @@ public class EpicsStatusServiceIT extends TestCase {
         xmlWrt.close();
         xsdWrt.close();
 
+        EpicsTop epicsTop = new EpicsTopImpl("gpi");
 
         //initialize and check channels are created
         EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
-        EpicsStatusService ess = new EpicsStatusService(cas, xml.getPath(), xsd.getPath());
+        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath(), xsd.getPath());
 
 
         ess.initialize();

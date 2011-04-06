@@ -131,6 +131,7 @@
         <module>gmp-handlers-state-service</module>
         <module>epics-heartbeat</module>
         <module>gmp-tui</module>
+        <module>gmp-epics-top</module>
     </modules>
 
     <distributionManagement>

@@ -3,25 +3,25 @@
 	xsi:noNamespaceSchemaLocation="giapi-epics-status-mapping.xsd">
 	<SimpleChannel>
 		<giapiname>gpi:status1</giapiname>
-		<epicsname>gpi:status1</epicsname>
+		<epicsname>status1</epicsname>
 		<type>INT</type>
 		<initial>2</initial>
 	</SimpleChannel>
 	<SimpleChannel>
 		<giapiname>gpi:status2</giapiname>
-		<epicsname>gpi:status2</epicsname>
+		<epicsname>status2</epicsname>
 		<type>INT</type>
 		<initial>2</initial>
 	</SimpleChannel>
 	<AlarmChannel>
 		<giapiname>gpi:alarm1</giapiname>
-		<epicsname>gpi:alarm1</epicsname>
+		<epicsname>alarm1</epicsname>
 		<type>INT</type>
 		<initial>2</initial>
 	</AlarmChannel>
 	<HealthChannel>
 		<giapiname>gpi:health1</giapiname>
-		<epicsname>gpi:health1</epicsname>
+		<epicsname>health1</epicsname>
 	</HealthChannel>
 	<SimpleChannel>
 		<giapiname>giapinameint</giapiname>

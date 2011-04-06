@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.statusservice;
 
 
 import edu.gemini.aspen.giapi.status.*;
+import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.cas.AlarmChannel;
 import edu.gemini.cas.Channel;
@@ -54,14 +55,17 @@ public class EpicsStatusService implements StatusHandler {
     private final ChannelAccessServer _channelAccessServer;
     private final String xmlFileName;
     private final String xsdFileName;
+    private final EpicsTop epicsTop;
 
 
     public EpicsStatusService(@Requires ChannelAccessServer cas,
+                              @Requires EpicsTop epicsTop,
                               @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
                               @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
         _channelAccessServer = cas;
         this.xmlFileName = xmlFileName;
         this.xsdFileName = xsdFileName;
+        this.epicsTop = epicsTop;
     }
 
 
@@ -80,11 +84,11 @@ public class EpicsStatusService implements StatusHandler {
         for (BaseChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             try {
                 if (item instanceof HealthChannelType) {
-                    addHealthVariable(item.getGiapiname(), item.getEpicsname(), Health.valueOf("BAD"));
+                    addHealthVariable(item.getGiapiname(), epicsTop.buildChannelName(item.getEpicsname()), Health.valueOf("BAD"));
                 } else if (item instanceof AlarmChannelType) {
-                    addAlarmVariable(item.getGiapiname(), item.getEpicsname(), ChannelsHelper.getInitial((SimpleChannelType) item));
+                    addAlarmVariable(item.getGiapiname(), epicsTop.buildChannelName(item.getEpicsname()), ChannelsHelper.getInitial((SimpleChannelType) item));
                 } else if (item instanceof SimpleChannelType) {
-                    addVariable(item.getGiapiname(), item.getEpicsname(), ChannelsHelper.getInitial((SimpleChannelType) item));
+                    addVariable(item.getGiapiname(), epicsTop.buildChannelName(item.getEpicsname()), ChannelsHelper.getInitial((SimpleChannelType) item));
                 }
             } catch (CAException ex) {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);

@@ -2,6 +2,8 @@ package edu.gemini.aspen.gmp.commands.records;
 
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.gmp.epics.top.EpicsTop;
+import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.cas.Channel;
 import edu.gemini.cas.ChannelListener;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
@@ -88,7 +90,7 @@ public class RecordsTest {
 
     private ChannelAccessServerImpl cas;
     private final String carPrefix = "gpi:applyC";
-    private final String epicsTop = "gpi";
+    private final EpicsTop epicsTop = new EpicsTopImpl("gpi");
     private final String cadName = "observe";
     private CommandSender cs;
 
@@ -99,16 +101,16 @@ public class RecordsTest {
         cas.start();
         cs = mock(CommandSender.class);
         Command start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.START, DefaultConfiguration.configurationBuilder().
-                withConfiguration(epicsTop + ":" + cadName + ".DATA_LABEL", "").
+                withConfiguration(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "").
                 build());
         Command preset = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET, DefaultConfiguration.configurationBuilder().
-                withConfiguration(epicsTop + ":" + cadName + ".DATA_LABEL", "").
+                withConfiguration(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "").
                 build());
         Command cancel = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.CANCEL, DefaultConfiguration.configurationBuilder().
-                withConfiguration(epicsTop + ":" + cadName + ".DATA_LABEL", "").
+                withConfiguration(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "").
                 build());
         Command preset_start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET_START, DefaultConfiguration.configurationBuilder().
-                withConfiguration(epicsTop + ":" + cadName + ".DATA_LABEL", "").
+                withConfiguration(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "").
                 build());
         when(cs.sendCommand(eq(preset), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);
         when(cs.sendCommand(eq(start), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.COMPLETED);
@@ -168,8 +170,8 @@ public class RecordsTest {
         cad.start();
 
         //test mark
-        Channel<String> a = cas.createChannel(epicsTop + ":" + cadName + ".DATA_LABEL", "");
-        Channel<CarRecord.Val> carVal = cas.createChannel(epicsTop + ":" + cadName + "C.VAL", CarRecord.Val.IDLE);
+        Channel<String> a = cas.createChannel(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "");
+        Channel<CarRecord.Val> carVal = cas.createChannel(epicsTop.buildChannelName(cadName + "C.VAL"), CarRecord.Val.IDLE);
 
 
         class CarListener extends CountDownLatch implements ChannelListener {
@@ -204,7 +206,7 @@ public class RecordsTest {
 
 
         //test CAR
-        Channel<Dir> dir = cas.createChannel(epicsTop + ":" + cadName + ".DIR", Dir.CLEAR);
+        Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName(cadName + ".DIR"), Dir.CLEAR);
         dir.setValue(Dir.MARK);
         dir.setValue(Dir.PRESET);
         if (!carListener.await(1, TimeUnit.SECONDS)) {
@@ -227,7 +229,7 @@ public class RecordsTest {
         CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
 
-        Channel<Dir> dir = cas.createChannel(epicsTop + ":" + cadName + ".DIR", Dir.CLEAR);
+        Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName(cadName + ".DIR"), Dir.CLEAR);
 
 
         //0 -> clear -> 0
@@ -275,14 +277,14 @@ public class RecordsTest {
 
     @Test
     public void applyTest() throws CAException, InterruptedException, IOException {
-        ApplyRecord apply = new ApplyRecord(cas, cs, xmlFile.getPath(), xsdFile.getPath());
+        ApplyRecord apply = new ApplyRecord(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
         apply.start();
-        Channel<Dir> dir = cas.createChannel(epicsTop + ":apply.DIR", Dir.CLEAR);
-        Channel<Integer> val = cas.createChannel(epicsTop + ":apply.VAL", 0);
-        Channel<Integer> cadVal = cas.createChannel(epicsTop + ":" + cadName + ".VAL", 0);
-        Channel<Integer> clid = cas.createChannel(epicsTop + ":apply.CLID", 0);
-        Channel<Integer> cadClid = cas.createChannel(epicsTop + ":" + cadName + ".ICID", 0);
-        Channel<String> data_label = cas.createChannel(epicsTop + ":" + cadName + ".DATA_LABEL", "");
+        Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName("apply.DIR"), Dir.CLEAR);
+        Channel<Integer> val = cas.createChannel(epicsTop.buildChannelName("apply.VAL"), 0);
+        Channel<Integer> cadVal = cas.createChannel(epicsTop.buildChannelName(cadName + ".VAL"), 0);
+        Channel<Integer> clid = cas.createChannel(epicsTop.buildChannelName("apply.CLID"), 0);
+        Channel<Integer> cadClid = cas.createChannel(epicsTop.buildChannelName(cadName + ".ICID"), 0);
+        Channel<String> data_label = cas.createChannel(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "");
 
 
         data_label.setValue("");
@@ -293,9 +295,9 @@ public class RecordsTest {
         assertEquals(new Integer(1), val.getFirst());
 
         //special record apply/config.
-        Channel<String> useAo = cas.createChannel(epicsTop + ":configAo:useAo", "");
-        cadClid = cas.createChannel(epicsTop + ":config.ICID", 0);
-        cadVal = cas.createChannel(epicsTop + ":config.VAL", 0);
+        Channel<String> useAo = cas.createChannel(epicsTop.buildChannelName("configAo:useAo"), "");
+        cadClid = cas.createChannel(epicsTop.buildChannelName("config.ICID"), 0);
+        cadVal = cas.createChannel(epicsTop.buildChannelName("config.VAL"), 0);
 
 
         useAo.setValue("1");
