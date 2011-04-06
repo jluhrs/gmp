@@ -51,20 +51,17 @@ public class EpicsStatusService implements StatusHandler {
     private final Map<String, AlarmChannel<?>> alarmChannelMap = new HashMap<String, AlarmChannel<?>>();
     private final Map<String, Channel<String>> healthChannelMap = new HashMap<String, Channel<String>>();
 
-    @Requires
-    private ChannelAccessServer _channelAccessServer;
+    private final ChannelAccessServer _channelAccessServer;
+    private final String xmlFileName;
+    private final String xsdFileName;
 
-    @Property(name = "xmlFileName", value = "INVALID", mandatory = true)
-    private String xmlFileName;
-    @Property(name = "xsdFileName", value = "INVALID", mandatory = true)
-    private String xsdFileName;
 
-    private EpicsStatusService() {
-
-    }
-
-    public EpicsStatusService(ChannelAccessServer Cas) {
-        _channelAccessServer = Cas;
+    public EpicsStatusService(@Requires ChannelAccessServer cas,
+                              @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
+                              @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
+        _channelAccessServer = cas;
+        this.xmlFileName = xmlFileName;
+        this.xsdFileName = xsdFileName;
     }
 
 

@@ -34,7 +34,7 @@ public class EpicsStatusServiceIT extends TestCase {
     private static final Logger LOG = Logger.getLogger(EpicsStatusServiceIT.class.getName());
 
     @Test
-    public void testWithCas() throws Exception{
+    public void testWithCas() throws Exception {
         //create fake config files
         File xml = null;
 
@@ -57,10 +57,10 @@ public class EpicsStatusServiceIT extends TestCase {
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
-        EpicsStatusService ess = new EpicsStatusService(cas);
+        EpicsStatusService ess = new EpicsStatusService(cas, xml.getPath(), xsd.getPath());
 
 
-        ess.initialize(essc.getSimulatedChannels());
+        ess.initialize();
 
         Map<String, AlarmChannel<?>> ac = ess.getAlarmChannels();
 

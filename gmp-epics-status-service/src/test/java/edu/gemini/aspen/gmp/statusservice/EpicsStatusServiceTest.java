@@ -28,8 +28,8 @@ import static org.mockito.Mockito.*;
 public class EpicsStatusServiceTest extends TestCase {
     private static final Logger LOG = Logger.getLogger(EpicsStatusServiceTest.class.getName());
 
-    private AlarmChannelType buildAlarmChannel(String giapiname, String epicsname, DataType type, String initial){
-        AlarmChannelType ch= new AlarmChannelType();
+    private AlarmChannelType buildAlarmChannel(String giapiname, String epicsname, DataType type, String initial) {
+        AlarmChannelType ch = new AlarmChannelType();
         ch.setGiapiname(giapiname);
         ch.setEpicsname(epicsname);
         ch.setType(type);
@@ -38,33 +38,48 @@ public class EpicsStatusServiceTest extends TestCase {
     }
 
     private ChannelAccessServer cas;
+    private File xml = null;
+    private File xsd = null;
 
     @Before
-    public void setUp()throws Exception{
-        cas= mock(ChannelAccessServerImpl.class);
+    public void setUp() throws Exception {
+        cas = mock(ChannelAccessServerImpl.class);
         AlarmChannel iach = mock(AlarmChannel.class);
-        when(cas.createAlarmChannel(anyString(),anyInt())).thenReturn(iach);
-        when(cas.createAlarmChannel(anyString(),anyFloat())).thenReturn(iach);
-        when(cas.createAlarmChannel(anyString(),anyDouble())).thenReturn(iach);
-        when(cas.createAlarmChannel(anyString(),anyString())).thenReturn(iach);
+        when(cas.createAlarmChannel(anyString(), anyInt())).thenReturn(iach);
+        when(cas.createAlarmChannel(anyString(), anyFloat())).thenReturn(iach);
+        when(cas.createAlarmChannel(anyString(), anyDouble())).thenReturn(iach);
+        when(cas.createAlarmChannel(anyString(), anyString())).thenReturn(iach);
         Channel ich = mock(Channel.class);
-        when(cas.createChannel(anyString(),anyInt())).thenReturn(ich);
-        when(cas.createChannel(anyString(),anyFloat())).thenReturn(ich);
-        when(cas.createChannel(anyString(),anyDouble())).thenReturn(ich);
-        when(cas.createChannel(anyString(),anyString())).thenReturn(ich);
+        when(cas.createChannel(anyString(), anyInt())).thenReturn(ich);
+        when(cas.createChannel(anyString(), anyFloat())).thenReturn(ich);
+        when(cas.createChannel(anyString(), anyDouble())).thenReturn(ich);
+        when(cas.createChannel(anyString(), anyString())).thenReturn(ich);
+
+
+        xml = File.createTempFile("EpicsTest", "xml");
+
+        xsd = File.createTempFile("EpicsTest", "xsd");
+
+        FileWriter xmlWrt = new FileWriter(xml);
+        FileWriter xsdWrt = new FileWriter(xsd);
+
+        xmlWrt.write(EpicsStatusServiceConfigurationTest.xmlStr);
+        xsdWrt.write(EpicsStatusServiceConfigurationTest.xsdStr);
+        xmlWrt.close();
+        xsdWrt.close();
     }
 
     @Test
-    public void testBasic(){
-        EpicsStatusService ess=new EpicsStatusService(cas);
+    public void testBasic() {
+        EpicsStatusService ess = new EpicsStatusService(cas, xml.getPath(), xsd.getPath());
 
         //LOG.info("Service name: "+ess.getName());
 
-        Channels lst= new Channels();
-        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name1","other name1",DataType.INT,"3"));
-        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name2","other name2",DataType.DOUBLE,"3.0"));
-        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name3","other name3",DataType.FLOAT,"3.0"));
-        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name4","other name4",DataType.STRING,"three"));
+        Channels lst = new Channels();
+        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name1", "other name1", DataType.INT, "3"));
+        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name2", "other name2", DataType.DOUBLE, "3.0"));
+        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name3", "other name3", DataType.FLOAT, "3.0"));
+        lst.getSimpleChannelOrAlarmChannelOrHealthChannel().add(buildAlarmChannel("name4", "other name4", DataType.STRING, "three"));
 
 
         ess.initialize(lst);
@@ -81,33 +96,19 @@ public class EpicsStatusServiceTest extends TestCase {
 
         ess.shutdown();
 
-        assertEquals(ess.getChannels().keySet(),new HashSet<String>());
+        assertEquals(ess.getChannels().keySet(), new HashSet<String>());
     }
 
     @Test
-    public void testFull() throws Exception{
-           File xml = null;
-
-        xml = File.createTempFile("EpicsTest", "xml");
-
-        File xsd = null;
-        xsd = File.createTempFile("EpicsTest", "xsd");
-
-        FileWriter xmlWrt = new FileWriter(xml);
-        FileWriter xsdWrt = new FileWriter(xsd);
-
-        xmlWrt.write(EpicsStatusServiceConfigurationTest.xmlStr);
-        xsdWrt.write(EpicsStatusServiceConfigurationTest.xsdStr);
-        xmlWrt.close();
-        xsdWrt.close();
+    public void testFull() throws Exception {
 
 
         //initialize and check channels are created
         EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
 
 
-        EpicsStatusService ess=new EpicsStatusService(cas);
-        ess.initialize(essc.getSimulatedChannels());
+        EpicsStatusService ess = new EpicsStatusService(cas, xml.getPath(), xsd.getPath());
+        ess.initialize();
         Map<String, AlarmChannel<?>> ac = ess.getAlarmChannels();
 
         Map<String, Channel<?>> nc = ess.getChannels();
