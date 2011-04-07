@@ -97,7 +97,7 @@ public class EpicsBaseImpl implements EpicsBase {
         } catch (TimeoutException e) {
             throw new EpicsException("Timeout while binding to epics channel " + channel, e);
         } catch (IllegalStateException e) {
-            LOG.log(Level.WARNING, "Epics channel in incorrect state " + channel, e);
+            throw new EpicsException("Epics channel in incorrect state " + channel, e);
         }
     }
 
