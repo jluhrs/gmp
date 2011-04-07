@@ -6,7 +6,6 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
@@ -24,9 +23,8 @@ import java.util.logging.Logger;
  * that other services need to use to talk to JCA
  * It manages the life cycle of the context
  */
-@Component(managedservice = "edu.gemini.epics.EpicsService", publicFactory = false)
+@Component
 @Provides
-@Instantiate(name="epicsService")
 public class EpicsService implements JCAContextController {
     private static final Logger LOG = Logger.getLogger(EpicsService.class.getName());
     private static final String IPADDRESS_PATTERN =
@@ -40,9 +38,6 @@ public class EpicsService implements JCAContextController {
 
     private Context _ctx;
 
-    /**
-     * For iPojo
-     */
     public EpicsService(@Property(name = PROPERTY_ADDRESS_LIST, value = "127.0.0.1", mandatory = true) String addressList) {
         LOG.info("EpicsService created with " + addressList);
         validateAddressToConnect(addressList);
