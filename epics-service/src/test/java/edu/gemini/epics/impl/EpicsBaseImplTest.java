@@ -40,7 +40,8 @@ public class EpicsBaseImplTest {
     }
 
     @Test
-    public void testIsChannelKnown() {
+    public void testIsChannelKnown() throws CAException {
+        when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
 
         assertFalse(epicsBase.isChannelKnown(CHANNEL_NAME));
