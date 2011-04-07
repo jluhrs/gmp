@@ -1,6 +1,7 @@
 package edu.gemini.epics.impl;
 
 import edu.gemini.epics.EpicsClient;
+import edu.gemini.epics.EpicsException;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
@@ -47,6 +48,12 @@ public class ChannelBindingSupportTest {
         cbs.bindChannel(CHANNEL_NAME);
 
         verify(context).createChannel(eq(CHANNEL_NAME), any(ConnectionListener.class));
+    }
+
+    @Test(expected = EpicsException.class)
+    public void testExceptionWhenBindingChannel() throws CAException {
+        when(context.createChannel(eq(CHANNEL_NAME), any(ConnectionListener.class))).thenThrow(new CAException());
+        cbs.bindChannel(CHANNEL_NAME);
     }
 
     @Test
