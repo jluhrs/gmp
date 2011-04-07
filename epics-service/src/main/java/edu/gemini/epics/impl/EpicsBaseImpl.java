@@ -29,36 +29,6 @@ public class EpicsBaseImpl implements EpicsBase {
     private final Context _ctx;
     private final Map<String, Channel> _channels = Maps.newTreeMap();
 
-    //TODO: The following code can be resucitated when more testing is done to define
-    //      how to reconnect correctly in case of EPICS trouble.
-    /*private final ConnectionListener _connectionListener = new ConnectionListener() {
-        public void connectionChanged(ConnectionEvent ce) {
-            Channel ch = (Channel) ce.getSource();
-            LOG.fine("Channel was opened for " + ch.getName());
-
-            if (ce.isConnected()) {
-                LOG.fine("Channel was opened for " + ch.getName());
-            } else {
-                // Now throw the dead channel away and reconnect.
-                if (!closed) {
-                    LOG.warning("Connection was closed for " + ch.getName());
-                    try {
-                        LOG.info("Destroying channel " + ch.getName() + ", state is " + ch.getConnectionState());
-                        ch.destroy();
-
-                        LOG.info("Reconnecting channel " + ch.getName());
-                        ch = ch.getContext().createChannel(ch.getName(), this);
-                        _channels.put(ch.getName(), ch);
-                        ch.getContext().flushIO();
-                    } catch (Exception e) {
-                        LOG.log(Level.SEVERE, "Trouble reconnecting channel " + ch.getName(), e);
-                    }
-                }
-            }
-        }
-    };*/
-
-
     public EpicsBaseImpl(JCAContextController epicsService) {
         Preconditions.checkArgument(epicsService != null, "Passed JCAContextController cannot be null");
         Preconditions.checkArgument(epicsService.getJCAContext() != null, "Passed JCA Context cannot be null");
@@ -118,13 +88,16 @@ public class EpicsBaseImpl implements EpicsBase {
         return channel;
     }
 
-    public void close() throws IllegalStateException, CAException {
+    public void close() {
         for (String channelName : _channels.keySet()) {
             Channel ch = _channels.get(channelName);
             try {
                 ch.destroy();
             } catch (IllegalStateException ise) {
                 // Ok; channel already destroyed.
+            } catch (CAException e) {
+                // Log and continue
+                LOG.log(Level.WARNING, "Exception while closing channel " + ch, e);
             }
         }
         _channels.clear();

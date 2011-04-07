@@ -8,6 +8,7 @@ import edu.gemini.epics.EpicsException;
 import gov.aps.jca.Context;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
@@ -19,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class EpicsClientsHolder {
     private static final Logger LOG = Logger.getLogger(EpicsClientsHolder.class.getName());
-    private final ConcurrentMap<EpicsClient, Iterable<String>> pendingClients = Maps.newConcurrentMap();
+    private final ConcurrentMap<EpicsClient, Collection<String>> pendingClients = Maps.newConcurrentMap();
     private final ConcurrentMap<EpicsClient, ChannelBindingSupport> startedClients = Maps.newConcurrentMap();
 
     /**
@@ -29,24 +30,32 @@ public class EpicsClientsHolder {
         connectNewClient(ctx, epicsClient, Lists.newArrayList(channels));
     }
 
-    public void connectNewClient(Context ctx, EpicsClient epicsClient, Iterable<String> channels) {
-        try {
-            ChannelBindingSupport cbs = new ChannelBindingSupport(ctx, epicsClient);
-            for (String channel : channels) {
-                LOG.info("Binding client " + epicsClient + " to channel " + channel);
-                cbs.bindChannel(channel);
+    public void connectNewClient(Context ctx, EpicsClient epicsClient, Collection<String> channels) {
+        if (!channels.isEmpty()) {
+            try {
+                ChannelBindingSupport cbs = subscribeToChannels(ctx, epicsClient, channels);
+                
+                startedClients.put(epicsClient, cbs);
+                epicsClient.connected();
+            } catch (EpicsException cae) {
+                LOG.log(Level.SEVERE, "Could not connect to EPICS.", cae);
             }
-            startedClients.put(epicsClient, cbs);
-            epicsClient.connected();
-        } catch (EpicsException cae) {
-            LOG.log(Level.SEVERE, "Could not connect to EPICS.", cae);
         }
+    }
+
+    private ChannelBindingSupport subscribeToChannels(Context ctx, EpicsClient epicsClient, Collection<String> channels) {
+        ChannelBindingSupport cbs = new ChannelBindingSupport(ctx, epicsClient);
+        for (String channel : channels) {
+            LOG.fine("Binding client " + epicsClient + " to channel " + channel);
+            cbs.bindChannel(channel);
+        }
+        return cbs;
     }
 
     /**
      * Stores a client to be started when the Context is made available
      */
-    public void saveForLateConnection(EpicsClient epicsClient, Iterable<String> channels) {
+    public void saveForLateConnection(EpicsClient epicsClient, Collection<String> channels) {
         LOG.fine("Saving client " + epicsClient + " for binding channels " + channels);
         pendingClients.put(epicsClient, channels);
     }
@@ -81,7 +90,7 @@ public class EpicsClientsHolder {
      */
     public void connectAllPendingClients(Context ctx) {
         // TODO Lock access to pendingClients
-        for (Map.Entry<EpicsClient, Iterable<String>> pendingClient : pendingClients.entrySet()) {
+        for (Map.Entry<EpicsClient, Collection<String>> pendingClient : pendingClients.entrySet()) {
             connectNewClient(ctx, pendingClient.getKey(), pendingClient.getValue());
         }
         pendingClients.clear();

@@ -1,5 +1,7 @@
 package edu.gemini.epics;
 
+import java.util.Collection;
+
 /**
  * This interface defines a service that can register listeners to specific EPICS channels
  *
@@ -16,7 +18,7 @@ public interface EpicsObserver {
      * @param client A Valid EpicsClient object
      * @param channels A list of channels the Client will get updates for
      */
-    void registerEpicsClient(EpicsClient client, Iterable<String> channels);
+    void registerEpicsClient(EpicsClient client, Collection<String> channels);
 
     /**
      * The counter part to (@link registerEpicsClient}, it will stop sending

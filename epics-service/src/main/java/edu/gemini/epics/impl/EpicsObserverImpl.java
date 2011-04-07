@@ -10,6 +10,7 @@ import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 @Component
@@ -37,7 +38,7 @@ public class EpicsObserverImpl implements EpicsObserver {
     }
 
     @Override
-    public void registerEpicsClient(EpicsClient epicsClient, Iterable<String> channels) {
+    public void registerEpicsClient(EpicsClient epicsClient, Collection<String> channels) {
         if (contextController.isContextAvailable()) {
             epicsClientsHolder.connectNewClient(contextController.getJCAContext(), epicsClient, channels);
         } else {
