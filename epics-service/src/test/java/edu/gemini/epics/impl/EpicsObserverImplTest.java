@@ -1,10 +1,11 @@
 package edu.gemini.epics.impl;
 
 import com.google.common.collect.ImmutableList;
+import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsClientMock;
-import edu.gemini.epics.EpicsObserver;
 import edu.gemini.epics.JCAContextController;
 import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
 import gov.aps.jca.event.ConnectionListener;
 import org.junit.Before;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 public class EpicsObserverImplTest {
     private static final ImmutableList<String> CHANNELS_TO_READ = ImmutableList.of("tst:tst");
-    private EpicsObserver epicsObserver;
+    private EpicsObserverImpl epicsObserver;
     private JCAContextController contextController;
     private Context jcaContext;
 
@@ -32,6 +33,8 @@ public class EpicsObserverImplTest {
 
         jcaContext = mock(Context.class);
         when(contextController.getJCAContext()).thenReturn(jcaContext);
+        Channel channel = mock(Channel.class);
+        when(jcaContext.createChannel(Matchers.<String>any(), Matchers.<ConnectionListener>anyObject())).thenReturn(channel);
 
         epicsObserver = new EpicsObserverImpl(contextController);
     }
@@ -53,68 +56,50 @@ public class EpicsObserverImplTest {
         assertFalse(epicsClient.wasConnectedCalled());
         verifyZeroInteractions(jcaContext);
     }
-//
-//    @Test
-//    public void testBindingEpicsClientBeforeStartingTheService() {
-//        EpicsClient epicsClient = mock(EpicsClient.class);
-//        epicsObserver.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
-//
-//        verifyZeroInteractions(epicsClient);
-//        epicsObserver.startService();
-//
-//        verify(epicsClient).connected();
-//        epicsObserver.stopService();
-//    }
-//
-//    @Test
-//    public void testUnbindingEpicsClient() {
-//        epicsObserver.startService();
-//        EpicsClient epicsClient = mock(EpicsClient.class);
-//        epicsObserver.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
-//        verify(epicsClient).connected();
-//
-//        epicsObserver.unbindEpicsClient(epicsClient);
-//        verify(epicsClient).disconnected();
-//
-//        epicsObserver.stopService();
-//    }
-//
-//    @Test
-//    public void testUnbindingEpicsClientWhenStopping() {
-//        epicsObserver.startService();
-//        EpicsClient epicsClient = mock(EpicsClient.class);
-//        epicsObserver.bindEpicsClient(epicsClient, CHANNELS_TO_READ);
-//        verify(epicsClient).connected();
-//
-//        epicsObserver.stopService();
-//        verify(epicsClient).disconnected();
-//    }
-//
-//    @Test
-//    public void testUnbindingUnknownClient() {
-//        epicsObserver.startService();
-//        EpicsClient epicsClient = mock(EpicsClient.class);
-//        epicsObserver.unbindEpicsClient(epicsClient);
-//
-//        epicsObserver.stopService();
-//        verifyZeroInteractions(epicsClient);
-//    }
-//
-//    @Test(expected = IllegalStateException.class)
-//    public void testGetContextBeforeReady() {
-//        epicsObserver.getJCAContext();
-//    }
-//
-//    @Test
-//    public void testGetContextPassedInitially() {
-//        Context context = mock(Context.class);
-//        EpicsService epicsService = new EpicsService(context, "127.0.0.1");
-//        assertEquals(context, epicsService.getJCAContext());
-//    }
-//
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testPassingBadAddress() {
-//        Context context = mock(Context.class);
-//        new EpicsService(context, "a.b.c.d");
-//    }
+
+    @Test
+    public void testBindingEpicsClientBeforeStartingTheService() throws CAException {
+        when(contextController.isContextAvailable()).thenReturn(false);
+
+        EpicsClientMock epicsClient =  new EpicsClientMock();
+        epicsObserver.registerEpicsClient(epicsClient, CHANNELS_TO_READ);
+
+        verifyZeroInteractions(jcaContext);
+
+        when(contextController.isContextAvailable()).thenReturn(true);
+        when(contextController.getJCAContext()).thenReturn(jcaContext);
+        
+        epicsObserver.startObserver();
+
+        verify(jcaContext).createChannel(eq("tst:tst"), Matchers.<ConnectionListener>anyObject());
+        assertTrue(epicsClient.wasConnectedCalled());
+    }
+
+    @Test
+    public void testUnregisterEpicsClient() {
+        EpicsClientMock epicsClient = new EpicsClientMock();
+        epicsObserver.registerEpicsClient(epicsClient, CHANNELS_TO_READ);
+
+        epicsObserver.unregisterEpicsClient(epicsClient);
+        assertTrue(epicsClient.wasDisconnectedCalled());
+    }
+
+    @Test
+    public void testUnbindingEpicsClientWhenStopping() {
+        EpicsClientMock epicsClient = new EpicsClientMock();
+        epicsObserver.registerEpicsClient(epicsClient, CHANNELS_TO_READ);
+
+        epicsObserver.stopObserver();
+
+        assertTrue(epicsClient.wasDisconnectedCalled());
+    }
+
+    @Test
+    public void testUnbindingUnknownClient() {
+        EpicsClient epicsClient = mock(EpicsClient.class);
+        epicsObserver.unregisterEpicsClient(epicsClient);
+
+        verifyZeroInteractions(epicsClient);
+    }
+
 }
