@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
  * Basic integration test for EpicsService \verifying that the services can run and its properties be set
  */
 @RunWith(JUnit4TestRunner.class)
-public class EpicsObserverIT extends EpicsServiceBaseIntegration {
+public class EpicsClientSubscriberIT extends EpicsServiceBaseIntegration {
     @Test
     public void registerMockEpicsClient() throws InterruptedException {
         EpicsClientMock epicsClient = new EpicsClientMock();
