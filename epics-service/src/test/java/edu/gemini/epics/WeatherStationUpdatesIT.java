@@ -3,6 +3,7 @@ package edu.gemini.epics;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import edu.gemini.epics.impl.ChannelBindingSupport;
+import edu.gemini.epics.impl.EpicsObserverImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
@@ -53,10 +54,14 @@ public  class WeatherStationUpdatesIT {
     public void testWeatherReads() throws InterruptedException, CAException {
         WeatherStationEpicsClient weatherStationEpicsClient = new WeatherStationEpicsClient();
 
-        cbs = new ChannelBindingSupport(context, weatherStationEpicsClient);
-        for (String s : CHANNELS.keySet()) {
-            cbs.bindChannel(s);
-        }
+        EpicsService epicsService = new EpicsService(context);
+        EpicsObserver observer = new EpicsObserverImpl(epicsService);
+
+        observer.registerEpicsClient(weatherStationEpicsClient, CHANNELS.keySet());
+//        cbs = new ChannelBindingSupport(context, weatherStationEpicsClient);
+//        for (String s : CHANNELS.keySet()) {
+//            cbs.bindChannel(s);
+//        }
 
         // Give it 5 seconds
         TimeUnit.MILLISECONDS.sleep(5000);

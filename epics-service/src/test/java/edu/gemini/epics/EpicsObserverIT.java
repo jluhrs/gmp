@@ -51,7 +51,7 @@ public class EpicsObserverIT extends EpicsServiceBaseIntegration {
     }
 
     @Test
-    public void testDisconnectUponObserverUnregistration() throws InterruptedException, BundleException {
+    public void testDisconnectUponObserverUnRegistration() throws InterruptedException, BundleException {
         EpicsClientMock epicsClient = new EpicsClientMock();
 
         Dictionary<String, String[]> serviceProperties = new Hashtable<String, String[]>();
