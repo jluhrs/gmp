@@ -34,6 +34,7 @@ public class ChannelBindingSupport {
     private boolean _closed;
 
     private final ConnectionListener connectionListener = new ConnectionListener() {
+        @Override
         public void connectionChanged(ConnectionEvent ce) {
             Channel ch = (Channel) ce.getSource();
             if (ce.isConnected()) {
@@ -104,6 +105,7 @@ public class ChannelBindingSupport {
     }
 
     private final GetListener getListener = new GetListener() {
+        @Override
         public void getCompleted(GetEvent ge) {
             Channel ch = (Channel) ge.getSource();
             try {
