@@ -12,9 +12,14 @@ import org.apache.felix.ipojo.annotations.Unbind;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
- * The EpicsService is an internal service that tracks EpicsClients as OSGi services
- * and assigns them to listen for updates on EPICS
+ * The EpicsService is a simple component that tracks EpicsClient objects registered
+ * as OSGi services and set them up as Listeners for channels
+ *
+ * Clients need to register an EpicsClient service and include the EpicsClient.EPICS_CHANNEL
+ * service properties to indicate which channels it wants to listen to
  */
 @Component
 @Instantiate
@@ -23,10 +28,10 @@ public class EpicsClientSubscriber {
     private final EpicsObserver _epicsObserver;
 
     protected EpicsClientSubscriber(@Requires EpicsObserver epicsObserver) {
+        checkArgument(epicsObserver != null);
         LOG.fine("EpicsClientSubscriber created with " + epicsObserver);
         _epicsObserver = epicsObserver;
     }
-
 
     /**
      * Called when an EpicsClient appears. It will try to bind to the client right away if possible or it will

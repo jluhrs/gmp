@@ -14,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 public class EpicsServiceTest {
-    private static final ImmutableMap<String,Object> CHANNELS_TO_READ = ImmutableMap.<String, Object>of(EpicsClient.EPICS_CHANNELS, new String[] {"tst:tst"});
+    private static final ImmutableMap<String, Object> CHANNELS_TO_READ = ImmutableMap.<String, Object>of(EpicsClient.EPICS_CHANNELS, new String[]{"tst:tst"});
     private EpicsService epicsService;
 
 
@@ -56,11 +56,16 @@ public class EpicsServiceTest {
      */
     @Test
     public void updateAddressList() {
-        Dictionary<String,String> dictionary = new Hashtable<String, String>();
+        Dictionary<String, String> dictionary = new Hashtable<String, String>();
         String NEW_ADDRESS = "0.0.0.0";
         dictionary.put(EpicsService.PROPERTY_ADDRESS_LIST, NEW_ADDRESS);
         epicsService.changedAddress(dictionary);
 
+        epicsService.startService();
+        assertEquals(NEW_ADDRESS, System.getProperty("com.cosylab.epics.caj.CAJContext.addr_list"));
+
+        // Now pass an empty set
+        epicsService.changedAddress(new Hashtable<String, String>());
         epicsService.startService();
         assertEquals(NEW_ADDRESS, System.getProperty("com.cosylab.epics.caj.CAJContext.addr_list"));
     }

@@ -16,6 +16,10 @@ import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+/**
+ * This class is an implementation of EpicsObserver. It allows EpicClient objects to
+ * register to be notified upon changes on an epics channel
+ */
 @Component
 @Provides
 @Instantiate(name = "epicsObserver")
@@ -46,15 +50,15 @@ public class EpicsObserverImpl implements EpicsObserver {
     @Override
     public void registerEpicsClient(EpicsClient epicsClient, Collection<String> channels) {
         if (channels != null) {
-            registerObserver(epicsClient, channels);
+            registerListener(epicsClient, channels);
         }
     }
 
-    private void registerObserver(EpicsClient epicsClient, Collection<String> channels) {
+    private void registerListener(EpicsClient epicsClient, Collection<String> channels) {
+        // This may be called before or after the startService method
         if (contextController.isContextAvailable()) {
             epicsClientsHolder.connectNewClient(contextController.getJCAContext(), epicsClient, channels);
         } else {
-            // This may be called before or after the startService method
             epicsClientsHolder.saveForLateConnection(epicsClient, channels);
         }
     }

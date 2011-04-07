@@ -6,7 +6,9 @@ import java.util.Collection;
  * This interface defines a service that can register listeners to specific EPICS channels
  *
  * This is similar to the role of {@link EpicsClient} but instead of using OSGi services
- * it can be used programatically
+ * it can be used directly in code
+ *
+ * This interface follows the Observer Pattern with EpicsClient being the listeners
  *
  */
 public interface EpicsObserver {
@@ -16,7 +18,7 @@ public interface EpicsObserver {
      * Unknown channels are ignored
      *
      * @param client A Valid EpicsClient object
-     * @param channels A list of channels the Client will get updates for
+     * @param channels A list of channels the Client will subscribe to
      */
     void registerEpicsClient(EpicsClient client, Collection<String> channels);
 

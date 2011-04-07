@@ -29,7 +29,6 @@ public class EpicsReaderImpl extends EpicsBaseImpl implements EpicsReader {
 
     public EpicsReaderImpl(@Requires JCAContextController epicsService) {
         super(epicsService);
-        startEpicsReader();
     }
 
     /**
@@ -41,8 +40,9 @@ public class EpicsReaderImpl extends EpicsBaseImpl implements EpicsReader {
      * @throws EpicsException
      */
     public Object getValue(String channelName) throws EpicsException {
+        Channel channel = getChannel(channelName);
         if (isChannelKnown(channelName)) {
-            return readChannelValue(channelName);
+            return readChannelValue(channel);
         } else {
             return EMPTY_CHANNEL_VALUE;
         }
@@ -53,8 +53,7 @@ public class EpicsReaderImpl extends EpicsBaseImpl implements EpicsReader {
         LOG.info("EpicsReader ready" );
     }
 
-    private Object readChannelValue(String channelName) {
-        Channel channel = getChannel(channelName);
+    private Object readChannelValue(Channel channel) {
         try {
             return readEpicsValue(channel);
         } catch (CAException e) {
@@ -65,6 +64,7 @@ public class EpicsReaderImpl extends EpicsBaseImpl implements EpicsReader {
     }
 
     private Object readEpicsValue(Channel channel) throws CAException, TimeoutException {
+        // There is a slight chance of problems here as the channel could be unbound anytimes
         DBR dbr = channel.get();
         channel.getContext().pendIO(1.0);
         return dbr.getValue();

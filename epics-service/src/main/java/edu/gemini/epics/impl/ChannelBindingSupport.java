@@ -25,6 +25,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Support class that links an epicsClient with the JCA plumbing required to
+ * get data updates for the changes
+ */
 public class ChannelBindingSupport {
     private static final Logger LOG = Logger.getLogger(ChannelBindingSupport.class.getName());
 
@@ -108,6 +112,7 @@ public class ChannelBindingSupport {
         @Override
         public void getCompleted(GetEvent ge) {
             Channel ch = (Channel) ge.getSource();
+            // Wrap the call to avoid rogue clients to break it
             try {
                 sendUpdateToClient(ge, ch);
             } catch (Exception e) {

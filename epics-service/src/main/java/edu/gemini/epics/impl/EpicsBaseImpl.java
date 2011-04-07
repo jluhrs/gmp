@@ -16,7 +16,7 @@ import gov.aps.jca.event.ContextMessageListener;
 import gov.aps.jca.event.ContextVirtualCircuitExceptionEvent;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +27,7 @@ public class EpicsBaseImpl implements EpicsBase {
     private static final Logger LOG = Logger.getLogger(EpicsBaseImpl.class.getName());
 
     private final Context _ctx;
-    private final Map<String, Channel> _channels = Maps.newTreeMap();
+    private final ConcurrentMap<String, Channel> _channels = Maps.newConcurrentMap();
 
     public EpicsBaseImpl(JCAContextController epicsService) {
         Preconditions.checkArgument(epicsService != null, "Passed JCAContextController cannot be null");
@@ -74,7 +74,7 @@ public class EpicsBaseImpl implements EpicsBase {
     private void bindNewChannel(String channelName) throws CAException, TimeoutException {
         Channel epicsChannel = _ctx.createChannel(channelName);
         //TODO: Do we need to bind the channels asynchronously, using the connection listener?
-        _channels.put(channelName, epicsChannel);
+        _channels.putIfAbsent(channelName, epicsChannel);
         _ctx.pendIO(5.0);
     }
 

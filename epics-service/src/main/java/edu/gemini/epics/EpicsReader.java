@@ -13,7 +13,7 @@ public interface EpicsReader extends EpicsBase {
      *
      * @param channelName EPICS channel to read from
      * @return the current value from the EPICS channel
-     * @throws EpicsException if an exception ocurred while performing
+     * @throws EpicsException if an exception happened while performing
      * the operation
      */
     Object getValue(String channelName) throws EpicsException;

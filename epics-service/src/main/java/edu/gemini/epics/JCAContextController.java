@@ -14,5 +14,10 @@ public interface JCAContextController {
      */
     Context getJCAContext() throws IllegalStateException;
 
+    /**
+     * Indicates if a JCA Context is available. Should be used before getJCAContext
+     *
+     * @return <code>true</code> if you can get a JCA Context, <code>false</code> otherwise
+     */
     boolean isContextAvailable();
 }

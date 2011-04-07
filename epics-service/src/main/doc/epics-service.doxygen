@@ -2,8 +2,11 @@
  * \page epics-service Epics Service
  *
  * Epics Service is a bundle that gives access to external/remote epics databases to read and write values.
- * The service can also accept registration of clients interested on receiving asynchronous updates. They can do so
- * by registering an EpicsClient service
+ * The service can also accept registration of clients interested on receiving asynchronous updates.
+ *
+ * They can do so by two means:
+ * - Registering an EpicsClient service
+ * - Getting a reference to EpicsObserver and call registerEpicsClient with a list of channels
  *
  * \section epics-service_provides_sec Provided Services
  * This bundle provides the following OSGi services
@@ -12,6 +15,7 @@
  * - \ref edu.gemini.epics.EpicsReader "EpicsReader" this service allows to read a value from a given EPICS channel. For that it is necessary to
  * pass the channel name
  * - \ref edu.gemini.epics.EpicsWriter "EpicsWriter" A service to write double values to a specific epics channel. Double arrays are also supported
+ * - \ref edu.gemini.epics.EpicsObserver "EpicsObserver" A service to register EpicsClient to get updates to EpicsChannels.
  *
  * \section epics-service_requires_sec Required Services
  * This bundle can use implementations of the \ref edu.gemini.epics.EpicsClient "EpicsClient" service. Implementations

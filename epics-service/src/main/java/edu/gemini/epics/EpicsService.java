@@ -19,9 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The EpicsService is an iPojo Component that has a reference to a JCAContext
- * that other services need to use to talk to JCA
- * It manages the life cycle of the context
+ * The EpicsService is an iPojo Component that has a reference to a JCA Context
+ * implementing {@link JCAContextController} which is used by many other service
+ *
+ * EpicsService is in charge of creating the JCA Context and manage its life cycle
  */
 @Component
 @Provides
@@ -71,7 +72,7 @@ public class EpicsService implements JCAContextController {
     public void changedAddress(Dictionary<String, String> properties) {
         if (properties.get(PROPERTY_ADDRESS_LIST) != null) {
             this._addressList = properties.get(PROPERTY_ADDRESS_LIST);
-            LOG.info("Address List changed, update JCA Context to " + this._addressList);
+            LOG.fine("Address List changed, update JCA Context to " + this._addressList);
         }
     }
 
@@ -98,7 +99,6 @@ public class EpicsService implements JCAContextController {
         if (isContextAvailable()) {
             stopService();
         }
-        LOG.info("EpicsService Validated, starting with:" + _ctx + " " + _addressList);
         validateAddressToConnect(_addressList);
 
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", _addressList);
@@ -107,13 +107,13 @@ public class EpicsService implements JCAContextController {
         try {
             _ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
             _ctx.initialize();
-            LOG.info("JCALibrary built connecting to: " + _addressList);
+            LOG.fine("JCALibrary built connecting to: " + _addressList);
 
             logContextInfo();
         } catch (CAException e) {
             LOG.log(Level.SEVERE, "Cannot start JCALibrary", e);
         }
-        LOG.info("Epics Service started on : " + _addressList);
+        LOG.fine("Epics Service started on : " + _addressList);
     }
 
     private void logContextInfo() {

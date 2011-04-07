@@ -27,7 +27,8 @@ public class EpicsWriterImplTest {
 
         when(channel.getContext()).thenReturn(context);
 
-        EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
+        EpicsWriterImpl epicsWriter = new EpicsWriterImpl(new EpicsService(context));
+        epicsWriter.startEpicsWriter();
         epicsWriter.bindChannel(CHANNEL_NAME);
 
         epicsWriter.write(CHANNEL_NAME, simulatedValue);

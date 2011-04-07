@@ -58,10 +58,6 @@ public  class WeatherStationUpdatesIT {
         EpicsObserver observer = new EpicsObserverImpl(epicsService);
 
         observer.registerEpicsClient(weatherStationEpicsClient, CHANNELS.keySet());
-//        cbs = new ChannelBindingSupport(context, weatherStationEpicsClient);
-//        for (String s : CHANNELS.keySet()) {
-//            cbs.bindChannel(s);
-//        }
 
         // Give it 5 seconds
         TimeUnit.MILLISECONDS.sleep(5000);

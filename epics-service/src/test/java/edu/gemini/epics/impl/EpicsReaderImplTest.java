@@ -29,7 +29,8 @@ public class EpicsReaderImplTest {
         when(channel.get()).thenReturn(new DBR_Float(simulatedValue));
         when(channel.getContext()).thenReturn(context);
 
-        EpicsReader epicsReader = new EpicsReaderImpl(new EpicsService(context));
+        EpicsReaderImpl epicsReader = new EpicsReaderImpl(new EpicsService(context));
+        epicsReader.startEpicsReader();
         epicsReader.bindChannel(CHANNEL_NAME);
 
         Object value = epicsReader.getValue(CHANNEL_NAME);

@@ -14,7 +14,8 @@ import org.apache.felix.ipojo.annotations.Validate;
 import java.util.logging.Logger;
 
 /**
- * Implementation of the EpicsWriter interface using JCA
+ * Implementation of the EpicsWriter interface that allows to write values
+ * to a previously bound value
  */
 @Component
 @Instantiate
@@ -24,17 +25,16 @@ public class EpicsWriterImpl extends EpicsBaseImpl implements EpicsWriter {
 
     public EpicsWriterImpl(@Requires JCAContextController epicsService) throws CAException {
         super(epicsService);
-        startEpicsWriter();
     }
 
     @Validate
     public void startEpicsWriter() {
-        LOG.info("EpicsWriter ready" );
+        LOG.fine("EpicsWriter ready");
     }
 
     public void write(String channelName, Double value) throws EpicsException {
+        Channel channel = getChannel(channelName);
         if (isChannelKnown(channelName)) {
-            Channel channel = getChannel(channelName);
             try {
                 channel.put(value);
                 channel.getContext().flushIO();
@@ -53,9 +53,8 @@ public class EpicsWriterImpl extends EpicsBaseImpl implements EpicsWriter {
     }
 
     public void write(String channelName, double[] value) throws EpicsException {
+        Channel channel = getChannel(channelName);
         if (isChannelKnown(channelName)) {
-            Channel channel = getChannel(channelName);
-
             try {
                 channel.put(value);
                 channel.getContext().flushIO();
