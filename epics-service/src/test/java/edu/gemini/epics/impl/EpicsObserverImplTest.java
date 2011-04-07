@@ -44,6 +44,10 @@ public class EpicsObserverImplTest {
         EpicsClientMock epicsClient = new EpicsClientMock();
         epicsObserver.registerEpicsClient(epicsClient, CHANNELS_TO_READ);
 
+        verifyChannelsAreRegisteredToClient(epicsClient);
+    }
+
+    private void verifyChannelsAreRegisteredToClient(EpicsClientMock epicsClient) throws CAException {
         assertTrue(epicsClient.wasConnectedCalled());
         verify(jcaContext).createChannel(eq("tst:tst"), Matchers.<ConnectionListener>anyObject());
     }
@@ -53,8 +57,20 @@ public class EpicsObserverImplTest {
         EpicsClientMock epicsClient = new EpicsClientMock();
         epicsObserver.registerEpicsClient(epicsClient, ImmutableList.<String>of());
 
+        verifyNoInteractionsWithClient(epicsClient);
+    }
+
+    private void verifyNoInteractionsWithClient(EpicsClientMock epicsClient) {
         assertFalse(epicsClient.wasConnectedCalled());
         verifyZeroInteractions(jcaContext);
+    }
+
+    @Test
+    public void testBindingEpicsClientWithNullChannelsProperty() {
+        EpicsClientMock epicsClient = new EpicsClientMock();
+        epicsObserver.registerEpicsClient(epicsClient, null);
+
+        verifyNoInteractionsWithClient(epicsClient);
     }
 
     @Test
@@ -64,15 +80,14 @@ public class EpicsObserverImplTest {
         EpicsClientMock epicsClient =  new EpicsClientMock();
         epicsObserver.registerEpicsClient(epicsClient, CHANNELS_TO_READ);
 
-        verifyZeroInteractions(jcaContext);
+        verifyNoInteractionsWithClient(epicsClient);
 
         when(contextController.isContextAvailable()).thenReturn(true);
         when(contextController.getJCAContext()).thenReturn(jcaContext);
         
         epicsObserver.startObserver();
 
-        verify(jcaContext).createChannel(eq("tst:tst"), Matchers.<ConnectionListener>anyObject());
-        assertTrue(epicsClient.wasConnectedCalled());
+        verifyChannelsAreRegisteredToClient(epicsClient);
     }
 
     @Test
