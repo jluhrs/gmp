@@ -36,7 +36,7 @@ public class EpicsPcsUpdaterTest {
 
     @Test(expected = PcsUpdaterException.class)
     public void constructionWithNadEpicsChannel() throws PcsUpdaterException, EpicsException {
-        doThrow(new EpicsException("Test exception")).when(writer).bindChannel(anyString());
+        doThrow(new EpicsException("Test exception", new RuntimeException())).when(writer).bindChannel(anyString());
         new EpicsPcsUpdater(writer, channel);
     }
 
