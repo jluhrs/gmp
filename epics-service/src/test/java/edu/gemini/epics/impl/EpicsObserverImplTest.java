@@ -72,29 +72,6 @@ public class EpicsObserverImplTest {
     }
 
     @Test
-    public void testClientRegistrationWithNoChannels() {
-        EpicsClientMock epicsClient = new EpicsClientMock();
-
-        epicsObserver.registerEpicsClient(epicsClient, ImmutableList.<String>of());
-
-        verifyNoInteractionsWithClient(epicsClient);
-    }
-
-    private void verifyNoInteractionsWithClient(EpicsClientMock epicsClient) {
-        assertFalse(epicsClient.wasConnectedCalled());
-        verifyZeroInteractions(jcaContext);
-    }
-
-    @Test
-    public void testClientRegistrationWithNullChannels() {
-        EpicsClientMock epicsClient = new EpicsClientMock();
-
-        epicsObserver.registerEpicsClient(epicsClient, null);
-
-        verifyNoInteractionsWithClient(epicsClient);
-    }
-
-    @Test
     public void testClientGetsUpdates() throws CAException {
         EpicsClientMock epicsClient = new EpicsClientMock();
         epicsObserver.registerEpicsClient(epicsClient, CHANNELS_TO_READ);
@@ -128,6 +105,42 @@ public class EpicsObserverImplTest {
 
         verify(channel).get(getListenerCaptor.capture());
         return getListenerCaptor.getValue();
+    }
+
+    @Test
+    public void testRegistrationAfterStart() throws CAException {
+        when(contextController.isContextAvailable()).thenReturn(false);
+
+        EpicsClientMock epicsClient = new EpicsClientMock();
+        epicsObserver.registerEpicsClient(epicsClient, CHANNELS_TO_READ);
+
+        when(contextController.isContextAvailable()).thenReturn(true);
+        epicsObserver.startObserver();
+
+        verifyChannelsAreRegisteredToClient(epicsClient);
+    }
+
+    @Test
+    public void testClientRegistrationWithNoChannels() {
+        EpicsClientMock epicsClient = new EpicsClientMock();
+
+        epicsObserver.registerEpicsClient(epicsClient, ImmutableList.<String>of());
+
+        verifyNoInteractionsWithClient(epicsClient);
+    }
+
+    private void verifyNoInteractionsWithClient(EpicsClientMock epicsClient) {
+        assertFalse(epicsClient.wasConnectedCalled());
+        verifyZeroInteractions(jcaContext);
+    }
+
+    @Test
+    public void testClientRegistrationWithNullChannels() {
+        EpicsClientMock epicsClient = new EpicsClientMock();
+
+        epicsObserver.registerEpicsClient(epicsClient, null);
+
+        verifyNoInteractionsWithClient(epicsClient);
     }
 
     @Test

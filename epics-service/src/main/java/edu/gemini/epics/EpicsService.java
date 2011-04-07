@@ -32,7 +32,7 @@ public class EpicsService implements JCAContextController {
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-    private static final String PROPERTY_ADDRESS_LIST = "addressList";
+    protected static final String PROPERTY_ADDRESS_LIST = "addressList";
 
     private String _addressList;
 

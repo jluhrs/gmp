@@ -1,13 +1,10 @@
 package edu.gemini.epics.impl;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsException;
 import gov.aps.jca.Context;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -23,12 +20,6 @@ public class EpicsClientsHolder {
     private final ConcurrentMap<EpicsClient, Collection<String>> pendingClients = Maps.newConcurrentMap();
     private final ConcurrentMap<EpicsClient, ChannelBindingSupport> startedClients = Maps.newConcurrentMap();
 
-    /**
-     * Connects a new client and saves it for future reference
-     */
-    public void connectNewClient(Context ctx, EpicsClient epicsClient, String[] channels) {
-        connectNewClient(ctx, epicsClient, Lists.newArrayList(channels));
-    }
 
     public void connectNewClient(Context ctx, EpicsClient epicsClient, Collection<String> channels) {
         if (!channels.isEmpty()) {
@@ -58,14 +49,6 @@ public class EpicsClientsHolder {
     public void saveForLateConnection(EpicsClient epicsClient, Collection<String> channels) {
         LOG.fine("Saving client " + epicsClient + " for binding channels " + channels);
         pendingClients.put(epicsClient, channels);
-    }
-
-    /**
-     * Stores a client to be started when the Context is made available
-     */
-    public void saveForLateConnection(EpicsClient epicsClient, String[] channels) {
-        LOG.fine("Saving client " + epicsClient + " for binding channels " + Arrays.toString(channels));
-        pendingClients.put(epicsClient, ImmutableList.copyOf(channels));
     }
 
     /**

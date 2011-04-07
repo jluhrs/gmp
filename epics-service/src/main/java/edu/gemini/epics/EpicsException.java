@@ -10,8 +10,4 @@ public class EpicsException extends RuntimeException {
         super(message, cause);
     }
 
-    public EpicsException(String message) {
-        super(message);
-    }
-
 }
