@@ -72,6 +72,11 @@
                 <artifactId>org.apache.felix.ipojo.annotations</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>1.6</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -141,6 +146,11 @@
             <artifactId>com.springsource.org.junit</artifactId>
             <version>4.4.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.6</version>
         </dependency>
     </dependencies>
 
