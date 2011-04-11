@@ -68,6 +68,16 @@
                 <version>0.1.0</version>
             </dependency>
             <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-epics-top</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.cas</groupId>
+                <artifactId>cas</artifactId>
+                <version>0.1.4</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo.annotations</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
