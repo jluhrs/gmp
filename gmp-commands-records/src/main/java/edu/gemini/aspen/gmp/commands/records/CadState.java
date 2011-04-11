@@ -20,7 +20,7 @@ enum CadState {
             try {
                 endProcessingNoCarUpdate(epicsCad);
             } catch (CAException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
             switch (dir) {
                 case MARK:
@@ -48,21 +48,21 @@ enum CadState {
                     try {
                         endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return MARKED;
                 case CLEAR:
                     try {
                         endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 case PRESET:
                     try {
                         startProcessing(epicsCad, car);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
@@ -77,14 +77,14 @@ enum CadState {
                             return CLEAR;
                         }
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                         return CLEAR;
                     }
                 case START:
                     try {
                         startProcessing(epicsCad, car);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     resp = doActivity(Activity.PRESET_START, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
@@ -98,14 +98,14 @@ enum CadState {
                             endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 case STOP:
                     try {
                         startProcessing(epicsCad, car);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
@@ -117,7 +117,7 @@ enum CadState {
                             endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 default://just so the compiler doesn't complain
@@ -135,21 +135,21 @@ enum CadState {
                     try {
                         endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return MARKED;
                 case CLEAR:
                     try {
                         endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 case PRESET:
                     try {
                         startProcessing(epicsCad, car);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
@@ -164,14 +164,14 @@ enum CadState {
                             return CLEAR;
                         }
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                         return CLEAR;
                     }
                 case START:
                     try {
                         startProcessing(epicsCad, car);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     resp = doActivity(Activity.START, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
@@ -185,14 +185,14 @@ enum CadState {
                             endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 case STOP:
                     try {
                         startProcessing(epicsCad, car);
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad);
                     try {
@@ -204,7 +204,7 @@ enum CadState {
                             endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 default://just so the compiler doesn't complain
