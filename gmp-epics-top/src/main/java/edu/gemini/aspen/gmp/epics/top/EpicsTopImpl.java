@@ -17,11 +17,11 @@ public class EpicsTopImpl implements EpicsTop {
     private final String epicsTop;
 
     public EpicsTopImpl(@Property(name = "epicsTop", value = "INVALID", mandatory = true) String epicsTop) {
-        this.epicsTop = epicsTop;
+        this.epicsTop = epicsTop + ":";
     }
 
     @Override
     public String buildChannelName(String name) {
-        return epicsTop + ":" + name;
+        return epicsTop + name;
     }
 }
