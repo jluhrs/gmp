@@ -125,7 +125,7 @@ public class RecordsTest {
     }
 
     @Test
-    public void CarTest() throws CAException {
+    public void carTest() throws CAException {
         CarRecord car = new CarRecord(cas, carPrefix);
         car.start();
 
@@ -165,7 +165,7 @@ public class RecordsTest {
     }
 
     @Test
-    public void CadTest() throws CAException, InterruptedException {
+    public void cadTest() throws CAException, InterruptedException {
         CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
 
@@ -225,7 +225,7 @@ public class RecordsTest {
     }
 
     @Test
-    public void CadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
+    public void cadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
         CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
 

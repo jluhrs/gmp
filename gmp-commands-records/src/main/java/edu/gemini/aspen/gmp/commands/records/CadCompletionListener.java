@@ -9,11 +9,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
-* This Listener updates the CAR record when completion information for a command is received.
-*
-* @author Nicolas A. Barriga
-*         Date: 3/24/11
-*/
+ * This Listener updates the CAR record when completion information for a command is received.
+ *
+ * @author Nicolas A. Barriga
+ *         Date: 3/24/11
+ */
 class CadCompletionListener implements CompletionListener {
     private static final Logger LOG = Logger.getLogger(CadCompletionListener.class.getName());
 
@@ -27,14 +27,11 @@ class CadCompletionListener implements CompletionListener {
 
     @Override
     public void onHandlerResponse(HandlerResponse response, Command command) {
-        try {
-            if (response.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
-                car.changeState(CarRecord.Val.IDLE, response.hasErrorMessage() ? "" : response.getMessage(), 0, clientId);
-            } else {
-                car.changeState(CarRecord.Val.ERR, response.hasErrorMessage() ? "" : response.getMessage(), -1, clientId);
-            }
-        } catch (CAException e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+        if (response.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
+            car.setIdle(clientId);
+        } else {
+            car.setError(clientId, response.hasErrorMessage() ? "" : response.getMessage(), -1);
         }
+
     }
 }

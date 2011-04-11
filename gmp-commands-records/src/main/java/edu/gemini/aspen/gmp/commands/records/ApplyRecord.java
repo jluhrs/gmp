@@ -53,6 +53,11 @@ public class ApplyRecord {
     private final List<CadRecord> cads = new ArrayList<CadRecord>();
 
     /**
+     * indicates that the record is currently processing a directive
+     */
+    volatile private boolean processing = false;
+
+    /**
      * Constructor
      *
      * @param cas Channel Access Server to use
@@ -170,10 +175,6 @@ public class ApplyRecord {
 //        cars.remove(cad.getCar());
 //    }
 
-    /**
-     * indicates that the record is currently processing a directive
-     */
-    volatile private boolean processing = false;
 
     private boolean processDir(Dir dir) throws CAException {
         synchronized (car) {
@@ -181,7 +182,7 @@ public class ApplyRecord {
             if (dir == Dir.START) {
                 incAndGetClientId();
             }
-            car.changeState(CarRecord.Val.BUSY, "", 0, getClientId());
+            car.setBusy(getClientId());
             boolean retVal = processInternal(dir);
 
             if (retVal) {
@@ -192,10 +193,10 @@ public class ApplyRecord {
                     }
                 }
                 if (idle) {
-                    car.changeState(CarRecord.Val.IDLE, "", 0, getClientId());
+                    car.setIdle(getClientId());
                 }
             } else {
-                car.changeState(CarRecord.Val.ERR, ((String[]) mess.getDBR().getValue())[0], ((int[]) val.getDBR().getValue())[0], getClientId());
+                car.setError(getClientId(), ((String[]) mess.getDBR().getValue())[0], ((int[]) val.getDBR().getValue())[0]);
             }
             processing = false;
             return retVal;
@@ -233,7 +234,7 @@ public class ApplyRecord {
                 value = ((int[]) listener.getDBR().getValue())[0];
 
             } catch (InterruptedException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                LOG.log(Level.SEVERE, e.getMessage(), e);
                 cad.getEpicsCad().unRegisterValListener(listener);
 
             }
@@ -314,21 +315,18 @@ public class ApplyRecord {
         public void update(CarRecord.Val state, String message, Integer errorCode, Integer id) {
             synchronized (car) {
                 LOG.info("Received CAR status change: " + state);
-                try {
-                    if (state == CarRecord.Val.ERR) {
-                        car.changeState(state, message, errorCode, Math.max(id, car.getClId()));
-                    }
-                    if (!processing && state == CarRecord.Val.IDLE) {
-                        for (CadRecord cad : cads) {
-                            if (cad.getCar().getState() != CarRecord.Val.IDLE) {
-                                return;
-                            }
-                        }
-                        car.changeState(state, message, errorCode, Math.max(id, car.getClId()));
-                    }
-                } catch (CAException e) {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+                if (state == CarRecord.Val.ERR) {
+                    car.setError(Math.max(id, car.getClId()), message, errorCode);
                 }
+                if (!processing && state == CarRecord.Val.IDLE) {
+                    for (CadRecord cad : cads) {
+                        if (cad.getCar().getState() != CarRecord.Val.IDLE) {
+                            return;
+                        }
+                    }
+                    car.setIdle(Math.max(id, car.getClId()));
+                }
+
             }
         }
     }

@@ -261,6 +261,6 @@ enum CadState {
         epicsCad.setVal(-1);
         epicsCad.setMess(errorMessage);
         epicsCad.post();
-        car.changeState(CarRecord.Val.ERR, errorMessage, -1, epicsCad.getClid());
+        car.setError(epicsCad.getClid(),errorMessage,-1);
     }
 }

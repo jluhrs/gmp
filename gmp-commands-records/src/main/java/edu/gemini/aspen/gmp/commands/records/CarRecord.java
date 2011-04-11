@@ -108,7 +108,7 @@ public class CarRecord {
                 clid.setValue(clientId);
             }
         }
-        notifyListeners(state,message,errorCode,clientId);
+        notifyListeners(state, message, errorCode, clientId);
     }
 
     private List<CarListener> listeners = new CopyOnWriteArrayList<CarListener>();
@@ -146,7 +146,7 @@ public class CarRecord {
         try {
             changeState(Val.BUSY, "", 0, id);
         } catch (CAException e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -159,7 +159,23 @@ public class CarRecord {
         try {
             changeState(Val.IDLE, "", 0, id);
         } catch (CAException e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * Convenience method to set CAR to ERROR
+     *
+     * @param id        client ID for the command we are providing feedback
+     * @param message   error message
+     * @param errorCode error code
+     */
+    synchronized void setError(Integer id, String message, int errorCode) {
+        try {
+            changeState(Val.ERR, message, errorCode, id);
+        } catch (CAException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
@@ -177,6 +193,7 @@ public class CarRecord {
             return Val.UNKNOWN;
         }
     }
+
     /**
      * Get the state of the CAR
      *

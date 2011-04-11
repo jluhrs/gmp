@@ -579,7 +579,7 @@ The valid values for health, severity and alarm cause, can be found in the giapi
 \subsection comm_records_testing_sec GMP Commands Records Integration Tests
 \li Start the GMP as indicated in the \ref user_manual.
 \li For this test you will also need tcl code in http://source.gemini.edu/software/giapi/giapi-eng/ocs-test-scripts/trunk.
-\li Check the code to a directory we'll call ocs-test-scripts/
+\li Check the code to a directory we'll call ocs-test-scripts/, in a Linux machine with ocswish installed.
 \li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh any-command</tt>.
 \li In ocs-test-scripts/, run <tt>$ ./commandTest -config test.ca -cs observe -params "DATA_LABEL test_data_label"<tt>. Remember to set the
 \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.

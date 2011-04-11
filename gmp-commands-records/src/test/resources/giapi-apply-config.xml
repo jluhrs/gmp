@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ConfigSets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="giapi-apply-config.xsd">
+            xsi:noNamespaceSchemaLocation="../../main/resources/giapi-apply-config.xsd">
     <ConfigSet>
         <name>configAo</name>
         <field>useAo</field>
