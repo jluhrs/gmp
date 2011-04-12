@@ -10,11 +10,11 @@
   classes that need to listen for the heartbeat.
 
 
-  \section cas_requires_sec Required Services
+  \section gmp_heartbeat_requires_sec Required Services
   This bundle requires the service \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service, provided by, for
   example, the \ref jms_activemq_provider bundle.
 
-  \section cas_configuration_sec Configuration
+  \section gmp_heartbeat_configuration_sec Configuration
   This bundle has no configuration options.
 
  */
