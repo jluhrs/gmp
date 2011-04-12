@@ -22,6 +22,8 @@
     <name>Heartbeat Distributor Service</name>
     <description>Heartbeat Distributor Service</description>
 
+    <packaging>bundle</packaging>
+
     <dependencies>
         <!--
          | uncomment to add all imported (non-local) bundles to your compilation classpath
@@ -32,63 +34,61 @@
           <optional>true</optional>
         </dependency>
         -->
-    <dependency>
-        <groupId>edu.gemini.jms</groupId>
-        <artifactId>jms-api</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>edu.gemini.aspen</groupId>
-        <artifactId>giapi-jms-util</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>edu.gemini.jms</groupId>
-        <artifactId>jms-activemq-provider</artifactId>
-        <version>1.1.0</version>
-    </dependency>
-    <dependency>
-        <groupId>edu.gemini.aspen</groupId>
-        <artifactId>giapi</artifactId>
-        <scope>provided</scope>
-    </dependency>
-    <dependency>
-        <groupId>javax.jms</groupId>
-        <artifactId>com.springsource.javax.jms</artifactId>
-        <version>1.1.0</version>
-    </dependency>
-    <!-- Start dependencies for activemq broker -->
-    <dependency>
-        <groupId>org.apache.activemq</groupId>
-        <artifactId>activemq-core</artifactId>
-        <version>${org.activemq.core.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.geronimo.specs</groupId>
-        <artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
-        <version>1.0.1</version>
-        <scope>runtime</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.activemq</groupId>
-        <artifactId>kahadb</artifactId>
-        <version>5.4.2</version>
-        <scope>runtime</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.geronimo.specs</groupId>
-        <artifactId>geronimo-annotation_1.0_spec</artifactId>
-        <version>1.1.1</version>
-        <scope>runtime</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>com.springsource.org.apache.commons.logging</artifactId>
-        <version>1.1.1</version>
-        <scope>runtime</scope>
-    </dependency>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-jms-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-provider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>com.springsource.javax.jms</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- Start dependencies for activemq broker -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>${org.activemq.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
+            <version>1.0.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>kahadb</artifactId>
+            <version>5.4.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-annotation_1.0_spec</artifactId>
+            <version>1.1.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>com.springsource.org.apache.commons.logging</artifactId>
+            <version>1.1.1</version>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-heartbeat</artifactId>
-            <version>0.1.0</version>
         </dependency>
     </dependencies>
 

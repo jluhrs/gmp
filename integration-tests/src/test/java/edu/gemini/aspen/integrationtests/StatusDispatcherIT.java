@@ -1,5 +1,7 @@
-package edu.gemini.aspen.giapi.status.dispatcher;
+package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
+import edu.gemini.aspen.giapi.status.dispatcher.StatusDispatcher;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapitestsupport.StatusSetter;
 import edu.gemini.jms.api.JmsProvider;
@@ -12,7 +14,6 @@ import org.osgi.framework.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
 
@@ -52,7 +53,10 @@ public class StatusDispatcherIT{
                 mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
                 mavenBundle().artifactId("giapi-test-support").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
-                mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject()
+                mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject(),
+                mavenBundle().artifactId("gmp-heartbeat").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
+                mavenBundle().artifactId("heartbeat-distributor-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
+                mavenBundle().artifactId("integration-tests").groupId("edu.gemini.aspen").update().versionAsInProject()
                 );
     }
 
@@ -97,10 +101,10 @@ public class StatusDispatcherIT{
         ss.setStatusItem(new BasicStatus<String>("gpi:status1", "gpi:status1"));
 
         //wait for messages to arrive and assert
-        testHandler1.waitOnLatch(1, TimeUnit.SECONDS);
-        testHandler2.waitOnLatch(1, TimeUnit.SECONDS);
-        assertEquals(1, testHandler1.getCounter());
-        assertEquals(1, testHandler2.getCounter());
+        assertTrue(testHandler1.waitOnLatch(1, TimeUnit.SECONDS));
+        assertTrue(testHandler2.waitOnLatch(1, TimeUnit.SECONDS));
+        Assert.assertEquals(1, testHandler1.getCounter());
+        Assert.assertEquals(1, testHandler2.getCounter());
 
         ss.stopJms();
 

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
-* Class TestConsumerComponent. This class should be moved to an Integration tests bundle.
+* Class TestConsumerComponent.
 *
 * @author Nicolas A. Barriga
 *         Date: 3/10/11

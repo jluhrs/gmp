@@ -60,6 +60,7 @@ public class HeartbeatDistributorIT {
                 mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
                 mavenBundle().artifactId("gmp-heartbeat").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
                 mavenBundle().artifactId("heartbeat-distributor-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
+                mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("integration-tests").groupId("edu.gemini.aspen").update().versionAsInProject()
                 );
     }

@@ -1,6 +1,8 @@
-package edu.gemini.aspen.giapi.status.dispatcher;
+package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
+import edu.gemini.aspen.giapi.status.dispatcher.StatusItemFilter;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Validate;
@@ -9,9 +11,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
 /**
-* Class TestHandler just for testing purposes.
-* It is here because otherwise it is not part of the bundle and cannot be used for
-* integration tests. In the future it should be moved to a specific bundle for integration tests.
+* Class TestHandler
 *
 * @author Nicolas A. Barriga
 *         Date: 2/24/11
@@ -44,8 +44,8 @@ public class TestHandler implements FilteredStatusHandler {
         latch.countDown();
     }
 
-    public void waitOnLatch(long l, java.util.concurrent.TimeUnit timeUnit) throws java.lang.InterruptedException{
-        latch.await(l,timeUnit);
+    public boolean waitOnLatch(long l, java.util.concurrent.TimeUnit timeUnit) throws java.lang.InterruptedException{
+        return latch.await(l,timeUnit);
     }
 
     public int getCounter(){
