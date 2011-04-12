@@ -132,6 +132,7 @@
         <module>epics-heartbeat</module>
         <module>gmp-tui</module>
         <module>gmp-epics-top</module>
+        <module>integration-tests</module>
     </modules>
 
     <distributionManagement>

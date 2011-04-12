@@ -22,25 +22,6 @@
     <name>Heartbeat Distributor Service</name>
     <description>Heartbeat Distributor Service</description>
 
-    <packaging>bundle</packaging>
-     <build>
-        <plugins>
-            <!-- use pax exam maven plugin -->
-            <plugin>
-                <groupId>org.ops4j.pax.exam</groupId>
-                <artifactId>maven-paxexam-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-config</id>
-                        <goals>
-                            <goal>generate-depends-file</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <!--
          | uncomment to add all imported (non-local) bundles to your compilation classpath

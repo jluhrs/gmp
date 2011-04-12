@@ -47,9 +47,9 @@ public class TestConsumerComponent implements HeartbeatConsumer {
      *
      * @param l timeout length
      * @param timeUnit unit of the timeout
-     * @throws java.lang.InterruptedException
+     * @throws InterruptedException
      */
-    public void waitOnLatch(long l, TimeUnit timeUnit) throws java.lang.InterruptedException{
+    public void waitOnLatch(long l, TimeUnit timeUnit) throws InterruptedException{
          latch.await(l,timeUnit);
     }
 
@@ -57,9 +57,9 @@ public class TestConsumerComponent implements HeartbeatConsumer {
      * Wait until the latch has been activated (by an arriving beat), or a timeout (in milliseconds) has elapsed.
      *
      * @param l        timeout length in milliseconds
-     * @throws java.lang.InterruptedException
+     * @throws InterruptedException
      */
-    public void waitOnLatch(long l) throws java.lang.InterruptedException {
+    public void waitOnLatch(long l) throws InterruptedException {
         latch.await(l, TimeUnit.MILLISECONDS);
     }
 

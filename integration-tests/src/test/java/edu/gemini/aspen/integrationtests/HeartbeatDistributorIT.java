@@ -1,5 +1,6 @@
-package edu.gemini.aspen.heartbeatdistributor;
+package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +59,8 @@ public class HeartbeatDistributorIT {
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").version("1.1.1"),
                 mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
                 mavenBundle().artifactId("gmp-heartbeat").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
-                mavenBundle().artifactId("heartbeat-distributor-service").groupId("edu.gemini.aspen").update().versionAsInProject()
+                mavenBundle().artifactId("heartbeat-distributor-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
+                mavenBundle().artifactId("integration-tests").groupId("edu.gemini.aspen").update().versionAsInProject()
                 );
     }
 
