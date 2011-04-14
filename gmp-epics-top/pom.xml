@@ -20,17 +20,17 @@
     <version>0.0.1</version>
 
     <name>GMP EPICS Top</name>
-       <description>GMP EPICS Top</description>
+    <description>GMP EPICS Top</description>
 
-       <packaging>bundle</packaging>
+    <packaging>bundle</packaging>
 
-        <dependencies>
-             <dependency>
+    <dependencies>
+        <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo</artifactId>
             <version>1.6.8</version>
             <scope>provided</scope>
         </dependency>
-        </dependencies>
+    </dependencies>
 
 </project>
