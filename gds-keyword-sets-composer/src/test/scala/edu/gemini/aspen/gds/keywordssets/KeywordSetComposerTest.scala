@@ -14,4 +14,14 @@ class KeywordSetComposerTest extends JUnitSuite with ShouldMatchersForJUnit {
             'dataSet (dataset)
         )
     }
+
+    @Test
+    def verifyCompleteMessage() {
+        // This is a contrived test as the semantics of case classes ensures the result already
+        val dataset = new Dataset("GS-2010A")
+        val complete = Complete(dataset)
+        complete should have (
+            'dataSet (dataset)
+        )
+    }
 }
