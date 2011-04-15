@@ -6,7 +6,7 @@ import edu.gemini.aspen.giapi.data.Dataset
 
 class KeywordSetComposerTest extends JUnitSuite with ShouldMatchersForJUnit {
     @Test
-    def verifyInitMessage() {
+    def verifyInitMessage() = {
         // This is a contrived test as the semantics of case classes ensures the result already
         val dataset = new Dataset("GS-2010A")
         val init = Init(dataset)
@@ -16,7 +16,7 @@ class KeywordSetComposerTest extends JUnitSuite with ShouldMatchersForJUnit {
     }
 
     @Test
-    def verifyCompleteMessage() {
+    def verifyCompleteMessage() = {
         // This is a contrived test as the semantics of case classes ensures the result already
         val dataset = new Dataset("GS-2010A")
         val complete = Complete(dataset)
