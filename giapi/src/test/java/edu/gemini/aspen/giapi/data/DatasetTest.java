@@ -1,9 +1,10 @@
 package edu.gemini.aspen.giapi.data;
 
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
 import com.gargoylesoftware.base.testing.EqualsTester;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for the Dataset class
@@ -41,6 +42,5 @@ public class DatasetTest {
     public void testEmptyInitialization() {
         new Dataset("");
     }
-
     
 }

@@ -1,16 +1,16 @@
 package edu.gemini.aspen.giapi.data;
 
+import com.google.common.base.Preconditions;
+
 /**
  * A very simple data structure to represent a dataset
  */
 public final class Dataset {
 
-    private String _name;
+    private final String _name;
 
     public Dataset(String name) {
-        if (name == null || "".equals(name.trim())) {
-            throw new IllegalArgumentException("A Dataset name can't be null nor empty");
-        }
+        Preconditions.checkArgument(name != null && !"".equals(name.trim()), "A Dataset name can't be null nor empty");
         _name = name;
     }
 
