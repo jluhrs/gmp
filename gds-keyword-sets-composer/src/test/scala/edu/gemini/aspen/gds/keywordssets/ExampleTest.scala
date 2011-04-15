@@ -7,8 +7,9 @@
 package edu.gemini.aspen.gds.keywordssets
 
 import org.junit.Test
+import org.scalatest.junit.AssertionsForJUnit
 
-class ExampleTest {
+class ExampleTest extends AssertionsForJUnit {
     @Test
     def testOne() {
         new Example();
