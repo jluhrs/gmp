@@ -1,5 +1,7 @@
 package edu.gemini.aspen.giapi.commands;
 
+import java.util.EnumSet;
+
 /**
  *  Enumerated type defining the Gemini Sequence Commands
  */
@@ -29,6 +31,13 @@ public enum SequenceCommand {
 
     public String getName() {
         return _name;
+    }
+
+    /**
+     * Returns a set of SequenceCommands that don't require configuration
+     */
+    public static EnumSet<SequenceCommand> commandWithNoConfig() {
+        return EnumSet.complementOf(EnumSet.of(APPLY, OBSERVE, REBOOT));
     }
 
 }
