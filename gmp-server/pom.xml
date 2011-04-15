@@ -35,6 +35,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
         <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
+        <scala-lang.version>2.8.1</scala-lang.version>
         <!--felix.log.level>4</felix.log.level-->
         <ipojo.log.level>debug</ipojo.log.level>
     </properties>
@@ -322,6 +323,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-epics-top</artifactId>
             <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-keyword-sets-composer</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
