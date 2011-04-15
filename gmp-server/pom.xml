@@ -225,7 +225,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-commands-jms-bridge</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.2.0</version>
         </dependency>
         <!-- GMP PCS Updater -->
         <dependency>
