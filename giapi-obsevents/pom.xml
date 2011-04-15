@@ -43,7 +43,6 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
-            <version>${org.activemq.core.version}</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
