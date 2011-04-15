@@ -19,6 +19,7 @@
     <modules>
         <module>wrappers</module>
         <module>compiled</module>
+        <module>scala</module>
     </modules>
 
     <build>
