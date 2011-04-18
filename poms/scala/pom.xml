@@ -60,6 +60,11 @@
                 </executions>
                 <configuration>
                     <scalaVersion>${scala-lang.version}</scalaVersion>
+                    <args>
+                        <arg>-unchecked</arg>
+                        <arg>-deprecation</arg>
+                        <arg>-explaintypes</arg>
+                    </args>
                 </configuration>
             </plugin>
             <plugin>
