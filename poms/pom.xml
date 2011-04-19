@@ -25,20 +25,20 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
+                <!--plugin>
                     <groupId>org.ops4j</groupId>
-                    <artifactId>maven-pax-plugin</artifactId>
+                    <artifactId>maven-pax-plugin</artifactId-->
                     <!--
                      | enable improved OSGi compilation support for the bundle life-cycle.
                      | to switch back to the standard bundle life-cycle, move this setting
                      | down to the maven-bundle-plugin section
                     -->
-                    <extensions>true</extensions>
-                </plugin>
+                    <!--extensions>true</extensions>
+                </plugin-->
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>1.4.3</version>
+                    <version>2.3.4</version>
                 </plugin>
                 <plugin>
                     <groupId>com.atlassian.maven.plugins</groupId>
@@ -51,12 +51,14 @@
 
     <!-- Clover needs to be downloaded directly from atlassian -->
     <pluginRepositories>
-      <pluginRepository>
-        <releases><enabled>true</enabled></releases>
-        <id>atlassian-m2-repository</id>
-        <name>Atlassian Maven 2.x Repository</name>
-        <url>http://repository.atlassian.com/maven2</url>
-      </pluginRepository>
+        <pluginRepository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>atlassian-m2-repository</id>
+            <name>Atlassian Maven 2.x Repository</name>
+            <url>http://repository.atlassian.com/maven2</url>
+        </pluginRepository>
     </pluginRepositories>
 
     <dependencyManagement>
