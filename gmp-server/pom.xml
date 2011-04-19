@@ -31,13 +31,13 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
 
         <felix.cm.loglevel>4</felix.cm.loglevel>
-        <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
         <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
-        <scala-lang.version>2.8.1</scala-lang.version>
-        <!--felix.log.level>4</felix.log.level-->
         <ipojo.log.level>debug</ipojo.log.level>
+
+        <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
+        <scala-lang.version>2.8.1</scala-lang.version>
     </properties>
 
     <build>
