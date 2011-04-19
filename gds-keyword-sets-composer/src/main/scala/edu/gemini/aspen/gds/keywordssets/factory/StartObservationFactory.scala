@@ -1,13 +1,27 @@
 package edu.gemini.aspen.gds.keywordssets.factory
 
-import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
 import edu.gemini.aspen.giapi.data.Dataset
-import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Component}
 import edu.gemini.epics.EpicsReader
+import actors.Actor
+import org.apache.felix.ipojo.annotations._
+import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
+import annotation.target.{param, field}
 
 @Component
 @Instantiate
-class StartObservationFactory(@Requires epicsService:EpicsReader) extends KeywordActorsFactory {
+@Provides(specifications = Array(classOf[KeywordActorsFactory]))
+class StartObservationFactory(@(Requires @param) epicsReader: EpicsReader) extends KeywordActorsFactory {
+    def startObservationActors(dataSet: Dataset): List[Actor] = {
+        new EpicsValuesActor(epicsReader) :: Nil
+    }
 
-    def startObservationActors(dataSet: Dataset) = null
+    @Validate()
+    def validate() = {println("new validate " + epicsReader)}
+}
+
+class EpicsValuesActor(epicsReader: EpicsReader) extends Actor {
+    def act() {
+        println(epicsReader)
+        reply("collected")
+    }
 }
