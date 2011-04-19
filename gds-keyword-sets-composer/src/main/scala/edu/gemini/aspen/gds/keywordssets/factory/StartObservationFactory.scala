@@ -10,7 +10,7 @@ import annotation.target.{param, field}
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class StartObservationFactory(@(Requires @param) epicsReader: EpicsReader) extends KeywordActorsFactory {
+class StartObservationFactory(@Requires epicsReader: EpicsReader) extends KeywordActorsFactory {
     def startObservationActors(dataSet: Dataset): List[Actor] = {
         new EpicsValuesActor(epicsReader) :: Nil
     }
