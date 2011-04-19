@@ -18,7 +18,10 @@
     <packaging>pom</packaging>
 
     <properties>
+
         <org.activemq.core.version>5.4.2</org.activemq.core.version>
+        <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
+        <scala-lang.version>2.8.1</scala-lang.version>
     </properties>
 
     <!--
