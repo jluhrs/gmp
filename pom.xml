@@ -166,6 +166,11 @@
             <url>http://build.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
         </repository>
         <repository>
+            <!-- Repository of other local dependencies stored locally -->
+            <id>edu.gemini.libs-releases-local</id>
+            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+        </repository>
+        <repository>
             <!-- Scala-tools.org mirror -->
             <id>edu.gemini.scala-org.mirror</id>
             <url>http://build.cl.gemini.edu:8081/artifactory/scala-tools.org</url>
