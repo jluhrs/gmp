@@ -7,11 +7,11 @@
 --log=info
 
 # Use the repositories set in felix and bundles
---repositories=file:../felix,file:../bundles
---localRepository=file:../felix,file:../bundles
+--repositories=file:../felix,file:../bundles@snapshots
+--localRepository=file:../felix,file:../bundles@snapshots
 
 # Pass System properties for configuration and logs
---vmOptions=-Dfelix.system.properties=file:../../conf/config.properties
+--vmOptions=-Dfelix.system.properties=file:../../conf/config.properties -Xverify:none
 
 # Instructions on what bundles to load
 scan-composite:file:../conf/module.properties
