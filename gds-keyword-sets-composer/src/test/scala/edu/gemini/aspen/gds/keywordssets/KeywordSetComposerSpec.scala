@@ -6,7 +6,7 @@ import edu.gemini.aspen.giapi.data.Dataset
 import org.scalatest.matchers.ShouldMatchers
 import scala.actors.Actor
 import Actor._
-import org.scalatest.{Spec, FeatureSpec}
+import org.scalatest.Spec
 
 @RunWith(classOf[JUnitRunner])
 class KeywordSetComposerSpec extends Spec with ShouldMatchers {
