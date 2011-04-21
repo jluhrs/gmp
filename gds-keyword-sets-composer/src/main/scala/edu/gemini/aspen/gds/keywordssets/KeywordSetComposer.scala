@@ -29,7 +29,7 @@ class KeywordSetComposer(actorsFactory:KeywordActorsFactory) extends Actor {
     // Start automatically
     start
 
-    def act() = {
+    def act() {
         loop {
             react {
                 case Init(dataSet) => startKeywordCollection(sender, dataSet)
@@ -39,7 +39,7 @@ class KeywordSetComposer(actorsFactory:KeywordActorsFactory) extends Actor {
         }
     }
 
-    private def startKeywordCollection(sender:OutputChannel[Any], dataSet: Dataset) = {
+    private def startKeywordCollection(sender:OutputChannel[Any], dataSet: Dataset) {
         LOG.info("Init keyword collection on dataset " + dataSet)
         // Get the actors from the factory
         val actors = actorsFactory.startObservationActors(dataSet)
@@ -66,7 +66,7 @@ class KeywordSetComposer(actorsFactory:KeywordActorsFactory) extends Actor {
         println(data)
     }
 
-    private def finishKeywordSetCollection(dataSet: Dataset) = {
+    private def finishKeywordSetCollection(dataSet: Dataset) {
         LOG.info("Complete keyword collection on dataset " + dataSet)
     }
 }

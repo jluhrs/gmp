@@ -5,7 +5,7 @@ import scala.actors.Actor
 
 /**
  * Trait for objects that can provide a set of Actors
- * that can retrieve keyword values
+ * that can in turn retrieve keyword values
  */
 trait KeywordActorsFactory {
     def startObservationActors(dataSet:Dataset): List[Actor]

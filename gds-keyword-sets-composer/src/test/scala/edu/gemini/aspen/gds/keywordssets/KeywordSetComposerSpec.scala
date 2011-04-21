@@ -30,13 +30,3 @@ class KeywordSetComposerSpec extends Spec with ShouldMatchers {
     }
 }
 
-class DummyActorsFactory extends KeywordActorsFactory {
-    def startObservationActors(dataSet: Dataset): List[Actor] = {
-        val dummyActor = actor {
-            react {
-                case Collect => reply("collected")
-            }
-        }
-        dummyActor :: Nil
-    }
-}

@@ -1,42 +1,35 @@
 package edu.gemini.aspen.gds.keywordssets.factory
 
 import edu.gemini.aspen.giapi.data.Dataset
-import edu.gemini.epics.EpicsReader
 import actors.Actor
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
 import xml.{Elem, XML}
+import java.util.logging.Logger
 
 @Component
-@Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class ObservationStartActorsFactory(@Requires epicsReader: EpicsReader, @Property(name="startObservationFactory", value="INVALID", mandatory = true) fileName: String) extends KeywordActorsFactory {
-    val actorsBuilder = new ConfigBasedActorBuilder(XML.loadFile(fileName))
+@Provides(specifications = Array(classOf[ObservationStartActorsFactory]))
+class ObservationStartActorsFactory(@Property(name="startObservationFactory", value="INVALID", mandatory = true) fileName: String) extends KeywordActorsFactory {
+    val LOG = Logger.getLogger(classOf[ObservationStartActorsFactory].getName)
+
+    var factories:List[KeywordActorsFactory] = List()
 
     def startObservationActors(dataSet: Dataset): List[Actor] = {
-        //new EpicsValuesActor(epicsReader) :: Nil
-        actorsBuilder.buildActors
+        factories flatMap (
+            _.startObservationActors(dataSet)
+        )
+    }
+
+    @Bind(aggregate = true, optional = true)
+    def bindKeywordFactory(keywordFactory:KeywordActorsFactory) {
+        factories = keywordFactory :: factories
+    }
+
+    @Unbind(aggregate = true)
+    def unbindKeywordFactory(keywordFactory:KeywordActorsFactory) {
+        factories = factories filterNot (_ == keywordFactory)
     }
 
     @Validate()
-    def validate() = {println("new validate " + epicsReader + " " + fileName)}
-}
-
-class ConfigBasedActorBuilder(xmlConfig: Elem) {
-    def buildActors: List[Actor] = {
-        val a = xmlConfig \ "actor"
-        a foreach { node =>
-            //case <actor keywords="{keywords}" class="{clazz}">{contents}</actor> => println(contents)
-            val keywords = node \ "@keywords"
-            val clazz = node \ "@class"
-            println (keywords + " " + clazz)
-            val constructor = Class.forName(clazz.text).getConstructors
-            constructor foreach { c =>
-                c.getParameterTypes foreach {
-                    println _
-                }
-            }
-        }
-
-        Nil
-    }
+    def validate() {LOG.info("ObservationStartFactory validated" )}
 }
