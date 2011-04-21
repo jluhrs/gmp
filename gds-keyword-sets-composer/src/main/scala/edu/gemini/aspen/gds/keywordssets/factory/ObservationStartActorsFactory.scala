@@ -14,6 +14,9 @@ class ObservationStartActorsFactory(@Property(name="startObservationFactory", va
 
     var factories:List[KeywordActorsFactory] = List()
 
+    /**
+     * Composite of the other factories registered as OSGI services
+     */
     def startObservationActors(dataSet: Dataset): List[Actor] = {
         factories flatMap (
             _.startObservationActors(dataSet)
