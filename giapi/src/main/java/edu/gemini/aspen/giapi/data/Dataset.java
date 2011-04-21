@@ -3,7 +3,7 @@ package edu.gemini.aspen.giapi.data;
 import com.google.common.base.Preconditions;
 
 /**
- * A very simple data structure to represent a dataset
+ * A very simple data structure to represent a data label
  */
 public final class Dataset {
 
