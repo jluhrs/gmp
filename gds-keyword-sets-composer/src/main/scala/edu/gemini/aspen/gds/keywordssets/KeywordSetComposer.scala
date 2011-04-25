@@ -23,7 +23,7 @@ case class Complete(dataSet: Dataset)
 /**
  * An actor that can compose data items from a set of independent actors
  */
-class KeywordSetComposer(actorsFactory:KeywordActorsFactory) extends Actor {
+class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
     val LOG = KeywordSetComposer.LOG
 
     // Start automatically
@@ -39,7 +39,11 @@ class KeywordSetComposer(actorsFactory:KeywordActorsFactory) extends Actor {
         }
     }
 
-    private def startKeywordCollection(sender:OutputChannel[Any], dataSet: Dataset) {
+    def observationInit(dataSet: Dataset) = this ! Init(dataSet)
+
+    def observationComplete(dataSet: Dataset) = this ! Init(dataSet)
+
+    private def startKeywordCollection(sender: OutputChannel[Any], dataSet: Dataset) {
         LOG.info("Init keyword collection on dataset " + dataSet)
         // Get the actors from the factory
         val actors = actorsFactory.startObservationActors(dataSet)
@@ -77,5 +81,5 @@ class KeywordSetComposer(actorsFactory:KeywordActorsFactory) extends Actor {
 object KeywordSetComposer {
     private val LOG = Logger.getLogger(classOf[KeywordSetComposer].getName)
 
-    def apply(actorsFactory:KeywordActorsFactory) = new KeywordSetComposer(actorsFactory)
+    def apply(actorsFactory: KeywordActorsFactory) = new KeywordSetComposer(actorsFactory)
 }
