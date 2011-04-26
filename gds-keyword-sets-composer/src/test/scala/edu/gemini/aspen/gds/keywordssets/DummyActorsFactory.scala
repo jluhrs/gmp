@@ -13,5 +13,7 @@ class DummyActorsFactory extends KeywordActorsFactory {
         }
         dummyActor :: Nil
     }
+
+    override def endAcquisitionActors(dataLabel: DataLabel) = List()
 }
 

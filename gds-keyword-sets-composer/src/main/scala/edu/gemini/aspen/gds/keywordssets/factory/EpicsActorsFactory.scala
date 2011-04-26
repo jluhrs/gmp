@@ -24,4 +24,6 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActo
         }
         actorsList
     }
+
+    override def endAcquisitionActors(dataLabel: DataLabel) = List()
 }

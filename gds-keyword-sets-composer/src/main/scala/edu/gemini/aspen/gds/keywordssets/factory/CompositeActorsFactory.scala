@@ -32,6 +32,12 @@ class CompositeActorsFactoryImpl extends CompositeActorsFactory {
         )
     }
 
+    override def endAcquisitionActors(dataLabel: DataLabel): List[Actor] = {
+        factories flatMap (
+            _.endAcquisitionActors(dataLabel)
+        )
+    }
+
     @Bind(aggregate = true, optional = true)
     def bindKeywordFactory(keywordFactory:KeywordActorsFactory) {
         factories = keywordFactory :: factories

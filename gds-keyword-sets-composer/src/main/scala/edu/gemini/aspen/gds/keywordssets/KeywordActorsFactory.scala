@@ -9,4 +9,6 @@ import actors.Actor
  */
 trait KeywordActorsFactory {
     def startAcquisitionActors(dataLabel:DataLabel): List[Actor]
+
+    def endAcquisitionActors(dataLabel:DataLabel): List[Actor]
 }
