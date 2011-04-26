@@ -6,6 +6,10 @@ import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Comp
 import edu.gemini.aspen.gds.keywordssets.factory.StartAcquisitionActorsFactory
 import edu.gemini.aspen.gds.keywordssets.{Init, KeywordSetComposer}
 
+/**
+ * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
+ * keyword values acquisition process
+ */
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
@@ -13,7 +17,7 @@ class GDSObseventHandler(@Requires actorsFactory: StartAcquisitionActorsFactory)
     def onObservationEvent(event: ObservationEvent, dataset: Dataset) {
         event match {
             case OBS_START_ACQ => startAcquisition(dataset)
-            case _ => 
+            case _ =>
         }
     }
 
