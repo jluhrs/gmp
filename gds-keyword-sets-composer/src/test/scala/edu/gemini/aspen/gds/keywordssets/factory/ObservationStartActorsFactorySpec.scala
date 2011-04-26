@@ -4,13 +4,13 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
-import edu.gemini.aspen.giapi.data.Dataset
+import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.keywordssets.DummyActorsFactory
 
 @RunWith(classOf[JUnitRunner])
 class ObservationStartActorsFactorySpec extends Spec with ShouldMatchers {
     def createFixture = (
-            new Dataset("GS-2011"),
+            new DataLabel("GS-2011"),
             new ObservationStartActorsFactory()
             )
 

@@ -1,8 +1,8 @@
 package edu.gemini.aspen.giapi.data.obsevents.jms;
 
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
-import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 
 import javax.jms.*;
@@ -32,8 +32,8 @@ public class JmsObservationEventListener implements MessageListener {
             String type = m.getStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME);
             String file = m.getStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME);
             ObservationEvent obsEvent = ObservationEvent.getObservationEvent(type);
-            Dataset dataset = new Dataset(file);
-            _action.onObservationEvent(obsEvent, dataset);
+            DataLabel dataLabel = new DataLabel(file);
+            _action.onObservationEvent(obsEvent, dataLabel);
         } catch (JMSException e) {
             LOG.warning("Jms Exception: " + e.getMessage());
         } catch (IllegalArgumentException ex) {

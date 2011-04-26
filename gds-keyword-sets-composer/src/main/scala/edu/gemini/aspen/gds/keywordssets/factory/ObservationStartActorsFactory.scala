@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.keywordssets.factory
 
-import edu.gemini.aspen.giapi.data.Dataset
+import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
@@ -20,7 +20,7 @@ class ObservationStartActorsFactory extends StartAcquisitionActorsFactory {
     /**
      * Composite of the other factories registered as OSGI services
      */
-    override def startObservationActors(dataSet: Dataset): List[Actor] = {
+    override def startObservationActors(dataSet: DataLabel): List[Actor] = {
         factories flatMap (
             _.startObservationActors(dataSet)
         )

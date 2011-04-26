@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.keywordssets
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import edu.gemini.aspen.giapi.data.Dataset
+import edu.gemini.aspen.giapi.data.DataLabel
 import org.scalatest.matchers.ShouldMatchers
 import scala.actors.Actor
 import Actor._
@@ -13,7 +13,7 @@ class KeywordSetComposerSpec extends Spec with ShouldMatchers {
     describe("A KeywordSetComposer") {
         it("should reply to Init messages") {
             // Generate dataset
-            val dataSet = new Dataset("GS-2011")
+            val dataSet = new DataLabel("GS-2011")
 
             val dummyActorsFactory = new DummyActorsFactory()
             // Create composer

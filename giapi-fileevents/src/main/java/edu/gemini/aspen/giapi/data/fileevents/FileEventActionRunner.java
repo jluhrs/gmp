@@ -1,6 +1,6 @@
 package edu.gemini.aspen.giapi.data.fileevents;
 
-import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.AncillaryFileEventHandler;
 import edu.gemini.aspen.giapi.data.IntermediateFileEventHandler;
 
@@ -31,7 +31,7 @@ public class FileEventActionRunner implements FileEventAction {
     }
 
 
-    public void onAncillaryFileEvent(final String filename, final Dataset dataset) {
+    public void onAncillaryFileEvent(final String filename, final DataLabel dataLabel) {
 
         /**
          * For each handler available, invoke it in a separate thread
@@ -39,13 +39,13 @@ public class FileEventActionRunner implements FileEventAction {
         for (final AncillaryFileEventHandler handler: _ancillaryFileHandlers) {
             _threadPool.submit(new Runnable() {
                 public void run() {
-                    handler.onAncillaryFileEvent(filename, dataset);
+                    handler.onAncillaryFileEvent(filename, dataLabel);
                 }
             });
         }
     }
 
-    public void onIntermediateFileEvent(final String filename, final Dataset dataset, final String hint) {
+    public void onIntermediateFileEvent(final String filename, final DataLabel dataLabel, final String hint) {
 
         /**
          * For each handler available, invoke it in a separate thread
@@ -53,7 +53,7 @@ public class FileEventActionRunner implements FileEventAction {
         for (final IntermediateFileEventHandler handler: _intermediateFileHandlers) {
             _threadPool.submit(new Runnable() {
                 public void run() {
-                    handler.onIntermediateFileEvent(filename, dataset, hint);
+                    handler.onIntermediateFileEvent(filename, dataLabel, hint);
                 }
             });
         }

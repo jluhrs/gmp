@@ -1,9 +1,9 @@
 package edu.gemini.aspen.giapi.data.fileevents.jms;
 
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.data.FileEvent;
-import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 
 import javax.jms.MessageListener;
@@ -48,22 +48,22 @@ public class JmsFileEventsListener implements MessageListener {
 
             MapMessage mmsg = (MapMessage)message;
 
-            //filename and dataset are common parts of all the file events
+            //filename and dataLabel are common parts of all the file events
             String filename = mmsg.getString(JmsKeys.GMP_DATA_FILEEVENT_FILENAME);
             if (filename == null) {
                 throw new FileEventException("Filename cannot be null for a file event");
             }
-            Dataset dataset;
+            DataLabel dataLabel;
 
             try {
-                dataset = new Dataset(mmsg.getString(JmsKeys.GMP_DATA_FILEEVENT_DATALABEL));
+                dataLabel = new DataLabel(mmsg.getString(JmsKeys.GMP_DATA_FILEEVENT_DATALABEL));
             } catch (IllegalArgumentException ex) {
-                throw new FileEventException("Invalid dataset in file event", ex);
+                throw new FileEventException("Invalid dataLabel in file event", ex);
             }
 
             switch (fileEvent) {
                 case ANCILLARY_FILE:
-                    _action.onAncillaryFileEvent(filename, dataset);
+                    _action.onAncillaryFileEvent(filename, dataLabel);
                     break;
                 case INTERMEDIATE_FILE:
                     String hint = null;
@@ -72,7 +72,7 @@ public class JmsFileEventsListener implements MessageListener {
                     if (mmsg.itemExists(JmsKeys.GMP_DATA_FILEEVENT_HINT)) {
                         hint = mmsg.getString(JmsKeys.GMP_DATA_FILEEVENT_HINT);
                     }
-                    _action.onIntermediateFileEvent(filename, dataset, hint);
+                    _action.onIntermediateFileEvent(filename, dataLabel, hint);
                     break;
             }
         } catch (JMSException e) {

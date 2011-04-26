@@ -1,7 +1,7 @@
 package edu.gemini.aspen.giapi.data.fileevents;
 
 import edu.gemini.aspen.giapi.data.AncillaryFileEventHandler;
-import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.IntermediateFileEventHandler;
 
 import static org.junit.Assert.*;
@@ -32,7 +32,7 @@ public class FileEventActionRunnerTest {
      */
     private class AncillaryAction implements AncillaryFileEventHandler {
                           public boolean done=false;
-        public void onAncillaryFileEvent(String filename, Dataset dataset) {
+        public void onAncillaryFileEvent(String filename, DataLabel dataLabel) {
             synchronized (this) {
                 done=true;
                 synchronized(lockAncillary){
@@ -48,7 +48,7 @@ public class FileEventActionRunnerTest {
      */
     private class IntermediateAction implements IntermediateFileEventHandler {
         public boolean done=false;
-        public void onIntermediateFileEvent(String filename, Dataset dataset, String hint) {
+        public void onIntermediateFileEvent(String filename, DataLabel dataLabel, String hint) {
             synchronized (this) {
                 synchronized(lockIntermediate){
                     _intermediateCount++;
@@ -132,8 +132,8 @@ public class FileEventActionRunnerTest {
             }
         });
         //Submit the file events.
-        _action.onAncillaryFileEvent("filename1", new Dataset("dataset"));
-        _action.onIntermediateFileEvent("filename1", new Dataset("dataset"), "hint");
+        _action.onAncillaryFileEvent("filename1", new DataLabel("dataset"));
+        _action.onIntermediateFileEvent("filename1", new DataLabel("dataset"), "hint");
 
         //wait for the threads waiting for events to finish.
         try {

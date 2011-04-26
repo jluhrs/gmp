@@ -2,23 +2,23 @@ package edu.gemini.aspen.gds.keywordssets
 
 import java.util.logging.Logger
 import actors.{OutputChannel, Actor}
-import edu.gemini.aspen.giapi.data.{FitsKeyword, Dataset}
+import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 
 /**
  * Message to indicate that a new observation was initiated
  */
-case class Init(dataSet: Dataset)
+case class Init(dataSet: DataLabel)
 
 /**
  * Message to indicate that the data collection was completed
  * It is sent in reply to an Init message
  */
-case class InitCompleted(dataSet: Dataset)
+case class InitCompleted(dataSet: DataLabel)
 
 /**
  * Message to indicate that an observation was completed
  */
-case class Complete(dataSet: Dataset)
+case class Complete(dataSet: DataLabel)
 
 /**
  * An actor that can compose data items from a set of independent actors
@@ -39,11 +39,11 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
         }
     }
 
-    def observationInit(dataSet: Dataset) = this ! Init(dataSet)
+    def observationInit(dataSet: DataLabel) = this ! Init(dataSet)
 
-    def observationComplete(dataSet: Dataset) = this ! Init(dataSet)
+    def observationComplete(dataSet: DataLabel) = this ! Init(dataSet)
 
-    private def startKeywordCollection(sender: OutputChannel[Any], dataSet: Dataset) {
+    private def startKeywordCollection(sender: OutputChannel[Any], dataSet: DataLabel) {
         LOG.info("Init keyword collection on dataset " + dataSet)
         // Get the actors from the factory
         val actors = actorsFactory.startObservationActors(dataSet)
@@ -70,7 +70,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
         println(collectedValue)
     }
 
-    private def finishKeywordSetCollection(dataSet: Dataset) {
+    private def finishKeywordSetCollection(dataSet: DataLabel) {
         LOG.info("Complete keyword collection on dataset " + dataSet)
     }
 }

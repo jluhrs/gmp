@@ -1,7 +1,7 @@
 package edu.gemini.aspen.giapi.data.obsevents;
 
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
-import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 
 import java.util.concurrent.RejectedExecutionException;
@@ -40,7 +40,7 @@ public class ObservationEventAction implements ObservationEventHandlerComposite 
     private Map<ObservationEventHandler, ExecutorService> _handlerMap =
             new ConcurrentHashMap<ObservationEventHandler, ExecutorService>();
 
-    public void onObservationEvent(final ObservationEvent event, final Dataset dset) {
+    public void onObservationEvent(final ObservationEvent event, final DataLabel dset) {
 
         for (final ObservationEventHandler handler : _handlerMap.keySet()) {
             try {

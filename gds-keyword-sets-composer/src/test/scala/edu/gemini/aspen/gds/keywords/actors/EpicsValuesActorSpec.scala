@@ -6,7 +6,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
 import edu.gemini.aspen.gds.keywordssets.{CollectedValue, Collect}
 import edu.gemini.epics.EpicsReader
-import edu.gemini.aspen.giapi.data.{FitsKeyword, Dataset}
+import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
 
 @RunWith(classOf[JUnitRunner])
@@ -14,7 +14,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     describe("An EpicsValuesActor") {
         it("should reply to Collect messages") {
             // Generate dataset
-            val dataSet = new Dataset("GS-2011")
+            val dataSet = new DataLabel("GS-2011")
             val epicsReader = mock[EpicsReader]
 
             val channelName = "channelName"

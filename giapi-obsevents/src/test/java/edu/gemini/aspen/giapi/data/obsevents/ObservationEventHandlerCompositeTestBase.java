@@ -1,5 +1,6 @@
 package edu.gemini.aspen.giapi.data.obsevents;
 
+import edu.gemini.aspen.giapi.data.DataLabel;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -7,7 +8,6 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
-import edu.gemini.aspen.giapi.data.Dataset;
 
 import java.util.*;
 
@@ -39,7 +39,7 @@ public abstract class ObservationEventHandlerCompositeTestBase {
      * how many times it has been invoked
      */
     private final ObservationEventHandler singleHandlerStub = new ObservationEventHandler() {
-        public void onObservationEvent(ObservationEvent event, Dataset dataset) {
+        public void onObservationEvent(ObservationEvent event, DataLabel dataLabel) {
             synchronized (this) {
                 ++flagValue;
                 notifyAll();
@@ -52,7 +52,7 @@ public abstract class ObservationEventHandlerCompositeTestBase {
      * operations involving several threads
      */
     private final ObservationEventHandler waitingHandler = new ObservationEventHandler() {
-        public void onObservationEvent(ObservationEvent event, Dataset dataset) {
+        public void onObservationEvent(ObservationEvent event, DataLabel dataLabel) {
             events.add(event);
             try {
                 //add some random time, to simulate processing.
@@ -82,7 +82,7 @@ public abstract class ObservationEventHandlerCompositeTestBase {
      */
     public void triggerHandler() {
         getHandlerComposite().onObservationEvent(ObservationEvent.OBS_PREP,
-                new Dataset("TEST-DATASET"));
+                new DataLabel("TEST-DATASET"));
     }
 
     @Test
@@ -147,7 +147,7 @@ public abstract class ObservationEventHandlerCompositeTestBase {
         //try to add a fake handler. This is not supported since the
         //returned set should be unmodifiable.
         handlers.add(new ObservationEventHandler() {
-            public void onObservationEvent(ObservationEvent event, Dataset dataset) {
+            public void onObservationEvent(ObservationEvent event, DataLabel dataLabel) {
                 //nothing
             }
         });
@@ -177,9 +177,9 @@ public abstract class ObservationEventHandlerCompositeTestBase {
 
         getHandlerComposite().registerHandler(waitingHandler);
 
-        Dataset dataset = new Dataset("TEST_DATASET");
+        DataLabel dataLabel = new DataLabel("TEST_DATASET");
         for (ObservationEvent event : testEvents) {
-            getHandlerComposite().onObservationEvent(event, dataset);
+            getHandlerComposite().onObservationEvent(event, dataLabel);
         }
 
         //wait for the last event to be invoked. After 10 seconds, we give up

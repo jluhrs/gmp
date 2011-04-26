@@ -1,8 +1,8 @@
 package edu.gemini.aspen.giapi.data.fileevents.jms;
 
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventException;
-import edu.gemini.aspen.giapi.data.Dataset;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import org.apache.activemq.command.ActiveMQMapMessage;
 import org.apache.activemq.command.ActiveMQMessage;
@@ -35,18 +35,18 @@ public class JmsFileEventsListenerTest {
     private class TestAction implements FileEventAction {
 
         private String filename = null;
-        private Dataset dataset = null;
+        private DataLabel dataLabel = null;
         private String hint = null;
 
-        public void onAncillaryFileEvent(String filename, Dataset dataset) {
+        public void onAncillaryFileEvent(String filename, DataLabel dataLabel) {
             this.filename = filename;
-            this.dataset = dataset;
+            this.dataLabel = dataLabel;
             _ancillaryCount++;
         }
 
-        public void onIntermediateFileEvent(String filename, Dataset dataset, String hint) {
+        public void onIntermediateFileEvent(String filename, DataLabel dataLabel, String hint) {
             this.filename = filename;
-            this.dataset = dataset;
+            this.dataLabel = dataLabel;
             this.hint = hint;
             _intermediateCount++;
         }
@@ -55,8 +55,8 @@ public class JmsFileEventsListenerTest {
             return filename;
         }
 
-        public Dataset getDataset() {
-            return dataset;
+        public DataLabel getDataLabel() {
+            return dataLabel;
         }
 
         public String getHint() {
@@ -99,7 +99,7 @@ public class JmsFileEventsListenerTest {
         //confirm the handler got invoked
         assertEquals(1, _ancillaryCount);
         assertEquals(0, _intermediateCount);
-        assertEquals("datalabel-1", _action.getDataset().getName());
+        assertEquals("datalabel-1", _action.getDataLabel().getName());
         assertEquals("filename-1", _action.getFilename());
         assertNull(_action.getHint());
     }
@@ -122,7 +122,7 @@ public class JmsFileEventsListenerTest {
         //confirm the handler got invoked
         assertEquals(0, _ancillaryCount);
         assertEquals(1, _intermediateCount);
-        assertEquals("datalabel-2", _action.getDataset().getName());
+        assertEquals("datalabel-2", _action.getDataLabel().getName());
         assertEquals("filename-2", _action.getFilename());
         assertNull(_action.getHint());
     }
@@ -147,7 +147,7 @@ public class JmsFileEventsListenerTest {
         //confirm the handler got invoked
         assertEquals(0, _ancillaryCount);
         assertEquals(1, _intermediateCount);
-        assertEquals("datalabel-3", _action.getDataset().getName());
+        assertEquals("datalabel-3", _action.getDataLabel().getName());
         assertEquals("filename-3", _action.getFilename());
         assertEquals("hint-1", _action.getHint());
     }

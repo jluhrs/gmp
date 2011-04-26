@@ -1,6 +1,6 @@
 package edu.gemini.aspen.giapi.data.obsevents.jms;
 
-import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
@@ -23,7 +23,7 @@ public class JmsObservationEventListenerTest {
     private int flagValue = 0;
 
     private final ObservationEventHandler singleHandlerStub = new ObservationEventHandler() {
-        public void onObservationEvent(ObservationEvent event, Dataset dataset) {
+        public void onObservationEvent(ObservationEvent event, DataLabel dataLabel) {
             ++flagValue;
         }
     };

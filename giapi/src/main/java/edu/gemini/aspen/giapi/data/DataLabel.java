@@ -5,12 +5,12 @@ import com.google.common.base.Preconditions;
 /**
  * A very simple data structure to represent a data label
  */
-public final class Dataset {
+public final class DataLabel {
 
     private final String _name;
 
-    public Dataset(String name) {
-        Preconditions.checkArgument(name != null && !"".equals(name.trim()), "A Dataset name can't be null nor empty");
+    public DataLabel(String name) {
+        Preconditions.checkArgument(name != null && !"".equals(name.trim()), "A DataLabel name can't be null nor empty");
         _name = name;
     }
 
@@ -23,9 +23,9 @@ public final class Dataset {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Dataset dataset = (Dataset) o;
+        DataLabel dataLabel = (DataLabel) o;
 
-        if (!_name.equals(dataset._name)) return false;
+        if (!_name.equals(dataLabel._name)) return false;
 
         return true;
     }

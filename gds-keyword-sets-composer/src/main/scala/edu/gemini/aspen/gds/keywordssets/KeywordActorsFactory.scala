@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.keywordssets
 
-import edu.gemini.aspen.giapi.data.Dataset
+import edu.gemini.aspen.giapi.data.DataLabel
 import scala.actors.Actor
 
 /**
@@ -8,5 +8,5 @@ import scala.actors.Actor
  * that can in turn retrieve keyword values
  */
 trait KeywordActorsFactory {
-    def startObservationActors(dataSet:Dataset): List[Actor]
+    def startObservationActors(dataSet:DataLabel): List[Actor]
 }

@@ -2,7 +2,7 @@ package edu.gemini.giapi.tool.fileevents;
 
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 import edu.gemini.aspen.giapi.data.fileevents.jms.JmsFileEventsListener;
-import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.MonitorFileEventsArgument;
 import edu.gemini.giapi.tool.parser.Argument;
@@ -61,12 +61,12 @@ public class MonitorFileEventsOperation implements Operation {
 
 
     private final class TestFileEventsAction implements FileEventAction  {
-        public void onAncillaryFileEvent(String filename, Dataset dataset) {
-            System.out.println("Ancillary File Event    [" + dataset.getName() + "/" + filename + "]");
+        public void onAncillaryFileEvent(String filename, DataLabel dataLabel) {
+            System.out.println("Ancillary File Event    [" + dataLabel.getName() + "/" + filename + "]");
         }
 
-        public void onIntermediateFileEvent(String filename, Dataset dataset, String hint) {
-            System.out.println("Intermediate File Event [" + dataset.getName() + "/" + filename + "/" + hint + "]");
+        public void onIntermediateFileEvent(String filename, DataLabel dataLabel, String hint) {
+            System.out.println("Intermediate File Event [" + dataLabel.getName() + "/" + filename + "/" + hint + "]");
         }
     }
 }

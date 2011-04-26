@@ -7,7 +7,7 @@ import edu.gemini.giapi.tool.arguments.MonitorObsEventArgument;
 import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
-import edu.gemini.aspen.giapi.data.Dataset;
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.BaseMessageConsumer;
@@ -62,8 +62,8 @@ public class MonitorObsEventOperation implements Operation {
     }
 
     public class TestObsEventHandler implements ObservationEventHandler {
-        public void onObservationEvent(ObservationEvent event, Dataset dataset) {
-            System.out.println("[" + dataset.getName() + "/" + event + "]");
+        public void onObservationEvent(ObservationEvent event, DataLabel dataLabel) {
+            System.out.println("[" + dataLabel.getName() + "/" + event + "]");
         }
     }
 }

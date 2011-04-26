@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.keywords.database
 
 import collection.mutable.HashMap
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.Dataset
+import edu.gemini.aspen.giapi.data.DataLabel
 
 /**
  * Interface for the database
@@ -15,7 +15,7 @@ trait KeywordsDatabase {
    * @param keyword keyword to store
    * @param value value to associate to the keyword
    */
-  def store(dataSet:Dataset, keyword:String, value:AnyRef)
+  def store(dataSet:DataLabel, keyword:String, value:AnyRef)
 
   /**
    * Retrieve data from the database
@@ -25,7 +25,7 @@ trait KeywordsDatabase {
    *
    * @return Option containing the value if it was found in the DB
    */
-  def retrieve(dataSet:Dataset, keyword:String):Option[AnyRef]
+  def retrieve(dataSet:DataLabel, keyword:String):Option[AnyRef]
 
   /**
    * Retrieve all the data associated to a given data set
@@ -34,7 +34,7 @@ trait KeywordsDatabase {
    *
    * @return a HashMap[String, AnyRef] containing the data for the given data set
    */
-  def retrieveAll(dataSet:Dataset):Option[HashMap[String, AnyRef]]
+  def retrieveAll(dataSet:DataLabel):Option[HashMap[String, AnyRef]]
 
 }
 
@@ -43,16 +43,16 @@ trait KeywordsDatabase {
 @Instantiate
 class KeywordsDatabaseImpl extends KeywordsDatabase{
 
-  val map:HashMap[Dataset, HashMap[String,AnyRef]] = new HashMap
+  val map:HashMap[DataLabel, HashMap[String,AnyRef]] = new HashMap
 
-  def store(dataSet:Dataset, keyword: String, value: AnyRef) = {
+  def store(dataSet:DataLabel, keyword: String, value: AnyRef) = {
     if(!map.contains(dataSet)){
       map.put(dataSet,new HashMap[String, AnyRef]())
     }
     map.get(dataSet).get.put(keyword,value)
   }
 
-  def retrieve(dataSet:Dataset, keyword: String):Option[AnyRef] = {
+  def retrieve(dataSet:DataLabel, keyword: String):Option[AnyRef] = {
     val innerMapOption = map.get(dataSet)
     if(!innerMapOption.isDefined){
       return None
@@ -60,7 +60,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase{
     return innerMapOption.get.get(keyword)
   }
 
-  def retrieveAll(dataSet: Dataset): Option[HashMap[String, AnyRef]] = {
+  def retrieveAll(dataSet: DataLabel): Option[HashMap[String, AnyRef]] = {
     return map.get(dataSet)
   }
 

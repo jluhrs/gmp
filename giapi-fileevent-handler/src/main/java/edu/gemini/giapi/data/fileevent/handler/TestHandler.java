@@ -1,8 +1,8 @@
 package edu.gemini.giapi.data.fileevent.handler;
 
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.IntermediateFileEventHandler;
 import edu.gemini.aspen.giapi.data.AncillaryFileEventHandler;
-import edu.gemini.aspen.giapi.data.Dataset;
 
 import java.util.logging.Logger;
 
@@ -15,13 +15,13 @@ public class TestHandler implements IntermediateFileEventHandler, AncillaryFileE
     private static final Logger LOG = Logger.getLogger(TestHandler.class.getName());
 
 
-    public void onIntermediateFileEvent(String filename, Dataset dataset, String hint) {
-        LOG.info("Intermediate file Event received: Filename [" + filename + "], Dataset [" +
-        dataset + "], hint [" + hint +"]");
+    public void onIntermediateFileEvent(String filename, DataLabel dataLabel, String hint) {
+        LOG.info("Intermediate file Event received: Filename [" + filename + "], DataLabel [" +
+                dataLabel + "], hint [" + hint +"]");
     }
 
-    public void onAncillaryFileEvent(String filename, Dataset dataset) {
-        LOG.info("Ancillary file Event received: Filename [" + filename + "], Dataset [" +
-        dataset + "]");
+    public void onAncillaryFileEvent(String filename, DataLabel dataLabel) {
+        LOG.info("Ancillary file Event received: Filename [" + filename + "], DataLabel [" +
+                dataLabel + "]");
     }
 }
