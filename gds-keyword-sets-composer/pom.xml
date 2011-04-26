@@ -36,6 +36,7 @@
         <dependency>
             <groupId>org.specs2</groupId>
             <artifactId>specs2_2.8.1</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

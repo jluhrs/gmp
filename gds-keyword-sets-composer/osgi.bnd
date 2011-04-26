@@ -2,3 +2,4 @@
 # Use this file to add customized Bnd instructions for the bundle
 #-----------------------------------------------------------------
 Bundle-Activator:
+Export-Package: ${bundle.namespace}.*;version="${pom.version}", edu.gemini.aspen.gds.keywords.*;version="${pom.version}"
