@@ -9,7 +9,7 @@ import edu.gemini.aspen.gds.keywordssets.{Init, KeywordSetComposer}
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
-class GDSObseventHandler(@Requires observationStartActorsFactory: StartAcquisitionActorsFactory) extends ObservationEventHandler {
+class GDSObseventHandler(@Requires actorsFactory: StartAcquisitionActorsFactory) extends ObservationEventHandler {
     def onObservationEvent(event: ObservationEvent, dataset: Dataset) {
         event match {
             case OBS_START_ACQ => startAcquisition(dataset)
@@ -18,6 +18,6 @@ class GDSObseventHandler(@Requires observationStartActorsFactory: StartAcquisiti
     }
 
     private def startAcquisition(dataset: Dataset) {
-        new KeywordSetComposer(observationStartActorsFactory) ! Init(dataset)
+        new KeywordSetComposer(actorsFactory) ! Init(dataset)
     }
 }
