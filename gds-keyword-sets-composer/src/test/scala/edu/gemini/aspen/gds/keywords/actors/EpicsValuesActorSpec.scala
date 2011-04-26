@@ -24,7 +24,6 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             val fitsKeyword = new FitsKeyword("KEYWORD1")
 
             val epicsValueActor = new EpicsValuesActor(epicsReader, fitsKeyword, channelName)
-            epicsValueActor.start
             
             // Send an init message
             val result = epicsValueActor !! Collect
@@ -34,7 +33,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
                     => keyword should equal (fitsKeyword)
                        value should equal (referenceValue)
                        comment should be ('empty)
-                case _ => fail("Should not reply other message")
+                case x:AnyRef => fail("Should not reply other message ")
             }
 
             // verify mock

@@ -7,9 +7,11 @@ import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
 import xml.{Elem, XML}
 import java.util.logging.Logger
 
+trait StartAcquisitionActorsFactory extends KeywordActorsFactory
+
 @Component
-@Provides(specifications = Array(classOf[ObservationStartActorsFactory]))
-class ObservationStartActorsFactory(@Property(name="startObservationFactory", value="INVALID", mandatory = true) fileName: String) extends KeywordActorsFactory {
+@Provides(specifications = Array(classOf[StartAcquisitionActorsFactory]))
+class ObservationStartActorsFactory(@Property(name="startObservationFactory", value="INVALID", mandatory = true) fileName: String) extends StartAcquisitionActorsFactory {
     val LOG = Logger.getLogger(classOf[ObservationStartActorsFactory].getName)
 
     var factories:List[KeywordActorsFactory] = List()
@@ -17,7 +19,7 @@ class ObservationStartActorsFactory(@Property(name="startObservationFactory", va
     /**
      * Composite of the other factories registered as OSGI services
      */
-    def startObservationActors(dataSet: Dataset): List[Actor] = {
+    override def startObservationActors(dataSet: Dataset): List[Actor] = {
         factories flatMap (
             _.startObservationActors(dataSet)
         )

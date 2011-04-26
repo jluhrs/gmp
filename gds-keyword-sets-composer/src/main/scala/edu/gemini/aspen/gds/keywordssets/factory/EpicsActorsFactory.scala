@@ -8,8 +8,8 @@ import edu.gemini.aspen.gds.keywords.actors.EpicsValuesActor
 import actors.Actor
 
 @Component
-@Provides(specifications = Array(classOf[KeywordActorsFactory]))
 @Instantiate
+@Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActorsFactory {
     // Use dummy configuration
     val conf: Map[FitsKeyword, String] = Map(

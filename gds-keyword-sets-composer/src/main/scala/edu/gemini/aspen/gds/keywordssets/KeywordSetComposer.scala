@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gds.keywordssets
 
-import edu.gemini.aspen.giapi.data.Dataset
 import java.util.logging.Logger
 import actors.{OutputChannel, Actor}
+import edu.gemini.aspen.giapi.data.{FitsKeyword, Dataset}
 
 /**
  * Message to indicate that a new observation was initiated
@@ -47,6 +47,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
         LOG.info("Init keyword collection on dataset " + dataSet)
         // Get the actors from the factory
         val actors = actorsFactory.startObservationActors(dataSet)
+        
         // Start collecting
         val dataFutures = for (dataActor <- actors) yield {
             dataActor !! Collect
@@ -65,9 +66,8 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
         }
     }
 
-    private def storeReply(data: Any) {
-        // TODO: store the data in the database
-        println(data)
+    private def storeReply(collectedValue:Any) {
+        println(collectedValue)
     }
 
     private def finishKeywordSetCollection(dataSet: Dataset) {

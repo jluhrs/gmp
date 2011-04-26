@@ -13,6 +13,7 @@ case class Collect()
  */
 case class CollectedValue(keyword:FitsKeyword, value:AnyRef, comment:String)
 
+
 /**
  * Trait for an actor that retrieve a specific value
  *
