@@ -10,8 +10,9 @@ import java.util.logging.Logger
 trait StartAcquisitionActorsFactory extends KeywordActorsFactory
 
 @Component
+@Instantiate
 @Provides(specifications = Array(classOf[StartAcquisitionActorsFactory]))
-class ObservationStartActorsFactory(@Property(name="startObservationFactory", value="INVALID", mandatory = true) fileName: String) extends StartAcquisitionActorsFactory {
+class ObservationStartActorsFactory extends StartAcquisitionActorsFactory {
     val LOG = Logger.getLogger(classOf[ObservationStartActorsFactory].getName)
 
     var factories:List[KeywordActorsFactory] = List()

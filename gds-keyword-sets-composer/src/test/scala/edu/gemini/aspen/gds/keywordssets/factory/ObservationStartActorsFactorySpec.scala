@@ -11,7 +11,7 @@ import edu.gemini.aspen.gds.keywordssets.DummyActorsFactory
 class ObservationStartActorsFactorySpec extends Spec with ShouldMatchers {
     def createFixture = (
             new Dataset("GS-2011"),
-            new ObservationStartActorsFactory("")
+            new ObservationStartActorsFactory()
             )
 
     describe("An ObservationStartActorsFactory") {
