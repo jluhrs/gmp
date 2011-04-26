@@ -29,7 +29,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             val result = epicsValueActor !! Collect
 
             result() match {
-                case CollectedValue(keyword, value, comment)
+                case CollectedValue(keyword, value, comment) :: Nil
                     => keyword should equal (fitsKeyword)
                        value should equal (referenceValue)
                        comment should be ('empty)

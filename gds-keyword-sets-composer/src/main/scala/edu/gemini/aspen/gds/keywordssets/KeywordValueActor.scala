@@ -19,4 +19,16 @@ case class CollectedValue(keyword:FitsKeyword, value:AnyRef, comment:String)
  *
  * It is expected that the reply will be a List[CollectedValues]
  */
-trait KeywordValueActor extends Actor;
+abstract trait KeywordValueActor extends Actor {
+    start
+
+    override def act() {
+        loop {
+            react {
+                case Collect => reply(collectValues)
+            }
+        }
+    }
+
+    def collectValues: List[CollectedValue]
+}

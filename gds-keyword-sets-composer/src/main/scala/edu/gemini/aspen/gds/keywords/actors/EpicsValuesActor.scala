@@ -9,19 +9,9 @@ import edu.gemini.aspen.gds.keywordssets.{KeywordValueActor, Collect, CollectedV
  * linked to a single fitsKeyword
  */
 class EpicsValuesActor(epicsReader: EpicsReader, fitsKeyword: FitsKeyword, channelName: String) extends KeywordValueActor {
-    start
-    
-    override def act() {
-        loop {
-            react {
-                case Collect => reply(collectValue)
-            }
-        }
-    }
-
-    private def collectValue() = {
+    override def collectValues():List[CollectedValue] = {
         val epicsValue = epicsReader.getValue(channelName)
-        CollectedValue(fitsKeyword, epicsValue, "")
+        CollectedValue(fitsKeyword, epicsValue, "") :: Nil
     }
 
 }
