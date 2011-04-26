@@ -22,4 +22,3 @@ case class CollectedValue(keyword:FitsKeyword, value:AnyRef, comment:String)
 trait KeywordValueActor extends Actor {
     def act() {}
 }
-

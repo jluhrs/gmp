@@ -25,7 +25,7 @@ class KeywordSetComposerSpec extends Spec with ShouldMatchers {
             val result = composer !! StartAcquisition(dataLabel)
 
             result() match {
-                case InitCompleted(replyDataSet) => replyDataSet should be (dataLabel)
+                case StartAcquisitionReply(replyDataSet) => replyDataSet should be (dataLabel)
                 case _ => fail("Should not reply other message")
             }
         }

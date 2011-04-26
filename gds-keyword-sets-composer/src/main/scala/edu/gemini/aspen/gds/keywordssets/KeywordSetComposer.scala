@@ -5,23 +5,25 @@ import actors.{OutputChannel, Actor}
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
 
-sealed abstract class ObsEventsActions
+sealed abstract class AcquisitionRequest
 
 /**
  * Message to indicate that a new observation was initiated
  */
-case class StartAcquisition(dataLabel: DataLabel) extends ObsEventsActions
+case class StartAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
 
 /**
  * Message to indicate that an observation was completed
  */
-case class EndAcquisition(dataLabel: DataLabel) extends ObsEventsActions
+case class EndAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
+
+sealed abstract class AcquisitionReply
 
 /**
  * Message to indicate that the data collection was completed
  * It is sent in reply to an StartAcquisition message
  */
-case class InitCompleted(dataLabel: DataLabel)
+case class StartAcquisitionReply(dataLabel: DataLabel) extends AcquisitionReply
 
 /**
  * An actor that can compose data items from a set of independent actors
@@ -59,9 +61,9 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
                 case data => storeReply(data)
             }
         } andThen {
+            LOG.info("All collecting actors completed.")
             // Reply to the original sender
-            sender ! InitCompleted(dataLabel)
-            LOG.info("OK, all collecting actors completed.")
+            sender ! StartAcquisitionReply(dataLabel)
         }
     }
 

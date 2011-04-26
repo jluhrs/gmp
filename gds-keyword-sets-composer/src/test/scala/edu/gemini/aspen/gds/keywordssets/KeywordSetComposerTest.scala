@@ -29,7 +29,7 @@ class KeywordSetComposerTest extends JUnitSuite with ShouldMatchersForJUnit {
     def verifyInitCompleteMessage() {
         // This is a contrived test as the semantics of case classes ensures the result already
         val dataLabel = new DataLabel("GS-2010A")
-        val complete = InitCompleted(dataLabel)
+        val complete = StartAcquisitionReply(dataLabel)
         complete should have (
             'dataLabel (dataLabel)
         )

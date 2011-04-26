@@ -3,9 +3,9 @@ package edu.gemini.aspen.gds.keywordssets.factory
 import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
 import xml.{Elem, XML}
 import java.util.logging.Logger
+import edu.gemini.aspen.gds.keywordssets.{KeywordValueActor, KeywordActorsFactory}
 
 trait StartAcquisitionActorsFactory extends KeywordActorsFactory
 

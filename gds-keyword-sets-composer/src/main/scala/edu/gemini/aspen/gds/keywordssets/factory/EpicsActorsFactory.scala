@@ -1,11 +1,10 @@
 package edu.gemini.aspen.gds.keywordssets.factory
 
-import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.epics.EpicsReader
 import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
 import edu.gemini.aspen.gds.keywords.actors.EpicsValuesActor
-import actors.Actor
+import edu.gemini.aspen.gds.keywordssets.{KeywordValueActor, KeywordActorsFactory}
 
 @Component
 @Instantiate
@@ -16,9 +15,9 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActo
         new FitsKeyword("HUMIDITY") -> "ws:wsFilter.VALO"
     )
 
-    def startObservationActors(dataLabel: DataLabel) = {
+    override def startObservationActors(dataLabel: DataLabel) = {
         // There must be a cleaner way to do this
-        var actorsList:List[Actor] = List()
+        var actorsList:List[KeywordValueActor] = List()
         conf map {
             case (keyword, channel) =>
                 actorsList = new EpicsValuesActor(epicsReader, keyword, channel) :: actorsList
