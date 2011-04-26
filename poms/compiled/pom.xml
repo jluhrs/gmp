@@ -103,6 +103,16 @@
                 <version>0.1.0</version>
             </dependency>
             <dependency>
+                <groupId>edu.gemini.aspen</groupId>
+                <artifactId>giapi-obsevents</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.gds</groupId>
+                <artifactId>gds-keyword-sets-composer</artifactId>
+                <version>0.1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
                 <groupId>edu.gemini.jms</groupId>
                 <artifactId>jms-activemq-provider</artifactId>
                 <version>1.1.0</version>
@@ -248,55 +258,55 @@
                     </execution>
                 </executions>
             </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-                <execution>
-                    <id>generate-build-metadata</id>
-                    <phase>prepare-package</phase>
-                    <goals>
-                        <goal>run</goal>
-                    </goals>
-                    <configuration>
-                        <tasks>
-                            <taskdef resource="net/sf/antcontrib/antcontrib.properties"
-                                     classpathref="maven.plugin.classpath"/>
-                            <mkdir dir="${project.build.directory}"/>
-                            <exec executable="hostname" osfamily="unix" failifexecutionfails="false"
-                                  outputproperty="env.COMPUTERNAME"/>
-                            <exec executable="uuidgen" osfamily="unix" failifexecutionfails="false"
-                                  outputproperty="build.uuid"/>
-                            <property name="hostname" value="${env.COMPUTERNAME}"/>
-                            <echo file="${basedir}/target/buildmeta.properties"
-                                  message="Build-Host=${hostname}${line.separator}"/>
-                            <echo file="${basedir}/target/buildmeta.properties"
-                                  message="Build-UUID=${build.uuid}${line.separator}" append="true"/>
-                            <condition property="calculateChecksum">
-                                <available file="${basedir}/target/${project.build.finalName}-sources.jar"/>
-                            </condition>
-                            <if>
-                                <isset property="calculateChecksum"/>
-                                <then>
-                                    <checksum file="${basedir}/target/${project.build.finalName}-sources.jar"
-                                              property="src.md5"/>
-                                    <echo file="${basedir}/target/buildmeta.properties"
-                                          message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}"
-                                          append="true"/>
-                                </then>
-                            </if>
-                        </tasks>
-                    </configuration>
-                </execution>
-            </executions>
-            <dependencies>
-                <dependency>
-                    <groupId>ant-contrib</groupId>
-                    <artifactId>ant-contrib</artifactId>
-                    <version>20020829</version>
-                </dependency>
-            </dependencies>
-        </plugin>
-    </plugins>
-</build>
-        </project>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-build-metadata</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+                                         classpathref="maven.plugin.classpath"/>
+                                <mkdir dir="${project.build.directory}"/>
+                                <exec executable="hostname" osfamily="unix" failifexecutionfails="false"
+                                      outputproperty="env.COMPUTERNAME"/>
+                                <exec executable="uuidgen" osfamily="unix" failifexecutionfails="false"
+                                      outputproperty="build.uuid"/>
+                                <property name="hostname" value="${env.COMPUTERNAME}"/>
+                                <echo file="${basedir}/target/buildmeta.properties"
+                                      message="Build-Host=${hostname}${line.separator}"/>
+                                <echo file="${basedir}/target/buildmeta.properties"
+                                      message="Build-UUID=${build.uuid}${line.separator}" append="true"/>
+                                <condition property="calculateChecksum">
+                                    <available file="${basedir}/target/${project.build.finalName}-sources.jar"/>
+                                </condition>
+                                <if>
+                                    <isset property="calculateChecksum"/>
+                                    <then>
+                                        <checksum file="${basedir}/target/${project.build.finalName}-sources.jar"
+                                                  property="src.md5"/>
+                                        <echo file="${basedir}/target/buildmeta.properties"
+                                              message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}"
+                                              append="true"/>
+                                    </then>
+                                </if>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>ant-contrib</groupId>
+                        <artifactId>ant-contrib</artifactId>
+                        <version>20020829</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+</project>
