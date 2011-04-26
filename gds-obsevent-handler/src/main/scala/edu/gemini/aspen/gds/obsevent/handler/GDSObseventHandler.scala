@@ -14,14 +14,14 @@ import edu.gemini.aspen.gds.keywordssets.{Init, KeywordSetComposer}
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 class GDSObseventHandler(@Requires actorsFactory: StartAcquisitionActorsFactory) extends ObservationEventHandler {
-    def onObservationEvent(event: ObservationEvent, dataset: DataLabel) {
+    def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
         event match {
-            case OBS_START_ACQ => startAcquisition(dataset)
+            case OBS_START_ACQ => startAcquisition(dataLabel)
             case _ =>
         }
     }
 
-    private def startAcquisition(dataset: DataLabel) {
-        new KeywordSetComposer(actorsFactory) ! Init(dataset)
+    private def startAcquisition(dataLabel: DataLabel) {
+        new KeywordSetComposer(actorsFactory) ! Init(dataLabel)
     }
 }
