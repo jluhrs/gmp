@@ -8,17 +8,17 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.keywordssets.DummyActorsFactory
 
 @RunWith(classOf[JUnitRunner])
-class ObservationStartActorsFactorySpec extends Spec with ShouldMatchers {
+class CompositeActorsFactoryImplSpec extends Spec with ShouldMatchers {
     def createFixture = (
             new DataLabel("GS-2011"),
-            new ObservationStartActorsFactory()
+            new CompositeActorsFactoryImpl()
             )
 
-    describe("An ObservationStartActorsFactory") {
+    describe("An CompositeActorsFactory") {
         it("should return an empty list of Actors when no Factories are registered") {
             val (dataLabel, startObservationFactory) = createFixture
 
-            val actors = startObservationFactory.startObservationActors(dataLabel)
+            val actors = startObservationFactory.startAcquisitionActors(dataLabel)
             actors should be('empty)
         }
         it("should return a non empty list of actors with a mocked factory") {
@@ -27,7 +27,7 @@ class ObservationStartActorsFactorySpec extends Spec with ShouldMatchers {
             // Register dummy factory
             startObservationFactory.bindKeywordFactory(new DummyActorsFactory())
 
-            val actors = startObservationFactory.startObservationActors(dataLabel)
+            val actors = startObservationFactory.startAcquisitionActors(dataLabel)
             actors should have length(1)
         }
         it("should return a non empty list of actors after registration and unregistration of a factory") {
@@ -40,7 +40,7 @@ class ObservationStartActorsFactorySpec extends Spec with ShouldMatchers {
             // Unregister dummy factory
             startObservationFactory.unbindKeywordFactory(actorsFactory)
 
-            val actors = startObservationFactory.startObservationActors(dataLabel)
+            val actors = startObservationFactory.startAcquisitionActors(dataLabel)
             actors should be('empty)
         }
     }

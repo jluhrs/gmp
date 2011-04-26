@@ -5,7 +5,7 @@ import Actor._
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 
 class DummyActorsFactory extends KeywordActorsFactory {
-    override def startObservationActors(dataLabel: DataLabel) = {
+    override def startAcquisitionActors(dataLabel: DataLabel) = {
         val dummyActor = actor {
             react {
                 case Collect => reply(List(CollectedValue(new FitsKeyword("KEYWORD1"), "", "")))

@@ -3,26 +3,32 @@ package edu.gemini.aspen.gds.keywordssets.factory
 import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
 import org.apache.felix.ipojo.annotations._
-import xml.{Elem, XML}
 import java.util.logging.Logger
-import edu.gemini.aspen.gds.keywordssets.{KeywordValueActor, KeywordActorsFactory}
+import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
 
-trait StartAcquisitionActorsFactory extends KeywordActorsFactory
+/**
+ * Interface for a Composite of Actors Factory required by OSGi
+ */
+trait CompositeActorsFactory extends KeywordActorsFactory
 
+/**
+ * A composite Actors Factory that can listen for OSGi services registered as
+ * keyword actors factories
+ */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[StartAcquisitionActorsFactory]))
-class ObservationStartActorsFactory extends StartAcquisitionActorsFactory {
-    val LOG = Logger.getLogger(classOf[ObservationStartActorsFactory].getName)
+@Provides(specifications = Array(classOf[CompositeActorsFactory]))
+class CompositeActorsFactoryImpl extends CompositeActorsFactory {
+    val LOG = Logger.getLogger(classOf[CompositeActorsFactory].getName)
 
     var factories:List[KeywordActorsFactory] = List()
 
     /**
      * Composite of the other factories registered as OSGI services
      */
-    override def startObservationActors(dataLabel: DataLabel): List[Actor] = {
+    override def startAcquisitionActors(dataLabel: DataLabel): List[Actor] = {
         factories flatMap (
-            _.startObservationActors(dataLabel)
+            _.startAcquisitionActors(dataLabel)
         )
     }
 

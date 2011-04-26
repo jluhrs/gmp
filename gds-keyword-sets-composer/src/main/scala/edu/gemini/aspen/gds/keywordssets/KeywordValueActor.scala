@@ -19,6 +19,4 @@ case class CollectedValue(keyword:FitsKeyword, value:AnyRef, comment:String)
  *
  * It is expected that the reply will be a List[CollectedValues]
  */
-trait KeywordValueActor extends Actor {
-    def act() {}
-}
+trait KeywordValueActor extends Actor;

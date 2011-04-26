@@ -15,7 +15,7 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActo
         new FitsKeyword("HUMIDITY") -> "ws:wsFilter.VALO"
     )
 
-    override def startObservationActors(dataLabel: DataLabel) = {
+    override def startAcquisitionActors(dataLabel: DataLabel) = {
         // There must be a cleaner way to do this
         var actorsList:List[KeywordValueActor] = List()
         conf map {

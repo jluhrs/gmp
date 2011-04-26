@@ -5,6 +5,9 @@ import actors.{OutputChannel, Actor}
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
 
+/**
+ * Parent class of request to KeywordSetComposer
+ */
 sealed abstract class AcquisitionRequest
 
 /**
@@ -17,6 +20,9 @@ case class StartAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
  */
 case class EndAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
 
+/**
+ * Parent class of actor's replies to KeywordSetComposer
+ */
 sealed abstract class AcquisitionReply
 
 /**
@@ -26,7 +32,7 @@ sealed abstract class AcquisitionReply
 case class StartAcquisitionReply(dataLabel: DataLabel) extends AcquisitionReply
 
 /**
- * An actor that can compose data items from a set of independent actors
+ * An actor that composes the items required to complete an observation using a set of actors
  */
 class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: KeywordsDatabase) extends Actor {
     val LOG = KeywordSetComposer.LOG
@@ -47,7 +53,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     private def startKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
         LOG.info("Init keyword collection on dataset " + dataLabel)
         // Get the actors from the factory
-        val actors = actorsFactory.startObservationActors(dataLabel)
+        val actors = actorsFactory.startAcquisitionActors(dataLabel)
         
         // Start collecting
         val dataFutures = for (dataActor <- actors) yield {
