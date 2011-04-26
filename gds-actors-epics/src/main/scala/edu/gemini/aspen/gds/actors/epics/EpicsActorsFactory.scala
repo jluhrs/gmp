@@ -1,10 +1,9 @@
-package edu.gemini.aspen.gds.keywordssets.factory
+package edu.gemini.aspen.gds.actors.epics
 
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.epics.EpicsReader
 import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
-import edu.gemini.aspen.gds.keywords.actors.EpicsValuesActor
-import edu.gemini.aspen.gds.keywordssets.{KeywordValueActor, KeywordActorsFactory}
+import edu.gemini.aspen.gds.actors.{KeywordActorsFactory, KeywordValueActor}
 
 @Component
 @Instantiate

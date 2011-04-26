@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.keywordssets
+package edu.gemini.aspen.gds.actors
 
 import actors.Actor
 import edu.gemini.aspen.giapi.data.FitsKeyword

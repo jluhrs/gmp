@@ -136,6 +136,7 @@
         <module>integration-tests</module>
         <module>gds-keywords-database</module>
         <module>gds-keyword-sets-composer</module>
+        <module>gds-actors-epics</module>
         <module>gds-obsevent-handler</module>
     </modules>
 

@@ -4,7 +4,7 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
 import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
-import edu.gemini.aspen.gds.keywordssets.KeywordActorsFactory
+import edu.gemini.aspen.gds.actors.KeywordActorsFactory
 
 /**
  * Interface for a Composite of Actors Factory required by OSGi

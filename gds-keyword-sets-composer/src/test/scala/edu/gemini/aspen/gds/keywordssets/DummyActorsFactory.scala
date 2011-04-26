@@ -3,6 +3,7 @@ package edu.gemini.aspen.gds.keywordssets
 import scala.actors.Actor
 import Actor._
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.gds.actors.{CollectedValue, Collect, KeywordActorsFactory}
 
 class DummyActorsFactory extends KeywordActorsFactory {
     override def startAcquisitionActors(dataLabel: DataLabel) = {

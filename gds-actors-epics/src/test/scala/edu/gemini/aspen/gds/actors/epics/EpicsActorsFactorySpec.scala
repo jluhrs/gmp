@@ -1,11 +1,10 @@
-package edu.gemini.aspen.gds.keywordssets.factory
+package edu.gemini.aspen.gds.actors.epics
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.keywordssets.DummyActorsFactory
 import org.specs2.mock.Mockito
 import edu.gemini.epics.EpicsReader
 

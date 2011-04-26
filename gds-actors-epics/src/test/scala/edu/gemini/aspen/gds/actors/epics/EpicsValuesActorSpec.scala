@@ -1,13 +1,13 @@
-package edu.gemini.aspen.gds.keywords.actors
+package edu.gemini.aspen.gds.actors.epics
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
-import edu.gemini.aspen.gds.keywordssets.{CollectedValue, Collect}
 import edu.gemini.epics.EpicsReader
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
+import edu.gemini.aspen.gds.actors.{CollectedValue, Collect}
 
 @RunWith(classOf[JUnitRunner])
 class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {

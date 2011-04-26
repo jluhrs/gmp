@@ -2,8 +2,9 @@ package edu.gemini.aspen.gds.keywordssets
 
 import java.util.logging.Logger
 import actors.{OutputChannel, Actor}
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
+import edu.gemini.aspen.gds.actors.{Collect, KeywordActorsFactory}
 
 /**
  * Parent class of request to KeywordSetComposer
