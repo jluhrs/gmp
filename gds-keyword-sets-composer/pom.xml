@@ -34,6 +34,10 @@
             <artifactId>epics-service</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-keywords-database</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.specs2</groupId>
             <artifactId>specs2_2.8.1</artifactId>
             <scope>test</scope>
