@@ -13,17 +13,17 @@ class KeywordSetComposerSpec extends Spec with ShouldMatchers {
     describe("A KeywordSetComposer") {
         it("should reply to Init messages") {
             // Generate dataset
-            val dataSet = new DataLabel("GS-2011")
+            val dataLabel = new DataLabel("GS-2011")
 
             val dummyActorsFactory = new DummyActorsFactory()
             // Create composer
             val composer = KeywordSetComposer(dummyActorsFactory)
             
             // Send an init message
-            val result = composer !! Init(dataSet)
+            val result = composer !! Init(dataLabel)
 
             result() match {
-                case InitCompleted(replyDataSet) => replyDataSet should be (dataSet)
+                case InitCompleted(replyDataSet) => replyDataSet should be (dataLabel)
                 case _ => fail("Should not reply other message")
             }
         }

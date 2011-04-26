@@ -14,7 +14,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     describe("An EpicsValuesActor") {
         it("should reply to Collect messages") {
             // Generate dataset
-            val dataSet = new DataLabel("GS-2011")
+            val dataLabel = new DataLabel("GS-2011")
             val epicsReader = mock[EpicsReader]
 
             val channelName = "channelName"

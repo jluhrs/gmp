@@ -8,30 +8,30 @@ class KeywordSetComposerTest extends JUnitSuite with ShouldMatchersForJUnit {
     @Test
     def verifyInitMessage() {
         // This is a contrived test as the semantics of case classes ensures the result already
-        val dataset = new DataLabel("GS-2010A")
-        val init = Init(dataset)
+        val dataLabel = new DataLabel("GS-2010A")
+        val init = Init(dataLabel)
         init should have (
-            'dataSet (dataset)
+            'dataLabel (dataLabel)
         )
     }
 
     @Test
     def verifyCompleteMessage() {
         // This is a contrived test as the semantics of case classes ensures the result already
-        val dataset = new DataLabel("GS-2010A")
-        val complete = Complete(dataset)
+        val dataLabel = new DataLabel("GS-2010A")
+        val complete = Complete(dataLabel)
         complete should have (
-            'dataSet (dataset)
+            'dataLabel (dataLabel)
         )
     }
 
     @Test
     def verifyInitCompleteMessage() {
         // This is a contrived test as the semantics of case classes ensures the result already
-        val dataset = new DataLabel("GS-2010A")
-        val complete = InitCompleted(dataset)
+        val dataLabel = new DataLabel("GS-2010A")
+        val complete = InitCompleted(dataLabel)
         complete should have (
-            'dataSet (dataset)
+            'dataLabel (dataLabel)
         )
     }
 }

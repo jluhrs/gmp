@@ -8,5 +8,5 @@ import scala.actors.Actor
  * that can in turn retrieve keyword values
  */
 trait KeywordActorsFactory {
-    def startObservationActors(dataSet:DataLabel): List[Actor]
+    def startObservationActors(dataLabel:DataLabel): List[Actor]
 }

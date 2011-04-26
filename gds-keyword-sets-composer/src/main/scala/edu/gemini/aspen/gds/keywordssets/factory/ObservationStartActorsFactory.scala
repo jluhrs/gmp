@@ -20,9 +20,9 @@ class ObservationStartActorsFactory extends StartAcquisitionActorsFactory {
     /**
      * Composite of the other factories registered as OSGI services
      */
-    override def startObservationActors(dataSet: DataLabel): List[Actor] = {
+    override def startObservationActors(dataLabel: DataLabel): List[Actor] = {
         factories flatMap (
-            _.startObservationActors(dataSet)
+            _.startObservationActors(dataLabel)
         )
     }
 

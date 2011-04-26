@@ -7,18 +7,18 @@ import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 /**
  * Message to indicate that a new observation was initiated
  */
-case class Init(dataSet: DataLabel)
+case class Init(dataLabel: DataLabel)
 
 /**
  * Message to indicate that the data collection was completed
  * It is sent in reply to an Init message
  */
-case class InitCompleted(dataSet: DataLabel)
+case class InitCompleted(dataLabel: DataLabel)
 
 /**
  * Message to indicate that an observation was completed
  */
-case class Complete(dataSet: DataLabel)
+case class Complete(dataLabel: DataLabel)
 
 /**
  * An actor that can compose data items from a set of independent actors
@@ -32,21 +32,21 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
     def act() {
         loop {
             react {
-                case Init(dataSet) => startKeywordCollection(sender, dataSet)
-                case Complete(dataSet) => finishKeywordSetCollection(dataSet)
+                case Init(dataLabel) => startKeywordCollection(sender, dataLabel)
+                case Complete(dataLabel) => finishKeywordSetCollection(dataLabel)
                 case _ => throw new RuntimeException("Argument not known ")
             }
         }
     }
 
-    def observationInit(dataSet: DataLabel) = this ! Init(dataSet)
+    def observationInit(dataLabel: DataLabel) = this ! Init(dataLabel)
 
-    def observationComplete(dataSet: DataLabel) = this ! Init(dataSet)
+    def observationComplete(dataLabel: DataLabel) = this ! Init(dataLabel)
 
-    private def startKeywordCollection(sender: OutputChannel[Any], dataSet: DataLabel) {
-        LOG.info("Init keyword collection on dataset " + dataSet)
+    private def startKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
+        LOG.info("Init keyword collection on dataset " + dataLabel)
         // Get the actors from the factory
-        val actors = actorsFactory.startObservationActors(dataSet)
+        val actors = actorsFactory.startObservationActors(dataLabel)
         
         // Start collecting
         val dataFutures = for (dataActor <- actors) yield {
@@ -61,7 +61,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
             }
         } andThen {
             // Reply to the original sender
-            sender ! InitCompleted(dataSet)
+            sender ! InitCompleted(dataLabel)
             LOG.info("OK, all collecting actors completed.")
         }
     }
@@ -70,8 +70,8 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
         println(collectedValue)
     }
 
-    private def finishKeywordSetCollection(dataSet: DataLabel) {
-        LOG.info("Complete keyword collection on dataset " + dataSet)
+    private def finishKeywordSetCollection(dataLabel: DataLabel) {
+        LOG.info("Complete keyword collection on dataset " + dataLabel)
     }
 }
 
