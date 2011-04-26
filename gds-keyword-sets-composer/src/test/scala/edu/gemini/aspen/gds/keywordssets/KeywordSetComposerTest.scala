@@ -9,7 +9,7 @@ class KeywordSetComposerTest extends JUnitSuite with ShouldMatchersForJUnit {
     def verifyInitMessage() {
         // This is a contrived test as the semantics of case classes ensures the result already
         val dataLabel = new DataLabel("GS-2010A")
-        val init = Init(dataLabel)
+        val init = StartAcquisition(dataLabel)
         init should have (
             'dataLabel (dataLabel)
         )
@@ -19,7 +19,7 @@ class KeywordSetComposerTest extends JUnitSuite with ShouldMatchersForJUnit {
     def verifyCompleteMessage() {
         // This is a contrived test as the semantics of case classes ensures the result already
         val dataLabel = new DataLabel("GS-2010A")
-        val complete = Complete(dataLabel)
+        val complete = EndAcquisition(dataLabel)
         complete should have (
             'dataLabel (dataLabel)
         )

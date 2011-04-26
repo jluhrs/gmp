@@ -8,13 +8,15 @@ import org.junit.runner.RunWith
 import edu.gemini.aspen.gds.keywordssets.factory.StartAcquisitionActorsFactory
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import actors.Actor
+import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
 
 @RunWith(classOf[JUnitRunner])
 class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
     describe("A GDSObseventHandler") {
         it("should react to OBS_START_ACQ events") {
             val actorsFactory = mock[StartAcquisitionActorsFactory]
-            val observationHandler = new GDSObseventHandler(actorsFactory)
+            val keywordsDatabase = new KeywordsDatabaseImpl()
+            val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase)
             val dataLabel = new DataLabel("GS-2011")
 
             actorsFactory.startObservationActors(dataLabel) returns List[Actor]()

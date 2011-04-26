@@ -39,8 +39,8 @@ trait KeywordsDatabase {
 }
 
 @Component
-@Provides(specifications = Array(classOf[KeywordsDatabase]))
 @Instantiate
+@Provides(specifications = Array(classOf[KeywordsDatabase]))
 class KeywordsDatabaseImpl extends KeywordsDatabase{
 
   val map:HashMap[DataLabel, HashMap[String,AnyRef]] = new HashMap

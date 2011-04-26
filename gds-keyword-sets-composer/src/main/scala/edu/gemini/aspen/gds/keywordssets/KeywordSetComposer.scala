@@ -3,27 +3,30 @@ package edu.gemini.aspen.gds.keywordssets
 import java.util.logging.Logger
 import actors.{OutputChannel, Actor}
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
+
+sealed abstract class ObsEventsActions
 
 /**
  * Message to indicate that a new observation was initiated
  */
-case class Init(dataLabel: DataLabel)
-
-/**
- * Message to indicate that the data collection was completed
- * It is sent in reply to an Init message
- */
-case class InitCompleted(dataLabel: DataLabel)
+case class StartAcquisition(dataLabel: DataLabel) extends ObsEventsActions
 
 /**
  * Message to indicate that an observation was completed
  */
-case class Complete(dataLabel: DataLabel)
+case class EndAcquisition(dataLabel: DataLabel) extends ObsEventsActions
+
+/**
+ * Message to indicate that the data collection was completed
+ * It is sent in reply to an StartAcquisition message
+ */
+case class InitCompleted(dataLabel: DataLabel)
 
 /**
  * An actor that can compose data items from a set of independent actors
  */
-class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
+class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: KeywordsDatabase) extends Actor {
     val LOG = KeywordSetComposer.LOG
 
     // Start automatically
@@ -32,16 +35,12 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
     def act() {
         loop {
             react {
-                case Init(dataLabel) => startKeywordCollection(sender, dataLabel)
-                case Complete(dataLabel) => finishKeywordSetCollection(dataLabel)
+                case StartAcquisition(dataLabel) => startKeywordCollection(sender, dataLabel)
+                case EndAcquisition(dataLabel) => finishKeywordSetCollection(dataLabel)
                 case _ => throw new RuntimeException("Argument not known ")
             }
         }
     }
-
-    def observationInit(dataLabel: DataLabel) = this ! Init(dataLabel)
-
-    def observationComplete(dataLabel: DataLabel) = this ! Init(dataLabel)
 
     private def startKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
         LOG.info("Init keyword collection on dataset " + dataLabel)
@@ -68,6 +67,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
 
     private def storeReply(collectedValue:Any) {
         println(collectedValue)
+        
     }
 
     private def finishKeywordSetCollection(dataLabel: DataLabel) {
@@ -81,5 +81,5 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory) extends Actor {
 object KeywordSetComposer {
     private val LOG = Logger.getLogger(classOf[KeywordSetComposer].getName)
 
-    def apply(actorsFactory: KeywordActorsFactory) = new KeywordSetComposer(actorsFactory)
+    def apply(actorsFactory: KeywordActorsFactory, keywordsDatabase: KeywordsDatabase) = new KeywordSetComposer(actorsFactory, keywordsDatabase)
 }

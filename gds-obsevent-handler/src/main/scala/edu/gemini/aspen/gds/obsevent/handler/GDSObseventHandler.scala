@@ -4,7 +4,8 @@ import edu.gemini.aspen.giapi.data.ObservationEvent._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel, ObservationEventHandler}
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import edu.gemini.aspen.gds.keywordssets.factory.StartAcquisitionActorsFactory
-import edu.gemini.aspen.gds.keywordssets.{Init, KeywordSetComposer}
+import edu.gemini.aspen.gds.keywordssets.{StartAcquisition, KeywordSetComposer}
+import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -13,7 +14,7 @@ import edu.gemini.aspen.gds.keywordssets.{Init, KeywordSetComposer}
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
-class GDSObseventHandler(@Requires actorsFactory: StartAcquisitionActorsFactory) extends ObservationEventHandler {
+class GDSObseventHandler(@Requires actorsFactory: StartAcquisitionActorsFactory, @Requires keywordsDatabase: KeywordsDatabase) extends ObservationEventHandler {
     def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
         event match {
             case OBS_START_ACQ => startAcquisition(dataLabel)
@@ -22,6 +23,6 @@ class GDSObseventHandler(@Requires actorsFactory: StartAcquisitionActorsFactory)
     }
 
     private def startAcquisition(dataLabel: DataLabel) {
-        new KeywordSetComposer(actorsFactory) ! Init(dataLabel)
+        new KeywordSetComposer(actorsFactory, keywordsDatabase) ! StartAcquisition(dataLabel)
     }
 }
