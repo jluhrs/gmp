@@ -5,6 +5,7 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.TemporaryQueue;
 
 /**
  * Base class to model a request/reply communication using JMS.
@@ -60,6 +61,11 @@ public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
         MessageConsumer tempConsumer = createReplyConsumer(requestMessage);
         Message reply = tempConsumer.receive(timeout);
         tempConsumer.close();
+        
+        if (requestMessage.getJMSReplyTo() instanceof TemporaryQueue) {
+            TemporaryQueue temporaryQueue = (TemporaryQueue)requestMessage.getJMSReplyTo();
+            temporaryQueue.delete();
+        }
         return buildResponse(reply);
     }
 
