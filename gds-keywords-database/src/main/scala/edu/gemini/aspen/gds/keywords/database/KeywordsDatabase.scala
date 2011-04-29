@@ -9,7 +9,7 @@ import actors.Actor
 /**
  * Interface for the database
  */
-trait KeywordsDatabase {
+trait KeywordsDatabase extends Actor{
   /**
    * Store the keyword
    *
@@ -50,7 +50,7 @@ case class RetrieveAll(dataLabel: DataLabel)
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordsDatabase]))
-class KeywordsDatabaseImpl extends Actor with KeywordsDatabase {
+class KeywordsDatabaseImpl extends KeywordsDatabase {
 
 
   def act() {

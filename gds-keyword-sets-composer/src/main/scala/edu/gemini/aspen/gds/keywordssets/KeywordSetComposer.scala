@@ -5,6 +5,7 @@ import actors.{OutputChannel, Actor}
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.actors.{Collect, KeywordActorsFactory}
 import edu.gemini.aspen.gds.keywords.database.{Store, KeywordsDatabase}
+import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
  * Parent class of request to KeywordSetComposer
@@ -74,9 +75,10 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         }
     }
 
-    private def storeReply(dataLabel: DataLabel, collectedValue:Any) {
-        println(collectedValue)
-        keywordsDatabase ! Store(collectedValue)
+    private def storeReply(dataLabel: DataLabel, collectedValues:Any) {
+        println(collectedValues)
+      for(value <- collectedValues.asInstanceOf[List[CollectedValue]])
+        keywordsDatabase ! Store(dataLabel,value)
     }
 
     private def finishKeywordSetCollection(dataLabel: DataLabel) {
