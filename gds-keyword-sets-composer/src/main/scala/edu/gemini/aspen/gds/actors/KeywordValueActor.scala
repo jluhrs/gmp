@@ -13,7 +13,7 @@ case class Collect()
  *
  * It is expected that the reply will be a List[CollectedValues]
  */
-abstract trait KeywordValueActor extends Actor {
+trait KeywordValueActor extends Actor {
     start
 
     override def act() {

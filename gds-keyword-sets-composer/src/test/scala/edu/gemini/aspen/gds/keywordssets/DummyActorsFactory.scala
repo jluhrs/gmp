@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gds.keywordssets
 
+import configuration.GDSConfiguration
 import scala.actors.Actor
 import Actor._
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
@@ -17,5 +18,7 @@ class DummyActorsFactory extends KeywordActorsFactory {
     }
 
     override def endAcquisitionActors(dataLabel: DataLabel) = List()
+
+    def configure(configuration:List[GDSConfiguration]) {}
 }
 

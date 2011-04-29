@@ -9,7 +9,18 @@ import edu.gemini.aspen.gds.keywordssets.configuration.GDSConfiguration
  * that can in turn retrieve keyword values
  */
 trait KeywordActorsFactory {
+    /**
+     * Request the factory to create and start actors required for the start acquisition part
+     */
     def startAcquisitionActors(dataLabel:DataLabel): List[Actor]
 
+    /**
+     * Request the factory to create and start actors required for the end acquisition part
+     */
     def endAcquisitionActors(dataLabel:DataLabel): List[Actor]
+
+    /**
+     * Passes the global GDS configuration along
+     */
+    def configure(configuration:List[GDSConfiguration])
 }

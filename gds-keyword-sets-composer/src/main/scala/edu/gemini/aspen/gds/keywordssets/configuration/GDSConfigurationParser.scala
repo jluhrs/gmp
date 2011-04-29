@@ -2,6 +2,7 @@ package edu.gemini.aspen.gds.keywordssets.configuration
 
 import util.parsing.combinator.RegexParsers
 import io.Source
+import edu.gemini.aspen.giapi.data.FitsKeyword
 
 case class Comment(comment: String)
 
@@ -17,9 +18,9 @@ case class Mandatory(value: Boolean)
 
 case class NullValue(value: String)
 
-case class Subsystem(value: String)
+case class Subsystem(name: String)
 
-case class Channel(value: String)
+case class Channel(name: String)
 
 case class ArrayIndex(value: String)
 
@@ -35,6 +36,7 @@ class GDSConfigurationParser extends RegexParsers {
     def lines = rep(line) <~ EOF
 
     def line = (comment | configuration | CRLF)
+
 
     def configuration = (spaces ~ instrument
             ~ spaces ~ observationEvent
@@ -129,6 +131,8 @@ class GDSConfigurationParser extends RegexParsers {
 }
 
 object GDSConfigurationParser {
+    implicit def keyword2fitsKeyword(keyword:Keyword):FitsKeyword = new FitsKeyword(keyword.name)
+    
     def main(args: Array[String]) {
         val parser = new GDSConfigurationParser()
         parser.parseFile("src/main/resources/gds-keywords.conf")

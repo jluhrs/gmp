@@ -5,6 +5,7 @@ import actors.Actor
 import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.actors.KeywordActorsFactory
+import edu.gemini.aspen.gds.keywordssets.configuration.GDSConfiguration
 
 /**
  * Interface for a Composite of Actors Factory required by OSGi
@@ -36,6 +37,12 @@ class CompositeActorsFactoryImpl extends CompositeActorsFactory {
         factories flatMap (
             _.endAcquisitionActors(dataLabel)
         )
+    }
+
+    override def configure(configuration:List[GDSConfiguration]) {
+        factories foreach {
+            _.configure(configuration)
+        }
     }
 
     @Bind(aggregate = true, optional = true)
