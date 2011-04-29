@@ -27,7 +27,7 @@ case class FitsComment(value: String)
 
 case class Space(length: Int)
 
-case class Configuration(instrument: Instrument, event: ObservationEvent, keyword: Keyword, dataType: DataType, mandatory: Mandatory, nullValue: NullValue, subsystem: Subsystem, channel: Channel, arrayIndex: ArrayIndex, fitsComment:FitsComment)
+case class GDSConfiguration(instrument: Instrument, event: ObservationEvent, keyword: Keyword, dataType: DataType, mandatory: Mandatory, nullValue: NullValue, subsystem: Subsystem, channel: Channel, arrayIndex: ArrayIndex, fitsComment:FitsComment)
 
 class GDSConfigurationParser extends RegexParsers {
     override val skipWhitespace = false
@@ -55,7 +55,7 @@ class GDSConfigurationParser extends RegexParsers {
             ~ s7 ~ subsystem
             ~ s8 ~ channelName
             ~ s9 ~ arrayIndex
-            ~ s10 ~ fitscomment => Configuration(instrument, observationEvent, keyword, dataType, mandatory, nullValue, subsystem, channelName, arrayIndex, fitscomment)
+            ~ s10 ~ fitsComment => GDSConfiguration(instrument, observationEvent, keyword, dataType, mandatory, nullValue, subsystem, channelName, arrayIndex, fitsComment)
     }
 
     def instrument = """\w*""".r ^^ {
