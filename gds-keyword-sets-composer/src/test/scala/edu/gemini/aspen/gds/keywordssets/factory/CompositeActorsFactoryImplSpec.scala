@@ -11,7 +11,7 @@ import edu.gemini.aspen.gds.keywordssets.DummyActorsFactory
 class CompositeActorsFactoryImplSpec extends Spec with ShouldMatchers {
     def createFixture = (
             new DataLabel("GS-2011"),
-            new CompositeActorsFactoryImpl()
+            new CompositeActorsFactoryImpl("")
             )
 
     describe("An CompositeActorsFactory") {

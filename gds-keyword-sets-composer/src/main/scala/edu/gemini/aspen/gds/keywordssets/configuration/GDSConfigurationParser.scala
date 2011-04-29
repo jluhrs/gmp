@@ -120,9 +120,9 @@ class GDSConfigurationParser extends RegexParsers {
 
     def EOF = "\\z".r
 
-    def parseFile(fileName: String) {
+    def parseFile(fileName: String) = {
         val file = Source.fromFile(fileName, "UTF8")
-        println(parseAll(lines, file.bufferedReader))
+        parseAll(lines, file.bufferedReader).get
     }
 
     def parseText(text: String) = {
