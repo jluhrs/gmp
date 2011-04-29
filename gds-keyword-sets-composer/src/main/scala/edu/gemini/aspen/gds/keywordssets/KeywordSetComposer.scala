@@ -3,8 +3,8 @@ package edu.gemini.aspen.gds.keywordssets
 import java.util.logging.Logger
 import actors.{OutputChannel, Actor}
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
 import edu.gemini.aspen.gds.actors.{Collect, KeywordActorsFactory}
+import edu.gemini.aspen.gds.keywords.database.{Store, KeywordsDatabase}
 
 /**
  * Parent class of request to KeywordSetComposer
@@ -65,7 +65,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         loopWhile(i < actors.size) {
             i += 1
             dataFutures(i - 1).inputChannel.react {
-                case data => storeReply(data)
+                case data => storeReply(dataLabel,data)
             }
         } andThen {
             LOG.info("All collecting actors completed.")
@@ -74,9 +74,9 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         }
     }
 
-    private def storeReply(collectedValue:Any) {
+    private def storeReply(dataLabel: DataLabel, collectedValue:Any) {
         println(collectedValue)
-        
+        keywordsDatabase ! Store(collectedValue)
     }
 
     private def finishKeywordSetCollection(dataLabel: DataLabel) {
