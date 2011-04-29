@@ -1,18 +1,12 @@
 package edu.gemini.aspen.gds.actors
 
 import actors.Actor
-import edu.gemini.aspen.giapi.data.FitsKeyword
+import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
  * Message indicating that a value should be collected
  */
 case class Collect()
-
-/**
- * Message indicating the resulting values
- */
-case class CollectedValue(keyword:FitsKeyword, value:AnyRef, comment:String)
-
 
 /**
  * Trait for an actor that retrieve a specific value

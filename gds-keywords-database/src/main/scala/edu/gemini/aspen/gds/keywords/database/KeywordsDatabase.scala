@@ -1,8 +1,9 @@
 package edu.gemini.aspen.gds.keywords.database
 
-import collection.mutable.HashMap
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.DataLabel
+import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.gds.api.CollectedValue
+import collection.mutable.{HashSet, HashMap, Set}
 
 /**
  * Interface for the database
@@ -15,7 +16,7 @@ trait KeywordsDatabase {
    * @param keyword keyword to store
    * @param value value to associate to the keyword
    */
-  def store(dataLabel:DataLabel, keyword:String, value:AnyRef)
+  def store(dataLabel:DataLabel, value:CollectedValue)
 
   /**
    * Retrieve data from the database
@@ -25,7 +26,7 @@ trait KeywordsDatabase {
    *
    * @return Option containing the value if it was found in the DB
    */
-  def retrieve(dataLabel:DataLabel, keyword:String):Option[AnyRef]
+  def retrieve(dataLabel:DataLabel, keyword:FitsKeyword):Option[CollectedValue]
 
   /**
    * Retrieve all the data associated to a given data set
@@ -34,7 +35,7 @@ trait KeywordsDatabase {
    *
    * @return a HashMap[String, AnyRef] containing the data for the given data set
    */
-  def retrieveAll(dataLabel:DataLabel):Option[HashMap[String, AnyRef]]
+  def retrieveAll(dataLabel:DataLabel):Option[Set[CollectedValue]]
 
 }
 
@@ -43,32 +44,29 @@ trait KeywordsDatabase {
 @Provides(specifications = Array(classOf[KeywordsDatabase]))
 class KeywordsDatabaseImpl extends KeywordsDatabase{
 
-  val map:HashMap[DataLabel, HashMap[String,AnyRef]] = new HashMap
+  val map:HashMap[DataLabel, Set[CollectedValue]] = new HashMap
 
-  def store(dataLabel:DataLabel, keyword: String, value: AnyRef) = {
+  override def store(dataLabel:DataLabel, value:CollectedValue) {
     if(!map.contains(dataLabel)){
-      map.put(dataLabel,new HashMap[String, AnyRef]())
+      map.put(dataLabel,new HashSet[CollectedValue]())
     }
-    map.get(dataLabel).get.put(keyword,value)
+    map.get(dataLabel).get.add(value)
   }
 
-  def retrieve(dataLabel:DataLabel, keyword: String):Option[AnyRef] = {
-    val innerMapOption = map.get(dataLabel)
-    if(!innerMapOption.isDefined){
-      return None
-    }
-    return innerMapOption.get.get(keyword)
+  override def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[CollectedValue] = {
+    for{
+      set <-  map.get(dataLabel)
+      value <- set.find(x => x.keyword==keyword)
+    } yield value
   }
 
-  def retrieveAll(dataLabel: DataLabel): Option[HashMap[String, AnyRef]] = {
-    return map.get(dataLabel)
-  }
+  override def retrieveAll(dataLabel: DataLabel): Option[Set[CollectedValue]] = map.get(dataLabel)
 
   @Validate
-  def validate() = {println(map)}
+  def validate() {println("Validating..." + map)}
 
   @Invalidate
-  def invalidate() = {println(map)}
+  def invalidate() {println("Invalidating..." + map)}
 }
 
 

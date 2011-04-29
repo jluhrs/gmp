@@ -2,7 +2,8 @@ package edu.gemini.aspen.gds.actors.epics
 
 import edu.gemini.epics.EpicsReader
 import edu.gemini.aspen.giapi.data.FitsKeyword
-import edu.gemini.aspen.gds.actors.{KeywordValueActor, CollectedValue}
+import edu.gemini.aspen.gds.actors.KeywordValueActor
+import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
  * Very simple actor that can produce as a reply of a Collect request a single value

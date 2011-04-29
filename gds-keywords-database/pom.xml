@@ -29,6 +29,10 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

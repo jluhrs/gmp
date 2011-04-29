@@ -134,6 +134,7 @@
         <module>gmp-tui</module>
         <module>gmp-epics-top</module>
         <module>integration-tests</module>
+        <module>gds-api</module>
         <module>gds-keywords-database</module>
         <module>gds-keyword-sets-composer</module>
         <module>gds-actors-epics</module>
