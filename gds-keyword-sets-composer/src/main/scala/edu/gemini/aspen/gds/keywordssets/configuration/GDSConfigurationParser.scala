@@ -3,6 +3,8 @@ package edu.gemini.aspen.gds.keywordssets.configuration
 import util.parsing.combinator.RegexParsers
 import io.Source
 
+case class Comment(comment:String)
+
 class GDSConfigurationParser extends RegexParsers {
     override val skipWhitespace = false
 
@@ -17,7 +19,7 @@ class GDSConfigurationParser extends RegexParsers {
     case class ArrayIndex(value:String)
     case class Space(length:Int)
 
-    def lines = rep(line) ~ EOF 
+    def lines = rep(line) <~ EOF 
 
     def line = (comment | configuration | CRLF)
 
@@ -55,7 +57,7 @@ class GDSConfigurationParser extends RegexParsers {
 
     def arrayIndex = """\w*""".r ^^ {x => ArrayIndex(x)}
 
-    def comment: Parser[String] = """#.*""".r
+    def comment = """#.*""".r ^^ {x => Comment(x)}
 
     def fitscomment = "\"" ~> internalComment <~ "\""
 
@@ -69,15 +71,19 @@ class GDSConfigurationParser extends RegexParsers {
 
     def EOF = "\\z".r
 
-    def parse(fileName: String) {
+    def parseFile(fileName: String) {
         val file = Source.fromFile(fileName, "UTF8")
         println(parseAll(lines, file.bufferedReader))
+    }
+
+    def parseText(text: String) = {
+        parseAll(lines, text)
     }
 }
 
 object GDSConfigurationParser {
     def main(args: Array[String]) {
         val parser = new GDSConfigurationParser()
-        parser.parse("src/main/resources/gds-keywords.conf")
+        parser.parseFile("src/main/resources/gds-keywords.conf")
     }
 }
