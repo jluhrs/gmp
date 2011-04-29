@@ -8,7 +8,7 @@ case class Comment(comment: String)
 
 case class Instrument(name: String)
 
-case class ObservationEvent(name: String)
+case class GDSEvent(name: String)
 
 case class Keyword(name: String)
 
@@ -28,7 +28,7 @@ case class FitsComment(value: String)
 
 case class Space(length: Int)
 
-case class GDSConfiguration(instrument: Instrument, event: ObservationEvent, keyword: Keyword, dataType: DataType, mandatory: Mandatory, nullValue: NullValue, subsystem: Subsystem, channel: Channel, arrayIndex: ArrayIndex, fitsComment:FitsComment)
+case class GDSConfiguration(instrument: Instrument, event: GDSEvent, keyword: Keyword, dataType: DataType, mandatory: Mandatory, nullValue: NullValue, subsystem: Subsystem, channel: Channel, arrayIndex: ArrayIndex, fitsComment:FitsComment)
 
 class GDSConfigurationParser extends RegexParsers {
     override val skipWhitespace = false
@@ -36,7 +36,6 @@ class GDSConfigurationParser extends RegexParsers {
     def lines = rep(line) <~ EOF
 
     def line = (comment | configuration | CRLF)
-
 
     def configuration = (spaces ~ instrument
             ~ spaces ~ observationEvent
@@ -65,7 +64,7 @@ class GDSConfigurationParser extends RegexParsers {
     }
 
     def observationEvent = """[\p{Upper}_]*""".r ^^ {
-        x => ObservationEvent(x)
+        x => GDSEvent(x)
     }
 
     def keyword = """[\p{Upper}\d]{1,8}""".r ^^ {

@@ -18,7 +18,7 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
             )
 
     def buildOneConfiguration: GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"), ObservationEvent("OBS_START_ACQ"), Keyword("AIRMASS"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+        GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), Keyword("AIRMASS"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
     }
 
     describe("An EpicsActorsFactory") {
@@ -41,8 +41,8 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
         it("should be configurable with two item") {
             val (dataLabel, epicsActorsFactory) = createFixture
             val configuration = List(
-                GDSConfiguration(Instrument("GPI"), ObservationEvent("OBS_START_ACQ"), Keyword("AIRMASS"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")),
-                GDSConfiguration(Instrument("GPI"), ObservationEvent("OBS_START_ACQ"), Keyword("AIRMAS2"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmas2"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), Keyword("AIRMASS"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")),
+                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), Keyword("AIRMAS2"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmas2"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
             )
             epicsActorsFactory.configure(configuration)
 
@@ -52,8 +52,8 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
         it("should only pick EPICS subsystems") {
             val (dataLabel, epicsActorsFactory) = createFixture
             val configuration = List(
-                GDSConfiguration(Instrument("GPI"), ObservationEvent("OBS_START_ACQ"), Keyword("AIRMASS"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")),
-                GDSConfiguration(Instrument("GPI"), ObservationEvent("OBS_START_ACQ"), Keyword("AIRMAS2"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("NOEPICS"), Channel("ws:massAirmas2"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), Keyword("AIRMASS"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")),
+                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), Keyword("AIRMAS2"), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("NOEPICS"), Channel("ws:massAirmas2"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
             )
             epicsActorsFactory.configure(configuration)
 
