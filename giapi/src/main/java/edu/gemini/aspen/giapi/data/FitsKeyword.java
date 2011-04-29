@@ -20,4 +20,12 @@ public class FitsKeyword {
     public String getName() {
         return name;
     }
+
+
+    @Override
+    public String toString() {
+        return "FitsKeyword{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
