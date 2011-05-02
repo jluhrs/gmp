@@ -14,10 +14,10 @@ class EpicsValuesActor(epicsReader: EpicsReader, fitsKeyword: FitsKeyword, chann
         val epicsValue = epicsReader.getValue(channelName)
         if (epicsValue.isInstanceOf[Array[Double]]) {
             // TODO: This should be done on the EpicsArray Actor
-            CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](0).asInstanceOf[AnyRef], "") :: Nil
+            CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](0).asInstanceOf[AnyRef], "", 0) :: Nil
         } else {
             // TODO cast to the right type
-            CollectedValue(fitsKeyword, epicsValue, "") :: Nil
+            CollectedValue(fitsKeyword, epicsValue, "", 0) :: Nil
         }
     }
 

@@ -11,7 +11,7 @@ class DummyActorsFactory extends KeywordActorsFactory {
     override def startAcquisitionActors(dataLabel: DataLabel) = {
         val dummyActor = actor {
             react {
-                case Collect => reply(List(CollectedValue(new FitsKeyword("KEYWORD1"), "", "")))
+                case Collect => reply(List(CollectedValue(new FitsKeyword("KEYWORD1"), "", "", 0)))
             }
         }
         dummyActor :: Nil

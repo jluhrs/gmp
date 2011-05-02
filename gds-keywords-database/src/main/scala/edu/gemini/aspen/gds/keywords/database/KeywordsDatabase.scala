@@ -2,46 +2,17 @@ package edu.gemini.aspen.gds.keywords.database
 
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
-import edu.gemini.aspen.gds.api.CollectedValue
 import collection.mutable.{HashSet, HashMap, Set}
 import actors.Actor
+import edu.gemini.fits.HeaderItem
 
 /**
  * Interface for the database
  */
-trait KeywordsDatabase extends Actor{
-  /**
-   * Store the keyword
-   *
-   * @param dataLabel to which the keywords belong
-   * @param keyword keyword to store
-   * @param value value to associate to the keyword
-   */
-  //def store(dataLabel:DataLabel, value:CollectedValue)
-
-  /**
-   * Retrieve data from the database
-   *
-   * @param dataLabel from which to retrieve data
-   * @param keyword keyword to retrieve
-   *
-   * @return Option containing the value if it was found in the DB
-   */
-  //def retrieve(dataLabel:DataLabel, keyword:FitsKeyword):Option[CollectedValue]
-
-  /**
-   * Retrieve all the data associated to a given data set
-   *
-   * @param dataLabel for which to retrieve data
-   *
-   * @return a HashMap[String, AnyRef] containing the data for the given data set
-   */
-  //def retrieveAll(dataLabel:DataLabel):Option[Set[CollectedValue]]
-
-}
+trait KeywordsDatabase extends Actor
 
 //case classes define the messages accepted by the DataBase
-case class Store(dataLabel: DataLabel, value: CollectedValue)
+case class Store(dataLabel: DataLabel, value: HeaderItem)
 
 case class Retrieve(dataLabel: DataLabel, keyword: FitsKeyword)
 
@@ -65,7 +36,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   }
 
 
-  val map: HashMap[DataLabel, Set[CollectedValue]] = new HashMap
+  val map: HashMap[DataLabel, Set[HeaderItem]] = new HashMap
 
   /**
    * Store the keyword
@@ -74,9 +45,9 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    * @param keyword keyword to store
    * @param value value to associate to the keyword
    */
-  private def store(dataLabel: DataLabel, value: CollectedValue) {
+  private def store(dataLabel: DataLabel, value: HeaderItem) {
     if (!map.contains(dataLabel)) {
-      map.put(dataLabel, new HashSet[CollectedValue]())
+      map.put(dataLabel, new HashSet[HeaderItem]())
     }
     map.get(dataLabel).get.add(value)
   }
@@ -89,10 +60,10 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    *
    * @return Option containing the value if it was found in the DB
    */
-  private def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[CollectedValue] = {
+  private def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[HeaderItem] = {
     for {
       set <- map.get(dataLabel)
-      value <- set.find(x => x.keyword == keyword)
+      value <- set.find(x => x.getKeyword == keyword.getName)
     } yield value
   }
 
@@ -103,7 +74,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    *
    * @return a HashMap[String, AnyRef] containing the data for the given data set
    */
-  private def retrieveAll(dataLabel: DataLabel): Option[Set[CollectedValue]] = map.get(dataLabel)
+  private def retrieveAll(dataLabel: DataLabel): Option[Set[HeaderItem]] = map.get(dataLabel)
 
   @Validate
   def validate() {
