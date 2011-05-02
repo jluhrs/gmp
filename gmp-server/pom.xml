@@ -354,6 +354,16 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>giapi-obsevents</artifactId>
             <version>0.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>fits-util</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>file-util</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <profiles>
