@@ -1,10 +1,10 @@
 package edu.gemini.aspen.gds.actors.epics
 
-import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.epics.EpicsReader
 import edu.gemini.aspen.gds.actors.KeywordActorsFactory
 import edu.gemini.aspen.gds.keywordssets.configuration.GDSConfiguration
 import org.apache.felix.ipojo.annotations._
+import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 
 @Component
 @Instantiate
@@ -14,13 +14,16 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActo
     var conf: List[GDSConfiguration] = List()
 
     override def startAcquisitionActors(dataLabel: DataLabel) = {
-        // There must be a cleaner way to do this
-        conf map {
+        conf filter {_.event.name == ObservationEvent.OBS_START_ACQ.toString} map {
             case config:GDSConfiguration => new EpicsValuesActor(epicsReader, config)
         }
     }
 
-    override def endAcquisitionActors(dataLabel: DataLabel) = List()
+    override def endAcquisitionActors(dataLabel: DataLabel) = {
+        conf filter {_.event.name == ObservationEvent.OBS_END_ACQ.toString} map {
+            case config:GDSConfiguration => new EpicsValuesActor(epicsReader, config)
+        }
+    }
 
     override def configure(configuration:List[GDSConfiguration]) {
         conf = configuration filter { _.subsystem.name == "EPICS"}
