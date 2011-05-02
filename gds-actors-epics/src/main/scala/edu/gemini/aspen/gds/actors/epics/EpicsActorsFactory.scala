@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gds.actors.epics
 
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.epics.EpicsReader
-import edu.gemini.aspen.gds.actors.{KeywordActorsFactory, KeywordValueActor}
+import edu.gemini.aspen.gds.actors.KeywordActorsFactory
 import edu.gemini.aspen.gds.keywordssets.configuration.GDSConfiguration
 import org.apache.felix.ipojo.annotations._
 
@@ -16,7 +16,7 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActo
     override def startAcquisitionActors(dataLabel: DataLabel) = {
         // There must be a cleaner way to do this
         conf map {
-            case GDSConfiguration(_,_,keyword,_,_,_,_,channelName,_,_) => new EpicsValuesActor(epicsReader, new FitsKeyword(keyword.name), channelName.name)
+            case config:GDSConfiguration => new EpicsValuesActor(epicsReader, config)
         }
     }
 

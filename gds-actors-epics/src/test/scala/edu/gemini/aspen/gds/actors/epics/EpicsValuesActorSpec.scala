@@ -9,6 +9,7 @@ import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.actors.Collect
 import edu.gemini.aspen.gds.api.CollectedValue
+import edu.gemini.aspen.gds.keywordssets.configuration._
 
 @RunWith(classOf[JUnitRunner])
 class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
@@ -18,13 +19,15 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             val dataLabel = new DataLabel("GS-2011")
             val epicsReader = mock[EpicsReader]
 
-            val channelName = "channelName"
+            val channelName = "ws:massAirmass"
             val referenceValue = "an epics string"
             // mock return value
             epicsReader.getValue(channelName) returns referenceValue
-            val fitsKeyword = new FitsKeyword("KEYWORD1")
+            val fitsKeyword = new FitsKeyword("AIRMASS")
 
-            val epicsValueActor = new EpicsValuesActor(epicsReader, fitsKeyword, channelName)
+            val configuration = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), Keyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+
+            val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
             
             // Send an init message
             val result = epicsValueActor !! Collect
