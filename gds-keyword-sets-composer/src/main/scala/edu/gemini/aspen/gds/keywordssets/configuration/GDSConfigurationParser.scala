@@ -12,6 +12,8 @@ case class GDSEvent(name: String)
 
 case class Keyword(name: String)
 
+case class HeaderIndex(index: Int)
+
 case class DataType(name: String)
 
 case class Mandatory(value: Boolean)
@@ -28,7 +30,7 @@ case class FitsComment(value: String)
 
 case class Space(length: Int)
 
-case class GDSConfiguration(instrument: Instrument, event: GDSEvent, keyword: Keyword, dataType: DataType, mandatory: Mandatory, nullValue: NullValue, subsystem: Subsystem, channel: Channel, arrayIndex: ArrayIndex, fitsComment:FitsComment)
+case class GDSConfiguration(instrument: Instrument, event: GDSEvent, keyword: Keyword, index:HeaderIndex, dataType: DataType, mandatory: Mandatory, nullValue: NullValue, subsystem: Subsystem, channel: Channel, arrayIndex: ArrayIndex, fitsComment:FitsComment)
 
 class GDSConfigurationParser extends RegexParsers {
     override val skipWhitespace = false
@@ -40,6 +42,7 @@ class GDSConfigurationParser extends RegexParsers {
     def configuration = (spaces ~ instrument
             ~ spaces ~ observationEvent
             ~ spaces ~ keyword
+            ~ spaces ~ headerIndex
             ~ spaces ~ datatype
             ~ spaces ~ mandatory
             ~ spaces ~ nullValue
@@ -50,13 +53,14 @@ class GDSConfigurationParser extends RegexParsers {
         case s1~ instrument
             ~ s2 ~ observationEvent
             ~ s3 ~ keyword
-            ~ s4 ~ dataType
-            ~ s5 ~ mandatory
-            ~ s6 ~ nullValue
-            ~ s7 ~ subsystem
-            ~ s8 ~ channelName
-            ~ s9 ~ arrayIndex
-            ~ s10 ~ fitsComment => GDSConfiguration(instrument, observationEvent, keyword, dataType, mandatory, nullValue, subsystem, channelName, arrayIndex, fitsComment)
+            ~ s4 ~ headerIndex
+            ~ s5 ~ dataType
+            ~ s6 ~ mandatory
+            ~ s7 ~ nullValue
+            ~ s8 ~ subsystem
+            ~ s9 ~ channelName
+            ~ s10 ~ arrayIndex
+            ~ s11 ~ fitsComment => GDSConfiguration(instrument, observationEvent, keyword, headerIndex, dataType, mandatory, nullValue, subsystem, channelName, arrayIndex, fitsComment)
     }
 
     def instrument = """\w*""".r ^^ {
@@ -69,6 +73,10 @@ class GDSConfigurationParser extends RegexParsers {
 
     def keyword = """[\p{Upper}\d]{1,8}""".r ^^ {
         x => Keyword(x)
+    }
+
+    def headerIndex = """\d*""".r ^^ {
+        x => HeaderIndex(x.toInt)
     }
 
     def datatype = "DOUBLE" ^^ {
