@@ -15,7 +15,7 @@ class EpicsValuesActor(epicsReader: EpicsReader, configuration:GDSConfiguration)
 
         val (channelName, fitsKeyword, headerIndex) = (
                 configuration.channel.name,
-                new FitsKeyword(configuration.keyword.name),
+                configuration.keyword,
                 configuration.index.index
                 )
 
