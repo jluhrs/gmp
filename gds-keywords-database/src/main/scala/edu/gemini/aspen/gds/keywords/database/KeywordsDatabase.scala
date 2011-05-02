@@ -4,7 +4,9 @@ import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import collection.mutable.{HashSet, HashMap, Set}
 import actors.Actor
-import edu.gemini.fits.HeaderItem
+import collection.JavaConversions._
+import edu.gemini.fits.{DefaultHeaderItem, DefaultHeader, Header, HeaderItem}
+import scala.None
 
 /**
  * Interface for the database
@@ -36,7 +38,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   }
 
 
-  val map: HashMap[DataLabel, Set[HeaderItem]] = new HashMap
+  val map = collection.mutable.Map.empty[DataLabel, List[Header]]
 
   /**
    * Store the keyword
@@ -45,11 +47,26 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    * @param keyword keyword to store
    * @param value value to associate to the keyword
    */
-  private def store(dataLabel: DataLabel, value: HeaderItem) {
+  private def store(dataLabel: DataLabel, item: HeaderItem) {
     if (!map.contains(dataLabel)) {
-      map.put(dataLabel, new HashSet[HeaderItem]())
+      map += (dataLabel -> List[Header]())
     }
-    map.get(dataLabel).get.add(value)
+    val headerList = map.get(dataLabel).get
+    val added: List[Boolean] = for {
+      header: Header <- headerList
+      //      if header.getIndex == value.getIndex //should be unique
+      if true //should be unique
+    } yield {
+      header.add(item)
+    }
+
+    if (added.size == 0) {
+      //if couldn't find the header, then add it
+      val head = new DefaultHeader()
+      head.add(item)
+      map.put(dataLabel, List[Header](head))
+      //map.put(dataLabel ,(new DefaultHeader(List(item)))::Nil)
+    }
   }
 
   /**
@@ -61,10 +78,21 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    * @return Option containing the value if it was found in the DB
    */
   private def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[HeaderItem] = {
-    for {
-      set <- map.get(dataLabel)
-      value <- set.find(x => x.getKeyword == keyword.getName)
-    } yield value
+    if (!map.contains(dataLabel)) {
+      None
+    } else {
+      val items: List[HeaderItem] = for {
+        header <- map.get(dataLabel).get;
+        item: HeaderItem = header.get(keyword.getName)
+        if item != null
+      } yield item
+
+      if (items.isEmpty) {
+        None
+      } else {
+        Some(items.get(0))
+      }
+    }
   }
 
   /**
@@ -74,7 +102,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    *
    * @return a HashMap[String, AnyRef] containing the data for the given data set
    */
-  private def retrieveAll(dataLabel: DataLabel): Option[Set[HeaderItem]] = map.get(dataLabel)
+  private def retrieveAll(dataLabel: DataLabel): Option[List[Header]] = map.get(dataLabel)
 
   @Validate
   def validate() {

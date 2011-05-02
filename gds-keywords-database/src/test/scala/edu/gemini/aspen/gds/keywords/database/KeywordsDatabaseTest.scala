@@ -5,8 +5,9 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectedValue
 import collection.mutable.HashSet
 import org.junit.{Before, Test}
-import edu.gemini.fits.HeaderItem
 import edu.gemini.aspen.gds.api.Conversions._
+import edu.gemini.fits.{DefaultHeader, Header, HeaderItem}
+import collection.JavaConversions._
 
 class KeywordsDatabaseTest extends AssertionsForJUnit {
   var db: KeywordsDatabaseImpl = null
@@ -29,7 +30,7 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
     db ! Store(dataLabel, colVal)
 
     val ret = db !? (1000,Retrieve(dataLabel, key))
-    assert(ret!=None)//we didn't get a timeout
+    assert(!ret.isEmpty)//we didn't get a timeout
     val opt = ret.get.asInstanceOf[Option[HeaderItem]]
     assert(opt.isDefined)//the value was at the DB
     assert(opt.get == headerItem)//the value was correct
@@ -37,18 +38,44 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
 
   @Test
   def testRetrieveAll() {
-    val set = new HashSet[HeaderItem]()
-    set.add(headerItem)
+    val list = List(new DefaultHeader(List(headerItem)))
 
     db ! Store(dataLabel, colVal)
 
     val ret = db !? (1000,RetrieveAll(dataLabel))
-    assert(ret!=None)//we didn't get a timeout
-    val storedSet = ret.get.asInstanceOf[Option[Set[HeaderItem]]]
-    assert(storedSet.isDefined)//the set was at the DB
-    for(e1 <- storedSet.get;e2 <- set){
+    assert(!ret.isEmpty)//we didn't get a timeout
+    val storedOpt = ret.get.asInstanceOf[Option[List[Header]]]
+    assert(storedOpt.isDefined)//the set was at the DB
+    for(storedList <- storedOpt;e1 <- storedList;e2 <- list){
       assert(e1 == e2)
     }
   }
+
+  @Test
+  def retrieveEmpty() {
+    val ret = db !? (1000, Retrieve(dataLabel, key))
+    assert(!ret.isEmpty)
+    val opt = ret.get.asInstanceOf[Option[HeaderItem]]
+    assert(opt.isEmpty)
+  }
+
+  @Test
+  def retrieveWrongDataLabel() {
+    db ! Store(dataLabel, colVal)
+    val ret = db !? (1000, Retrieve("wrong", key))
+    assert(!ret.isEmpty)
+    val opt = ret.get.asInstanceOf[Option[HeaderItem]]
+    assert(opt.isEmpty)
+  }
+
+//  @Test
+//  def retrieveWrongKey() {
+//    db ! Store(dataLabel, colVal)
+//    val ret = db !? (1000, Retrieve(dataLabel, "wrong"))
+//    assert(!ret.isEmpty)
+//     val opt = ret.get.asInstanceOf[Option[HeaderItem]]
+//    assert(opt.isEmpty)
+//  }
+
 
 }
