@@ -32,7 +32,6 @@
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>fits-util</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
