@@ -64,7 +64,7 @@ public class EpicsReaderImpl extends EpicsBaseImpl implements EpicsReader {
     }
 
     private Object readEpicsValue(Channel channel) throws CAException, TimeoutException {
-        // There is a slight chance of problems here as the channel could be unbound anytimes
+        // There is a slight chance of problems here as the channel could be unbound at anytime
         DBR dbr = channel.get();
         channel.getContext().pendIO(1.0);
         return dbr.getValue();

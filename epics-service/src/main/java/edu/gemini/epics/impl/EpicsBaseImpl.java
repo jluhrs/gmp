@@ -43,7 +43,8 @@ public class EpicsBaseImpl implements EpicsBase {
     }
 
     private void addJCAContextListeners() throws CAException {
-        _ctx.addContextExceptionListener(new ContextExceptionListener() {
+        synchronized (_ctx) {
+            _ctx.addContextExceptionListener(new ContextExceptionListener() {
                 public void contextException(ContextExceptionEvent cee) {
                     LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
                 }
@@ -52,14 +53,15 @@ public class EpicsBaseImpl implements EpicsBase {
                     LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
                 }
             });
-        _ctx.addContextMessageListener(new ContextMessageListener() {
-            public void contextMessage(ContextMessageEvent cme) {
-                LOG.info(cme.getMessage());
-            }
-        });
+            _ctx.addContextMessageListener(new ContextMessageListener() {
+                public void contextMessage(ContextMessageEvent cme) {
+                    LOG.info(cme.getMessage());
+                }
+            });
+        }
     }
 
-    public void bindChannel(String channel) throws EpicsException {
+    public synchronized void bindChannel(String channel) throws EpicsException {
         try {
             bindNewChannel(channel);
         } catch (CAException e) {
@@ -72,6 +74,14 @@ public class EpicsBaseImpl implements EpicsBase {
     }
 
     private void bindNewChannel(String channelName) throws CAException, TimeoutException {
+        synchronized (_ctx) {
+            if (!isChannelKnown(channelName)) {
+                addNewChannel(channelName);
+            }
+        }
+    }
+
+    private void addNewChannel(String channelName) throws CAException, TimeoutException {
         Channel epicsChannel = _ctx.createChannel(channelName);
         //TODO: Do we need to bind the channels asynchronously, using the connection listener?
         _channels.putIfAbsent(channelName, epicsChannel);
