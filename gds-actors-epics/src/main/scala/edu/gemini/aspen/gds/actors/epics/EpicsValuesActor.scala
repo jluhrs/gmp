@@ -11,12 +11,12 @@ import edu.gemini.aspen.gds.api.CollectedValue
  */
 class EpicsValuesActor(epicsReader: EpicsReader, fitsKeyword: FitsKeyword, channelName: String) extends KeywordValueActor {
     override def collectValues():List[CollectedValue] = {
-        epicsReader.bindChannel(channelName)
         val epicsValue = epicsReader.getValue(channelName)
         if (epicsValue.isInstanceOf[Array[Double]]) {
-            println(channelName + " => " + epicsValue.asInstanceOf[Array[Double]](0))
+            // TODO: This should be done on the EpicsArray Actor
             CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](0).asInstanceOf[AnyRef], "") :: Nil
         } else {
+            // TODO cast to the right type
             CollectedValue(fitsKeyword, epicsValue, "") :: Nil
         }
     }

@@ -2,9 +2,9 @@ package edu.gemini.aspen.gds.actors.epics
 
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.epics.EpicsReader
-import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
 import edu.gemini.aspen.gds.actors.{KeywordActorsFactory, KeywordValueActor}
 import edu.gemini.aspen.gds.keywordssets.configuration.GDSConfiguration
+import org.apache.felix.ipojo.annotations._
 
 @Component
 @Instantiate
@@ -24,5 +24,14 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActo
 
     override def configure(configuration:List[GDSConfiguration]) {
         conf = configuration filter { _.subsystem.name == "EPICS"}
+        // Bind all required channels
+        conf map { x =>
+            epicsReader.bindChannel(x.channel.name)
+        }
+    }
+
+    @Invalidate
+    def unbindAllChannels() {
+        // TODO remove all the bound channels
     }
 }
