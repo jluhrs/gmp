@@ -10,8 +10,6 @@ case class Instrument(name: String)
 
 case class GDSEvent(name: String)
 
-case class Keyword(name: String)
-
 case class HeaderIndex(index: Int)
 
 case class DataType(name: String)
@@ -138,8 +136,6 @@ class GDSConfigurationParser extends RegexParsers {
 }
 
 object GDSConfigurationParser {
-    implicit def keyword2fitsKeyword(keyword:Keyword):FitsKeyword = new FitsKeyword(keyword.name)
-    
     def main(args: Array[String]) {
         val parser = new GDSConfigurationParser()
         parser.parseFile("src/main/resources/gds-keywords.conf")

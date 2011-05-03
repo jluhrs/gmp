@@ -7,6 +7,7 @@ import edu.gemini.aspen.gds.actors.{Collect, KeywordActorsFactory}
 import edu.gemini.aspen.gds.keywords.database.{Store, KeywordsDatabase}
 import edu.gemini.aspen.gds.api.CollectedValue
 import edu.gemini.aspen.gds.api.Conversions._
+
 /**
  * Parent class of request to KeywordSetComposer
  */
@@ -34,6 +35,12 @@ sealed abstract class AcquisitionReply
 case class StartAcquisitionReply(dataLabel: DataLabel) extends AcquisitionReply
 
 /**
+ * Message to indicate that the data collection was completed
+ * It is sent in reply to an StartAcquisition message
+ */
+case class EndAcquisitionReply(dataLabel: DataLabel) extends AcquisitionReply
+
+/**
  * An actor that composes the items required to complete an observation using a set of actors
  */
 class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: KeywordsDatabase) extends Actor {
@@ -46,8 +53,8 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         loop {
             react {
                 case StartAcquisition(dataLabel) => startKeywordCollection(sender, dataLabel)
-                case EndAcquisition(dataLabel) => finishKeywordSetCollection(dataLabel)
-                case _ => throw new RuntimeException("Argument not known ")
+                case EndAcquisition(dataLabel) => finishKeywordSetCollection(sender, dataLabel)
+                case x:Any => throw new RuntimeException("Argument not known " + x)
             }
         }
     }
@@ -56,7 +63,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         LOG.info("Init keyword collection on dataset " + dataLabel)
         // Get the actors from the factory
         val actors = actorsFactory.startAcquisitionActors(dataLabel)
-        
+
         // Start collecting
         val dataFutures = for (dataActor <- actors) yield {
             dataActor !! Collect
@@ -66,7 +73,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         loopWhile(i < actors.size) {
             i += 1
             dataFutures(i - 1).inputChannel.react {
-                case data => storeReply(dataLabel,data)
+                case data => storeReply(dataLabel, data)
             }
         } andThen {
             LOG.info("All collecting actors completed.")
@@ -75,14 +82,33 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         }
     }
 
-    private def storeReply(dataLabel: DataLabel, collectedValues:Any) {
+    private def storeReply(dataLabel: DataLabel, collectedValues: Any) {
         println(collectedValues)
-      for(value <- collectedValues.asInstanceOf[List[CollectedValue]])
-        keywordsDatabase ! Store(dataLabel,value)
+        for (value <- collectedValues.asInstanceOf[List[CollectedValue]])
+            keywordsDatabase ! Store(dataLabel, value)
     }
 
-    private def finishKeywordSetCollection(dataLabel: DataLabel) {
+    private def finishKeywordSetCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
         LOG.info("Complete keyword collection on dataset " + dataLabel)
+        // Get the actors from the factory
+        val actors = actorsFactory.endAcquisitionActors(dataLabel)
+
+        // Start collecting
+        val dataFutures = for (dataActor <- actors) yield {
+            dataActor !! Collect
+        }
+        // Wait for response
+        var i = 0
+        loopWhile(i < actors.size) {
+            i += 1
+            dataFutures(i - 1).inputChannel.react {
+                case data => storeReply(dataLabel, data)
+            }
+        } andThen {
+            LOG.info("All collecting actors completed.")
+            // Reply to the original sender
+            sender ! EndAcquisitionReply(dataLabel)
+        }
     }
 }
 
