@@ -38,7 +38,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
         case Retrieve(dataLabel, keyword) => sender ! retrieve(dataLabel, keyword)
         case RetrieveExtension(dataLabel, index) => sender ! retrieveExtension(dataLabel, index)
         case RetrieveAll(dataLabel) => sender ! retrieveAll(dataLabel)
-        case _ => throw new RuntimeException("Argument not known")
+        case x:Any => throw new RuntimeException("Argument not known " + x)
       }
     }
   }
