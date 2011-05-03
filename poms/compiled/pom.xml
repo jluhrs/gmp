@@ -133,6 +133,12 @@
                 <version>1.1.0</version>
             </dependency>
             <dependency>
+                <groupId>gemini-nocs</groupId>
+                <artifactId>file-util</artifactId>
+                <version>1.0.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.activemq</groupId>
                 <artifactId>activemq-core</artifactId>
                 <version>${org.activemq.core.version}</version>
