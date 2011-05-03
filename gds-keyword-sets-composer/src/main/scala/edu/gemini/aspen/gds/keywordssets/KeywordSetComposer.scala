@@ -61,16 +61,11 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
 
     private def startKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
         LOG.info("Init keyword collection on dataset " + dataLabel)
-        // Get the actors from the factory
-        val actors = actorsFactory.startAcquisitionActors(dataLabel)
 
-        // Start collecting
-        val dataFutures = for (dataActor <- actors) yield {
-            dataActor !! Collect
-        }
+        val dataFutures = requestCollection(dataLabel, actorsFactory.startAcquisitionActors)
         // Wait for response
         var i = 0
-        loopWhile(i < actors.size) {
+        loopWhile(i < dataFutures.size) {
             i += 1
             dataFutures(i - 1).inputChannel.react {
                 case data => storeReply(dataLabel, data)
@@ -82,6 +77,17 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         }
     }
 
+    private def requestCollection(dataLabel: DataLabel, actorsBuilder: (DataLabel) => List[Actor]) = {
+        // Get the actors from the factory
+        val actors = actorsBuilder(dataLabel)
+
+        // Start collecting
+        val dataFutures = for (dataActor <- actors) yield {
+            dataActor !! Collect
+        }
+        dataFutures
+    }
+
     private def storeReply(dataLabel: DataLabel, collectedValues: Any) {
         println(collectedValues)
         for (value <- collectedValues.asInstanceOf[List[CollectedValue]])
@@ -90,16 +96,11 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
 
     private def finishKeywordSetCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
         LOG.info("Complete keyword collection on dataset " + dataLabel)
-        // Get the actors from the factory
-        val actors = actorsFactory.endAcquisitionActors(dataLabel)
+        val dataFutures = requestCollection(dataLabel, actorsFactory.endAcquisitionActors)
 
-        // Start collecting
-        val dataFutures = for (dataActor <- actors) yield {
-            dataActor !! Collect
-        }
         // Wait for response
         var i = 0
-        loopWhile(i < actors.size) {
+        loopWhile(i < dataFutures.size) {
             i += 1
             dataFutures(i - 1).inputChannel.react {
                 case data => storeReply(dataLabel, data)
