@@ -20,6 +20,8 @@ case class Retrieve(dataLabel: DataLabel, keyword: FitsKeyword)
 
 case class RetrieveAll(dataLabel: DataLabel)
 
+//todo: retrieve a specific header? ex. dataset:X, header:0
+
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordsDatabase]))
@@ -51,9 +53,10 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     if (!map.contains(dataLabel)) {
       map += (dataLabel -> List[Header]())
     }
-    val headerList = map.get(dataLabel).get
     val added: List[Boolean] = for {
+      headerList <- map.get(dataLabel).toList
       header: Header <- headerList
+      //todo: check index
       //      if header.getIndex == value.getIndex //should be unique
       if true //should be unique
     } yield {
@@ -62,10 +65,9 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
 
     if (added.size == 0) {
       //if couldn't find the header, then add it
-      val head = new DefaultHeader()
-      head.add(item)
-      map.put(dataLabel, List[Header](head))
-      //map.put(dataLabel ,(new DefaultHeader(List(item)))::Nil)
+      val header = new DefaultHeader()//todo:construct with correct index
+      header.add(item)
+      map.put(dataLabel , header::map.get(dataLabel).get)
     }
   }
 
@@ -77,13 +79,14 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    *
    * @return Option containing the value if it was found in the DB
    */
-  private def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[HeaderItem] = {
-    if (!map.contains(dataLabel)) {
-      None
-    } else {
-      val items: List[HeaderItem] = for {
-        header <- map.get(dataLabel).get;
-        item: HeaderItem = header.get(keyword.getName)
+  private def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[HeaderItem] = {//todo: should return list?
+//    if (!map.contains(dataLabel)) {
+//      None
+//    } else {
+      val items = for {
+        headerList <- map.get(dataLabel).toList
+        header <- headerList
+        item = header.get(keyword.getName)
         if item != null
       } yield item
 
@@ -92,7 +95,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
       } else {
         Some(items.get(0))
       }
-    }
+   // }
   }
 
   /**

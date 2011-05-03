@@ -68,14 +68,23 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
     assert(opt.isEmpty)
   }
 
-//  @Test
-//  def retrieveWrongKey() {
-//    db ! Store(dataLabel, colVal)
-//    val ret = db !? (1000, Retrieve(dataLabel, "wrong"))
-//    assert(!ret.isEmpty)
-//     val opt = ret.get.asInstanceOf[Option[HeaderItem]]
-//    assert(opt.isEmpty)
-//  }
+  @Test
+  def retrieveWrongKey() {
+    db ! Store(dataLabel, colVal)
+    val ret = db !? (1000, Retrieve(dataLabel, "wrong"))
+    assert(!ret.isEmpty)
+     val opt = ret.get.asInstanceOf[Option[HeaderItem]]
+    assert(opt.isEmpty)
+  }
 
+  @Test
+  def multipleHeaders(){
+      //todo: test with two items with different index
+  }
+
+  @Test
+  def multipleDatasets(){
+    //todo: test with different datasets
+  }
 
 }

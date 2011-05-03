@@ -18,5 +18,6 @@ object CollectedValue{
   implicit def headerItemToCollectedValue(headerItem: HeaderItem): CollectedValue = new CollectedValue(headerItem.getKeyword, headerItem.getValue, headerItem.getComment, 0)
 
   //todo: check value conversion to string
+  //todo: header item with index
 }
 
