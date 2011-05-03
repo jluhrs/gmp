@@ -2,11 +2,11 @@ package edu.gemini.aspen.gds.keywords.database
 
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
-import collection.mutable.{HashSet, HashMap, Set}
 import actors.Actor
 import collection.JavaConversions._
-import edu.gemini.fits.{DefaultHeaderItem, DefaultHeader, Header, HeaderItem}
+import edu.gemini.fits.{DefaultHeader, Header, HeaderItem}
 import scala.None
+import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
  * Interface for the database
@@ -14,9 +14,11 @@ import scala.None
 trait KeywordsDatabase extends Actor
 
 //case classes define the messages accepted by the DataBase
-case class Store(dataLabel: DataLabel, value: HeaderItem)
+case class Store(dataLabel: DataLabel, value: CollectedValue)
 
 case class Retrieve(dataLabel: DataLabel, keyword: FitsKeyword)
+
+case class RetrieveExtension(dataLabel: DataLabel, index: Int)
 
 case class RetrieveAll(dataLabel: DataLabel)
 
@@ -33,6 +35,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
       react {
         case Store(dataLabel, value) => store(dataLabel, value)
         case Retrieve(dataLabel, keyword) => sender ! retrieve(dataLabel, keyword)
+        case RetrieveExtension(dataLabel, index) => sender ! retrieveExtension(dataLabel, index)
         case RetrieveAll(dataLabel) => sender ! retrieveAll(dataLabel)
         case _ => throw new RuntimeException("Argument not known")
       }
@@ -49,25 +52,25 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    * @param keyword keyword to store
    * @param value value to associate to the keyword
    */
-  private def store(dataLabel: DataLabel, item: HeaderItem) {
+  private def store(dataLabel: DataLabel, value: CollectedValue) {
     if (!map.contains(dataLabel)) {
       map += (dataLabel -> List[Header]())
     }
-    val added: List[Boolean] = for {
+    val headers: List[Header] = for {
       headerList <- map.get(dataLabel).toList
       header: Header <- headerList
-      //todo: check index
-      //      if header.getIndex == value.getIndex //should be unique
-      if true //should be unique
-    } yield {
-      header.add(item)
-    }
+      if header.getIndex == value.index
+    } yield header
 
-    if (added.size == 0) {
+    for (header <- headers) {
+      //should only be one...
+      header.add(value) //implicit conversion to HeaderItem
+    }
+    if (headers.isEmpty) {
       //if couldn't find the header, then add it
-      val header = new DefaultHeader()//todo:construct with correct index
-      header.add(item)
-      map.put(dataLabel , header::map.get(dataLabel).get)
+      val header = new DefaultHeader(value.index)
+      header.add(value) //implicit conversion to HeaderItem
+      map.put(dataLabel, header :: map.get(dataLabel).get)
     }
   }
 
@@ -79,23 +82,38 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    *
    * @return Option containing the value if it was found in the DB
    */
-  private def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[HeaderItem] = {//todo: should return list?
-//    if (!map.contains(dataLabel)) {
-//      None
-//    } else {
-      val items = for {
-        headerList <- map.get(dataLabel).toList
-        header <- headerList
-        item = header.get(keyword.getName)
-        if item != null
-      } yield item
+  private def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[HeaderItem] = {
+    //todo: should return list?
+    val items = for {
+      headerList <- map.get(dataLabel).toList
+      header <- headerList
+      item = header.get(keyword.getName)
+      if item != null
+    } yield item
 
-      if (items.isEmpty) {
-        None
-      } else {
-        Some(items.get(0))
-      }
-   // }
+    if (items.isEmpty) {
+      None
+    } else {
+      Some(items.get(0))
+    }
+  }
+
+  /**
+   * Retrieve data from the database
+   *
+   * @param dataLabel from which to retrieve data
+   * @param keyword keyword to retrieve
+   *
+   * @return Option containing the value if it was found in the DB
+   */
+  private def retrieveExtension(dataLabel: DataLabel, index: Int): Option[Header] = {
+    val headers = for {
+      headerList <- map.get(dataLabel).toList
+      header: Header <- headerList
+      if header.getIndex == index
+    } yield header
+
+    headers.headOption
   }
 
   /**
