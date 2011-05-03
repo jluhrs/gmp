@@ -63,14 +63,8 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         LOG.info("Init keyword collection on dataset " + dataLabel)
 
         val dataFutures = requestCollection(dataLabel, actorsFactory.startAcquisitionActors)
-        // Wait for response
-        var i = 0
-        loopWhile(i < dataFutures.size) {
-            i += 1
-            dataFutures(i - 1).inputChannel.react {
-                case data => storeReply(dataLabel, data)
-            }
-        } andThen {
+
+        waitForDataAndReply(dataLabel, dataFutures) {
             LOG.info("All collecting actors completed.")
             // Reply to the original sender
             sender ! StartAcquisitionReply(dataLabel)
@@ -88,6 +82,19 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         dataFutures
     }
 
+    private def waitForDataAndReply(dataLabel:DataLabel, dataFutures: List[Future[Any]])(postAction: => Unit) {
+        // Wait for response
+        var i = 0
+        loopWhile(i < dataFutures.size) {
+            i += 1
+            dataFutures(i - 1).inputChannel.react {
+                case data => storeReply(dataLabel, data)
+            }
+        } andThen {
+            postAction
+        }
+    }
+
     private def storeReply(dataLabel: DataLabel, collectedValues: Any) {
         println(collectedValues)
         for (value <- collectedValues.asInstanceOf[List[CollectedValue]])
@@ -98,14 +105,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         LOG.info("Complete keyword collection on dataset " + dataLabel)
         val dataFutures = requestCollection(dataLabel, actorsFactory.endAcquisitionActors)
 
-        // Wait for response
-        var i = 0
-        loopWhile(i < dataFutures.size) {
-            i += 1
-            dataFutures(i - 1).inputChannel.react {
-                case data => storeReply(dataLabel, data)
-            }
-        } andThen {
+        waitForDataAndReply(dataLabel, dataFutures) {
             LOG.info("All collecting actors completed.")
             // Reply to the original sender
             sender ! EndAcquisitionReply(dataLabel)
