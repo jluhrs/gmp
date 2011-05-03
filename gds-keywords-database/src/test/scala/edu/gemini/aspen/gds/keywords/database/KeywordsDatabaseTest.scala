@@ -22,7 +22,6 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
   @Before
   def setup() {
     db = new KeywordsDatabaseImpl
-    db.start()
   }
 
   @Test

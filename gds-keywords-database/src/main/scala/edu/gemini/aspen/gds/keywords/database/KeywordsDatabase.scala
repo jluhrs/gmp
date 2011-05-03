@@ -29,6 +29,7 @@ case class RetrieveAll(dataLabel: DataLabel)
 @Provides(specifications = Array(classOf[KeywordsDatabase]))
 class KeywordsDatabaseImpl extends KeywordsDatabase {
 
+  start
 
   def act() {
     loop {
