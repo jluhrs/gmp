@@ -1,8 +1,9 @@
 package edu.gemini.aspen.gds.fits
 
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.fits.Header
 import java.io.{IOException, FileInputStream, FileOutputStream, File}
+import edu.gemini.fits.{Hedit, Header}
+import collection.JavaConversions._
 
 /**
  *
@@ -15,8 +16,13 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
 
     def updateFitsHeaders() {
         val dest = copyOriginal
-        //TODO: Carlos will fix this
 
+        val hEdit = new Hedit(dest)
+        val primaryHeader = headers(0)
+        val hdrs = primaryHeader.getKeywords
+        hdrs foreach { h =>
+            hEdit.updatePrimary(primaryHeader.getAll(h))
+        }
     }
 
     private def copyOriginal = {
