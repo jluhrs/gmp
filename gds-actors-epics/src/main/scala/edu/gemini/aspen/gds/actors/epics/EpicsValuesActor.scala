@@ -13,19 +13,20 @@ import edu.gemini.aspen.gds.keywordssets.configuration.{GDSConfiguration, Header
 class EpicsValuesActor(epicsReader: EpicsReader, configuration:GDSConfiguration) extends KeywordValueActor {
     override def collectValues():List[CollectedValue] = {
 
-        val (channelName, fitsKeyword, headerIndex) = (
+        val (channelName, fitsKeyword, fitsComment, headerIndex) = (
                 configuration.channel.name,
                 configuration.keyword,
+                configuration.fitsComment.value,
                 configuration.index.index
                 )
 
         val epicsValue = epicsReader.getValue(channelName)
         if (epicsValue.isInstanceOf[Array[Double]]) {
             // TODO: This should be done on the EpicsArray Actor
-            CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](0).asInstanceOf[AnyRef], "", headerIndex) :: Nil
+            CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](0).asInstanceOf[AnyRef], fitsComment, headerIndex) :: Nil
         } else {
             // TODO cast to the right type
-            CollectedValue(fitsKeyword, epicsValue, "", headerIndex) :: Nil
+            CollectedValue(fitsKeyword, epicsValue, fitsComment, headerIndex) :: Nil
         }
     }
 

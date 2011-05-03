@@ -36,7 +36,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
                 case CollectedValue(keyword, value, comment, 0) :: Nil
                     => keyword should equal (fitsKeyword)
                        value should equal (referenceValue)
-                       comment should be ('empty)
+                       comment should be ("Mean airmass for the observation")
                 case x:AnyRef => fail("Should not reply other message ")
             }
 
