@@ -139,6 +139,7 @@
         <module>gds-keyword-sets-composer</module>
         <module>gds-actors-epics</module>
         <module>gds-obsevent-handler</module>
+        <module>gds-fits-updater</module>
     </modules>
 
     <distributionManagement>
