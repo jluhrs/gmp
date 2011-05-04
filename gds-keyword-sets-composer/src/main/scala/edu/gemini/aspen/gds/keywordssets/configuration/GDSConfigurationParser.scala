@@ -28,7 +28,17 @@ case class FitsComment(value: String)
 
 case class Space(length: Int)
 
-case class GDSConfiguration(instrument: Instrument, event: GDSEvent, keyword: FitsKeyword, index:HeaderIndex, dataType: DataType, mandatory: Mandatory, nullValue: NullValue, subsystem: Subsystem, channel: Channel, arrayIndex: ArrayIndex, fitsComment:FitsComment)
+case class GDSConfiguration(instrument: Instrument,
+                            event: GDSEvent,
+                            keyword: FitsKeyword,
+                            index:HeaderIndex,
+                            dataType: DataType,
+                            mandatory: Mandatory,
+                            nullValue: NullValue,
+                            subsystem: Subsystem,
+                            channel: Channel,
+                            arrayIndex: ArrayIndex,
+                            fitsComment:FitsComment)
 
 class GDSConfigurationParser extends RegexParsers {
     override val skipWhitespace = false
