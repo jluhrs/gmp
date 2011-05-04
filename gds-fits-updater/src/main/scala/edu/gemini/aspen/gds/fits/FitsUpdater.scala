@@ -20,8 +20,10 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
         val hEdit = new Hedit(dest)
         val primaryHeader = headers(0)
         val hdrs = primaryHeader.getKeywords
-        hdrs foreach { h =>
-            hEdit.updatePrimary(primaryHeader.getAll(h))
+        println("Update primary of " + dest)
+        hdrs foreach {
+            h =>
+                hEdit.updatePrimary(primaryHeader.getAll(h))
         }
     }
 
@@ -38,20 +40,18 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
     @throws(classOf[IOException])
     def copy(from: File, to: File) {
         use(new FileInputStream(from)) {
-            in =>
-                use(new FileOutputStream(to)) {
-                    out =>
-                        out getChannel () transferFrom (
-                                in getChannel, 0, Long.MaxValue)
-                }
+            in => use(new FileOutputStream(to)) {
+                out =>
+                    out getChannel () transferFrom (
+                            in getChannel, 0, Long.MaxValue)
+            }
         }
     }
 
     private def use[T <: {def close() : Unit}](closable: T)(block: T => Unit) {
         try {
             block(closable)
-        }
-        finally {
+        } finally {
             closable.close()
         }
     }

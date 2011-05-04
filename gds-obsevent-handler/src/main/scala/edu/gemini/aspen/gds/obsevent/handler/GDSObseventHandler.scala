@@ -4,10 +4,13 @@ import edu.gemini.aspen.giapi.data.ObservationEvent._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel, ObservationEventHandler}
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import edu.gemini.aspen.gds.keywordssets.factory.CompositeActorsFactory
+import edu.gemini.aspen.gds.fits.FitsUpdater
 import scala.actors.Actor._
 import actors.Actor
 import edu.gemini.aspen.gds.keywordssets._
 import edu.gemini.aspen.gds.keywords.database.{RetrieveAll, KeywordsDatabase}
+import java.io.File
+import edu.gemini.fits.{Header, HeaderItem}
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -63,12 +66,20 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
   private def endAcquisitionReply(dataLabel: DataLabel) {
     if (started.contains(dataLabel)) {
       started -= dataLabel
+
       //add FITS file update here
-      println(keywordsDatabase !? RetrieveAll(dataLabel))
+        updateFITSFile(dataLabel)
     } else {
       throw new RuntimeException("Dataset " + dataLabel + " ended but never started")
     }
   }
 
+    private def updateFITSFile(dataLabel: DataLabel): Unit = {
+        val list = (keywordsDatabase !? RetrieveAll(dataLabel)).asInstanceOf[Option[List[Header]]]
+        list match {
+            case Some(x) => new FitsUpdater(new File("/tmp"), dataLabel, x).updateFitsHeaders
+            case None =>
+        }
+    }
 
 }
