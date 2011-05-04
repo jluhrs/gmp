@@ -8,4 +8,4 @@ package edu.gemini.aspen.gds.keywordssets.configuration
  * To change this template use File | Settings | File Templates.
  */
 
-class GDSConfiguration
+class GDSConfigurationService
