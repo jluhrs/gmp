@@ -19,7 +19,7 @@
     <artifactId>gmp-webconsole-docs</artifactId>
     <version>0.1.0</version>
 
-    <name>${bundle.symbolicName} [${bundle.namespace}]</name>
+    <name>GMP Docs Static Serving Servlet</name>
 
     <!--packaging>bundle</packaging-->
     <packaging>war</packaging>
@@ -28,7 +28,9 @@
         <plugins>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
                 <configuration>
+                    <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
                     <archive>
                         <!-- add the generated manifest to the war -->
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -48,24 +50,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <supportedProjectTypes>
-                        <supportedProjectType>jar</supportedProjectType>
-                        <supportedProjectType>bundle</supportedProjectType>
-                        <supportedProjectType>war</supportedProjectType>
-                    </supportedProjectTypes>
                     <instructions>
-                        <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
-                        <Bundle-Version>${pom.version}</Bundle-Version>
-                        <!--
-                           | assume public classes are in the top package, and private classes are under ".internal"
-                        -->
-                        <Export-Package>!${bundle.namespace}.internal.*,${bundle.namespace}.*;version="${pom.version}"
-                        </Export-Package>
-                        <Private-Package>${bundle.namespace}.internal.*</Private-Package>
-                        <!--
-                           | each module can override these defaults in their osgi.bnd file
-                        -->
-                        <_include>-osgi.bnd</_include>
+                        <_wab>true</_wab>
+                        <excludeDependencies>*;scope=provided</excludeDependencies>
                     </instructions>
                 </configuration>
             </plugin>
@@ -96,16 +83,6 @@
           <optional>true</optional>
         </dependency>
         -->
-        <!--dependency>
-            <groupId>org.ops4j.pax.web</groupId>
-            <artifactId>pax-web-jetty-bundle</artifactId>
-            <version>1.0.1</version>
-        </dependency-->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>7.3.0.v20110203</version>
-        </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi_R4_core</artifactId>

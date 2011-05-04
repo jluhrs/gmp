@@ -3,4 +3,4 @@
 #-----------------------------------------------------------------
 
 Bundle-Activator:
-#Export-Package:
+Web-ContextPath: docs
