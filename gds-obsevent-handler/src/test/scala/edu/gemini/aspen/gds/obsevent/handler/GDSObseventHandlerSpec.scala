@@ -12,33 +12,32 @@ import edu.gemini.aspen.gds.keywordssets.factory.CompositeActorsFactory
 
 @RunWith(classOf[JUnitRunner])
 class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
-    describe("A GDSObseventHandler") {
-        it("should react to OBS_START_ACQ events") {
-            val actorsFactory = mock[CompositeActorsFactory]
-            val keywordsDatabase = new KeywordsDatabaseImpl()
-            val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase)
-            val dataLabel = new DataLabel("GS-2011")
+  val actorsFactory = mock[CompositeActorsFactory]
+  val keywordsDatabase = new KeywordsDatabaseImpl()
 
-            actorsFactory.startAcquisitionActors(dataLabel) returns List[Actor]()
+  private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase)
+  describe("A GDSObseventHandler") {
+    it("should react to OBS_START_ACQ events") {
 
-            observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
+      val dataLabel = new DataLabel("GS-2011")
 
-            // verify mock
-            there was one(actorsFactory).startAcquisitionActors(dataLabel)
-        }
-        it("should react to OBS_END_ACQ events") {
-            val actorsFactory = mock[CompositeActorsFactory]
-            val keywordsDatabase = new KeywordsDatabaseImpl()
-            val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase)
-            val dataLabel = new DataLabel("GS-2011")
+      actorsFactory.startAcquisitionActors(dataLabel) returns List[Actor]()
 
-            actorsFactory.endAcquisitionActors(dataLabel) returns List[Actor]()
+      observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
 
-            observationHandler.onObservationEvent(ObservationEvent.OBS_END_ACQ, dataLabel)
-
-            // verify mock
-            there was one(actorsFactory).endAcquisitionActors(dataLabel)
-        }
-        it("should not react to other events messages")(pending)
+      // verify mock
+      there was one(actorsFactory).startAcquisitionActors(dataLabel)
     }
+    it("should react to OBS_END_ACQ events") {
+      val dataLabel = new DataLabel("GS-2011")
+
+      actorsFactory.endAcquisitionActors(dataLabel) returns List[Actor]()
+
+      observationHandler.onObservationEvent(ObservationEvent.OBS_END_ACQ, dataLabel)
+
+      // verify mock
+      there was one(actorsFactory).endAcquisitionActors(dataLabel)
+    }
+    it("should not react to other events messages")(pending)
+  }
 }
