@@ -623,4 +623,32 @@ epicsMutexLock failed." is normal).
     Messages processed = 9
     2011-04-04 13:59:16,455 [0x4e77c940] INFO  giapi.LogCommandUtil - Posting completion info for action id  6
 \endverbatim
+
+\subsection comm_memory_leaks_testing_sec GMP Commands Memory Leaks Testing
+Testing for memory leaks are possible by using the stress.sh script and the checking the GMP using visualvm or jconsole
+\li Start the GMP as indicated in the \ref user_manual.
+\li For this test you will also need tcl code in http://source.gemini.edu/software/giapi/giapi-eng/ocs-test-scripts/trunk.
+\li Check the code to a directory we'll call ocs-test-scripts/, in a Linux machine with ocswish installed.
+\li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh any-command</tt>.
+\li Start jconsole (Installed as part of the JDK) and make it connect to the org.apache.felix.main.Main process
+\li In ocs-test-scripts/, run <tt>$ ./stress.sh num<tt> where num is a large number. Remember to set the
+\c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
+\li The script should run for quite a while sending commands in sequence to the GMP and then to the simulated instrument
+\li The output of the script would look like:
+\verbatim
+Iteration 1
+Sending PARK
+Sending OBSERVE
+Sending APPLY
+Iteration 2
+Sending PARK
+Sending OBSERVE
+Sending APPLY
+Iteration 3
+Sending PARK
+\endverbatim
+\li On jconsole the memory consumption can be checked on the Memory tab as shown below:
+\image html jconsole_memory_tab.png
+\attention A small memory leak was found as explained in \ref known_issues_and_bugs 
+
 */
