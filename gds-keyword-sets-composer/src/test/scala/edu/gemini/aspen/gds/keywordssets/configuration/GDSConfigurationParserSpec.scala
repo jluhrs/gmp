@@ -5,6 +5,7 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 import edu.gemini.aspen.giapi.data.FitsKeyword
+import edu.gemini.aspen.gds.api._
 
 @RunWith(classOf[JUnitRunner])
 class GDSConfigurationParserSpec extends Spec with ShouldMatchers {

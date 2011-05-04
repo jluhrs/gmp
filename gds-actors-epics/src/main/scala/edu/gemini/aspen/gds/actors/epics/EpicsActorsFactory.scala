@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gds.actors.epics
 
 import edu.gemini.epics.EpicsReader
-import edu.gemini.aspen.gds.actors.KeywordActorsFactory
-import edu.gemini.aspen.gds.keywordssets.configuration.GDSConfiguration
+import edu.gemini.aspen.gds.api.KeywordActorsFactory
+import edu.gemini.aspen.gds.api.GDSConfiguration
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 

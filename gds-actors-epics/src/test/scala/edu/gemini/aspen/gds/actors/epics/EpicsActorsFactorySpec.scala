@@ -6,8 +6,8 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
 import org.specs2.mock.Mockito
 import edu.gemini.epics.EpicsReader
-import edu.gemini.aspen.gds.keywordssets.configuration._
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.gds.api._
 
 @RunWith(classOf[JUnitRunner])
 class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {

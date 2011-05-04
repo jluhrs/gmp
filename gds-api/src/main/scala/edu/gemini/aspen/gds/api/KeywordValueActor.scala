@@ -1,7 +1,6 @@
-package edu.gemini.aspen.gds.actors
+package edu.gemini.aspen.gds.api
 
 import actors.Actor
-import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
  * Message indicating that a value should be collected
