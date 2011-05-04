@@ -17,7 +17,18 @@ This bundle requires the \ref edu.gemini.cas.ChannelAccessServer "ChannelAccessS
 the gmp-commands bundle.
 
 \section comm_records_configuration_sec Configuration
-This module doesn't have any configuration files.
+  This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.commands.records.ApplyRecord-default.cfg.
+  There, you can set the name of the file where the APPLY record configuration is defined. The default is
+  \ref giapi-apply-config.xml and it can be used as an example. The schema file to which said configuration
+  must adhere is \ref giapi-apply-config.xsd. For example:
+  \verbatim
+      <ConfigSet>
+        <name>configCal</name>
+        <field>useCal</field>
+        <field>magnitudeH</field>
+    </ConfigSet>
+  \endverbatim
+  will create the EPICS channels \$(top)configCal:useCal and \$(top)configCal:magnitudeH.
 
 \section comm_records_notes_sec Notes
 \subsection apply_sec GIAPI APPLY Record
