@@ -11,6 +11,7 @@ import edu.gemini.aspen.gds.keywordssets._
 import edu.gemini.aspen.gds.keywords.database.{RetrieveAll, KeywordsDatabase}
 import java.io.File
 import edu.gemini.fits.{Header, HeaderItem}
+import java.util.logging.Logger
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -20,16 +21,16 @@ import edu.gemini.fits.{Header, HeaderItem}
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase) extends ObservationEventHandler {
+  private val LOG = Logger.getLogger(classOf[GDSObseventHandler].getName)
   private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase)
 
   def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     event match {
       case OBS_START_ACQ => replyHandler ! StartAcquisition(dataLabel)
       case OBS_END_ACQ => replyHandler ! EndAcquisition(dataLabel)
-      case x: Any => throw new RuntimeException("Argument not known " + x)
+      case e: ObservationEvent => LOG.info("Non handled observation event: " + e)
     }
   }
-
 
 }
 
