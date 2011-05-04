@@ -1,7 +1,8 @@
 /*! \page known_issues_and_bugs Known Issues and Bugs
  *
  * - Telnet console doesn't quit with a CTRL-C keystroke, use the \b CTRL-D instead
- * - A small memory leak was found due to a bug in the Java Util Logging library which is used in the GMP
+ * - A small memory leak was found due to a bug in the Java Util Logging library which is used by the GMP.
+ *
  * Due to the small amount of leaking and the nature of the issue this is not going to be addressed at this time (May 2011).
  * The bug has been documented at <a href="http://bugs.sun.com/view_bug.do?bug_id=6942989">Bug ID: 6942989</a>
  *
