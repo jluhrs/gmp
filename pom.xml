@@ -141,6 +141,7 @@
         <module>gds-actors-epics</module>
         <module>gds-obsevent-handler</module>
         <module>gds-fits-updater</module>
+        <module>gds-datalabel-provider</module>
     </modules>
 
     <distributionManagement>
