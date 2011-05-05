@@ -15,27 +15,34 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
     require(dataLabel != null)
 
     def updateFitsHeaders() {
-        val dest = copyOriginal
+        val destinationFile = copyOriginal
 
-        val hEdit = new Hedit(dest)
+        val hEdit = new Hedit(destinationFile)
         val primaryHeader = headers(0)
-        val hdrs = primaryHeader.getKeywords
-        println("Update primary of " + dest)
-        hdrs foreach {
-            h =>
-                hEdit.updatePrimary(primaryHeader.getAll(h))
+
+        hEdit.updatePrimary(findHeaders(primaryHeader))
+    }
+
+    private def findHeaders(header: Header) = {
+        val keywords = header.getKeywords.toSeq
+        keywords.flatMap {
+            h => header.getAll(h)
         }
     }
 
     private def copyOriginal = {
-        val originalFile = new File(path, dataLabel.toString + ".fits")
-        val destinationFile = new File(path, "N-" + dataLabel.toString + ".fits")
+        val originalFile = new File(path, toFits(dataLabel))
+        val destinationFile = new File(path, newFitsName(dataLabel))
 
         destinationFile.createNewFile
 
         copy(originalFile, destinationFile)
         destinationFile
     }
+
+    def toFits(dataLabel:DataLabel) = dataLabel.toString + ".fits"
+
+    def newFitsName(dataLabel:DataLabel) = "N-" + toFits(dataLabel)
 
     @throws(classOf[IOException])
     def copy(from: File, to: File) {

@@ -37,11 +37,11 @@ class FitsUpdaterSpec extends Spec with ShouldMatchers {
             destinationFile.exists should be(true)
             destinationFile.delete
         }
-        it("should update the primary headers of a file copy") {
+        it("should update the primary headers with one new keywords") {
             val primaryHeaders = new Hedit(originalFile).readPrimary
 
             // Verify that AIRMASS is not in the original file
-            primaryHeaders.get("AIRMASS") should be (null)
+            primaryHeaders.get("AIRMASS") should be(null)
 
             val headers = createHeadersWithAirMass
 
@@ -53,6 +53,26 @@ class FitsUpdaterSpec extends Spec with ShouldMatchers {
 
             // Verify AIRMASS was added
             updatedHeaders.get("AIRMASS") should not be (null)
+
+            destinationFile.delete
+        }
+        it("should update the primary headers with several new keywords") {
+            val primaryHeader = new DefaultHeader()
+            primaryHeader.add(DefaultHeaderItem.create("AIRMASS", 1.0, "Mass of airmass"))
+            primaryHeader.add(DefaultHeaderItem.create("AIREND", 2.0, "Mass of airmass at the end"))
+            primaryHeader.add(DefaultHeaderItem.create("AIRSTART", 3.0, "Mass of airmass at the beggining"))
+            val headers = primaryHeader :: Nil
+
+            updateFitsFile(headers)
+
+            val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
+
+            val updatedHeaders = new Hedit(destinationFile).readPrimary
+
+            // Verify AIRMASS was added
+            updatedHeaders.get("AIRMASS") should not be (null)
+            updatedHeaders.get("AIREND") should not be (null)
+            updatedHeaders.get("AIRSTART") should not be (null)
 
             destinationFile.delete
         }
