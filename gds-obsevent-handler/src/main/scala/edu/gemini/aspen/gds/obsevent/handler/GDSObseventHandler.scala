@@ -78,7 +78,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     private def updateFITSFile(dataLabel: DataLabel): Unit = {
         val list = (keywordsDatabase !? RetrieveAll(dataLabel)).asInstanceOf[Option[List[Header]]]
         list match {
-            case Some(x) => new FitsUpdater(new File("/tmp"), dataLabel, x).updateFitsHeaders
+            case Some(headersList) => new FitsUpdater(new File("/tmp"), dataLabel, headersList).updateFitsHeaders
             case None =>
         }
     }
