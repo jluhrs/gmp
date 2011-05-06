@@ -95,9 +95,9 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     }
 
     private def storeReply(dataLabel: DataLabel, collectedValues: Any) {
-        println(collectedValues)
-        for (value <- collectedValues.asInstanceOf[List[CollectedValue]])
+        for (value <- collectedValues.asInstanceOf[List[CollectedValue]]) {
             keywordsDatabase ! Store(dataLabel, value)
+        }
     }
 
     private def finishKeywordSetCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
