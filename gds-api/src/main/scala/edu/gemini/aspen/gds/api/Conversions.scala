@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.api
 
-import edu.gemini.fits.{HeaderItem, DefaultHeaderItem}
 import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
 
 
