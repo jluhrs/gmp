@@ -99,7 +99,8 @@ class FitsUpdaterSpec extends Spec with ShouldMatchers {
             val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
             destinationFile.delete
 
-            println((System.nanoTime - start) / 10e9)
+            val spentTime = ((System.nanoTime - start) / 10e9)
+            spentTime should be <= (0.1)
         }
     }
 }

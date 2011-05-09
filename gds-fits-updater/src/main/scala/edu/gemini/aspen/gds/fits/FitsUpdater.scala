@@ -18,12 +18,16 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
         val destinationFile = copyOriginal
 
         val hEdit = new Hedit(destinationFile)
-        val primaryHeader = headers(0)
+        val updatedHeaders = headers sortBy {
+            h => h.getIndex
+        }
 
-        hEdit.updatePrimary(findHeaders(primaryHeader))
+        for (h <- updatedHeaders) {
+            hEdit.updateHeader(getUpdatedKeywords(h), h.getIndex)
+        }
     }
 
-    private def findHeaders(header: Header) = {
+    private def getUpdatedKeywords(header: Header) = {
         val keywords = header.getKeywords.toSeq
         keywords.flatMap {
             h => header.getAll(h)
@@ -40,9 +44,9 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
         destinationFile
     }
 
-    def toFits(dataLabel:DataLabel) = dataLabel.toString + ".fits"
+    def toFits(dataLabel: DataLabel) = dataLabel.toString + ".fits"
 
-    def newFitsName(dataLabel:DataLabel) = "N-" + toFits(dataLabel)
+    def newFitsName(dataLabel: DataLabel) = "N-" + toFits(dataLabel)
 
     @throws(classOf[IOException])
     def copy(from: File, to: File) {
