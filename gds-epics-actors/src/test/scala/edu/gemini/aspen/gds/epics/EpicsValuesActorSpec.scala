@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.actors.epics
+package edu.gemini.aspen.gds.epics
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
