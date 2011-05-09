@@ -138,7 +138,7 @@
         <module>gds-api</module>
         <module>gds-keywords-database</module>
         <module>gds-keyword-sets-composer</module>
-        <module>gds-actors-epics</module>
+        <module>gds-epics-actors</module>
         <module>gds-obsevent-handler</module>
         <module>gds-fits-updater</module>
         <module>gds-datalabel-provider</module>
