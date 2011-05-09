@@ -35,10 +35,6 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
-            <artifactId>gds-keyword-sets-composer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-api</artifactId>
         </dependency>
         <dependency>
