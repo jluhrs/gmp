@@ -15,7 +15,7 @@ import java.util.logging.Logger
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) extends KeywordActorsFactory {
-    val LOG =  Logger.getLogger(classOf[InstrumentStatusActorsFactory])
+    val LOG =  Logger.getLogger(classOf[InstrumentStatusActorsFactory].getName)
     var actorsConfiguration: List[GDSConfiguration] = List()
 
     override def startAcquisitionActors(dataLabel: DataLabel) = {
