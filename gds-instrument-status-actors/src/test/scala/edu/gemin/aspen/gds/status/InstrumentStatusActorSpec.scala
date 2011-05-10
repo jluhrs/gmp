@@ -12,28 +12,27 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus
 
 @RunWith(classOf[JUnitRunner])
 class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
-    def createFixture = (
-        new DataLabel("GS-2011"),
-        mock[StatusDatabaseService],
-        new FitsKeyword("GPISTATUS"),
-        "gpi:status1"
-    )
+    val defaultValue = "DEFAULT"
+    val fitsKeyword = new FitsKeyword("GPISTATUS")
+
+    def buildConfiguration(channelName: String): GDSConfiguration = {
+        GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), fitsKeyword, HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue(defaultValue), Subsystem("STATUS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Current global status of the instrument"))
+    }
 
     describe("An InstrumentStatusActor") {
         it("should reply to Collect messages") {
             // Generate dataset
-            val (dataLabel, statusDB, fitsKeyword, channelName) = createFixture
+            val (dataLabel, statusDB, channelName) = createFixture
+            val configuration = buildConfiguration(channelName)
 
             val referenceValue = "ok"
             // mock return value
             val statusItem = new BasicStatus[String](channelName, referenceValue)
             statusDB.getStatusItem(channelName) returns statusItem
 
-            val configuration = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), fitsKeyword, HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Current global status of the instrument"))
-
             val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
             
-            // Send an init message
+            // Send a Collect message and wait the response
             val result = instrumentStatusActor !! Collect
 
             result() match {
@@ -49,17 +48,15 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
         }
         it("should reply to Collect messages even when status value is unknown") {
             // Generate dataset
-            val (dataLabel, statusDB, fitsKeyword, channelName) = createFixture
+            val (dataLabel, statusDB, channelName) = createFixture
+            val configuration = buildConfiguration(channelName)
 
-            val defaultValue = "DEFAULT"
             // mock return value
             statusDB.getStatusItem(channelName) returns null
 
-            val configuration = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), fitsKeyword, HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue(defaultValue), Subsystem("STATUS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Current global status of the instrument"))
-
             val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
 
-            // Send an init message
+            // Send a Collect message and wait the response
             val result = instrumentStatusActor !! Collect
 
             result() match {
@@ -74,5 +71,10 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
             there was one(statusDB).getStatusItem(channelName)
         }
     }
+    def createFixture = (
+        new DataLabel("GS-2011"),
+        mock[StatusDatabaseService],
+        "gpi:status1"
+    )
 }
 

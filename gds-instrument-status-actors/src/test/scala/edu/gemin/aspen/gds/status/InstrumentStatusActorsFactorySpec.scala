@@ -12,19 +12,7 @@ import edu.gemini.aspen.giapi.status.StatusDatabaseService
 @RunWith(classOf[JUnitRunner])
 class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
     val statusDB = mock[StatusDatabaseService]
-
-    def createFixture = (
-            new DataLabel("GS-2011"),
-            new InstrumentStatusActorsFactory(statusDB))
-
-    def buildOneConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
-    }
-
-    def buildOneNonStatusConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("NOSTATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
-    }
-
+    
     describe("An InstrumentStatusActorsFactory") {
         it("should return an empty list of Actors when not configured") {
             val (dataLabel, instrumentStatusActorsFactory) = createFixture
@@ -70,6 +58,17 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
             val actors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
             actors should have length(1)
         }
+    }
+    def createFixture = (
+            new DataLabel("GS-2011"),
+            new InstrumentStatusActorsFactory(statusDB))
+
+    def buildOneConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
+        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
+    }
+
+    def buildOneNonStatusConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
+        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("NOSTATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
     }
 
 }
