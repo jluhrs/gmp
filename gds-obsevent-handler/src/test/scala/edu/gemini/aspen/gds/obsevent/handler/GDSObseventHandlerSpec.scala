@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import actors.Actor
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
-import edu.gemini.aspen.gds.keywordssets.factory.CompositeActorsFactory
+import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 
 @RunWith(classOf[JUnitRunner])
 class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {

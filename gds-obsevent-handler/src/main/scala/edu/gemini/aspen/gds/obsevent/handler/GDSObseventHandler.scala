@@ -3,15 +3,14 @@ package edu.gemini.aspen.gds.obsevent.handler
 import edu.gemini.aspen.giapi.data.ObservationEvent._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel, ObservationEventHandler}
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
-import edu.gemini.aspen.gds.keywordssets.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.fits.FitsUpdater
-import scala.actors.Actor._
 import actors.Actor
-import edu.gemini.aspen.gds.keywordssets._
 import edu.gemini.aspen.gds.keywords.database.{RetrieveAll, KeywordsDatabase}
 import java.io.File
 import edu.gemini.fits.{Header, HeaderItem}
 import java.util.logging.Logger
+import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
+import edu.gemini.aspen.gds.actors._
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
