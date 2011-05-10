@@ -7,12 +7,15 @@ import org.scalatest.Spec
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.giapi.status.StatusDatabaseService
 
 @RunWith(classOf[JUnitRunner])
 class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
+    val statusDB = mock[StatusDatabaseService]
+
     def createFixture = (
             new DataLabel("GS-2011"),
-            new InstrumentStatusActorsFactory
+            new InstrumentStatusActorsFactory(statusDB)
             )
 
     def buildOneConfiguration: GDSConfiguration = {

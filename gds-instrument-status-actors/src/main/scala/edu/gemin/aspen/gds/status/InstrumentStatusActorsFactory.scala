@@ -5,23 +5,24 @@ import edu.gemini.aspen.gds.api.GDSConfiguration
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemin.aspen.gds.status.InstrumentStatusActor
+import edu.gemini.aspen.giapi.status.StatusDatabaseService
 
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class InstrumentStatusActorsFactory() extends KeywordActorsFactory {
+class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) extends KeywordActorsFactory {
     // Use dummy configuration
     var conf: List[GDSConfiguration] = List()
 
     override def startAcquisitionActors(dataLabel: DataLabel) = {
         conf filter {_.event.name == ObservationEvent.OBS_START_ACQ.toString} map {
-            case config:GDSConfiguration => new InstrumentStatusActor(config)
+            case config:GDSConfiguration => new InstrumentStatusActor(statusDB, config)
         }
     }
 
     override def endAcquisitionActors(dataLabel: DataLabel) = {
         conf filter {_.event.name == ObservationEvent.OBS_END_ACQ.toString} map {
-            case config:GDSConfiguration => new InstrumentStatusActor(config)
+            case config:GDSConfiguration => new InstrumentStatusActor(statusDB, config)
         }
     }
 
