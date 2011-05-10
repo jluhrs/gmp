@@ -17,10 +17,20 @@ class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration:GDSCo
                 configuration.index.index
                 )
 
-        val statusItem:StatusItem[AnyRef] = statusDB.getStatusItem(channelName)
-
-        val value = statusItem.getValue
-        CollectedValue(fitsKeyword, value, fitsComment, headerIndex) :: Nil
+        val statusItem = Option(statusDB.getStatusItem(channelName))
+        def collectedValue(value:AnyRef) = {
+            CollectedValue(fitsKeyword, value, fitsComment, headerIndex) :: Nil
+        }
+        statusItem match {
+            case Some(x) => {
+                val value = x.asInstanceOf[StatusItem[String]].getValue
+                collectedValue(value)
+            }
+            case None => {
+                val value = configuration.nullValue.value
+                collectedValue(value)
+            }
+        }
     }
 
 }

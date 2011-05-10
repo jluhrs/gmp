@@ -43,6 +43,35 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
             // verify mock
             there was one(statusDB).getStatusItem(channelName)
         }
+        it("should reply to Collect messages even when status value is unknown") {
+            // Generate dataset
+            val dataLabel = new DataLabel("GS-2011")
+            val statusDB = mock[StatusDatabaseService]
+
+            val channelName = "gpi:status1"
+            val defaultValue = "DEFAULT"
+            // mock return value
+            statusDB.getStatusItem(channelName) returns null
+            val fitsKeyword = new FitsKeyword("GPISTATUS")
+
+            val configuration = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), fitsKeyword, HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue(defaultValue), Subsystem("STATUS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Current global status of the instrument"))
+
+            val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
+
+            // Send an init message
+            val result = instrumentStatusActor !! Collect
+
+            result() match {
+                case CollectedValue(keyword, value, comment, 0) :: Nil
+                    => keyword should equal (fitsKeyword)
+                       value should equal (defaultValue)
+                       comment should be ("Current global status of the instrument")
+                case x:AnyRef => fail("Should not reply other message ")
+            }
+
+            // verify mock
+            there was one(statusDB).getStatusItem(channelName)
+        }
     }
 }
 
