@@ -1,13 +1,13 @@
-package edu.gemini.aspen.gds.keywordssets
+package edu.gemini.aspen.gds.actors
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import edu.gemini.aspen.giapi.data.DataLabel
 import org.scalatest.matchers.ShouldMatchers
 import scala.actors.Actor
-import Actor._
 import org.scalatest.Spec
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
+import edu.gemini.aspen.gds.actors._
 
 @RunWith(classOf[JUnitRunner])
 class KeywordSetComposerSpec extends Spec with ShouldMatchers {

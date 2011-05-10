@@ -1,11 +1,11 @@
-package edu.gemini.aspen.gds.keywordssets.factory
+package edu.gemini.aspen.gds.actors.factory
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.keywordssets.DummyActorsFactory
+import edu.gemini.aspen.gds.actors.DummyActorsFactory
 
 @RunWith(classOf[JUnitRunner])
 class CompositeActorsFactoryImplSpec extends Spec with ShouldMatchers {

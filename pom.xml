@@ -136,7 +136,7 @@
         <module>gmp-epics-top</module>
         <module>gds-api</module>
         <module>gds-keywords-database</module>
-        <module>gds-keyword-sets-composer</module>
+        <module>gds-actors-composer</module>
         <module>gds-epics-actors</module>
         <module>gds-instrument-status-actors</module>
         <module>gds-obsevent-handler</module>

@@ -10,16 +10,16 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>edu.gemini.aspen.gds.keywordssets</bundle.symbolicName>
-        <bundle.namespace>edu.gemini.aspen.gds.keywordssets</bundle.namespace>
+        <bundle.symbolicName>edu.gemini.aspen.gds.actors</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.aspen.gds.actors</bundle.namespace>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gds</groupId>
-    <artifactId>gds-keyword-sets-composer</artifactId>
+    <artifactId>gds-actors-composer</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 
-    <name>GDS Keywords Set Composer</name>
+    <name>GDS Actors Composer</name>
     <description>An engine to compose values that are included in observations</description>
 
     <packaging>bundle</packaging>

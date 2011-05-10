@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.keywordssets.configuration
+package edu.gemini.aspen.gds.actors.configuration
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner

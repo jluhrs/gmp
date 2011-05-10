@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.keywordssets
+package edu.gemini.aspen.gds.actors
 
 import scala.actors.Actor
 import Actor._
