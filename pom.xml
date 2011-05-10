@@ -134,7 +134,6 @@
         <module>epics-heartbeat</module>
         <module>gmp-tui</module>
         <module>gmp-epics-top</module>
-        <module>integration-tests</module>
         <module>gds-api</module>
         <module>gds-keywords-database</module>
         <module>gds-keyword-sets-composer</module>
@@ -143,6 +142,7 @@
         <module>gds-obsevent-handler</module>
         <module>gds-fits-updater</module>
         <module>gds-datalabel-provider</module>
+        <module>integration-tests</module>
     </modules>
 
     <distributionManagement>
