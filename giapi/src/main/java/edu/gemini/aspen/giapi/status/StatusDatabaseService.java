@@ -17,7 +17,7 @@ public interface StatusDatabaseService {
      * available, or <code>null</code> if there is no status
      * item in the database associated to the given name
      */
-    StatusItem getStatusItem(String name);
+    <T> StatusItem<T> getStatusItem(String name);
 
     /**
      * Returns a Set containing all the registered status names in the database

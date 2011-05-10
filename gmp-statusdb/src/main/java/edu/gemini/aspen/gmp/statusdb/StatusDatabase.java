@@ -34,7 +34,7 @@ public class StatusDatabase implements StatusHandler, StatusDatabaseService {
     }
 
     @Override
-    public StatusItem getStatusItem(String name) {
+    public <T> StatusItem<T> getStatusItem(String name) {
         return _db.get(name);
     }
 

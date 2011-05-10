@@ -15,7 +15,7 @@ public class StatusDatabaseServiceDecorator implements StatusDatabaseService {
 
     private StatusDatabaseService _service = null;
 
-    public StatusItem getStatusItem(String name) {
+    public <T> StatusItem<T> getStatusItem(String name) {
         if (_service != null) {
             return _service.getStatusItem(name);
         }
