@@ -14,21 +14,22 @@ class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration:GDSCo
                 configuration.channel.name,
                 configuration.keyword,
                 configuration.fitsComment.value,
-                configuration.index.index
-                )
+                configuration.index.index)
 
         val statusItem = Option(statusDB.getStatusItem(channelName))
-        def collectedValue(value:AnyRef) = {
+        def buildCollectedValues(value:AnyRef) = {
             CollectedValue(fitsKeyword, value, fitsComment, headerIndex) :: Nil
         }
         statusItem match {
             case Some(x) => {
+                // TODO How to handle non string items
                 val value = x.asInstanceOf[StatusItem[String]].getValue
-                collectedValue(value)
+                buildCollectedValues(value)
             }
             case None => {
+                // In case no status item, we use the default value
                 val value = configuration.nullValue.value
-                collectedValue(value)
+                buildCollectedValues(value)
             }
         }
     }

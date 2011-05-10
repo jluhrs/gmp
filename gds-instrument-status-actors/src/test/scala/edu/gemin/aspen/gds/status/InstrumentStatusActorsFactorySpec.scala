@@ -15,11 +15,14 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
 
     def createFixture = (
             new DataLabel("GS-2011"),
-            new InstrumentStatusActorsFactory(statusDB)
-            )
+            new InstrumentStatusActorsFactory(statusDB))
 
-    def buildOneConfiguration: GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+    def buildOneConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
+        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
+    }
+
+    def buildOneNonStatusConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
+        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("NOSTATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
     }
 
     describe("An InstrumentStatusActorsFactory") {
@@ -31,9 +34,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
         }
         it("should be configurable with one item") {
             val (dataLabel, instrumentStatusActorsFactory) = createFixture
-            val configuration = List(
-                buildOneConfiguration
-            )
+            val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") :: Nil
             instrumentStatusActorsFactory.configure(configuration)
 
             val actors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
@@ -41,10 +42,9 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
         }
         it("should be configurable with two item") {
             val (dataLabel, instrumentStatusActorsFactory) = createFixture
-            val configuration = List(
-                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")),
-                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMAS2"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel("ws:massAirmas2"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
-            )
+
+            val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") ::
+                buildOneConfiguration("OBS_START_ACQ", "STATUS2", "gpi:status2") :: Nil
             instrumentStatusActorsFactory.configure(configuration)
 
             val actors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
@@ -52,10 +52,8 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
         }
         it("should be configurable with one item for start and one item for end") {
             val (dataLabel, instrumentStatusActorsFactory) = createFixture
-            val configuration = List(
-                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")),
-                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_END_ACQ"), new FitsKeyword("AIRMAS2"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel("ws:massAirmas2"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
-            )
+            val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") ::
+                buildOneConfiguration("OBS_END_ACQ", "STATUS2", "gpi:status2") :: Nil
             instrumentStatusActorsFactory.configure(configuration)
 
             val startActors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
@@ -65,10 +63,8 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
         }
         it("should only pick Instrument Status subsystems") {
             val (dataLabel, instrumentStatusActorsFactory) = createFixture
-            val configuration = List(
-                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")),
-                GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMAS2"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("NOSTATUS"), Channel("ws:massAirmas2"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
-            )
+            val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") ::
+                buildOneNonStatusConfiguration("OBS_END_ACQ", "STATUS2", "gpi:status2") :: Nil
             instrumentStatusActorsFactory.configure(configuration)
 
             val actors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
