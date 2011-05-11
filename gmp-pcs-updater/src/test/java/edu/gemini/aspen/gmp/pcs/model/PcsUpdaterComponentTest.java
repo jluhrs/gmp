@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
+import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsWriter;
 import org.junit.Test;
@@ -16,11 +17,22 @@ public class PcsUpdaterComponentTest {
         PcsUpdaterComponent component = buildComponent();
 
         component.registerEpicsWriter();
-        verify(epicsWriter).bindChannel(channel);
+        verifyBindings(channel);
     }
 
     private PcsUpdaterComponent buildComponent() {
         return new PcsUpdaterComponent(epicsWriter, pcsComposite, false, channel);
+    }
+
+
+    private void verifyBindings(String baseChannel, int times) {
+        for (String s : EpicsPcsUpdater.INPUTS) {
+            verify(epicsWriter, times(times)).bindChannel(eq(baseChannel + "." + s));
+        }
+    }
+
+    private void verifyBindings(String baseChannel) {
+        verifyBindings(baseChannel, 1);
     }
 
     @Test
@@ -51,7 +63,7 @@ public class PcsUpdaterComponentTest {
         component.registerEpicsWriter();
 
         component.unRegisterEpicsWriter();
-        verify(epicsWriter).bindChannel(channel);
+        verifyBindings(channel);
         // TODO Should the channel be unbound?
     }
 
@@ -72,7 +84,8 @@ public class PcsUpdaterComponentTest {
         component.registerEpicsWriter();
 
         component.modifiedEpicsWriter();
-        verify(epicsWriter, times(2)).bindChannel(channel);
+
+        verifyBindings(channel, 2);
     }
 
     @Test

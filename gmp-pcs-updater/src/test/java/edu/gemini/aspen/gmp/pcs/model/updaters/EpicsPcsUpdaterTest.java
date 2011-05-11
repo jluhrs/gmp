@@ -6,7 +6,6 @@ import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsWriter;
 import org.junit.Test;
 
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -18,20 +17,26 @@ import static org.mockito.Mockito.*;
  */
 public class EpicsPcsUpdaterTest {
     private EpicsWriter writer = mock(EpicsWriter.class);
-    private String channel = "X.val1";
+    private String channel = "X:val1";
 
     @Test
     public void constructionWithDefaultChannel() throws PcsUpdaterException, EpicsException {
         new EpicsPcsUpdater(writer, null);
-
-        verify(writer).bindChannel(anyString());
+        verifyBindings(EpicsPcsUpdater.TCS_ZERNIKES_BASE_CHANNEL);
     }
 
     @Test
     public void constructionWithExplicitChannel() throws PcsUpdaterException, EpicsException {
         new EpicsPcsUpdater(writer, channel);
+        verifyBindings(channel);
+    }
 
-        verify(writer).bindChannel(eq(channel));
+
+    private void verifyBindings(String baseChannel) {
+        for (String s: EpicsPcsUpdater.INPUTS) {
+            verify(writer).bindChannel(eq(baseChannel + "." + s));
+        }
+
     }
 
     @Test(expected = PcsUpdaterException.class)
@@ -41,19 +46,49 @@ public class EpicsPcsUpdaterTest {
     }
 
     @Test
-    public void simpleUpdate() throws PcsUpdaterException, EpicsException {
+    public void pcsUpdateWithoutValues() throws PcsUpdaterException, EpicsException {
         EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
         pcsUpdater.update(new PcsUpdate(new Double[0]));
-
-        verify(writer).write(eq(channel), (Double[])anyObject());
+        verifyBindings(channel);
+        verify(writer, never()).write(anyString(), anyDouble());
     }
 
     @Test
-    public void nullUpdate() throws PcsUpdaterException, EpicsException {
+    public void simplePcsUpdate() throws PcsUpdaterException, EpicsException {
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
+        pcsUpdater.update(new PcsUpdate(new Double[]{1.0, 2.0}));
+
+        verify(writer).write(eq(channel + ".A"), eq(1.0));
+        verify(writer).write(eq(channel + ".B"), eq(2.0));
+
+    }
+
+
+    @Test
+    public void nullPcsUpdate() throws PcsUpdaterException, EpicsException {
         EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
         pcsUpdater.update(null);
+        verifyBindings(channel);
+        verify(writer, never()).write(anyString(), anyDouble());
+    }
 
-        verify(writer).bindChannel(eq(channel));
+    @Test
+    public void verifyTooLongPcsUpdate() throws PcsUpdaterException, EpicsException {
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
+
+        Double[] zernikes = new Double[EpicsPcsUpdater.INPUTS.length + 1];
+        for (int i = 0; i < EpicsPcsUpdater.INPUTS.length + 1; i++) {
+            zernikes[i] = (double)i;
+        }
+
+        pcsUpdater.update(new PcsUpdate(zernikes));
+
+        verifyBindings(channel);
+
+        for (int i = 0; i < EpicsPcsUpdater.INPUTS.length; i++) {
+            verify(writer).write(eq(channel + "." + EpicsPcsUpdater.INPUTS[i]), eq(zernikes[i]));
+        }
+
         verifyNoMoreInteractions(writer);
     }
 }

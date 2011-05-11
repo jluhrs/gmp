@@ -3,15 +3,16 @@
  *
  * This bundle receives JMS messages sent to the GMP.PCS_UPDATE_DESTINATION destination.
  * The bundle expects those messages to contain an array of double values
- * representing zernikes and writes them to an EPICS channel
+ * representing zernikes and writes them to the corresponding TCS EPICS channels
+ * (namely, tcs:m1Figure.{A-N})
  *
  * \section gmp-pcs-updater_provides_sec Provided Services
  * The \ref edu.gemini.aspen.gmp.pcs.model.PcsUpdaterComposite "PcsUpdaterComposite" class provides a service
- * which is not being used directly by other bundles but is rather used internally instead. The service listens for JMS messages
- * and writes them to the EPICS channel
+ * which is not being used directly by other bundles but is used internally instead. The service listens for JMS messages
+ * and writes them to the corresponding EPICS channels
  *
  * \section gmp-pcs-updater_requires_sec Required Services
- * This bundle requires the \ref import edu.gemini.epics.EpicsWriter "EpicsWriter" OSGI service, provided by
+ * This bundle requires the \ref edu.gemini.epics.EpicsWriter "EpicsWriter" OSGI service, provided by the
  * \ref epics-service bundle.
  *
  * \section gmp-pcs-updater_configuration_sec Configuration
@@ -19,6 +20,10 @@
  *
  * There, you can set two properties:
  *
- * - simulation: if true the bundle will run in simulation mode. The default is true
- * - epicsChannel: If not in simulation the channel name where the zernikes values are written
+ * - simulation: if true the bundle will run in simulation mode. The default is true. In this case the zernikes values
+ *               are simply logged to the screen.
+ * - epicsChannel: If not in simulation the prefix channel name where the zernikes values are written to. This corresponds
+ *                 to the prefix of the EPICS channels used in the TCS to receive zernikes corrections, for instance tcs:m1Figure
+ *                 Using this prefix, the system will try to write to fourteen EPICS channels: tcs:m1Figure.A, tcs:m1Figure.B,
+ *                 tcs:m1Figure.C, ...., tcs:m1Figure.N. as described in the TCS/PCS ICD.
  */
