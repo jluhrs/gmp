@@ -6,9 +6,22 @@ based instruments, such as GPI.
 
 \section gds_bundles_sec Bundles
 The GDS is comprised of the following bundles:
-- add bundles here...
+- \subpage gds-actors-composer
 
 \section design_sec Design Issues
+
+\subsection composition_sec Data Values Composition
+The GDS is a component that listen for Observation Events sent from an instrument and that reacts to them
+by sampling the state of the Observatory. observation database, instrument, etc. The sampled information is then added
+to the data files produced by the instrument. This process is called value composition, where all sampled values upon
+observation events are composed into the data file.
+
+The design uses the concept of actors or agents that are independent objects that can sample the information. This design
+makes it simple to keep track of the progress and make each of these actors, a single purpose, very simple to implement
+component.
+
+It also makes it easy to extend the composition as the core components can discover new modules in charge of gathering
+these values
 
 \subsection datalabel_sec Data Label Generation
 Currently, the dataset names (or datalabels) generation is performed via a control command by the DHS, at the request of
@@ -46,10 +59,5 @@ Just some notes:
 - A C++ client does work.
 - Can generate datalabels.
 - If data arrives with a label that already exists, a dash and a correlative number is appended to the name.
-
-
-
-
-
 
 */
