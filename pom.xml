@@ -142,6 +142,7 @@
         <module>gds-obsevent-handler</module>
         <module>gds-fits-updater</module>
         <module>gds-datalabel-provider</module>
+        <module>gds-static-header-receiver</module>
         <module>integration-tests</module>
     </modules>
 
