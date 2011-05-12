@@ -19,29 +19,27 @@ trait HeaderReceiver
 @Instantiate
 @Provides(specifications = Array(classOf[HeaderReceiver]))
 class SeqexecHeaderReceiver(@Requires keywordsDatabase: KeywordsDatabase) {
+  val webServer = XmlRpcServerFactory.newServer("HeaderReceiver", classOf[XmlRpcReceiver], 12345)
 
   @Validate
   def start() {
     RequestHandler.setDatabase(keywordsDatabase)
-    val rpcServ = new RpcServer
-
-    rpcServ.addServer("HeaderReceiver", classOf[XmlRpcReceiver])
-    rpcServ.startServer(12345)
+    RequestHandler.start()
+    webServer.start();
   }
 
   @Invalidate
   def shutdown() {
+    webServer.shutdown()
   }
 
 }
 
 object RequestHandler extends Actor {
-  var keywordsDatabase:KeywordsDatabase = _
+  var keywordsDatabase: KeywordsDatabase = _
 
   def setDatabase(keywordsDatabase: KeywordsDatabase) {
     this.keywordsDatabase = keywordsDatabase
-    start()
-
   }
 
 
@@ -56,57 +54,50 @@ object RequestHandler extends Actor {
   }
 
   def initObservation(programId: String, dataLabel: DataLabel) {
+    println("Program ID: "+programId+" Data label: "+dataLabel)
     //send this information to somebody
   }
 
   def storeKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef) {
+    println("Data label: "+dataLabel+" Keyword: "+keyword+" Value: "+value)
     keywordsDatabase ! Store(dataLabel, CollectedValue(keyword, value, "", 0))
-
   }
 }
 
 class XmlRpcReceiver {
   def initObservation(programId: String, dataLabel: String): Boolean = {
-    RequestHandler ! InitObservation(programId,dataLabel)
+    RequestHandler ! InitObservation(programId, dataLabel)
     true
   }
 
-  def storeStringKeyword(dataLabel: String, keyword: String, value: String): Boolean = {
-    RequestHandler ! StoreKeyword(dataLabel,keyword,value)
+  def storeKeyword(dataLabel: String, keyword: String, value: String): Boolean = {
+    RequestHandler ! StoreKeyword(dataLabel, keyword, value)
     true
   }
 
-  def storeDoubleKeyword(dataLabel: String, keyword: String, value: Double): Boolean = {
-    RequestHandler ! StoreKeyword(dataLabel,keyword,value.asInstanceOf[AnyRef])
+  def storeKeyword(dataLabel: String, keyword: String, value: Double): Boolean = {
+    RequestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
     true
   }
 
-  def storeIntKeyword(dataLabel: String, keyword: String, value: Int): Boolean = {
-    RequestHandler ! StoreKeyword(dataLabel,keyword,value.asInstanceOf[AnyRef])
+  def storeKeyword(dataLabel: String, keyword: String, value: Int): Boolean = {
+    RequestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
     true
   }
 }
 
 
-class RpcServer {
-
-  val phm: PropertyHandlerMapping = new PropertyHandlerMapping();
-
-  def addServer(serverName: String, serverClass: Class[_]) {
-
-
-    phm.addHandler(serverName, serverClass);
-
-  }
-
-  def startServer(port: Int) {
+object XmlRpcServerFactory {
+  def newServer(serverName: String, serverClass: Class[_], port: Int): WebServer = {
     val webServer = new WebServer(port);
     val xmlRpcServer: XmlRpcServer = webServer.getXmlRpcServer();
+    val phm: PropertyHandlerMapping = new PropertyHandlerMapping();
+    phm.addHandler(serverName, serverClass);
     xmlRpcServer.setHandlerMapping(phm);
     val serverConfig: XmlRpcServerConfigImpl = xmlRpcServer.getConfig().asInstanceOf[XmlRpcServerConfigImpl];
     serverConfig.setEnabledForExtensions(true);
     serverConfig.setContentLengthOptional(false);
-    webServer.start();
+    webServer
   }
 
 }
@@ -115,4 +106,5 @@ object Test extends Application {
   org.apache.log4j.BasicConfigurator.configure();
   val seq = new SeqexecHeaderReceiver(new KeywordsDatabaseImpl)
   seq.start
+  Thread.sleep(1000000)
 }
