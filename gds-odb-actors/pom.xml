@@ -41,37 +41,30 @@
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>jini-driver</artifactId>
-            <version>1.0.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.jini</groupId>
             <artifactId>jini-core</artifactId>
-            <version>2.1</version>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>pot-client</artifactId>
-            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>shared-jini</artifactId>
-            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>spModel</artifactId>
-            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>spModel-pio</artifactId>
-            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>shared-util</artifactId>
-            <version>1.0.2</version>
         </dependency>
     </dependencies>
 
