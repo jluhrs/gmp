@@ -77,12 +77,12 @@ class XmlRpcReceiver {
   }
 
   def storeDoubleKeyword(dataLabel: String, keyword: String, value: Double): Boolean = {
-    RequestHandler ! StoreKeyword(dataLabel,keyword,value)
+    RequestHandler ! StoreKeyword(dataLabel,keyword,value.asInstanceOf[AnyRef])
     true
   }
 
   def storeIntKeyword(dataLabel: String, keyword: String, value: Int): Boolean = {
-    RequestHandler ! StoreKeyword(dataLabel,keyword,value)
+    RequestHandler ! StoreKeyword(dataLabel,keyword,value.asInstanceOf[AnyRef])
     true
   }
 }
