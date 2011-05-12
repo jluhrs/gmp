@@ -1,8 +1,8 @@
 /*!
  * \page gds-actors-composer GDS Actors Composer
  * This bundle contains the core logic of the Gemini Data Service (GDS). GDS is a process used to complete data collection
- * reacting to observation events and gathering vaues that are to be stored in the resulting observation file, normally
- * a FITS file.
+ * reacting to observation events and sample values from different subsystems that are to be stored in the resulting
+ * observation file, normally a FITS file.
  *
  * This module contains 3 main parts:
  *
@@ -12,7 +12,8 @@
  *
  * \section gds-keyword_factory_composite Keyword Factory Composite
  * The bundle includes an OSGi based \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory.scala "CompositeActorsFactory"
- * Keyword Factory Composite that listen for other OSGi-based KeywordActorFactory services and manages them as a composite
+ * which is a software composite of other OSGi-based KeywordActorFactory services and manages them together.
+ *
  * This arrangement is necessary as the KeywordFactory classes often need to access other OSGi services and thus cannot
  * be directly instantiated. Using the Composite also avoids the need for the KeywordValueComposer to know about this
  * extra OSGi dependencies and makes it very easy to extend to new actors types as needed.
@@ -22,6 +23,12 @@
  * \image html keyword-actor-factory-composite.jpg
  *
  * \section gds-keyword_values_composer Keyword Value Composer
+ * The Keyword Value Composer is an actor based class that takes care of launching and controlling other actors built by
+ * the Keyword Actors Factory. The composer will launch these sub-actors, collect their result and use them at the end
+ * to compose the whole data sample. This can be better expressed in the sequence command below:
+ *
+ * \image html keyword-value-composer-collaboration.jpg
+ *
  * \section gds-keyword_factory_configuration GDS Configuration
  *
  * \section gds-actors-composer_provides_sec Provided Services
