@@ -11,6 +11,10 @@ import edu.gemini.pot.spdb.{IDBDatabase, DBAbstractQueryFunctor, IDBQueryRunner}
  * to a single fitsKeyword
  */
 class ODBValueActor(queryRunner: IDBQueryRunner, configuration:List[GDSConfiguration]) extends KeywordValueActor {
+    type ExtractorFunction = (SPProgram) => AnyRef
+    val extractorFunctions = Map[String, ExtractorFunction](
+        "odb:piFirstName" -> extractPIFirstName)
+
     override def collectValues():List[CollectedValue] = {
         val functor = queryRunner.queryPrograms(GDSProgramQuery("GS-2006B-Q-57")).asInstanceOf[GDSProgramQuery]
         val spProgram = functor.program
@@ -23,6 +27,17 @@ class ODBValueActor(queryRunner: IDBQueryRunner, configuration:List[GDSConfigura
     def buildExtractors: List[SPProgram => CollectedValue] = {
         List()
     }
+
+    def extractFunction(configuration: GDSConfiguration, spProgram:SPProgram, extractor:SPProgram => AnyRef):CollectedValue = {
+        val (fitsKeyword, fitsComment, headerIndex) = (
+                configuration.keyword,
+                configuration.fitsComment.value,
+                configuration.index.index)
+        val value = extractor(spProgram)
+        CollectedValue(fitsKeyword, value, fitsComment, headerIndex)
+    }
+
+    def extractPIFirstName(spProgram:SPProgram) = spProgram.getPIFirstName
 
 }
 
