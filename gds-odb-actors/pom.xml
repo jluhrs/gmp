@@ -66,6 +66,12 @@
             <groupId>gemini-nocs</groupId>
             <artifactId>shared-util</artifactId>
         </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>spModel-type</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

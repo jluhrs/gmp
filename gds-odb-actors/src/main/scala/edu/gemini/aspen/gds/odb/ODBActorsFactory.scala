@@ -22,7 +22,7 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService) extends KeywordA
     var actorsConfiguration: List[GDSConfiguration] = List()
 
     override def buildInitializationActors(programID:String, dataLabel:DataLabel) = {
-        new ODBValueActor(dbService.getQueryRunner, actorsConfiguration) :: Nil
+        new ODBValuesActor(dbService.getQueryRunner, actorsConfiguration) :: Nil
     }
 
     override def buildStartAcquisitionActors(dataLabel: DataLabel) = {
