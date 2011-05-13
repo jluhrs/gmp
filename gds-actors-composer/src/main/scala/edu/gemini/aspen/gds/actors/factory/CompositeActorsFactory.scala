@@ -24,18 +24,24 @@ class CompositeActorsFactoryImpl(@Property(name="keywordsConfiguration", value =
     var factories:List[KeywordActorsFactory] = List()
     var config:List[GDSConfiguration] = List()
 
-    /**
-     * Composite of the other factories registered as OSGI services
-     */
-    override def startAcquisitionActors(dataLabel: DataLabel): List[Actor] = {
+    override def buildInitializationActors(programID:String, dataLabel:DataLabel) = {
         factories flatMap (
-            _.startAcquisitionActors(dataLabel)
+            _.buildInitializationActors(programID, dataLabel)
         )
     }
 
-    override def endAcquisitionActors(dataLabel: DataLabel): List[Actor] = {
+    /**
+     * Composite of the other factories registered as OSGI services
+     */
+    override def buildStartAcquisitionActors(dataLabel: DataLabel): List[Actor] = {
         factories flatMap (
-            _.endAcquisitionActors(dataLabel)
+            _.buildStartAcquisitionActors(dataLabel)
+        )
+    }
+
+    override def buildEndAcquisitionActors(dataLabel: DataLabel): List[Actor] = {
+        factories flatMap (
+            _.buildEndAcquisitionActors(dataLabel)
         )
     }
 

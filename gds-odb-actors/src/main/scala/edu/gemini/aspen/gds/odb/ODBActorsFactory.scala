@@ -9,6 +9,10 @@ import edu.gemini.pot.spdb.IDBDatabaseService
 
 /**
  * Factory of Actors that can retrieve values from the ODB
+ *
+ * Whereas other actor factories use the approach of one actor per keyword, the ODB
+ * used one actor for all the keywords. This is to reduce the cost of ODB calls which
+ * tend to be expensive
  */
 @Component
 @Instantiate
@@ -17,24 +21,20 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService) extends KeywordA
     val LOG =  Logger.getLogger(classOf[ODBActorsFactory].getName)
     var actorsConfiguration: List[GDSConfiguration] = List()
 
-    override def startAcquisitionActors(dataLabel: DataLabel) = {
-        configurationsForEvent(ObservationEvent.OBS_START_ACQ) map {
-            case config:GDSConfiguration => new ODBValueActor(dbService, config)
-        }
+    override def buildInitializationActors(programID:String, dataLabel:DataLabel) = {
+        new ODBValueActor(dbService.getQueryRunner, actorsConfiguration) :: Nil
     }
 
-    override def endAcquisitionActors(dataLabel: DataLabel) = {
-        configurationsForEvent(ObservationEvent.OBS_END_ACQ) map {
-            case config:GDSConfiguration => new ODBValueActor(dbService, config)
-        }
+    override def buildStartAcquisitionActors(dataLabel: DataLabel) = {
+        List()
+    }
+
+    override def buildEndAcquisitionActors(dataLabel: DataLabel) = {
+        List()
     }
 
     override def configure(configuration:List[GDSConfiguration]) {
         actorsConfiguration = configuration filter { _.subsystem.name == "ODB"}
-    }
-
-    def configurationsForEvent(e: ObservationEvent) = {
-        actorsConfiguration filter {_.event.name == e.toString}
     }
 
     @Validate

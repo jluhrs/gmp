@@ -13,12 +13,19 @@ import edu.gemini.pot.spdb.IDBDatabaseService
 @RunWith(classOf[JUnitRunner])
 class ODBActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
     val databaseService = mock[IDBDatabaseService]
-    
+    val programID = "GS-2011-Q-56"
+
     describe("An ODBActorsFactory") {
-        it("should return an empty list of Actors when not configured") {
+        it("should return an empty list of Actors for start acquisition") {
             val (dataLabel, odbActorsFactory) = createFixture
 
-            val actors = odbActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = odbActorsFactory.buildStartAcquisitionActors(dataLabel)
+            actors should be('empty)
+        }
+        it("should return an empty list of Actors for end acquisition") {
+            val (dataLabel, odbActorsFactory) = createFixture
+
+            val actors = odbActorsFactory.buildEndAcquisitionActors(dataLabel)
             actors should be('empty)
         }
         it("should be configurable with one item") {
@@ -26,7 +33,7 @@ class ODBActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
             val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") :: Nil
             odbActorsFactory.configure(configuration)
 
-            val actors = odbActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = odbActorsFactory.buildInitializationActors(programID, dataLabel)
             actors should have length(1)
         }
         it("should be configurable with two item") {
@@ -36,27 +43,7 @@ class ODBActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
                 buildOneConfiguration("OBS_START_ACQ", "STATUS2", "gpi:status2") :: Nil
             odbActorsFactory.configure(configuration)
 
-            val actors = odbActorsFactory.startAcquisitionActors(dataLabel)
-            actors should have length(2)
-        }
-        it("should be configurable with one item for start and one item for end") {
-            val (dataLabel, odbActorsFactory) = createFixture
-            val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") ::
-                buildOneConfiguration("OBS_END_ACQ", "STATUS2", "gpi:status2") :: Nil
-            odbActorsFactory.configure(configuration)
-
-            val startActors = odbActorsFactory.startAcquisitionActors(dataLabel)
-            startActors should have length(1)
-            val endActors = odbActorsFactory.endAcquisitionActors(dataLabel)
-            endActors should have length(1)
-        }
-        it("should only pick Instrument Status subsystems") {
-            val (dataLabel, odbActorsFactory) = createFixture
-            val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") ::
-                buildOneNonStatusConfiguration("OBS_END_ACQ", "STATUS2", "gpi:status2") :: Nil
-            odbActorsFactory.configure(configuration)
-
-            val actors = odbActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = odbActorsFactory.buildInitializationActors(programID, dataLabel)
             actors should have length(1)
         }
     }

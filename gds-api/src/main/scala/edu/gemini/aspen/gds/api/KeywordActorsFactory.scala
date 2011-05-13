@@ -9,14 +9,19 @@ import actors.Actor
  */
 trait KeywordActorsFactory {
     /**
+     * Request the factory to create and start actors when the 
+     */
+    def buildInitializationActors(programID:String, dataLabel:DataLabel): List[Actor]
+
+    /**
      * Request the factory to create and start actors required for the start acquisition part
      */
-    def startAcquisitionActors(dataLabel:DataLabel): List[Actor]
+    def buildStartAcquisitionActors(dataLabel:DataLabel): List[Actor]
 
     /**
      * Request the factory to create and start actors required for the end acquisition part
      */
-    def endAcquisitionActors(dataLabel:DataLabel): List[Actor]
+    def buildEndAcquisitionActors(dataLabel:DataLabel): List[Actor]
 
     /**
      * Passes the global GDS configuration along

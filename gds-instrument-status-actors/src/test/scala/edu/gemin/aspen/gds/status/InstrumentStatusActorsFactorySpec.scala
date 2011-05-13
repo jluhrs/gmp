@@ -17,7 +17,13 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
         it("should return an empty list of Actors when not configured") {
             val (dataLabel, instrumentStatusActorsFactory) = createFixture
 
-            val actors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = instrumentStatusActorsFactory.buildStartAcquisitionActors(dataLabel)
+            actors should be('empty)
+        }
+        it ("should return an empty list of actors upon initialization") {
+            val (dataLabel, instrumentStatusActorsFactory) = createFixture
+
+            val actors = instrumentStatusActorsFactory.buildInitializationActors("programID", dataLabel)
             actors should be('empty)
         }
         it("should be configurable with one item") {
@@ -25,7 +31,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
             val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") :: Nil
             instrumentStatusActorsFactory.configure(configuration)
 
-            val actors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = instrumentStatusActorsFactory.buildStartAcquisitionActors(dataLabel)
             actors should have length(1)
         }
         it("should be configurable with two item") {
@@ -35,7 +41,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
                 buildOneConfiguration("OBS_START_ACQ", "STATUS2", "gpi:status2") :: Nil
             instrumentStatusActorsFactory.configure(configuration)
 
-            val actors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = instrumentStatusActorsFactory.buildStartAcquisitionActors(dataLabel)
             actors should have length(2)
         }
         it("should be configurable with one item for start and one item for end") {
@@ -44,9 +50,9 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
                 buildOneConfiguration("OBS_END_ACQ", "STATUS2", "gpi:status2") :: Nil
             instrumentStatusActorsFactory.configure(configuration)
 
-            val startActors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
+            val startActors = instrumentStatusActorsFactory.buildStartAcquisitionActors(dataLabel)
             startActors should have length(1)
-            val endActors = instrumentStatusActorsFactory.endAcquisitionActors(dataLabel)
+            val endActors = instrumentStatusActorsFactory.buildEndAcquisitionActors(dataLabel)
             endActors should have length(1)
         }
         it("should only pick Instrument Status subsystems") {
@@ -55,7 +61,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
                 buildOneNonStatusConfiguration("OBS_END_ACQ", "STATUS2", "gpi:status2") :: Nil
             instrumentStatusActorsFactory.configure(configuration)
 
-            val actors = instrumentStatusActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = instrumentStatusActorsFactory.buildStartAcquisitionActors(dataLabel)
             actors should have length(1)
         }
     }

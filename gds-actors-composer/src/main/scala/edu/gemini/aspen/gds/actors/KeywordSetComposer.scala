@@ -61,7 +61,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     private def startKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
         LOG.info("Init keyword collection on dataset " + dataLabel)
 
-        val dataFutures = requestCollection(dataLabel, actorsFactory.startAcquisitionActors)
+        val dataFutures = requestCollection(dataLabel, actorsFactory.buildStartAcquisitionActors)
 
         waitForDataAndReply(dataLabel, dataFutures) {
             LOG.info("All collecting actors completed.")
@@ -102,7 +102,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
 
     private def finishKeywordSetCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
         LOG.info("Complete keyword collection on dataset " + dataLabel)
-        val dataFutures = requestCollection(dataLabel, actorsFactory.endAcquisitionActors)
+        val dataFutures = requestCollection(dataLabel, actorsFactory.buildEndAcquisitionActors)
 
         waitForDataAndReply(dataLabel, dataFutures) {
             LOG.info("All collecting actors completed.")

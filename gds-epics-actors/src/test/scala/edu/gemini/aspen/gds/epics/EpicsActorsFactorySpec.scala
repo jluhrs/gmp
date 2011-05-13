@@ -25,7 +25,13 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
         it("should return an empty list of Actors when not configured") {
             val (dataLabel, epicsActorsFactory) = createFixture
 
-            val actors = epicsActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = epicsActorsFactory.buildStartAcquisitionActors(dataLabel)
+            actors should be('empty)
+        }
+        it ("should return an empty list of actors upon initialization") {
+            val (dataLabel, epicsActorsFactory) = createFixture
+
+            val actors = epicsActorsFactory.buildInitializationActors("programID", dataLabel)
             actors should be('empty)
         }
         it("should be configurable with one item") {
@@ -35,7 +41,7 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
             )
             epicsActorsFactory.configure(configuration)
 
-            val actors = epicsActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = epicsActorsFactory.buildStartAcquisitionActors(dataLabel)
             actors should have length(1)
         }
         it("should be configurable with two item") {
@@ -46,7 +52,7 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
             )
             epicsActorsFactory.configure(configuration)
 
-            val actors = epicsActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = epicsActorsFactory.buildStartAcquisitionActors(dataLabel)
             actors should have length(2)
         }
         it("should be configurable with one item for start and one item for end") {
@@ -57,9 +63,9 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
             )
             epicsActorsFactory.configure(configuration)
 
-            val startActors = epicsActorsFactory.startAcquisitionActors(dataLabel)
+            val startActors = epicsActorsFactory.buildStartAcquisitionActors(dataLabel)
             startActors should have length(1)
-            val endActors = epicsActorsFactory.endAcquisitionActors(dataLabel)
+            val endActors = epicsActorsFactory.buildEndAcquisitionActors(dataLabel)
             endActors should have length(1)
         }
         it("should only pick EPICS subsystems") {
@@ -70,7 +76,7 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
             )
             epicsActorsFactory.configure(configuration)
 
-            val actors = epicsActorsFactory.startAcquisitionActors(dataLabel)
+            val actors = epicsActorsFactory.buildStartAcquisitionActors(dataLabel)
             actors should have length(1)
         }
     }

@@ -13,13 +13,15 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActo
     // Use dummy configuration
     var conf: List[GDSConfiguration] = List()
 
-    override def startAcquisitionActors(dataLabel: DataLabel) = {
+    override def buildInitializationActors(programID:String, dataLabel:DataLabel) = List()
+
+    override def buildStartAcquisitionActors(dataLabel: DataLabel) = {
         conf filter {_.event.name == ObservationEvent.OBS_START_ACQ.toString} map {
             case config:GDSConfiguration => new EpicsValuesActor(epicsReader, config)
         }
     }
 
-    override def endAcquisitionActors(dataLabel: DataLabel) = {
+    override def buildEndAcquisitionActors(dataLabel: DataLabel) = {
         conf filter {_.event.name == ObservationEvent.OBS_END_ACQ.toString} map {
             case config:GDSConfiguration => new EpicsValuesActor(epicsReader, config)
         }

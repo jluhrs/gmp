@@ -21,22 +21,22 @@ class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
 
       val dataLabel = new DataLabel("GS-2011")
 
-      actorsFactory.startAcquisitionActors(dataLabel) returns List[Actor]()
+      actorsFactory.buildStartAcquisitionActors(dataLabel) returns List[Actor]()
 
       observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
 
       // verify mock
-      there was one(actorsFactory).startAcquisitionActors(dataLabel)
+      there was one(actorsFactory).buildStartAcquisitionActors(dataLabel)
     }
     it("should react to OBS_END_ACQ events") {
       val dataLabel = new DataLabel("GS-2011")
 
-      actorsFactory.endAcquisitionActors(dataLabel) returns List[Actor]()
+      actorsFactory.buildEndAcquisitionActors(dataLabel) returns List[Actor]()
 
       observationHandler.onObservationEvent(ObservationEvent.OBS_END_ACQ, dataLabel)
 
       // verify mock
-      there was one(actorsFactory).endAcquisitionActors(dataLabel)
+      there was one(actorsFactory).buildEndAcquisitionActors(dataLabel)
     }
     it("should not react to other events messages")(pending)
   }

@@ -7,6 +7,13 @@ import edu.gemini.pot.spdb._
 import edu.gemini.pot.sp.{SPProgramID, ISPRemoteNode}
 import edu.gemini.spModel.gemini.obscomp.SPProgram
 
+/**
+ * This is a component that gets a JiniDriver service and uses it to request a reference to
+ * an IDBDatabaseService.
+ *
+ * This way when the IDatabaseService is found it is made available to other services like
+ * ODBActorsFactory
+ */
 @Component
 @Instantiate
 class ODBServiceTracker(@Requires jiniDriver: JiniDriver) {
@@ -20,7 +27,6 @@ class ODBServiceTracker(@Requires jiniDriver: JiniDriver) {
 }
 
 @Component
-@Instantiate
 class DBServiceTracker(@Requires dbService: IDBDatabaseService) {
     @Validate
     def validate() {
