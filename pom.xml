@@ -144,6 +144,7 @@
         <module>gds-fits-updater</module>
         <module>gds-datalabel-provider</module>
         <module>gds-static-header-receiver</module>
+        <module>gds-seqexec-actors</module>
         <module>integration-tests</module>
     </modules>
 
