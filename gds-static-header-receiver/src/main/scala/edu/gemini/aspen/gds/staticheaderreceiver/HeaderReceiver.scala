@@ -1,13 +1,9 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
-import org.apache.xmlrpc.server.{XmlRpcServer, PropertyHandlerMapping, XmlRpcServerConfigImpl}
-import org.apache.xmlrpc.webserver.WebServer
-import actors.Actor
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
-import edu.gemini.aspen.gds.api.CollectedValue
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.gds.keywords.database.{KeywordsDatabaseImpl, Store, KeywordsDatabase}
 import edu.gemini.aspen.gds.api.Conversions._
+import edu.gemini.aspen.gds.keywords.database.{ProgramIdDatabaseImpl, ProgramIdDatabase}
 
 case class InitObservation(programId: String, dataLabel: DataLabel)
 
@@ -20,12 +16,12 @@ trait HeaderReceiver
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[HeaderReceiver]))
-class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase) {
-  val webServer = XmlRpcServerFactory.newServer("HeaderReceiver", classOf[XmlRpcReceiver], 12345)
+class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase, @Requires programIdDB:ProgramIdDatabase) {
+  private val webServer = XmlRpcServerFactory.newServer("HeaderReceiver", classOf[XmlRpcReceiver], 12345)
 
   @Validate
   def start() {
-    RequestHandler.setDatabase(keywordsDatabase)
+    RequestHandler.setDatabases(keywordsDatabase,programIdDB)
     RequestHandler.start()
     webServer.start();
   }
@@ -37,11 +33,13 @@ class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywords
 
 }
 
-
+/**
+ * Temporary test app
+ */
 object TestApp extends Application {
   org.apache.log4j.BasicConfigurator.configure();
-  val seq = new SeqexecHeaderReceiver(new TemporarySeqexecKeywordsDatabaseImpl)
-  seq.start
+  val seq = new SeqexecHeaderReceiver(new TemporarySeqexecKeywordsDatabaseImpl, new ProgramIdDatabaseImpl)
+  seq.start()
   Thread.sleep(1000000)
 }
 
