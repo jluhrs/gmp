@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <relativePath>../poms/wrappers/</relativePath>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
+        <artifactId>wrapper-bundle-settings</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <bundle.symbolicName>org.apache.ws.ws-commons-util</bundle.symbolicName>
+        <wrapped.groupId>ws-commons-util</wrapped.groupId>
+    </properties>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>edu.gemini.aspen.giapi.external</groupId>
+    <artifactId>ws-commons-util</artifactId>
+    <version>1.0.1</version>
+
+    <name>Apache WS Common Libraries - ws-commons-util.jar [osgi]</name>
+    <description>Apache WS Common Library wrapped in OSGi</description>
+
+    <packaging>bundle</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>${wrapped.groupId}</groupId>
+            <artifactId>${project.artifactId}</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>edu.gemini.libs</id>
+            <name>sbfosxdev01.cl.gemini.edu-releases</name>
+            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>edu.gemini.libs</id>
+            <name>sbfosxdev01.cl.gemini.edu-snapshots</name>
+            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>
