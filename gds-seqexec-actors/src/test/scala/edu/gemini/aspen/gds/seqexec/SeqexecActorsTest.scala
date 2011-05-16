@@ -33,7 +33,7 @@ class SeqexecActorsTest extends AssertionsForJUnit {
     assert(factory.buildEndAcquisitionActors("label").isEmpty)
     val actors = factory.buildPrepareObservationActors("label")
     assert(actors.length == 1)
-    val values = actors.head.collectValues
+    val values = actors.head.collectValues()
     values.head match {
       case CollectedValue(fits,value,comment,0) => {
         assert(fits == stringToFitsKeyword("TEST"))

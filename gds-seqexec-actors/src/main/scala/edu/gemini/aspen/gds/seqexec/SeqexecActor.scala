@@ -26,7 +26,7 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
     if (value.isDefined) {
       CollectedValue(fitsKeyword, value.get, fitsComment, headerIndex) :: Nil
     }else{
-      CollectedValue(fitsKeyword,"novaluefound",fitsComment,headerIndex) :: Nil
+      List()
     }
   }
 

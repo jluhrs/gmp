@@ -11,7 +11,6 @@ import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabas
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class SeqexecActorsFactory(@Requires seqexecKeyDB: TemporarySeqexecKeywordsDatabase) extends KeywordActorsFactory {
-  // Use dummy configuration
   var conf: List[GDSConfiguration] = List()
 
   override def buildInitializationActors(programID: String, dataLabel: DataLabel) = List()
