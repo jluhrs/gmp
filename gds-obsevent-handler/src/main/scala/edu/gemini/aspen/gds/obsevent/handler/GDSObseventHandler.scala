@@ -7,7 +7,7 @@ import edu.gemini.aspen.gds.fits.FitsUpdater
 import actors.Actor
 import edu.gemini.aspen.gds.keywords.database.{RetrieveAll, KeywordsDatabase}
 import java.io.File
-import edu.gemini.fits.{Header, HeaderItem}
+import edu.gemini.fits.{Header}
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
@@ -37,7 +37,7 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 }
 
 class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase) extends Actor {
-  start
+  start()
 
   def act() {
     loop {

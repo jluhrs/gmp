@@ -29,7 +29,7 @@ case class RetrieveAll(dataLabel: DataLabel)
 @Provides(specifications = Array(classOf[KeywordsDatabase]))
 class KeywordsDatabaseImpl extends KeywordsDatabase {
 
-  start
+  start()
 
   def act() {
     loop {
@@ -44,7 +44,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   }
 
 
-  val map = collection.mutable.Map.empty[DataLabel, List[Header]]
+  private val map = collection.mutable.Map.empty[DataLabel, List[Header]]
 
   /**
    * Store the keyword

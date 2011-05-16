@@ -4,6 +4,8 @@ import org.apache.xmlrpc.server.{XmlRpcServer, PropertyHandlerMapping, XmlRpcSer
 import org.apache.xmlrpc.webserver.WebServer
 
 object XmlRpcServerFactory {
+
+
   def newServer(serverName: String, serverClass: Class[_], port: Int): WebServer = {
     val webServer = new WebServer(port);
     val xmlRpcServer: XmlRpcServer = webServer.getXmlRpcServer();

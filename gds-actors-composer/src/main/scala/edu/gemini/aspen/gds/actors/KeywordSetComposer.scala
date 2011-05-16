@@ -57,7 +57,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     val LOG = KeywordSetComposer.LOG
 
     // Start automatically
-    start
+    start()
 
     def act() {
         loop {

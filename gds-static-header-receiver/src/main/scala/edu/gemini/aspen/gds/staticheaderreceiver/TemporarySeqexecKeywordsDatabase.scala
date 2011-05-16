@@ -5,12 +5,13 @@ import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
 import actors.Actor
 
 trait TemporarySeqexecKeywordsDatabase extends Actor
+
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[TemporarySeqexecKeywordsDatabase]))
 class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatabase {
 
-  start
+  start()
 
   def act() {
     loop {
@@ -25,7 +26,7 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
   }
 
 
-  val map = collection.mutable.Map.empty[DataLabel, collection.mutable.Map[FitsKeyword, AnyRef]]
+  private val map = collection.mutable.Map.empty[DataLabel, collection.mutable.Map[FitsKeyword, AnyRef]]
 
   private def cleanAll(){
     map.clear()
