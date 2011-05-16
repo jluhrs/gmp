@@ -15,6 +15,7 @@ class ODBValuesActor(queryRunner: IDBQueryRunner, configuration: List[GDSConfigu
     type CollectorFunction = SPProgram => CollectedValue
 
     val extractorFunctions = Map[String, ExtractorFunction](
+        "odb:piLastName" -> extractPILastName,
         "odb:piFirstName" -> extractPIFirstName)
 
     override def collectValues(): List[CollectedValue] = {
@@ -25,11 +26,11 @@ class ODBValuesActor(queryRunner: IDBQueryRunner, configuration: List[GDSConfigu
                 //for (extractor <- buildExtractors) yield extractor(program)
                 for {c <- configuration
                      val (fitsKeyword, fitsComment, headerIndex) = (
-                             c.keyword,
-                             c.fitsComment.value,
-                             c.index.index)
+                                     c.keyword,
+                                     c.fitsComment.value,
+                                     c.index.index)
+                     if extractorFunctions contains c.channel.name
                      val r = extractorFunctions.getOrElse(c.channel.name, null)(program)
-                //val col -
                 }
                 yield CollectedValue(fitsKeyword, r, fitsComment, headerIndex)
             }
@@ -67,7 +68,11 @@ class ODBValuesActor(queryRunner: IDBQueryRunner, configuration: List[GDSConfigu
     //        CollectedValue(fitsKeyword, value, fitsComment, headerIndex)
     //    }
 
+    def defaultExtractor(spProgram: SPProgram) = spProgram.toString
+
     def extractPIFirstName(spProgram: SPProgram) = spProgram.getPIFirstName
+
+    def extractPILastName(spProgram: SPProgram) = spProgram.getPILastName
 
 }
 
