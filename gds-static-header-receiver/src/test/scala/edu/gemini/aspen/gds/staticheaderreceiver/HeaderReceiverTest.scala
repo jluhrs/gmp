@@ -2,15 +2,22 @@ package edu.gemini.aspen.gds.staticheaderreceiver
 
 
 import org.scalatest.junit.AssertionsForJUnit
-import org.junit.{Test}
 import edu.gemini.aspen.gds.api.Conversions._
 import collection.JavaConversions._
+import org.junit.{Before, Test}
 
 class HeaderReceiverTest extends AssertionsForJUnit {
+  var db: TemporarySeqexecKeywordsDatabase = _
+
+  @Before
+  def setup() {
+    db = new TemporarySeqexecKeywordsDatabaseImpl
+    RequestHandler.setDatabase(db)
+    RequestHandler.start()
+  }
 
   @Test
   def testDB() {
-    val db = new TemporarySeqexecKeywordsDatabaseImpl
     db ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
     assert(db !? RetrieveValue("label", "key") == Some(1))
     assert((db !? RetrieveValue("wronglabel", "key")).asInstanceOf[Option[AnyRef]].isEmpty)
@@ -20,7 +27,27 @@ class HeaderReceiverTest extends AssertionsForJUnit {
     db ! Clean("wronglabel")
   }
 
-  //todo: test xmlrpc server
-  //todo: test requesthandler
+  @Test
+  def testRequestHandler() {
+    RequestHandler ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
+    Thread.sleep(100) //allow for messages to arrive
+    assert(db !? RetrieveValue("label", "key") == Some(1))
+
+    RequestHandler ! InitObservation("programID", "label")
+    //todo: test init observation
+
+    //todo: test wrong message handling???
+    //RequestHandler ! "wrong message"
+
+  }
+
+
+  @Test
+  def testXmlRpcReceiver() {
+    val xml = new XmlRpcReceiver
+    xml.storeKeyword("label", "key", 1)
+    Thread.sleep(100) //allow for messages to arrive
+    assert(db !? RetrieveValue("label", "key") == Some(1))
+  }
 
 }

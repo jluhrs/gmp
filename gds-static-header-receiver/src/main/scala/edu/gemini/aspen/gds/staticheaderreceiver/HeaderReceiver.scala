@@ -37,7 +37,7 @@ class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywords
 }
 
 
-object Test extends Application {
+object TestApp extends Application {
   org.apache.log4j.BasicConfigurator.configure();
   val seq = new SeqexecHeaderReceiver(new TemporarySeqexecKeywordsDatabaseImpl)
   seq.start

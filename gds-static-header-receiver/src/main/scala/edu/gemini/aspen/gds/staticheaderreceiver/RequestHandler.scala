@@ -4,7 +4,7 @@ import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
 import actors.Actor
 
 object RequestHandler extends Actor {
-  var keywordsDatabase: TemporarySeqexecKeywordsDatabase = _
+  private var keywordsDatabase: TemporarySeqexecKeywordsDatabase = _
 
   def setDatabase(keywordsDatabase: TemporarySeqexecKeywordsDatabase) {
     this.keywordsDatabase = keywordsDatabase
@@ -16,7 +16,7 @@ object RequestHandler extends Actor {
       react {
         case InitObservation(programId, dataLabel) => initObservation(programId, dataLabel)
         case StoreKeyword(dataLabel, keyword, value) => storeKeyword(dataLabel, keyword, value)
-        case x: Any => throw new RuntimeException("Argument not known " + x)
+        case x: Any => throw new RuntimeException("Argument not known: " + x)
       }
     }
   }
