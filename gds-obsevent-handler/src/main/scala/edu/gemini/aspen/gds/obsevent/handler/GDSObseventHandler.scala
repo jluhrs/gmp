@@ -21,10 +21,13 @@ import edu.gemini.aspen.gds.actors._
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase) extends ObservationEventHandler {
   private val LOG = Logger.getLogger(classOf[GDSObseventHandler].getName)
-  private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase)
+
+  //todo: private[handler] is just for testing. Need to find a better way to test this class
+  private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase)
 
   def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     event match {
+      case OBS_PREP => replyHandler ! PrepareObservation(dataLabel)
       case OBS_START_ACQ => replyHandler ! StartAcquisition(dataLabel)
       case OBS_END_ACQ => replyHandler ! EndAcquisition(dataLabel)
       case e: ObservationEvent => LOG.info("Non handled observation event: " + e)
@@ -39,6 +42,8 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
   def act() {
     loop {
       react {
+        case PrepareObservation(dataLabel) => prepareObservation(dataLabel)
+        case PrepareObservationReply(dataLabel) => prepareObservationReply(dataLabel)
         case StartAcquisition(dataLabel) => startAcquisition(dataLabel)
         case StartAcquisitionReply(dataLabel) => startAcquisitionReply(dataLabel)
         case EndAcquisition(dataLabel) => endAcquisition(dataLabel)
@@ -48,38 +53,56 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     }
   }
 
+  //set of observations that have completed the OBS_PREP header collection
+  private var prepared: Set[DataLabel] = Set[DataLabel]()
+
+  //set of observations that have completed the OBS_START_ACQ header collection
   private var started: Set[DataLabel] = Set[DataLabel]()
 
+  private def prepareObservation(dataLabel: DataLabel) {
+    new KeywordSetComposer(actorsFactory, keywordsDatabase) ! PrepareObservation(dataLabel)
+  }
+
+  private def prepareObservationReply(dataLabel: DataLabel) {
+    prepared += dataLabel
+  }
+
   private def startAcquisition(dataLabel: DataLabel) {
-    new KeywordSetComposer(actorsFactory, keywordsDatabase) ! StartAcquisition(dataLabel)
+    if (prepared.contains(dataLabel)) {
+      prepared -= dataLabel
+
+      new KeywordSetComposer(actorsFactory, keywordsDatabase) ! StartAcquisition(dataLabel)
+    } else {
+      throw new RuntimeException("Dataset " + dataLabel + " started but never preped")
+    }
   }
 
   private def startAcquisitionReply(dataLabel: DataLabel) {
     started += dataLabel
-
   }
 
   private def endAcquisition(dataLabel: DataLabel) {
-    new KeywordSetComposer(actorsFactory, keywordsDatabase) ! EndAcquisition(dataLabel)
-  }
-
-  private def endAcquisitionReply(dataLabel: DataLabel) {
     if (started.contains(dataLabel)) {
       started -= dataLabel
 
-      //add FITS file update here
-        updateFITSFile(dataLabel)
+      new KeywordSetComposer(actorsFactory, keywordsDatabase) ! EndAcquisition(dataLabel)
     } else {
       throw new RuntimeException("Dataset " + dataLabel + " ended but never started")
     }
   }
 
-    private def updateFITSFile(dataLabel: DataLabel): Unit = {
-        val list = (keywordsDatabase !? RetrieveAll(dataLabel)).asInstanceOf[Option[List[Header]]]
-        list match {
-            case Some(headersList) => new FitsUpdater(new File("/tmp"), dataLabel, headersList).updateFitsHeaders
-            case None =>
-        }
+  private def endAcquisitionReply(dataLabel: DataLabel) {
+    //add FITS file update here
+    updateFITSFile(dataLabel)
+
+  }
+
+  private def updateFITSFile(dataLabel: DataLabel): Unit = {
+    val list = (keywordsDatabase !? RetrieveAll(dataLabel)).asInstanceOf[Option[List[Header]]]
+    list match {
+      case Some(headersList) => new FitsUpdater(new File("/tmp"), dataLabel, headersList).updateFitsHeaders
+      case None =>
     }
+  }
 
 }

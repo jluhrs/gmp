@@ -13,6 +13,11 @@ import edu.gemini.aspen.gds.api.{KeywordActorsFactory, Collect, CollectedValue}
 sealed abstract class AcquisitionRequest
 
 /**
+ * Message to indicate that a new observation is being prepared
+ */
+case class PrepareObservation(dataLabel: DataLabel) extends AcquisitionRequest
+
+/**
  * Message to indicate that a new observation was initiated
  */
 case class StartAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
@@ -26,6 +31,12 @@ case class EndAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
  * Parent class of actor's replies to KeywordSetComposer
  */
 sealed abstract class AcquisitionReply
+
+/**
+ * Message to indicate that the data collection was completed
+ * It is sent in reply to an PrepareObservation message
+ */
+case class PrepareObservationReply(dataLabel: DataLabel) extends AcquisitionReply
 
 /**
  * Message to indicate that the data collection was completed
@@ -51,8 +62,9 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     def act() {
         loop {
             react {
+                case PrepareObservation(dataLabel) => prepareKeywordCollection(sender, dataLabel)
                 case StartAcquisition(dataLabel) => startKeywordCollection(sender, dataLabel)
-                case EndAcquisition(dataLabel) => finishKeywordSetCollection(sender, dataLabel)
+                case EndAcquisition(dataLabel) => finishKeywordCollection(sender, dataLabel)
                 case x:Any => throw new RuntimeException("Argument not known " + x)
             }
         }
@@ -100,7 +112,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
         }
     }
 
-    private def finishKeywordSetCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
+    private def finishKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
         LOG.info("Complete keyword collection on dataset " + dataLabel)
         val dataFutures = requestCollection(dataLabel, actorsFactory.buildEndAcquisitionActors)
 
@@ -108,6 +120,18 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
             LOG.info("All collecting actors completed.")
             // Reply to the original sender
             sender ! EndAcquisitionReply(dataLabel)
+        }
+    }
+
+      private def prepareKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
+        LOG.info("Prepare keyword collection on dataset " + dataLabel)
+
+        val dataFutures = requestCollection(dataLabel, actorsFactory.buildPrepareObservationActors)
+
+        waitForDataAndReply(dataLabel, dataFutures) {
+            LOG.info("All collecting actors completed.")
+            // Reply to the original sender
+            sender ! PrepareObservationReply(dataLabel)
         }
     }
 }

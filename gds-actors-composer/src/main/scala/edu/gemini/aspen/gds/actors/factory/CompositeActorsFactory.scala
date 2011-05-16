@@ -1,11 +1,10 @@
 package edu.gemini.aspen.gds.actors.factory
 
 import edu.gemini.aspen.giapi.data.DataLabel
-import actors.Actor
 import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
-import edu.gemini.aspen.gds.api.{KeywordActorsFactory, GDSConfiguration}
 import edu.gemini.aspen.gds.actors.configuration.GDSConfigurationParser
+import edu.gemini.aspen.gds.api.{KeywordValueActor, KeywordActorsFactory, GDSConfiguration}
 
 /**
  * Interface for a Composite of Actors Factory required by OSGi
@@ -33,13 +32,13 @@ class CompositeActorsFactoryImpl(@Property(name="keywordsConfiguration", value =
     /**
      * Composite of the other factories registered as OSGI services
      */
-    override def buildStartAcquisitionActors(dataLabel: DataLabel): List[Actor] = {
+    override def buildStartAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = {
         factories flatMap (
             _.buildStartAcquisitionActors(dataLabel)
         )
     }
 
-    override def buildEndAcquisitionActors(dataLabel: DataLabel): List[Actor] = {
+    override def buildEndAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = {
         factories flatMap (
             _.buildEndAcquisitionActors(dataLabel)
         )

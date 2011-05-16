@@ -16,35 +16,22 @@ class SeqexecActorsFactory(@Requires seqexecKeyDB: TemporarySeqexecKeywordsDatab
 
   override def buildInitializationActors(programID: String, dataLabel: DataLabel) = List()
 
-  override def buildStartAcquisitionActors(dataLabel: DataLabel) = {
+  override def buildPrepareObservationActors(dataLabel: DataLabel) = {
     conf filter {
-      _.event.name == ObservationEvent.OBS_START_ACQ.toString
+      _.event.name == ObservationEvent.OBS_PREP.toString
     } map {
       case config: GDSConfiguration => new SeqexecActor(seqexecKeyDB, dataLabel, config)
     }
   }
 
-  override def buildEndAcquisitionActors(dataLabel: DataLabel) = {
-    conf filter {
-      _.event.name == ObservationEvent.OBS_END_ACQ.toString
-    } map {
-      case config: GDSConfiguration => new SeqexecActor(seqexecKeyDB, dataLabel, config)
-    }
-  }
+  override def buildStartAcquisitionActors(dataLabel: DataLabel) = List()
+
+  override def buildEndAcquisitionActors(dataLabel: DataLabel) = List()
 
   override def configure(configuration: List[GDSConfiguration]) {
     conf = configuration filter {
       _.subsystem.name == "SEQEXEC"
     }
-    // Bind all required channels
-//    conf map {
-//      x =>
-//        epicsReader.bindChannel(x.channel.name)
-//    }
   }
 
-  @Invalidate
-  def unbindAllChannels() {
-    // TODO remove all the bound channels
-  }
 }

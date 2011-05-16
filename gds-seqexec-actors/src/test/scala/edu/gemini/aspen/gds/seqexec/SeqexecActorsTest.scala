@@ -7,6 +7,7 @@ import edu.gemini.aspen.gds.api.Conversions._
 import collection.JavaConversions._
 import edu.gemini.aspen.gds.staticheaderreceiver.{StoreKeyword, TemporarySeqexecKeywordsDatabaseImpl}
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.giapi.data.FitsKeyword
 
 class SeqexecActorsTest extends AssertionsForJUnit {
 
@@ -18,8 +19,28 @@ class SeqexecActorsTest extends AssertionsForJUnit {
     val seqActor = new SeqexecActor(db,"label", new GDSConfiguration("GPI","OBS_START_EVENT","KEY",0,"INT",true,"null","SEQEXEC","KEY","0","my comment"))
 
 
-    assert(seqActor.collectValues == List(CollectedValue("KEY",Some(1),"my comment",0)))
+    assert(seqActor.collectValues == List(CollectedValue("KEY",1.asInstanceOf[AnyRef],"my comment",0)))
   }
 
-  //todo: test actor factory
+  @Test
+  def testActorFactory(){
+    val db = new TemporarySeqexecKeywordsDatabaseImpl
+    db ! StoreKeyword("label","TEST",1.asInstanceOf[AnyRef])
+    val factory = new SeqexecActorsFactory(db)
+    factory.configure(List(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_PREP"), new FitsKeyword("TEST"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("SEQEXEC"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("my comment"))))
+    assert(factory.buildInitializationActors("id","label").isEmpty)
+    assert(factory.buildStartAcquisitionActors("label").isEmpty)
+    assert(factory.buildEndAcquisitionActors("label").isEmpty)
+    val actors = factory.buildPrepareObservationActors("label")
+    assert(actors.length == 1)
+    val values = actors.head.collectValues
+    values.head match {
+      case CollectedValue(fits,value,comment,0) => {
+        assert(fits == stringToFitsKeyword("TEST"))
+        assert(value == 1)
+        assert(comment == "my comment")
+      }
+      case x:AnyRef => fail("Wrong answer")
+    }
+  }
 }

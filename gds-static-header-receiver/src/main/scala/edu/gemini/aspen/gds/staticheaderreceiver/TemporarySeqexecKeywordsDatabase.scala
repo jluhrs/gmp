@@ -18,6 +18,7 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
         case StoreKeyword(dataLabel, key, value) => store(dataLabel, key, value)
         case RetrieveValue(dataLabel, key) => sender ! retrieveValue (dataLabel, key)
         case Clean(dataLabel) => clean(dataLabel)
+        case CleanAll() => cleanAll()
         case x:Any => throw new RuntimeException("Argument not known " + x)
       }
     }
@@ -26,16 +27,23 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
 
   val map = collection.mutable.Map.empty[DataLabel, collection.mutable.Map[FitsKeyword, AnyRef]]
 
+  private def cleanAll(){
+    map.clear()
+  }
+
   private def clean(dataLabel:DataLabel){
     map -= dataLabel
   }
+
+  //todo: clean map. Empty maps are being left over for each datalabel.
   private def retrieveValue(dataLabel: DataLabel, keyword: FitsKeyword):Option[AnyRef] = {
     if (map.contains(dataLabel)){
-      map(dataLabel).get(keyword)
+      map(dataLabel).remove(keyword)
     }else{
       None
     }
   }
+
   private def store(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef){
     if (!map.contains(dataLabel)){
       map += (dataLabel -> collection.mutable.Map.empty[FitsKeyword,AnyRef])

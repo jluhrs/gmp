@@ -24,7 +24,7 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
     val value = (seqexecKeyDB !? RetrieveValue(dataLabel,fitsKeyword)).asInstanceOf[Option[AnyRef]]
 
     if (value.isDefined) {
-      CollectedValue(fitsKeyword, value, fitsComment, headerIndex) :: Nil
+      CollectedValue(fitsKeyword, value.get, fitsComment, headerIndex) :: Nil
     }else{
       CollectedValue(fitsKeyword,"novaluefound",fitsComment,headerIndex) :: Nil
     }

@@ -14,6 +14,7 @@ case class InitObservation(programId: String, dataLabel: DataLabel)
 case class StoreKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef)
 case class RetrieveValue(dataLabel: DataLabel, keyword: FitsKeyword)
 case class Clean(dataLabel:DataLabel)
+case class CleanAll()
 trait HeaderReceiver
 
 @Component

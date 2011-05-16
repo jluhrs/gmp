@@ -9,6 +9,8 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import actors.Actor
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
+import edu.gemini.aspen.gds.actors.{EndAcquisitionReply, StartAcquisitionReply, PrepareObservationReply}
+import edu.gemini.aspen.gds.api.KeywordValueActor
 
 @RunWith(classOf[JUnitRunner])
 class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
@@ -17,11 +19,30 @@ class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
 
   private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase)
   describe("A GDSObseventHandler") {
+    it("should react to OBS_PREP events") {
+
+      val dataLabel = new DataLabel("GS-2011")
+
+      actorsFactory.buildPrepareObservationActors(dataLabel) returns List[KeywordValueActor]()
+
+      observationHandler.onObservationEvent(ObservationEvent.OBS_PREP, dataLabel)
+
+      Thread.sleep(100)
+      observationHandler.replyHandler ! PrepareObservationReply(dataLabel)
+      Thread.sleep(100)
+
+      // verify mock
+      there was one(actorsFactory).buildPrepareObservationActors(dataLabel)
+    }
     it("should react to OBS_START_ACQ events") {
 
       val dataLabel = new DataLabel("GS-2011")
 
-      actorsFactory.buildStartAcquisitionActors(dataLabel) returns List[Actor]()
+      actorsFactory.buildStartAcquisitionActors(dataLabel) returns List[KeywordValueActor]()
+
+      Thread.sleep(100)
+      observationHandler.replyHandler ! StartAcquisitionReply(dataLabel)
+      Thread.sleep(100)
 
       observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
 
@@ -31,9 +52,13 @@ class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
     it("should react to OBS_END_ACQ events") {
       val dataLabel = new DataLabel("GS-2011")
 
-      actorsFactory.buildEndAcquisitionActors(dataLabel) returns List[Actor]()
+      actorsFactory.buildEndAcquisitionActors(dataLabel) returns List[KeywordValueActor]()
 
       observationHandler.onObservationEvent(ObservationEvent.OBS_END_ACQ, dataLabel)
+
+      Thread.sleep(100)
+      observationHandler.replyHandler ! EndAcquisitionReply(dataLabel)
+      Thread.sleep(100)
 
       // verify mock
       there was one(actorsFactory).buildEndAcquisitionActors(dataLabel)
