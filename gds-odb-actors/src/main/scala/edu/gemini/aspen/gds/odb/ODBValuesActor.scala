@@ -23,7 +23,6 @@ class ODBValuesActor(queryRunner: IDBQueryRunner, configuration: List[GDSConfigu
         val spProgram = functor.program
         spProgram match {
             case Some(program) => {
-                //for (extractor <- buildExtractors) yield extractor(program)
                 for {c <- configuration
                      val (fitsKeyword, fitsComment, headerIndex) = (
                                      c.keyword,
@@ -37,36 +36,6 @@ class ODBValuesActor(queryRunner: IDBQueryRunner, configuration: List[GDSConfigu
             case None => List()
         }
     }
-
-    //    def buildExtractors: List[CollectorFunction] = {
-    //        configuration map {
-    //            c => def extractor(spProgram:SPProgram):CollectedValue = {
-    //                val (fitsKeyword, fitsComment, headerIndex) = (
-    //                c.keyword,
-    //                c.fitsComment.value,
-    //                c.index.index)
-    //                val extractor = extractorFunctions getOrElse (c.channel.name, null)
-    //                val value = extractor(spProgram)
-    //                CollectedValue(fitsKeyword, value, fitsComment, headerIndex)
-    //                extractor
-    //            }
-    //
-    //
-    //        }
-    //        //List(extractPIFirstName)
-    //    }
-
-
-    //    def extractPIFirstName(configuration: GDSConfiguration, extractor:ExtractorFunction): ExtractorFunction = {
-
-    //    def subExtractFunction(configuration: GDSConfiguration, extractor:ExtractorFunction): ExtractorFunction = {
-    //        val (fitsKeyword, fitsComment, headerIndex) = (
-    //                configuration.keyword,
-    //                configuration.fitsComment.value,
-    //                configuration.index.index)
-    //        val value = extractor(spProgram)
-    //        CollectedValue(fitsKeyword, value, fitsComment, headerIndex)
-    //    }
 
     def defaultExtractor(spProgram: SPProgram) = spProgram.toString
 
@@ -87,7 +56,7 @@ abstract class GDSProgramQuery(programID: String) extends DBAbstractQueryFunctor
  *
  * Changing the code may be required when changing the functor code which is cached on the ODB
  */
-class GDSProgramQuery1(programID: String) extends GDSProgramQuery(programID) {
+class GetProgramQuery(programID: String) extends GDSProgramQuery(programID) {
     var program: Option[SPProgram]= None
 
     def execute(p1: IDBDatabase, p2: ISPRemoteNode) {
@@ -101,6 +70,6 @@ class GDSProgramQuery1(programID: String) extends GDSProgramQuery(programID) {
 
 object GDSProgramQuery {
     def apply(programID: String): GDSProgramQuery = {
-        new GDSProgramQuery1(programID)
+        new GetProgramQuery(programID)
     }
 }
