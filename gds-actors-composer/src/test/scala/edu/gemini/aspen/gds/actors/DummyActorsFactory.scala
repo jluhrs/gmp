@@ -6,8 +6,6 @@ import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.api._
 
 class DummyActorsFactory extends KeywordActorsFactory {
-    override def buildInitializationActors(programID:String, dataLabel:DataLabel) = List()
-
     override def buildStartAcquisitionActors(dataLabel: DataLabel) = {
         val dummyActor = new KeywordValueActor{
           override def collectValues: List[CollectedValue] = {
@@ -16,8 +14,6 @@ class DummyActorsFactory extends KeywordActorsFactory {
         }
         dummyActor :: Nil
     }
-
-    override def buildEndAcquisitionActors(dataLabel: DataLabel) = List()
 
     def configure(configuration:List[GDSConfiguration]) {}
 }

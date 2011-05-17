@@ -18,8 +18,6 @@ class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) e
     val LOG =  Logger.getLogger(classOf[InstrumentStatusActorsFactory].getName)
     var actorsConfiguration: List[GDSConfiguration] = List()
 
-    override def buildInitializationActors(programID:String, dataLabel:DataLabel) = List()
-
     override def buildStartAcquisitionActors(dataLabel: DataLabel) = {
         configurationsForEvent(ObservationEvent.OBS_START_ACQ) map {
             case config:GDSConfiguration => new InstrumentStatusActor(statusDB, config)

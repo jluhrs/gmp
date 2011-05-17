@@ -13,8 +13,6 @@ import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabas
 class SeqexecActorsFactory(@Requires seqexecKeyDB: TemporarySeqexecKeywordsDatabase) extends KeywordActorsFactory {
   var conf: List[GDSConfiguration] = List()
 
-  override def buildInitializationActors(programID: String, dataLabel: DataLabel) = List()
-
   override def buildPrepareObservationActors(dataLabel: DataLabel) = {
     conf filter {
       _.event.name == ObservationEvent.OBS_PREP.toString
@@ -22,10 +20,6 @@ class SeqexecActorsFactory(@Requires seqexecKeyDB: TemporarySeqexecKeywordsDatab
       case config: GDSConfiguration => new SeqexecActor(seqexecKeyDB, dataLabel, config)
     }
   }
-
-  override def buildStartAcquisitionActors(dataLabel: DataLabel) = List()
-
-  override def buildEndAcquisitionActors(dataLabel: DataLabel) = List()
 
   override def configure(configuration: List[GDSConfiguration]) {
     conf = configuration filter {

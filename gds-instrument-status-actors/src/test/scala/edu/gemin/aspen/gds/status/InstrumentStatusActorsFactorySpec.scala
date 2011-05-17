@@ -20,12 +20,6 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
             val actors = instrumentStatusActorsFactory.buildStartAcquisitionActors(dataLabel)
             actors should be('empty)
         }
-        it ("should return an empty list of actors upon initialization") {
-            val (dataLabel, instrumentStatusActorsFactory) = createFixture
-
-            val actors = instrumentStatusActorsFactory.buildInitializationActors("programID", dataLabel)
-            actors should be('empty)
-        }
         it("should be configurable with one item") {
             val (dataLabel, instrumentStatusActorsFactory) = createFixture
             val configuration = buildOneConfiguration("OBS_START_ACQ", "STATUS1", "gpi:status1") :: Nil

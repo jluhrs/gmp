@@ -23,12 +23,6 @@ class CompositeActorsFactoryImpl(@Property(name="keywordsConfiguration", value =
     var factories:List[KeywordActorsFactory] = List()
     var config:List[GDSConfiguration] = List()
 
-    override def buildInitializationActors(programID:String, dataLabel:DataLabel) = {
-        factories flatMap (
-            _.buildInitializationActors(programID, dataLabel)
-        )
-    }
-
     /**
      * Composite of the other factories registered as OSGI services
      */

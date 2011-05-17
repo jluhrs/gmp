@@ -8,27 +8,22 @@ import edu.gemini.aspen.giapi.data.DataLabel
  */
 trait KeywordActorsFactory {
     /**
-     * Request the factory to create and start actors when the 
+     * Request the factory to create and start actors required for the prepare observation part
      */
-    def buildInitializationActors(programID:String, dataLabel:DataLabel): List[KeywordValueActor]
-
-  /**
-   * Request the factory to create and start actors required for the prepare observation part
-   */
-    def buildPrepareObservationActors(dataLabel:DataLabel): List[KeywordValueActor] = List()
+    def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] = List()
 
     /**
      * Request the factory to create and start actors required for the start acquisition part
      */
-    def buildStartAcquisitionActors(dataLabel:DataLabel): List[KeywordValueActor]
+    def buildStartAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = List()
 
     /**
      * Request the factory to create and start actors required for the end acquisition part
      */
-    def buildEndAcquisitionActors(dataLabel:DataLabel): List[KeywordValueActor]
+    def buildEndAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = List()
 
     /**
      * Passes the global GDS configuration along
      */
-    def configure(configuration:List[GDSConfiguration])
+    def configure(configuration: List[GDSConfiguration])
 }
