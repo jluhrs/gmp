@@ -1,14 +1,22 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
 import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
-import actors.Actor
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabase}
+import actors.Reactor
+import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Store
+
+sealed abstract class RequestHandlerMessage
+
+case class InitObservation(programId: String, dataLabel: DataLabel) extends RequestHandlerMessage
+
+case class StoreKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef) extends RequestHandlerMessage
+
 
 /**
  * Singleton actor that forwards messages from the XMLRPC server to the appropriate DB
  */
-object RequestHandler extends Actor {
+object RequestHandler extends Reactor[RequestHandlerMessage] {
   private val LOG = Logger.getLogger(this.getClass.getName)
 
   private var keywordsDatabase: TemporarySeqexecKeywordsDatabase = _
@@ -31,12 +39,12 @@ object RequestHandler extends Actor {
   }
 
   def initObservation(programId: String, dataLabel: DataLabel) {
-    LOG.info("Program ID: "+programId+" Data label: "+dataLabel)
+    LOG.info("Program ID: " + programId + " Data label: " + dataLabel)
     programIdDB ! StoreProgramId(dataLabel, programId)
   }
 
   def storeKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef) {
-    LOG.info("Data label: "+dataLabel+" Keyword: "+keyword+" Value: "+value)
-    keywordsDatabase ! StoreKeyword(dataLabel, keyword, value)
+    LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
+    keywordsDatabase ! Store(dataLabel, keyword, value)
   }
 }
