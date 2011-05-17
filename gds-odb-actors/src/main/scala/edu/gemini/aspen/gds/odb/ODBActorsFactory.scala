@@ -22,7 +22,7 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires progra
     var actorsConfiguration: List[GDSConfiguration] = List()
 
     override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] ={
-        val programID = programIdDatabase.retrieveProgramId(dataLabel)
+        val programID = programIdDatabase !? RetrieveProgramId(dataLabel)
         programID match {
             case Some(id) => new ODBValuesActor(dbService.getQueryRunner, actorsConfiguration) :: Nil
                 // TODO add log

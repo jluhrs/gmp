@@ -30,7 +30,7 @@ class ODBValuesActor(queryRunner: IDBQueryRunner, configuration: List[GDSConfigu
     }
 
     private def collectValuesFromProgram(program: SPProgram): List[CollectedValue] = {
-        val cv =for {c <- configuration
+        for {c <- configuration
              val (fitsKeyword, fitsComment, headerIndex) = (
                      c.keyword,
                      c.fitsComment.value,
