@@ -1,11 +1,10 @@
 package edu.gemini.aspen.gds.keywords.database
 
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
 import collection.JavaConversions._
-import edu.gemini.fits.{DefaultHeader, Header, HeaderItem}
-import scala.None
+import edu.gemini.fits.{DefaultHeader, Header}
 import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
@@ -16,14 +15,13 @@ trait KeywordsDatabase extends Actor
 //case classes define the messages accepted by the DataBase
 case class Store(dataLabel: DataLabel, value: CollectedValue)
 
-case class Retrieve(dataLabel: DataLabel, keyword: FitsKeyword)
+case class Retrieve(dataLabel: DataLabel)
 
-case class RetrieveExtension(dataLabel: DataLabel, index: Int)
+case class Clean(dataLabel: DataLabel)
 
-case class RetrieveAll(dataLabel: DataLabel)
-
-//todo: retrieve a specific header? ex. dataset:X, header:0
-
+/**
+ * Component to store CollectedValue as HeaderItem, associated to DataLabel
+ */
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordsDatabase]))
@@ -35,10 +33,9 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     loop {
       react {
         case Store(dataLabel, value) => store(dataLabel, value)
-        case Retrieve(dataLabel, keyword) => sender ! retrieve(dataLabel, keyword)
-        case RetrieveExtension(dataLabel, index) => sender ! retrieveExtension(dataLabel, index)
-        case RetrieveAll(dataLabel) => sender ! retrieveAll(dataLabel)
-        case x:Any => throw new RuntimeException("Argument not known " + x)
+        case Retrieve(dataLabel) => sender ! retrieve(dataLabel)
+        case Clean(dataLabel) => clean(dataLabel)
+        case x: Any => throw new RuntimeException("Argument not known " + x)
       }
     }
   }
@@ -76,55 +73,22 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   }
 
   /**
-   * Retrieve data from the database
-   *
-   * @param dataLabel from which to retrieve data
-   * @param keyword keyword to retrieve
-   *
-   * @return Option containing the value if it was found in the DB
-   */
-  private def retrieve(dataLabel: DataLabel, keyword: FitsKeyword): Option[HeaderItem] = {
-    //todo: should return list?
-    val items = for {
-      headerList <- map.get(dataLabel).toList
-      header <- headerList
-      item = header.get(keyword.getName)
-      if item != null
-    } yield item
-
-    if (items.isEmpty) {
-      None
-    } else {
-      Some(items.get(0))
-    }
-  }
-
-  /**
-   * Retrieve data from the database
-   *
-   * @param dataLabel from which to retrieve data
-   * @param keyword keyword to retrieve
-   *
-   * @return Option containing the value if it was found in the DB
-   */
-  private def retrieveExtension(dataLabel: DataLabel, index: Int): Option[Header] = {
-    val headers = for {
-      headerList <- map.get(dataLabel).toList
-      header: Header <- headerList
-      if header.getIndex == index
-    } yield header
-
-    headers.headOption
-  }
-
-  /**
    * Retrieve all the data associated to a given data set
    *
    * @param dataLabel for which to retrieve data
    *
    * @return a HashMap[String, AnyRef] containing the data for the given data set
    */
-  private def retrieveAll(dataLabel: DataLabel): Option[List[Header]] = map.get(dataLabel)
+  private def retrieve(dataLabel: DataLabel): Option[List[Header]] = map.get(dataLabel)
+
+  /**
+   * Remove all keywords associated with a given DataLabel
+   *
+   * @param dataLabel for which to remove data
+   */
+  private def clean(dataLabel: DataLabel) {
+    map.remove(dataLabel)
+  }
 
   @Validate
   def validate() {
