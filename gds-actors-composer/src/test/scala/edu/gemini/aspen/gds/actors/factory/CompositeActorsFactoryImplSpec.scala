@@ -21,13 +21,31 @@ class CompositeActorsFactoryImplSpec extends Spec with ShouldMatchers {
             val actors = startObservationFactory.buildStartAcquisitionActors(dataLabel)
             actors should be('empty)
         }
-        it("should return a non empty list of actors with a mocked factory") {
+        it("should return a non empty list of actors for buildStartAcquisitionActors") {
             val (dataLabel, startObservationFactory) = createFixture
 
             // Register dummy factory
             startObservationFactory.bindKeywordFactory(new DummyActorsFactory())
 
             val actors = startObservationFactory.buildStartAcquisitionActors(dataLabel)
+            actors should have length(1)
+        }
+        it("should return a non empty list of actors for buildPrepareObservationActors") {
+            val (dataLabel, startObservationFactory) = createFixture
+
+            // Register dummy factory
+            startObservationFactory.bindKeywordFactory(new DummyActorsFactory())
+
+            val actors = startObservationFactory.buildPrepareObservationActors(dataLabel)
+            actors should have length(1)
+        }
+        it("should return a non empty list of actors for buildEndAcquisitionActors") {
+            val (dataLabel, startObservationFactory) = createFixture
+
+            // Register dummy factory
+            startObservationFactory.bindKeywordFactory(new DummyActorsFactory())
+
+            val actors = startObservationFactory.buildEndAcquisitionActors(dataLabel)
             actors should have length(1)
         }
         it("should return a non empty list of actors after registration and unregistration of a factory") {

@@ -32,6 +32,12 @@ class CompositeActorsFactoryImpl(@Property(name="keywordsConfiguration", value =
         )
     }
 
+    override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] = {
+        factories flatMap (
+            _.buildPrepareObservationActors(dataLabel)
+        )
+    }
+
     override def buildEndAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = {
         factories flatMap (
             _.buildEndAcquisitionActors(dataLabel)
@@ -56,9 +62,9 @@ class CompositeActorsFactoryImpl(@Property(name="keywordsConfiguration", value =
         factories = factories filterNot (_ == keywordFactory)
     }
 
-    @Validate()
+    @Validate
     def validate() {
-        LOG.info("ObservationStartFactory validated with config:"  + configurationFile)
+        LOG.info("CompositeActorsFactory validated with config:"  + configurationFile)
         val configurationList = new GDSConfigurationParser().parseFile(configurationFile)
 
         config = for (x <- configurationList if x.isInstanceOf[GDSConfiguration] ) yield {
