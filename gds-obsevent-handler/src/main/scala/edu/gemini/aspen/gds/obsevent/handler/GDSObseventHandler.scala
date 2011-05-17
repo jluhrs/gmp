@@ -30,6 +30,10 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
       case OBS_PREP => replyHandler ! PrepareObservation(dataLabel)
       case OBS_START_ACQ => replyHandler ! StartAcquisition(dataLabel)
       case OBS_END_ACQ => replyHandler ! EndAcquisition(dataLabel)
+      case OBS_START_READOUT =>
+      case OBS_END_READOUT =>
+      case OBS_START_DSET_WRITE =>
+      case OBS_END_DSET_WRITE => replyHandler ! EndWrite(dataLabel)
       case e: ObservationEvent => LOG.info("Non handled observation event: " + e)
     }
   }
@@ -48,6 +52,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
         case StartAcquisitionReply(dataLabel) => startAcquisitionReply(dataLabel)
         case EndAcquisition(dataLabel) => endAcquisition(dataLabel)
         case EndAcquisitionReply(dataLabel) => endAcquisitionReply(dataLabel)
+        case EndWrite(dataLabel) => endWrite(dataLabel)
         case x: Any => throw new RuntimeException("Argument not known " + x)
       }
     }
@@ -58,6 +63,9 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
   //set of observations that have completed the OBS_START_ACQ header collection
   private var started: Set[DataLabel] = Set[DataLabel]()
+
+  //set of observations that have completed the OBS_END_ACQ header collection
+  private var ended: Set[DataLabel] = Set[DataLabel]()
 
   private def prepareObservation(dataLabel: DataLabel) {
     new KeywordSetComposer(actorsFactory, keywordsDatabase) ! PrepareObservation(dataLabel)
@@ -73,7 +81,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
       new KeywordSetComposer(actorsFactory, keywordsDatabase) ! StartAcquisition(dataLabel)
     } else {
-      throw new RuntimeException("Dataset " + dataLabel + " started but never preped")
+      throw new RuntimeException("Dataset " + dataLabel + " started acquisition but never preped")
     }
   }
 
@@ -87,14 +95,21 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
       new KeywordSetComposer(actorsFactory, keywordsDatabase) ! EndAcquisition(dataLabel)
     } else {
-      throw new RuntimeException("Dataset " + dataLabel + " ended but never started")
+      throw new RuntimeException("Dataset " + dataLabel + " ended acquisition but never started it")
     }
   }
 
   private def endAcquisitionReply(dataLabel: DataLabel) {
-    //add FITS file update here
-    updateFITSFile(dataLabel)
+    ended += dataLabel
+  }
 
+  private def endWrite(dataLabel: DataLabel) {
+    if (ended.contains(dataLabel)) {
+      ended -= dataLabel
+      updateFITSFile(dataLabel)
+    } else {
+      throw new RuntimeException("Dataset " + dataLabel + " ended writing dataset but never ended acquisition")
+    }
   }
 
   private def updateFITSFile(dataLabel: DataLabel): Unit = {

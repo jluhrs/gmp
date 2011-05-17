@@ -28,6 +28,11 @@ case class StartAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
 case class EndAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
 
 /**
+ * Message to indicate that a dataset write was completed
+ */
+case class EndWrite(dataLabel: DataLabel) extends AcquisitionRequest
+
+/**
  * Parent class of actor's replies to KeywordSetComposer
  */
 sealed abstract class AcquisitionReply
