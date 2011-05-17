@@ -28,12 +28,6 @@ class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
             val actors = epicsActorsFactory.buildStartAcquisitionActors(dataLabel)
             actors should be('empty)
         }
-        it ("should return an empty list of actors upon initialization") {
-            val (dataLabel, epicsActorsFactory) = createFixture
-
-            val actors = epicsActorsFactory.buildInitializationActors("programID", dataLabel)
-            actors should be('empty)
-        }
         it("should be configurable with one item") {
             val (dataLabel, epicsActorsFactory) = createFixture
             val configuration = List(
