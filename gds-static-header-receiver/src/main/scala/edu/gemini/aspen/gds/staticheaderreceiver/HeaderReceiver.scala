@@ -5,14 +5,25 @@ import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.keywords.database.{ProgramIdDatabaseImpl, ProgramIdDatabase}
 
-case class InitObservation(programId: String, dataLabel: DataLabel)
 
+/**
+ * Case classes representing messages to actors
+ */
+case class InitObservation(programId: String, dataLabel: DataLabel)
 case class StoreKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef)
 case class RetrieveValue(dataLabel: DataLabel, keyword: FitsKeyword)
 case class Clean(dataLabel:DataLabel)
 case class CleanAll()
+
+/**
+ * Needed by iPojo
+ */
 trait HeaderReceiver
 
+
+/**
+ * Component that starts the XMLRPC server and starts the actor that forwards messages to the appropriate database
+ */
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[HeaderReceiver]))

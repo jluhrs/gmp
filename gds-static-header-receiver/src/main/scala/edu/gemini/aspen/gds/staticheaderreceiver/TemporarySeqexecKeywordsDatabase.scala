@@ -4,8 +4,16 @@ import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
 import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
 import actors.Actor
 
+/**
+ * Needed for iPojo
+ */
 trait TemporarySeqexecKeywordsDatabase extends Actor
 
+
+/**
+ * This component stores keyword values coming from the seqexec, so that later an actor will pick them up and
+ * complete the information with data from the config file.
+ */
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[TemporarySeqexecKeywordsDatabase]))

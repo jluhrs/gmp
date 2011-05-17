@@ -5,6 +5,9 @@ import actors.Actor
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabase}
 
+/**
+ * Singleton actor that forwards messages from the XMLRPC server to the appropriate DB
+ */
 object RequestHandler extends Actor {
   private val LOG = Logger.getLogger(this.getClass.getName)
 

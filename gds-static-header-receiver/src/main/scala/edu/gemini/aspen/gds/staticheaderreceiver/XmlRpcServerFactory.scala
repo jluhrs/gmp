@@ -3,8 +3,11 @@ package edu.gemini.aspen.gds.staticheaderreceiver
 import org.apache.xmlrpc.server.{XmlRpcServer, PropertyHandlerMapping, XmlRpcServerConfigImpl}
 import org.apache.xmlrpc.webserver.WebServer
 
-object XmlRpcServerFactory {
 
+/**
+ * Constructs an XMLRPC server.
+ */
+object XmlRpcServerFactory {
 
   def newServer(serverName: String, serverClass: Class[_], port: Int): WebServer = {
     val webServer = new WebServer(port);
