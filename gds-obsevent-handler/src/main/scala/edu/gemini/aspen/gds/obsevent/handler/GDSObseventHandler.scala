@@ -5,9 +5,9 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel, ObservationEven
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import edu.gemini.aspen.gds.fits.FitsUpdater
 import actors.Actor
-import edu.gemini.aspen.gds.keywords.database.{RetrieveAll, KeywordsDatabase}
+import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
 import java.io.File
-import edu.gemini.fits.{Header}
+import edu.gemini.fits.Header
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
@@ -107,13 +107,14 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     if (ended.contains(dataLabel)) {
       ended -= dataLabel
       updateFITSFile(dataLabel)
+      keywordsDatabase ! Clean(dataLabel)
     } else {
       throw new RuntimeException("Dataset " + dataLabel + " ended writing dataset but never ended acquisition")
     }
   }
 
   private def updateFITSFile(dataLabel: DataLabel): Unit = {
-    val list = (keywordsDatabase !? RetrieveAll(dataLabel)).asInstanceOf[Option[List[Header]]]
+    val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[Option[List[Header]]]
     list match {
       case Some(headersList) => new FitsUpdater(new File("/tmp"), dataLabel, headersList).updateFitsHeaders
       case None =>
