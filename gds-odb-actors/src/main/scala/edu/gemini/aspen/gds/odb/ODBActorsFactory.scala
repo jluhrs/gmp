@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.odb
 
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import java.util.logging.Logger
 import edu.gemini.pot.spdb.IDBDatabaseService
 import edu.gemini.aspen.gds.api.{KeywordValueActor, KeywordActorsFactory, GDSConfiguration}
@@ -23,11 +23,17 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires progra
 
     override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] ={
         val programID = programIdDatabase !? RetrieveProgramId(dataLabel)
+        // Only produce actors if the programID has been already stored in the programIdDatabase
         programID match {
-            case Some(id) => new ODBValuesActor(dbService.getQueryRunner, actorsConfiguration) :: Nil
+            case Some(id) if id.isInstanceOf[String] => buildODBActor(id.asInstanceOf[String])
                 // TODO add log
             case None => List()
         }
+    }
+
+    def buildODBActor(programID:String)= {
+        LOG.info("Building ODB Actor for program: " + programID)
+        new ODBValuesActor(programID, dbService.getQueryRunner, actorsConfiguration) :: Nil
     }
 
     override def configure(configuration:List[GDSConfiguration]) {

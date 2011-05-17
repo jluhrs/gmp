@@ -14,6 +14,7 @@ import edu.gemini.pot.spdb.{IDBQueryFunctor, IDBDatabase, IDBQueryRunner}
 @RunWith(classOf[JUnitRunner])
 class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     val dataLabel = new DataLabel("GS-2011")
+    val programID = "programID"
     val queryRunner = mock[IDBQueryRunner]
 
     val lastNameChannel = "odb:piLastName"
@@ -24,14 +25,14 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     val piInfo = new SPProgram.PIInfo(firstName, lastName, null, null, null)
     spProgram.setPIInfo(piInfo)
 
-    describe("An EpicsValuesActor") {
+    describe("An ODBValuesActor") {
         it("should reply to Collect messages") {
             // mock return value
             queryRunner.queryPrograms(any[IDBQueryFunctor]) returns new MockGDSProgramQuery(spProgram)
             val fitsKeyword = new FitsKeyword("PIFSTNAM")
             val configuration = buildConfigurationItem(fitsKeyword, lastNameChannel, "PI Last Name")
 
-            val odbValuesActor = new ODBValuesActor(queryRunner, List(configuration))
+            val odbValuesActor = new ODBValuesActor(programID, queryRunner, List(configuration))
 
             // Send an init message
             val result = odbValuesActor !! Collect
@@ -53,7 +54,7 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             val fitsKeyword = new FitsKeyword("PIFSTNAM")
             val configuration = buildConfigurationItem(fitsKeyword, "odb:achannel", "PI Last Name")
 
-            val odbValuesActor = new ODBValuesActor(queryRunner, List(configuration))
+            val odbValuesActor = new ODBValuesActor(programID, queryRunner, List(configuration))
 
             // Send an init message
             val result = odbValuesActor !! Collect
@@ -75,7 +76,7 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             val configuration1 = buildConfigurationItem(lastNameFitsKeyword, lastNameChannel, "PI Last Name")
             val configuration2 = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI First Name")
 
-            val odbValuesActor = new ODBValuesActor(queryRunner, List(configuration1, configuration2))
+            val odbValuesActor = new ODBValuesActor(programID, queryRunner, List(configuration1, configuration2))
 
             // Send an init message
             val result = odbValuesActor !! Collect
