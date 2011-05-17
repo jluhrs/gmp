@@ -1,11 +1,11 @@
 package edu.gemini.aspen.gds.odb
 
-import edu.gemini.aspen.gds.api.KeywordActorsFactory
-import edu.gemini.aspen.gds.api.GDSConfiguration
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import java.util.logging.Logger
 import edu.gemini.pot.spdb.IDBDatabaseService
+import edu.gemini.aspen.gds.api.{KeywordValueActor, KeywordActorsFactory, GDSConfiguration}
+import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, ProgramIdDatabase}
 
 /**
  * Factory of Actors that can retrieve values from the ODB
@@ -17,20 +17,17 @@ import edu.gemini.pot.spdb.IDBDatabaseService
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class ODBActorsFactory(@Requires dbService: IDBDatabaseService) extends KeywordActorsFactory {
+class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires programIdDatabase:ProgramIdDatabase) extends KeywordActorsFactory {
     val LOG =  Logger.getLogger(classOf[ODBActorsFactory].getName)
     var actorsConfiguration: List[GDSConfiguration] = List()
 
-    override def buildInitializationActors(programID:String, dataLabel:DataLabel) = {
-        new ODBValuesActor(dbService.getQueryRunner, actorsConfiguration) :: Nil
-    }
-
-    override def buildStartAcquisitionActors(dataLabel: DataLabel) = {
-        List()
-    }
-
-    override def buildEndAcquisitionActors(dataLabel: DataLabel) = {
-        List()
+    override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] ={
+        val programID = programIdDatabase !? RetrieveProgramId(dataLabel)
+        programID match {
+            case Some(id) => new ODBValuesActor(dbService.getQueryRunner, actorsConfiguration) :: Nil
+                // TODO add log
+            case None => List()
+        }
     }
 
     override def configure(configuration:List[GDSConfiguration]) {

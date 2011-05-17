@@ -3,8 +3,8 @@ package edu.gemini.aspen.gds.odb
 import edu.gemini.aspen.gds.api.KeywordValueActor
 import edu.gemini.aspen.gds.api.{GDSConfiguration, CollectedValue}
 import edu.gemini.spModel.gemini.obscomp.SPProgram
-import edu.gemini.pot.sp.ISPRemoteNode
 import edu.gemini.pot.spdb.{IDBDatabase, DBAbstractQueryFunctor, IDBQueryRunner}
+import edu.gemini.pot.sp.{SPProgramID, ISPRemoteNode}
 
 /**
  * Actor that can produce as a reply of a Collect request with the value of an StatusItem linked
@@ -22,19 +22,21 @@ class ODBValuesActor(queryRunner: IDBQueryRunner, configuration: List[GDSConfigu
         val functor = queryRunner.queryPrograms(GDSProgramQuery("GS-2006B-Q-57")).asInstanceOf[GDSProgramQuery]
         val spProgram = functor.program
         spProgram match {
-            case Some(program) => {
-                for {c <- configuration
-                     val (fitsKeyword, fitsComment, headerIndex) = (
-                                     c.keyword,
-                                     c.fitsComment.value,
-                                     c.index.index)
-                     if extractorFunctions contains c.channel.name
-                     val r = extractorFunctions.getOrElse(c.channel.name, null)(program)
-                }
-                yield CollectedValue(fitsKeyword, r, fitsComment, headerIndex)
-            }
+            case Some(program) => collectValuesFromProgram(program)
             case None => List()
         }
+    }
+
+    private def collectValuesFromProgram(program: SPProgram): List[CollectedValue] = {
+        for {c <- configuration
+             val (fitsKeyword, fitsComment, headerIndex) = (
+                     c.keyword,
+                     c.fitsComment.value,
+                     c.index.index)
+             if extractorFunctions contains c.channel.name
+             val r = extractorFunctions.getOrElse(c.channel.name, null)(program)
+        }
+        yield CollectedValue(fitsKeyword, r, fitsComment, headerIndex)
     }
 
     def defaultExtractor(spProgram: SPProgram) = spProgram.toString
@@ -46,7 +48,7 @@ class ODBValuesActor(queryRunner: IDBQueryRunner, configuration: List[GDSConfigu
 }
 
 abstract class GDSProgramQuery(programID: String) extends DBAbstractQueryFunctor {
-   def program: Option[SPProgram]
+    def program: Option[SPProgram]
 }
 
 /**
@@ -57,10 +59,10 @@ abstract class GDSProgramQuery(programID: String) extends DBAbstractQueryFunctor
  * Changing the code may be required when changing the functor code which is cached on the ODB
  */
 class GetProgramQuery(programID: String) extends GDSProgramQuery(programID) {
-    var program: Option[SPProgram]= None
+    var program: Option[SPProgram] = None
 
     def execute(p1: IDBDatabase, p2: ISPRemoteNode) {
-        val programID = p2.getProgramID()
+        val programID = p2.getProgramID
 
         if (programID != null && programID.stringValue().equals(programID)) {
             program = Option(p2.asInstanceOf[SPProgram])

@@ -10,6 +10,7 @@ import edu.gemini.aspen.gds.api._
 import edu.gemini.spModel.gemini.obscomp.SPProgram
 import edu.gemini.pot.sp.ISPRemoteNode
 import edu.gemini.pot.spdb.{IDBQueryFunctor, IDBDatabase, IDBQueryRunner}
+import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabaseImpl
 
 @RunWith(classOf[JUnitRunner])
 class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
