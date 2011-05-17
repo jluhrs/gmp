@@ -42,4 +42,4 @@ class SeqexecActorsTest extends AssertionsForJUnit {
       case x:AnyRef => fail("Wrong answer")
     }
   }
-}o
+}
