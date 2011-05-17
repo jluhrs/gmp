@@ -159,6 +159,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 
     <dependencies>
         <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>jini-driver</artifactId>
+            <version>1.0.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
             <version>1.4.0</version>
@@ -293,12 +298,12 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>gmp-webconsole-branding</artifactId>
             <version>0.1.0</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-webconsole-docs</artifactId>
             <version>0.1.0</version>
             <type>war</type>
-        </dependency>
+        </dependency-->
         <!-- Commands Handlers State Service -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -371,6 +376,16 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-static-header-receiver</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-seqexec-actors</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>fits-util</artifactId>
             <version>1.2.0-SNAPSHOT</version>
@@ -379,6 +394,21 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <groupId>gemini-nocs</groupId>
             <artifactId>file-util</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-odb-actors</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>spdb-activator</artifactId>
+            <version>2011A.1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>rr</artifactId>
+            <version>0.1.0</version>
         </dependency>
     </dependencies>
 
