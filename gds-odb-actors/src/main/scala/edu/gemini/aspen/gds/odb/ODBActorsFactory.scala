@@ -25,7 +25,7 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires progra
         val programID = programIdDatabase !? RetrieveProgramId(dataLabel)
         // Only produce actors if the programID has been already stored in the programIdDatabase
         programID match {
-            case Some(id) if id.isInstanceOf[String] => buildODBActor(id.asInstanceOf[String])
+            case Some(id:String) => buildODBActor(id)
                 // TODO add log
             case None => List()
         }

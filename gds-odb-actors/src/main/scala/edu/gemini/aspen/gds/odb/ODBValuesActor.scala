@@ -15,7 +15,7 @@ class ODBValuesActor(programID:String, queryRunner: IDBQueryRunner, configuratio
     type ExtractorFunction = SPProgram => AnyRef
     type CollectorFunction = SPProgram => CollectedValue
 
-    // Defines a list of "channels" to functions that can extract information from a SPProgram instance
+    // Defines a list of "channels" to functions map that can extract information from a SPProgram instance
     // More methods can be added to the list to support more channels
     val extractorFunctions = Map[String, ExtractorFunction](
         "odb:piLastName" -> extractPILastName,
