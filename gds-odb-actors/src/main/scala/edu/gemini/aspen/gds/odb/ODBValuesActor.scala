@@ -45,7 +45,6 @@ class ODBValuesActor(programID:String, queryRunner: IDBQueryRunner, configuratio
                      c.index.index)
              if extractorFunctions contains c.channel.name
              val r = extractorFunctions.getOrElse(c.channel.name, null)(program)
-
         }
         yield CollectedValue(fitsKeyword, r, fitsComment, headerIndex)
     }
@@ -82,7 +81,7 @@ class GetProgramQuery6(programID: String) extends GDSProgramQuery(programID) {
             val ispProgram = p2.asInstanceOf[ISPProgram]
             val dataObject = Option(ispProgram.getDataObject)
             dataObject match {
-                case Some(spProgram) if spProgram.isInstanceOf[SPProgram] => program = Option(ispProgram.getDataObject.asInstanceOf[SPProgram])
+                case Some(spProgram:SPProgram) => program = Option(spProgram)
                 case Some(x) =>
                 case None =>
             }
