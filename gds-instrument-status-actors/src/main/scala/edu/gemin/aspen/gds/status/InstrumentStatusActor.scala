@@ -22,9 +22,7 @@ class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration:GDSCo
         }
         statusItem match {
             case Some(x) => {
-                // TODO How to handle non string items
-                val value = x.asInstanceOf[StatusItem[String]].getValue
-                buildCollectedValues(value)
+                buildCollectedValues(x.getValue)
             }
             case None => {
                 // In case no status item, we use the default value

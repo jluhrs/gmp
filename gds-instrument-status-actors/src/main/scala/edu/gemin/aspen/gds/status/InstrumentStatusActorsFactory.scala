@@ -20,13 +20,13 @@ class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) e
 
     override def buildStartAcquisitionActors(dataLabel: DataLabel) = {
         configurationsForEvent(ObservationEvent.OBS_START_ACQ) map {
-            case config:GDSConfiguration => new InstrumentStatusActor(statusDB, config)
+            new InstrumentStatusActor(statusDB, _)
         }
     }
 
     override def buildEndAcquisitionActors(dataLabel: DataLabel) = {
         configurationsForEvent(ObservationEvent.OBS_END_ACQ) map {
-            case config:GDSConfiguration => new InstrumentStatusActor(statusDB, config)
+            new InstrumentStatusActor(statusDB, _)
         }
     }
 
@@ -34,7 +34,7 @@ class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) e
         actorsConfiguration = configuration filter { _.subsystem.name == "STATUS"}
     }
 
-    def configurationsForEvent(e: ObservationEvent) = {
+    private def configurationsForEvent(e: ObservationEvent) = {
         actorsConfiguration filter {_.event.name == e.toString}
     }
 

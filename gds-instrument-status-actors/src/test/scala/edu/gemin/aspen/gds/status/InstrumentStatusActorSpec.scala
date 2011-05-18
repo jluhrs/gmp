@@ -14,6 +14,9 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus
 class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
     val defaultValue = "DEFAULT"
     val fitsKeyword = new FitsKeyword("GPISTATUS")
+    val dataLabel = new DataLabel("GS-2011")
+    val statusDB = mock[StatusDatabaseService]
+    val channelName = "gpi:status1"
 
     def buildConfiguration(channelName: String): GDSConfiguration = {
         GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), fitsKeyword, HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue(defaultValue), Subsystem("STATUS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Current global status of the instrument"))
@@ -21,8 +24,6 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
 
     describe("An InstrumentStatusActor") {
         it("should reply to Collect messages") {
-            // Generate dataset
-            val (dataLabel, statusDB, channelName) = createFixture
             val configuration = buildConfiguration(channelName)
 
             val referenceValue = "ok"
@@ -47,8 +48,6 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
             there was one(statusDB).getStatusItem(channelName)
         }
         it("should reply to Collect messages even when status value is unknown") {
-            // Generate dataset
-            val (dataLabel, statusDB, channelName) = createFixture
             val configuration = buildConfiguration(channelName)
 
             // mock return value
@@ -71,10 +70,5 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
             there was one(statusDB).getStatusItem(channelName)
         }
     }
-    def createFixture = (
-        new DataLabel("GS-2011"),
-        mock[StatusDatabaseService],
-        "gpi:status1"
-    )
 }
 
