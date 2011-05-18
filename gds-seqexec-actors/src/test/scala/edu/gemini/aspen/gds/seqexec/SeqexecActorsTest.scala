@@ -18,8 +18,16 @@ class SeqexecActorsTest extends AssertionsForJUnit {
 
     val seqActor = new SeqexecActor(db, "label", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
 
-
     assert(seqActor.collectValues == List(CollectedValue("KEY", 1.asInstanceOf[AnyRef], "my comment", 0)))
+  }
+
+  @Test
+  def testEmpty() {
+    val db = new TemporarySeqexecKeywordsDatabaseImpl
+
+    val seqActor = new SeqexecActor(db, "label", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+
+    assert(seqActor.collectValues == List())
   }
 
   @Test

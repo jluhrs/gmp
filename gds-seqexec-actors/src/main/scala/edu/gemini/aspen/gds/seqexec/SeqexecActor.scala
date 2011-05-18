@@ -24,11 +24,10 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
 
     val value = (seqexecKeyDB !? Retrieve(dataLabel, fitsKeyword)).asInstanceOf[Option[AnyRef]]
 
-    if (value.isDefined) {
-      CollectedValue(fitsKeyword, value.get, fitsComment, headerIndex) :: Nil
-    } else {
-      List()
-    }
+    value map {
+      v => CollectedValue(fitsKeyword, v, fitsComment, headerIndex)
+    } toList
+
   }
 
 }
