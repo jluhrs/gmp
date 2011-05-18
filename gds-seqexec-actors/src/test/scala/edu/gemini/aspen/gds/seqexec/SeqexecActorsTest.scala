@@ -39,7 +39,7 @@ class SeqexecActorsTest extends AssertionsForJUnit {
         assert(value == 1)
         assert(comment == "my comment")
       }
-      case x: AnyRef => fail("Wrong answer")
+      case _ => fail("Wrong answer")
     }
   }
 }
