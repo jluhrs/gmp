@@ -127,6 +127,22 @@
             <artifactId>gds-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-actors-composer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-fits-updater</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-epics-actors</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>jca-lib</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.weiglewilczek.scala-lang-osgi</groupId>
             <artifactId>scala-library</artifactId>
             <version>${scala-lang.version}</version>

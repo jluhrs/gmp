@@ -55,7 +55,6 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>jca-lib</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

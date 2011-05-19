@@ -4,20 +4,17 @@ import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 /**
  * Class HeartbeatDistributorIT
@@ -26,21 +23,12 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
  *         Date: 3/10/11
  */
 @RunWith(JUnit4TestRunner.class)
-public class HeartbeatDistributorIT {
+public class HeartbeatDistributorIT extends FelixContainerConfigurationBase {
     private final Logger LOG = Logger.getLogger(HeartbeatDistributorIT.class.getName());
-    @Inject
-    private BundleContext context;
 
     @Configuration
     public static Option[] withJMSProviderConfig() {
         return options(
-                felix(),
-                cleanCaches(),
-                systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + "/src/test/resources/conf/services"),
-                systemProperty("felix.fileinstall.noInitialDelay").value("true"),
-                mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
-                mavenBundle().artifactId("com.springsource.javax.jms").groupId("javax.jms").versionAsInProject(),
-                mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").version("4.2.0"),
                 mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
                 mavenBundle().artifactId("giapi-jms-util").groupId("edu.gemini.aspen").versionAsInProject(),
@@ -67,17 +55,7 @@ public class HeartbeatDistributorIT {
 
     @Test
     public void bundleExistence() {
-        assertNotNull(getHeartbeatDistributorBundle());
-    }
-
-    private Bundle getHeartbeatDistributorBundle() {
-        for (Bundle b : context.getBundles()) {
-            if ("edu.gemini.aspen.heartbeat-distributor-service".equals(b.getSymbolicName())) {
-                return b;
-            }
-        }
-        fail();
-        return null;
+        assertNotNull(getBundle("edu.gemini.aspen.heartbeat-distributor-service"));
     }
 
     @Test

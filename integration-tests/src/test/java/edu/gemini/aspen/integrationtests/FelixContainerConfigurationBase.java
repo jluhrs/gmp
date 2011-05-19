@@ -15,7 +15,7 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
 
 abstract public class FelixContainerConfigurationBase {
     @Inject
-    private BundleContext context;
+    protected BundleContext context;
 
     @Configuration
     public static Option[] baseContainerConfig() {
@@ -25,8 +25,8 @@ abstract public class FelixContainerConfigurationBase {
                 systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + "/src/test/resources/conf/services"),
                 systemProperty("felix.fileinstall.noInitialDelay").value("true"),
                 mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
+                mavenBundle().artifactId("org.apache.felix.ipojo.annotations").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("com.springsource.javax.jms").groupId("javax.jms").versionAsInProject(),
-                mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
                 mavenBundle().artifactId("org.apache.felix.configadmin").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
