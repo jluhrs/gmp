@@ -651,4 +651,31 @@ Sending PARK
 \image html jconsole_memory_tab.png
 \attention A small memory leak was found as explained in \ref known_issues_and_bugs 
 
+\subsection gds_testing_sec Integrated GDS + GMP Commands Records Tests
+\li Start the GMP as indicated in the \ref user_manual.
+\li For this test you will also need tcl code in http://source.gemini.edu/software/giapi/giapi-eng/ocs-test-scripts/trunk.
+\li Check the code to a directory we'll call ocs-test-scripts/, in a Linux machine with ocswish installed.
+\li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh observe-simulator</tt>.
+\li In ocs-test-scripts/, run <tt>$ ./observeTest.itcl<tt>. Remember to set the
+\c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
+\li The command should take a few seconds before exiting without any exceptions (a message like "epicsThreadOnceOsd
+epicsMutexLock failed." is normal).
+\li In the C++ example code that's running you should see something like:
+\verbatim
+    $ sh runExample.sh observe-simulator
+    Starting Accepting Any Sequence Commands Example
+    2011-05-19 15:28:19,790 [0x2aedd06f15d0] INFO  giapi.LogCommandUtil - Registering handler to sequence command GMP.SC.OBSERVE
+    Response to caller 0
+    Starting worker thread for 4
+    Worker Thread started!
+    Sending observation events...
+    2011-05-19 15:28:27,687 [0x45b72940] INFO  giapi.JmsProducer - Observation Event: OBS_PREP datalabel: S20110427-01
+    2011-05-19 15:28:28,688 [0x45b72940] INFO  giapi.JmsProducer - Observation Event: OBS_START_ACQ datalabel: S20110427-01
+    2011-05-19 15:28:29,690 [0x45b72940] INFO  giapi.JmsProducer - Observation Event: OBS_END_ACQ datalabel: S20110427-01
+    2011-05-19 15:28:30,994 [0x45b72940] INFO  giapi.JmsProducer - Observation Event: OBS_END_DSET_WRITE datalabel: S20110427-01
+    Sending completion info...
+    2011-05-19 15:28:31,996 [0x45b72940] INFO  giapi.LogCommandUtil - Posting completion info for action id  4
+    Processing done
+\endverbatim
+\li Check that FITS file has been updated. (TODO: specify how/where to check it)
 */
