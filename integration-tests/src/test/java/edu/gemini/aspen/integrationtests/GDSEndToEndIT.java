@@ -1,24 +1,23 @@
 package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
-import java.util.logging.Logger;
-
 import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSEndToEndIT extends FelixContainerConfigurationBase {
-    private final Logger LOG = Logger.getLogger(HeartbeatDistributorIT.class.getName());
-
     @Configuration
     public static Option[] gdsBundles() {
         return options(
+                vmOption("-Xverify:none "),
                 mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
                 mavenBundle().artifactId("file-util").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("fits-util").groupId("gemini-nocs").versionAsInProject(),
@@ -29,7 +28,9 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("gds-fits-updater").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").versionAsInProject(),
                 mavenBundle().artifactId("jca-lib").groupId("edu.gemini.aspen").versionAsInProject(),
-                mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject()
+                mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-instrument-status-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-obsevent-handler").groupId("edu.gemini.aspen.gds").versionAsInProject()
         );
     }
 
@@ -40,6 +41,12 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
         assertNotNull(getBundle("edu.gemini.aspen.gds.actors"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.fits"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.epics"));
+        assertNotNull(getBundle("edu.gemini.aspen.gds.status"));
+    }
+
+    @Test
+    public void sendObsEvents() {
+        System.out.println(context.getServiceReference(ObservationEventHandler.class.getName()));    
     }
 
 }
