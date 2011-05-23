@@ -33,7 +33,7 @@ trait TemporarySeqexecKeywordsDatabase extends TypedActor[SeqexecDbMsg]
 @Provides(specifications = Array(classOf[TemporarySeqexecKeywordsDatabase]))
 class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatabase {
 
-  val channel: actors.Channel[SeqexecDbMsg] = new Channel[SeqexecDbMsg](new Actor {
+  val _actor = new Actor {
     start()
 
     def act() {
@@ -74,5 +74,6 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
       }
       map(dataLabel) += (keyword -> value)
     }
-  })
+  }
+  val channel: actors.Channel[SeqexecDbMsg] = new Channel[SeqexecDbMsg](_actor)
 }
