@@ -3,16 +3,21 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
+import edu.gemini.fits.FitsParseException;
+import edu.gemini.fits.Header;
+import edu.gemini.fits.Hedit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertNotNull;
@@ -55,13 +60,19 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
     }
 
     @Test
-    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException {
+    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
+        Hedit hEdit = new Hedit(new File("/tmp/S20110427-01.fits"));
+        Header primaryHeader = hEdit.readPrimary();
+
+        Set<String> originalKeywords = primaryHeader.getKeywords();
+
         copyInitialFile();
 
-        DataLabel dataLabel  = new DataLabel("S20110427-01");
+        TimeUnit.MILLISECONDS.sleep(100);
+        DataLabel dataLabel = new DataLabel("S20110427-01");
         eventHandler.onObservationEvent(ObservationEvent.OBS_PREP, dataLabel);
 
         TimeUnit.MILLISECONDS.sleep(100);
@@ -72,11 +83,27 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
 
         TimeUnit.MILLISECONDS.sleep(100);
         eventHandler.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, dataLabel);
+
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        File finalFile = new File("/tmp/N-S20110427-01.fits");
+        assertTrue(finalFile.exists());
+
+        hEdit = new Hedit(finalFile);
+        primaryHeader = hEdit.readPrimary();
+
+        Set<String> afterProcessingKeywords = primaryHeader.getKeywords();
+        assertTrue(afterProcessingKeywords.containsAll(originalKeywords));
+        assertTrue(afterProcessingKeywords.contains("AIRMASS"));
+        assertTrue(afterProcessingKeywords.contains("HUMIDITY"));
+        assertTrue(afterProcessingKeywords.contains("TAMBIENT"));
+        assertTrue(afterProcessingKeywords.contains("PRESSURE"));
+        assertTrue(afterProcessingKeywords.contains("WINDSPEE"));
+        assertTrue(afterProcessingKeywords.contains("WINDDIRE"));
     }
 
     private void copyInitialFile() throws IOException {
         InputStream in = GDSEndToEndIT.class.getResourceAsStream("S20110427-01.fits");
-        System.out.println(GDSEndToEndIT.class.getResource("S20110427-01.fits"));
         assertTrue(in.available() > 0);
 
         FileOutputStream fos = new FileOutputStream("/tmp/S20110427-01.fits");
