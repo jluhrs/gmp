@@ -47,14 +47,14 @@ class HeaderReceiverTest extends AssertionsForJUnit {
   @Test
   def testRequestHandler() {
     RequestHandler ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
-    Thread.sleep(100) //allow for messages to arrive
+    Thread.sleep(200) //allow for messages to arrive
     (ch !? (1000, Retrieve("label", "key"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
 
     RequestHandler ! InitObservation("programId", "label")
-    Thread.sleep(100)
+    Thread.sleep(200)
     (pdb !? (1000, RetrieveProgramId("label"))) match {
       case Some(Some("programId")) =>
       case _ => fail()
@@ -71,7 +71,7 @@ class HeaderReceiverTest extends AssertionsForJUnit {
     val xml = new XmlRpcReceiver
     xml.storeKeyword("label", "key", 1)
     xml.initObservation("id", "label")
-    Thread.sleep(100) //allow for messages to arrive
+    Thread.sleep(200) //allow for messages to arrive
     (ch !? (1000, Retrieve("label", "key"))) match {
       case Some(Some(1)) =>
       case _ => fail()
