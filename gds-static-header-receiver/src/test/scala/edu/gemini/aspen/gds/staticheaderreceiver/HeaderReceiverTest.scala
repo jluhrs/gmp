@@ -5,16 +5,17 @@ import org.scalatest.junit.AssertionsForJUnit
 import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.{Before, Test}
 import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, ProgramIdDatabaseImpl, ProgramIdDatabase}
-import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{Store, Retrieve, Clean}
 import scala.Some
 
 class HeaderReceiverTest extends AssertionsForJUnit {
   var db: TemporarySeqexecKeywordsDatabase = _
+  var ch: actors.Channel[SeqexecDbMsg] = _
   var pdb: ProgramIdDatabase = _
 
   @Before
   def setup() {
     db = new TemporarySeqexecKeywordsDatabaseImpl
+    ch = db.channel
     pdb = new ProgramIdDatabaseImpl
     RequestHandler.setDatabases(db, pdb)
     RequestHandler.start()
@@ -22,32 +23,32 @@ class HeaderReceiverTest extends AssertionsForJUnit {
 
   @Test
   def testDB() {
-    db ! Store("label", "key", 1.asInstanceOf[AnyRef])
-    (db !? (1000, Retrieve("label", "key"))) match {
+    ch ! Store("label", "key", 1.asInstanceOf[AnyRef])
+    (ch !? (1000, Retrieve("label", "key"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("wronglabel", "key"))) match {
+    (ch !? (1000, Retrieve("wronglabel", "key"))) match {
       case Some(None) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label", "wrongkey"))) match {
+    (ch !? (1000, Retrieve("label", "wrongkey"))) match {
       case Some(None) =>
       case _ => fail()
     }
-    db ! Clean("label")
-    (db !? (1000, Retrieve("label", "key"))) match {
+    ch ! Clean("label")
+    (ch !? (1000, Retrieve("label", "key"))) match {
       case Some(None) =>
       case _ => fail()
     }
-    db ! Clean("wronglabel")
+    ch ! Clean("wronglabel")
   }
 
   @Test
   def testRequestHandler() {
     RequestHandler ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
     Thread.sleep(100) //allow for messages to arrive
-    (db !? (1000, Retrieve("label", "key"))) match {
+    (ch !? (1000, Retrieve("label", "key"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
@@ -71,7 +72,7 @@ class HeaderReceiverTest extends AssertionsForJUnit {
     xml.storeKeyword("label", "key", 1)
     xml.initObservation("id", "label")
     Thread.sleep(100) //allow for messages to arrive
-    (db !? (1000, Retrieve("label", "key"))) match {
+    (ch !? (1000, Retrieve("label", "key"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }

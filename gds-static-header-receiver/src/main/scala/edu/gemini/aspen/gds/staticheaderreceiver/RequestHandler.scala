@@ -4,7 +4,6 @@ import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabase}
 import actors.Reactor
-import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Store
 
 sealed abstract class RequestHandlerMessage
 
@@ -45,6 +44,6 @@ object RequestHandler extends Reactor[RequestHandlerMessage] {
 
   def storeKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef) {
     LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
-    keywordsDatabase ! Store(dataLabel, keyword, value)
+    keywordsDatabase.channel ! Store(dataLabel, keyword, value)
   }
 }

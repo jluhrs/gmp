@@ -4,8 +4,7 @@ package edu.gemini.aspen.gds.seqexec
 import edu.gemini.aspen.gds.api.KeywordValueActor
 import edu.gemini.aspen.gds.api.{GDSConfiguration, CollectedValue}
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabase
-import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Retrieve
+import edu.gemini.aspen.gds.staticheaderreceiver.{Retrieve, TemporarySeqexecKeywordsDatabase}
 
 /**
  * Very simple actor that can produce as a reply of a Collect request a single value
@@ -22,7 +21,7 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
       configuration.index.index
       )
 
-    val value = (seqexecKeyDB !? Retrieve(dataLabel, fitsKeyword)).asInstanceOf[Option[AnyRef]]
+    val value = (seqexecKeyDB.channel !? Retrieve(dataLabel, fitsKeyword)).asInstanceOf[Option[AnyRef]]
 
     value map {
       v => CollectedValue(fitsKeyword, v, fitsComment, headerIndex)
