@@ -6,9 +6,11 @@ import edu.gemini.fits.{Hedit, Header}
 import collection.JavaConversions._
 
 /**
+ * Class that can take an existing file and add the headers passed in the constructor
  *
+ * The FitsUpdater must preserve all the existing data and only add or update the headers
+ * passed at construction
  */
-
 class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
     require(path.exists)
     require(path.isDirectory)
@@ -28,7 +30,7 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
     }
 
     private def getUpdatedKeywords(header: Header) = {
-        val keywords = header.getKeywords.toSeq
+        val keywords = header.getKeywords.toList
         keywords.flatMap {
             h => header.getAll(h)
         }
@@ -48,6 +50,7 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
 
     def newFitsName(dataLabel: DataLabel) = "N-" + toFits(dataLabel)
 
+    // TODO: Move these two methods to a common utility class
     @throws(classOf[IOException])
     def copy(from: File, to: File) {
         use(new FileInputStream(from)) {
