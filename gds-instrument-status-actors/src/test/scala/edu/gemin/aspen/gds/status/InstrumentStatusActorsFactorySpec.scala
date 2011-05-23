@@ -55,11 +55,31 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
         }
     }
     def buildOneConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
+        GDSConfiguration(Instrument("GPI"),
+            GDSEvent(event),
+            new FitsKeyword(keyword),
+            HeaderIndex(0),
+            DataType("DOUBLE"),
+            Mandatory(false),
+            NullValue("NONE"),
+            Subsystem("STATUS"),
+            Channel(channel),
+            ArrayIndex("NULL"),
+            FitsComment("A comment"))
     }
 
     def buildOneNonStatusConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("NOSTATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
+        GDSConfiguration(Instrument("GPI"),
+            GDSEvent(event),
+            new FitsKeyword(keyword),
+            HeaderIndex(0),
+            DataType("DOUBLE"),
+            Mandatory(false),
+            NullValue("NONE"),
+            Subsystem("NOSTATUS"),
+            Channel(channel),
+            ArrayIndex("NULL"),
+            FitsComment("A comment"))
     }
 
 }

@@ -34,6 +34,9 @@ class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) e
         actorsConfiguration = configuration filter { _.subsystem.name == "STATUS"}
     }
 
+    /**
+     * Filters out only the configuration events relevant for a given observation event
+     */
     private def configurationsForEvent(e: ObservationEvent) = {
         actorsConfiguration filter {_.event.name == e.toString}
     }
