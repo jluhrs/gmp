@@ -48,7 +48,7 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
         );
     }
 
-    //@Test
+    @Test
     public void bundleExistence() {
         assertNotNull(getBundle("edu.gemini.aspen.gds.api"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.keywords.database"));
@@ -64,12 +64,13 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
+        copyInitialFile();
+
         Hedit hEdit = new Hedit(new File("/tmp/S20110427-01.fits"));
         Header primaryHeader = hEdit.readPrimary();
 
         Set<String> originalKeywords = primaryHeader.getKeywords();
 
-        copyInitialFile();
 
         TimeUnit.MILLISECONDS.sleep(100);
         DataLabel dataLabel = new DataLabel("S20110427-01");
