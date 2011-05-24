@@ -4,13 +4,13 @@ import edu.gemini.aspen.giapi.data.ObservationEvent._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel, ObservationEventHandler}
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import edu.gemini.aspen.gds.fits.FitsUpdater
-import actors.Actor
 import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
 import java.io.File
 import edu.gemini.fits.Header
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
+import actors.Reactor
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -40,7 +40,7 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 
 }
 
-class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase) extends Actor {
+class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase) extends Reactor[AcquisitionRequestReply] {
   start()
 
   def act() {
