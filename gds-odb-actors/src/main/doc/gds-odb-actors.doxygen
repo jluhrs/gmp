@@ -1,0 +1,91 @@
+/*!
+\page gds-odb-actors GDS ODB Actors
+This bundle contains the actors and actors factory that can collect data values from the ODB
+
+In a nutshell, when an observation is performed we need to gather some information related to the program that
+is performing the and store the required keywords in the resulting FITS file. For example, we may want to get
+information about the current observation's PI name, email, etc. We can do that by querying the ODB using the program ID.
+ 
+A difficulty in this approach is that the GDS actors are activated upon Observation Events sent from the
+instrument but those events do not contain the program ID but rather the observation data label. Thus we need a
+way to link the data label and the program ID.
+
+In our design we requires that the system starting the observation, currently the Seqexec, sends to the GDS
+the correlation between the program ID and the data label. This needs to be performed \b before instructing the
+Instrument to perform the actual observation to avoid data race conditions.
+
+This is done through an XML-RPC service implemented in the \ref gds-static-header-receiver bundle and that Seqexec
+can acces through a simple HTTP call. The interaction between these components is represented in the diagram below:
+
+\image html gds-program-id-interaction.jpg
+
+In the bundle there are basically two classes:,
+
+- \ref edu.gemini.aspen.gds.odb.ODBActorsFactory "ODBActorsFactory", this factory builds actors using the information
+from the GDS configuration
+- \ref edu.gemini.aspen.gds.odb.ODBValuesActor "ODBValuesActor",  This is an actor that reads the needed information
+from the program database. Given that ODB queries are relatively expensive, only one actor is launched to gather all
+the keywords unlike other actors' subsystems. Anther difference with other actors is that queries to the ODB are very
+generic on nature and thus do not lend themselves to the concept of channel. So allowed channel names are internally
+mapped to functions that extract data items from the Program
+
+\section gds-odb-actors_config Configuration
+
+\subsection gds-odb-actors_config_gds GDS Configuration
+
+The bundle uses the common configuration format and use items of the subsystem ODB like:
+
+\verbatim
+#   Instrument    Event         Keyword Name      FITS      Data       Gemini           Null      Subsystem       Subsystem                 Array     Comment
+#     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
+#  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------   -----------------
+    GPI          OBS_PREP         PIFSTNAM         0        DOUBLE          F            NONE        ODB         odb:piFirstName             NULL     "PI's first name"
+\endverbatim
+
+As mentioned before the channel is a value mapped internally to a value in the program.
+
+Currently the module supports the following channels:
+<table>
+   <tr>
+	<th>channel</th>
+	<th>value</th>
+        <th>expression</th>
+   </tr>
+   <tr>
+	<td>odb:piLastName</td>
+	<td>PI's last name</td>
+	<td>spProgram.getPILastName</td>
+   </tr>
+   <tr>
+	<td>odb:piFirstName</td>
+	<td>PI's first name</td>
+	<td>spProgram.getPIFirstName</td>
+   </tr>
+</table>
+\subsection gds-odb-actors_config_jini ODB-related Configuration:
+
+To connect to the ODB several system configuration variables need to be passed ot startup:
+
+- jini.lus.import.hosts Points to the host where the ODB is running
+- jini.lus.import.groups Points to the jini groups name of tho ODB
+
+Finally to make Jini play nicely with OSGi we need to set these properties to define system packages:
+
+- org.osgi.framework.system.packages.extra=sun.misc,sun.security.action,sun.rmi.runtime,edu.gemini.rmi.server
+- org.osgi.framework.bootdelegation=java.rmi.server 
+
+Overall we need to pass to the JVM the following options:
+
+\b "-Djini.lus.import.hosts=<odbhost-ip> -Xverify:none -Dorg.osgi.framework.system.packages.extra=sun.misc,sun.security.action,sun.rmi.runtime,edu.gemini.rmi.server -Dorg.osgi.framework.bootdelegation=java.rmi.server Djini.lus.import.groups=<jini-group>"
+
+\section gds-odb-actors_provides_sec Provided Services
+This bundle provides as a service the \ref edu.gemini.aspen.gds.odb.ODBActorsFactory "ODBActorsFactory" with
+the KeywordStatusActorFactory interface that is used by the \ref gds-actors-composer "Actors Composer"
+
+\section gds-odb-actors_requires_sec Required Services
+This bundle requires the JiniDriver to got a reference to an IDBDatabaseService services, so it uses indirectly
+two services:
+
+- \ref edu.gemini.pot.spdb.IDBDatabaseService "IDBDatabaseService"
+- \ref org.osgi.service.jini.JiniDriver "JiniDriver"
+*/

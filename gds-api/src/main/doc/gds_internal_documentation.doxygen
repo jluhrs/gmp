@@ -7,6 +7,8 @@ based instruments, such as GPI.
 \section gds_bundles_sec Bundles
 The GDS is comprised of the following bundles:
 - \subpage gds-actors-composer
+- \subpage gds-odb-actors
+- \subpage gds-instrument-status-actors
 
 \section design_sec Design Issues
 
