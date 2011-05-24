@@ -36,7 +36,7 @@ case class EndWrite(dataLabel: DataLabel) extends AcquisitionRequest
 /**
  * Parent class of actor's replies to KeywordSetComposer
  */
-sealed abstract class AcquisitionReply
+sealed abstract class AcquisitionReply extends AcquisitionRequestReply
 
 /**
  * Message to indicate that the data collection was completed
