@@ -33,7 +33,7 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires progra
 
     def buildODBActor(programID:String)= {
         LOG.info("Building ODB Actor for program: " + programID)
-        new ODBValuesActor(programID, dbService.getQueryRunner, actorsConfiguration) :: Nil
+        new ODBValuesActor(programID, dbService, actorsConfiguration) :: Nil
     }
 
     override def configure(configuration:List[GDSConfiguration]) {
