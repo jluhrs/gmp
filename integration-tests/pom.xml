@@ -140,6 +140,10 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-odb-actors</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-instrument-status-actors</artifactId>
         </dependency>
         <dependency>
@@ -162,6 +166,36 @@
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>file-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>spdb-activator</artifactId>
+            <version>2011A.1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>rr</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>jini-driver</artifactId>
+            <version>1.0.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-jetty-bundle</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-spi</artifactId>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
 
