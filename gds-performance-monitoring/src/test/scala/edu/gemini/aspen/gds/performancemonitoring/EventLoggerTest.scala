@@ -12,13 +12,16 @@ class EventLoggerTest extends AssertionsForJUnit {
 
     el ! AddEventSet("set")
     el ! Start("set", "hola")
+    Thread.sleep(500)
     el ! End("set", "hola")
     el ! Start("set", "chao")
     el ! End("set", "Oops")
+    el.addEventSet("otro set")
+
     el ! Dump("set")
     el ! DumpAll()
-
-    el.addEventSet("otro set")
     Thread.sleep(1000)
+
+    //todo: this is not an actual test...
   }
 }
