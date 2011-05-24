@@ -37,6 +37,10 @@
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-fits-updater</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-performance-monitoring</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -11,6 +11,7 @@ import java.util.logging.Logger
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
 import actors.Reactor
+import edu.gemini.aspen.gds.performancemonitoring._
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -19,11 +20,11 @@ import actors.Reactor
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
-class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase) extends ObservationEventHandler {
+class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires eventLogger: EventLogger) extends ObservationEventHandler {
   private val LOG = Logger.getLogger(classOf[GDSObseventHandler].getName)
 
   //todo: private[handler] is just for testing. Need to find a better way to test this class
-  private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase)
+  private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, eventLogger)
 
   def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     event match {
@@ -40,7 +41,7 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 
 }
 
-class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase) extends Reactor[AcquisitionRequestReply] {
+class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, eventLogger: EventLogger) extends Reactor[AcquisitionRequestReply] {
   start()
 
   def act() {
@@ -68,46 +69,46 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
   private var ended: Set[DataLabel] = Set[DataLabel]()
 
   private def prepareObservation(dataLabel: DataLabel) {
+    eventLogger ! AddEventSet(dataLabel)
+    eventLogger ! Start(dataLabel, OBS_PREP)
     new KeywordSetComposer(actorsFactory, keywordsDatabase) ! PrepareObservation(dataLabel)
   }
 
   private def prepareObservationReply(dataLabel: DataLabel) {
     prepared += dataLabel
+    eventLogger ! End(dataLabel, OBS_PREP)
   }
 
   private def startAcquisition(dataLabel: DataLabel) {
-    if (prepared.contains(dataLabel)) {
-      prepared -= dataLabel
-
-      new KeywordSetComposer(actorsFactory, keywordsDatabase) ! StartAcquisition(dataLabel)
-    } else {
-      throw new RuntimeException("Dataset " + dataLabel + " started acquisition but never preped")
-    }
+    eventLogger ! Start(dataLabel, OBS_START_ACQ)
+    new KeywordSetComposer(actorsFactory, keywordsDatabase) ! StartAcquisition(dataLabel)
   }
 
   private def startAcquisitionReply(dataLabel: DataLabel) {
     started += dataLabel
+    eventLogger ! End(dataLabel, OBS_START_ACQ)
   }
 
   private def endAcquisition(dataLabel: DataLabel) {
-    if (started.contains(dataLabel)) {
-      started -= dataLabel
-
-      new KeywordSetComposer(actorsFactory, keywordsDatabase) ! EndAcquisition(dataLabel)
-    } else {
-      throw new RuntimeException("Dataset " + dataLabel + " ended acquisition but never started it")
-    }
+    eventLogger ! Start(dataLabel, OBS_END_ACQ)
+    new KeywordSetComposer(actorsFactory, keywordsDatabase) ! EndAcquisition(dataLabel)
   }
 
   private def endAcquisitionReply(dataLabel: DataLabel) {
     ended += dataLabel
+    eventLogger ! End(dataLabel, OBS_END_ACQ)
   }
 
   private def endWrite(dataLabel: DataLabel) {
-    if (ended.contains(dataLabel)) {
+    eventLogger ! Start(dataLabel, OBS_END_DSET_WRITE)
+    if (prepared.contains(dataLabel) && started.contains(dataLabel) && ended.contains(dataLabel)) {
+      prepared -= dataLabel
+      started -= dataLabel
       ended -= dataLabel
       updateFITSFile(dataLabel)
       keywordsDatabase ! Clean(dataLabel)
+      eventLogger ! End(dataLabel, OBS_END_DSET_WRITE)
+      eventLogger ! Dump(dataLabel)
     } else {
       throw new RuntimeException("Dataset " + dataLabel + " ended writing dataset but never ended acquisition")
     }

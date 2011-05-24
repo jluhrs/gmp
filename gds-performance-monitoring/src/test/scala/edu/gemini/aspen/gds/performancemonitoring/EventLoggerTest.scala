@@ -18,6 +18,7 @@ class EventLoggerTest extends AssertionsForJUnit {
     el ! Dump("set")
     el ! DumpAll()
 
+    el.addEventSet("otro set")
     Thread.sleep(1000)
   }
 }

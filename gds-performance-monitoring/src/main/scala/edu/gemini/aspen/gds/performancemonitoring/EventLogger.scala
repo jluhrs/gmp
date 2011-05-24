@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
-import actors.Actor
 import java.lang.Long
 import scala.Some
 import org.apache.felix.ipojo.annotations.{Validate, Provides, Instantiate, Component}
+import actors.Reactor
 
 sealed abstract class EventLoggerMsg
 
@@ -17,7 +17,11 @@ case class Dump(set: Any) extends EventLoggerMsg
 
 case class DumpAll() extends EventLoggerMsg
 
-trait EventLogger extends Actor
+trait EventLogger extends Reactor[EventLoggerMsg] {
+  def addEventSet(set: Any) {
+    this ! AddEventSet(set)
+  }
+}
 
 @Component
 @Instantiate
