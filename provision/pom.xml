@@ -200,6 +200,16 @@
             <artifactId>ws-commons-util</artifactId>
             <version>1.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.giapi.external</groupId>
+            <artifactId>time_2.8.1</artifactId>
+            <version>0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
-import org.apache.felix.ipojo.annotations.{Validate, Provides, Instantiate, Component}
 import actors.Reactor
 import org.scala_tools.time.Imports._
 import scala.{Some, Option}
+import org.apache.felix.ipojo.annotations._
 
 sealed abstract class EventLoggerMsg
 
@@ -31,6 +31,11 @@ class EventLoggerImpl extends EventLogger {
   @Validate
   def validate() {
     start()
+  }
+
+  @Invalidate
+  def invalidate() {
+    this ! DumpAll()
   }
 
   override def act() {
