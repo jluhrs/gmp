@@ -10,8 +10,8 @@ import edu.gemini.fits.Header
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
-import actors.Reactor
 import edu.gemini.aspen.gds.performancemonitoring._
+import actors.Actor
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -21,7 +21,7 @@ import edu.gemini.aspen.gds.performancemonitoring._
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires eventLogger: EventLogger) extends ObservationEventHandler {
-  private val LOG = Logger.getLogger(classOf[GDSObseventHandler].getName)
+  private val LOG = Logger.getLogger(this.getClass.getName)
 
   //todo: private[handler] is just for testing. Need to find a better way to test this class
   private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, eventLogger)
@@ -41,7 +41,8 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 
 }
 
-class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, eventLogger: EventLogger) extends Reactor[AcquisitionRequestReply] {
+class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, eventLogger: EventLogger) extends Actor {
+  private val LOG = Logger.getLogger(this.getClass.getName)
   start()
 
   def act() {
@@ -110,7 +111,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
       eventLogger ! End(dataLabel, OBS_END_DSET_WRITE)
       eventLogger ! Dump(dataLabel)
     } else {
-      throw new RuntimeException("Dataset " + dataLabel + " ended writing dataset but never ended acquisition")
+      LOG.severe("Dataset " + dataLabel + " ended writing dataset but never ended acquisition")
     }
   }
 
