@@ -1,11 +1,13 @@
 package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.fits.FitsParseException;
 import edu.gemini.fits.Header;
 import edu.gemini.fits.Hedit;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -28,7 +30,23 @@ import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 @RunWith(JUnit4TestRunner.class)
-public class GDSWithODB_IT extends FelixContainerConfigurationBase {
+public class GDSWithODBIT extends FelixContainerConfigurationBase {
+    private static final String FINAL_FITS_FILE = "/tmp/N-S20110427-01.fits";
+    private static final String INITIAL_FITS_FILE = "/tmp/S20110427-01.fits";
+
+    @Before
+    public void removeFiles() {
+        removeTestFile(FINAL_FITS_FILE);
+        removeTestFile(INITIAL_FITS_FILE);
+    }
+
+    private void removeTestFile(String fileName) {
+        File finalFile = new File(fileName);
+        if (finalFile.exists()) {
+            finalFile.delete();
+        }
+    }
+
     @Configuration
     public static Option[] gdsBundles() {
         return options(
@@ -63,21 +81,27 @@ public class GDSWithODB_IT extends FelixContainerConfigurationBase {
         assertNotNull(getBundle("edu.gemini.aspen.gds.odb"));
     }
 
-    //@Test
+    @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
+        TimeUnit.MILLISECONDS.sleep(400);
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
+        ProgramIdDatabase programIdDatabase = (ProgramIdDatabase) context.getService(context.getServiceReference(ProgramIdDatabase.class.getName()));
+        assertNotNull(programIdDatabase);
+        DataLabel dataLabel = new DataLabel("S20110427-01");
+        programIdDatabase.store(dataLabel, "GS-2006B-Q-57");
+
         copyInitialFile();
 
-        Hedit hEdit = new Hedit(new File("/tmp/S20110427-01.fits"));
+        Hedit hEdit = new Hedit(new File(INITIAL_FITS_FILE));
         Header primaryHeader = hEdit.readPrimary();
-
         Set<String> originalKeywords = primaryHeader.getKeywords();
 
+        assertTrue(!originalKeywords.contains("PIFSTNAM"));
 
         TimeUnit.MILLISECONDS.sleep(100);
-        DataLabel dataLabel = new DataLabel("S20110427-01");
+
         eventHandler.onObservationEvent(ObservationEvent.OBS_PREP, dataLabel);
 
         TimeUnit.MILLISECONDS.sleep(100);
@@ -89,9 +113,9 @@ public class GDSWithODB_IT extends FelixContainerConfigurationBase {
         TimeUnit.MILLISECONDS.sleep(100);
         eventHandler.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, dataLabel);
 
-        TimeUnit.MILLISECONDS.sleep(200);
+        TimeUnit.MILLISECONDS.sleep(400);
 
-        File finalFile = new File("/tmp/N-S20110427-01.fits");
+        File finalFile = new File(FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
         hEdit = new Hedit(finalFile);
@@ -99,19 +123,14 @@ public class GDSWithODB_IT extends FelixContainerConfigurationBase {
 
         Set<String> afterProcessingKeywords = primaryHeader.getKeywords();
         assertTrue(afterProcessingKeywords.containsAll(originalKeywords));
-        assertTrue(afterProcessingKeywords.contains("AIRMASS"));
-        assertTrue(afterProcessingKeywords.contains("HUMIDITY"));
-        assertTrue(afterProcessingKeywords.contains("TAMBIENT"));
-        assertTrue(afterProcessingKeywords.contains("PRESSURE"));
-        assertTrue(afterProcessingKeywords.contains("WINDSPEE"));
-        assertTrue(afterProcessingKeywords.contains("WINDDIRE"));
+        assertTrue(afterProcessingKeywords.contains("PIFSTNAM"));
     }
 
     private void copyInitialFile() throws IOException {
-        InputStream in = GDSWithODB_IT.class.getResourceAsStream("S20110427-01.fits");
+        InputStream in = GDSWithODBIT.class.getResourceAsStream("S20110427-01.fits");
         assertTrue(in.available() > 0);
 
-        FileOutputStream fos = new FileOutputStream("/tmp/S20110427-01.fits");
+        FileOutputStream fos = new FileOutputStream(INITIAL_FITS_FILE);
         byte readBlock[] = new byte[1024];
         while (in.available() > 0) {
             int readCount = in.read(readBlock);
