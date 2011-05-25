@@ -7,6 +7,8 @@ import edu.gemini.fits.FitsParseException;
 import edu.gemini.fits.Header;
 import edu.gemini.fits.Hedit;
 import org.junit.Before;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,6 +18,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 /**
  * Base class for the integration tests related to the GDS
@@ -28,6 +33,25 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     public void removeFiles() {
         removeTestFile(FINAL_FITS_FILE);
         removeTestFile(INITIAL_FITS_FILE);
+    }
+
+    @Configuration
+    public static Option[] gdsBundles() {
+        return options(
+                vmOption("-Xverify:none "),
+                mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
+                mavenBundle().artifactId("file-util").groupId("gemini-nocs").versionAsInProject(),
+                mavenBundle().artifactId("fits-util").groupId("gemini-nocs").versionAsInProject(),
+                mavenBundle().artifactId("scala-library").groupId("com.weiglewilczek.scala-lang-osgi").versionAsInProject(),
+                mavenBundle().artifactId("gds-api").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-keywords-database").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-performance-monitoring").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("time_2.8.1").groupId("edu.gemini.aspen.giapi.external").versionAsInProject(),
+                mavenBundle().artifactId("joda-time").groupId("joda-time").versionAsInProject(),
+                mavenBundle().artifactId("gds-actors-composer").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-fits-updater").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-obsevent-handler").groupId("edu.gemini.aspen.gds").versionAsInProject()
+        );
     }
 
     private void removeTestFile(String fileName) {
@@ -54,16 +78,16 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         DataLabel dataLabel = new DataLabel("S20110427-01");
         eventHandler.onObservationEvent(ObservationEvent.OBS_PREP, dataLabel);
 
-        TimeUnit.MILLISECONDS.sleep(100);
+        TimeUnit.MILLISECONDS.sleep(200);
         eventHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel);
 
-        TimeUnit.MILLISECONDS.sleep(100);
+        TimeUnit.MILLISECONDS.sleep(200);
         eventHandler.onObservationEvent(ObservationEvent.OBS_END_ACQ, dataLabel);
 
-        TimeUnit.MILLISECONDS.sleep(100);
+        TimeUnit.MILLISECONDS.sleep(200);
         eventHandler.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, dataLabel);
 
-        TimeUnit.MILLISECONDS.sleep(200);
+        TimeUnit.MILLISECONDS.sleep(300);
     }
 
     protected Set<String> readFinalKeywords() throws IOException, FitsParseException, InterruptedException {

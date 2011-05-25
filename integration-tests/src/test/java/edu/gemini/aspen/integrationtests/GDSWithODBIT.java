@@ -22,29 +22,18 @@ import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSWithODBIT extends GDSIntegrationBase {
 
     @Configuration
-    public static Option[] gdsBundles() {
+    public static Option[] gdsODBBundles() {
         return options(
-                vmOption("-Xverify:none "),
                 systemProperty("jini.lus.import.hosts").value("sbfswgdev01.cl.gemini.edu"),
                 systemProperty("org.osgi.framework.system.packages.extra").value("sun.misc,sun.security.action,sun.rmi.runtime,edu.gemini.rmi.server"),
                 systemProperty("org.osgi.framework.bootdelegation").value("java.rmi.server"),
                 systemProperty("jini.lus.import.groups").value("swg-test"),
                 systemProperty("org.osgi.service.http.port").value("8888"),
-                mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
-                mavenBundle().artifactId("file-util").groupId("gemini-nocs").versionAsInProject(),
-                mavenBundle().artifactId("fits-util").groupId("gemini-nocs").versionAsInProject(),
-                mavenBundle().artifactId("scala-library").groupId("com.weiglewilczek.scala-lang-osgi").versionAsInProject(),
-                mavenBundle().artifactId("gds-api").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-keywords-database").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-actors-composer").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-fits-updater").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-obsevent-handler").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-jetty-bundle").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-spi").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").versionAsInProject(),

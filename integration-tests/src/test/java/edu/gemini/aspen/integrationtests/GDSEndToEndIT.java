@@ -23,39 +23,28 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 @RunWith(JUnit4TestRunner.class)
 public class GDSEndToEndIT extends GDSIntegrationBase {
     @Configuration
-    public static Option[] gdsBundles() {
+    public static Option[] gdsEpicsBundles() {
         return options(
                 vmOption("-Xverify:none "),
-                mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
-                mavenBundle().artifactId("file-util").groupId("gemini-nocs").versionAsInProject(),
-                mavenBundle().artifactId("fits-util").groupId("gemini-nocs").versionAsInProject(),
-                mavenBundle().artifactId("scala-library").groupId("com.weiglewilczek.scala-lang-osgi").versionAsInProject(),
-                mavenBundle().artifactId("gds-api").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-keywords-database").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-actors-composer").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-fits-updater").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").versionAsInProject(),
                 mavenBundle().artifactId("jca-lib").groupId("edu.gemini.aspen").versionAsInProject(),
-                mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-instrument-status-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-obsevent-handler").groupId("edu.gemini.aspen.gds").versionAsInProject()
+                mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject()
         );
     }
 
     @Test
-    public void bundleExistence() {
+    public void bundleExistence() throws InterruptedException {
         assertNotNull(getBundle("edu.gemini.aspen.gds.api"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.keywords.database"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.actors"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.fits"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.epics"));
-        assertNotNull(getBundle("edu.gemini.aspen.gds.status"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.obsevent.handler"));
     }
 
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
-        TimeUnit.MILLISECONDS.sleep(100);
+        TimeUnit.MILLISECONDS.sleep(200);
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
