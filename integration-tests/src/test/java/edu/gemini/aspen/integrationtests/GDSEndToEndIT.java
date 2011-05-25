@@ -1,11 +1,7 @@
 package edu.gemini.aspen.integrationtests;
 
-import edu.gemini.aspen.giapi.data.DataLabel;
-import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.fits.FitsParseException;
-import edu.gemini.fits.Header;
-import edu.gemini.fits.Hedit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -13,9 +9,7 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +21,7 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 @RunWith(JUnit4TestRunner.class)
-public class GDSEndToEndIT extends FelixContainerConfigurationBase {
+public class GDSEndToEndIT extends GDSIntegrationBase {
     @Configuration
     public static Option[] gdsBundles() {
         return options(
@@ -67,32 +61,14 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
 
         copyInitialFile();
 
-        Hedit hEdit = new Hedit(new File("/tmp/S20110427-01.fits"));
-        Header primaryHeader = hEdit.readPrimary();
+        Set<String> originalKeywords = readOriginalKeywords();
 
-        Set<String> originalKeywords = primaryHeader.getKeywords();
+        sendObservationEvents(eventHandler);
 
-        DataLabel dataLabel = new DataLabel("S20110427-01");
-        eventHandler.onObservationEvent(ObservationEvent.OBS_PREP, dataLabel);
-
-        TimeUnit.MILLISECONDS.sleep(100);
-        eventHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel);
-
-        TimeUnit.MILLISECONDS.sleep(100);
-        eventHandler.onObservationEvent(ObservationEvent.OBS_END_ACQ, dataLabel);
-
-        TimeUnit.MILLISECONDS.sleep(100);
-        eventHandler.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, dataLabel);
-
-        TimeUnit.MILLISECONDS.sleep(200);
-
-        File finalFile = new File("/tmp/N-S20110427-01.fits");
+        File finalFile = new File(FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
-        hEdit = new Hedit(finalFile);
-        primaryHeader = hEdit.readPrimary();
-
-        Set<String> afterProcessingKeywords = primaryHeader.getKeywords();
+        Set<String> afterProcessingKeywords = readFinalKeywords();
         assertTrue(afterProcessingKeywords.containsAll(originalKeywords));
         assertTrue(afterProcessingKeywords.contains("AIRMASS"));
         assertTrue(afterProcessingKeywords.contains("HUMIDITY"));
@@ -100,19 +76,6 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
         assertTrue(afterProcessingKeywords.contains("PRESSURE"));
         assertTrue(afterProcessingKeywords.contains("WINDSPEE"));
         assertTrue(afterProcessingKeywords.contains("WINDDIRE"));
-    }
-
-    private void copyInitialFile() throws IOException {
-        InputStream in = GDSEndToEndIT.class.getResourceAsStream("S20110427-01.fits");
-        assertTrue(in.available() > 0);
-
-        FileOutputStream fos = new FileOutputStream("/tmp/S20110427-01.fits");
-        byte readBlock[] = new byte[1024];
-        while (in.available() > 0) {
-            int readCount = in.read(readBlock);
-            fos.write(readBlock, 0, readCount);
-        }
-        fos.close();
     }
 
 }
