@@ -272,7 +272,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
         }
         String finalPathStr = sb.toString();
         //return the path without the last separator.
-        return finalPathStr.substring(0, finalPathStr.length() - 1);
+        return finalPathStr.substring(0, Math.max(finalPathStr.length() - 1, 0));
     }
 
 }

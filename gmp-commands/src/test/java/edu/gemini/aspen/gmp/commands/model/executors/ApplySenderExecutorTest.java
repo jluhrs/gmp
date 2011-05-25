@@ -1,10 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
-import edu.gemini.aspen.giapi.commands.Activity;
-import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.Configuration;
-import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
@@ -87,7 +83,8 @@ public class ApplySenderExecutorTest {
     /**
      * Test that an APPLY command with a non hierarchical configuration will be handled correctly
      */
-    @Test
+    //@Test
+    //This test uses a now unsupported configuration
     public void testSimpleConfiguration() {
         Configuration basicConfiguration = configurationBuilder()
                 .withConfiguration("X", "1")

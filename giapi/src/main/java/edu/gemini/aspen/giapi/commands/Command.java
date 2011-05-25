@@ -66,7 +66,7 @@ public class Command {
 
         this._sequenceCommand = sequenceCommand;
         this._activity = activity;
-        this._config = config;
+        this._config = config;//todo: if command is APPLY, config must not be of the form X=1(needs a proper tree)
     }
 
     public boolean isApply() {

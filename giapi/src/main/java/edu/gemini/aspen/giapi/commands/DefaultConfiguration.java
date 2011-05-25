@@ -10,11 +10,10 @@ import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 
 /**
  * A straightforward implementation of {@link Configuration}
- *
+ * <p/>
  * DefaultConfiguration is fully immutable it cannot be changed
- *
+ * <p/>
  * Empty Configurations are not allowed to be built
- *
  */
 public final class DefaultConfiguration implements Configuration {
 
@@ -23,7 +22,7 @@ public final class DefaultConfiguration implements Configuration {
     /**
      * Factory method to create a new configuration
      *
-     * @param path The Path to the configuration, cannot be null
+     * @param path  The Path to the configuration, cannot be null
      * @param value The value of the configuration, cannot be null
      * @return A fully constructed configuration
      */
@@ -45,7 +44,7 @@ public final class DefaultConfiguration implements Configuration {
     public static Builder configurationBuilder() {
         return new Builder(emptyConfiguration());
     }
-    
+
     DefaultConfiguration() {
         _config = ImmutableSortedMap.of();
     }
@@ -67,12 +66,13 @@ public final class DefaultConfiguration implements Configuration {
     }
 
     public Configuration getSubConfiguration(ConfigPath path) {
-        if (path == null || _config.size() == 1) {
+        if (path == null) {
             return emptyConfiguration();
         }
         // Finds everything from path to anything represented by the last possible char
         ConfigPath endPath = new ConfigPath(path, "\uFFFF");
-        return new DefaultConfiguration(_config.subMap(path, endPath));
+        ConfigPath startPath = new ConfigPath(path, "\u0000");
+        return new DefaultConfiguration(_config.subMap(startPath, endPath));
     }
 
     @Override
@@ -105,13 +105,14 @@ public final class DefaultConfiguration implements Configuration {
 
     @Override
     public String toString() {
-        return "{config=" + _config +'}';
+        return "{config=" + _config + '}';
     }
 
     public static class Builder {
         private final SortedMap<ConfigPath, String> _baseConfiguration = Maps.newTreeMap();
+
         private Builder(Configuration config) {
-            for (ConfigPath path: config.getKeys()) {
+            for (ConfigPath path : config.getKeys()) {
                 _baseConfiguration.put(path, config.getValue(path));
             }
         }
