@@ -44,7 +44,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
 
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
-        TimeUnit.MILLISECONDS.sleep(200);
+        TimeUnit.MILLISECONDS.sleep(400);
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
