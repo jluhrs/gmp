@@ -2,6 +2,8 @@ package edu.gemini.aspen.gds.performancemonitoring
 
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Test
+import scala.Some
+import org.scala_tools.time.Imports._
 
 class EventLoggerTest extends AssertionsForJUnit {
 
@@ -18,10 +20,15 @@ class EventLoggerTest extends AssertionsForJUnit {
     el ! End("set", "Oops")
     el.addEventSet("otro set")
 
-    el ! Dump("set")
-    el ! DumpAll()
-    Thread.sleep(1000)
-
-    //todo: this is not an actual test...
+    (el !? (1000, Retrieve("set"))) match {
+      case Some(y) => {
+        val x = y.asInstanceOf[scala.collection.Map[Any, Option[Duration]]]
+        assert((x("hola").get - 250.millis) > 0.millis && ((x("hola").get - 750.millis) < 0.millis), "Time is: " + x("hola").get) //+- 50 ms
+        assert(x("chao").isEmpty) //doesn't end
+        assert(x("Oops").isEmpty) //doesn't start
+      }
+      case _ => fail()
+    }
   }
+
 }
