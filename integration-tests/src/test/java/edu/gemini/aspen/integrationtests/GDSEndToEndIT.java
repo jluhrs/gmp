@@ -61,6 +61,7 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
 
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
+        TimeUnit.MILLISECONDS.sleep(100);
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
@@ -71,8 +72,6 @@ public class GDSEndToEndIT extends FelixContainerConfigurationBase {
 
         Set<String> originalKeywords = primaryHeader.getKeywords();
 
-
-        TimeUnit.MILLISECONDS.sleep(100);
         DataLabel dataLabel = new DataLabel("S20110427-01");
         eventHandler.onObservationEvent(ObservationEvent.OBS_PREP, dataLabel);
 
