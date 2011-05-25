@@ -11,7 +11,7 @@ import edu.gemini.pot.spdb.{IDBDatabaseService, IDBDatabase, DBAbstractQueryFunc
  * to the ODB. The query is in the functor below and basically consists of retrieving the program
  * for a given programID
  */
-class ODBValuesActor(programID:String, queryRunner: IDBDatabaseService, configuration: List[GDSConfiguration]) extends KeywordValueActor {
+class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configuration: List[GDSConfiguration]) extends KeywordValueActor {
     type ExtractorFunction = SPProgram => AnyRef
     type CollectorFunction = SPProgram => CollectedValue
 
@@ -28,7 +28,7 @@ class ODBValuesActor(programID:String, queryRunner: IDBDatabaseService, configur
         val progId = SPProgramID.toProgramID(programID)
         val dataObjOpt = Option(queryRunner.lookupProgramByID(progId)) map { _.getDataObject }
         // todo: remove the null check
-        dataObjOpt.toList map { _.asInstanceOf[SPProgram]} filter { _ != null} flatMap { collectValuesFromProgram }
+        dataObjOpt.toList map { _.asInstanceOf[SPProgram] } filter { _ != null } flatMap { collectValuesFromProgram }
     }
 
     /**

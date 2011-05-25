@@ -17,27 +17,33 @@ import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, ProgramIdDatab
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires programIdDatabase:ProgramIdDatabase) extends KeywordActorsFactory {
-    val LOG =  Logger.getLogger(classOf[ODBActorsFactory].getName)
+class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires programIdDatabase: ProgramIdDatabase) extends KeywordActorsFactory {
+    val LOG = Logger.getLogger(classOf[ODBActorsFactory].getName)
     var actorsConfiguration: List[GDSConfiguration] = List()
 
-    override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] ={
+    override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] = {
         val programID = programIdDatabase !? RetrieveProgramId(dataLabel)
         // Only produce actors if the programID has been already stored in the programIdDatabase
         programID match {
-            case Some(id:String) => buildODBActor(id)
-                // TODO add log
+            case Some(id: String) => buildODBActor(id)
+            // TODO add log
             case None => List()
         }
     }
 
-    def buildODBActor(programID:String)= {
-        LOG.info("Building ODB Actor for program: " + programID)
-        new ODBValuesActor(programID, dbService, actorsConfiguration) :: Nil
+    def buildODBActor(programID: String) = {
+        if (actorsConfiguration.nonEmpty) {
+            LOG.info("Building ODB Actor for program: " + programID)
+            new ODBValuesActor(programID, dbService, actorsConfiguration) :: Nil
+        } else {
+            Nil
+        }
     }
 
-    override def configure(configuration:List[GDSConfiguration]) {
-        actorsConfiguration = configuration filter { _.subsystem.name == "ODB"}
+    override def configure(configuration: List[GDSConfiguration]) {
+        actorsConfiguration = configuration filter {
+            _.subsystem.name == "ODB"
+        }
     }
 
     @Validate
