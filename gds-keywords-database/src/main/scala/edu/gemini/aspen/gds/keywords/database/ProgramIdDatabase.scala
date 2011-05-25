@@ -4,7 +4,10 @@ import actors.Actor
 import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
 import edu.gemini.aspen.giapi.data.DataLabel
 
-trait ProgramIdDatabase extends Actor
+trait ProgramIdDatabase extends Actor {
+    def store(dataLabel: DataLabel, programId: String)
+}
+
 
 case class StoreProgramId(dataLabel: DataLabel, programId: String)
 
@@ -15,28 +18,32 @@ case class RetrieveProgramId(dataLabel: DataLabel)
 @Provides(specifications = Array(classOf[ProgramIdDatabase]))
 class ProgramIdDatabaseImpl extends ProgramIdDatabase {
 
-  start()
+    start()
 
-  def act() {
-    loop {
-      react {
-        case StoreProgramId(dataLabel, programId) => store(dataLabel, programId)
-        case RetrieveProgramId(dataLabel) => sender ! retrieve(dataLabel)
-        case x: Any => throw new RuntimeException("Argument not known: " + x)
-      }
+    def act() {
+        loop {
+            react {
+                case StoreProgramId(dataLabel, programId) => internalStore(dataLabel, programId)
+                case RetrieveProgramId(dataLabel) => sender ! retrieve(dataLabel)
+                case x: Any => throw new RuntimeException("Argument not known: " + x)
+            }
+        }
     }
-  }
 
-  //todo: clean db
-  private val map = collection.mutable.Map.empty[DataLabel, String]
+    //todo: clean db
+    private val map = collection.mutable.Map.empty[DataLabel, String]
 
-  private def store(dataLabel: DataLabel, programId: String) {
-    map += dataLabel -> programId
-  }
+    override def store(dataLabel: DataLabel, programId: String) {
+        this ! StoreProgramId(dataLabel, programId)
+    }
 
-  private def retrieve(dataLabel: DataLabel): Option[String] = {
-    map.get(dataLabel)
-  }
+    private def internalStore(dataLabel: DataLabel, programId: String) {
+        map += dataLabel -> programId
+    }
+
+    private def retrieve(dataLabel: DataLabel): Option[String] = {
+        map.get(dataLabel)
+    }
 
 }
 
