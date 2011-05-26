@@ -83,8 +83,7 @@ public class ApplySenderExecutorTest {
     /**
      * Test that an APPLY command with a non hierarchical configuration will be handled correctly
      */
-    //@Test
-    //This test uses a now unsupported configuration
+    @Test
     public void testSimpleConfiguration() {
         Configuration basicConfiguration = configurationBuilder()
                 .withConfiguration("X", "1")

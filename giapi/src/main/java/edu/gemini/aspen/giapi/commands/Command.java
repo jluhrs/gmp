@@ -41,7 +41,7 @@ public class Command {
     public Command(SequenceCommand sequenceCommand, Activity activity) {
         checkArgument(sequenceCommand != null, "Command cannot be null");
         checkArgument(activity != null, "Activity cannot be null");
-        checkArgument(!(sequenceCommand.equals(SequenceCommand.APPLY) || sequenceCommand.equals(SequenceCommand.REBOOT)), "Activity with no configuration cannot be APPLY or REBOOT");
+        checkArgument(!(sequenceCommand.equals(SequenceCommand.APPLY) || sequenceCommand.equals(SequenceCommand.REBOOT) || sequenceCommand.equals(SequenceCommand.OBSERVE)), "Activity with no configuration cannot be APPLY, OBSERVE or REBOOT");
 
         this._sequenceCommand = sequenceCommand;
         this._activity = activity;
@@ -66,7 +66,7 @@ public class Command {
 
         this._sequenceCommand = sequenceCommand;
         this._activity = activity;
-        this._config = config;//todo: if command is APPLY, config must not be of the form X=1(needs a proper tree)
+        this._config = config;
     }
 
     public boolean isApply() {

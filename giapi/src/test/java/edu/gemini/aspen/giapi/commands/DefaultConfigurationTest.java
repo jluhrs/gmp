@@ -25,7 +25,7 @@ public class DefaultConfigurationTest {
         assertTrue(configuration.getKeys().contains(configPath("X")));
         assertFalse(configuration.getKeys().contains(configPath("Y")));
         //todo: this test needs an update
-        //assertEquals(emptyConfiguration(), configuration.getSubConfiguration(configPath("X")));
+        assertEquals(configuration, configuration.getSubConfiguration(configPath("X")));
         assertEquals(configuration, configuration.getSubConfiguration(EMPTY_PATH));
     }
 

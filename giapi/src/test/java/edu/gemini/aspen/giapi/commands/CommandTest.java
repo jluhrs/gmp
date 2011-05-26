@@ -4,6 +4,7 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 import org.junit.Test;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
@@ -23,6 +24,18 @@ public class CommandTest {
     @Test(expected = IllegalArgumentException.class)
     public void testBuildApplyWithoutConfiguration() {
         new Command(SequenceCommand.APPLY, Activity.START);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuildObserveWithoutConfiguration() {
+        new Command(SequenceCommand.OBSERVE, Activity.START);
+    }
+
+    @Test
+    public void testBuildApplyCommandSimple() {
+        Configuration config = configuration(configPath("X.val1"), "value1");
+        Command command = new Command(SequenceCommand.APPLY, Activity.START, config);
+        assertTrue(command.isApply());
     }
 
     @Test
