@@ -1,21 +1,23 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
 import org.scalatest.junit.AssertionsForJUnit
-import org.junit.Test
 import org.scala_tools.time.Imports._
 import scala.Some
+import org.junit.{Before, Test}
 
 class EventLoggerTest extends AssertionsForJUnit {
 
   private def check(value: Duration, target: Duration, margin: Duration) = {
-    ((value > target) && (value - target) < margin) ||
-      ((value < target) && (target - value) < margin)
+    ((value >= target) && (value - target) < margin) ||
+      ((value <= target) && (target - value) < margin)
   }
 
-  @Test
-  def testBasic() {
-    val delay = 500;
-    val el = new EventLoggerImpl
+  val delay = 100;
+  var el: EventLoggerImpl = _
+
+  @Before
+  def setup() {
+    el = new EventLoggerImpl
     el.validate()
 
     el ! AddEventSet("set")
@@ -35,23 +37,66 @@ class EventLoggerTest extends AssertionsForJUnit {
 
     el ! Start("set", "chao")
     el ! End("set", "Oops")
+  }
+
+  @Test
+  def testRetrieve() {
 
     (el !? (1000, Retrieve("set"))) match {
       case Some(y) => {
         val x = y.asInstanceOf[scala.collection.Map[AnyRef, Option[Duration]]]
-        assert(check(x("hola").get, 500.millis, 200.millis), "Time is: " + x("hola").get) //+- 200 ms
+        assert(check(x("hola").get, delay.millis, 100.millis), "Time is: " + x("hola").get)
         assert(x("chao").isEmpty) //doesn't end
         assert(x("Oops").isEmpty) //doesn't start
       }
       case _ => fail()
     }
+  }
 
-    (el !? (1000, RetrieveEventAverage("hola"))) match {
-      case Some(x: Duration) => assert(check(x, 500.millis, 100.millis), "Time is: " + x)
+  @Test
+  def testRetrieveEvent() {
+    (el !? (1000, RetrieveEvent("set", "hola"))) match {
+      case Some(Some(x: Duration)) => assert(check(x, delay.millis, 50.millis), "Time is: " + x)
       case _ => fail()
     }
+  }
+
+  @Test
+  def testRetrieveEventEmpty() {
+    (el !? (1000, RetrieveEvent("set", "chao"))) match {
+      case Some(None) =>
+      case _ => fail()
+    }
+  }
+
+  @Test
+  def testRetrieveEventAverage() {
+    (el !? (1000, RetrieveEventAverage("hola"))) match {
+      case Some(x: Duration) => assert(check(x, delay.millis, 50.millis), "Time is: " + x)
+      case _ => fail()
+    }
+  }
+
+  @Test
+  def testRetrieveEventAverageEmpty() {
     (el !? (1000, RetrieveEventAverage("chao"))) match {
       case Some(x: Duration) => assert(x.compare(0.millis) == 0, "Time is: " + x)
+      case _ => fail()
+    }
+  }
+
+  @Test
+  def testCheck() {
+    (el !? (1000, Check("set", "hola", 600))) match {
+      case Some(x: Boolean) => assert(x)
+      case _ => fail()
+    }
+  }
+
+  @Test
+  def testCheckEmpty() {
+    (el !? (1000, Check("set", "chao", 600))) match {
+      case Some(x: Boolean) => assert(!x)
       case _ => fail()
     }
   }
