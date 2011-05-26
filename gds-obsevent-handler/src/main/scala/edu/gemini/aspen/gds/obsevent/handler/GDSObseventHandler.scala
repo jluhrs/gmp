@@ -22,7 +22,6 @@ import actors.Actor
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires eventLogger: EventLogger) extends ObservationEventHandler {
   private val LOG = Logger.getLogger(this.getClass.getName)
-
   //todo: private[handler] is just for testing. Need to find a better way to test this class
   private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, eventLogger)
 
@@ -43,6 +42,8 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 
 class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, eventLogger: EventLogger) extends Actor {
   private val LOG = Logger.getLogger(this.getClass.getName)
+  private val collectDeadline = 300L
+
   start()
 
   def act() {
@@ -88,6 +89,12 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
   private def startAcquisitionReply(dataLabel: DataLabel) {
     started += dataLabel
     eventLogger ! End(dataLabel, OBS_START_ACQ)
+
+    //check if the keyword recollection was performed on time
+    (eventLogger !? (1000, Check(dataLabel, OBS_START_ACQ, collectDeadline))) match {
+      case Some(onTime: Boolean) => if (!onTime) LOG.severe("Dataset " + dataLabel + ", Event " + OBS_START_ACQ + ", didn't finish on time")
+      case _ => LOG.severe("Performance monitoring module failed to respond")
+    }
   }
 
   private def endAcquisition(dataLabel: DataLabel) {
@@ -98,6 +105,12 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
   private def endAcquisitionReply(dataLabel: DataLabel) {
     ended += dataLabel
     eventLogger ! End(dataLabel, OBS_END_ACQ)
+
+    //check if the keyword recollection was performed on time
+    (eventLogger !? (1000, Check(dataLabel, OBS_END_ACQ, collectDeadline))) match {
+      case Some(onTime: Boolean) => if (!onTime) LOG.severe("Dataset " + dataLabel + ", Event " + OBS_END_ACQ + ", didn't finish on time")
+      case _ => LOG.severe("Performance monitoring module failed to respond")
+    }
   }
 
   private def endWrite(dataLabel: DataLabel) {
@@ -109,10 +122,11 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
       updateFITSFile(dataLabel)
       keywordsDatabase ! Clean(dataLabel)
       eventLogger ! End(dataLabel, OBS_END_DSET_WRITE)
-      eventLogger ! Dump(dataLabel)
     } else {
       LOG.severe("Dataset " + dataLabel + " ended writing dataset but never ended acquisition")
     }
+    //log timing stats for this datalabel
+    eventLogger ! Log(dataLabel)
   }
 
   private def updateFITSFile(dataLabel: DataLabel): Unit = {
