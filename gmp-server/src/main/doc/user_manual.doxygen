@@ -142,6 +142,87 @@
  * configurations are just string key-value properties, so for more complex items those properties often point
  * to other files under the $GMP_HOME/conf directory.
  *
+ \subsection gds_configuration_sec GDS Configuration
+ The GDS is configured by editing the file $GMP_HOME/conf/gds-keywords.conf.
+
+ \attention The GDS configuration will change once the Configuration GUI is done.
+
+The configuration file looks like this:
+
+\verbatim
+#
+#   Instrument    Event         Keyword Name      FITS      Data       Gemini           Null      Subsystem       Subsystem                 Array     Comment
+#     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
+#  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------   -----------------
+#
+   GPI          OBS_END_ACQ      AIRMASS          0        DOUBLE          F            NONE        EPICS       ws:massAirmass              NULL     "Mean airmass for the observation"
+...
+\endverbatim
+
+
+<table>
+   <tr>
+	<th>Column Title</th>
+	<th>Column Description</th>
+    <th>Possible Values</th>
+   </tr>
+   <tr>
+	<td>Instrument Name</td>
+	<td>Instrument for which this keyword is valid</td>
+	<td>GPI</td>
+   </tr>
+   <tr>
+	<td>Event</td>
+	<td>Observation event that trigger the collection of this keyword's value</td>
+	<td>OBS_PREP, OBS_START_ACQ, OBS_END_ACQ, OBS_START_READOUT, OBS_END_READOUT, OBS_START_DSET_WRITE, OBS_END_DSET_WRITE</td>
+   </tr>
+   <tr>
+	<td>Keyword Name in FITS</td>
+	<td>Keyword name as it will appear in the FITS file</td>
+	<td>Any alphanumeric string of length <= 8</td>
+   </tr>
+   <tr>
+	<td>FITS Header</td>
+	<td>In which header should this value be: primary(0) or an extension(1-)</td>
+	<td>0, 1, 2...</td>
+   </tr>
+   <tr>
+	<td>Data Type</td>
+	<td>FITS data type</td>
+	<td>DOUBLE, INT, STRING</td>
+   </tr>
+   <tr>
+	<td>Gemini Mandatory</td>
+	<td>Is this a mandatory keyword?</td>
+	<td>T, F</td>
+   </tr>
+   <tr>
+	<td>Null Value</td>
+	<td>Value to write in case the actual value can't be retrieved</td>
+	<td>Any alphanumeric string</td>
+   </tr>
+   <tr>
+	<td>Subsystem</td>
+	<td>Which subsytem provides this value</td>
+	<td>EPICS, STATUS, SEQEXEC, ODB</td>
+   </tr>
+   <tr>
+	<td>Subsystem Channel</td>
+	<td>Name of the channel in the subsystem, where the keyword value can be retrieved (ex. An EPICs channel, a StatusItem name, etc...)</td>
+	<td></td>
+   </tr>
+   <tr>
+	<td>Array Index</td>
+	<td>If the channel is an array, which element to retrieve. Put 0 if channel is not an array.</td>
+	<td>0, 1, 2...</td>
+   </tr>
+   <tr>
+	<td>Comment</td>
+	<td>Comment accompanying the keyword in the FITS file</td>
+	<td>Any alphanumeric string</td>
+   </tr>
+</table>
+
  * \subsection log_configuration Log Configuration
  * TBD
  *
