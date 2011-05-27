@@ -30,6 +30,10 @@
             <artifactId>giapi</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>fits-util</artifactId>
         </dependency>

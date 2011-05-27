@@ -100,7 +100,7 @@ class FitsUpdaterSpec extends Spec with ShouldMatchers {
             destinationFile.delete
 
             val spentTime = ((System.nanoTime - start) / 10e9)
-            spentTime should be <= (0.1)
+            spentTime should be <= (0.01)
         }
     }
 }

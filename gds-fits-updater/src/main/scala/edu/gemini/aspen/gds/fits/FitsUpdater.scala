@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gds.fits
 
 import edu.gemini.aspen.giapi.data.DataLabel
-import java.io.{IOException, FileInputStream, FileOutputStream, File}
+import java.io.File
 import edu.gemini.fits.{Hedit, Header}
 import collection.JavaConversions._
+import edu.gemini.aspen.gds.api.Predef._
 
 /**
  * Class that can take an existing file and add the headers passed in the constructor
@@ -20,20 +21,14 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
         val destinationFile = copyOriginal
 
         val hEdit = new Hedit(destinationFile)
-        val updatedHeaders = headers sortBy {
-            h => h.getIndex
-        }
+        val updatedHeaders = headers sortBy { _.getIndex }
 
-        for (h <- updatedHeaders) {
-            hEdit.updateHeader(getUpdatedKeywords(h), h.getIndex)
-        }
+        updatedHeaders map { h => hEdit.updateHeader(getUpdatedKeywords(h), h.getIndex) }
     }
 
     private def getUpdatedKeywords(header: Header) = {
         val keywords = header.getKeywords.toList
-        keywords.flatMap {
-            h => header.getAll(h)
-        }
+        keywords.flatMap { header.getAll }
     }
 
     private def copyOriginal = {
@@ -49,24 +44,4 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
     def toFits(dataLabel: DataLabel) = dataLabel.toString + ".fits"
 
     def newFitsName(dataLabel: DataLabel) = "N-" + toFits(dataLabel)
-
-    // TODO: Move these two methods to a common utility class
-    @throws(classOf[IOException])
-    def copy(from: File, to: File) {
-        use(new FileInputStream(from)) {
-            in => use(new FileOutputStream(to)) {
-                out =>
-                    out getChannel () transferFrom (
-                            in getChannel, 0, Long.MaxValue)
-            }
-        }
-    }
-
-    private def use[T <: {def close() : Unit}](closable: T)(block: T => Unit) {
-        try {
-            block(closable)
-        } finally {
-            closable.close()
-        }
-    }
 }
