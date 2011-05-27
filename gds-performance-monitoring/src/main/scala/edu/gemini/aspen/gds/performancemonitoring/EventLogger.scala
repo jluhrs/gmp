@@ -4,6 +4,7 @@ import org.scala_tools.time.Imports._
 import java.util.logging.Logger
 import scala.{Some, Option}
 
+//todo: Add javadoc to this class
 /**
  * This event logger works by logging "event"'s starting and finishing times. The event are grouped in "sets".
  * For example, you can create a set for a datalabel, and log the starting and ending times of every observation event
