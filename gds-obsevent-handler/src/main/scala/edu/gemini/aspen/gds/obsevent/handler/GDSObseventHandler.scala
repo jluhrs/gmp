@@ -5,13 +5,13 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel, ObservationEven
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import edu.gemini.aspen.gds.fits.FitsUpdater
 import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
-import java.io.File
 import edu.gemini.fits.Header
-import java.util.logging.Logger
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
 import edu.gemini.aspen.gds.performancemonitoring._
 import actors.Actor
+import java.io.{FileNotFoundException, File}
+import java.util.logging.{Level, Logger}
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -20,10 +20,10 @@ import actors.Actor
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
-class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires eventLogger: EventLogger) extends ObservationEventHandler {
+class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase) extends ObservationEventHandler {
   private val LOG = Logger.getLogger(this.getClass.getName)
   //todo: private[handler] is just for testing. Need to find a better way to test this class
-  private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, eventLogger)
+  private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase)
 
   def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     event match {
@@ -40,10 +40,10 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 
 }
 
-class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, eventLogger: EventLogger) extends Actor {
+class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase) extends Actor {
   private val LOG = Logger.getLogger(this.getClass.getName)
   private val collectDeadline = 300L
-
+  private val eventLogger = new EventLogger
   start()
 
   def act() {
@@ -71,62 +71,81 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
   private var ended: Set[DataLabel] = Set[DataLabel]()
 
   private def prepareObservation(dataLabel: DataLabel) {
-    eventLogger ! AddEventSet(dataLabel)
-    eventLogger ! Start(dataLabel, OBS_PREP)
+    eventLogger.addEventSet(dataLabel)
+    eventLogger.start(dataLabel, OBS_PREP)
     new KeywordSetComposer(actorsFactory, keywordsDatabase) ! PrepareObservation(dataLabel)
   }
 
   private def prepareObservationReply(dataLabel: DataLabel) {
     prepared += dataLabel
-    eventLogger ! End(dataLabel, OBS_PREP)
+    eventLogger.end(dataLabel, OBS_PREP)
   }
 
   private def startAcquisition(dataLabel: DataLabel) {
-    eventLogger ! Start(dataLabel, OBS_START_ACQ)
+    eventLogger.start(dataLabel, OBS_START_ACQ)
     new KeywordSetComposer(actorsFactory, keywordsDatabase) ! StartAcquisition(dataLabel)
   }
 
   private def startAcquisitionReply(dataLabel: DataLabel) {
     started += dataLabel
-    eventLogger ! End(dataLabel, OBS_START_ACQ)
+    eventLogger.end(dataLabel, OBS_START_ACQ)
 
     //check if the keyword recollection was performed on time
-    (eventLogger !? (1000, Check(dataLabel, OBS_START_ACQ, collectDeadline))) match {
-      case Some(onTime: Boolean) => if (!onTime) LOG.severe("Dataset " + dataLabel + ", Event " + OBS_START_ACQ + ", didn't finish on time")
+    eventLogger.check(dataLabel, OBS_START_ACQ, collectDeadline) match {
+      case onTime: Boolean => if (!onTime) LOG.severe("Dataset " + dataLabel + ", Event " + OBS_START_ACQ + ", didn't finish on time")
       case _ => LOG.severe("Performance monitoring module failed to respond")
     }
   }
 
   private def endAcquisition(dataLabel: DataLabel) {
-    eventLogger ! Start(dataLabel, OBS_END_ACQ)
+    eventLogger.start(dataLabel, OBS_END_ACQ)
     new KeywordSetComposer(actorsFactory, keywordsDatabase) ! EndAcquisition(dataLabel)
   }
 
   private def endAcquisitionReply(dataLabel: DataLabel) {
     ended += dataLabel
-    eventLogger ! End(dataLabel, OBS_END_ACQ)
+    eventLogger.end(dataLabel, OBS_END_ACQ)
 
     //check if the keyword recollection was performed on time
-    (eventLogger !? (1000, Check(dataLabel, OBS_END_ACQ, collectDeadline))) match {
-      case Some(onTime: Boolean) => if (!onTime) LOG.severe("Dataset " + dataLabel + ", Event " + OBS_END_ACQ + ", didn't finish on time")
+    eventLogger.check(dataLabel, OBS_END_ACQ, collectDeadline) match {
+      case onTime: Boolean => if (!onTime) LOG.severe("Dataset " + dataLabel + ", Event " + OBS_END_ACQ + ", didn't finish on time")
       case _ => LOG.severe("Performance monitoring module failed to respond")
     }
   }
 
   private def endWrite(dataLabel: DataLabel) {
-    eventLogger ! Start(dataLabel, OBS_END_DSET_WRITE)
+    eventLogger.start(dataLabel, OBS_END_DSET_WRITE)
     if (prepared.contains(dataLabel) && started.contains(dataLabel) && ended.contains(dataLabel)) {
       prepared -= dataLabel
       started -= dataLabel
       ended -= dataLabel
-      updateFITSFile(dataLabel)
+      try {
+        updateFITSFile(dataLabel)
+      } catch {
+        case ex: FileNotFoundException => LOG.log(Level.SEVERE, ex.getMessage, ex)
+
+      }
       keywordsDatabase ! Clean(dataLabel)
-      eventLogger ! End(dataLabel, OBS_END_DSET_WRITE)
+      eventLogger.end(dataLabel, OBS_END_DSET_WRITE)
+
     } else {
       LOG.severe("Dataset " + dataLabel + " ended writing dataset but never ended acquisition")
     }
     //log timing stats for this datalabel
-    eventLogger ! Log(dataLabel)
+    LOG.info(eventLogger.retrieve(dataLabel).toString())
+
+    LOG.info("Average timing for event " + OBS_PREP + ": " + eventLogger.average(OBS_PREP).flatMap({
+      x => Some(x.getMillis)
+    }).getOrElse("unknown") + "[ms]")
+    LOG.info("Average timing for event " + OBS_START_ACQ + ": " + eventLogger.average(OBS_START_ACQ).flatMap({
+      x => Some(x.getMillis)
+    }).getOrElse("unknown") + "[ms]")
+    LOG.info("Average timing for event " + OBS_END_ACQ + ": " + eventLogger.average(OBS_END_ACQ).flatMap({
+      x => Some(x.getMillis)
+    }).getOrElse("unknown") + "[ms]")
+    LOG.info("Average timing for event " + OBS_END_DSET_WRITE + ": " + eventLogger.average(OBS_END_DSET_WRITE).flatMap({
+      x => Some(x.getMillis)
+    }).getOrElse("unknown") + "[ms]")
   }
 
   private def updateFITSFile(dataLabel: DataLabel): Unit = {

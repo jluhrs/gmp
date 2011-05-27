@@ -54,6 +54,14 @@ The FITS headers that the seqexec provides, must be passed to the GDS. There are
 alternatives supported by tcl and java/scala. The most suitable seems to be XMLRPC, which has implementations in both
 languages, and is relatively simple, but much higher level than using plain http or tcp.
 
+\section gds_performance GDS Preliminary Performance Test
+
+- Average timing for event OBS_PREP: 38[ms]
+- Average timing for event OBS_START_ACQ: 18[ms]
+- Average timing for event OBS_END_ACQ: 20[ms]
+- Average timing for event OBS_END_DSET_WRITE: 23[ms]
+
+
 \section random_sec Random Rambling
 Just some notes:
 - The "current" DHS is not tags/current, but the trunk.
