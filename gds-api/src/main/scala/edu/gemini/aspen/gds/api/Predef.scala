@@ -13,17 +13,19 @@ object Predef {
      * @param to The destination file, it cannot be null
      */
     @throws(classOf[IOException])
-    def copy(from: File, to: File) {
+    def copy(from: File, to: File) = {
         require(from != null)
         require(from.exists)
 
         require(to != null)
+        //to.createNewFile
 
         use(new FileInputStream(from)) {
             in => use(new FileOutputStream(to)) {
                 out => out.getChannel.transferFrom(in.getChannel, 0, Long.MaxValue)
             }
         }
+        to
     }
 
     /**

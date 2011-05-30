@@ -17,7 +17,13 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
     require(path.isDirectory)
     require(dataLabel != null)
 
-    def updateFitsHeaders() {
+    /**
+     * Updates the headers in the destination file, adding to the current set of
+     * headers the ones passed in the constructor
+     *
+     * @param namingFunction, it is a an optional method to rename the file to a new name
+     */
+    def updateFitsHeaders(namingFunction: DataLabel => File = newFitsFile) {
         val destinationFile = copyOriginal
 
         val hEdit = new Hedit(destinationFile)
@@ -32,16 +38,13 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
     }
 
     private def copyOriginal = {
-        val originalFile = new File(path, toFits(dataLabel))
-        val destinationFile = new File(path, newFitsName(dataLabel))
-
-        destinationFile.createNewFile
+        val originalFile = new File(path, toFitsFileName(dataLabel))
+        val destinationFile = newFitsFile(dataLabel)
 
         copy(originalFile, destinationFile)
-        destinationFile
     }
 
-    def toFits(dataLabel: DataLabel) = dataLabel.toString + ".fits"
+    def toFitsFileName(dataLabel: DataLabel) = dataLabel.toString + ".fits"
 
-    def newFitsName(dataLabel: DataLabel) = "N-" + toFits(dataLabel)
+    def newFitsFile(dataLabel: DataLabel) = new File(path, "N-" + toFitsFileName(dataLabel))
 }

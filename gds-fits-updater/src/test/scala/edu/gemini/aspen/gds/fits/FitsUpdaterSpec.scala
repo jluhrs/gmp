@@ -23,7 +23,7 @@ class FitsUpdaterSpec extends Spec with ShouldMatchers {
 
     def updateFitsFile(headers: List[Header]) {
         val fitsUpdater = new FitsUpdater(originalFile.getParentFile, dataLabel, headers)
-        fitsUpdater.updateFitsHeaders
+        fitsUpdater.updateFitsHeaders()
     }
 
     describe("A FitsUpdater") {
