@@ -2,28 +2,21 @@ package edu.gemini.aspen.gds.fits
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 import java.io.File
 import edu.gemini.aspen.giapi.data.DataLabel
 import collection.JavaConversions._
 import edu.gemini.fits.{Header, DefaultHeaderItem, DefaultHeader, Hedit}
+import org.scalatest.{BeforeAndAfterEach, Spec}
 
 @RunWith(classOf[JUnitRunner])
-class FitsUpdaterSpec extends Spec with ShouldMatchers {
+class FitsUpdaterSpec extends FitsBaseSpec {
     val originalFile = new File(classOf[FitsUpdaterSpec].getResource("S20110427-01.fits").toURI)
+    val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
     val dataLabel = new DataLabel("S20110427-01")
 
-    def createHeadersWithAirMass: List[Header] = {
-        val primaryHeader = new DefaultHeader()
-        primaryHeader.add(DefaultHeaderItem.create("AIRMASS", 1.0, "Mass of airmass"))
-
-        primaryHeader :: Nil
-    }
-
-    def updateFitsFile(headers: List[Header]) {
-        val fitsUpdater = new FitsUpdater(originalFile.getParentFile, dataLabel, headers)
-        fitsUpdater.updateFitsHeaders()
+    def readPrimaryHeader(fitsFile: File = originalFile): Header = {
+        new Hedit(fitsFile).readAllHeaders.get(0)
     }
 
     describe("A FitsUpdater") {
@@ -32,29 +25,22 @@ class FitsUpdaterSpec extends Spec with ShouldMatchers {
 
             updateFitsFile(headers)
 
-            val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
-
             destinationFile.exists should be(true)
-            destinationFile.delete
         }
         it("should update the primary headers with one new keywords") {
-            val primaryHeaders = new Hedit(originalFile).readPrimary
+            val primaryHeader = readPrimaryHeader(originalFile)
 
             // Verify that AIRMASS is not in the original file
-            primaryHeaders.get("AIRMASS") should be(null)
+            verifyKeywordNotInHeader(primaryHeader, "AIRMASS")
 
-            val headers = createHeadersWithAirMass
+            val headers = createHeadersWithAirMass(0)
 
             updateFitsFile(headers)
 
-            val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
-
-            val updatedHeaders = new Hedit(destinationFile).readPrimary
+            val updatedPrimaryHeader = readPrimaryHeader(destinationFile)
 
             // Verify AIRMASS was added
-            updatedHeaders.get("AIRMASS") should not be (null)
-
-            destinationFile.delete
+            verifyKeywordInHeader(updatedPrimaryHeader, "AIRMASS")
         }
         it("should update the primary headers with several new keywords") {
             val primaryHeader = new DefaultHeader()
@@ -65,42 +51,32 @@ class FitsUpdaterSpec extends Spec with ShouldMatchers {
 
             updateFitsFile(headers)
 
-            val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
-
-            val updatedHeaders = new Hedit(destinationFile).readPrimary
+            val updatedPrimaryHeader = readPrimaryHeader(destinationFile)
 
             // Verify AIRMASS was added
-            updatedHeaders.get("AIRMASS") should not be (null)
-            updatedHeaders.get("AIREND") should not be (null)
-            updatedHeaders.get("AIRSTART") should not be (null)
-
-            destinationFile.delete
+            List("AIRMASS", "AIREND", "AIRSTART") foreach {
+                verifyKeywordInHeader(updatedPrimaryHeader, _)
+            }
         }
         it("should preseve all the original primary headers of a file") {
-            val originalKeywords = new Hedit(originalFile).readPrimary.getKeywords
+            val originalPrimaryHeader = readPrimaryHeader(originalFile)
 
-            val headers = createHeadersWithAirMass
+            val headers = createHeadersWithAirMass(0)
 
             updateFitsFile(headers)
 
-            val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
+            val updatedPrimaryHeader = readPrimaryHeader(destinationFile)
 
-            val updatedHeaders = new Hedit(destinationFile).readPrimary
-
-            updatedHeaders.getKeywords.containsAll(originalKeywords) should be(true)
-
-            destinationFile.delete
+            updatedPrimaryHeader.getKeywords.containsAll(originalPrimaryHeader.getKeywords) should be(true)
         }
-        it("should update a file in less than x secs") {
+        it("should update a file in less than 0.005 secs") {
             val start = System.nanoTime
-            val headers = createHeadersWithAirMass
+            val headers = createHeadersWithAirMass(0)
             updateFitsFile(headers)
-
-            val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
-            destinationFile.delete
 
             val spentTime = ((System.nanoTime - start) / 10e9)
-            spentTime should be <= (0.01)
+            spentTime should be <= (0.005)
         }
     }
+
 }
