@@ -2,12 +2,9 @@ package edu.gemini.aspen.gds.fits
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.matchers.ShouldMatchers
 import java.io.File
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.fits.{Header, DefaultHeaderItem, DefaultHeader, Hedit}
-import org.junit.After
-import org.scalatest.{BeforeAndAfterEach, Spec}
 
 @RunWith(classOf[JUnitRunner])
 class FitsWithExtensionsUpdaterSpec extends FitsBaseSpec {

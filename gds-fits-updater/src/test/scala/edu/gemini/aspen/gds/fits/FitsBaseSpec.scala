@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.fits
 import org.scalatest.matchers.ShouldMatchers
 import java.io.File
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.fits.{Header, DefaultHeaderItem, DefaultHeader, Hedit}
+import edu.gemini.fits.{Header, DefaultHeaderItem, DefaultHeader}
 import org.scalatest.{BeforeAndAfterEach, Spec}
 
 abstract class FitsBaseSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
