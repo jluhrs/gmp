@@ -5,14 +5,13 @@ import edu.gemini.aspen.gds.api.CollectedValue
 import org.junit.{Before, Test}
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.fits.{DefaultHeader, Header, HeaderItem}
-import collection.JavaConversions._
 import edu.gemini.aspen.giapi.data.DataLabel
 
 class KeywordsDatabaseTest extends AssertionsForJUnit {
   var db: KeywordsDatabaseImpl = null
   val key = "keyword"
   val key2 = "keyword2"
-  val value: AnyRef = (0.1).asInstanceOf[AnyRef]
+  val value = 0.1
   val colVal = new CollectedValue(key, value, "my comment", 0)
   val colVal2 = new CollectedValue(key2, value, "my comment", 1)
   val dataLabel = "GS-2011B"

@@ -4,7 +4,7 @@ import java.util.logging.Logger
 import actors.{OutputChannel, Actor}
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.keywords.database.{Store, KeywordsDatabase}
-import edu.gemini.aspen.gds.api.{KeywordActorsFactory, Collect, CollectedValue}
+import edu.gemini.aspen.gds.api.{KeywordActorsFactory, Collect, CollectedValue, _CollectedValue}
 
 sealed abstract class AcquisitionRequestReply
 
@@ -113,8 +113,14 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   }
 
   private def storeReply(dataLabel: DataLabel, collectedValues: Any) {
-    for (value <- collectedValues.asInstanceOf[List[CollectedValue]]) {
-      keywordsDatabase ! Store(dataLabel, value)
+    for (value <- collectedValues.asInstanceOf[List[CollectedValue[_]]]) {
+      keywordsDatabase ! value match {
+        case _CollectedValue(keyword, value, comment, index, _value) => _value.getType match {
+          case i if i.isAssignableFrom(classOf[Int]) => Store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
+          case i if i.isAssignableFrom(classOf[Double]) => Store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
+          case i if i.isAssignableFrom(classOf[String]) => Store(dataLabel, value.asInstanceOf[CollectedValue[String]])
+        }
+      }
     }
   }
 

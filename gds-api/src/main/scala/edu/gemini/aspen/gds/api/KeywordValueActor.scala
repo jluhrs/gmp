@@ -13,15 +13,15 @@ case class Collect()
  * It is expected that the reply will be a List[CollectedValues]
  */
 trait KeywordValueActor extends Actor {
-    start()
+  start()
 
-    override def act() {
-        loop {
-            react {
-                case Collect => reply(collectValues())
-            }
-        }
+  override def act() {
+    loop {
+      react {
+        case Collect => reply(collectValues())
+      }
     }
+  }
 
-    def collectValues(): List[CollectedValue]
+  def collectValues(): List[CollectedValue[_]]
 }

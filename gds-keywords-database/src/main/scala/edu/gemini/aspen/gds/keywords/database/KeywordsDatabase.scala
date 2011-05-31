@@ -3,9 +3,8 @@ package edu.gemini.aspen.gds.keywords.database
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
-import collection.JavaConversions._
 import edu.gemini.fits.{DefaultHeader, Header}
-import edu.gemini.aspen.gds.api.CollectedValue
+import edu.gemini.aspen.gds.api.{FitsType, CollectedValue}
 
 /**
  * Interface for the database
@@ -13,7 +12,12 @@ import edu.gemini.aspen.gds.api.CollectedValue
 trait KeywordsDatabase extends Actor
 
 //case classes define the messages accepted by the DataBase
-case class Store(dataLabel: DataLabel, value: CollectedValue)
+case class Store[T](dataLabel: DataLabel, value: CollectedValue[T])(implicit val _value: FitsType[T])
+
+//helper object to be able to extract implicit parameter from case class while pattern matching
+object _Store {
+  def unapply(in: Store[_]) = Some(in.dataLabel, in.value, in._value)
+}
 
 case class Retrieve(dataLabel: DataLabel)
 
@@ -32,7 +36,11 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   def act() {
     loop {
       react {
-        case Store(dataLabel, value) => store(dataLabel, value)
+        case _Store(dataLabel, value, _value) => _value.getType match {
+          case i if i.isAssignableFrom(classOf[Int]) => store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
+          case i if i.isAssignableFrom(classOf[Double]) => store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
+          case i if i.isAssignableFrom(classOf[String]) => store(dataLabel, value.asInstanceOf[CollectedValue[String]])
+        }
         case Retrieve(dataLabel) => sender ! retrieve(dataLabel)
         case Clean(dataLabel) => clean(dataLabel)
         case x: Any => throw new RuntimeException("Argument not known " + x)
@@ -50,7 +58,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    * @param keyword keyword to store
    * @param value value to associate to the keyword
    */
-  private def store(dataLabel: DataLabel, value: CollectedValue) {
+  private def store[T: FitsType](dataLabel: DataLabel, value: CollectedValue[T]) {
     if (!map.contains(dataLabel)) {
       map += (dataLabel -> List[Header]())
     }
