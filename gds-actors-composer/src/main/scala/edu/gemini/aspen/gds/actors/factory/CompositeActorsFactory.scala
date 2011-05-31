@@ -63,7 +63,7 @@ class CompositeActorsFactoryImpl(@Property(name="keywordsConfiguration", value =
         LOG.info("CompositeActorsFactory validated with config:"  + configurationFile)
         val configurationList = new GDSConfigurationParser().parseFile(configurationFile)
 
-        config = configurationList map {_.asInstanceOf[GDSConfiguration]}
+        config = configurationList filter { _.isInstanceOf[GDSConfiguration] } map {_.asInstanceOf[GDSConfiguration]}
         configure(config)
     }
 }
