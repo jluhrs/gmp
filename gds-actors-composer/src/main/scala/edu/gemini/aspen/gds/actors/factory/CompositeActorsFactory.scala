@@ -26,50 +26,44 @@ class CompositeActorsFactoryImpl(@Property(name="keywordsConfiguration", value =
     /**
      * Composite of the other factories registered as OSGI services
      */
-    override def buildStartAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = {
-        factories flatMap (
-            _.buildStartAcquisitionActors(dataLabel)
-        )
-    }
+    override def buildStartAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] =
+        factories flatMap { _.buildStartAcquisitionActors(dataLabel) }
 
-    override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] = {
-        factories flatMap (
-            _.buildPrepareObservationActors(dataLabel)
-        )
-    }
+    override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] =
+        factories flatMap { _.buildPrepareObservationActors(dataLabel)}
 
-    override def buildEndAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = {
-        factories flatMap (
-            _.buildEndAcquisitionActors(dataLabel)
-        )
-    }
+    override def buildEndAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] =
+        factories flatMap { _.buildEndAcquisitionActors(dataLabel) }
 
-    override def configure(configuration:List[GDSConfiguration]) {
-        factories foreach {
-            _.configure(configuration)
-        }
-    }
+    override def configure(configuration:List[GDSConfiguration]) =
+        factories foreach { _.configure(configuration) }
 
+    /**
+     * Method called when a new KeywordActorsFactory is registered
+     */
     @Bind(aggregate = true, optional = true)
     def bindKeywordFactory(keywordFactory:KeywordActorsFactory) {
         keywordFactory.configure(config)
         factories = keywordFactory :: factories
     }
 
+    /**
+     * Method called when a KeywordActorsFactory is unregistered
+     */
     @Unbind(aggregate = true)
     def unbindKeywordFactory(keywordFactory:KeywordActorsFactory) {
-        keywordFactory.configure(config)
         factories = factories filterNot (_ == keywordFactory)
     }
 
+    /**
+     * Method called when the Component is ready to start
+     */
     @Validate
-    def validate() {
+    def startConfiguration() {
         LOG.info("CompositeActorsFactory validated with config:"  + configurationFile)
         val configurationList = new GDSConfigurationParser().parseFile(configurationFile)
 
-        config = for (x <- configurationList if x.isInstanceOf[GDSConfiguration] ) yield {
-            x.asInstanceOf[GDSConfiguration]
-        }
+        config = configurationList map {_.asInstanceOf[GDSConfiguration]}
         configure(config)
     }
 }
