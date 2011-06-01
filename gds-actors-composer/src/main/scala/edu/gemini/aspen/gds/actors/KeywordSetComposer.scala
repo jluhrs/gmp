@@ -116,9 +116,9 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     for (value <- collectedValues.asInstanceOf[List[CollectedValue[_]]]) {
       keywordsDatabase ! (value match {
         case _CollectedValue(keyword, _value, comment, index, _type) => _type match {
-          case x if x == FitsType.IntegerType => Store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
-          case x if x == FitsType.DoubleType => Store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
-          case x if x == FitsType.StringType => Store(dataLabel, value.asInstanceOf[CollectedValue[String]])
+          case FitsType.IntegerType => Store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
+          case FitsType.DoubleType => Store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
+          case FitsType.StringType => Store(dataLabel, value.asInstanceOf[CollectedValue[String]])
         }
       })
     }

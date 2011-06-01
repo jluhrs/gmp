@@ -37,9 +37,9 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     loop {
       react {
         case _Store(dataLabel, value, _type) => _type match {
-          case x if x == FitsType.IntegerType => store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
-          case x if x == FitsType.DoubleType => store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
-          case x if x == FitsType.StringType => store(dataLabel, value.asInstanceOf[CollectedValue[String]])
+          case FitsType.IntegerType => store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
+          case FitsType.DoubleType => store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
+          case FitsType.StringType => store(dataLabel, value.asInstanceOf[CollectedValue[String]])
         }
         case Retrieve(dataLabel) => sender ! retrieve(dataLabel)
         case Clean(dataLabel) => clean(dataLabel)

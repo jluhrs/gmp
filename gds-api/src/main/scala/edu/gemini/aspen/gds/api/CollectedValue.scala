@@ -14,9 +14,9 @@ case class CollectedValue[T](keyword: FitsKeyword, value: T, comment: String, in
 object CollectedValue {
   implicit def collectedValueToHeaderItem[T](collectedValue: CollectedValue[T])(implicit _type: FitsType[T]): HeaderItem = {
     _type match {
-      case x if x == FitsType.IntegerType => DefaultHeaderItem.create(collectedValue.keyword.getName, collectedValue.value.asInstanceOf[Int], collectedValue.comment)
-      case x if x == FitsType.DoubleType => DefaultHeaderItem.create(collectedValue.keyword.getName, collectedValue.value.asInstanceOf[Double], collectedValue.comment)
-      case x if x == FitsType.StringType => DefaultHeaderItem.create(collectedValue.keyword.getName, collectedValue.value.asInstanceOf[String], collectedValue.comment)
+      case FitsType.IntegerType => DefaultHeaderItem.create(collectedValue.keyword.getName, collectedValue.value.asInstanceOf[Int], collectedValue.comment)
+      case FitsType.DoubleType => DefaultHeaderItem.create(collectedValue.keyword.getName, collectedValue.value.asInstanceOf[Double], collectedValue.comment)
+      case FitsType.StringType => DefaultHeaderItem.create(collectedValue.keyword.getName, collectedValue.value.asInstanceOf[String], collectedValue.comment)
     } //todo: another case cannot happen, but what if?
   }
 

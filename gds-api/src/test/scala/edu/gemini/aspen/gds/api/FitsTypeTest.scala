@@ -20,9 +20,9 @@ class FitsTypeTest extends AssertionsForJUnit {
 
   private def fitsMethod[T](fits: T)(implicit _fits: FitsType[T]) {
     _fits match {
-      case i if i == FitsType.IntegerType => method(fits.asInstanceOf[Int])
-      case i if i == FitsType.StringType => method(fits.asInstanceOf[String])
-      case i if i == FitsType.DoubleType => method(fits.asInstanceOf[Double])
+      case FitsType.IntegerType => method(fits.asInstanceOf[Int])
+      case FitsType.StringType => method(fits.asInstanceOf[String])
+      case FitsType.DoubleType => method(fits.asInstanceOf[Double])
     }
   }
 
