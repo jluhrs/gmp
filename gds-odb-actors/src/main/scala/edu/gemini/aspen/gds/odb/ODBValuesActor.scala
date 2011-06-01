@@ -1,10 +1,9 @@
 package edu.gemini.aspen.gds.odb
 
-import edu.gemini.aspen.gds.api.KeywordValueActor
-import edu.gemini.aspen.gds.api.{GDSConfiguration, CollectedValue}
 import edu.gemini.spModel.gemini.obscomp.SPProgram
 import edu.gemini.pot.sp.SPProgramID
 import edu.gemini.pot.spdb.IDBDatabaseService
+import edu.gemini.aspen.gds.api.{DataType, KeywordValueActor, GDSConfiguration, CollectedValue}
 
 /**
  * Actor that can produce as a reply of a Collect request a set of CollectedValues obtained from a Query
@@ -12,7 +11,7 @@ import edu.gemini.pot.spdb.IDBDatabaseService
  * for a given programID
  */
 class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configuration: List[GDSConfiguration]) extends KeywordValueActor {
-  type ExtractorFunction = SPProgram => String //todo: add support for other data types
+  type ExtractorFunction = SPProgram => AnyRef
   type CollectorFunction = SPProgram => CollectedValue[_]
 
   // Defines a list of "channels" to functions map that can extract information from a SPProgram instance
@@ -46,14 +45,19 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
    */
   private def collectValuesFromProgram(program: SPProgram): List[CollectedValue[_]] = {
     for {c <- configuration
-         val (fitsKeyword, fitsComment, headerIndex) = (
+         val (fitsKeyword, fitsComment, headerIndex, dataType) = (
            c.keyword,
            c.fitsComment.value,
-           c.index.index)
+           c.index.index,
+           c.dataType)
          if extractorFunctions contains c.channel.name
-         val r = extractorFunctions(c.channel.name)(program)
+         val r = dataType match {
+           case DataType("INT") => CollectedValue(fitsKeyword, (extractorFunctions(c.channel.name)(program)).asInstanceOf[Int], fitsComment, headerIndex)
+           case DataType("DOUBLE") => CollectedValue(fitsKeyword, (extractorFunctions(c.channel.name)(program)).asInstanceOf[Double], fitsComment, headerIndex)
+           case DataType("STRING") => CollectedValue(fitsKeyword, (extractorFunctions(c.channel.name)(program)).asInstanceOf[String], fitsComment, headerIndex)
+         }
     }
-    yield CollectedValue(fitsKeyword, r, fitsComment, headerIndex)
+    yield r
   }
 
   // ExtractorFunction that can read the PI's First Name
