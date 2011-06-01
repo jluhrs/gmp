@@ -19,10 +19,10 @@ class FitsTypeTest extends AssertionsForJUnit {
   }
 
   private def fitsMethod[T](fits: T)(implicit _fits: FitsType[T]) {
-    _fits.getType match {
-      case i if i.isAssignableFrom(classOf[Int]) => method(fits.asInstanceOf[Int])
-      case i if i.isAssignableFrom(classOf[String]) => method(fits.asInstanceOf[String])
-      case i if i.isAssignableFrom(classOf[Double]) => method(fits.asInstanceOf[Double])
+    _fits match {
+      case i if i == FitsType.IntegerType => method(fits.asInstanceOf[Int])
+      case i if i == FitsType.StringType => method(fits.asInstanceOf[String])
+      case i if i == FitsType.DoubleType => method(fits.asInstanceOf[Double])
     }
   }
 

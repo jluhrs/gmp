@@ -18,7 +18,7 @@ class SeqexecActorsTest extends AssertionsForJUnit {
 
     val seqActor = new SeqexecActor(db, "label", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
 
-    assert(seqActor.collectValues == List(CollectedValue("KEY", 1.asInstanceOf[AnyRef], "my comment", 0)))
+    assert(seqActor.collectValues == List(CollectedValue("KEY", 1, "my comment", 0)))
   }
 
   @Test
@@ -33,7 +33,7 @@ class SeqexecActorsTest extends AssertionsForJUnit {
   @Test
   def testActorFactory() {
     val db = new TemporarySeqexecKeywordsDatabaseImpl
-    db ! Store("label", "TEST", 1.asInstanceOf[AnyRef])
+    db ! Store("label", "TEST", (1.0).asInstanceOf[AnyRef])
     val factory = new SeqexecActorsFactory(db)
     factory.configure(List(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_PREP"), new FitsKeyword("TEST"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("SEQEXEC"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("my comment"))))
     assert(factory.buildStartAcquisitionActors("label").isEmpty)

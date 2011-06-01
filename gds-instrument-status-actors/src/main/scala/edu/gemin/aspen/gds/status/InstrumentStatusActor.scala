@@ -9,22 +9,22 @@ import edu.gemini.aspen.giapi.status.StatusDatabaseService
  * to a single fitsKeyword
  */
 class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSConfiguration) extends KeywordValueActor {
-    override def collectValues(): List[CollectedValue] = {
-        val statusItemName = configuration.channel.name
-        val (fitsKeyword, fitsComment, headerIndex) = (
-                configuration.keyword,
-                configuration.fitsComment.value,
-                configuration.index.index)
+  override def collectValues(): List[CollectedValue[_]] = {
+    val statusItemName = configuration.channel.name
+    val (fitsKeyword, fitsComment, headerIndex) = (
+      configuration.keyword,
+      configuration.fitsComment.value,
+      configuration.index.index)
 
-        val statusItem = Option(statusDB.getStatusItem(statusItemName))
+    val statusItem = Option(statusDB.getStatusItem(statusItemName))
 
-        val value = statusItem match {
-            case Some(x) => x.getValue
-            // In case no status item, we use the default value
-            case None => configuration.nullValue.value
-        }
-
-        CollectedValue(fitsKeyword, value, fitsComment, headerIndex) :: Nil
+    val value = statusItem match {
+      case Some(x) => x.getValue
+      // In case no status item, we use the default value
+      case None => configuration.nullValue.value
     }
+
+    CollectedValue(fitsKeyword, value, fitsComment, headerIndex) :: Nil
+  }
 
 }

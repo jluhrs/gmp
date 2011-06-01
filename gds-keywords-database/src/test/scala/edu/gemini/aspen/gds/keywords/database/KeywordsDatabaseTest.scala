@@ -25,7 +25,9 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
   }
 
   def check(label: DataLabel, item: HeaderItem) {
-    val list = List(new DefaultHeader(List(item)))
+    val defHead = new DefaultHeader()
+    defHead.add(item)
+    val list = List(defHead)
     val ret = db !? (1000, Retrieve(label))
     assert(!ret.isEmpty) //we didn't get a timeout
     val storedOpt = ret.get.asInstanceOf[Option[List[Header]]]
