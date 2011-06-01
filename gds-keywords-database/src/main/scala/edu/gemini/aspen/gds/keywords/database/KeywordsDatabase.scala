@@ -12,11 +12,11 @@ import edu.gemini.aspen.gds.api.{FitsType, CollectedValue}
 trait KeywordsDatabase extends Actor
 
 //case classes define the messages accepted by the DataBase
-case class Store[T](dataLabel: DataLabel, value: CollectedValue[T])(implicit val _value: FitsType[T])
+case class Store[T](dataLabel: DataLabel, value: CollectedValue[T])(implicit val _type: FitsType[T])
 
 //helper object to be able to extract implicit parameter from case class while pattern matching
 object _Store {
-  def unapply(in: Store[_]) = Some(in.dataLabel, in.value, in._value)
+  def unapply(in: Store[_]) = Some(in.dataLabel, in.value, in._type)
 }
 
 case class Retrieve(dataLabel: DataLabel)
