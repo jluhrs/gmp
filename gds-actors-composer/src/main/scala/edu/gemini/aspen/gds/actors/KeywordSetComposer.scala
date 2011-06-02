@@ -114,13 +114,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
 
   private def storeReply(dataLabel: DataLabel, collectedValues: Any) {
     for (value <- collectedValues.asInstanceOf[List[CollectedValue[_]]]) {
-      keywordsDatabase ! (value match {
-        case _CollectedValue(keyword, _value, comment, index, _type) => _type match {
-          case FitsType.IntegerType => Store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
-          case FitsType.DoubleType => Store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
-          case FitsType.StringType => Store(dataLabel, value.asInstanceOf[CollectedValue[String]])
-        }
-      })
+      keywordsDatabase ! Store(dataLabel, value)
     }
   }
 

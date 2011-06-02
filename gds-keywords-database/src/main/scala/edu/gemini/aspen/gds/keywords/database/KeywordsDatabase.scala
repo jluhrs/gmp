@@ -3,8 +3,8 @@ package edu.gemini.aspen.gds.keywords.database
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
-import edu.gemini.aspen.gds.api.{FitsType, CollectedValue}
 import edu.gemini.fits.{HeaderItem, DefaultHeader, Header}
+import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
  * Interface for the database
@@ -12,12 +12,7 @@ import edu.gemini.fits.{HeaderItem, DefaultHeader, Header}
 trait KeywordsDatabase extends Actor
 
 //case classes define the messages accepted by the DataBase
-case class Store[T](dataLabel: DataLabel, value: CollectedValue[T])(implicit val _type: FitsType[T])
-
-//helper object to be able to extract implicit parameter from case class while pattern matching
-object _Store {
-  def unapply(in: Store[_]) = Some(in.dataLabel, in.value, in._type)
-}
+case class Store(dataLabel: DataLabel, value: CollectedValue[_])
 
 case class Retrieve(dataLabel: DataLabel)
 
@@ -36,12 +31,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   def act() {
     loop {
       react {
-       // case _Store(dataLabel, value, _type) => _type match {
-         // case  FitsType.IntegerType => store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
-        //  case  FitsType.DoubleType => store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
-         // case  FitsType.StringType => store(dataLabel, value.asInstanceOf[CollectedValue[String]])
-        //}
-        case _Store(dataLabel, value,_type) => store(dataLabel, _type.collectedValueToHeaderItem(value), value.index)
+        case Store(dataLabel: DataLabel, value: CollectedValue[_]) => store(dataLabel, value._type.collectedValueToHeaderItem(value), value.index)
         case Retrieve(dataLabel) => sender ! retrieve(dataLabel)
         case Clean(dataLabel) => clean(dataLabel)
         case x: Any => throw new RuntimeException("Argument not known " + x)
