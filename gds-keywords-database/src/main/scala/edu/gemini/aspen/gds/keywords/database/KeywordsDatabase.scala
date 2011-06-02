@@ -3,8 +3,8 @@ package edu.gemini.aspen.gds.keywords.database
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
-import edu.gemini.fits.{DefaultHeader, Header}
 import edu.gemini.aspen.gds.api.{FitsType, CollectedValue}
+import edu.gemini.fits.{HeaderItem, DefaultHeader, Header}
 
 /**
  * Interface for the database
@@ -36,11 +36,12 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   def act() {
     loop {
       react {
-        case _Store(dataLabel, value, _type) => _type match {
-          case FitsType.IntegerType => store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
-          case FitsType.DoubleType => store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
-          case FitsType.StringType => store(dataLabel, value.asInstanceOf[CollectedValue[String]])
-        }
+       // case _Store(dataLabel, value, _type) => _type match {
+         // case  FitsType.IntegerType => store(dataLabel, value.asInstanceOf[CollectedValue[Int]])
+        //  case  FitsType.DoubleType => store(dataLabel, value.asInstanceOf[CollectedValue[Double]])
+         // case  FitsType.StringType => store(dataLabel, value.asInstanceOf[CollectedValue[String]])
+        //}
+        case _Store(dataLabel, value,_type) => store(dataLabel, _type.collectedValueToHeaderItem(value), value.index)
         case Retrieve(dataLabel) => sender ! retrieve(dataLabel)
         case Clean(dataLabel) => clean(dataLabel)
         case x: Any => throw new RuntimeException("Argument not known " + x)
@@ -58,24 +59,24 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    * @param keyword keyword to store
    * @param value value to associate to the keyword
    */
-  private def store[T: FitsType](dataLabel: DataLabel, value: CollectedValue[T]) {
+  private def store(dataLabel: DataLabel, headerItem: HeaderItem, index: Int) {
     if (!map.contains(dataLabel)) {
       map += (dataLabel -> List[Header]())
     }
     val headers: List[Header] = for {
       headerList <- map.get(dataLabel).toList
       header: Header <- headerList
-      if header.getIndex == value.index
+      if header.getIndex == index
     } yield header
 
     for (header <- headers) {
       //should only be one...
-      header.add(value) //implicit conversion to HeaderItem
+      header.add(headerItem) //implicit conversion to HeaderItem
     }
     if (headers.isEmpty) {
       //if couldn't find the header, then add it
-      val header = new DefaultHeader(value.index)
-      header.add(value) //implicit conversion to HeaderItem
+      val header = new DefaultHeader(index)
+      header.add(headerItem) //implicit conversion to HeaderItem
       map.put(dataLabel, header :: map.get(dataLabel).get)
     }
   }
