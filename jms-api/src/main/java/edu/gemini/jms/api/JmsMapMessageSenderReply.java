@@ -9,14 +9,13 @@ import javax.jms.TemporaryQueue;
 
 /**
  * Base class to model a request/reply communication using JMS.
- *
+ * <p/>
  * Implementations of this class need to define how to reconstruct the
  * reply message in the communication as an Object with the method buildResponse
- *
+ * <p/>
  * Also they need to customize what kind of consumer will be used to get the reply
  * overriding the method createReplyConsumer. For example the reply could be a temporary
  * queue or a fixed queue with a correlationID selector
- *
  */
 public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
         implements MapMessageSenderReply<T> {
@@ -29,8 +28,12 @@ public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
     public T sendMessageWithReply(DestinationData destination,
                                   MapMessageBuilder messageBuilder,
                                   long timeout) throws MessagingException {
+        long startTime = System.currentTimeMillis();
         Message m = sendMapMessageWithReply(destination, messageBuilder);
-        return waitForReply(m, timeout);
+        T replyObject = waitForReply(m, timeout);
+        long endTime = System.currentTimeMillis();
+        LOG.info("Sending/reply on " + destination + " took " + (endTime - startTime) + "   [ms]");
+        return replyObject;
 
     }
 
@@ -61,9 +64,9 @@ public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
         MessageConsumer tempConsumer = createReplyConsumer(requestMessage);
         Message reply = tempConsumer.receive(timeout);
         tempConsumer.close();
-        
+
         if (requestMessage.getJMSReplyTo() instanceof TemporaryQueue) {
-            TemporaryQueue temporaryQueue = (TemporaryQueue)requestMessage.getJMSReplyTo();
+            TemporaryQueue temporaryQueue = (TemporaryQueue) requestMessage.getJMSReplyTo();
             temporaryQueue.delete();
         }
         return buildResponse(reply);
