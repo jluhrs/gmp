@@ -66,7 +66,7 @@ public final class DefaultConfiguration implements Configuration {
     }
 
     public Configuration getSubConfiguration(ConfigPath path) {
-        if (path == null) {
+        if (path == null || (_config.size() == 1 && _config.containsKey(path))) {
             return emptyConfiguration();
         }
         // Finds everything from path to anything represented by the last possible char

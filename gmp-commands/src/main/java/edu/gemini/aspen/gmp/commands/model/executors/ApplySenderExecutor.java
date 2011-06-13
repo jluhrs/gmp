@@ -69,7 +69,6 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
             //get the sub-configuration
             Configuration c = config.getSubConfiguration(cp);
 
-
             ActionMessage am = _actionMessageBuilder.buildActionMessage(action, cp);
 
             HandlerResponse response = sender.send(am, action.getTimeout());
@@ -84,10 +83,6 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
             //if there are no handlers, recursively decompose this config in
             //smaller units if possible, and return the answer.
             if (response == HandlerResponse.NOANSWER) {
-                if (c.equals(config)) {
-                    analyzer.addResponse(HandlerResponse.NOANSWER);
-                    continue;
-                }
                 response = getResponse(action, c, cp, sender);
             }
 

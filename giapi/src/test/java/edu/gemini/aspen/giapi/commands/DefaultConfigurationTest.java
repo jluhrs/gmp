@@ -24,8 +24,7 @@ public class DefaultConfigurationTest {
         assertNull(configuration.getValue(configPath("Y")));
         assertTrue(configuration.getKeys().contains(configPath("X")));
         assertFalse(configuration.getKeys().contains(configPath("Y")));
-        //todo: this test needs an update
-        assertEquals(configuration, configuration.getSubConfiguration(configPath("X")));
+        assertEquals(emptyConfiguration(), configuration.getSubConfiguration(configPath("X")));
         assertEquals(configuration, configuration.getSubConfiguration(EMPTY_PATH));
     }
 
@@ -102,4 +101,61 @@ public class DefaultConfigurationTest {
         assertTrue(emptyConfiguration().isEmpty());
     }
 
+    @Test
+    public void testSubConfigurationOnEmptyConfiguration() {
+        Configuration config = emptyConfiguration();
+
+        assertEquals(emptyConfiguration(), config.getSubConfiguration(null));
+        assertEquals(emptyConfiguration(), config.getSubConfiguration(ConfigPath.EMPTY_PATH));
+        assertEquals(emptyConfiguration(), config.getSubConfiguration(configPath("x")));
+    }
+
+    @Test
+    public void testSubConfigurationOnStandardConfiguration() {
+        Configuration config = configurationBuilder()
+                .withConfiguration("gpi:observationMode.mode", "Y_coron")
+                .build();
+
+        assertEquals(emptyConfiguration(), config.getSubConfiguration(null));
+        assertEquals(config, config.getSubConfiguration(ConfigPath.EMPTY_PATH));
+        assertEquals(config, config.getSubConfiguration(configPath("gpi")));
+        assertEquals(config, config.getSubConfiguration(configPath("gpi:observationMode")));
+    }
+
+    @Test
+    public void testSubConfigurationOnCompositeConfiguration() {
+        Configuration config = configurationBuilder()
+                .withConfiguration("gpi:configFOVIfsOffsets.xTarget", "1")
+                .withConfiguration("gpi:configFOVIfsOffsets.yTarget", "2")
+                .withConfiguration("gpi:observationMode.mode", "Y_coron")
+                .build();
+
+        assertEquals(emptyConfiguration(), config.getSubConfiguration(null));
+        assertEquals(config, config.getSubConfiguration(ConfigPath.EMPTY_PATH));
+        assertEquals(config, config.getSubConfiguration(configPath("gpi")));
+
+        Configuration configFOVIfsOffsets = configurationBuilder()
+                .withConfiguration("gpi:configFOVIfsOffsets.xTarget", "1")
+                .withConfiguration("gpi:configFOVIfsOffsets.yTarget", "2")
+                .build();
+
+        assertEquals(configFOVIfsOffsets, config.getSubConfiguration(configPath("gpi:configFOVIfsOffsets")));
+
+        Configuration configObservationMode = configurationBuilder()
+                .withConfiguration("gpi:observationMode.mode", "Y_coron")
+                .build();
+
+        assertEquals(configObservationMode, config.getSubConfiguration(configPath("gpi:observationMode")));
+    }
+
+    @Test
+    public void testSubConfigurationOnNonStandardConfiguration() {
+        Configuration config = configurationBuilder()
+                .withConfiguration("gpi.val", "1")
+                .build();
+
+        assertEquals(emptyConfiguration(), config.getSubConfiguration(null));
+        assertEquals(config, config.getSubConfiguration(ConfigPath.EMPTY_PATH));
+        assertEquals(config, config.getSubConfiguration(configPath("gpi")));
+    }
 }
