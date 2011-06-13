@@ -244,15 +244,8 @@ Of course, you can change these values and update the test application according
         This will start listening for the PARK Command with the PRESET/START activity and will invoke a handler upon reception of
          the command. The handler will alternate simulating  an immediate response and an action that takes about 10 seconds to complete.
 
-
         To confirm this is working, use the giapi-tester to send this command to the application.
 
-        <tt>$ ./giapi-tester.sh -sc PARK -activity PRESET_START</tt>
-\verbatim
-    Response Received: [COMPLETED]
-\endverbatim
-
-        If you run it again, you should see:
         <tt>$ ./giapi-tester.sh -sc PARK -activity PRESET_START</tt>
 \verbatim
     Response Received: [STARTED]
