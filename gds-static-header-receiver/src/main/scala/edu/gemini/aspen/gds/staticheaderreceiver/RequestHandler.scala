@@ -8,8 +8,10 @@ import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabas
 
 sealed abstract class RequestHandlerMessage
 
+// message to initialize an observation. Program ID needed to fetch data from odb
 case class InitObservation(programId: String, dataLabel: DataLabel) extends RequestHandlerMessage
 
+// store a keyword/value pair for a given data label
 case class StoreKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef) extends RequestHandlerMessage
 
 

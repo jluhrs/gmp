@@ -11,12 +11,16 @@ import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabas
  */
 object TemporarySeqexecKeywordsDatabaseImpl {
 
+  // store a keyword/value pair for a given data label
   case class Store(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef)
 
+  // retrieve the value associated to a keyword and data label
   case class Retrieve(dataLabel: DataLabel, keyword: FitsKeyword)
 
+  // delete data for a given data label
   case class Clean(dataLabel: DataLabel)
 
+  // delete the whole database
   case class CleanAll()
 
 }
@@ -62,10 +66,8 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
 
   //todo: clean map. Empty maps are being left over for each datalabel.
   private def retrieveValue(dataLabel: DataLabel, keyword: FitsKeyword): Option[AnyRef] = {
-    if (map.contains(dataLabel)) {
-      map(dataLabel).remove(keyword)
-    } else {
-      None
+    map.get(dataLabel) flatMap {
+      x => x.get(keyword)
     }
   }
 
