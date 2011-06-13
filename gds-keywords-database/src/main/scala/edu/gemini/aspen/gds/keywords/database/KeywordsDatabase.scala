@@ -12,10 +12,13 @@ import edu.gemini.aspen.gds.api.CollectedValue
 trait KeywordsDatabase extends Actor
 
 //case classes define the messages accepted by the DataBase
+//store a CollectedValue associated with a data label
 case class Store(dataLabel: DataLabel, value: CollectedValue[_])
 
+//retrieve all CollectedValues associated with a data label
 case class Retrieve(dataLabel: DataLabel)
 
+//remove all the CollectedValues associated with a data label
 case class Clean(dataLabel: DataLabel)
 
 /**
@@ -32,7 +35,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     loop {
       react {
         case Store(dataLabel: DataLabel, value: CollectedValue[_]) => store(dataLabel, value._type.collectedValueToHeaderItem(value), value.index)
-        case Retrieve(dataLabel) => sender ! retrieve(dataLabel)
+        case Retrieve(dataLabel) => reply(retrieve(dataLabel))
         case Clean(dataLabel) => clean(dataLabel)
         case x: Any => throw new RuntimeException("Argument not known " + x)
       }

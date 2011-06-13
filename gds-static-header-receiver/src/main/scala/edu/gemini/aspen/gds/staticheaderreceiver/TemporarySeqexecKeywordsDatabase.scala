@@ -45,7 +45,7 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
     loop {
       react {
         case Store(dataLabel, key, value) => store(dataLabel, key, value)
-        case Retrieve(dataLabel, key) => sender ! retrieveValue(dataLabel, key)
+        case Retrieve(dataLabel, key) => reply(retrieveValue(dataLabel, key))
         case Clean(dataLabel) => clean(dataLabel)
         case CleanAll() => cleanAll()
         case x: Any => throw new RuntimeException("Argument not known " + x)
