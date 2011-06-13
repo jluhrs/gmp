@@ -10,6 +10,7 @@ import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
 import edu.gemini.aspen.gds.performancemonitoring._
 import actors.Actor
+import actors.Actor.actor
 import java.io.{FileNotFoundException, File}
 import java.util.logging.{Level, Logger}
 
@@ -151,7 +152,9 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
   private def updateFITSFile(dataLabel: DataLabel): Unit = {
     val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[Option[List[Header]]]
     list match {
-      case Some(headersList) => new FitsUpdater(new File("/tmp"), dataLabel, headersList).updateFitsHeaders()
+      case Some(headersList) => actor {
+        new FitsUpdater(new File("/tmp"), dataLabel, headersList).updateFitsHeaders()
+      }
       case None =>
     }
   }
