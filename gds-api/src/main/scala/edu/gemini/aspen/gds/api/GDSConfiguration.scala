@@ -12,7 +12,7 @@ case class HeaderIndex(index: Int)
 
 case class DataType(name: String)
 
-case class Mandatory(value: Boolean)
+case class Mandatory(mandatory: Boolean)
 
 case class NullValue(value: String)
 
@@ -36,29 +36,6 @@ case class GDSConfiguration(instrument: Instrument,
                             arrayIndex: ArrayIndex,
                             fitsComment:FitsComment)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+object GDSConfiguration {
+    implicit def mandatoryToBoolean(mandatory: Mandatory) = mandatory.mandatory
+}
