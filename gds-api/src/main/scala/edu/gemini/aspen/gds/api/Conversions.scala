@@ -25,7 +25,7 @@ object Conversions {
 
   implicit def boolToMandatory(value: Boolean) = new Mandatory(value)
 
-  implicit def stringToNullValue(value: String) = new DefaultValue(value)
+  implicit def stringToDefaultValue(value: String) = new DefaultValue(value)
 
   implicit def stringToSubsystem(name: String) = new Subsystem(name)
 
