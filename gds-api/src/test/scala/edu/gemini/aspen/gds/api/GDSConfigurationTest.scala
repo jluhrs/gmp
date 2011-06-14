@@ -10,9 +10,9 @@ class GDSConfigurationTest extends AssertionsForJUnit {
 
     @Test
     def testIsMandatory() {
-        val mandatoryConfig = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(true), NullValue("NONE"), Subsystem("EPICS"), Channel("a"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+        val mandatoryConfig = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(true), DefaultValue("NONE"), Subsystem("EPICS"), Channel("a"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
         assertTrue(mandatoryConfig.isMandatory)
-        val nonMandatoryConfig = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("a"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+        val nonMandatoryConfig = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem("EPICS"), Channel("a"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
         assertFalse(nonMandatoryConfig.isMandatory)
     }
 

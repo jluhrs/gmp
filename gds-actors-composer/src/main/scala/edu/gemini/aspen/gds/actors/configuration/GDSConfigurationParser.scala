@@ -68,7 +68,7 @@ class GDSConfigurationParser extends RegexParsers {
     }
 
     def nullValue = """\w*""".r ^^ {
-        x => NullValue(x)
+        x => DefaultValue(x)
     }
 
     def subsystem = """\w*""".r ^^ {

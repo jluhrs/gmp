@@ -63,11 +63,11 @@ class ODBActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
             new ODBActorsFactory(databaseService, programIDDatabase))
 
     def buildOneConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("ODB"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
+        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem("ODB"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
     }
 
     def buildOneNonStatusConfiguration(event:String,keyword:String,channel:String): GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("STATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
+        GDSConfiguration(Instrument("GPI"), GDSEvent(event), new FitsKeyword(keyword), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem("STATUS"), Channel(channel), ArrayIndex("NULL"), FitsComment("A comment"))
     }
 
 }

@@ -103,6 +103,6 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     }
 
     def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String) = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), fitsKeyword, HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("ODB"), Channel(channelName), ArrayIndex("NULL"), FitsComment(comment))
+        GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), fitsKeyword, HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem("ODB"), Channel(channelName), ArrayIndex("NULL"), FitsComment(comment))
     }
 }

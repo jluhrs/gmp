@@ -25,7 +25,7 @@ class GDSConfigurationParserSpec extends Spec with ShouldMatchers {
         it("should read the default value") {
             val result = new GDSConfigurationParser().parseText(text)
 
-            result.get(0).asInstanceOf[GDSConfiguration].nullValue should equal (NullValue("NONE"))
+            result.get(0).asInstanceOf[GDSConfiguration].nullValue should equal (DefaultValue("NONE"))
         }
         it("should parse comment lines") {
             val text = "#comment"
@@ -43,7 +43,7 @@ class GDSConfigurationParserSpec extends Spec with ShouldMatchers {
         result.successful should be(true)
 
         result.get should have length (1)
-        result.get(0) should equal(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_END_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")))
+        result.get(0) should equal(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_END_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem("EPICS"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation")))
     }
 
 }

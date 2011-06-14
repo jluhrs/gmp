@@ -12,7 +12,7 @@ case class DataType(name: String)
 
 case class Mandatory(mandatory: Boolean)
 
-case class NullValue(value: String)
+case class DefaultValue(value: String)
 
 case class Subsystem(name: String)
 
@@ -31,7 +31,7 @@ case class GDSConfiguration(instrument: Instrument,
                             index:HeaderIndex,
                             dataType: DataType,
                             mandatory: Mandatory,
-                            nullValue: NullValue,
+                            nullValue: DefaultValue,
                             subsystem: Subsystem,
                             channel: Channel,
                             arrayIndex: ArrayIndex,

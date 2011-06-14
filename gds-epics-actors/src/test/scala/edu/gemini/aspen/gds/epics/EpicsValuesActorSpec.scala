@@ -17,7 +17,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     val channelName = "ws:massAirmass"
     val referenceValue = "an epics string"
     val fitsKeyword = new FitsKeyword("AIRMASS")
-    val nullValue = NullValue("NONE")
+    val nullValue = DefaultValue("NONE")
 
     def buildConfiguration(mandatory:Boolean) =
         GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(mandatory), nullValue, Subsystem("EPICS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))

@@ -35,7 +35,7 @@ class SeqexecActorsTest extends AssertionsForJUnit {
     val db = new TemporarySeqexecKeywordsDatabaseImpl
     db ! Store("label", "TEST", (1.0).asInstanceOf[AnyRef])
     val factory = new SeqexecActorsFactory(db)
-    factory.configure(List(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_PREP"), new FitsKeyword("TEST"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("SEQEXEC"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("my comment"))))
+    factory.configure(List(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_PREP"), new FitsKeyword("TEST"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem("SEQEXEC"), Channel("ws:massAirmass"), ArrayIndex("NULL"), FitsComment("my comment"))))
     assert(factory.buildStartAcquisitionActors("label").isEmpty)
     assert(factory.buildEndAcquisitionActors("label").isEmpty)
     val actors = factory.buildPrepareObservationActors("label")

@@ -74,7 +74,7 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
             HeaderIndex(0),
             DataType("DOUBLE"),
             Mandatory(false),
-            NullValue(defaultValue),
+            DefaultValue(defaultValue),
             Subsystem("STATUS"),
             Channel(statusItem),
             ArrayIndex("NULL"),
