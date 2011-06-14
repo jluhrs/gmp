@@ -22,6 +22,9 @@ case class ArrayIndex(value: String)
 
 case class FitsComment(value: String)
 
+/**
+ * Encapsulates a configuration item of GDS
+ */
 case class GDSConfiguration(instrument: Instrument,
                             event: GDSEvent,
                             keyword: FitsKeyword,
@@ -32,8 +35,6 @@ case class GDSConfiguration(instrument: Instrument,
                             subsystem: Subsystem,
                             channel: Channel,
                             arrayIndex: ArrayIndex,
-                            fitsComment:FitsComment)
-
-object GDSConfiguration {
-    implicit def mandatoryToBoolean(mandatory: Mandatory):Boolean = mandatory.mandatory
+                            fitsComment:FitsComment) {
+    def isMandatory = mandatory.mandatory
 }
