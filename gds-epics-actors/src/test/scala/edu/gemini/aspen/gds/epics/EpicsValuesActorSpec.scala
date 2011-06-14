@@ -11,22 +11,25 @@ import edu.gemini.aspen.gds.api._
 
 @RunWith(classOf[JUnitRunner])
 class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
+    val dataLabel = new DataLabel("GS-2011")
+    val epicsReader = mock[EpicsReader]
+
+    val channelName = "ws:massAirmass"
+    val referenceValue = "an epics string"
+    val fitsKeyword = new FitsKeyword("AIRMASS")
+    val nullValue = NullValue("NONE")
+
+    def buildConfiguration(mandatory:Boolean) =
+        GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(mandatory), nullValue, Subsystem("EPICS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+
     describe("An EpicsValuesActor") {
         it("should reply to Collect messages") {
-            // Generate dataset
-            val dataLabel = new DataLabel("GS-2011")
-            val epicsReader = mock[EpicsReader]
+            val configuration = buildConfiguration(true)
+            val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
-            val channelName = "ws:massAirmass"
-            val referenceValue = "an epics string"
             // mock return value
             epicsReader.getValue(channelName) returns referenceValue
-            val fitsKeyword = new FitsKeyword("AIRMASS")
 
-            val configuration = GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), NullValue("NONE"), Subsystem("EPICS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
-
-            val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
-            
             // Send an init message
             val result = epicsValueActor !! Collect
 
@@ -37,6 +40,41 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
                        comment should be ("Mean airmass for the observation")
                 case x:AnyRef => fail("Should not reply other message ")
             }
+
+            // verify mock
+            there was one(epicsReader).getValue(channelName)
+        }
+        it("should provide a default value if the current one cannot be read") {
+            val configuration = buildConfiguration(false)
+            val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
+
+            // mock return value cannot be read
+            epicsReader.getValue(channelName) returns null
+
+            // Send an init message
+            val result = epicsValueActor !! Collect
+
+            result() match {
+                case CollectedValue(keyword, value, comment, 0) :: Nil
+                    => keyword should equal (fitsKeyword)
+                       value should equal (nullValue.value)
+                       comment should be ("Mean airmass for the observation")
+                case x:AnyRef => fail("Should not reply other message ")
+            }
+
+            // verify mock
+            there was one(epicsReader).getValue(channelName)
+        }
+        it("should return empty if mandatory and the current one cannot be read") {
+            val configuration = buildConfiguration(true)
+            val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
+
+            // mock return value cannot be read
+            epicsReader.getValue(channelName) returns null
+
+            // Send an init message
+            val result = epicsValueActor !! Collect
+            result().asInstanceOf[List[CollectedValue[_]]].isEmpty
 
             // verify mock
             there was one(epicsReader).getValue(channelName)
