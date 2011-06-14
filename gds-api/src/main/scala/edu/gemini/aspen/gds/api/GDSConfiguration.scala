@@ -1,7 +1,5 @@
 package edu.gemini.aspen.gds.api
 
-import util.parsing.combinator.RegexParsers
-import io.Source
 import edu.gemini.aspen.giapi.data.FitsKeyword
 
 case class Instrument(name: String)
@@ -37,5 +35,5 @@ case class GDSConfiguration(instrument: Instrument,
                             fitsComment:FitsComment)
 
 object GDSConfiguration {
-    implicit def mandatoryToBoolean(mandatory: Mandatory) = mandatory.mandatory
+    implicit def mandatoryToBoolean(mandatory: Mandatory):Boolean = mandatory.mandatory
 }
