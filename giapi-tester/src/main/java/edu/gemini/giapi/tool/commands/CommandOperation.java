@@ -35,7 +35,7 @@ public class CommandOperation implements Operation {
     private String host = "localhost";
 
     private int repetitions = 1;
-    private long timeout = 25000;
+    private long timeout = Long.MAX_VALUE; // Wait forever
 
     public void execute() throws Exception {
         String url = "tcp://" + host + ":61616";
