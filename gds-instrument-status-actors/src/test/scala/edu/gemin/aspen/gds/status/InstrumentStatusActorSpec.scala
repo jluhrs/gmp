@@ -7,6 +7,7 @@ import org.scalatest.Spec
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.giapi.status.impl.BasicStatus
 
@@ -20,7 +21,7 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
 
     describe("An InstrumentStatusActor") {
         it("should reply to Collect messages") {
-            val configuration = buildConfiguration(statusItemName)
+            val configuration = buildConfiguration(statusItemName, false)
 
             val referenceValue = "ok"
             // mock return value
@@ -32,19 +33,20 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
             // Send a Collect message and wait the response
             val result = instrumentStatusActor !! Collect
 
+
             result() match {
                 case CollectedValue(keyword, value, comment, 0) :: Nil
                     => keyword should equal(fitsKeyword)
                     value should equal(referenceValue)
                     comment should be("Current global status of the instrument")
-                case x: AnyRef => fail("Should not reply other message ")
+                case _ => fail("Should not reply other message ")
             }
 
             // verify mock
             there was one(statusDB).getStatusItem(statusItemName)
         }
-        it("should reply to Collect messages even when status value is unknown") {
-            val configuration = buildConfiguration(statusItemName)
+        it("should reply to Collect messages and a default value if the status is unknown") {
+            val configuration = buildConfiguration(statusItemName, false)
 
             // mock return value
             statusDB.getStatusItem(statusItemName) returns null
@@ -59,7 +61,26 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
                     => keyword should equal(fitsKeyword)
                     value should equal(defaultValue)
                     comment should be("Current global status of the instrument")
-                case x: AnyRef => fail("Should not reply other message ")
+                case _ => fail("Should not reply other message ")
+            }
+
+            // verify mock
+            there was one(statusDB).getStatusItem(statusItemName)
+        }
+        it("should return empty if mandatory and the current one cannot be read") {
+         val configuration = buildConfiguration(statusItemName, true)
+
+            // mock return value
+            statusDB.getStatusItem(statusItemName) returns null
+
+            val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
+
+            // Send a Collect message and wait the response
+            val result = instrumentStatusActor !! Collect
+
+            result() match {
+                case Nil =>
+                case _ => fail("Should not reply other message ")
             }
 
             // verify mock
@@ -67,18 +88,18 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
         }
     }
 
-    def buildConfiguration(statusItem: String): GDSConfiguration = {
-        GDSConfiguration(Instrument("GPI"),
-            GDSEvent("OBS_START_ACQ"),
+    def buildConfiguration(statusItem: String, mandatory: Boolean): GDSConfiguration = {
+        GDSConfiguration("GPI",
+            "OBS_START_ACQ",
             fitsKeyword,
-            HeaderIndex(0),
-            DataType("DOUBLE"),
-            Mandatory(false),
-            DefaultValue(defaultValue),
-            Subsystem("STATUS"),
-            Channel(statusItem),
-            ArrayIndex("NULL"),
-            FitsComment("Current global status of the instrument"))
+            0,
+            "DOUBLE",
+            mandatory,
+            defaultValue,
+            "STATUS",
+            statusItem,
+            "NULL",
+            "Current global status of the instrument")
     }
 }
 

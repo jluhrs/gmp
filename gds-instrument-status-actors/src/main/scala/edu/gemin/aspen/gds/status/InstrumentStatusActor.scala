@@ -1,30 +1,22 @@
 package edu.gemin.aspen.gds.status
 
-import edu.gemini.aspen.gds.api.KeywordValueActor
-import edu.gemini.aspen.gds.api.{GDSConfiguration, CollectedValue}
-import edu.gemini.aspen.giapi.status.StatusDatabaseService
+import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.giapi.status.{StatusItem, StatusDatabaseService}
 
 /**
  * Actor that can produce as a reply of a Collect request with the value of an StatusItem linked
  * to a single fitsKeyword
  */
-class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSConfiguration) extends KeywordValueActor {
-  override def collectValues(): List[CollectedValue[_]] = {
-    val statusItemName = configuration.channel.name
-    val (fitsKeyword, fitsComment, headerIndex) = (
-      configuration.keyword,
-      configuration.fitsComment.value,
-      configuration.index.index)
+class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
+    override def collectValues(): List[CollectedValue[_]] = {
+        val statusItem = Option(statusDB.getStatusItem(sourceChannel))
 
-    val statusItem = Option(statusDB.getStatusItem(statusItemName))
-
-    val value = statusItem match {
-      case Some(x) => x.getValue
-      // In case no status item, we use the default value
-      case None => configuration.nullValue.value
+        statusItem map(collectedValue) orElse(defaultCollectedValue) toList
     }
 
-    CollectedValue(fitsKeyword, value, fitsComment, headerIndex) :: Nil
-  }
+    def collectedValue(status: StatusItem[_]):CollectedValue[_] = {
+        // TODO: Add type
+        CollectedValue(fitsKeyword, status.getValue.toString, fitsComment, headerIndex)
+    }
 
 }
