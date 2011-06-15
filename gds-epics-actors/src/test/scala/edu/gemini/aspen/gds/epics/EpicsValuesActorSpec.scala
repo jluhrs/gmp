@@ -8,6 +8,7 @@ import edu.gemini.epics.EpicsReader
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.api.Conversions._
 
 @RunWith(classOf[JUnitRunner])
 class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
@@ -20,7 +21,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     val nullValue = DefaultValue("NONE")
 
     def buildConfiguration(mandatory:Boolean) =
-        GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(mandatory), nullValue, Subsystem("EPICS"), Channel(channelName), ArrayIndex("NULL"), FitsComment("Mean airmass for the observation"))
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", mandatory, "NONE", "EPICS", channelName, "NULL", "Mean airmass for the observation")
 
     describe("An EpicsValuesActor") {
         it("should reply to Collect messages") {
