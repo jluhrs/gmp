@@ -26,5 +26,6 @@
  * - \subpage known_issues_and_bugs
  * - \subpage gmp_internal_documentation
  * - \subpage gds_internal_documentation
+ * - \subpage gpi_validation
  *
  */

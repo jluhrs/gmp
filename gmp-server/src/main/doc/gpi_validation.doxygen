@@ -1,0 +1,62 @@
+/*! \page gpi_validation GPI Specific Integration Tests
+\subsection gpi_test GPI Commands Test
+A test script is made available to test all the apply commands. The script is available in the
+GMP Server distribution file under \b bin/gpiTestAllCommands.sh
+
+\attention This test should be used with care if not in simulation mode
+
+\subsection gpi_test_setup Setup
+
+To run the scripts you need the following
+
+ - GMP Server running using the \b bin/start.sh script
+ - TLC running using <b> $TLC_ROOT/startup/gpi-initd start</b>
+ - TLC Command Event running with, e.g. <b>./bin/linux64/gpCmdEvent -c $TLC_ROOT/config/CONFIG.CmdEvent -simGmb -simTcs -d 1 </b> 
+
+When they are all running, the script \b gpiTestAllCommands.sh can be called and it will try to execute all the known commands
+in the right order and it will emit an ERROR message if needed
+
+For example:
+\verbatim
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=INIT][activity=PRESET_START][{config={}}]]
+Command INIT OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=DATUM][activity=PRESET_START][{config={}}]]
+Command DATUM OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=PARK][activity=PRESET_START][{config={}}]]
+Command PARK OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=INIT][activity=PRESET_START][{config={}}]]
+Command INIT OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=END_GUIDE][activity=PRESET_START][{config={}}]]
+Command END_GUIDE OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_START][{config={gpi:centerPinhole.mark=1}}]]
+Command APPLY OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_START][{config={gpi:configPolarizer.angle=5}}]]
+Command APPLY OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_START][{config={gpi:configSteeringMirrors.focus=0.0}}]]
+Command APPLY OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_START][{config={gpi:correct.selection=1}}]]
+Command APPLY OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_START][{config={ao:dmShape.dmFlag=1}}]]
+Command APPLY OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_START][{config={ifs:log.rate=5}}]]
+Command APPLY OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_START][{config={gpi:selectLyotMask.maskStr=APLC_60}}]]
+Command APPLY OK
+Response Received: [STARTED]
+Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_START][{config={cal:acquireWhiteFringe.mark=1}}]]
+Command APPLY OK
+Response Received: [STARTED]
+\endverbatim
+*/

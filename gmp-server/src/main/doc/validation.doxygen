@@ -617,6 +617,8 @@ epicsMutexLock failed." is normal).
     2011-04-04 13:59:16,455 [0x4e77c940] INFO  giapi.LogCommandUtil - Posting completion info for action id  6
 \endverbatim
 
+\subsection gpi_test GPI Commands Test
+
 \subsection comm_memory_leaks_testing_sec GMP Commands Memory Leaks Testing
 Testing for memory leaks are possible by using the stress.sh script and the checking the GMP using visualvm or jconsole
 \li Start the GMP as indicated in the \ref user_manual.
@@ -671,4 +673,5 @@ epicsMutexLock failed." is normal).
     Processing done
 \endverbatim
 \li Check that FITS file has been updated. (TODO: specify how/where to check it)
+
 */
