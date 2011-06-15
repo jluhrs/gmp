@@ -39,7 +39,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
                     => keyword should equal (fitsKeyword)
                        value should equal (referenceValue)
                        comment should be ("Mean airmass for the observation")
-                case x:AnyRef => fail("Should not reply other message ")
+                case _ => fail("Should not reply other message ")
             }
 
             // verify mock
@@ -60,7 +60,7 @@ class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
                     => keyword should equal (fitsKeyword)
                        value should equal (nullValue.value)
                        comment should be ("Mean airmass for the observation")
-                case x:AnyRef => fail("Should not reply other message ")
+                case _ => fail("Should not reply other message ")
             }
 
             // verify mock
