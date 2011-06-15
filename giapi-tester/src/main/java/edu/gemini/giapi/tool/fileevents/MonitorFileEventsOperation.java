@@ -40,7 +40,7 @@ public class MonitorFileEventsOperation implements Operation {
         return _isReady;
     }
 
-    public void execute() throws Exception {
+    public int execute() throws Exception {
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
         JmsFileEventsListener listener = new JmsFileEventsListener(new TestFileEventsAction());
@@ -57,6 +57,7 @@ public class MonitorFileEventsOperation implements Operation {
         } catch (JMSException e) {
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());
         }
+        return 0;
     }
 
 

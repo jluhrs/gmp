@@ -34,7 +34,7 @@ public class GetStatusOperation implements Operation {
         return _statusName != null;
     }
 
-    public void execute() throws Exception {
+    public int execute() throws Exception {
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
         StatusGetter getter = new StatusGetter();
@@ -54,6 +54,7 @@ public class GetStatusOperation implements Operation {
 
         }  catch (JMSException ex) {
             LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-        } 
+        }
+        return 0;
     }
 }

@@ -14,21 +14,25 @@ public class HelpOperation implements Operation {
 
     private boolean showHelp = false;
 
+    @Override
     public void setArgument(Argument arg) {
         if (arg instanceof HelpArgument) {
             showHelp = true;
         }
     }
 
+    @Override
     public boolean isReady() {
         return showHelp;
     }
 
-    public void execute() throws Exception {
+    @Override
+    public int execute() throws Exception {
         InputStreamReader isr = new InputStreamReader(
                 HelpOperation.class.getResourceAsStream("usage.txt"));
         BufferedReader br = new BufferedReader(isr);
         for (String line = br.readLine(); line != null; line = br.readLine())
             System.out.println(line);
+        return 0;
     }
 }

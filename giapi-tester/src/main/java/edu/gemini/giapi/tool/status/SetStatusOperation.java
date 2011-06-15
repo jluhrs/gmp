@@ -58,7 +58,7 @@ public class SetStatusOperation implements Operation {
         return (_name != null)&&(_value != null)&&(_type!=null);
     }
 
-    public void execute() throws Exception {
+    public int execute() throws Exception {
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
         StatusItem _statusItem = null;
         if(_type.ordinal()>4 && (_severity != null) && (_cause != null )){
@@ -67,7 +67,7 @@ public class SetStatusOperation implements Operation {
             _statusItem = _type.getStatusItem(_name,_value);
         }else{
             LOG.severe("If you indicate an alarm type, you must indicate severity and cause (message is optional).");
-            return;
+            return 0;
         }
         StatusSetter setter = new StatusSetter(_statusItem.getName());
 
@@ -84,5 +84,6 @@ public class SetStatusOperation implements Operation {
         } finally{
              setter.stopJms();
         }
+        return 0;
     }
 }

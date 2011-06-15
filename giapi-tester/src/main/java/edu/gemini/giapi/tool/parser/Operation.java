@@ -15,7 +15,7 @@ public interface Operation {
 
     /**
      * Return true if the Operation can be executed with the
-     * arguments registerd
+     * arguments registered
      * @return true if the operation is ready to be executed.
      */
     public boolean isReady();
@@ -23,6 +23,7 @@ public interface Operation {
     /**
      * Execute the given operation
      * @throws Exception
+     * @return Returns an error code to be used by giapi tester to signal external callers
      */
-    public void execute() throws Exception;
+    public int execute() throws Exception;
 }

@@ -64,9 +64,17 @@ public class GiapiTester {
         Operation op = parser.parse();
 
         if (op != null) {
-            op.execute();
+             execute(op);
         } else {
             Util.die("I'm sorry, what operation do you mean?");
+        }
+    }
+
+    private static void execute(Operation op) throws Exception {
+        try{
+            System.exit(op.execute());
+        } catch (Exception e) {
+            Util.die("Error executing operation " + op + ", error message: " + e.getMessage());
         }
     }
 

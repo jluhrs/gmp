@@ -35,7 +35,7 @@ public class GetStatusNamesOperation implements Operation {
         return ready;
     }
     
-    public void execute() throws Exception {
+    public int execute() throws Exception {
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
         StatusGetter getter = new StatusGetter();
@@ -63,5 +63,6 @@ public class GetStatusNamesOperation implements Operation {
         }finally{
             getter.stopJms();
         }
+        return 0;
     }
 }

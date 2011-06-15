@@ -81,7 +81,7 @@ public class MonitorStatusOperation implements Operation {
         return _statusName != null;
     }
 
-    public void execute() throws Exception {
+    public int execute() throws Exception {
 
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
@@ -113,7 +113,7 @@ public class MonitorStatusOperation implements Operation {
         } catch (JMSException e) {
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());
         }
-
+        return 0;
     }
 
     private void waitForTimeout(StatusService service, ScheduledFuture<Void> futureValue) throws InterruptedException, ExecutionException, TimeoutException {

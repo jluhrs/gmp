@@ -28,6 +28,8 @@ public class CommandOperation implements Operation {
 
     private SequenceCommandArgument _scArgument;
 
+    private CommandSenderClient senderClient;
+
     private ActivityArgument _activityArgument;
 
     private ConfigArgument _configArgument;
@@ -37,12 +39,15 @@ public class CommandOperation implements Operation {
     private int repetitions = 1;
     private long timeout = Long.MAX_VALUE; // Wait forever
 
-    public void execute() throws Exception {
-        String url = "tcp://" + host + ":61616";
+    public CommandOperation() {}
 
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
-        provider.startConnection();
-        CommandSenderClient senderClient = new CommandSenderClient(provider);
+    protected CommandOperation(CommandSenderClient senderClient) {
+        this.senderClient = senderClient;
+    }
+
+    @Override
+    public int execute() throws Exception {
+        CommandSenderClient senderClient = buildCommandSender();
 
         Configuration config = (_configArgument != null) ? _configArgument.getConfiguration() : emptyConfiguration();
 
@@ -51,6 +56,7 @@ public class CommandOperation implements Operation {
                 _activityArgument.getActivity(),
                 config);
 
+        int result = 0;
         for (int x = 0; x < repetitions; x++) {
             WaitingCompletionListener listener = new WaitingCompletionListener();
             HandlerResponse response = senderClient.sendCommand(command, listener);
@@ -62,11 +68,30 @@ public class CommandOperation implements Operation {
                 CompletionInformation completionInformation
                         = listener.waitForResponse(timeout);
                 LOG.info("Completion Information: " + completionInformation);
+                result = isResponseAnError(completionInformation.getHandlerResponse()) ?1:0;
             }
-        }
+            if (isResponseAnError(response)) {
+                result = 1;
+            }
 
+        }
+        return result;
     }
 
+    private CommandSenderClient buildCommandSender() {
+        String url = "tcp://" + host + ":61616";
+
+        // This limits making a unit test
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
+        provider.startConnection();
+        return new CommandSenderClient(provider);
+    }
+
+    private boolean isResponseAnError(HandlerResponse response) {
+        return response.getResponse().equals(HandlerResponse.Response.ERROR);
+    }
+
+    @Override
     public void setArgument(Argument arg) {
         if (arg instanceof SequenceCommandArgument) {
             _scArgument = (SequenceCommandArgument) arg;
@@ -83,6 +108,7 @@ public class CommandOperation implements Operation {
         }
     }
 
+    @Override
     public boolean isReady() {
         return (_scArgument != null && _activityArgument != null);
     }
