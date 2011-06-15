@@ -1,11 +1,11 @@
 package edu.gemini.aspen.gmp.commands.records;
 
-import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.commands.CommandSender;
+import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.dbr.DBR;
-import org.apache.felix.ipojo.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +36,10 @@ public class CadRecordImpl implements CadRecord {
     /**
      * Constructor
      *
-     * @param cas Channel Access Server to pass to CAR and EpicsCad
-     * @param cs Command Sender to use
+     * @param cas        Channel Access Server to pass to CAR and EpicsCad
+     * @param cs         Command Sender to use
      * @param epicsTop
-     * @param name CAD name. ex.: "park"
+     * @param name       CAD name. ex.: "park"
      * @param attributes attribute names this CAD has.
      */
     protected CadRecordImpl(ChannelAccessServer cas,
@@ -50,22 +50,22 @@ public class CadRecordImpl implements CadRecord {
         this.cs = cs;
         this.epicsTop = epicsTop;
         this.name = name.toLowerCase();
-        if(name.equalsIgnoreCase("config")){
+        if (name.equalsIgnoreCase("config")) {
             seqCom = SequenceCommand.valueOf("APPLY");
-        }else{
+        } else {
             seqCom = SequenceCommand.valueOf(name.toUpperCase());
         }
-        for(String att: attributes){
+        for (String att : attributes) {
             attributeNames.add(att);
         }
         epicsCad = new EpicsCad(cas);
         car = new CarRecord(cas, epicsTop.buildChannelName(name.toLowerCase() + "C"));
-        LOG.info("Constructor");
+        LOG.info("Finished constructing CAD record " + name);
     }
 
     @Override
     public synchronized void start() {
-        LOG.info("Validate");
+        LOG.info("Validate " + seqCom.getName() + " CAD record");
 
         epicsCad.start(epicsTop, name, new AttributeListener(), new DirListener(), attributeNames);
         car.start();
@@ -73,7 +73,7 @@ public class CadRecordImpl implements CadRecord {
 
     @Override
     public synchronized void stop() {
-        LOG.info("InValidate");
+        LOG.info("InValidate " + seqCom.getName() + " CAD record");
         epicsCad.stop();
         car.stop();
 
@@ -90,16 +90,17 @@ public class CadRecordImpl implements CadRecord {
     }
 
     private synchronized CadState processDir(Dir dir) {
-        LOG.info("State: " + state + " Directive: " + dir);
+        if (state != CadState.CLEAR)
+            LOG.info("CAD Record: " + seqCom.getName() + " in State: " + state + " received Directive: " + dir);
         CadState newState = state.processDir(dir, epicsCad, cs, seqCom, car);
-        LOG.info("State: " + newState);
+        if (state != CadState.CLEAR) LOG.info("CAD Record: " + seqCom.getName() + " now in State: " + newState);
         return newState;
     }
 
     private class AttributeListener implements ChannelListener {
         @Override
         public void valueChange(DBR dbr) {
-            LOG.info("Attribute Received: " + ((String[]) dbr.getValue())[0]);
+            LOG.fine("CAD Record: " + seqCom.getName() + " Attribute Received: " + ((String[]) dbr.getValue())[0]);
             state = processDir(Dir.MARK);
         }
     }

@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.commands.records;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
@@ -13,10 +12,8 @@ import edu.gemini.cas.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 import org.apache.felix.ipojo.annotations.*;
-import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -220,15 +217,15 @@ public class ApplyRecord {
         for (CadRecord cad : cads) {
             UpdateListener listener = new UpdateListener();
             cad.getEpicsCad().registerValListener(listener);
-            LOG.info("listener registered");
+            LOG.finer("listener registered");
 
             cad.getEpicsCad().setDir(dir, id);
-            LOG.info("commands sent");
+            LOG.finer("commands sent");
             Integer value = -1;
 
             try {
                 listener.await();
-                LOG.info("latch released");
+                LOG.finer("latch released");
 
                 cad.getEpicsCad().unRegisterValListener(listener);
                 value = ((int[]) listener.getDBR().getValue())[0];
@@ -238,7 +235,7 @@ public class ApplyRecord {
                 cad.getEpicsCad().unRegisterValListener(listener);
 
             }
-            LOG.info("all ok");
+            LOG.finer("all ok");
 
             if (value != 0) {
                 val.setValue(value);
