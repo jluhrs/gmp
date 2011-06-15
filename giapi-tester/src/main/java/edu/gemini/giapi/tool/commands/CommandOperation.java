@@ -39,7 +39,8 @@ public class CommandOperation implements Operation {
     private int repetitions = 1;
     private long timeout = Long.MAX_VALUE; // Wait forever
 
-    public CommandOperation() {}
+    public CommandOperation() {
+    }
 
     protected CommandOperation(CommandSenderClient senderClient) {
         this.senderClient = senderClient;
@@ -68,7 +69,7 @@ public class CommandOperation implements Operation {
                 CompletionInformation completionInformation
                         = listener.waitForResponse(timeout);
                 LOG.info("Completion Information: " + completionInformation);
-                result = isResponseAnError(completionInformation.getHandlerResponse()) ?1:0;
+                result = isResponseAnError(completionInformation.getHandlerResponse()) ? 1 : 0;
             }
             if (isResponseAnError(response)) {
                 result = 1;
@@ -79,16 +80,19 @@ public class CommandOperation implements Operation {
     }
 
     private CommandSenderClient buildCommandSender() {
-        String url = "tcp://" + host + ":61616";
+        if (senderClient == null) {
+            String url = "tcp://" + host + ":61616";
 
-        // This limits making a unit test
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
-        provider.startConnection();
-        return new CommandSenderClient(provider);
+            // This limits making a unit test
+            ActiveMQJmsProvider provider = new ActiveMQJmsProvider(url);
+            provider.startConnection();
+            senderClient = new CommandSenderClient(provider);
+        }
+        return senderClient;
     }
 
     private boolean isResponseAnError(HandlerResponse response) {
-        return response.getResponse().equals(HandlerResponse.Response.ERROR);
+        return response.getResponse().equals(HandlerResponse.Response.ERROR) || response.getResponse().equals(HandlerResponse.Response.NOANSWER);
     }
 
     @Override

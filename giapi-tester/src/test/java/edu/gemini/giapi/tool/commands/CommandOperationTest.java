@@ -72,4 +72,16 @@ public class CommandOperationTest {
         assertEquals(1, commandOperation.execute());
     }
 
+    @Test
+    public void testNoAnswerIsAnError() throws Exception {
+        CommandSenderClient senderClient = mock(CommandSenderClient.class);
+        CommandOperation commandOperation = new CommandOperation(senderClient);
+
+        buildApplyCommand(commandOperation);
+
+        when(senderClient.sendCommand(Matchers.<Command>anyObject(), Matchers.<CompletionListener>anyObject())).thenReturn(HandlerResponse.get(HandlerResponse.Response.NOANSWER));
+
+        assertEquals(1, commandOperation.execute());
+    }
+
 }
