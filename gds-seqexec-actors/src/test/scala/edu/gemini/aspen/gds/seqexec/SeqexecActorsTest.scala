@@ -14,11 +14,25 @@ class SeqexecActorsTest extends AssertionsForJUnit {
   @Test
   def testActor() {
     val db = new TemporarySeqexecKeywordsDatabaseImpl
-    db ! Store("label", "key", 1.asInstanceOf[AnyRef])
+    db ! Store("labelint", "key", 1.asInstanceOf[AnyRef])
+    db ! Store("labelstring", "key", "1".asInstanceOf[AnyRef])
+    db ! Store("labeldouble", "key", 1.0.asInstanceOf[AnyRef])
+
+    val seqActorInt = new SeqexecActor(db, "labelint", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+    assert(seqActorInt.collectValues == List(CollectedValue("KEY", 1, "my comment", 0)))
+    val seqActorString = new SeqexecActor(db, "labelstring", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "STRING", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+    assert(seqActorString.collectValues == List(CollectedValue("KEY", "1", "my comment", 0)))
+    val seqActorDouble = new SeqexecActor(db, "labeldouble", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "DOUBLE", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+    assert(seqActorDouble.collectValues == List(CollectedValue("KEY", 1.0, "my comment", 0)))
+  }
+
+  @Test(expected = classOf[ClassCastException])
+  def testWrongType() {
+    val db = new TemporarySeqexecKeywordsDatabaseImpl
+    db ! Store("label", "key", 1.1.asInstanceOf[AnyRef])
 
     val seqActor = new SeqexecActor(db, "label", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
-
-    assert(seqActor.collectValues == List(CollectedValue("KEY", 1, "my comment", 0)))
+    seqActor.collectValues
   }
 
   @Test
