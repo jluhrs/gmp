@@ -8,15 +8,18 @@ import edu.gemini.aspen.giapi.status.{StatusItem, StatusDatabaseService}
  * to a single fitsKeyword
  */
 class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-    override def collectValues(): List[CollectedValue[_]] = {
-        val statusItem = Option(statusDB.getStatusItem(sourceChannel))
+  override def collectValues(): List[CollectedValue[_]] = {
+    val statusItem = Option(statusDB.getStatusItem(sourceChannel))
 
-        statusItem map(collectedValue) orElse(defaultCollectedValue) toList
-    }
+    statusItem map (collectedValue) orElse (defaultCollectedValue) toList
+  }
 
-    def collectedValue(status: StatusItem[_]):CollectedValue[_] = {
-        // TODO: Add type
-        CollectedValue(fitsKeyword, status.getValue.toString, fitsComment, headerIndex)
+  def collectedValue(status: StatusItem[_]): CollectedValue[_] = {
+    dataType match {
+      case DataType("STRING") => CollectedValue(fitsKeyword, status.getValue.toString, fitsComment, headerIndex)
+      case DataType("DOUBLE") => CollectedValue(fitsKeyword, status.getValue.asInstanceOf[Double], fitsComment, headerIndex)
+      case DataType("INT") => CollectedValue(fitsKeyword, status.getValue.asInstanceOf[Int], fitsComment, headerIndex)
     }
+  }
 
 }
