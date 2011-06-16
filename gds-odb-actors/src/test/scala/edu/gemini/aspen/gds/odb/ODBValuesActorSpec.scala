@@ -131,9 +131,31 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             // verify mock
             there was databaseService.lookupProgramByID(programID)
         }
-    }
+//        it("should give a default value if not mandatory and the result is null") {
+//            val piInfo = new SPProgram.PIInfo(null, null, null, null, null)
+//            spProgram.setPIInfo(piInfo)
+//
+//            val configuration = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI Last Name", false)
+//
+//            val result = buildActorAndCollect(configuration)
+//            println(result)
+//
+//            result match {
+//                case CollectedValue(keyword, value, comment, 0) :: Nil
+//                    => keyword should equal(firstNameFitsKeyword)
+//                       value should equal("NOT FOUND")
+//                       comment should be("PI Last Name")
+//                case _ => fail("Should not reply other message ")
+//
+//
+//                // verify mock
+//                there was databaseService.lookupProgramByID(programID)
+//            }
+//        }
 
-    def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory:Boolean) = {
-        List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "DOUBLE", mandatory, "NONE", "ODB", channelName, "NULL", comment))
+        def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory: Boolean) = {
+            List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "DOUBLE", mandatory, "NONE", "ODB", channelName, "NOT FOUND", comment))
+        }
+
     }
 }

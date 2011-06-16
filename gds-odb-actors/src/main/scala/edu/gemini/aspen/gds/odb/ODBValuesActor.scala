@@ -11,7 +11,7 @@ import edu.gemini.aspen.gds.api.{DataType, KeywordValueActor, GDSConfiguration, 
  * for a given programID
  */
 class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configuration: List[GDSConfiguration]) extends KeywordValueActor {
-    type ExtractorFunction = SPProgram => AnyRef
+    type ExtractorFunction = SPProgram => Option[AnyRef]
     type CollectorFunction = SPProgram => CollectedValue[_]
 
     // Defines a list of "channels" to functions map that can extract information from a SPProgram instance
@@ -51,18 +51,30 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
                      c.index.index,
                      c.dataType)
              if extractorFunctions contains c.channel.name
-             val r = Option(dataType match {
-                 case DataType("INT") => CollectedValue(fitsKeyword, (extractorFunctions(c.channel.name)(program)).asInstanceOf[Int], fitsComment, headerIndex)
-                 case DataType("DOUBLE") => CollectedValue(fitsKeyword, (extractorFunctions(c.channel.name)(program)).asInstanceOf[Double], fitsComment, headerIndex)
-                 case DataType("STRING") => CollectedValue(fitsKeyword, (extractorFunctions(c.channel.name)(program)).asInstanceOf[String], fitsComment, headerIndex)
-             })
-        }
-        yield r.get
+             val result = extractorFunctions(c.channel.name)(program)
+             val r = result map { value =>
+                 dataType match {
+                     case DataType("INT") => CollectedValue(fitsKeyword, value.asInstanceOf[Int], fitsComment, headerIndex)
+                     case DataType("DOUBLE") => CollectedValue(fitsKeyword, value.asInstanceOf[Double], fitsComment, headerIndex)
+                     case DataType("STRING") => CollectedValue(fitsKeyword, value.asInstanceOf[String], fitsComment, headerIndex)
+                 }
+             } orElse (defaultCollectedValue(c))
+        } yield r.get
+    }
+
+    private def newCollectedValue() {
+
+    }
+
+    private def defaultCollectedValue(config: GDSConfiguration): Option[CollectedValue[_]] = if (!config.isMandatory) {
+        Option(CollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index))
+    } else {
+        None
     }
 
     // ExtractorFunction that can read the PI's First Name
-    def extractPIFirstName(spProgram: SPProgram) = spProgram.getPIFirstName
+    def extractPIFirstName(spProgram: SPProgram) = Option(spProgram.getPIFirstName)
 
-    def extractPILastName(spProgram: SPProgram) = spProgram.getPILastName
+    def extractPILastName(spProgram: SPProgram) = Option(spProgram.getPILastName)
 
 }
