@@ -7,6 +7,7 @@ import org.scalatest.Spec
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.spModel.gemini.obscomp.SPProgram
 import edu.gemini.pot.spdb.{IDBDatabaseService, IDBQueryFunctor, IDBDatabase, IDBQueryRunner}
 import edu.gemini.pot.sp.memImpl.MemProgram
@@ -43,10 +44,10 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
 
             result() match {
                 case CollectedValue(keyword, value, comment, 0) :: Nil
-                => keyword should equal(firstNameFitsKeyword)
-                value should equal(lastName)
-                comment should be("PI Last Name")
-                case x: AnyRef => fail("Should not reply other message ")
+                    => keyword should equal(firstNameFitsKeyword)
+                    value should equal(lastName)
+                    comment should be("PI Last Name")
+                case _ => fail("Should not reply other message ")
             }
 
             // verify mock
@@ -62,7 +63,7 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
 
             result() match {
                 case List() =>  // Expected
-                case x: AnyRef => fail("Should not reply other message ")
+                case _ => fail("Should not reply other message ")
             }
 
             // verify mock
@@ -94,7 +95,7 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
                                 comment should be ("PI First Name")
                     }
                 }
-                case x: AnyRef => fail("Should not reply other message ")
+                case _ => fail("Should not reply other message ")
             }
 
             // verify mock
@@ -103,6 +104,6 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     }
 
     def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String) = {
-        GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_START_ACQ"), fitsKeyword, HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem("ODB"), Channel(channelName), ArrayIndex("NULL"), FitsComment(comment))
+        GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "DOUBLE", false, "NONE", "ODB", channelName, "NULL", comment)
     }
 }
