@@ -22,22 +22,13 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires progra
     var actorsConfiguration: List[GDSConfiguration] = List()
 
     override def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] = {
-        val programID = programIdDatabase !? RetrieveProgramId(dataLabel)
+        val programID = (programIdDatabase !? RetrieveProgramId(dataLabel)).asInstanceOf[Option[String]]
         // Only produce actors if the programID has been already stored in the programIdDatabase
-        programID match {
-            case Some(id: String) => buildODBActor(id)
-            // TODO add log
-            case None => List()
-        }
-    }
-
-    def buildODBActor(programID: String) = {
-        if (actorsConfiguration.nonEmpty) {
-            LOG.info("Building ODB Actor for program: " + programID)
-            new ODBValuesActor(programID, dbService, actorsConfiguration) :: Nil
-        } else {
-            Nil
-        }
+        programID filter {
+            _ => actorsConfiguration.nonEmpty
+        } map {
+            id => new ODBValuesActor(id, dbService, actorsConfiguration)
+        } toList
     }
 
     override def configure(configuration: List[GDSConfiguration]) {
