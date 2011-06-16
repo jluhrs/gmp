@@ -33,16 +33,22 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
     databaseService.lookupProgramByID(programID) returns ispProgram
     ispProgram.getDataObject returns spProgram
 
+    def buildActorAndCollect(configuration: List[GDSConfiguration]) = {
+        val odbValuesActor = new ODBValuesActor(programIDLabel, databaseService, configuration)
+
+        // Send a Collect message
+        val result = odbValuesActor !! Collect
+
+        result().asInstanceOf[List[CollectedValue[_]]]
+    }
+
     describe("An ODBValuesActor") {
         it("should reply to Collect messages") {
-            val configuration = buildConfigurationItem(firstNameFitsKeyword, lastNameChannel, "PI Last Name")
+            val configuration = buildConfigurationItem(firstNameFitsKeyword, lastNameChannel, "PI Last Name", true)
 
-            val odbValuesActor = new ODBValuesActor(programIDLabel, databaseService, List(configuration))
+            val result = buildActorAndCollect(configuration)
 
-            // Send a Collect message
-            val result = odbValuesActor !! Collect
-
-            result() match {
+            result match {
                 case CollectedValue(keyword, value, comment, 0) :: Nil
                 => keyword should equal(firstNameFitsKeyword)
                 value should equal(lastName)
@@ -54,14 +60,11 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             there was databaseService.lookupProgramByID(programID)
         }
         it("should ignore unknown channels") {
-            val configuration = buildConfigurationItem(firstNameFitsKeyword, "odb:achannel", "PI Last Name")
+            val configuration = buildConfigurationItem(firstNameFitsKeyword, "odb:achannel", "PI Last Name", true)
 
-            val odbValuesActor = new ODBValuesActor(programIDLabel, databaseService, List(configuration))
+            val result = buildActorAndCollect(configuration)
 
-            // Send a Collect message
-            val result = odbValuesActor !! Collect
-
-            result() match {
+            result match {
                 case List() => // Expected
                 case _ => fail("Should not reply other message ")
             }
@@ -72,15 +75,12 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
         it("should reply to Collect messages with multiple configurations") {
             val lastNameFitsKeyword = new FitsKeyword("PILSTNAM")
 
-            val configuration1 = buildConfigurationItem(lastNameFitsKeyword, lastNameChannel, "PI Last Name")
-            val configuration2 = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI First Name")
+            val configuration1 = buildConfigurationItem(lastNameFitsKeyword, lastNameChannel, "PI Last Name", true)
+            val configuration2 = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI First Name", true)
 
-            val odbValuesActor = new ODBValuesActor(programIDLabel, databaseService, List(configuration1, configuration2))
+            val result = buildActorAndCollect(configuration1 ::: configuration2)
 
-            // Send a Collect message
-            val result = odbValuesActor !! Collect
-
-            result() match {
+            result match {
                 case last :: first :: Nil => {
                     last match {
                         case CollectedValue(keyword, value, comment, 0)
@@ -101,16 +101,29 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             // verify mock
             there was databaseService.lookupProgramByID(programID)
         }
-        it("should skip if there is no program") {
+        it("should be empty if there is no program") {
             databaseService.lookupProgramByID(programID) returns null
-            val configuration = buildConfigurationItem(firstNameFitsKeyword, lastNameChannel, "PI Last Name")
+            val configuration = buildConfigurationItem(firstNameFitsKeyword, lastNameChannel, "PI Last Name", true)
 
-            val odbValuesActor = new ODBValuesActor(programIDLabel, databaseService, List(configuration))
+            val result = buildActorAndCollect(configuration)
 
-            // Send a Collect message
-            val result = odbValuesActor !! Collect
+            result match {
+                case List() => // Expected
+                case _ => fail("Should not reply other message ")
+            }
 
-            result() match {
+            // verify mock
+            there was databaseService.lookupProgramByID(programID)
+        }
+        it("should be empty if mandatory and the result is null") {
+            val piInfo = new SPProgram.PIInfo(null, null, null, null, null)
+            spProgram.setPIInfo(piInfo)
+
+            val configuration = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI Last Name", true)
+
+            val result = buildActorAndCollect(configuration)
+
+            result match {
                 case List() => // Expected
                 case _ => fail("Should not reply other message ")
             }
@@ -120,7 +133,7 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
         }
     }
 
-    def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String) = {
-        GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "DOUBLE", false, "NONE", "ODB", channelName, "NULL", comment)
+    def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory:Boolean) = {
+        List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "DOUBLE", mandatory, "NONE", "ODB", channelName, "NULL", comment))
     }
 }
