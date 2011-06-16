@@ -26,13 +26,13 @@ class SeqexecActorsTest extends AssertionsForJUnit {
     assert(seqActorDouble.collectValues == List(CollectedValue("KEY", 1.0, "my comment", 0)))
   }
 
-  @Test(expected = classOf[ClassCastException])
+  @Test
   def testWrongType() {
     val db = new TemporarySeqexecKeywordsDatabaseImpl
     db ! Store("label", "key", 1.1.asInstanceOf[AnyRef])
 
     val seqActor = new SeqexecActor(db, "label", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
-    seqActor.collectValues
+    assert(seqActor.collectValues == Nil)
   }
 
   @Test
