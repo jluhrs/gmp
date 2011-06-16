@@ -1,29 +1,20 @@
 package edu.gemini.aspen.gds.api
 
-import edu.gemini.aspen.giapi.data.DataLabel
+import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 
 /**
  * Trait for objects that can provide a set of Actors
  * that can in turn retrieve keyword values
  */
 trait KeywordActorsFactory {
-    /**
-     * Request the factory to create and start actors required for the prepare observation part
-     */
-    def buildPrepareObservationActors(dataLabel: DataLabel): List[KeywordValueActor] = List()
 
-    /**
-     * Request the factory to create and start actors required for the start acquisition part
-     */
-    def buildStartAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = List()
+  /**
+   * Request the factory to create and start actors required for the given observation event
+   */
+  def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor]
 
-    /**
-     * Request the factory to create and start actors required for the end acquisition part
-     */
-    def buildEndAcquisitionActors(dataLabel: DataLabel): List[KeywordValueActor] = List()
-
-    /**
-     * Passes the global GDS configuration along
-     */
-    def configure(configuration: List[GDSConfiguration])
+  /**
+   * Passes the global GDS configuration along
+   */
+  def configure(configuration: List[GDSConfiguration])
 }

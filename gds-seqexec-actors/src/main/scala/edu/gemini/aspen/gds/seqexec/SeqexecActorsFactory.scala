@@ -1,11 +1,10 @@
 package edu.gemini.aspen.gds.seqexec
 
 
-import edu.gemini.aspen.gds.api.KeywordActorsFactory
-import edu.gemini.aspen.gds.api.GDSConfiguration
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabase
+import edu.gemini.aspen.gds.api.{KeywordActorsFactory, GDSConfiguration}
 
 @Component
 @Instantiate
@@ -13,9 +12,9 @@ import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabas
 class SeqexecActorsFactory(@Requires seqexecKeyDB: TemporarySeqexecKeywordsDatabase) extends KeywordActorsFactory {
   var conf: List[GDSConfiguration] = List()
 
-  override def buildPrepareObservationActors(dataLabel: DataLabel) = {
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
     conf filter {
-      _.event.name == ObservationEvent.OBS_PREP.toString
+      _.event.name == obsEvent.name()
     } map {
       case config: GDSConfiguration => new SeqexecActor(seqexecKeyDB, dataLabel, config)
     }

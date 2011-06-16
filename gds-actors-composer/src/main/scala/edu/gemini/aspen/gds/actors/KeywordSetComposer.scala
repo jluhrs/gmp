@@ -2,59 +2,20 @@ package edu.gemini.aspen.gds.actors
 
 import java.util.logging.Logger
 import actors.{OutputChannel, Actor}
-import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.keywords.database.{Store, KeywordsDatabase}
 import edu.gemini.aspen.gds.api._
-
-sealed abstract class AcquisitionRequestReply
-
-/**
- * Parent class of request to KeywordSetComposer
- */
-sealed abstract class AcquisitionRequest extends AcquisitionRequestReply
+import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 
 /**
- * Message to indicate that a new observation is being prepared
+ * Message to indicate that FITS header data colelction should begin
  */
-case class PrepareObservation(dataLabel: DataLabel) extends AcquisitionRequest
+case class AcquisitionRequest(obsEvent: ObservationEvent, dataLabel: DataLabel)
 
 /**
- * Message to indicate that a new observation was initiated
+ * Message to indicate the data collection was completed
+ * It is sent in reply to an AcquisitionRequest message
  */
-case class StartAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
-
-/**
- * Message to indicate that an observation was completed
- */
-case class EndAcquisition(dataLabel: DataLabel) extends AcquisitionRequest
-
-/**
- * Message to indicate that a dataset write was completed
- */
-case class EndWrite(dataLabel: DataLabel) extends AcquisitionRequest
-
-/**
- * Parent class of actor's replies to KeywordSetComposer
- */
-sealed abstract class AcquisitionReply extends AcquisitionRequestReply
-
-/**
- * Message to indicate that the data collection was completed
- * It is sent in reply to an PrepareObservation message
- */
-case class PrepareObservationReply(dataLabel: DataLabel) extends AcquisitionReply
-
-/**
- * Message to indicate that the data collection was completed
- * It is sent in reply to an StartAcquisition message
- */
-case class StartAcquisitionReply(dataLabel: DataLabel) extends AcquisitionReply
-
-/**
- * Message to indicate that the data collection was completed
- * It is sent in reply to an StartAcquisition message
- */
-case class EndAcquisitionReply(dataLabel: DataLabel) extends AcquisitionReply
+case class AcquisitionRequestReply(obsEvent: ObservationEvent, dataLabel: DataLabel)
 
 /**
  * An actor that composes the items required to complete an observation using a set of actors
@@ -68,29 +29,27 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   def act() {
     loop {
       react {
-        case PrepareObservation(dataLabel) => prepareKeywordCollection(sender, dataLabel)
-        case StartAcquisition(dataLabel) => startKeywordCollection(sender, dataLabel)
-        case EndAcquisition(dataLabel) => finishKeywordCollection(sender, dataLabel)
+        case AcquisitionRequest(obsEvent, dataLabel) => doCollection(sender, obsEvent, dataLabel)
         case x: Any => throw new RuntimeException("Argument not known " + x)
       }
     }
   }
 
-  private def startKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
-    LOG.info("Init keyword collection on dataset " + dataLabel)
+  private def doCollection(sender: OutputChannel[Any], obsEvent: ObservationEvent, dataLabel: DataLabel) {
+    LOG.info("Keyword collection on dataset " + dataLabel + " for event " + obsEvent.name)
 
-    val dataFutures = requestCollection(dataLabel, actorsFactory.buildStartAcquisitionActors)
+    val dataFutures = requestCollection(obsEvent, dataLabel, actorsFactory.buildActors)
 
     waitForDataAndReply(dataLabel, dataFutures) {
       LOG.info("All collecting actors completed.")
       // Reply to the original sender
-      sender ! StartAcquisitionReply(dataLabel)
+      sender ! AcquisitionRequestReply(obsEvent, dataLabel)
     }
   }
 
-  private def requestCollection(dataLabel: DataLabel, actorsBuilder: (DataLabel) => List[Actor]) = {
+  private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => List[Actor]) = {
     // Get the actors from the factory
-    val actors = actorsBuilder(dataLabel)
+    val actors = actorsBuilder(obsEvent, dataLabel)
 
     // Start collecting
     val dataFutures = for (dataActor <- actors) yield {
@@ -118,28 +77,6 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     }
   }
 
-  private def finishKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
-    LOG.info("Complete keyword collection on dataset " + dataLabel)
-    val dataFutures = requestCollection(dataLabel, actorsFactory.buildEndAcquisitionActors)
-
-    waitForDataAndReply(dataLabel, dataFutures) {
-      LOG.info("All collecting actors completed.")
-      // Reply to the original sender
-      sender ! EndAcquisitionReply(dataLabel)
-    }
-  }
-
-  private def prepareKeywordCollection(sender: OutputChannel[Any], dataLabel: DataLabel) {
-    LOG.info("Prepare keyword collection on dataset " + dataLabel)
-
-    val dataFutures = requestCollection(dataLabel, actorsFactory.buildPrepareObservationActors)
-
-    waitForDataAndReply(dataLabel, dataFutures) {
-      LOG.info("All collecting actors completed.")
-      // Reply to the original sender
-      sender ! PrepareObservationReply(dataLabel)
-    }
-  }
 }
 
 /**
