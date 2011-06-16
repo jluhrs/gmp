@@ -44,9 +44,9 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
 
             result() match {
                 case CollectedValue(keyword, value, comment, 0) :: Nil
-                    => keyword should equal(firstNameFitsKeyword)
-                    value should equal(lastName)
-                    comment should be("PI Last Name")
+                => keyword should equal(firstNameFitsKeyword)
+                value should equal(lastName)
+                comment should be("PI Last Name")
                 case _ => fail("Should not reply other message ")
             }
 
@@ -62,7 +62,7 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             val result = odbValuesActor !! Collect
 
             result() match {
-                case List() =>  // Expected
+                case List() => // Expected
                 case _ => fail("Should not reply other message ")
             }
 
@@ -83,18 +83,35 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             result() match {
                 case last :: first :: Nil => {
                     last match {
-                        case CollectedValue (keyword, value, comment, 0)
-                            =>  keyword should equal (lastNameFitsKeyword)
-                                value should equal (lastName)
-                                comment should be ("PI Last Name")
+                        case CollectedValue(keyword, value, comment, 0)
+                        => keyword should equal(lastNameFitsKeyword)
+                        value should equal(lastName)
+                        comment should be("PI Last Name")
                     }
                     first match {
-                        case CollectedValue (keyword, value, comment, 0)
-                            =>  keyword should equal (firstNameFitsKeyword)
-                                value should equal (firstName)
-                                comment should be ("PI First Name")
+                        case CollectedValue(keyword, value, comment, 0)
+                        => keyword should equal(firstNameFitsKeyword)
+                        value should equal(firstName)
+                        comment should be("PI First Name")
                     }
                 }
+                case _ => fail("Should not reply other message ")
+            }
+
+            // verify mock
+            there was databaseService.lookupProgramByID(programID)
+        }
+        it("should skip if there is no program") {
+            databaseService.lookupProgramByID(programID) returns null
+            val configuration = buildConfigurationItem(firstNameFitsKeyword, lastNameChannel, "PI Last Name")
+
+            val odbValuesActor = new ODBValuesActor(programIDLabel, databaseService, List(configuration))
+
+            // Send a Collect message
+            val result = odbValuesActor !! Collect
+
+            result() match {
+                case List() => // Expected
                 case _ => fail("Should not reply other message ")
             }
 
