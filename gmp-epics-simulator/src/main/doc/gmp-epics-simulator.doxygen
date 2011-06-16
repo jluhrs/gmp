@@ -19,5 +19,6 @@
  * - simulationConfiguration: This property points to a XML file containing a definition of the simulated channels
  *
  * The XML file mentioned in the simulationConfiguration should list the simulated channels and their properties.
- * As a reference you can see the example \ref simulated-epics-channels.xml
+ * As a reference you can see the example \ref simulated-epics-channels.xml.
+ \attention You should avoid simulating channels that are active EPICS channels. Your clients will become confused.
  */
