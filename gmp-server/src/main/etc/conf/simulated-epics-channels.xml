@@ -17,15 +17,15 @@
 
 
 <channels>
-   <channel>
-       <name>ws:wsFilter.VALL</name>
-       <type>double</type>
-       <size>10</size>
-       <updateRate>5</updateRate>
-   </channel>
+    <channel>
+        <name>gpi:ws:wsFilter.VALL</name>
+        <type>double</type>
+        <size>10</size>
+        <updateRate>5</updateRate>
+    </channel>
 
     <channel>
-        <name>ws:cpWf</name>
+        <name>gpi:ws:cpWf</name>
         <type>byte</type>
         <size>20</size>
         <updateRate>7</updateRate>
