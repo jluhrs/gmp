@@ -18,7 +18,7 @@ case class Subsystem(name: String)
 
 case class Channel(name: String)
 
-case class ArrayIndex(value: String)
+case class ArrayIndex(value: Int)
 
 case class FitsComment(value: String)
 
@@ -28,13 +28,13 @@ case class FitsComment(value: String)
 case class GDSConfiguration(instrument: Instrument,
                             event: GDSEvent,
                             keyword: FitsKeyword,
-                            index:HeaderIndex,
+                            index: HeaderIndex,
                             dataType: DataType,
                             mandatory: Mandatory,
                             nullValue: DefaultValue,
                             subsystem: Subsystem,
                             channel: Channel,
                             arrayIndex: ArrayIndex,
-                            fitsComment:FitsComment) {
-    def isMandatory = mandatory.mandatory
+                            fitsComment: FitsComment) {
+  def isMandatory = mandatory.mandatory
 }

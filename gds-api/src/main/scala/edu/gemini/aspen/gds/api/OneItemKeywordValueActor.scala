@@ -12,7 +12,7 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
   protected val sourceChannel = config.channel.name
   protected val defaultValue = config.nullValue.value
   protected val dataType = config.dataType
-
+  protected val arrayIndex = config.arrayIndex.value
   /**
    * Method to get the default value of the value or None if the value is mandatory
    *

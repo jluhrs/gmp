@@ -65,7 +65,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
       DefaultValue("NONE"),
       Subsystem("STATUS"),
       Channel(channel),
-      ArrayIndex("NULL"),
+      ArrayIndex(0),
       FitsComment("A comment"))
   }
 
@@ -79,7 +79,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
       DefaultValue("NONE"),
       Subsystem("NOSTATUS"),
       Channel(channel),
-      ArrayIndex("NULL"),
+      ArrayIndex(0),
       FitsComment("A comment"))
   }
 

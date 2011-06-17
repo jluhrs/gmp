@@ -79,8 +79,8 @@ class GDSConfigurationParser extends RegexParsers {
     x => Channel(x)
   }
 
-  def arrayIndex = """\w*""".r ^^ {
-    x => ArrayIndex(x)
+  def arrayIndex = """\d*""".r ^^ {
+    x => ArrayIndex(x.toInt)
   }
 
   def comment = """#.*""".r ^^ {

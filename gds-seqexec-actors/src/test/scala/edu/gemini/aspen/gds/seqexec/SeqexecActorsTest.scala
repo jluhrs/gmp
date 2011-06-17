@@ -20,11 +20,11 @@ class SeqexecActorsTest {
     db ! Store("labelstring", "key", "1".asInstanceOf[AnyRef])
     db ! Store("labeldouble", "key", 1.0.asInstanceOf[AnyRef])
 
-    val seqActorInt = new SeqexecActor(db, "labelint", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+    val seqActorInt = new SeqexecActor(db, "labelint", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment"))
     assertEquals(List(CollectedValue("KEY", 1, "my comment", 0)), seqActorInt.collectValues)
-    val seqActorString = new SeqexecActor(db, "labelstring", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "STRING", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+    val seqActorString = new SeqexecActor(db, "labelstring", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "STRING", true, "null", "SEQEXEC", "KEY", 0, "my comment"))
     assertEquals(List(CollectedValue("KEY", "1", "my comment", 0)), seqActorString.collectValues)
-    val seqActorDouble = new SeqexecActor(db, "labeldouble", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "DOUBLE", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+    val seqActorDouble = new SeqexecActor(db, "labeldouble", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "DOUBLE", true, "null", "SEQEXEC", "KEY", 0, "my comment"))
     assertEquals(List(CollectedValue("KEY", 1.0, "my comment", 0)), seqActorDouble.collectValues)
   }
 
@@ -33,7 +33,7 @@ class SeqexecActorsTest {
     val db = new TemporarySeqexecKeywordsDatabaseImpl
     db ! Store("label", "key", "1.1")
 
-    val seqActor = new SeqexecActor(db, "label", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "DOUBLE", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+    val seqActor = new SeqexecActor(db, "label", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "DOUBLE", true, "null", "SEQEXEC", "KEY", 0, "my comment"))
     assertEquals(List(), seqActor.collectValues)
   }
 
@@ -41,7 +41,7 @@ class SeqexecActorsTest {
   def testActorInt() {
     db ! Store("label", "key", 1.asInstanceOf[AnyRef])
 
-    val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", "0", "my comment"))
+    val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment"))
 
     assertEquals(List(CollectedValue("KEY", 1, "my comment", 0)), seqActor.collectValues)
   }
@@ -51,7 +51,7 @@ class SeqexecActorsTest {
    */
   @Test
   def testNotMandatoryNotFoundValue() {
-    val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", false, "DEFAULT", "SEQEXEC", "KEY", "0", "my comment"))
+    val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", false, "DEFAULT", "SEQEXEC", "KEY", 0, "my comment"))
 
     // Should produce the default value
     assertEquals(List(CollectedValue("KEY", "DEFAULT", "my comment", 0)), seqActor.collectValues)
@@ -62,7 +62,7 @@ class SeqexecActorsTest {
    */
   @Test
   def testMandatoryNotFoundValue() {
-    val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "DEFAULT", "SEQEXEC", "KEY", "0", "my comment"))
+    val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "DEFAULT", "SEQEXEC", "KEY", 0, "my comment"))
 
     // Should produce an empty list
     assertEquals(List(), seqActor.collectValues)
@@ -73,7 +73,7 @@ class SeqexecActorsTest {
     db ! Store("label", "TEST", (1.0).asInstanceOf[AnyRef])
 
     val factory = new SeqexecActorsFactory(db)
-    factory.configure(List(GDSConfiguration("GPI", "OBS_PREP", "TEST", 0, "DOUBLE", false, "NONE", "SEQEXEC", "ws:massAirmass", "NULL", "my comment")))
+    factory.configure(List(GDSConfiguration("GPI", "OBS_PREP", "TEST", 0, "DOUBLE", false, "NONE", "SEQEXEC", "ws:massAirmass", 0, "my comment")))
     assertTrue(factory.buildActors(ObservationEvent.OBS_START_ACQ, "label").isEmpty)
     assertTrue(factory.buildActors(ObservationEvent.OBS_END_ACQ, "label").isEmpty)
 

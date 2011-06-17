@@ -31,7 +31,7 @@ object Conversions {
 
   implicit def stringToChannel(name: String) = new Channel(name)
 
-  implicit def stringToArrayIndex(value: String) = new ArrayIndex(value)
+  implicit def intToArrayIndex(value: Int) = new ArrayIndex(value)
 
   implicit def stringToFitsComment(value: String) = new FitsComment(value)
 }

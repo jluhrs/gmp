@@ -25,9 +25,9 @@ class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration
 
   def collectedValue(epicsValue: AnyRef): CollectedValue[_] = {
     dataType match {
-      case DataType("STRING") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[_]](0).toString, fitsComment, headerIndex)
-      case DataType("DOUBLE") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](0), fitsComment, headerIndex)
-      case DataType("INT") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Int]](0), fitsComment, headerIndex)
+      case DataType("STRING") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[_]](arrayIndex).toString, fitsComment, headerIndex)
+      case DataType("DOUBLE") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](arrayIndex), fitsComment, headerIndex)
+      case DataType("INT") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Int]](arrayIndex), fitsComment, headerIndex)
     }
     // TODO: Take care of arrays
   }
