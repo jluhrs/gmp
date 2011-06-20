@@ -13,7 +13,7 @@ class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSC
 
     override def collectValues(): List[CollectedValue[_]] = {
         val statusItem = Option(statusDB.getStatusItem(sourceChannel))
-        List(statusItem map { s => Option(s.getValue) } map { x => valueToCollectedValue(x.get) } getOrElse (defaultCollectedValue))
+        statusItem map { s => Option(s.getValue) } map { x => valueToCollectedValue(x.get) } orElse (defaultCollectedValue) toList
     }
 
 }

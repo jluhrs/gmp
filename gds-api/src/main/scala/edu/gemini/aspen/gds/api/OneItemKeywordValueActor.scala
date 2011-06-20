@@ -21,10 +21,10 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
      *
      * @return An Option containing the default value or None if the Item is mandatory
      */
-    protected def defaultCollectedValue: CollectedValue[_] = if (!isMandatory) {
-        DefaultCollectedValue(fitsKeyword, defaultValue, fitsComment, headerIndex)
+    protected def defaultCollectedValue: Option[CollectedValue[_]] = if (isMandatory) {
+        Option(ErrorCollectedValue(fitsKeyword, CollectionError.MandatoryRequired, fitsComment, headerIndex))
     } else {
-        ErrorCollectedValue(fitsKeyword, CollectionError.MandatoryRequired, fitsComment, headerIndex)
+        Option(DefaultCollectedValue(fitsKeyword, defaultValue, fitsComment, headerIndex))
     }
 
     /**

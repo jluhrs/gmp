@@ -55,7 +55,7 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
 
         override def collectValues(): List[CollectedValue[_]] = {
             val result = extractorFunctions.getOrElse(sourceChannel, unKnownChannelExtractor(_)) (program)
-            List(result map (valueToCollectedValue) getOrElse (defaultCollectedValue))
+            result map (valueToCollectedValue) orElse (defaultCollectedValue) toList
         }
     }
 
