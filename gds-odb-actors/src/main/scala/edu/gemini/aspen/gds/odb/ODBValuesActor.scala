@@ -70,9 +70,15 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
 
         def collectedValue(odbValue: AnyRef): CollectedValue[_] = dataType match {
                 case DataType("STRING") => CollectedValue(fitsKeyword, odbValue.toString, fitsComment, headerIndex)
-                case DataType("DOUBLE") => CollectedValue(fitsKeyword, odbValue.asInstanceOf[Double], fitsComment, headerIndex)
-                case DataType("INT") => CollectedValue(fitsKeyword, odbValue.asInstanceOf[Int], fitsComment, headerIndex)
-                // todo, this should not happen
+                case DataType("DOUBLE") => odbValue match {
+                    case v:java.lang.Number => CollectedValue(fitsKeyword, v.doubleValue(), fitsComment, headerIndex)
+                    case _ => ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
+                }
+                case DataType("INT") => odbValue match {
+                    case v:java.lang.Number => CollectedValue(fitsKeyword, v.intValue(), fitsComment, headerIndex)
+                    case _ => ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
+                }
+                // this should not happen
                 case _ => ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
             }
     }
@@ -92,9 +98,10 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
      */
     private def collectNotFoundValues: List[CollectedValue[_]] = {
         configuration map { c =>
-            c.isMandatory match {
-                case true => ErrorCollectedValue(c.keyword, CollectionError.MandatoryRequired, c.fitsComment.value, c.index.index)
-                case false => DefaultCollectedValue(c.keyword, c.nullValue.value, c.fitsComment.value, c.index.index)
+            if (c.isMandatory) {
+                ErrorCollectedValue(c.keyword, CollectionError.MandatoryRequired, c.fitsComment.value, c.index.index)
+            } else {
+                DefaultCollectedValue(c.keyword, c.nullValue.value, c.fitsComment.value, c.index.index)
             }
         } toList
     }

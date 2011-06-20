@@ -1,7 +1,5 @@
 package edu.gemini.aspen.gds.odb
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 import org.junit.Assert._
 import org.junit.Test
 import org.scalatest.Spec
@@ -149,11 +147,10 @@ class ODBValuesActorSpec extends Spec with Mockito {
                 assertEquals("PI Last Name", comment)
             }
             case _ => fail("Should not reply other message ")
-
-
-            // verify mock
-            there was databaseService.lookupProgramByID(programID)
         }
+
+        // verify mock
+        there was databaseService.lookupProgramByID(programID)
     }
 
     @Test
@@ -176,8 +173,32 @@ class ODBValuesActorSpec extends Spec with Mockito {
         there was databaseService.lookupProgramByID(programID)
     }
 
-    def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory: Boolean) = {
-        List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "DOUBLE", mandatory, "NOT FOUND", "ODB", channelName, 0, comment))
+    @Test
+    def testTypeMismatch() {
+        val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", firstNameFitsKeyword, 0, "DOUBLE", true, "NOT FOUND", "ODB", firstNameChannel, 0, "PI First Name")
+
+        val result = buildActorAndCollect(List(configuration))
+
+        result match {
+            case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
+                assertEquals(firstNameFitsKeyword, keyword)
+                assertEquals(CollectionError.TypeMismatch, error)
+                assertEquals("PI First Name", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
+
+        // verify mock
+        there was databaseService.lookupProgramByID(programID)
     }
+
+
+    def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory: Boolean) = {
+        List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "STRING", mandatory, "NOT FOUND", "ODB", channelName, 0, comment))
+    }
+//
+//    def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory: Boolean) = {
+//        List()
+//    }
 
 }
