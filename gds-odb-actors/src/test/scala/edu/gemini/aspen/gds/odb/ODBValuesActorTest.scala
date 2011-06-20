@@ -11,7 +11,7 @@ import edu.gemini.pot.spdb.IDBDatabaseService
 import edu.gemini.pot.sp.{ISPProgram, SPProgramID}
 import edu.gemini.aspen.gds.api._
 
-class ODBValuesActorSpec extends Spec with Mockito {
+class ODBValuesActorTest extends Spec with Mockito {
     val dataLabel = new DataLabel("GS-2011")
     val programIDLabel = "programID"
     val programID = SPProgramID.toProgramID("programID")
