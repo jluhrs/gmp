@@ -29,14 +29,14 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
         val dataObjOpt = Option(queryRunner.lookupProgramByID(progId)) map {
             _.getDataObject
         }
-        // todo: remove the null check
+        // Do a collect for each item or return a set of default values
         dataObjOpt map {
             _.asInstanceOf[SPProgram]
-        } filter {
-            _ != null
         } map {
             collectValuesFromProgram(_)
-        } getOrElse (List())
+        } getOrElse {
+            collectNotFoundValues
+        }
     }
 
     /**
@@ -68,15 +68,13 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
 //            }
         }
 
-        def collectedValue(odbValue: AnyRef): CollectedValue[_] = {
-            dataType match {
+        def collectedValue(odbValue: AnyRef): CollectedValue[_] = dataType match {
                 case DataType("STRING") => CollectedValue(fitsKeyword, odbValue.toString, fitsComment, headerIndex)
                 case DataType("DOUBLE") => CollectedValue(fitsKeyword, odbValue.asInstanceOf[Double], fitsComment, headerIndex)
                 case DataType("INT") => CollectedValue(fitsKeyword, odbValue.asInstanceOf[Int], fitsComment, headerIndex)
                 // todo, this should not happen
                 case _ => ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
             }
-        }
     }
 
     // ExtractorFunction that can read the PI's First Name
@@ -86,4 +84,18 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
 
     // Placeholder for queries that cannot be answered, e.g. if the channel is unknown
     def unKnownChannelExtractor(spProgram: SPProgram):Option[AnyRef] = None
+
+    /**
+     * This method goes through the configuration and produced an error or a default value for each configuration
+     * item
+     * This is needed for the case a program is not found in the ODB
+     */
+    private def collectNotFoundValues: List[CollectedValue[_]] = {
+        configuration map { c =>
+            c.isMandatory match {
+                case true => ErrorCollectedValue(c.keyword, CollectionError.MandatoryRequired, c.fitsComment.value, c.index.index)
+                case false => DefaultCollectedValue(c.keyword, c.nullValue.value, c.fitsComment.value, c.index.index)
+            }
+        } toList
+    }
 }

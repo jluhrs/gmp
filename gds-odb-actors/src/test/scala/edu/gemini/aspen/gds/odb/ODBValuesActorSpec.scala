@@ -65,10 +65,9 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             val configuration = buildConfigurationItem(firstNameFitsKeyword, "odb:achannel", "PI Last Name", true)
 
             val result = buildActorAndCollect(configuration)
-            println(result)
 
             result match {
-                case List() => case ErrorCollectedValue(keyword, error, comment, 0) :: Nil =>  {
+                case ErrorCollectedValue(keyword, error, comment, 0) :: Nil =>  {
                     assertEquals(firstNameFitsKeyword, keyword)
                     assertEquals(CollectionError.MandatoryRequired, error)
                     assertEquals("PI Last Name", comment)
@@ -110,7 +109,7 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             // verify mock
             there was databaseService.lookupProgramByID(programID)
         }
-        it("should be empty if mandatory and the result is null") {
+        it("should produce an error if mandatory and the result is null") {
             val piInfo = new SPProgram.PIInfo(null, null, null, null, null)
             spProgram.setPIInfo(piInfo)
 
@@ -149,44 +148,25 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
                 there was databaseService.lookupProgramByID(programID)
             }
         }
-        /*it("should be empty if there is no program") {
+        it("should be empty if there is no program") {
             databaseService.lookupProgramByID(programID) returns null
-            val configuration = buildConfigurationItem(firstNameFitsKeyword, lastNameChannel, "PI Last Name", true)
+            val configuration = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI First Name", true)
 
             val result = buildActorAndCollect(configuration)
-            println(result)
 
             result match {
-                case List() => // Expected
+                case ErrorCollectedValue(keyword, error, comment, 0) :: Nil =>  {
+                    assertEquals(firstNameFitsKeyword, keyword)
+                    assertEquals(CollectionError.MandatoryRequired, error)
+                    assertEquals("PI First Name", comment)
+                }
                 case _ => fail("Should not reply other message ")
             }
 
             // verify mock
             there was databaseService.lookupProgramByID(programID)
-        }*/
+        }
     }
-
-    //        it("should give a default value if not mandatory and the result is null") {
-    //            val piInfo = new SPProgram.PIInfo(null, null, null, null, null)
-    //            spProgram.setPIInfo(piInfo)
-    //
-    //            val configuration = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI Last Name", false)
-    //
-    //            val result = buildActorAndCollect(configuration)
-    //            println(result)
-    //
-    //            result match {
-    //                case CollectedValue(keyword, value, comment, 0) :: Nil
-    //                    => keyword should equal(firstNameFitsKeyword)
-    //                       value should equal("NOT FOUND")
-    //                       comment should be("PI Last Name")
-    //                case _ => fail("Should not reply other message ")
-    //
-    //
-    //                // verify mock
-    //                there was databaseService.lookupProgramByID(programID)
-    //            }
-    //        }
 
     def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory: Boolean) = {
         List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "DOUBLE", mandatory, "NOT FOUND", "ODB", channelName, 0, comment))
