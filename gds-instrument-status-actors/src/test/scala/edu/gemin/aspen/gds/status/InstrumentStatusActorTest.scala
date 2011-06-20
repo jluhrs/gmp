@@ -99,11 +99,11 @@ class InstrumentStatusActorTest extends Mockito {
 
     @Test
     def testTypeMismatchError {
-        val configuration =  GDSConfiguration("GPI",
+        val configuration = GDSConfiguration("GPI",
             "OBS_START_ACQ",
             fitsKeyword,
             0,
-        // note the type here
+            // note the type here
             "DOUBLE",
             true,
             defaultValue,
