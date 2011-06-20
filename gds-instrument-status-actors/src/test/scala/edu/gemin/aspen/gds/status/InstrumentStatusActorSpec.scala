@@ -10,6 +10,7 @@ import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.giapi.status.impl.BasicStatus
+import org.junit.Assert._
 
 @RunWith(classOf[JUnitRunner])
 class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
@@ -79,7 +80,11 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
       val result = instrumentStatusActor !! Collect
 
       result() match {
-        case Nil =>
+        case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(CollectionError.MandatoryRequired, error)
+                assertEquals("Current global status of the instrument", comment)
+            }
         case _ => fail("Should not reply other message ")
       }
 

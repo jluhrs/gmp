@@ -12,8 +12,8 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
   val key = "keyword"
   val key2 = "keyword2"
   val value = 0.1
-  val colVal = new CollectedValue(key, value, "my comment", 0)
-  val colVal2 = new CollectedValue(key2, value, "my comment", 1)
+  val colVal = CollectedValue(key, value, "my comment", 0)
+  val colVal2 = CollectedValue(key2, value, "my comment", 1)
   val dataLabel = "GS-2011B"
   val dataLabel2 = "GS-2011A"
   val headerItem: HeaderItem = colVal //implicit conversion

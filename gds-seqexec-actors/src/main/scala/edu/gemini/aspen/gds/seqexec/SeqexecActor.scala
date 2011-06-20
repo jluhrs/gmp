@@ -18,7 +18,7 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
     override def collectValues(): List[CollectedValue[_]] = {
         val seqexecValue = (seqexecKeyDB !? Retrieve(dataLabel, fitsKeyword)).asInstanceOf[Option[Any]]
 
-        seqexecValue map (collectedValue) orElse (defaultCollectedValue) toList
+        List(seqexecValue map (collectedValue) getOrElse (defaultCollectedValue))
     }
 
     def buildCollectedValue(d: Any): CollectedValue[_] = {

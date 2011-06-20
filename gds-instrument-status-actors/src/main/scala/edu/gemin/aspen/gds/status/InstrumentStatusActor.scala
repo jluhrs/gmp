@@ -14,7 +14,7 @@ class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSC
   override def collectValues(): List[CollectedValue[_]] = {
     val statusItem = Option(statusDB.getStatusItem(sourceChannel))
     try {
-      statusItem map (collectedValue) orElse (defaultCollectedValue) toList
+      List(statusItem map (collectedValue) getOrElse (defaultCollectedValue))
     } catch {
       case e: ClassCastException => {
         LOG.warning("Data for " + fitsKeyword + " keyword was not of the type specified in config file.")

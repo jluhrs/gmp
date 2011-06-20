@@ -7,7 +7,7 @@ import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 
 /**
- * Message to indicate that FITS header data colelction should begin
+ * Message to indicate that FITS header data collection should begin
  */
 case class AcquisitionRequest(obsEvent: ObservationEvent, dataLabel: DataLabel)
 

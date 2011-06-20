@@ -1,106 +1,148 @@
 package edu.gemini.aspen.gds.epics
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.Spec
+import org.junit.Assert._
+import org.junit.Test
 import edu.gemini.epics.EpicsReader
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
 
-@RunWith(classOf[JUnitRunner])
-class EpicsValuesActorSpec extends Spec with ShouldMatchers with Mockito {
-  val dataLabel = new DataLabel("GS-2011")
-  val epicsReader = mock[EpicsReader]
+class EpicsValuesActorSpec extends Mockito {
+    val dataLabel = new DataLabel("GS-2011")
+    val epicsReader = mock[EpicsReader]
 
-  val channelName = "ws:massAirmass"
-  val referenceValue = Array[String]("an epics string", "another epics string")
-  val fitsKeyword = new FitsKeyword("AIRMASS")
-  val nullValue = DefaultValue("NONE")
+    val channelName = "ws:massAirmass"
+    val referenceValue = Array[String]("an epics string", "another epics string")
+    val fitsKeyword = new FitsKeyword("AIRMASS")
+    val nullValue = DefaultValue("NONE")
 
-  def buildConfiguration(mandatory: Boolean, arrayIndex: Int) =
-    GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", mandatory, "NONE", "EPICS", channelName, arrayIndex, "Mean airmass for the observation")
+    def buildConfiguration(mandatory: Boolean, arrayIndex: Int) =
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", mandatory, "NONE", "EPICS", channelName, arrayIndex, "Mean airmass for the observation")
 
-  describe("An EpicsValuesActor") {
-    it("should reply to Collect messages") {
-      val configuration = buildConfiguration(true, 0)
-      val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
+    @Test
+    def testReplyToCollect() {
+        val configuration = buildConfiguration(true, 0)
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
-      // mock return value
-      epicsReader.getValue(channelName) returns referenceValue
+        // mock return value
+        epicsReader.getValue(channelName) returns referenceValue
 
-      // Send an init message
-      val result = epicsValueActor !! Collect
+        // Send an init message
+        val result = epicsValueActor !! Collect
 
-      result() match {
-        case CollectedValue(keyword, value, comment, 0) :: Nil
-        => keyword should equal(fitsKeyword)
-        value should equal(referenceValue(0))
-        comment should be("Mean airmass for the observation")
-        case _ => fail("Should not reply other message ")
-      }
+        result() match {
+            case CollectedValue(keyword, value, comment, 0) :: Nil => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(referenceValue(0), value)
+                assertEquals("Mean airmass for the observation", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
 
-      // verify mock
-      there was one(epicsReader).getValue(channelName)
+        // verify mock
+        there was one(epicsReader).getValue(channelName)
     }
-    it("should be able to access all array elements") {
-      val configuration = buildConfiguration(true, 1)
-      val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
-      // mock return value
-      epicsReader.getValue(channelName) returns referenceValue
+    @Test
+    def testAccessArrayElement() {
+        val configuration = buildConfiguration(true, 1)
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
-      // Send an init message
-      val result = epicsValueActor !! Collect
+        // mock return value
+        epicsReader.getValue(channelName) returns referenceValue
 
-      result() match {
-        case CollectedValue(keyword, value, comment, 0) :: Nil
-        => keyword should equal(fitsKeyword)
-        value should equal(referenceValue(1))
-        comment should be("Mean airmass for the observation")
-        case _ => fail("Should not reply other message ")
-      }
+        // Send an init message
+        val result = epicsValueActor !! Collect
 
-      // verify mock
-      there was one(epicsReader).getValue(channelName)
+        result() match {
+            case CollectedValue(keyword, value, comment, 0) :: Nil
+            => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(referenceValue(1), value)
+                assertEquals("Mean airmass for the observation", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
+
+        // verify mock
+        there was one(epicsReader).getValue(channelName)
     }
-    it("should provide a default value if the current one cannot be read") {
-      val configuration = buildConfiguration(false, 0)
-      val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
-      // mock return value cannot be read
-      epicsReader.getValue(channelName) returns null
+    // should provide a default value if the current one cannot be read
+    @Test
+    def testCollectingADefaultValue {
+        val configuration = buildConfiguration(false, 0)
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
-      // Send an init message
-      val result = epicsValueActor !! Collect
+        // mock return value cannot be read
+        epicsReader.getValue(channelName) returns null
 
-      result() match {
-        case CollectedValue(keyword, value, comment, 0) :: Nil
-        => keyword should equal(fitsKeyword)
-        value should equal(nullValue.value)
-        comment should be("Mean airmass for the observation")
-        case _ => fail("Should not reply other message ")
-      }
+        // Send an init message
+        val result = epicsValueActor !! Collect
 
-      // verify mock
-      there was one(epicsReader).getValue(channelName)
+
+        result() match {
+            case CollectedValue(keyword, value, comment, 0) :: Nil => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(nullValue.value, value)
+                assertEquals("Mean airmass for the observation", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
+
+        // verify mock
+        there was one(epicsReader).getValue(channelName)
     }
-    it("should return empty if mandatory and the current one cannot be read") {
-      val configuration = buildConfiguration(true, 0)
-      val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
-      // mock return value cannot be read
-      epicsReader.getValue(channelName) returns null
+    @Test
+    def testCollectError {
+        val configuration = buildConfiguration(true, 0)
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
-      // Send an init message
-      val result = epicsValueActor !! Collect
-      result().asInstanceOf[List[CollectedValue[_]]].isEmpty
+        // mock return value cannot be read
+        epicsReader.getValue(channelName) returns null
 
-      // verify mock
-      there was one(epicsReader).getValue(channelName)
+        // Send an init message
+        val result = epicsValueActor !! Collect
+
+        result() match {
+            case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(CollectionError.MandatoryRequired, error)
+                assertEquals("Mean airmass for the observation", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
+
+        // verify mock
+        there was one(epicsReader).getValue(channelName)
     }
-  }
+
+    @Test
+    def testCollectTypeMismatch {
+        val configuration = buildConfiguration(true, 0)
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
+
+        // mock return value cannot be read
+        epicsReader.getValue(channelName) returns Double.box(1.1)
+
+        // Send an init message
+        val result = epicsValueActor !! Collect
+        println("NO CAN " + result())
+
+        result() match {
+            case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(CollectionError.TypeMismatch, error)
+                assertEquals("Mean airmass for the observation", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
+
+        // verify mock
+        there was one(epicsReader).getValue(channelName)
+    }
+
 }
 
