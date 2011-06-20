@@ -54,7 +54,7 @@ class SeqexecActorsTest {
     val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", false, "DEFAULT", "SEQEXEC", "KEY", 0, "my comment"))
 
     // Should produce the default value
-    assertEquals(List(CollectedValue("KEY", "DEFAULT", "my comment", 0)), seqActor.collectValues)
+    assertEquals(List(DefaultCollectedValue("KEY", "DEFAULT", "my comment", 0)), seqActor.collectValues)
   }
 
   /**
