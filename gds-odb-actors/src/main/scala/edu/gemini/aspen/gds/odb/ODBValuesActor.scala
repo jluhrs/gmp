@@ -54,8 +54,7 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
         private val LOG = Logger.getLogger(this.getClass.getName)
 
         override def collectValues(): List[CollectedValue[_]] = {
-//            if extractorFunctions contains c.channel.name
-            val result = extractorFunctions(sourceChannel)(program)
+            val result = extractorFunctions.getOrElse(sourceChannel, unKnownChannelExtractor(_)) (program)
             List(result map (collectedValue) getOrElse (defaultCollectedValue))
 
 //            val readValue = Option(epicsReader.getValue(sourceChannel))
@@ -85,4 +84,6 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
 
     def extractPILastName(spProgram: SPProgram) = Option(spProgram.getPILastName)
 
+    // Placeholder for queries that cannot be answered, e.g. if the channel is unknown
+    def unKnownChannelExtractor(spProgram: SPProgram):Option[AnyRef] = None
 }

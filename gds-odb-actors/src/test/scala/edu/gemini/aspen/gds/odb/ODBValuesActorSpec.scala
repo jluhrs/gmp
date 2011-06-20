@@ -61,19 +61,24 @@ class ODBValuesActorSpec extends Spec with ShouldMatchers with Mockito {
             // verify mock
             there was databaseService.lookupProgramByID(programID)
         }
-        /*it("should ignore unknown channels") {
+        it("should ignore unknown channels") {
             val configuration = buildConfigurationItem(firstNameFitsKeyword, "odb:achannel", "PI Last Name", true)
 
             val result = buildActorAndCollect(configuration)
+            println(result)
 
             result match {
-                case List() => // Expected
+                case List() => case ErrorCollectedValue(keyword, error, comment, 0) :: Nil =>  {
+                    assertEquals(firstNameFitsKeyword, keyword)
+                    assertEquals(CollectionError.MandatoryRequired, error)
+                    assertEquals("PI Last Name", comment)
+                }
                 case _ => fail("Should not reply other message ")
             }
 
             // verify mock
             there was databaseService.lookupProgramByID(programID)
-        }*/
+        }
         it("should reply to Collect messages with multiple configurations") {
             val lastNameFitsKeyword = new FitsKeyword("PILSTNAM")
 
