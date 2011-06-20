@@ -28,13 +28,13 @@ class SeqexecActorsTest {
     assertEquals(List(CollectedValue("KEY", 1.0, "my comment", 0)), seqActorDouble.collectValues)
   }
 
-  //@Test
+  @Test
   def testWrongType() {
     val db = new TemporarySeqexecKeywordsDatabaseImpl
     db ! Store("label", "key", "1.1")
 
     val seqActor = new SeqexecActor(db, "label", new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "DOUBLE", true, "null", "SEQEXEC", "KEY", 0, "my comment"))
-    assertEquals(List(), seqActor.collectValues)
+    assertEquals(List(ErrorCollectedValue("KEY", CollectionError.TypeMismatch, "my comment", 0)), seqActor.collectValues)
   }
 
   @Test

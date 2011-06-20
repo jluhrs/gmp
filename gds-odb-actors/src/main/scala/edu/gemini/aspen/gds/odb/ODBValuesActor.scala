@@ -55,32 +55,8 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
 
         override def collectValues(): List[CollectedValue[_]] = {
             val result = extractorFunctions.getOrElse(sourceChannel, unKnownChannelExtractor(_)) (program)
-            List(result map (collectedValue) getOrElse (defaultCollectedValue))
-
-//            val readValue = Option(epicsReader.getValue(sourceChannel))
-//            try {
-//                List(readValue map (collectedValue) getOrElse (defaultCollectedValue))
-//            } catch {
-//                case e: MatchError => {
-//                    LOG.warning("Data for " + fitsKeyword + " keyword was not of the type specified in config file.")
-//                    List(ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex))
-//                }
-//            }
+            List(result map (valueToCollectedValue) getOrElse (defaultCollectedValue))
         }
-
-        def collectedValue(odbValue: AnyRef): CollectedValue[_] = dataType match {
-                case DataType("STRING") => CollectedValue(fitsKeyword, odbValue.toString, fitsComment, headerIndex)
-                case DataType("DOUBLE") => odbValue match {
-                    case v:java.lang.Number => CollectedValue(fitsKeyword, v.doubleValue(), fitsComment, headerIndex)
-                    case _ => ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
-                }
-                case DataType("INT") => odbValue match {
-                    case v:java.lang.Number => CollectedValue(fitsKeyword, v.intValue(), fitsComment, headerIndex)
-                    case _ => ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
-                }
-                // this should not happen
-                case _ => ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
-            }
     }
 
     // ExtractorFunction that can read the PI's First Name

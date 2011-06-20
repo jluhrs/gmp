@@ -14,7 +14,7 @@ class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration
     override def collectValues(): List[CollectedValue[_]] = {
         val readValue = Option(epicsReader.getValue(sourceChannel))
         try {
-            List(readValue map (collectedValue) getOrElse (defaultCollectedValue))
+            List(readValue map (valueToCollectedValue) getOrElse (defaultCollectedValue))
         } catch {
             case e: MatchError => {
                 LOG.warning("Data for " + fitsKeyword + " keyword was not of the type specified in config file.")
@@ -23,7 +23,7 @@ class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration
         }
     }
 
-    def collectedValue(epicsValue: AnyRef): CollectedValue[_] = {
+    override def valueToCollectedValue(epicsValue: AnyRef): CollectedValue[_] = {
         dataType match {
             case DataType("STRING") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[_]](arrayIndex).toString, fitsComment, headerIndex)
             case DataType("DOUBLE") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](arrayIndex), fitsComment, headerIndex)
