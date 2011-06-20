@@ -20,24 +20,4 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
 
         List(seqexecValue map (valueToCollectedValue) getOrElse (defaultCollectedValue))
     }
-
-    def buildCollectedValue(d: Any): CollectedValue[_] = {
-        dataType.name match {
-            case "STRING" => CollectedValue(fitsKeyword, d.toString, fitsComment, headerIndex)
-            case "DOUBLE" => CollectedValue(fitsKeyword, d.asInstanceOf[Double], fitsComment, headerIndex)
-            case "INT" => CollectedValue(fitsKeyword, d.asInstanceOf[Int], fitsComment, headerIndex)
-            case _ => null
-        }
-    }
-
-    def valueToCollectedValue(d: Any): CollectedValue[_] = {
-        try {
-            buildCollectedValue(d)
-        } catch {
-            case e: ClassCastException => {
-                LOG.warning("Data for " + fitsKeyword + " keyword was not of the type " + dataType.name + " specified in config file.")
-                null
-            }
-        }
-    }
 }

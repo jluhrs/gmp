@@ -31,7 +31,7 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
      * Method to convert a value read from a given source to the type requested in the configuration
      *
      */
-    protected def valueToCollectedValue(value: AnyRef): CollectedValue[_] = dataType match {
+    protected def valueToCollectedValue(value: Any): CollectedValue[_] = dataType match {
         // Anything can be converted to a string
         case DataType("STRING") => CollectedValue(fitsKeyword, value.toString, fitsComment, headerIndex)
         // Any number can be converted to a double
@@ -44,13 +44,13 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
 
     private def newMismatchError = ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
 
-    private def newIntCollectedValue(value: AnyRef) = value match {
+    private def newIntCollectedValue(value: Any) = value match {
         // todo: Perhaps this is too liberal, it lets anything to be converted to a int
         case x: java.lang.Number => CollectedValue(fitsKeyword, x.intValue, fitsComment, headerIndex)
         case _ => newMismatchError
     }
 
-    private def newDoubleCollectedValue(value: AnyRef) = value match {
+    private def newDoubleCollectedValue(value: Any) = value match {
         case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue, fitsComment, headerIndex)
         case _ => newMismatchError
     }
