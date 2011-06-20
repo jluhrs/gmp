@@ -98,7 +98,7 @@ class InstrumentStatusActorSpec extends Spec with ShouldMatchers with Mockito {
       "OBS_START_ACQ",
       fitsKeyword,
       0,
-      "DOUBLE",
+      "STRING",
       mandatory,
       defaultValue,
       "STATUS",
