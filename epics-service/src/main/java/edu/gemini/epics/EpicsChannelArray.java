@@ -6,7 +6,7 @@ package edu.gemini.epics;
  * You should verify that the EpicsChannel is valid before using it
  * @param <T>
  */
-public interface EpicsChannel<T> {
+public interface EpicsChannelArray<T> {
     /**
      * Indicates whether the channel is valid
      */
@@ -15,6 +15,5 @@ public interface EpicsChannel<T> {
     /**
      * Returns the current value of the channel of the first array item if the channel is an array
      */
-    T getValue();
-
+    T[] getValue();
 }

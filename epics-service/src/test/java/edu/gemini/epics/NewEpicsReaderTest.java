@@ -4,7 +4,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @Ignore
@@ -17,25 +16,19 @@ public class NewEpicsReaderTest {
         EpicsChannel<Double> channel = epicsReader.getChannel("tst:tst");
 
         assertEquals(1.0, channel.getValue(), 0.0);
-        assertFalse(channel.isArray());
         assertTrue(channel.isValid());
-
-        // Get array returns the first value anyway
-        assertEquals(1.0, channel.getArrayValue(0), 0.0);
-        assertEquals(0, channel.getArraySize());
     }
 
     @Test
     public void testGetDoubleValueInArray() {
-        EpicsChannel<Double> channel = epicsReader.getChannel("tst:tst");
+        EpicsChannelArray<Double> channel = epicsReader.getArrayChannel("tst:tst");
 
-        assertTrue(channel.isArray());
         assertTrue(channel.isValid());
-        assertEquals(2, channel.getArraySize());
+        Double[] channelArray = channel.getValue();
+        assertEquals(2, channelArray.length);
 
         // Get Value returns always the first item if it is an array
-        assertEquals(1.0, channel.getValue(), 0.0);
-
-        assertEquals(2.0, channel.getArrayValue(1), 0.0);
+        assertEquals(1.0, channelArray[0], 0.0);
+        assertEquals(1.1, channelArray[1], 0.0);
     }
 }

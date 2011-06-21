@@ -35,7 +35,7 @@ public class NewGetTestValues {
 
         EpicsChannel<Double> channel = reader.getChannel("tc1:sad:astCtx");
 
-        System.out.println(channel.getArraySize());
+       // System.out.println(channel.getArraySize());
 
     }
 }
