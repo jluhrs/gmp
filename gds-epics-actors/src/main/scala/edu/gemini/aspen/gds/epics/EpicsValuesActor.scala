@@ -24,12 +24,11 @@ class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration
     }
 
     def convertCollectedValue(epicsValue: AnyRef): CollectedValue[_] = {
-        dataType match {
-            case DataType("STRING") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[_]](arrayIndex).toString, fitsComment, headerIndex)
-            case DataType("DOUBLE") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Double]](arrayIndex), fitsComment, headerIndex)
-            case DataType("INT") => CollectedValue(fitsKeyword, epicsValue.asInstanceOf[Array[Int]](arrayIndex), fitsComment, headerIndex)
-            // todo, this should not happen since tha parser limits it
-            case _ => ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
+        val valueArray = epicsValue.asInstanceOf[Array[_]]
+        if (arrayIndex < valueArray.length) {
+            valueToCollectedValue(valueArray(arrayIndex))
+        } else {
+            ErrorCollectedValue(fitsKeyword, CollectionError.ArrayIndexOutOfBounds, fitsComment, headerIndex)
         }
     }
 }

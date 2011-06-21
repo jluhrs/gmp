@@ -143,5 +143,30 @@ class EpicsValuesActorSpec extends Mockito {
         there was one(epicsReader).getValue(channelName)
     }
 
+    @Test
+    def testArrayIndexOutOfBounds {
+        val configuration = buildConfiguration(true, 2)
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
+
+        // mock return value
+        epicsReader.getValue(channelName) returns referenceValue
+
+        // Send an init message
+        val result = epicsValueActor !! Collect
+
+        result() match {
+            case ErrorCollectedValue(keyword, error, comment, 0) :: Nil
+            => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(CollectionError.ArrayIndexOutOfBounds, error)
+                assertEquals("Mean airmass for the observation", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
+
+        // verify mock
+        there was one(epicsReader).getValue(channelName)
+    }
+
 }
 

@@ -10,6 +10,7 @@ object CollectionError extends Enumeration {
     val MandatoryRequired = Value("MandatoryRequired")
     val TypeMismatch = Value("TypeMismatch")
     val ItemNotFound = Value("ItemNotFound")
+    val ArrayIndexOutOfBounds = Value("ArrayIndexOutOfBounds")
 }
 
 /**
