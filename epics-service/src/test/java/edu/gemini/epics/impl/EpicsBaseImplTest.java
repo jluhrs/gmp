@@ -6,6 +6,7 @@ import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsService;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -44,13 +45,26 @@ public class EpicsBaseImplTest {
     }
 
     @Test
-    public void testChannelUnbindingUnknowChannel() throws CAException {
+    public void testChannelUnbindingUnknownChannel() throws CAException {
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
         epicsBase.unbindChannel(CHANNEL_NAME);
 
         assertNull(epicsBase.getChannel(CHANNEL_NAME));
+    }
+
+    @Ignore
+    @Test
+    public void testChannelUnbindingChannelStillInUse() throws CAException {
+        when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
+
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
+        epicsBase.bindChannel(CHANNEL_NAME);
+        epicsBase.bindChannel(CHANNEL_NAME);
+        epicsBase.unbindChannel(CHANNEL_NAME);
+
+        assertNotNull(epicsBase.getChannel(CHANNEL_NAME));
     }
 
     @Test
