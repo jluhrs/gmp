@@ -84,7 +84,7 @@ public class EpicsBaseImpl implements EpicsBase {
     }
 
     private void addNewChannel(String channelName) throws CAException, TimeoutException {
-        CAJChannel epicsChannel = (CAJChannel)_ctx.createChannel(channelName);
+        CAJChannel epicsChannel = (CAJChannel) _ctx.createChannel(channelName);
         //TODO: Do we need to bind the channels asynchronously, using the connection listener?
         _channels.putIfAbsent(channelName, epicsChannel);
         _ctx.pendIO(5.0);
@@ -94,7 +94,9 @@ public class EpicsBaseImpl implements EpicsBase {
     public synchronized void unbindChannel(String channelName) throws EpicsException {
         try {
             CAJChannel channel = _channels.remove(channelName);
-            _ctx.destroyChannel(channel, false);
+            if (channel != null) {
+                _ctx.destroyChannel(channel, false);
+            }
         } catch (CAException e) {
             throw new EpicsException("Problem on Channel Access", e);
         } catch (IllegalStateException e) {

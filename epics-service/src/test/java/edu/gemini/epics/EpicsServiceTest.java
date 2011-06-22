@@ -18,7 +18,6 @@ public class EpicsServiceTest {
     private static final ImmutableMap<String, Object> CHANNELS_TO_READ = ImmutableMap.<String, Object>of(EpicsClient.EPICS_CHANNELS, new String[]{"tst:tst"});
     private EpicsService epicsService;
 
-
     @Before
     public void setUp() throws Exception {
         epicsService = new EpicsService("127.0.0.1");

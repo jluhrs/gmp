@@ -44,6 +44,16 @@ public class EpicsBaseImplTest {
     }
 
     @Test
+    public void testChannelUnbindingUnknowChannel() throws CAException {
+        when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
+
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
+        epicsBase.unbindChannel(CHANNEL_NAME);
+
+        assertNull(epicsBase.getChannel(CHANNEL_NAME));
+    }
+
+    @Test
     public void testFindUnknownChannel() {
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
 
