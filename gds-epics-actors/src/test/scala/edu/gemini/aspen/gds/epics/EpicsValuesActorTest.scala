@@ -5,10 +5,10 @@ import org.junit.Test
 import edu.gemini.epics.EpicsReader
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
-import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
+import edu.gemini.aspen.gds.api._
 
-class EpicsValuesActorSpec extends Mockito {
+class EpicsValuesActorTest extends Mockito {
     val dataLabel = new DataLabel("GS-2011")
 
     val channelName = "ws:massAirmass"
@@ -113,6 +113,32 @@ class EpicsValuesActorSpec extends Mockito {
             case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
                 assertEquals(fitsKeyword, keyword)
                 assertEquals(CollectionError.MandatoryRequired, error)
+                assertEquals("Mean airmass for the observation", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
+
+        // verify mock
+        there was one(epicsReader).getValue(channelName)
+    }
+
+    @Test
+    def testExceptionOnCollect {
+        val configuration = buildConfiguration(true, 0)
+        // mock return value cannot be read
+        val epicsReader = mock[EpicsReader]
+        epicsReader.getValue(channelName) throws new RuntimeException
+
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
+
+        // Send an init message
+        val result = epicsValueActor !! Collect
+        println(result())
+
+        result() match {
+            case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(CollectionError.GenericError, error)
                 assertEquals("Mean airmass for the observation", comment)
             }
             case _ => fail("Should not reply other message ")
