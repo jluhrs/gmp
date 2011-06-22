@@ -29,6 +29,11 @@ public class EpicsReaderMock implements EpicsReader {
     }
 
     @Override
+    public void unbindChannel(String channel) throws EpicsException {
+        this._channel = null;
+    }
+
+    @Override
     public String toString() {
         return "EpicsReader{" +
                 "channel='" + _channel + '\'' +
