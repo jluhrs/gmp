@@ -16,7 +16,7 @@ class SeqexecActorsFactory(@Requires seqexecKeyDB: TemporarySeqexecKeywordsDatab
     conf filter {
       _.event.name == obsEvent.name()
     } map {
-      case config: GDSConfiguration => new SeqexecActor(seqexecKeyDB, dataLabel, config)
+      c => new SeqexecActor(seqexecKeyDB, dataLabel, c)
     }
   }
 
