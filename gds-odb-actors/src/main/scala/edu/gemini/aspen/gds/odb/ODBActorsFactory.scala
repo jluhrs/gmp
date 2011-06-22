@@ -18,30 +18,31 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires programIdDatabase: ProgramIdDatabase) extends KeywordActorsFactory {
-  val LOG = Logger.getLogger(classOf[ODBActorsFactory].getName)
-  var actorsConfiguration: List[GDSConfiguration] = List()
+    val LOG = Logger.getLogger(classOf[ODBActorsFactory].getName)
+    var actorsConfiguration: List[GDSConfiguration] = List()
 
-  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
-    val programID = (programIdDatabase !? RetrieveProgramId(dataLabel)).asInstanceOf[Option[String]]
-    // Only produce actors if the programID has been already stored in the programIdDatabase
-    programID filter {
-      _ => actorsConfiguration.nonEmpty
-    } filter {
-      _ => actorsConfiguration.nonEmpty
-    }    map {
-            id => new ODBValuesActor(id, dbService, actorsConfiguration)
+    override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
+        val programID = (programIdDatabase !? RetrieveProgramId(dataLabel)).asInstanceOf[Option[String]]
+        // Only produce actors if the programID has been already stored in the programIdDatabase
+        val eventConfiguration = actorsConfiguration filter {
+            _.event.name == obsEvent.name
+        }
+        programID filter {
+            _ => eventConfiguration.nonEmpty
+        } map {
+            id => new ODBValuesActor(id, dbService, eventConfiguration)
         } toList
 
-  }
-
-  override def configure(configuration: List[GDSConfiguration]) {
-    actorsConfiguration = configuration filter {
-      _.subsystem.name == "ODB"
     }
-  }
 
-  @Validate
-  def start() {
-    LOG.info("ODBActorsFactory started")
-  }
+    override def configure(configuration: List[GDSConfiguration]) {
+        actorsConfiguration = configuration filter {
+            _.subsystem.name == "ODB"
+        }
+    }
+
+    @Validate
+    def start() {
+        LOG.info("ODBActorsFactory started")
+    }
 }
