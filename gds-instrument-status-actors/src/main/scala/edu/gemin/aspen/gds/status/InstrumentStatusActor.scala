@@ -9,8 +9,6 @@ import java.util.logging.Logger
  * to a single fitsKeyword
  */
 class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-    private val LOG = Logger.getLogger(this.getClass.getName)
-
     override def collectValues(): List[CollectedValue[_]] = {
         val statusItem = Option(statusDB.getStatusItem(sourceChannel))
         statusItem map { s => Option(s.getValue) } map { x => valueToCollectedValue(x.get) } orElse (defaultCollectedValue) toList

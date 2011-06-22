@@ -51,8 +51,6 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
     }
 
     private class ODBOneValueActor(program: SPProgram, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-        private val LOG = Logger.getLogger(this.getClass.getName)
-
         override def collectValues(): List[CollectedValue[_]] = {
             val result = extractorFunctions.getOrElse(sourceChannel, unKnownChannelExtractor(_)) (program)
             result map (valueToCollectedValue) orElse (defaultCollectedValue) toList

@@ -13,8 +13,6 @@ import java.util.logging.Logger
  * linked to a single fitsKeyword
  */
 class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: DataLabel, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-    private val LOG = Logger.getLogger(this.getClass.getName)
-
     override def collectValues(): List[CollectedValue[_]] = {
         val seqexecValue = (seqexecKeyDB !? Retrieve(dataLabel, fitsKeyword)).asInstanceOf[Option[Any]]
 

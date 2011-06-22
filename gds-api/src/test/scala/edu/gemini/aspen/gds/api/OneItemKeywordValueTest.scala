@@ -12,6 +12,7 @@ class OneItemKeywordValueTest extends AssertionsForJUnit {
      * Mocked actor that always returns the default value
      */
     class AlwaysDefaultValueActor(configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
+        //val LOG = Logger.getLogger(this.getClass.getName)
         def collectValues() = defaultCollectedValue.toList
     }
 

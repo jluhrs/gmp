@@ -10,7 +10,6 @@ import edu.gemini.aspen.gds.api.Conversions._
 
 class EpicsValuesActorSpec extends Mockito {
     val dataLabel = new DataLabel("GS-2011")
-    val epicsReader = mock[EpicsReader]
 
     val channelName = "ws:massAirmass"
     val referenceValue = Array[String]("an epics string", "another epics string")
@@ -23,10 +22,11 @@ class EpicsValuesActorSpec extends Mockito {
     @Test
     def testReplyToCollect() {
         val configuration = buildConfiguration(true, 0)
-        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
-
         // mock return value
+        val epicsReader = mock[EpicsReader]
         epicsReader.getValue(channelName) returns referenceValue
+
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
         // Send an init message
         val result = epicsValueActor !! Collect
@@ -47,10 +47,11 @@ class EpicsValuesActorSpec extends Mockito {
     @Test
     def testAccessArrayElement() {
         val configuration = buildConfiguration(true, 1)
-        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
-
         // mock return value
+        val epicsReader = mock[EpicsReader]
         epicsReader.getValue(channelName) returns referenceValue
+
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
         // Send an init message
         val result = epicsValueActor !! Collect
@@ -73,10 +74,11 @@ class EpicsValuesActorSpec extends Mockito {
     @Test
     def testCollectingADefaultValue {
         val configuration = buildConfiguration(false, 0)
-        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
-
         // mock return value cannot be read
+        val epicsReader = mock[EpicsReader]
         epicsReader.getValue(channelName) returns null
+
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
         // Send an init message
         val result = epicsValueActor !! Collect
@@ -98,10 +100,11 @@ class EpicsValuesActorSpec extends Mockito {
     @Test
     def testCollectError {
         val configuration = buildConfiguration(true, 0)
-        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
-
         // mock return value cannot be read
+        val epicsReader = mock[EpicsReader]
         epicsReader.getValue(channelName) returns null
+
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
         // Send an init message
         val result = epicsValueActor !! Collect
@@ -121,11 +124,38 @@ class EpicsValuesActorSpec extends Mockito {
 
     @Test
     def testCollectTypeMismatch {
-        val configuration = buildConfiguration(true, 0)
+        val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation")
+        val epicsReader = mock[EpicsReader]
+        // mock return value cannot be read
+        epicsReader.getValue(channelName) returns "a string"
+
+        val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
+
+        // Send an init message
+        val result = epicsValueActor !! Collect
+
+        result() match {
+            case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
+                assertEquals(fitsKeyword, keyword)
+                assertEquals(CollectionError.TypeMismatch, error)
+                assertEquals("Mean airmass for the observation", comment)
+            }
+            case _ => fail("Should not reply other message ")
+        }
+
+        // verify mock
+        there was one(epicsReader).getValue(channelName)
+    }
+
+    @Test
+    def testCollectTypeMismatchFromDoubleToInt {
+        val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "INT", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation")
+
+        val epicsReader = mock[EpicsReader]
         val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
         // mock return value cannot be read
-        epicsReader.getValue(channelName) returns Double.box(1.1)
+        epicsReader.getValue(channelName) returns Array(Double.box(1.1))
 
         // Send an init message
         val result = epicsValueActor !! Collect
@@ -146,6 +176,8 @@ class EpicsValuesActorSpec extends Mockito {
     @Test
     def testArrayIndexOutOfBounds {
         val configuration = buildConfiguration(true, 2)
+
+        val epicsReader = mock[EpicsReader]
         val epicsValueActor = new EpicsValuesActor(epicsReader, configuration)
 
         // mock return value

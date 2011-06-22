@@ -9,8 +9,6 @@ import edu.gemini.epics.{EpicsChannelArray, EpicsChannel, NewEpicsReader}
  * linked to a single fitsKeyword
  */
 class NewEpicsValuesActor(epicsReader: NewEpicsReader, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-    private val LOG = Logger.getLogger(this.getClass.getName)
-
     override def collectValues(): List[CollectedValue[_]] = {
         val readValue = if (arrayIndex > 0) {
             Option(epicsReader.getChannel(sourceChannel)) map (extractEpicsItem)

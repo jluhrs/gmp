@@ -1,11 +1,15 @@
 package edu.gemini.aspen.gds.api
 
+import java.util.logging.Logger
+
 /**
  * Abstract class extending a KeywordValueActor adding some useful methods
  *
  * Actors reading from different sources can extend this class to simplify building those actors
  */
 abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) extends KeywordValueActor {
+    protected val LOG = Logger.getLogger(this.getClass.getName)
+
     // Add some inner values to simplify code in the implementations
     protected val fitsKeyword = config.keyword
     protected val isMandatory = config.isMandatory
@@ -45,10 +49,17 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
     private def newMismatchError = ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
 
     private def newIntCollectedValue(value: Any) = value match {
-        // todo: Perhaps this is too liberal, it lets anything to be converted to a int
-        case x: java.lang.Number => CollectedValue(fitsKeyword, x.intValue, fitsComment, headerIndex)
+        case x: java.lang.Long => {
+            LOG.warning("Possible loss of precision converting " + x + " to integer" )
+            collectedValueFromInt(x.intValue)
+        }
+        case x: java.lang.Integer => collectedValueFromInt(x.intValue)
+        case x: java.lang.Short => collectedValueFromInt(x.intValue)
+        case x: java.lang.Byte => collectedValueFromInt(x.intValue)
         case _ => newMismatchError
     }
+
+    private def collectedValueFromInt(value: Int) = CollectedValue(fitsKeyword, value, fitsComment, headerIndex)
 
     private def newDoubleCollectedValue(value: Any) = value match {
         case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue, fitsComment, headerIndex)
