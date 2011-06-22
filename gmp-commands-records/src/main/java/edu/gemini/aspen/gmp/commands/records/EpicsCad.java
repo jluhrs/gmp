@@ -33,21 +33,22 @@ public class EpicsCad {
 
     private final List<Channel<String>> attributes = new ArrayList<Channel<String>>();
     private final ChannelAccessServer cas;
-    EpicsCad(ChannelAccessServer cas){
-        this.cas=cas;
+
+    EpicsCad(ChannelAccessServer cas) {
+        this.cas = cas;
     }
 
     /**
      * Create Channels
      *
      * @param epicsTop
-     * @param name of the CAD. ex.: "observe"
+     * @param name              of the CAD. ex.: "observe"
      * @param attributeListener listener to be notified when any attribute is written to
-     * @param dirListener listener to be notified when the DIR field is written to
-     * @param attributeNames list of attribute names. Each will be an EPICS channel.
+     * @param dirListener       listener to be notified when the DIR field is written to
+     * @param attributeNames    list of attribute names. Each will be an EPICS channel.
      */
-    public synchronized void start(EpicsTop epicsTop, String name, ChannelListener attributeListener, ChannelListener dirListener, List<String> attributeNames){
-        LOG.info("EpicsCad start: "+ epicsTop.buildChannelName(name));
+    public synchronized void start(EpicsTop epicsTop, String name, ChannelListener attributeListener, ChannelListener dirListener, List<String> attributeNames) {
+        LOG.info("EpicsCad start: " + epicsTop.buildChannelName(name));
         try {
             val = cas.createChannel(epicsTop.buildChannelName(name + ".VAL"), 0);
             clid = cas.createChannel(epicsTop.buildChannelName(name + ".ICID"), 0);
@@ -57,7 +58,7 @@ public class EpicsCad {
             omss = cas.createChannel(epicsTop.buildChannelName(name + ".OMSS"), "");
             //ocid = cas.createChannel(top +":"+ name + ".OCID", 0);
             //mark = cas.createChannel(top +":"+ name + ".MARK", 0);
-            for (String attribute: attributeNames) {
+            for (String attribute : attributeNames) {
                 Channel<String> ch = cas.createChannel(epicsTop.buildChannelName(attribute), "");
                 ch.registerListener(attributeListener);
                 attributes.add(ch);
@@ -70,10 +71,9 @@ public class EpicsCad {
 
     /**
      * Destroy Channels
-     *
      */
-    public synchronized void stop(){
-        LOG.info("EpicsCad stop: "+dir.getName());
+    public synchronized void stop() {
+        LOG.info("EpicsCad stop: " + dir.getName());
         cas.destroyChannel(dir);
         cas.destroyChannel(val);
         cas.destroyChannel(mess);
@@ -81,20 +81,21 @@ public class EpicsCad {
         cas.destroyChannel(clid);
         //cas.destroyChannel(ocid);
         //cas.destroyChannel(mark);
-        for(Channel<String> ch:attributes){
+        for (Channel<String> ch : attributes) {
             cas.destroyChannel(ch);
         }
     }
-    private Integer v=0;
-    private String m="";
+
+    private Integer v = 0;
+    private String m = "";
 
     /**
      * Set a value for the VAL field to be set to, after a post().
      *
      * @param v the value to set VAL to
      */
-    public synchronized void setVal(Integer v){
-        this.v=v;
+    public synchronized void setVal(Integer v) {
+        this.v = v;
     }
 
     /**
@@ -102,8 +103,8 @@ public class EpicsCad {
      *
      * @param m the value to set MESS to
      */
-    public synchronized void setMess(String m){
-        this.m=m;
+    public synchronized void setMess(String m) {
+        this.m = m;
     }
 
     /**
@@ -113,15 +114,17 @@ public class EpicsCad {
      */
     public synchronized void post() throws CAException {
         setMessage(m);
-        m="";
+        m = "";
         val.setValue(v);
     }
+
     private void setMessage(String message) throws CAException {
         String oldMessage = mess.getFirst();
         if (setIfDifferent(mess, message)) {
             omss.setValue(oldMessage);
         }
     }
+
     static private <T> boolean setIfDifferent(Channel<T> ch, T value) throws CAException {
         if (!value.equals(ch.getFirst())) {
             ch.setValue(value);
@@ -136,7 +139,7 @@ public class EpicsCad {
      *
      * @return client ID
      */
-    public synchronized Integer getClid(){
+    public synchronized Integer getClid() {
         try {
             return clid.getFirst();
         } catch (CAException e) {
@@ -148,7 +151,7 @@ public class EpicsCad {
     /**
      * Write DIR and CLID Channels
      *
-     * @param d Directive to write
+     * @param d  Directive to write
      * @param id client ID
      * @throws CAException
      */
@@ -188,13 +191,20 @@ public class EpicsCad {
     /**
      * Get the attribute names and current values
      *
-     * @return  A Map containing names and values
+     * @return A Map containing names and values
      */
-    public Map<String,String> getConfig(){
-        Map<String,String> map = new HashMap<String,String>();
-        for(Channel<String> ch: attributes){
+    public Map<String, String> getConfig() {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Channel<String> ch : attributes) {
             try {
-                map.put(ch.getName(),ch.getFirst());
+                //hack for observe and reboot configurations
+                if (ch.getName().endsWith("DATA_LABEL")) {
+                    map.put("DATA_LABEL", ch.getFirst());
+                } else if (ch.getName().endsWith("REBOOT_OPT")) {
+                    map.put("REBOOT_OPT", ch.getFirst());
+                } else {
+                    map.put(ch.getName(), ch.getFirst());
+                }
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
             }
