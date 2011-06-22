@@ -1,11 +1,11 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJChannel;
+import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsService;
 import gov.aps.jca.CAException;
-import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR_Float;
 import org.junit.Test;
@@ -18,8 +18,8 @@ import static org.mockito.Mockito.when;
 
 public class EpicsReaderImplTest {
     private static final String CHANNEL_NAME = "tst:tst";
-    private final Context context = mock(Context.class);
-    private final Channel channel = mock(Channel.class);
+    private final CAJContext context = mock(CAJContext.class);
+    private final CAJChannel channel = mock(CAJChannel.class);
 
     @Test
     public void testReadValue() throws CAException {

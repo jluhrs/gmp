@@ -1,5 +1,6 @@
 package edu.gemini.epics;
 
+import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableMap;
 import gov.aps.jca.Context;
 import org.junit.Before;
@@ -77,7 +78,7 @@ public class EpicsServiceTest {
 
     @Test
     public void testGetContextPassedInitially() {
-        Context context = mock(Context.class);
+        CAJContext context = mock(CAJContext.class);
         EpicsService epicsService = new EpicsService(context);
         assertEquals(context, epicsService.getJCAContext());
     }

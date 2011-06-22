@@ -1,6 +1,6 @@
 package edu.gemini.epics;
 
-import gov.aps.jca.Context;
+import com.cosylab.epics.caj.CAJContext;
 
 /**
  * An JCAContextController holds the control of JCAContext taking care of building and disposing it
@@ -12,7 +12,7 @@ public interface JCAContextController {
      * @return a valid JCA Context
      * @throws IllegalStateException In case the Context is not available
      */
-    Context getJCAContext() throws IllegalStateException;
+    CAJContext getJCAContext() throws IllegalStateException;
 
     /**
      * Indicates if a JCA Context is available. Should be used before getJCAContext

@@ -1,11 +1,11 @@
 package edu.gemini.epics;
 
+import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import edu.gemini.epics.impl.ChannelBindingSupport;
 import edu.gemini.epics.impl.EpicsObserverImpl;
 import gov.aps.jca.CAException;
-import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import org.junit.After;
 import org.junit.Before;
@@ -35,14 +35,14 @@ public  class WeatherStationUpdatesIT {
             "ws:wsFilter.VALM", "Wind Speed");
 
     private ChannelBindingSupport cbs;
-    private Context context;
+    private CAJContext context;
 
     @Before
     public void setUp() throws Exception {
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "172.17.2.255");
         System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
 
-        context = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+        context = (CAJContext)JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
     }
 
     @After

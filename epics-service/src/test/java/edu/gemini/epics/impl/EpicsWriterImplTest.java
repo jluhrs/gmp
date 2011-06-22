@@ -1,11 +1,11 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJChannel;
+import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.EpicsWriter;
 import gov.aps.jca.CAException;
-import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import org.junit.Test;
 
 import static org.mockito.Mockito.doThrow;
@@ -16,8 +16,8 @@ import static org.mockito.Mockito.when;
 
 public class EpicsWriterImplTest {
     private static final String CHANNEL_NAME = "tst:tst";
-    private final Context context = mock(Context.class);
-    private final Channel channel = mock(Channel.class);
+    private final CAJContext context = mock(CAJContext.class);
+    private final CAJChannel channel = mock(CAJChannel.class);
     private final double[] simulatedValue = new double[]{1, 2};
     private final Double singleValue = new Double(1.0);
 

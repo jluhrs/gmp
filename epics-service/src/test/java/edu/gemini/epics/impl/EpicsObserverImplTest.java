@@ -1,5 +1,6 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsClientMock;
@@ -7,7 +8,6 @@ import edu.gemini.epics.JCAContextController;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.event.ConnectionEvent;
@@ -34,7 +34,7 @@ public class EpicsObserverImplTest {
     private static final ImmutableList<String> CHANNELS_TO_READ = ImmutableList.of("tst:tst");
     private EpicsObserverImpl epicsObserver;
     private JCAContextController contextController;
-    private Context jcaContext;
+    private CAJContext jcaContext;
     private Channel channel;
 
     @Before
@@ -49,7 +49,7 @@ public class EpicsObserverImplTest {
         contextController = mock(JCAContextController.class);
         when(contextController.isContextAvailable()).thenReturn(true);
 
-        jcaContext = mock(Context.class);
+        jcaContext = mock(CAJContext.class);
         when(contextController.getJCAContext()).thenReturn(jcaContext);
 
         channel = mock(Channel.class);

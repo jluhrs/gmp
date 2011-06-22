@@ -1,5 +1,7 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJChannel;
+import com.cosylab.epics.caj.CAJContext;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import edu.gemini.epics.EpicsBase;
@@ -7,7 +9,6 @@ import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.JCAContextController;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.event.ContextExceptionEvent;
 import gov.aps.jca.event.ContextExceptionListener;
@@ -26,8 +27,8 @@ import java.util.logging.Logger;
 public class EpicsBaseImpl implements EpicsBase {
     private static final Logger LOG = Logger.getLogger(EpicsBaseImpl.class.getName());
 
-    private final Context _ctx;
-    private final ConcurrentMap<String, Channel> _channels = Maps.newConcurrentMap();
+    private final CAJContext _ctx;
+    private final ConcurrentMap<String, CAJChannel> _channels = Maps.newConcurrentMap();
 
     public EpicsBaseImpl(JCAContextController epicsService) {
         Preconditions.checkArgument(epicsService != null, "Passed JCAContextController cannot be null");
@@ -61,6 +62,7 @@ public class EpicsBaseImpl implements EpicsBase {
         }
     }
 
+    @Override
     public synchronized void bindChannel(String channel) throws EpicsException {
         try {
             bindNewChannel(channel);
@@ -82,10 +84,22 @@ public class EpicsBaseImpl implements EpicsBase {
     }
 
     private void addNewChannel(String channelName) throws CAException, TimeoutException {
-        Channel epicsChannel = _ctx.createChannel(channelName);
+        CAJChannel epicsChannel = (CAJChannel)_ctx.createChannel(channelName);
         //TODO: Do we need to bind the channels asynchronously, using the connection listener?
         _channels.putIfAbsent(channelName, epicsChannel);
         _ctx.pendIO(5.0);
+    }
+
+    @Override
+    public synchronized void unbindChannel(String channelName) throws EpicsException {
+        try {
+            CAJChannel channel = _channels.remove(channelName);
+            _ctx.destroyChannel(channel, false);
+        } catch (CAException e) {
+            throw new EpicsException("Problem on Channel Access", e);
+        } catch (IllegalStateException e) {
+            throw new EpicsException("Epics channel in incorrect state " + channelName, e);
+        }
     }
 
     protected Channel getChannel(String channelName) {

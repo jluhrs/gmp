@@ -1,12 +1,12 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableMap;
 import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsClientMock;
 import edu.gemini.epics.EpicsObserver;
 import edu.gemini.epics.EpicsService;
 import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import gov.aps.jca.event.ConnectionListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,14 +25,14 @@ import static org.mockito.Mockito.when;
 public class EpicsClientSubscriberTest {
     private static final String[] CHANNELS_TO_READ = new String[] {"tst:tst"};
     private Map<String, Object> serviceProperties = ImmutableMap.<String, Object>of(EpicsClient.EPICS_CHANNELS, CHANNELS_TO_READ);
-    private Context jcaContext;
+    private CAJContext jcaContext;
     private EpicsService epicsService;
     private EpicsObserver epicsObserver;
     private EpicsClientSubscriber subscriber;
 
     @Before
     public void setUp() throws Exception {
-        jcaContext = mock(Context.class);
+        jcaContext = mock(CAJContext.class);
         
         Channel channel = mock(Channel.class);
         when(jcaContext.createChannel(Matchers.<String>any(), Matchers.<ConnectionListener>anyObject())).thenReturn(channel);

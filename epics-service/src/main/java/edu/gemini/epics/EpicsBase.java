@@ -13,4 +13,13 @@ public interface EpicsBase {
      * given channel.
      */
     void bindChannel(String channel) throws EpicsException;
+
+    /**
+     * Disconnects of the specified channel name
+     *
+     * @param channel the channel to connect to
+     * @throws EpicsException in case there is a problem connecting to the
+     * given channel.
+     */
+    void unbindChannel(String channel) throws EpicsException;
 }

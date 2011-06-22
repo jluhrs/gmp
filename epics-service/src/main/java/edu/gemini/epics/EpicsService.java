@@ -1,9 +1,9 @@
 package edu.gemini.epics;
 
+import com.cosylab.epics.caj.CAJContext;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import gov.aps.jca.CAException;
-import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Invalidate;
@@ -37,7 +37,7 @@ public class EpicsService implements JCAContextController {
 
     private String _addressList;
 
-    private Context _ctx;
+    private CAJContext _ctx;
 
     public EpicsService(@Property(name = PROPERTY_ADDRESS_LIST, value = "127.0.0.1", mandatory = true) String addressList) {
         LOG.info("EpicsService created with " + addressList);
@@ -45,7 +45,7 @@ public class EpicsService implements JCAContextController {
         this._addressList = addressList;
     }
 
-    public EpicsService(Context context) {
+    public EpicsService(CAJContext context) {
         Preconditions.checkArgument(context != null, "JCAContext cannot be null");
         _ctx = context;
         this._addressList = null;
@@ -57,7 +57,7 @@ public class EpicsService implements JCAContextController {
     }
 
     @Override
-    public Context getJCAContext() {
+    public CAJContext getJCAContext() {
         if (!isContextAvailable()) {
             throw new IllegalStateException("Illegal State, attempt to read the Context before it has been made available");
         }
@@ -105,7 +105,7 @@ public class EpicsService implements JCAContextController {
         System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
 
         try {
-            _ctx = JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+            _ctx = (CAJContext)JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
             _ctx.initialize();
             LOG.fine("JCALibrary built connecting to: " + _addressList);
 
