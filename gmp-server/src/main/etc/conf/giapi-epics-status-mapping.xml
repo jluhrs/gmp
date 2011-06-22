@@ -973,8 +973,20 @@
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
+        <giapiname>ifs.temperature.temperatureAlarm02.severity</giapiname>
+        <epicsname>ifs:temperature.temperatureAlarm02.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
         <giapiname>ifs.temperature.temperatureAlarm03.severity</giapiname>
         <epicsname>ifs:temperature.temperatureAlarm03.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
+        <giapiname>ifs.temperature.temperatureAlarm04.severity</giapiname>
+        <epicsname>ifs:temperature.temperatureAlarm04.severity</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
@@ -985,14 +997,32 @@
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
+        <giapiname>ifs.temperature.temperatureAlarm06.severity</giapiname>
+        <epicsname>ifs:temperature.temperatureAlarm06.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
         <giapiname>ifs.temperature.temperatureAlarm07.severity</giapiname>
         <epicsname>ifs:temperature.temperatureAlarm07.severity</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
+        <giapiname>ifs.temperature.temperatureAlarm08.severity</giapiname>
+        <epicsname>ifs:temperature.temperatureAlarm08.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
         <giapiname>ifs.temperature.temperatureAlarm09.severity</giapiname>
         <epicsname>ifs:temperature.temperatureAlarm09.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
+        <giapiname>ifs.temperature.temperatureAlarm10.severity</giapiname>
+        <epicsname>ifs:temperature.temperatureAlarm10.severity</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
