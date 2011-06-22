@@ -26,9 +26,12 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires progra
     // Only produce actors if the programID has been already stored in the programIdDatabase
     programID filter {
       _ => actorsConfiguration.nonEmpty
-    } map {
-      id => new ODBValuesActor(id, dbService, actorsConfiguration)
-    } toList
+    } filter {
+      _ => actorsConfiguration.nonEmpty
+    }    map {
+            id => new ODBValuesActor(id, dbService, actorsConfiguration)
+        } toList
+
   }
 
   override def configure(configuration: List[GDSConfiguration]) {
