@@ -11,6 +11,7 @@ object CollectionError extends Enumeration {
     val TypeMismatch = Value("TypeMismatch")
     val ItemNotFound = Value("ItemNotFound")
     val ArrayIndexOutOfBounds = Value("ArrayIndexOutOfBounds")
+    val GenericError = Value("GenericError")
 }
 
 /**

@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.api
 
-import java.util.logging.Logger
+import java.util.logging.{Logger, Level}
 
 /**
  * Abstract class extending a KeywordValueActor adding some useful methods
@@ -19,6 +19,13 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
     protected val defaultValue = config.nullValue.value
     protected val dataType = config.dataType
     protected val arrayIndex = config.arrayIndex.value
+
+    override def exceptionHandler = {
+        case e: Exception => {
+            LOG log (Level.SEVERE, "Unhandled exception while collecting data item", e)
+            reply(List(ErrorCollectedValue(fitsKeyword, CollectionError.GenericError, fitsComment, headerIndex)))
+        }
+    }
 
     /**
      * Method to get the default value of the value or None if the value is mandatory
@@ -50,7 +57,7 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
 
     private def newIntCollectedValue(value: Any) = value match {
         case x: java.lang.Long => {
-            LOG.warning("Possible loss of precision converting " + x + " to integer" )
+            LOG.warning("Possible loss of precision converting " + x + " to integer")
             collectedValueFromInt(x.intValue)
         }
         case x: java.lang.Integer => collectedValueFromInt(x.intValue)
