@@ -146,6 +146,7 @@
         <module>gds-datalabel-provider</module>
         <module>gds-static-header-receiver</module>
         <module>gds-seqexec-actors</module>
+	<module>gds-error-policy</module>        
         <module>integration-tests</module>
     </modules>
 
