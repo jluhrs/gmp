@@ -8,15 +8,15 @@ import org.junit.runner.RunWith
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
-import edu.gemini.aspen.gds.api.KeywordValueActor
 import edu.gemini.aspen.gds.actors.AcquisitionRequestReply
+import edu.gemini.aspen.gds.api.{CompositeErrorPolicyImpl, CompositeErrorPolicy, KeywordValueActor}
 
 @RunWith(classOf[JUnitRunner])
 class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
   val actorsFactory = mock[CompositeActorsFactory]
   val keywordsDatabase = new KeywordsDatabaseImpl()
 
-  private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase)
+  private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl())
   describe("A GDSObseventHandler") {
     it("should react to OBS_PREP events") {
 
