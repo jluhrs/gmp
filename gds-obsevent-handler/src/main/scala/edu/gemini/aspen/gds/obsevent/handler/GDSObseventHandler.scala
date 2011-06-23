@@ -13,7 +13,6 @@ import actors.Actor
 import actors.Actor.actor
 import java.io.{FileNotFoundException, File}
 import java.util.logging.{Level, Logger}
-import java.util.EnumSet
 import edu.gemini.aspen.gds.api.{CompositeErrorPolicy, ErrorPolicy}
 
 /**
@@ -38,8 +37,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     private val LOG = Logger.getLogger(this.getClass.getName)
     private val collectDeadline = 300L
     private val eventLogger = new EventLogger
-    private val obsEventsMap = collection.mutable.Map.empty[DataLabel, EnumSet[ObservationEvent]]
-    private val repliesMap = collection.mutable.Map.empty[DataLabel, EnumSet[ObservationEvent]]
+    private val bookKeep = new ObsEventBookKeeping
 
     start()
 
@@ -54,7 +52,6 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     }
 
     private def acqRequest(obsEvent: ObservationEvent, dataLabel: DataLabel) {
-        val obsSet = obsEventsMap.getOrElseUpdate(dataLabel, EnumSet.noneOf(classOf[ObservationEvent]))
 
         obsEvent match {
             case OBS_PREP => {
@@ -64,11 +61,11 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
         }
 
         //check that all previous obsevents have arrived
-        if (!EnumSet.complementOf(EnumSet.range(obsEvent, ObservationEvent.values().last)).equals(obsSet)) {
+        if (!bookKeep.previousArrived(obsEvent, dataLabel)) {
             LOG.severe("Received observation event " + obsEvent + " for datalabel " + dataLabel + " out of order")
         }
-        obsSet.add(obsEvent)
         eventLogger.start(dataLabel, obsEvent)
+        bookKeep.addObs(obsEvent, dataLabel)
 
         new KeywordSetComposer(actorsFactory, keywordsDatabase) ! AcquisitionRequest(obsEvent, dataLabel)
 
@@ -76,33 +73,31 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
     private def acqRequestReply(obsEvent: ObservationEvent, dataLabel: DataLabel) {
 
-        val repliesSet = repliesMap.getOrElseUpdate(dataLabel, EnumSet.noneOf(classOf[ObservationEvent]))
 
         //check that this obsevent collection reply hasn't already arrived but that the obsevent has.
-        if (repliesSet.contains(obsEvent)) {
+        if (bookKeep.replyArrived(obsEvent, dataLabel)) {
             LOG.severe("Received data collection reply for observation event " + obsEvent + " for datalabel " + dataLabel + " twice")
             return
         }
-        if (!obsEventsMap(dataLabel).contains(obsEvent)) {
+        if (!bookKeep.obsArrived(obsEvent, dataLabel)) {
             LOG.severe("Received data collection reply for observation event " + obsEvent + " for datalabel " + dataLabel + ", but never received the observation event")
             return
         }
-        repliesSet.add(obsEvent)
+        bookKeep.addReply(obsEvent, dataLabel)
 
         obsEvent match {
             case OBS_END_DSET_WRITE => {
                 //if all obsevents replies have arrived
-                if (repliesMap.getOrElse(dataLabel, EnumSet.noneOf(classOf[ObservationEvent])).containsAll(EnumSet.allOf(classOf[ObservationEvent]))) {
-                    repliesMap -= dataLabel
-                    obsEventsMap -= dataLabel
+                if (bookKeep.allRepliesArrived(dataLabel)) {
+                    bookKeep.clean(dataLabel)
                     endWrite(dataLabel)
                 } else {
                     LOG.severe("Received data collection reply for " + obsEvent + " for dataset " + dataLabel + ", but data collection on other observation events hasn't finished")
-                    //sleep one second and retry
-                    actor {
-                        Thread.sleep(1000)
-                        this ! AcquisitionRequestReply(obsEvent, dataLabel)
-                    }
+                    //todo: sleep one second and retry
+                    //                    actor {
+                    //                        Thread.sleep(1000)
+                    //                        this ! AcquisitionRequestReply(obsEvent, dataLabel)
+                    //                    }
                     return
                 }
             }
