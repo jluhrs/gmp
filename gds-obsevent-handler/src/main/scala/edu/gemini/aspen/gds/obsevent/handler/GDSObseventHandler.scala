@@ -23,7 +23,6 @@ import edu.gemini.aspen.gds.api.{CompositeErrorPolicy, ErrorPolicy}
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires errorPolicy: CompositeErrorPolicy) extends ObservationEventHandler {
-    private val LOG = Logger.getLogger(this.getClass.getName)
     //todo: private[handler] is just for testing. Need to find a better way to test this class
     private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy)
 
@@ -106,6 +105,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
         eventLogger.end(dataLabel, obsEvent)
 
+        //todo:extract block to method
         //enforce timing constraints
         obsEvent match {
             case OBS_START_ACQ => {
@@ -122,6 +122,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
                 //log timing stats for this datalabel
                 LOG.info(eventLogger.retrieve(dataLabel).toString())
 
+                //todo: extract common block to a method
                 LOG.info("Average timing for event " + OBS_PREP + ": " + eventLogger.average(OBS_PREP).flatMap({
                     x => Some(x.getMillis)
                 }).getOrElse("unknown") + "[ms]")
@@ -159,7 +160,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
         keywordsDatabase ! Clean(dataLabel)
     }
 
-    private def updateFITSFile(dataLabel: DataLabel): Unit = {
+    private def updateFITSFile(dataLabel: DataLabel) {
         val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[Option[List[Header]]]
         val processedList = errorPolicy.applyPolicy(dataLabel, list)
 
