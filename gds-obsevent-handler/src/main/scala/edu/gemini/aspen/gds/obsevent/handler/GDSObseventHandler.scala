@@ -33,7 +33,7 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 
 }
 
-class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, errorPolicy:ErrorPolicy) extends Actor {
+class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, errorPolicy: ErrorPolicy) extends Actor {
     private val LOG = Logger.getLogger(this.getClass.getName)
     private val collectDeadline = 300L
     private val eventLogger = new EventLogger
