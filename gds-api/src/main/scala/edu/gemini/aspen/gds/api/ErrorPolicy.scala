@@ -2,19 +2,25 @@ package edu.gemini.aspen.gds.api
 
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.fits.Header
-import org.apache.felix.ipojo.annotations.{Provides, Instantiate, Component}
 
+/**
+ * Defines an error policy
+ */
 trait ErrorPolicy {
+    /**
+     * Applies the policy taking a set of proposed headers and returning the set of headers allowed
+     *
+     * @param dataLabel The data label being processed
+     * @param headers Proposed set of headers
+     * @return An Optional list of headers to be written to the fits file
+     */
     def applyPolicy(dataLabel:DataLabel, headers: Option[List[Header]]): Option[List[Header]]
 }
 
+/**
+ * The default error policy
+ */
 class DefaultErrorPolicy extends ErrorPolicy {
+    // Let all the original headers to be applied
     override def applyPolicy(dataLabel:DataLabel, headers: Option[List[Header]]): Option[List[Header]] = headers
 }
-
-trait CompositeErrorPolicy extends ErrorPolicy
-
-@Component
-@Instantiate
-@Provides(specifications = Array(classOf[CompositeErrorPolicy]))
-class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPolicy
