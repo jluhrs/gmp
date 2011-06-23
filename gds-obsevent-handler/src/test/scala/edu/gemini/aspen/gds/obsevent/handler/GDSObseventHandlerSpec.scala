@@ -9,7 +9,7 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors.AcquisitionRequestReply
-import edu.gemini.aspen.gds.api.{CompositeErrorPolicyImpl, CompositeErrorPolicy, KeywordValueActor}
+import edu.gemini.aspen.gds.api.{CompositeErrorPolicyImpl, KeywordValueActor}
 
 @RunWith(classOf[JUnitRunner])
 class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
@@ -39,11 +39,11 @@ class GDSObseventHandlerSpec extends Spec with ShouldMatchers with Mockito {
 
             actorsFactory.buildActors(ObservationEvent.OBS_START_ACQ, dataLabel) returns List[KeywordValueActor]()
 
+            observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
+
             Thread.sleep(100)
             observationHandler.replyHandler ! AcquisitionRequestReply(ObservationEvent.OBS_START_ACQ, dataLabel)
             Thread.sleep(100)
-
-            observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
 
             // verify mock
             there was one(actorsFactory).buildActors(ObservationEvent.OBS_START_ACQ, dataLabel)
