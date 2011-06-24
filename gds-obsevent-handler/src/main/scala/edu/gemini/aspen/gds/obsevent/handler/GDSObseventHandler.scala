@@ -5,7 +5,6 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel, ObservationEven
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import edu.gemini.aspen.gds.fits.FitsUpdater
 import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
-import edu.gemini.fits.Header
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
 import edu.gemini.aspen.gds.performancemonitoring._
@@ -13,7 +12,12 @@ import actors.Actor
 import actors.Actor.actor
 import java.io.{FileNotFoundException, File}
 import java.util.logging.{Level, Logger}
-import edu.gemini.aspen.gds.api.{CompositeErrorPolicy, ErrorPolicy}
+import edu.gemini.aspen.gds.api.Conversions._
+import edu.gemini.aspen.gds.api.CollectedValue._
+import edu.gemini.fits.{DefaultHeaderItem, DefaultHeader, Header}
+import java.lang.Double
+import edu.gemini.aspen.gds.api._
+import sun.net.www.HeaderParser
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -165,12 +169,29 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     }
 
     private def updateFITSFile(dataLabel: DataLabel) {
-        val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[Option[List[Header]]]
-        val processedList = errorPolicy.applyPolicy(dataLabel, list)
+        val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[Option[List[CollectedValue[_]]]]
+        // todo consider the case this is none
+        val processedList = errorPolicy.applyPolicy(dataLabel, list).get
+        val maxHeader = (0 /: processedList)((i, m) => m.index.max(i))
+
+        val headers: List[Header] = List.range(0, maxHeader + 1) map {
+            headerIndex => {
+                val header = new DefaultHeader(headerIndex)
+                processedList filter {
+                    _.index == headerIndex
+                } foreach {
+                    _ match {
+                        // Implicit conversion
+                        case c => header.add(c._type.collectedValueToHeaderItem(c))
+                    }
+                }
+                header
+            }
+        }
 
         processedList map {
             headersList => actor {
-                new FitsUpdater(new File("/tmp"), dataLabel, headersList).updateFitsHeaders()
+                new FitsUpdater(new File("/tmp"), dataLabel, headers).updateFitsHeaders()
             }
         }
     }
