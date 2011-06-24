@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.actors.configuration
 import util.parsing.combinator.RegexParsers
 import io.Source
 import edu.gemini.aspen.gds.api._
-import edu.gemini.aspen.giapi.data.FitsKeyword
+import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
 
 case class Space(length: Int)
 
@@ -44,8 +44,12 @@ class GDSConfigurationParser extends RegexParsers {
         x => Instrument(x)
     }
 
-    //todo: match against the actual possible enum values
-    def observationEvent = """[\p{Upper}_]+""".r ^^ {
+    //Equivalent to: """OBS_PREP|OBS_START_ACQ|OBS_END_ACQ|OBS_START_READOUT|OBS_END_READOUT|OBS_START_DSET_WRITE|OBS_END_DSET_WRITE"""
+    def observationEvent = (ObservationEvent.values().toList map {
+        _.name
+    } reduceLeft {
+        (x, y) => x + "|" + y
+    }).r ^^ {
         x => GDSEvent(x)
     }
 
