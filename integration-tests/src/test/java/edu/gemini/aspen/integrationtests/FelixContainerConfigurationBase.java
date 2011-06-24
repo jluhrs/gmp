@@ -18,11 +18,11 @@ abstract public class FelixContainerConfigurationBase {
     protected BundleContext context;
 
     @Configuration
-    public static Option[] baseContainerConfig() {
+    public Option[] baseContainerConfig() {
         return options(
                 felix(),
                 cleanCaches(),
-                systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + "/src/test/resources/conf/services"),
+                systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + confDir()),
                 systemProperty("felix.fileinstall.noInitialDelay").value("true"),
                 mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("org.apache.felix.ipojo.annotations").groupId("org.apache.felix").versionAsInProject(),
@@ -33,6 +33,8 @@ abstract public class FelixContainerConfigurationBase {
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject());
     }
+
+    abstract protected String confDir();
 
     protected Bundle getBundle(String symbolicName) {
         for (Bundle b : context.getBundles()) {

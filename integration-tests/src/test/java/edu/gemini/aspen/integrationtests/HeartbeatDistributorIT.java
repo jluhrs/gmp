@@ -50,7 +50,12 @@ public class HeartbeatDistributorIT extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("heartbeat-distributor-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("integration-tests").groupId("edu.gemini.aspen").update().versionAsInProject()
-                );
+        );
+    }
+
+    @Override
+    protected String confDir() {
+        return "/src/test/resources/conf/services";
     }
 
     @Test
@@ -59,17 +64,17 @@ public class HeartbeatDistributorIT extends FelixContainerConfigurationBase {
     }
 
     @Test
-    public void checkNotification() throws Exception{
+    public void checkNotification() throws Exception {
         //register handlers
         JmsProvider provider = (JmsProvider) context.getService(context.getServiceReference("edu.gemini.jms.api.JmsProvider"));
 
         TestConsumerComponent comp = new TestConsumerComponent(2);
-        context.registerService(HeartbeatConsumer.class.getName(),comp,null);
+        context.registerService(HeartbeatConsumer.class.getName(), comp, null);
 
-         //wait at most 3 second for 2 beats to arrive
+        //wait at most 3 second for 2 beats to arrive
         comp.waitOnLatch(3, TimeUnit.SECONDS);
-        assertTrue(comp.getLast()>0);
-        assertTrue(comp.getCount()>=2);
+        assertTrue(comp.getLast() > 0);
+        assertTrue(comp.getCount() >= 2);
 
     }
 }

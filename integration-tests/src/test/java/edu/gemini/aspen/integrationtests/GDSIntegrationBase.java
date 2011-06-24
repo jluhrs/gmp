@@ -54,6 +54,11 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         );
     }
 
+    @Override
+    protected String confDir() {
+        return "/src/test/resources/conf/services";
+    }
+
     private void removeTestFile(String fileName) {
         File finalFile = new File(fileName);
         if (finalFile.exists()) {
@@ -106,6 +111,8 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     private Set<String> readKeywords(String fileName) throws IOException, FitsParseException, InterruptedException {
         Hedit hEdit = new Hedit(new File(fileName));
         Header primaryHeader = hEdit.readPrimary();
+        //Header soc = hEdit.readAllHeaders().get(1);
+        //System.out.println("EXT 1 " + soc.getKeywords());
         return primaryHeader.getKeywords();
     }
 

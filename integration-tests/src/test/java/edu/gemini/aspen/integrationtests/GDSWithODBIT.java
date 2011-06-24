@@ -44,7 +44,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
         );
     }
 
-    @Test
+    //@Test
     public void bundleExistence() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(400);
         assertNotNull(getBundle("edu.gemini.aspen.gds.odb"));
