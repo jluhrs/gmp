@@ -120,24 +120,27 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
         obsEvent match {
             case OBS_END_DSET_WRITE => {
                 //log timing stats for this datalabel
-                LOG.info(eventLogger.retrieve(dataLabel).toString())
-
-                //todo: extract common block to a method
-                LOG.info("Average timing for event " + OBS_PREP + ": " + eventLogger.average(OBS_PREP).flatMap({
-                    x => Some(x.getMillis)
-                }).getOrElse("unknown") + "[ms]")
-                LOG.info("Average timing for event " + OBS_START_ACQ + ": " + eventLogger.average(OBS_START_ACQ).flatMap({
-                    x => Some(x.getMillis)
-                }).getOrElse("unknown") + "[ms]")
-                LOG.info("Average timing for event " + OBS_END_ACQ + ": " + eventLogger.average(OBS_END_ACQ).flatMap({
-                    x => Some(x.getMillis)
-                }).getOrElse("unknown") + "[ms]")
-                LOG.info("Average timing for event " + OBS_END_DSET_WRITE + ": " + eventLogger.average(OBS_END_DSET_WRITE).flatMap({
-                    x => Some(x.getMillis)
-                }).getOrElse("unknown") + "[ms]")
+                for (evt <- ObservationEvent.values()) {
+                    logTiming(evt, dataLabel)
+                }
             }
             case _ =>
         }
+    }
+
+    private def logTiming(evt: ObservationEvent, label: DataLabel) {
+        val avgTime = eventLogger.average(evt) map {
+            x => x.getMillis
+        } getOrElse {
+            "unknown"
+        }
+        val currTime = eventLogger.retrieve(label, evt) map {
+            x => x.getMillis
+        } getOrElse {
+            "unknown"
+        }
+        LOG.info("Average timing for event " + evt + ": " + avgTime + "[ms]")
+        LOG.info("Timing for event " + evt + " DataLabel " + label + ": " + currTime + "[ms]")
     }
 
     private def checkTime(obsEvent: ObservationEvent, dataLabel: DataLabel) {
