@@ -23,8 +23,7 @@ import edu.gemini.aspen.gds.api.{CompositeErrorPolicy, ErrorPolicy}
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires errorPolicy: CompositeErrorPolicy) extends ObservationEventHandler {
-    //todo: private[handler] is just for testing. Need to find a better way to test this class
-    private[handler] val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy)
+    private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy)
 
     def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
         replyHandler ! AcquisitionRequest(event, dataLabel)
@@ -105,17 +104,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
         eventLogger.end(dataLabel, obsEvent)
 
-        //todo:extract block to method
-        //enforce timing constraints
-        obsEvent match {
-            case OBS_START_ACQ => {
-                checkTime(obsEvent, dataLabel)
-            }
-            case OBS_END_ACQ => {
-                checkTime(obsEvent, dataLabel)
-            }
-            case _ =>
-        }
+        enforceTimeConstraints(obsEvent, dataLabel)
 
         obsEvent match {
             case OBS_END_DSET_WRITE => {
@@ -123,6 +112,18 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
                 for (evt <- ObservationEvent.values()) {
                     logTiming(evt, dataLabel)
                 }
+            }
+            case _ =>
+        }
+    }
+
+    private def enforceTimeConstraints(evt: ObservationEvent, label: DataLabel) {
+        evt match {
+            case OBS_START_ACQ => {
+                checkTime(evt, label)
+            }
+            case OBS_END_ACQ => {
+                checkTime(evt, label)
             }
             case _ =>
         }
