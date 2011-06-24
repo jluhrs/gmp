@@ -85,6 +85,15 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         eventHandler.onObservationEvent(ObservationEvent.OBS_END_ACQ, dataLabel);
 
         TimeUnit.MILLISECONDS.sleep(200);
+        eventHandler.onObservationEvent(ObservationEvent.OBS_START_READOUT, dataLabel);
+
+        TimeUnit.MILLISECONDS.sleep(200);
+        eventHandler.onObservationEvent(ObservationEvent.OBS_END_READOUT, dataLabel);
+
+        TimeUnit.MILLISECONDS.sleep(200);
+        eventHandler.onObservationEvent(ObservationEvent.OBS_START_DSET_WRITE, dataLabel);
+
+        TimeUnit.MILLISECONDS.sleep(200);
         eventHandler.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, dataLabel);
 
         TimeUnit.MILLISECONDS.sleep(300);
