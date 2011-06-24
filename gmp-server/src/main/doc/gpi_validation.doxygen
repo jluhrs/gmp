@@ -1,11 +1,11 @@
 /*! \page gpi_validation GPI Specific Integration Tests
-\subsection gpi_test GPI Commands Test
+\section gpi_test GPI Commands Test
 A test script is made available to test all the apply commands. The script is available in the
 GMP Server distribution file under \b bin/gpiTestAllCommands.sh
 
 \attention This test should be used with care if not in simulation mode
 
-\subsection gpi_test_setup Setup
+\section gpi_test_setup Setup
 
 To run the scripts you need the following
 
@@ -59,4 +59,73 @@ Completion Information: [[response=[COMPLETED]][command=APPLY][activity=PRESET_S
 Command APPLY OK
 Response Received: [STARTED]
 \endverbatim
+
+\section obs_events_tests Observation Event Tests
+Using the same setup as the one previously described, we tried to simulate an observation, both using the giapi-tester and using an ocswish script
+to send commands via EPICS. The goal was for the TLC/IFS simulation to generate observation events to test the integration with the GDS. The TLC only
+sent the OBS_PREP event, thus not allowing to fully test the system.
+Several problems were detected. Questions and answers below:
+\verbatim
+1) If the configuration sent to a command is wrong, doing a PRESET should fail. We sent an OBSERVE with a config gpi:observe.DATA_LABEL=S20110427-01 (instead of just DATA_LABEL=S20110427-01), and all we got was an OBS_PREP event with the DATA_LABEL=invalidDataLabel1. Instead we expect an error to be produced when sending a preset
+
+>>> I'm not sure I understand you - Are you saying that you are essentially sending an OBSERVE with no data label?  GPI is suppose to handle not getting all inputs and I thought that include the OBSERVE cmd.  When GPI starts up the default label is set to "invalidDataLabel", so it uses that.
+
+2) When sending an OBSERVE, all observation events should be returned in order. Currently, all we get is OBS_PREP, preventing us to test the GDS against the TLC. Is that due to the simulation modes?
+>> Yes, the IFS changes the other values that show the events.  This can easily be simulated by:
+
+https://www.astrosci.ca/projects/gpi-softdocs/TLC/doc/html/ceh2eventQuick.html
+
+Look at the very bottom, it will tell you what GMB fields to change to trigger the events.
+
+
+3) All status items  must start with "gpi:". Currently some of them start with "tlc", "aoc", etc.. these should be changed to "gpi:tlc:...", etc... Preferably the top level prefix (gpi) should be configurable so we con run the instrument in simulated mode along the real one.
+
+>> Yes, I wanted to change the prefixes -  the drawback is that it's in the ICD and I felt resistance to me changing anything in the ICD after CDR - and in fact at this point we need approval to change that.  And to make that top level prefix  configurable would be a change that I'm not sure is desireable at this time...
+
+
+4) A naming convention on StatusItems should be implemented. Something along the lines of: Names must start with "gpi:", followed by "{subsystem}:" (tlc, aoc, ifs, cal), etc.. All separators should be ":", except the last one that can be ".". This was suggested in the GIAPI specs
+
+>>> Yup, same as above.  This was something that should have been changed as development occurred - unfortunately sometimes what is obvious now was not so obvious back when the ICD was nailed down.
+
+
+5) It seems that if you send two commands simultaneously to the gpCmdEvent, it gets confused and replies the wrong response, possibly the event ids get mixed? After that the gpCmdEvent doesn't reply anymore
+
+>>Do the 2 commands have the same ID?  Are they the same command?
+
+
+5) We also trying to run the TLC with the IFS (TLC recompiled to have IFS not in simulation) but I don't have a clear sense on whether TLC is communicating with the external  IFS. Is there a clear indication that it is doing so? logs for example?
+
+>> The log file for the TLC is found in $TLC_ROOT/log.  The gpi-tlcd starts our debug service, and all executables are run as daemons.  All logging is sent to the log file that the debug service was started with - just look at the dates of the files in the log dir.  Every time you startup the TLC it creates a new log file.  At this point I would not run with the real IFS.  I have just sent a bunch of notes off to Jason, who will be doing the fixes and sending a new version soon.  How can you tell if we are running with the real IFS or simulated IFS - by checking the simulate mode of the IFS RPC Server.  You can do that by getting if from the GMB or looking at the GUI.
+
+For the GUI, From the Main Menu, go to the "TLC and Subsystem Servers" tab, and on the line of the IFS, click on the far right button.  In that GUI, look in the far top right.  If you see "SIMULATED" in red, then you are not talking to the real IFS.
+
+Or to get directly from the GMB:
+
+ $TLC_ROOT/bin/linux64/gpUtGmbReadVal -sim -connectAs IFS -name ifs.ifsRpc.stat.simulate
+
+
+We have also identified a few nice-to-have features:
+
+1) Scripts (such as tlc/startup/gpi-tlcd) should not override already defined environment variables.
+
+>>> Can't - this is run by init.d system process upon system reboot, which is run by root and not attached to GPI.  Well, I suppose it could be run as user gpi - not sure if I would want it to source the .cshrc in case someone tried to put some echo in there or something....  What I am trying to say is this script is used to start/stop/status gpi and is used by the TLC's system boot.
+
+
+2) Configurations should be more unified. Currently one has to indicate variables such as installations paths in several places.
+
+>>> Yes, I did suggest that and had started to look at parsing the config file and substituting paths - but it was being more difficult than expected and .....
+
+
+3) Could the configuration paths use system variables like GPI_ROOT, e.g gpIfDetector-sim.cfg
+
+>>> It was already relying on lots of information in the configuration file, I didn't want to also rely on having had some env variable set ....  It was a choice.
+
+The easiest fix here is to change the command line on those 3 functions to include the path for the files in question.  But that didn't occur till we had done all of our documentation, all of our scripts and it was too late in the game to change that and update everything else.....  And the last thought was that this thing will ideally only be running on GPI and those paths won't change.
+
+
+4) make gpCmdEvent doesn't work right away as it complains that it needs gpCmdEv.o compiled first. I do the step manually and it works fine
+
+>> Where are you making gpCmdEvent from when you get that error?  The root directory?
+\endverbatim
+
 */
