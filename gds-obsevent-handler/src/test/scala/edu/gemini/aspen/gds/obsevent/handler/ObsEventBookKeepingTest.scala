@@ -8,7 +8,7 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 class ObsEventBookKeepingTest {
 
     @Test
-    def test() {
+    def testPrevious() {
         val book = new ObsEventBookKeeping
         val dataLabel = new DataLabel("GS-2011")
 
@@ -17,12 +17,24 @@ class ObsEventBookKeepingTest {
         assertFalse(book.obsArrived(OBS_START_ACQ, dataLabel))
         assertTrue(book.previousArrived(OBS_START_ACQ, dataLabel))
         assertFalse(book.previousArrived(OBS_END_ACQ, dataLabel))
+    }
+
+    @Test
+    def testReply() {
+        val book = new ObsEventBookKeeping
+        val dataLabel = new DataLabel("GS-2011")
 
         book.addReply(OBS_PREP, dataLabel)
         assertTrue(book.replyArrived(OBS_PREP, dataLabel))
         assertFalse(book.replyArrived(OBS_START_ACQ, dataLabel))
-
         assertFalse(book.allRepliesArrived(dataLabel))
+
+    }
+
+    @Test
+    def testAllEvents() {
+        val book = new ObsEventBookKeeping
+        val dataLabel = new DataLabel("GS-2011")
 
         for (evt <- ObservationEvent.values()) {
             book.addObs(evt, dataLabel)
