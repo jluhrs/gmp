@@ -152,6 +152,10 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-error-policy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-performance-monitoring</artifactId>
         </dependency>
         <dependency>
