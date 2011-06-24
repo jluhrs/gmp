@@ -5,6 +5,6 @@ import org.junit.Test
 class ErrorsRemovedPolicyTest {
     @Test
     def testNonErrors() {
-
+        
     }
 }

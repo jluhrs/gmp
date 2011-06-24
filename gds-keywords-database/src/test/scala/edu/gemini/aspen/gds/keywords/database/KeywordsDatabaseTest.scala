@@ -8,76 +8,77 @@ import edu.gemini.fits.{DefaultHeader, Header, HeaderItem}
 import edu.gemini.aspen.giapi.data.DataLabel
 
 class KeywordsDatabaseTest extends AssertionsForJUnit {
-  var db: KeywordsDatabaseImpl = null
-  val key = "keyword"
-  val key2 = "keyword2"
-  val value = 0.1
-  val colVal = CollectedValue(key, value, "my comment", 0)
-  val colVal2 = CollectedValue(key2, value, "my comment", 1)
-  val dataLabel = "GS-2011B"
-  val dataLabel2 = "GS-2011A"
-  val headerItem: HeaderItem = colVal //implicit conversion
-  val headerItem2: HeaderItem = colVal2 //implicit conversion
+    var db: KeywordsDatabaseImpl = null
+    val key = "keyword"
+    val key2 = "keyword2"
+    val value = 0.1
+    val colVal = CollectedValue(key, value, "my comment", 0)
+    val colVal2 = CollectedValue(key2, value, "my comment", 1)
+    val dataLabel = "GS-2011B"
+    val dataLabel2 = "GS-2011A"
+   // val headerItem: HeaderItem = colVal
+    //implicit conversion
+   // val headerItem2: HeaderItem = colVal2
+    //implicit conversion
 
-  @Before
-  def setup() {
-    db = new KeywordsDatabaseImpl
-  }
-
-  def check(label: DataLabel, item: HeaderItem) {
-    val defHead = new DefaultHeader()
-    defHead.add(item)
-    val list = List(defHead)
-    val ret = db !? (1000, Retrieve(label))
-    assert(!ret.isEmpty) //we didn't get a timeout
-    val storedOpt = ret.get.asInstanceOf[Option[List[Header]]]
-    assert(storedOpt.isDefined) //the set was at the DB
-    for (storedList <- storedOpt; e1 <- storedList; e2 <- list) {
-      assert(e1 == e2)
+    @Before
+    def setup() {
+        db = new KeywordsDatabaseImpl
     }
-  }
 
-  @Test
-  def testRetrieveAll() {
+    def check(label: DataLabel, item: CollectedValue[_]) {
+        val list = List(item)
+        val ret = db !? (1000, Retrieve(label))
+        assert(!ret.isEmpty) //we didn't get a timeout
+        val storedOpt = ret.get.asInstanceOf[Option[List[CollectedValue[_]]]]
+        assert(storedOpt.isDefined) //the set was at the DB
+        for (storedList <- storedOpt; e1 <- storedList; e2 <- list) {
+            println(e1)
+            println(e2)
+            println(e1 == e2)
+            assert(e1 == e2)
+        }
+    }
 
-    db ! Store(dataLabel, colVal)
-    check(dataLabel, headerItem)
-
-  }
-
-
-  @Test
-  def retrieveEmpty() {
-    val ret = db !? (1000, Retrieve(dataLabel))
-    assert(!ret.isEmpty)
-    val opt = ret.get.asInstanceOf[Option[List[Header]]]
-    assert(opt.isEmpty)
-  }
-
-  @Test
-  def retrieveWrongDataLabel() {
-    db ! Store(dataLabel, colVal)
-    val ret = db !? (1000, Retrieve("wrong"))
-    assert(!ret.isEmpty)
-    val opt = ret.get.asInstanceOf[Option[List[Header]]]
-    assert(opt.isEmpty)
-  }
+    @Test
+    def testRetrieveAll() {
+        db ! Store(dataLabel, colVal)
+        check(dataLabel, colVal)
+    }
 
 
-  @Test
-  def multipleDatasets() {
-    db ! Store(dataLabel, colVal)
-    db ! Store(dataLabel2, colVal2)
+    @Test
+    def retrieveEmpty() {
+        val ret = db !? (1000, Retrieve(dataLabel))
+        assert(!ret.isEmpty)
+        val opt = ret.get.asInstanceOf[Option[List[CollectedValue[_]]]]
+        assert(opt.isEmpty)
+    }
 
-    check(dataLabel, headerItem)
+    @Test
+    def retrieveWrongDataLabel() {
+        db ! Store(dataLabel, colVal)
+        val ret = db !? (1000, Retrieve("wrong"))
+        assert(!ret.isEmpty)
+        val opt = ret.get.asInstanceOf[Option[List[CollectedValue[_]]]]
+        assert(opt.isEmpty)
+    }
 
-    check(dataLabel2, headerItem2)
-  }
 
-  @Test
-  def testClean() {
-    val ret = db !? (1000, Retrieve(dataLabel))
-    db ! Clean(dataLabel)
-    retrieveEmpty()
-  }
+    @Test
+    def multipleDatasets() {
+        db ! Store(dataLabel, colVal)
+        db ! Store(dataLabel2, colVal2)
+
+        check(dataLabel, colVal)
+
+        check(dataLabel2, colVal2)
+    }
+
+    @Test
+    def testClean() {
+        val ret = db !? (1000, Retrieve(dataLabel))
+        db ! Clean(dataLabel)
+        retrieveEmpty()
+    }
 }
