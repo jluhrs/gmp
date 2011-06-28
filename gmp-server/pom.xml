@@ -31,6 +31,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
 
         <felix.cm.loglevel>4</felix.cm.loglevel>
+        <felix.log.level>4</felix.log.level>
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
         <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
@@ -414,6 +415,12 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <groupId>gemini-nocs</groupId>
             <artifactId>rr</artifactId>
             <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-web-ui</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <type>war</type>
         </dependency>
     </dependencies>
 

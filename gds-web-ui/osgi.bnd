@@ -1,0 +1,8 @@
+#-----------------------------------------------------------------
+# Use this file to add customized Bnd instructions for the bundle
+#-----------------------------------------------------------------
+
+Export-Package: ${bundle.namespace}
+Import-Package: *;com.sun.jersey.spi.container.servlet
+Bundle-Activator:
+Web-ContextPath: test
