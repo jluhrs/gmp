@@ -12,7 +12,10 @@ import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 import org.apache.felix.ipojo.annotations.*;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -220,7 +223,7 @@ public class EpicsStatusService implements StatusHandler {
             } else {
                 //received a status item not on the config file
                 //ignoring it
-                LOG.warning("Unknown item " + item.getName());
+                LOG.finer("Unknown item " + item.getName());
             }
         } catch (CAException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);

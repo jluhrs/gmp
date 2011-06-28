@@ -9,12 +9,14 @@
         <type>INT</type>
         <initial>0</initial>
     </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:heartbeat</giapiname>
-        <epicsname>heartbeat</epicsname>
-        <type>INT</type>
-        <initial>0</initial>
-    </SimpleChannel>
+    <!-- too much noise in logs
+       <SimpleChannel>
+            <giapiname>gpi:heartbeat</giapiname>
+            <epicsname>heartbeat</epicsname>
+            <type>INT</type>
+            <initial>0</initial>
+        </SimpleChannel>
+    -->
     <SimpleChannel>
         <giapiname>gpi:adcDeploy</giapiname>
         <epicsname>adcDeploy</epicsname>
