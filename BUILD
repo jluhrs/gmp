@@ -43,6 +43,14 @@ normal mvn test target won't execute them.
 To run the integration tests manually you need to issue:
     mvn install failsafe:integration-test failsafe:verify
 
+If you wish to run a single integration test you can add to the command line
+the system variable it.test with the classname of the test you want to write like
+
+mvn -Dit.test=edu.gemini.aspen.integrationtests.GDSEndToEndIT install failsafe:integration-test failsafe:verify
+
+For more options check
+http://maven.apache.org/plugins/maven-failsafe-plugin/examples/single-test.html
+
 5. Use with IntelliJ idea
 ------------------------------
 Idea works best by just importing the pom.xml as a project file definition
