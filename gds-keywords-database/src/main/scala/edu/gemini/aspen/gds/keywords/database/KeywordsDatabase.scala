@@ -3,7 +3,6 @@ package edu.gemini.aspen.gds.keywords.database
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
-import edu.gemini.fits.{HeaderItem, DefaultHeader, Header}
 import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
@@ -94,12 +93,12 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
 
     @Validate
     def validate() {
-        println("Validating..." + map)
+        LOG.info("Validating KeywordsDatabase")
     }
 
     @Invalidate
     def invalidate() {
-        println("Invalidating..." + map)
+        LOG.info("Invalidating KeywordsDatabase")
     }
 }
 

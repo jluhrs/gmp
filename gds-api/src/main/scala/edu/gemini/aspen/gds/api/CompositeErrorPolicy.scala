@@ -45,6 +45,5 @@ class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPol
 
     @Validate
     def validate() {
-        println("Validated")
     }
 }
