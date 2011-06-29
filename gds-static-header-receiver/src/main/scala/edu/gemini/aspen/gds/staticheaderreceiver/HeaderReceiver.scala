@@ -14,20 +14,20 @@ trait HeaderReceiver
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[HeaderReceiver]))
-class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase, @Requires programIdDB: ProgramIdDatabase) {
-  private val webServer = XmlRpcServerFactory.newServer("HeaderReceiver", classOf[XmlRpcReceiver], 12345)
+class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase, @Requires programIdDB: ProgramIdDatabase) extends HeaderReceiver {
+    private val webServer = XmlRpcServerFactory.newServer("HeaderReceiver", classOf[XmlRpcReceiver], 12345)
 
-  @Validate
-  def start() {
-    RequestHandler.setDatabases(keywordsDatabase, programIdDB)
-    RequestHandler.start()
-    webServer.start();
-  }
+    @Validate
+    def start() {
+        RequestHandler.setDatabases(keywordsDatabase, programIdDB)
+        RequestHandler.start()
+        webServer.start();
+    }
 
-  @Invalidate
-  def shutdown() {
-    webServer.shutdown()
-  }
+    @Invalidate
+    def shutdown() {
+        webServer.shutdown()
+    }
 
 }
 
@@ -35,9 +35,9 @@ class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywords
  * Temporary test app
  */
 object TestApp extends Application {
-  org.apache.log4j.BasicConfigurator.configure();
-  val seq = new SeqexecHeaderReceiver(new TemporarySeqexecKeywordsDatabaseImpl, new ProgramIdDatabaseImpl)
-  seq.start()
-  Thread.sleep(1000000)
+    org.apache.log4j.BasicConfigurator.configure();
+    val seq = new SeqexecHeaderReceiver(new TemporarySeqexecKeywordsDatabaseImpl, new ProgramIdDatabaseImpl)
+    seq.start()
+    Thread.sleep(1000000)
 }
 
