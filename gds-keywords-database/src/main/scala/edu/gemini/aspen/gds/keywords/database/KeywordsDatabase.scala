@@ -4,6 +4,7 @@ import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
 import actors.Actor
 import edu.gemini.aspen.gds.api.CollectedValue
+import java.util.logging.Logger
 
 /**
  * Interface for the database
@@ -27,6 +28,7 @@ case class Clean(dataLabel: DataLabel)
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordsDatabase]))
 class KeywordsDatabaseImpl extends KeywordsDatabase {
+    private val LOG = Logger.getLogger(this.getClass.getName)
 
     start()
 
