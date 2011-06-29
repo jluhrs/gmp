@@ -2,8 +2,6 @@ package edu.gemini.aspen.gds.api
 
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
-import org.osgi.framework.PackagePermission
-import javax.management.remote.rmi._RMIConnection_Stub
 
 /**
  * Interface for an ErrorPolicy that uses OSGi services implementing error policies
@@ -19,14 +17,25 @@ trait CompositeErrorPolicy extends ErrorPolicy
 class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPolicy {
     var policies: List[ErrorPolicy] = List()
 
-    // Let all the original headers to be applied
+    // Apply all the original headers
     override def applyPolicy(dataLabel: DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = {
-        val p = for {ep <- policies
-        } yield (ep.applyPolicy(dataLabel, headers))
-        println(p)
-        Option(p flatMap {
-            _.get
-        })
+        //iterative
+        //        var h = headers
+        //        for (ep <- policies) {
+        //            h = ep.applyPolicy(dataLabel, h)
+        //        }
+        //        h
+
+        //recursive
+        applyPolicies(dataLabel, policies, headers)
+    }
+
+    private def applyPolicies(dataLabel: DataLabel, l: List[ErrorPolicy], headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = {
+        l match {
+            case Nil => headers
+            case _ => l.head.applyPolicy(dataLabel, applyPolicies(dataLabel, l.tail, headers))
+        }
+
     }
 
     @Bind(optional = true)
