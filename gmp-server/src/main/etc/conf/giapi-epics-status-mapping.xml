@@ -2,6 +2,12 @@
 <Channels xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="giapi-epics-status-mapping.xsd">
 
+
+    <HealthChannel>
+        <giapiname>gpi:gds:health</giapiname>
+        <epicsname>gds:health</epicsname>
+    </HealthChannel>
+
     <!--STATUS ITEMS reported to Gemini-->
     <SimpleChannel>
         <giapiname>gpi:state</giapiname>

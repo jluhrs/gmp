@@ -3,7 +3,6 @@ package edu.gemini.aspen.gds.health
 import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
 import edu.gemini.jms.api.JmsProvider
-import edu.gemini.aspen.giapitestsupport.StatusSetter
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.Health
 import edu.gemini.aspen.gds.api.KeywordActorsFactory
@@ -12,6 +11,7 @@ import edu.gemini.aspen.gds.seqexec.SeqexecActorsFactory
 import edu.gemini.aspen.gds.odb.ODBActorsFactory
 import edu.gemini.aspen.gds.status.InstrumentStatusActorsFactory
 import collection.mutable.Map
+import edu.gemini.aspen.giapi.util.jms.status.StatusSetter
 
 /**
  * OSGi component providing health information for the GDS

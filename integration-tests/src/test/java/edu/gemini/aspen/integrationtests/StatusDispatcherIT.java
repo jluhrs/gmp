@@ -3,22 +3,27 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.dispatcher.StatusDispatcher;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
-import edu.gemini.aspen.giapitestsupport.StatusSetter;
+import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.jms.api.JmsProvider;
-import org.junit.*;
-import org.junit.runner.*;
-import org.ops4j.pax.exam.*;
-import org.ops4j.pax.exam.junit.*;
-import org.osgi.framework.*;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Inject;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
 
 @RunWith(JUnit4TestRunner.class)
-public class StatusDispatcherIT{
+public class StatusDispatcherIT {
 
     @Inject
     private BundleContext context;
@@ -57,7 +62,7 @@ public class StatusDispatcherIT{
                 mavenBundle().artifactId("gmp-heartbeat").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
                 mavenBundle().artifactId("heartbeat-distributor-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("integration-tests").groupId("edu.gemini.aspen").update().versionAsInProject()
-                );
+        );
     }
 
     @Test
@@ -87,12 +92,12 @@ public class StatusDispatcherIT{
     }
 
     @Test
-    public void checkBinding() throws Exception{
+    public void checkBinding() throws Exception {
         //register handlers
         TestHandler testHandler1 = new TestHandler();
-        context.registerService(FilteredStatusHandler.class.getName(),testHandler1,null);
+        context.registerService(FilteredStatusHandler.class.getName(), testHandler1, null);
         TestHandler testHandler2 = new TestHandler();
-        context.registerService(FilteredStatusHandler.class.getName(),testHandler2,null);
+        context.registerService(FilteredStatusHandler.class.getName(), testHandler2, null);
         JmsProvider provider = (JmsProvider) context.getService(context.getServiceReference("edu.gemini.jms.api.JmsProvider"));
 
         //send StatusItem update via JMS

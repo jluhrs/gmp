@@ -5,16 +5,17 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
-import edu.gemini.aspen.giapitestsupport.StatusSetter;
+import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class StatusDispatcherTest {
 
