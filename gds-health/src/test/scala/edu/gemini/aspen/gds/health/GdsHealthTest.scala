@@ -6,14 +6,18 @@ import edu.gemini.aspen.giapi.statusservice.{StatusHandlerAggregate, StatusHandl
 import actors.threadpool.AtomicInteger
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.gds.epics.EpicsActorsFactory
 import edu.gemini.aspen.gds.seqexec.SeqexecActorsFactory
 import edu.gemini.aspen.gds.odb.ODBActorsFactory
 import edu.gemini.aspen.gds.status.InstrumentStatusActorsFactory
 import org.mockito.Mockito._
-import org.junit.{Ignore, After, Before, Test}
+import org.junit.{After, Before, Test}
+import edu.gemini.epics.EpicsReader
+import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabase
+import edu.gemini.pot.spdb.IDBDatabaseService
+import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase
+import edu.gemini.aspen.giapi.status.{StatusDatabaseService, Health, StatusItem, StatusHandler}
 
 class GdsHealthTest {
     val healthName = "gpi:gds:health"
@@ -77,7 +81,6 @@ class GdsHealthTest {
         assertEquals(lastStatusItem, new HealthStatus(healthName, Health.WARNING))
     }
 
-    @Ignore
     @Test
     def testGood() {
         counter = new AtomicInteger(0)
@@ -85,17 +88,16 @@ class GdsHealthTest {
 
         gdsHealth.validate()
         gdsHealth.bindGDSObseventHandler()
-        gdsHealth.bindActorFactory(mock(classOf[EpicsActorsFactory]))
-        gdsHealth.bindActorFactory(mock(classOf[SeqexecActorsFactory]))
-        gdsHealth.bindActorFactory(mock(classOf[ODBActorsFactory]))
-        gdsHealth.bindActorFactory(mock(classOf[InstrumentStatusActorsFactory]))
+        gdsHealth.bindActorFactory(new EpicsActorsFactory(mock(classOf[EpicsReader])))
+        gdsHealth.bindActorFactory(new SeqexecActorsFactory(mock(classOf[TemporarySeqexecKeywordsDatabase])))
+        gdsHealth.bindActorFactory(new ODBActorsFactory(mock(classOf[IDBDatabaseService]), mock(classOf[ProgramIdDatabase])))
+        gdsHealth.bindActorFactory(new InstrumentStatusActorsFactory(mock(classOf[StatusDatabaseService])))
         gdsHealth.bindHeaderReceiver()
         latch.await(1, TimeUnit.SECONDS)
         assertEquals(7, counter.get())
         assertEquals(lastStatusItem, new HealthStatus(healthName, Health.GOOD))
     }
 
-    @Ignore
     @Test
     def testUnbind() {
         testGood()
@@ -107,7 +109,6 @@ class GdsHealthTest {
         assertEquals(lastStatusItem, new HealthStatus(healthName, Health.WARNING))
     }
 
-    @Ignore
     @Test
     def testUnbind2() {
         testUnbind()
