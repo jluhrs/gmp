@@ -21,7 +21,6 @@ class CompositeActorsFactoryImpl(@Property(name = "keywordsConfiguration", value
     val LOG = Logger.getLogger(this.getClass.getName)
 
     var factories: List[KeywordActorsFactory] = List()
-    var config: List[GDSConfiguration] = List()
 
     override def configure(configuration: List[GDSConfiguration]) {
         factories foreach {
@@ -40,7 +39,7 @@ class CompositeActorsFactoryImpl(@Property(name = "keywordsConfiguration", value
      */
     @Bind(aggregate = true, optional = true)
     def bindKeywordFactory(keywordFactory: KeywordActorsFactory) {
-        keywordFactory.configure(config)
+        keywordFactory.configure(actorsConfiguration)
         factories = keywordFactory :: factories
     }
 
@@ -62,11 +61,11 @@ class CompositeActorsFactoryImpl(@Property(name = "keywordsConfiguration", value
         LOG.info("CompositeActorsFactory validated with config:" + configurationFile)
         val configurationList = new GDSConfigurationParser().parseFile(configurationFile)
 
-        config = configurationList filter {
+        actorsConfiguration = configurationList filter {
             _.isInstanceOf[GDSConfiguration]
         } map {
             _.asInstanceOf[GDSConfiguration]
         }
-        configure(config)
+        configure(actorsConfiguration)
     }
 }

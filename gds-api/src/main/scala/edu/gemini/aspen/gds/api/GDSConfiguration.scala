@@ -14,7 +14,7 @@ case class Mandatory(mandatory: Boolean)
 
 case class DefaultValue(value: String)
 
-case class Subsystem(name: String)
+case class Subsystem(name: KeywordSource.Value)
 
 case class Channel(name: String)
 
@@ -36,5 +36,5 @@ case class GDSConfiguration(instrument: Instrument,
                             channel: Channel,
                             arrayIndex: ArrayIndex,
                             fitsComment: FitsComment) {
-  def isMandatory = mandatory.mandatory
+    def isMandatory = mandatory.mandatory
 }

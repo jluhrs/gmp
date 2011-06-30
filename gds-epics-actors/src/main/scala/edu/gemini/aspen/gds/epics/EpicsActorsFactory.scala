@@ -1,20 +1,18 @@
 package edu.gemini.aspen.gds.epics
 
 import edu.gemini.epics.EpicsReader
-import edu.gemini.aspen.gds.api.KeywordActorsFactory
-import edu.gemini.aspen.gds.api.GDSConfiguration
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActorsFactory {
     // Use dummy configuration
-    var conf: List[GDSConfiguration] = List()
 
     override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
-        conf filter {
+        actorsConfiguration filter {
             _.event.name == obsEvent.name
         } map {
             c => {
@@ -24,16 +22,12 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActo
         }
     }
 
-    override def configure(configuration: List[GDSConfiguration]) {
-        conf = configuration filter {
-            _.subsystem.name == "EPICS"
-        }
-    }
+    override def getSource = KeywordSource.EPICS
 
     @Invalidate
     def unbindAllChannels() {
         // Unbind all required channels
-        conf map {
+        actorsConfiguration map {
             c => epicsReader.unbindChannel(c.channel.name)
         }
     }

@@ -7,17 +7,10 @@ import actors.threadpool.AtomicInteger
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
-import edu.gemini.aspen.gds.epics.EpicsActorsFactory
-import edu.gemini.aspen.gds.seqexec.SeqexecActorsFactory
-import edu.gemini.aspen.gds.odb.ODBActorsFactory
-import edu.gemini.aspen.gds.status.InstrumentStatusActorsFactory
 import org.mockito.Mockito._
+import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
 import org.junit.{After, Before, Test}
-import edu.gemini.epics.EpicsReader
-import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabase
-import edu.gemini.pot.spdb.IDBDatabaseService
-import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase
-import edu.gemini.aspen.giapi.status.{StatusDatabaseService, Health, StatusItem, StatusHandler}
+import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 
 class GdsHealthTest {
     val healthName = "gpi:gds:health"
@@ -57,7 +50,6 @@ class GdsHealthTest {
         statusservice.stopJms()
     }
 
-
     @Test
     def testBad() {
         counter = new AtomicInteger(0)
@@ -88,10 +80,16 @@ class GdsHealthTest {
 
         gdsHealth.validate()
         gdsHealth.bindGDSObseventHandler()
-        gdsHealth.bindActorFactory(new EpicsActorsFactory(mock(classOf[EpicsReader])))
-        gdsHealth.bindActorFactory(new SeqexecActorsFactory(mock(classOf[TemporarySeqexecKeywordsDatabase])))
-        gdsHealth.bindActorFactory(new ODBActorsFactory(mock(classOf[IDBDatabaseService]), mock(classOf[ProgramIdDatabase])))
-        gdsHealth.bindActorFactory(new InstrumentStatusActorsFactory(mock(classOf[StatusDatabaseService])))
+        val fact = mock(classOf[KeywordActorsFactory])
+        when(fact.getSource).thenReturn(KeywordSource.EPICS)
+        gdsHealth.bindActorFactory(fact)
+        when(fact.getSource).thenReturn(KeywordSource.STATUS)
+        gdsHealth.bindActorFactory(fact)
+        when(fact.getSource).thenReturn(KeywordSource.SEQEXEC)
+        gdsHealth.bindActorFactory(fact)
+        when(fact.getSource).thenReturn(KeywordSource.ODB)
+        gdsHealth.bindActorFactory(fact)
+
         gdsHealth.bindHeaderReceiver()
         latch.await(1, TimeUnit.SECONDS)
         assertEquals(7, counter.get())

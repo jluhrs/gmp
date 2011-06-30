@@ -4,15 +4,15 @@ import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword, DataLabel}
 
 class DummyActorsFactory extends KeywordActorsFactory {
-  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
-    val dummyActor = new KeywordValueActor {
-      override def collectValues: List[CollectedValue[_]] = {
-        List(CollectedValue(new FitsKeyword("KEYWORD1"), "", "", 0))
-      }
+    override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+        val dummyActor = new KeywordValueActor {
+            override def collectValues: List[CollectedValue[_]] = {
+                List(CollectedValue(new FitsKeyword("KEYWORD1"), "", "", 0))
+            }
+        }
+        dummyActor :: Nil
     }
-    dummyActor :: Nil
-  }
 
-  def configure(configuration: List[GDSConfiguration]) {}
+    override def configure(configuration: List[GDSConfiguration]) {}
 }
 

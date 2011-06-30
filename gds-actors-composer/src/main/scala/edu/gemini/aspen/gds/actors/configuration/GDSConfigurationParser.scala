@@ -77,8 +77,12 @@ class GDSConfigurationParser extends RegexParsers {
         x => DefaultValue(x)
     }
 
-    def subsystem = """\w+""".r ^^ {
-        x => Subsystem(x)
+    def subsystem = (KeywordSource.values map {
+        _.toString
+    } reduceLeft {
+        (x, y) => x + "|" + y
+    }).r ^^ {
+        x => Subsystem(KeywordSource.withName(x))
     }
 
     def channelName = """[:\w]+""".r ^^ {
