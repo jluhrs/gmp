@@ -39,7 +39,7 @@ class GDSCoreVaadinApp extends Application {
         LOG.info("GDSCoreVaadinApp> module gone " + module.title)
 
         val tabsToRemove = list filter {_.getCaption == module.title} map {tabsSheet.removeTab(_)}
-        list = list remove {_.getCaption == module.title}
+        list = list filterNot {_.getCaption == module.title}
     }
 
 }

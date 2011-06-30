@@ -28,7 +28,7 @@ class StaticResources(ctx: BundleContext) extends HttpServlet {
         val path = req.getPathInfo
         val resourcePath = "VAADIN" + path
 
-        val u = Option(vaadinBundle.getResource(resourcePath))
+        val u = vaadinBundle map {_.getResource(resourcePath)}
         u map {
             ur: URL =>
                 use(ur.openStream) {
@@ -50,5 +50,5 @@ class StaticResources(ctx: BundleContext) extends HttpServlet {
     def findVaadinBundle(ctx: BundleContext) =
         ctx.getBundles().toList filter {
             v: Bundle => "com.vaadin".equals(v.getSymbolicName())
-        } head
+        } headOption
 }
