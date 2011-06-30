@@ -427,8 +427,13 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <version>0.1.0</version>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen.gds</groupId>
+            <groupId>edu.gemini.aspen.gds.ui</groupId>
             <artifactId>gds-web-ui</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-web-ui-keywords</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

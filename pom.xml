@@ -149,6 +149,7 @@
         <module>gds-error-policy</module>
         <module>gds-health</module>
         <module>gds-web-ui</module>
+        <module>gds-web-ui-keywords</module>
         <module>integration-tests</module>
     </modules>
 
