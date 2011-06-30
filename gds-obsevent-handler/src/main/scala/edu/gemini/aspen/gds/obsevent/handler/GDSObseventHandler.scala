@@ -12,18 +12,14 @@ import actors.Actor
 import actors.Actor.actor
 import java.io.{FileNotFoundException, File}
 import java.util.logging.{Level, Logger}
-import edu.gemini.aspen.gds.api.Conversions._
-import edu.gemini.aspen.gds.api.CollectedValue._
-import edu.gemini.fits.{DefaultHeaderItem, DefaultHeader, Header}
-import java.lang.Double
+import edu.gemini.fits.{DefaultHeader, Header}
 import edu.gemini.aspen.gds.api._
-import sun.net.www.HeaderParser
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
  * keyword values acquisition process
  */
-@Component
+@Component(name = "GDSObseventHandler")
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires errorPolicy: CompositeErrorPolicy) extends ObservationEventHandler {
