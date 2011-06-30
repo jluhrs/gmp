@@ -13,6 +13,11 @@ trait GDSWebModule {
     val title:String
 
     /**
+     * Order of the tab
+     */
+    val order:Int
+
+    /**
      * Builds a component to be added to the tab
      *
      * Implementations should override this method to produce the actual content
