@@ -2,7 +2,8 @@
 # Use this file to add customized Bnd instructions for the bundle
 #-----------------------------------------------------------------
 
-Export-Package: ${bundle.namespace}
-Import-Package: *;com.sun.jersey.spi.container.servlet
-Bundle-Activator:
-Web-ContextPath: test
+#Export-Package: ${bundle.namespace}
+#Export-Package: edu.gemini.aspen.gds.web
+#Import-Package: *;com.sun.jersey.spi.container.servlet
+#Web-ContextPath: test
+Bundle-Activator: 
