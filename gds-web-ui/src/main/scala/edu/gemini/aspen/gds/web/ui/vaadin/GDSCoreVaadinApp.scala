@@ -1,11 +1,11 @@
-package edu.gemini.aspen.gds.web.vaadin
+package edu.gemini.aspen.gds.web.ui.vaadin
 
 import com.vaadin.Application;
 import org.apache.felix.ipojo.annotations.{Component, Bind, Unbind}
 import java.util.logging.Logger
-import edu.gemini.aspen.gds.web.api.GDSWebModule
 import com.vaadin.terminal.{ClassResource, StreamResource}
 import com.vaadin.ui._
+import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 
 /**
  * Main page of the GDS web UI

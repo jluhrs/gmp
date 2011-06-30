@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.web.vaadin
+package edu.gemini.aspen.gds.web.ui.vaadin
 
 import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.AbstractApplicationServlet;

@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.web.vaadin
+package edu.gemini.aspen.gds.web.ui.vaadin
 
 import org.junit.Test
 import org.junit.Assert._

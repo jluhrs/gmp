@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.web.vaadin
+package edu.gemini.aspen.gds.web.ui.vaadin
 
 import org.ops4j.pax.web.extender.whiteboard.runtime.DefaultResourceMapping
 import org.apache.felix.ipojo.annotations.{Provides, Instantiate, Component}

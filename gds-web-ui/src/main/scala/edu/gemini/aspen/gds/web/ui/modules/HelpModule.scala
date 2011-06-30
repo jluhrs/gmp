@@ -1,8 +1,7 @@
-package edu.gemini.aspen.gds.web.modules
+package edu.gemini.aspen.gds.web.ui.modules
 
 import org.apache.felix.ipojo.annotations.{Provides, Instantiate, Component}
-import edu.gemini.aspen.gds.web.api.GDSWebModule
-import scala.Predef._
+import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 
 @Component
 @Instantiate
