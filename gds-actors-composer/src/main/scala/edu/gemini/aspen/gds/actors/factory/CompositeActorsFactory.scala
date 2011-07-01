@@ -2,9 +2,9 @@ package edu.gemini.aspen.gds.actors.factory
 
 import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
-import edu.gemini.aspen.gds.actors.configuration.GDSConfigurationParser
 import edu.gemini.aspen.gds.api.{KeywordValueActor, KeywordActorsFactory, GDSConfiguration}
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 
 /**
  * Interface for a Composite of Actors Factory required by OSGi
@@ -17,7 +17,7 @@ trait CompositeActorsFactory extends KeywordActorsFactory
  */
 @Component
 @Provides(specifications = Array(classOf[CompositeActorsFactory]))
-class CompositeActorsFactoryImpl(@Property(name = "keywordsConfiguration", value = "NOVALID", mandatory = true) configurationFile: String) extends CompositeActorsFactory {
+class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends CompositeActorsFactory {
     val LOG = Logger.getLogger(this.getClass.getName)
 
     var factories: List[KeywordActorsFactory] = List()
@@ -58,14 +58,8 @@ class CompositeActorsFactoryImpl(@Property(name = "keywordsConfiguration", value
      */
     @Validate
     def startConfiguration() {
-        LOG.info("CompositeActorsFactory validated with config:" + configurationFile)
-        val configurationList = new GDSConfigurationParser().parseFile(configurationFile)
+        actorsConfiguration = configService.getConfiguration
 
-        actorsConfiguration = configurationList filter {
-            _.isInstanceOf[GDSConfiguration]
-        } map {
-            _.asInstanceOf[GDSConfiguration]
-        }
         configure(actorsConfiguration)
     }
 }

@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.actors.configuration
+package edu.gemini.aspen.gds.api.configuration
 
 import util.parsing.combinator.RegexParsers
 import io.Source
