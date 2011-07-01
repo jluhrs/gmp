@@ -8,6 +8,6 @@ import org.ops4j.pax.web.extender.whiteboard.ResourceMapping
 @Instantiate
 @Provides(specifications = Array(classOf[ResourceMapping]))
 class GDSVaadinResources extends DefaultResourceMapping {
-    setAlias("/gds/APP/1");
-    setPath("/images");
+    setAlias("/gds/APP/1")
+    setPath("/images")
 }
