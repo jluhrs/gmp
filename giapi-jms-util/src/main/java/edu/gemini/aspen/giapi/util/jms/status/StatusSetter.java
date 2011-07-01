@@ -11,7 +11,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 
 /**
- *
+ * This class encapsulates the code to publish a StatusItem update.
  */
 public class StatusSetter extends BaseMessageProducer {
     public StatusSetter(String statusName) {
