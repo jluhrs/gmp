@@ -93,22 +93,22 @@
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-jetty-bundle</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-extender-war</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-extender-whiteboard</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-spi</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <!-- Felix iPOJO -->
         <dependency>
