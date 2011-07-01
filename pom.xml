@@ -148,6 +148,7 @@
         <module>gds-seqexec-actors</module>
         <module>gds-error-policy</module>
         <module>gds-health</module>
+        <module>gds-observation-state-publisher</module>
         <module>gds-web-ui</module>
         <module>gds-web-ui-keywords</module>
         <module>integration-tests</module>
