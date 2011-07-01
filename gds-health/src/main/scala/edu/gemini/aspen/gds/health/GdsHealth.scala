@@ -19,27 +19,13 @@ class GdsHealth(@Requires provider: JmsProvider) {
     private val healthSetter: StatusSetter = new StatusSetter(healthName)
     private val LOG = Logger.getLogger(this.getClass.getName)
 
-    private val actors = new Array[Boolean](KeywordSource.maxId - 1)
-
-    private var obsEvtHndl = false
-    private var headerRec = false
+    private val healthState = new HealthState
     private var validated = false
 
     private def updateHealth() {
         LOG.info("Updating Health")
-        LOG.fine("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actors.toList)
         if (validated) {
-            if (obsEvtHndl) {
-                if (actors.reduceLeft({
-                    _ && _
-                }) && headerRec) {
-                    healthSetter.setStatusItem(new HealthStatus(healthName, Health.GOOD))
-                } else {
-                    healthSetter.setStatusItem(new HealthStatus(healthName, Health.WARNING))
-                }
-            } else {
-                healthSetter.setStatusItem(new HealthStatus(healthName, Health.BAD))
-            }
+            healthSetter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
         }
     }
 
@@ -61,48 +47,98 @@ class GdsHealth(@Requires provider: JmsProvider) {
     @Bind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
     def bindHeaderReceiver() {
         LOG.info("Binding HeaderReceiver")
-        headerRec = true
+        healthState.registerHeaderReceiver()
         updateHealth()
     }
 
     @Unbind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
     def unbindHeaderReceiver() {
         LOG.info("Unbinding HeaderReceiver")
-        headerRec = false
+        healthState.unregisterHeaderReceiver()
         updateHealth()
     }
 
     @Bind(id = "GDSObseventHandler", specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler")
     def bindGDSObseventHandler() {
         LOG.info("Binding GDSObseventHandler")
-        obsEvtHndl = true
+        healthState.registerGDSObseventHandler()
         updateHealth()
     }
 
     @Unbind(id = "GDSObseventHandler", specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler")
     def unbindGDSObseventHandler() {
         LOG.info("Unbinding GDSObseventHandler")
-        obsEvtHndl = false
+        healthState.unregisterGDSObseventHandler()
         updateHealth()
     }
 
     @Bind(aggregate = true, optional = true)
     def bindActorFactory(fact: KeywordActorsFactory) {
         LOG.info("Binding ActorsFactory: " + fact.getClass.getName)
-        fact.getSource match {
-            case KeywordSource.NONE => LOG.info("Registered KeywordActorsFactory of unknown type: " + fact.getSource)
-            case x => actors(x.id) = true
-        }
+        healthState.registerActorFactory(fact.getSource)
         updateHealth()
     }
 
     @Unbind(aggregate = true, optional = true)
     def unbindActorFactory(fact: KeywordActorsFactory) {
         LOG.info("Unbinding ActorsFactory: " + fact.getClass.getName)
-        fact.getSource match {
-            case KeywordSource.NONE => LOG.info("Unregistered KeywordActorsFactory of unknown type: " + fact.getSource)
-            case x => actors(x.id) = false
-        }
+        healthState.unregisterActorFactory(fact.getSource)
         updateHealth()
     }
+
+
+    private class HealthState {
+        private val LOG = Logger.getLogger(this.getClass.getName)
+
+        private val actors = new Array[Boolean](KeywordSource.maxId - 1) //Booleans are initialized to false
+
+        private var obsEvtHndl = false
+        private var headerRec = false
+
+        def registerHeaderReceiver() {
+            headerRec = true
+        }
+
+        def unregisterHeaderReceiver() {
+            headerRec = false
+        }
+
+        def registerGDSObseventHandler() {
+            obsEvtHndl = true
+        }
+
+        def unregisterGDSObseventHandler() {
+            obsEvtHndl = false
+        }
+
+        def registerActorFactory(source: KeywordSource.Value) {
+            source match {
+                case KeywordSource.NONE => LOG.info("Registered KeywordActorsFactory of unknown type: " + source)
+                case x => actors(x.id) = true
+            }
+        }
+
+        def unregisterActorFactory(source: KeywordSource.Value) {
+            source match {
+                case KeywordSource.NONE => LOG.info("Unregistered KeywordActorsFactory of unknown type: " + source)
+                case x => actors(x.id) = false
+            }
+        }
+
+        def getHealth = {
+            LOG.fine("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actors.toList)
+            if (obsEvtHndl) {
+                if (actors.reduceLeft({
+                    _ && _
+                }) && headerRec) {
+                    Health.GOOD
+                } else {
+                    Health.WARNING
+                }
+            } else {
+                Health.BAD
+            }
+        }
+    }
+
 }
