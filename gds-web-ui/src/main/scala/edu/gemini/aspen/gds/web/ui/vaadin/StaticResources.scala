@@ -41,7 +41,6 @@ class StaticResources(ctx: BundleContext) extends HttpServlet {
                         }
                     }
                 }
-
         } getOrElse {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND)
         }

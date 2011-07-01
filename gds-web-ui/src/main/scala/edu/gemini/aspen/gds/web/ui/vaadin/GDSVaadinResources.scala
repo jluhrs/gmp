@@ -11,3 +11,11 @@ class GDSVaadinResources extends DefaultResourceMapping {
     setAlias("/gds/APP/1")
     setPath("/images")
 }
+
+@Component
+@Instantiate
+@Provides(specifications = Array(classOf[ResourceMapping]))
+class GDSThemeResources extends DefaultResourceMapping {
+    setAlias("/VAADI/themes")
+    setPath("/themes")
+}

@@ -9,7 +9,7 @@ import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 @Provides(specifications = Array(classOf[GDSWebModule]))
 class AboutModule extends GDSWebModule {
     val title = "About"
-    val order = 0
+    val order = 2
 
     override  def buildTabContent: com.vaadin.ui.Component = {
         val l1 = new Label("About GDS")

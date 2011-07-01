@@ -135,7 +135,7 @@ class GDSCoreVaadinApp extends Application {
         gdsWebModules = tabsSheet.addTab(module.buildTabContent, module.title, null) :: gdsWebModules
     }
 
-    @Unbind(optional = true, aggregate = true)
+    @Unbind
     def unbindModule(module: GDSWebModule) {
         LOG.info("GDSCoreVaadinApp> module gone " + module.title)
 
