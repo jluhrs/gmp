@@ -10,6 +10,5 @@ class ColumnDefinitionTest {
     val definition = new MandatoryColumnDefinition
     assertEquals("Mandatory", definition.title)
     assertEquals(classOf[CheckBox], definition.columnType)
-    assertEquals(classOf[CheckBox], definition.buildComponent())
   }
 }
