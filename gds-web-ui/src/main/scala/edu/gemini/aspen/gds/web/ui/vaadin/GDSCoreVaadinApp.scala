@@ -30,7 +30,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
    */
   override def init() {
     LOG.info("GDSCoreVaadinApp init> ")
-    //setTheme()
+    //`setTheme()
     tabsSheet.setHeight("100%")
 
     val mainLayout = new VerticalLayout
