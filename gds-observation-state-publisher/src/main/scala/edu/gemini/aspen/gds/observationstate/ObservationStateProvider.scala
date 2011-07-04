@@ -14,5 +14,5 @@ trait ObservationStateProvider {
 
     def getMissingKeywords(label: DataLabel): Traversable[FitsKeyword]
 
-    def getTimes(label: DataLabel): Map[AnyRef, Option[Duration]]
+    def getTimes(label: DataLabel): Traversable[(AnyRef, Option[Duration])]
 }

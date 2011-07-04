@@ -12,7 +12,7 @@ trait ObservationStateRegistrar {
 
     def endObservation(label: DataLabel): Unit
 
-    def registerTimes(label: DataLabel, times: Map[AnyRef, Option[Duration]]): Unit
+    def registerTimes(label: DataLabel, times: Traversable[(AnyRef, Option[Duration])]): Unit
 
     def registerCollectionError(label: DataLabel, keyword: FitsKeyword, error: CollectionError.CollectionError): Unit
 
