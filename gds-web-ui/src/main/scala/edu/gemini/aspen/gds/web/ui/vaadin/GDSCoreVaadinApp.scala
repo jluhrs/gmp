@@ -118,6 +118,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
 
     loginPanel.addComponent(linkButton)
     layout.setComponentAlignment(linkButton, Alignment.MIDDLE_RIGHT)
+    loginPanel.setStyleName("no-border")
     loginPanel
   }
 

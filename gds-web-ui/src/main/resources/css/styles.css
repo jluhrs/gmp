@@ -1,1 +1,14 @@
-@import "../reindeer/styles.css"
+@import "../reindeer/styles.css";
+
+.v-label-gds-status {
+    font-size:1em;
+    font-weight:bold;
+}
+
+.v-panel-no-border {
+    border-style:none;
+}
+
+.v-panel-content-no-border {
+    border-style:none;
+}
