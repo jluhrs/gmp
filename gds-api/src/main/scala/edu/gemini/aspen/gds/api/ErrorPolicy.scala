@@ -1,12 +1,16 @@
 package edu.gemini.aspen.gds.api
 
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.fits.Header
 
 /**
  * Defines an error policy
  */
 trait ErrorPolicy {
+    /**
+     * Lower priority policies are applied first
+     */
+    val priority = 5
+
     /**
      * Applies the policy taking a set of proposed headers and returning the set of headers allowed
      *
@@ -14,7 +18,7 @@ trait ErrorPolicy {
      * @param headers Proposed set of headers
      * @return An Optional list of headers to be written to the fits file
      */
-    def applyPolicy(dataLabel:DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]]
+    def applyPolicy(dataLabel: DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]]
 }
 
 /**
@@ -22,5 +26,5 @@ trait ErrorPolicy {
  */
 class DefaultErrorPolicy extends ErrorPolicy {
     // Let all the original headers to be applied
-    override def applyPolicy(dataLabel:DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = headers
+    override def applyPolicy(dataLabel: DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = headers
 }

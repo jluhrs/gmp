@@ -27,13 +27,13 @@ class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPol
         //        h
 
         //recursive
-        applyPolicies(dataLabel, policies, headers)
+        applyPolicies(dataLabel, policies.sortWith((a, b) => a.priority < b.priority), headers)
     }
 
     private def applyPolicies(dataLabel: DataLabel, l: List[ErrorPolicy], headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = {
         l match {
             case Nil => headers
-            case _ => l.head.applyPolicy(dataLabel, applyPolicies(dataLabel, l.tail, headers))
+            case _ => l.last.applyPolicy(dataLabel, applyPolicies(dataLabel, l.init, headers))
         }
 
     }

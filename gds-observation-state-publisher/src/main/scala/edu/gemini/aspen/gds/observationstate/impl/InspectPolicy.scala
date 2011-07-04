@@ -9,6 +9,8 @@ import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher
 @Instantiate
 @Provides(specifications = Array(classOf[ErrorPolicy]))
 class InspectPolicy(@Requires obsStatePub: ObservationStatePublisher) extends ErrorPolicy {
+    override val priority = 0
+
     override def applyPolicy(dataLabel: DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = headers
 
     //todo: update ObservationStatePublisher
