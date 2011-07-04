@@ -10,8 +10,8 @@ import edu.gemini.aspen.gds.web.ui.api.{StatusPanelModule}
 @Instantiate
 @Provides(specifications = Array(classOf[StatusPanelModule]))
 class FilesProcessedPanel extends AbstractStatusPanelModule {
-    val label:String = "Files Processed"
-    val item:String = "1234"
+    val label = "Files Processed"
+    val item = "1234"
 
 }
 

@@ -30,8 +30,6 @@ class VaadinServlet(@Requires(from = "VaadinAppFactory") val vaadinAppFactory: F
     var sessions = List[VaadinSession]()
 
     override def getApplicationClass() = {
-        // not used as the component factory creates instances for us
-        // but has to return something or getSystemMessages causes a NPE
         classOf[Application]
     }
 
@@ -39,7 +37,6 @@ class VaadinServlet(@Requires(from = "VaadinAppFactory") val vaadinAppFactory: F
         val app = try {
             val instance = vaadinAppFactory.createComponentInstance(new Properties())
 
-            /// todo Make this code more scalish
             if (instance.getState() == ComponentInstance.VALID) {
                 val application = instance.asInstanceOf[InstanceManager].getPojoObject.asInstanceOf[GDSCoreVaadinApp]
                 sessions = VaadinSession(request.getSession(), application) :: sessions
