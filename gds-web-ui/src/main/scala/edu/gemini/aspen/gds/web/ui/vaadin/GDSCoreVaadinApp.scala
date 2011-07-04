@@ -5,10 +5,10 @@ import org.apache.felix.ipojo.annotations.{Component, Bind, Unbind}
 import java.util.logging.Logger
 import com.vaadin.terminal.ClassResource
 import com.vaadin.event.MouseEvents.{ClickEvent, ClickListener}
-import com.vaadin.ui._
-import themes.BaseTheme
 import edu.gemini.aspen.gds.web.ui.vaadin.VaadinUtilities._
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
+import com.vaadin.ui._
+import themes.BaseTheme
 
 /**
  * Main page of the GDS web UI
@@ -23,10 +23,42 @@ class GDSCoreVaadinApp extends Application {
 
     var gdsWebModules = List[TabSheet.Tab]()
 
-    def buildStatusPanel: Panel = {
-        val statusBar = new Panel()
-        statusBar.setHeight("40px")
-        statusBar
+    def buildStatusPanel = {
+        val layout = new HorizontalLayout
+        layout.setMargin(false)
+
+        val statusLabel = new Label("Status:")
+        val statusState = new Label("Running")
+
+        val filesProcessed = new Label("Files processed:")
+        val filesProcessedCount = new Label("1234")
+
+        val filesInProcessed = new Label("Files in process:")
+        val filesInProcessedCount = new Label("2")
+
+        layout.addComponent(statusLabel)
+        layout.addComponent(statusState)
+
+        layout.addComponent(filesProcessed)
+        layout.addComponent(filesProcessedCount)
+
+        layout.addComponent(filesInProcessed)
+        layout.addComponent(filesInProcessedCount)
+
+        layout.setComponentAlignment(statusLabel, Alignment.MIDDLE_RIGHT)
+        layout.setComponentAlignment(statusState, Alignment.MIDDLE_RIGHT)
+
+        layout.setComponentAlignment(filesProcessed, Alignment.MIDDLE_RIGHT)
+        layout.setComponentAlignment(filesProcessedCount, Alignment.MIDDLE_RIGHT)
+
+        layout.setComponentAlignment(filesInProcessed, Alignment.MIDDLE_RIGHT)
+        layout.setComponentAlignment(filesInProcessedCount, Alignment.MIDDLE_RIGHT)
+
+        layout.setHeight("30px")
+        layout.setWidth("100%")
+        layout
+
+        new Panel(layout)
     }
 
     def toggleUserBasedVisibilty {
