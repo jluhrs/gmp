@@ -1,20 +1,20 @@
 package edu.gemini.aspen.gds.web.ui.vaadin
 
 import com.vaadin.Application;
-import org.apache.felix.ipojo.annotations.{Component, Bind, Unbind}
 import java.util.logging.Logger
 import com.vaadin.terminal.ClassResource
 import com.vaadin.event.MouseEvents.{ClickEvent, ClickListener}
 import edu.gemini.aspen.gds.web.ui.vaadin.VaadinUtilities._
-import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import com.vaadin.ui._
 import themes.BaseTheme
+import org.apache.felix.ipojo.annotations.{Requires, Component, Bind, Unbind}
+import edu.gemini.aspen.gds.web.ui.api.{StatusPanel, GDSWebModule}
 
 /**
  * Main page of the GDS web UI
  */
 @Component(name = "VaadinAppFactory")
-class GDSCoreVaadinApp extends Application {
+class GDSCoreVaadinApp(@Requires statusPanel:StatusPanel) extends Application {
     private val LOG = Logger.getLogger(this.getClass.getName)
     val tabsSheet = new TabSheet()
     val mainWindow = new Window("GDS Management Console")
@@ -22,44 +22,6 @@ class GDSCoreVaadinApp extends Application {
     var loginPanel: Panel = buildLoginPanel
 
     var gdsWebModules = List[TabSheet.Tab]()
-
-    def buildStatusPanel = {
-        val layout = new HorizontalLayout
-        layout.setMargin(false)
-
-        val statusLabel = new Label("Status:")
-        val statusState = new Label("Running")
-
-        val filesProcessed = new Label("Files processed:")
-        val filesProcessedCount = new Label("1234")
-
-        val filesInProcessed = new Label("Files in process:")
-        val filesInProcessedCount = new Label("2")
-
-        layout.addComponent(statusLabel)
-        layout.addComponent(statusState)
-
-        layout.addComponent(filesProcessed)
-        layout.addComponent(filesProcessedCount)
-
-        layout.addComponent(filesInProcessed)
-        layout.addComponent(filesInProcessedCount)
-
-        layout.setComponentAlignment(statusLabel, Alignment.MIDDLE_RIGHT)
-        layout.setComponentAlignment(statusState, Alignment.MIDDLE_RIGHT)
-
-        layout.setComponentAlignment(filesProcessed, Alignment.MIDDLE_RIGHT)
-        layout.setComponentAlignment(filesProcessedCount, Alignment.MIDDLE_RIGHT)
-
-        layout.setComponentAlignment(filesInProcessed, Alignment.MIDDLE_RIGHT)
-        layout.setComponentAlignment(filesInProcessedCount, Alignment.MIDDLE_RIGHT)
-
-        layout.setHeight("30px")
-        layout.setWidth("100%")
-        layout
-
-        new Panel(layout)
-    }
 
     def toggleUserBasedVisibilty {
         val user = Option(getUser)
@@ -155,7 +117,7 @@ class GDSCoreVaadinApp extends Application {
         mainLayout.addComponent(tabsSheet)
         mainLayout.setExpandRatio(tabsSheet, 1.0f)
 
-        mainLayout.addComponent(buildStatusPanel)
+        mainLayout.addComponent(statusPanel.buildStatusPanel)
 
         mainWindow.setContent(mainLayout)
         setMainWindow(mainWindow)

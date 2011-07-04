@@ -17,8 +17,8 @@ import java.io.{FileOutputStream, FileInputStream}
  * TODO Replace with a pax-extender resource bundle
  */
 @Component
-@Provides(specifications = Array(classOf[Servlet]))
 @Instantiate
+@Provides(specifications = Array(classOf[Servlet]))
 class StaticResources(ctx: BundleContext) extends HttpServlet {
     @ServiceProperty(name = "alias", value = "/VAADIN")
     val label: String = "/VAADIN"
