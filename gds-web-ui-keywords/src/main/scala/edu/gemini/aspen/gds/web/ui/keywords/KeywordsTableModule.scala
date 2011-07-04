@@ -5,7 +5,7 @@ import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import scala.Predef._
 import edu.gemini.aspen.gds.api.{Mandatory, GDSConfiguration}
-import com.vaadin.ui.{CheckBox, Table}
+import com.vaadin.ui.{Window, CheckBox, Table}
 
 abstract class ColumnDefinition(clazz: Class[_], val columnType:Class[_]) {
   def title = clazz.getSimpleName
@@ -32,7 +32,7 @@ class KeywordsTableModule(@Requires configService: GDSConfigurationService) exte
 
   def defaultColumnDefinition(clazz: Class[_]) = new DefaultColumnDefinition(clazz)
 
-  override def buildTabContent = {
+  override def buildTabContent(mainWindow:Window) = {
     val table = new Table("")
     table.setSizeFull
     table.setSelectable(true)

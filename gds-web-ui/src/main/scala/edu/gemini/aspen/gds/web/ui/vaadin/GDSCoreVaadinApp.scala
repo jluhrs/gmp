@@ -4,11 +4,11 @@ import com.vaadin.Application;
 import org.apache.felix.ipojo.annotations.{Component, Bind, Unbind}
 import java.util.logging.Logger
 import com.vaadin.terminal.ClassResource
-import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import com.vaadin.event.MouseEvents.{ClickEvent, ClickListener}
 import com.vaadin.ui._
 import themes.BaseTheme
 import edu.gemini.aspen.gds.web.ui.vaadin.VaadinUtilities._
+import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 
 /**
  * Main page of the GDS web UI
@@ -129,15 +129,15 @@ class GDSCoreVaadinApp extends Application {
         setMainWindow(mainWindow)
     }
 
-    @Bind(optional = true, aggregate = true)
+    @Bind(optional = true, aggregate = true, specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModule")
     def bindGDSWebModule(module: GDSWebModule) {
-        LOG.info("GDSCoreVaadinApp> module detected " + module.title)
-        gdsWebModules = tabsSheet.addTab(module.buildTabContent, module.title, null) :: gdsWebModules
+        LOG.info("GDSCoreVaadinApp> tab module detected " + module.title)
+        gdsWebModules = tabsSheet.addTab(module.buildTabContent(mainWindow), module.title, null) :: gdsWebModules
     }
 
-    @Unbind
+    @Unbind(specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModule")
     def unbindModule(module: GDSWebModule) {
-        LOG.info("GDSCoreVaadinApp> module gone " + module.title)
+        LOG.info("GDSCoreVaadinApp> tab module gone " + module.title)
 
         gdsWebModules filter {
             _.getCaption == module.title

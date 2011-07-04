@@ -1,10 +1,12 @@
 package edu.gemini.aspen.gds.web.ui.api
 
-import com.vaadin.ui.{Panel, Component}
+import com.vaadin.ui.{Window, Panel, Component}
 
 /**
  * A service that implements a GDSWebModule will be added to the list of tabs and the
  * main area of the GDS Web interface
+ *
+ * Note
  */
 trait GDSWebModule {
     /**
@@ -22,5 +24,5 @@ trait GDSWebModule {
      *
      * Implementations should override this method to produce the actual content
      */
-    def buildTabContent:Component = {new Panel()}
+    def buildTabContent(mainWindow:Window) :Component
 }
