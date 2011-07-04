@@ -14,6 +14,7 @@ import java.io.{FileNotFoundException, File}
 import java.util.logging.{Level, Logger}
 import edu.gemini.fits.{DefaultHeader, Header}
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -22,8 +23,8 @@ import edu.gemini.aspen.gds.api._
 @Component(name = "GDSObseventHandler")
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
-class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires errorPolicy: CompositeErrorPolicy) extends ObservationEventHandler {
-    private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy)
+class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires errorPolicy: CompositeErrorPolicy, @Requires obsState: ObservationStateRegistrar) extends ObservationEventHandler {
+    private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, obsState)
 
     def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
         replyHandler ! AcquisitionRequest(event, dataLabel)
@@ -31,7 +32,7 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 
 }
 
-class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, errorPolicy: ErrorPolicy) extends Actor {
+class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, errorPolicy: ErrorPolicy, obsState: ObservationStateRegistrar) extends Actor {
     private val LOG = Logger.getLogger(this.getClass.getName)
     private val collectDeadline = 300L
     private val eventLogger = new EventLogger
@@ -50,6 +51,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     }
 
     private def acqRequest(obsEvent: ObservationEvent, dataLabel: DataLabel) {
+        //todo: update ObservationStatePublisher
 
         obsEvent match {
             case OBS_PREP => {
@@ -187,6 +189,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
         processedList map {
             headersList => actor {
+                //todo: add file write to event logger
                 new FitsUpdater(new File("/tmp"), dataLabel, headers).updateFitsHeaders()
             }
         }

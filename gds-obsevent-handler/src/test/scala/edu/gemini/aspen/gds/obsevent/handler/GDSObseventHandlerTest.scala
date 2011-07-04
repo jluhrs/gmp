@@ -6,13 +6,14 @@ import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.api.{CompositeErrorPolicyImpl, KeywordValueActor}
 import org.junit.Test
+import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 
 
 class GDSObseventHandlerTest {
     val actorsFactory = mock(classOf[CompositeActorsFactory])
     val keywordsDatabase = new KeywordsDatabaseImpl()
 
-    private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl())
+    private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), mock(classOf[ObservationStateRegistrar]))
 
     @Test
     def testGDSObseventHandler {
