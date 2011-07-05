@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.web.ui.vaadin
+package edu.gemini.aspen.gds.web.ui.api
 
 import com.vaadin.ui._
 

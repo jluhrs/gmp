@@ -5,7 +5,9 @@ import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import scala.Predef._
 import edu.gemini.aspen.gds.api.{Mandatory, GDSConfiguration}
-import com.vaadin.ui.{Window, CheckBox, Table}
+import com.vaadin.ui._
+import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
+import com.vaadin.ui.Window.Notification
 
 abstract class ColumnDefinition(clazz: Class[_], val columnType:Class[_]) {
   def title = clazz.getSimpleName
@@ -33,9 +35,11 @@ class KeywordsTableModule(@Requires configService: GDSConfigurationService) exte
   def defaultColumnDefinition(clazz: Class[_]) = new DefaultColumnDefinition(clazz)
 
   override def buildTabContent(mainWindow:Window) = {
+    val layout = new VerticalLayout
+
     val table = new Table("")
-    table.setSizeFull
     table.setSelectable(true)
+    table.setSizeFull
     table.setColumnCollapsingAllowed(true)
 
     classOf[GDSConfiguration].getDeclaredFields foreach {
@@ -48,6 +52,18 @@ class KeywordsTableModule(@Requires configService: GDSConfigurationService) exte
       v => table.addItem(configToItem(v), v)
     }
     table
+    layout.addComponent(table)
+    layout.setExpandRatio(table, 1.0f)
+    val button: Button = new Button("Validate")
+
+    button.addListener(((e: Button#ClickEvent) => {
+      mainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
+    }))
+
+    layout.addComponent(button)
+    layout.setComponentAlignment(button, Alignment.MIDDLE_RIGHT)
+    layout.setSizeFull
+    layout
   }
 
   def configToItem(config: GDSConfiguration):Array[Object] = {

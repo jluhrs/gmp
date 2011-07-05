@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.vaadin
 
 import com.vaadin.ui._
-import edu.gemini.aspen.gds.web.ui.vaadin.VaadinUtilities._
+import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import edu.gemini.aspen.gds.web.ui.api.DefaultAuthenticationService
 import com.vaadin.terminal.UserError
 

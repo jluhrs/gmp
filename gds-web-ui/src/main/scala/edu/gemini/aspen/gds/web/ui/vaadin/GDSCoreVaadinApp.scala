@@ -4,7 +4,7 @@ import com.vaadin.Application;
 import java.util.logging.Logger
 import com.vaadin.terminal.ClassResource
 import com.vaadin.event.MouseEvents.{ClickEvent, ClickListener}
-import edu.gemini.aspen.gds.web.ui.vaadin.VaadinUtilities._
+import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import org.apache.felix.ipojo.annotations.{Requires, Component, Bind, Unbind}
 import edu.gemini.aspen.gds.web.ui.api.{StatusPanel, GDSWebModule}
 import com.vaadin.ui._
