@@ -8,9 +8,10 @@ import com.vaadin.data.util.ObjectProperty
 @Instantiate
 @Provides(specifications = Array(classOf[StatusPanelModule]))
 class CurrentStatusPanel extends AbstractStatusPanelModule {
-    val label:String = "Status"
-    val item:String = "Running"
-    val property = new ObjectProperty[String]("Running")
+  val order = 0
+  val label: String = "Status"
+  val item: String = "Running"
+  val property = new ObjectProperty[String]("Running")
 }
 
 

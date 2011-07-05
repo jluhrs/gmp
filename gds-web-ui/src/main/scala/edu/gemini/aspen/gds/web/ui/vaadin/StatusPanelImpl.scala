@@ -20,7 +20,9 @@ class StatusPanelImpl extends StatusPanel {
     layout.setMargin(false)
     layout.setStyleName("gds-status")
 
-    modules foreach {
+    modules sortBy {
+      _.order
+    } foreach {
       m =>
         val statusItem = m.buildModule
         layout.addComponent(statusItem)

@@ -11,6 +11,7 @@ import com.vaadin.data.util.ObjectProperty
 @Instantiate
 @Provides(specifications = Array(classOf[StatusPanelModule]))
 class FilesProcessedPanel extends AbstractStatusPanelModule {
+  val order = 2
   val label = "Files Processed"
   val item = "1234"
   val property = new ObjectProperty[String]("1234")
