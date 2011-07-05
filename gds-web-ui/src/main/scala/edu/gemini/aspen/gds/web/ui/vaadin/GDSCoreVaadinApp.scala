@@ -53,7 +53,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   /**
    * Listens for modules making up the tabs
    */
-  @Bind(optional = true, aggregate = true, specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModule")
+  @Bind(id="gds-modules", optional = true, aggregate = true, specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModule")
   def bindGDSWebModule(module: GDSWebModule) {
     LOG.info("GDSCoreVaadinApp> tab module detected " + module.title)
 
@@ -64,7 +64,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   /**
    * Listens for services gone
    */
-  @Unbind(specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModule")
+  @Unbind(id="gds-modules", specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModule")
   def unbindModule(module: GDSWebModule) {
     LOG.info("GDSCoreVaadinApp> tab module gone " + module.title)
 
