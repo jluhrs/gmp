@@ -81,17 +81,14 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
    */
   private def buildTopPanel = {
     val layout = new VerticalLayout
-    val p =  new Panel(layout)
-    //layout.setStyleName("gds-top-panel")
     layout.setMargin(false)
-    //layout.setHeight("100%")
     layout.addComponent(loginPanel)
     layout.addComponent(userPanel)
     layout.addComponent(buildBannerPanel)
 
     toggleUserBasedVisibilty
 
-    p
+    new Panel(layout)
   }
 
   /**
@@ -142,18 +139,22 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
 
     // Add the GDS Label
     val gdsLabel = new Label("GIAPI Data Service")
-    layout.addComponent(gdsLabel)
-    gdsLabel.setHeight("120px")
-    layout.setHeight("120px")
+    layout.setHeight("95px")
     gdsLabel.setStyleName("gds-title")
-    layout.setStyleName("gds-title")
 
-    //layout.setComponentAlignment(gdsLabel, Alignment.MIDDLE_LEFT)
+    layout.addComponent(gdsLabel)
+    layout.setComponentAlignment(gdsLabel, Alignment.MIDDLE_LEFT)
+    layout.setExpandRatio(gdsLabel, 1.0f)
+
     layout.setWidth("100%")
 
     // Add the logo
-    val image = new Embedded("", new ClassResource("gemini-logo.jpg", this))
-    image.setHeight("100px")
+    val image = new Embedded(null, new ClassResource("gemini-logo.jpg", this))
+    image.setHeight("95px")
+    image.setWidth("282px")
+    image.setStyleName("gds-title")
+    layout.addComponent(image)
+    layout.setComponentAlignment(gdsLabel, Alignment.MIDDLE_RIGHT)
 
     layout
   }
