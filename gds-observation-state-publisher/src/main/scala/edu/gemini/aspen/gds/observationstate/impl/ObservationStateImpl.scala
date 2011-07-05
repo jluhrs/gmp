@@ -38,13 +38,13 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
     override def endObservation(label: DataLabel) {
         obsInfoMap.getOrElseUpdate(label, new ObservationInfo).ended = true
+        obsStatePubl.publishEndObservation(label, getMissingKeywords(label), getKeywordsInError(label))
     }
 
     override def startObservation(label: DataLabel) {
         obsInfoMap.getOrElseUpdate(label, new ObservationInfo).started = true
+        obsStatePubl.publishStartObservation(label)
     }
-
-    //todo: publish updates through ObservationStatePublisher
 
     //-----------------------------------------------------------------------
 
