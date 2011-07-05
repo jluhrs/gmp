@@ -5,14 +5,13 @@ import org.mockito.Mockito._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.data.DataLabel
 import org.junit.Test
-import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher
 
 class ObservationStateImplTest {
 
     @Test
     def testObsInProgress() {
-        val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[GDSConfigurationService]), mock(classOf[ObservationStatePublisher]))
+        val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
         assertTrue(obsState.getObservationsInProgress.isEmpty)
 
         obsState.startObservation("label1")

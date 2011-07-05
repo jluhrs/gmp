@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gds.observationstate.impl
 
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
-import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.api.CollectionError
 import org.scala_tools.time.Imports
@@ -13,7 +12,7 @@ import collection.mutable.Set
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationStateRegistrar], classOf[ObservationStateProvider]))
-class ObservationStateImpl(@Requires configService: GDSConfigurationService, @Requires obsStatePubl: ObservationStatePublisher) extends ObservationStateRegistrar with ObservationStateProvider {
+class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) extends ObservationStateRegistrar with ObservationStateProvider {
 
     class ObservationInfo {
         val missingKeywords: Set[FitsKeyword] = HashSet[FitsKeyword]()
