@@ -9,6 +9,7 @@ import org.apache.felix.ipojo.annotations.{Requires, Component, Bind, Unbind}
 import edu.gemini.aspen.gds.web.ui.api.{StatusPanel, GDSWebModule}
 import com.vaadin.ui._
 import themes.BaseTheme
+import com.vaadin.data.util.ObjectProperty
 
 /**
  * Main page of the GDS web UI
@@ -20,6 +21,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   val mainWindow = new Window("GDS Management Console")
   val userPanel = buildUserPanel
   var loginPanel = buildLoginPanel
+  val userProperty = new ObjectProperty[String]("")
 
   var gdsWebModules = List[TabSheet.Tab]()
 
@@ -112,25 +114,31 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
     val linkButton = new Button("Login")
     linkButton.setStyleName(BaseTheme.BUTTON_LINK)
     linkButton.addStyleName("gds-login-label")
-    linkButton.setHeight("20px")
+
     linkButton.addListener((e: Button#ClickEvent) => mainWindow.addWindow(new LoginWindow(this)))
 
     layout.addComponent(linkButton)
     layout.setComponentAlignment(linkButton, Alignment.MIDDLE_RIGHT)
-    //layout.setExpandRatio(linkButton, 1.0f)
     layout.setWidth("100%")
+    layout.setHeight("20px")
     layout
   }
 
   def buildUserPanel = {
     val layout = new HorizontalLayout
+    val subLayout = new HorizontalLayout
 
+    val userLabel = new Label("User: ")
+    //userLabel.setPropertyDataSource(userProperty)
     val logoutButton = new Button("Logout")
     logoutButton.setStyleName(BaseTheme.BUTTON_LINK)
 
-    layout.addComponent(logoutButton)
-    layout.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT)
-    layout.setStyleName("gds-login-panel")
+    subLayout.addComponent(userLabel)
+    subLayout.addComponent(logoutButton)
+    layout.addComponent(subLayout)
+    layout.setComponentAlignment(subLayout, Alignment.MIDDLE_RIGHT)
+    layout.setWidth("100%")
+    layout.setHeight("20px")
 
     layout
   }
@@ -165,6 +173,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
    */
   def authenticated(user: String) {
     this.setUser(user)
+    userProperty.setValue(user)
     toggleUserBasedVisibility
   }
 
