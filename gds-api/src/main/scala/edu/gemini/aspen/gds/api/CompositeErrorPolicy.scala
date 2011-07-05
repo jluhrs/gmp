@@ -18,7 +18,7 @@ class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPol
     var policies: List[ErrorPolicy] = List()
 
     // Apply all the original headers
-    override def applyPolicy(dataLabel: DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = {
+    override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
         //iterative
         //        var h = headers
         //        for (ep <- policies) {
@@ -30,7 +30,7 @@ class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPol
         applyPolicies(dataLabel, policies.sortWith((a, b) => a.priority < b.priority), headers)
     }
 
-    private def applyPolicies(dataLabel: DataLabel, l: List[ErrorPolicy], headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = {
+    private def applyPolicies(dataLabel: DataLabel, l: List[ErrorPolicy], headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
         l match {
             case Nil => headers
             case _ => l.last.applyPolicy(dataLabel, applyPolicies(dataLabel, l.init, headers))

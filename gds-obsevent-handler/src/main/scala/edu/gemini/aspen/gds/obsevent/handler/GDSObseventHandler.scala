@@ -167,9 +167,9 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     }
 
     private def updateFITSFile(dataLabel: DataLabel) {
-        val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[Option[List[CollectedValue[_]]]]
-        // todo consider the case this is none
-        val processedList = errorPolicy.applyPolicy(dataLabel, list).get
+        //if the option is None, use an empty List
+        val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[Option[List[CollectedValue[_]]]].getOrElse(List())
+        val processedList = errorPolicy.applyPolicy(dataLabel, list)
         val maxHeader = (0 /: processedList)((i, m) => m.index.max(i))
 
         val headers: List[Header] = List.range(0, maxHeader + 1) map {

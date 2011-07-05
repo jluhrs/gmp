@@ -16,9 +16,9 @@ trait ErrorPolicy {
      *
      * @param dataLabel The data label being processed
      * @param headers Proposed set of headers
-     * @return An Optional list of headers to be written to the fits file
+     * @return A list of headers to be written to the fits file
      */
-    def applyPolicy(dataLabel: DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]]
+    def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]]
 }
 
 /**
@@ -26,5 +26,5 @@ trait ErrorPolicy {
  */
 class DefaultErrorPolicy extends ErrorPolicy {
     // Let all the original headers to be applied
-    override def applyPolicy(dataLabel: DataLabel, headers: Option[List[CollectedValue[_]]]): Option[List[CollectedValue[_]]] = headers
+    override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = headers
 }
