@@ -86,7 +86,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
     layout.addComponent(userPanel)
     layout.addComponent(buildBannerPanel)
 
-    toggleUserBasedVisibilty
+    toggleUserBasedVisibility
 
     new Panel(layout)
   }
@@ -94,7 +94,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   /**
    * Decides what panel to show depending on whether there is a user logged or not
    */
-  private def toggleUserBasedVisibilty {
+  private def toggleUserBasedVisibility {
     val user = Option(getUser)
 
     user map {
@@ -111,13 +111,14 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
     val layout = new HorizontalLayout
     val linkButton = new Button("Login")
     linkButton.setStyleName(BaseTheme.BUTTON_LINK)
-    linkButton.setWidth(null)
+    linkButton.addStyleName("gds-login-label")
+    linkButton.setHeight("20px")
     linkButton.addListener((e: Button#ClickEvent) => mainWindow.addWindow(new LoginWindow(this)))
 
     layout.addComponent(linkButton)
-    layout.setComponentAlignment(linkButton, Alignment.BOTTOM_CENTER)
-    layout.setExpandRatio(linkButton, 1.0f)
-    layout.setStyleName("gds-login-panel")
+    layout.setComponentAlignment(linkButton, Alignment.MIDDLE_RIGHT)
+    //layout.setExpandRatio(linkButton, 1.0f)
+    layout.setWidth("100%")
     layout
   }
 
@@ -164,7 +165,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
    */
   def authenticated(user: String) {
     this.setUser(user)
-    toggleUserBasedVisibilty
+    toggleUserBasedVisibility
   }
 
 }

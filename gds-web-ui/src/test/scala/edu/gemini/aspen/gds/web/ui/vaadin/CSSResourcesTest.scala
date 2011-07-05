@@ -12,11 +12,3 @@ class CSSResourcesTest {
   }
 }
 
-class ImagesResourcesTest {
-  @Test
-  def trivialTest {
-    val css = new ImageResources
-    assertEquals("/gds/APP/1" ,css.getAlias)
-    assertEquals("/images" ,css.getPath)
-  }
-}
