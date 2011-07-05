@@ -24,12 +24,12 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
     val obsInfoMap = HashMap.empty[DataLabel, ObservationInfo]
 
-    override def registerMissingKeyword(label: DataLabel, keyword: FitsKeyword) {
-        obsInfoMap.getOrElseUpdate(label, new ObservationInfo).missingKeywords += keyword
+    override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
+        obsInfoMap.getOrElseUpdate(label, new ObservationInfo).missingKeywords ++= keywords
     }
 
-    override def registerCollectionError(label: DataLabel, keyword: FitsKeyword, error: CollectionError.CollectionError) {
-        obsInfoMap.getOrElseUpdate(label, new ObservationInfo).errorKeywords += Tuple2(keyword, error)
+    override def registerCollectionError(label: DataLabel, errors: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
+        obsInfoMap.getOrElseUpdate(label, new ObservationInfo).errorKeywords ++= errors
     }
 
     override def registerTimes(label: DataLabel, times: Traversable[(AnyRef, Option[Imports.Duration])]) {
@@ -44,6 +44,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
         obsInfoMap.getOrElseUpdate(label, new ObservationInfo).started = true
     }
 
+    //todo: publish updates through ObservationStatePublisher
 
     //-----------------------------------------------------------------------
 

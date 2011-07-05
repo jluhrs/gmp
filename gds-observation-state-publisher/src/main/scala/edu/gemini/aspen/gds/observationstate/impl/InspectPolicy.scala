@@ -19,22 +19,22 @@ class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires 
     }
 
     private def checkErrors(label: DataLabel, headers: List[CollectedValue[_]]) {
-        headers collect {
+        obsState.registerCollectionError(label, headers collect {
             case collected: ErrorCollectedValue => collected
-        } foreach {
-            c => obsState.registerCollectionError(label, c.keyword, c.error)
-        }
+        } collect {
+            case c => (c.keyword, c.error)
+        })
     }
 
     private def checkMissing(label: DataLabel, headers: List[CollectedValue[_]]) {
         val configList = configService.getConfiguration
         configList(0).keyword
-        configList filterNot {
+        obsState.registerMissingKeyword(label, configList filterNot {
             config => headers exists {
                 collected => collected.keyword == config.keyword
             }
-        } foreach {
-            config => obsState.registerMissingKeyword(label, config.keyword)
-        }
+        } collect {
+            case config => config.keyword
+        })
     }
 }

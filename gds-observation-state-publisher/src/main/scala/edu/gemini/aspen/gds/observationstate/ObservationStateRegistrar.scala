@@ -14,7 +14,7 @@ trait ObservationStateRegistrar {
 
     def registerTimes(label: DataLabel, times: Traversable[(AnyRef, Option[Duration])]): Unit
 
-    def registerCollectionError(label: DataLabel, keyword: FitsKeyword, error: CollectionError.CollectionError): Unit
+    def registerCollectionError(label: DataLabel, errors: Traversable[(FitsKeyword, CollectionError.CollectionError)]): Unit
 
-    def registerMissingKeyword(label: DataLabel, keyword: FitsKeyword): Unit
+    def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]): Unit
 }
