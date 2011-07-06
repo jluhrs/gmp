@@ -53,7 +53,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   /**
    * Listens for modules making up the tabs
    */
-  @Bind(id="gds-modules", optional = true, aggregate = true, specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory")
+  @Bind(id = "gds-modules", optional = true, aggregate = true, specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory")
   def bindGDSWebModule(moduleFactory: GDSWebModuleFactory) {
     LOG.info("GDSCoreVaadinApp> tab module factory detected " + moduleFactory)
 
@@ -61,18 +61,40 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
     val gdsModule = moduleFactory.buildWebModule
     val tab = tabsSheet.addTab(gdsModule.buildTabContent(mainWindow), gdsModule.title, null)
     gdsWebModules += moduleFactory -> (gdsModule, tab)
+    putTabsInOrder
+  }
+
+  def sortModules = {
+    gdsWebModules.values.toList sortBy {
+      case (m, t) => m.order
+    }
+  }
+
+  def findTabsPositions(sortedModules: List[(GDSWebModule, TabSheet.Tab)]) = {
+    for {i <- 0 until sortedModules.size
+         val (_, t) = sortedModules(i)}
+    yield (t, i)
+  }
+
+  def putTabsInOrder {
+    val sortedModules = sortModules
+    val tabs = findTabsPositions(sortedModules)
+    tabs foreach {
+      case (t,i) => tabsSheet.setTabPosition(t, i)
+    }
   }
 
   /**
    * Listens for services gone
    */
-  @Unbind(id="gds-modules", specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory")
+  @Unbind(id = "gds-modules", specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory")
   def unbindModule(moduleFactory: GDSWebModuleFactory) {
     LOG.info("GDSCoreVaadinApp> tab module factory gone " + moduleFactory)
 
-    gdsWebModules remove(moduleFactory) foreach {
+    gdsWebModules remove (moduleFactory) foreach {
       case (module, tab) => tabsSheet.removeTab(tab)
     }
+    putTabsInOrder
   }
 
   /**
