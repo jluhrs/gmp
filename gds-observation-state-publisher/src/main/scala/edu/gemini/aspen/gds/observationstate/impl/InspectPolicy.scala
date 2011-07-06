@@ -28,7 +28,6 @@ class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires 
 
     private def checkMissing(label: DataLabel, headers: List[CollectedValue[_]]) {
         val configList = configService.getConfiguration
-        configList(0).keyword
         obsState.registerMissingKeyword(label, configList filterNot {
             config => headers exists {
                 collected => collected.keyword == config.keyword
