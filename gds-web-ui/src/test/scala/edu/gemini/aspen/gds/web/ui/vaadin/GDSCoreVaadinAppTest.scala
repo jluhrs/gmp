@@ -15,4 +15,11 @@ class GDSCoreVaadinAppTest {
     val panel = new GDSCoreVaadinApp(statusPanel).buildUserPanel
     assertNotNull(panel)
   }
+
+  @Test
+  def testBuildBannerPanel = {
+    val statusPanel = new StatusPanelImpl()
+    val panel = new GDSCoreVaadinApp(statusPanel).buildBannerPanel
+    assertNotNull(panel)
+  }
 }
