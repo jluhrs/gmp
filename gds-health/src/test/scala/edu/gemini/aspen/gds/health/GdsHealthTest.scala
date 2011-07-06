@@ -58,7 +58,7 @@ class GdsHealthTest {
         gdsHealth.validate()
         latch.await(1, TimeUnit.SECONDS)
         assertEquals(1, counter.get())
-        assertEquals(lastStatusItem, new HealthStatus(healthName, Health.BAD))
+        assertEquals(new HealthStatus(healthName, Health.BAD), lastStatusItem)
     }
 
     @Test
@@ -70,30 +70,26 @@ class GdsHealthTest {
         gdsHealth.bindGDSObseventHandler()
         latch.await(1, TimeUnit.SECONDS)
         assertEquals(2, counter.get())
-        assertEquals(lastStatusItem, new HealthStatus(healthName, Health.WARNING))
+        assertEquals(new HealthStatus(healthName, Health.WARNING), lastStatusItem)
     }
 
     @Test
     def testGood() {
         counter = new AtomicInteger(0)
-        latch = new CountDownLatch(7)
+        latch = new CountDownLatch(KeywordSource.maxId + 2)
 
         gdsHealth.validate()
         gdsHealth.bindGDSObseventHandler()
         val fact = mock(classOf[KeywordActorsFactory])
-        when(fact.getSource).thenReturn(KeywordSource.EPICS)
-        gdsHealth.bindActorFactory(fact)
-        when(fact.getSource).thenReturn(KeywordSource.STATUS)
-        gdsHealth.bindActorFactory(fact)
-        when(fact.getSource).thenReturn(KeywordSource.SEQEXEC)
-        gdsHealth.bindActorFactory(fact)
-        when(fact.getSource).thenReturn(KeywordSource.ODB)
-        gdsHealth.bindActorFactory(fact)
+        for (source <- (KeywordSource.values - KeywordSource.NONE)) {
+            when(fact.getSource).thenReturn(source)
+            gdsHealth.bindActorFactory(fact)
+        }
 
         gdsHealth.bindHeaderReceiver()
         latch.await(1, TimeUnit.SECONDS)
-        assertEquals(7, counter.get())
-        assertEquals(lastStatusItem, new HealthStatus(healthName, Health.GOOD))
+        assertEquals(KeywordSource.maxId + 2, counter.get())
+        assertEquals(new HealthStatus(healthName, Health.GOOD), lastStatusItem)
     }
 
     @Test
@@ -104,7 +100,7 @@ class GdsHealthTest {
         gdsHealth.unbindHeaderReceiver()
         latch.await(1, TimeUnit.SECONDS)
         assertEquals(1, counter.get())
-        assertEquals(lastStatusItem, new HealthStatus(healthName, Health.WARNING))
+        assertEquals(new HealthStatus(healthName, Health.WARNING), lastStatusItem)
     }
 
     @Test
@@ -115,7 +111,7 @@ class GdsHealthTest {
         gdsHealth.unbindGDSObseventHandler()
         latch.await(1, TimeUnit.SECONDS)
         assertEquals(1, counter.get())
-        assertEquals(lastStatusItem, new HealthStatus(healthName, Health.BAD))
+        assertEquals(new HealthStatus(healthName, Health.BAD), lastStatusItem)
     }
 
 }

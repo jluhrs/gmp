@@ -6,6 +6,7 @@ object KeywordSource extends Enumeration {
     val EPICS = Value
     val ODB = Value
     val STATUS = Value
+    val CONSTANT = Value
 
     val NONE = Value
 }
