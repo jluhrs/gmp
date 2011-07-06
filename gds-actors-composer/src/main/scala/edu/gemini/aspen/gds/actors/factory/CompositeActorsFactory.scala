@@ -17,6 +17,7 @@ trait CompositeActorsFactory extends KeywordActorsFactory
  */
 @Component
 @Provides(specifications = Array(classOf[CompositeActorsFactory]))
+@Instantiate
 class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends CompositeActorsFactory {
     val LOG = Logger.getLogger(this.getClass.getName)
 
