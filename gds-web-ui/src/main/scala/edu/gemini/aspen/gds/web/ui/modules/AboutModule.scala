@@ -1,21 +1,20 @@
 package edu.gemini.aspen.gds.web.ui.modules
 
-import org.apache.felix.ipojo.annotations.{Provides, Instantiate, Component}
-import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import com.vaadin.ui.{Window, Label, Panel}
+import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 
-@Component
-@Instantiate
-@Provides(specifications = Array(classOf[GDSWebModule]))
+/**
+ * Tab containing an About message
+ */
 class AboutModule extends GDSWebModule {
-    val title = "About"
-    val order = 2
-
-    override  def buildTabContent(mainWindow:Window): com.vaadin.ui.Component = {
-        val l1 = new Label("About GDS")
-        val mainPanel = new Panel()
-        mainPanel.setSizeFull
-        mainPanel.addComponent(l1)
-        mainPanel
-    }
+  val title = "About"
+  val order = 2
+  
+  override def buildTabContent(mainWindow: Window): com.vaadin.ui.Component = {
+    val aboutLabel = new Label("About GDS")
+    val mainPanel = new Panel()
+    mainPanel.setSizeFull
+    mainPanel.addComponent(aboutLabel)
+    mainPanel
+  }
 }

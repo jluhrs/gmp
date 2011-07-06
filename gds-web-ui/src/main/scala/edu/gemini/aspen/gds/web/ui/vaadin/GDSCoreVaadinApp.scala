@@ -3,13 +3,12 @@ package edu.gemini.aspen.gds.web.ui.vaadin
 import com.vaadin.Application;
 import java.util.logging.Logger
 import com.vaadin.terminal.ClassResource
-import com.vaadin.event.MouseEvents.{ClickEvent, ClickListener}
 import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import org.apache.felix.ipojo.annotations.{Requires, Component, Bind, Unbind}
-import edu.gemini.aspen.gds.web.ui.api.{StatusPanel, GDSWebModule}
-import com.vaadin.ui._
-import themes.BaseTheme
+import com.vaadin.ui.themes.BaseTheme
 import com.vaadin.data.util.ObjectProperty
+import edu.gemini.aspen.gds.web.ui.api.{GDSWebModuleFactory, StatusPanel, GDSWebModule}
+import com.vaadin.ui._
 
 /**
  * Main page of the GDS web UI
@@ -53,29 +52,31 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   /**
    * Listens for modules making up the tabs
    */
-  @Bind(id="gds-modules", optional = true, aggregate = true, specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModule")
-  def bindGDSWebModule(module: GDSWebModule) {
-    LOG.info("GDSCoreVaadinApp> tab module detected " + module.title)
+  @Bind(id="gds-modules", optional = true, aggregate = true)
+  def bindGDSWebModule(module: GDSWebModuleFactory) {
+    LOG.info("GDSCoreVaadinApp> tab module factory detected " + module)
 
     // Adds the tab built by the module
-    gdsWebModules = tabsSheet.addTab(module.buildTabContent(mainWindow), module.title, null) :: gdsWebModules
+    val gdsModule = module.buildWebModule
+
+    gdsWebModules = tabsSheet.addTab(gdsModule.buildTabContent(mainWindow), gdsModule.title, null) :: gdsWebModules
   }
 
   /**
    * Listens for services gone
    */
-  @Unbind(id="gds-modules", specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModule")
-  def unbindModule(module: GDSWebModule) {
-    LOG.info("GDSCoreVaadinApp> tab module gone " + module.title)
+  @Unbind(id="gds-modules")
+  def unbindModule(module: GDSWebModuleFactory) {
+    LOG.info("GDSCoreVaadinApp> tab module gone " + module)
 
-    gdsWebModules filter {
+    /*gdsWebModules filter {
       _.getCaption == module.title
     } map {
       tabsSheet.removeTab(_)
     }
     gdsWebModules = gdsWebModules filterNot {
       _.getCaption == module.title
-    }
+    }*/
   }
 
   /**

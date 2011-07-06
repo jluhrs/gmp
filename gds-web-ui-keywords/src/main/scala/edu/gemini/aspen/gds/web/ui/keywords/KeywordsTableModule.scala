@@ -23,9 +23,6 @@ class MandatoryColumnDefinition() extends ColumnDefinition(classOf[Mandatory], c
   def buildComponent(config: GDSConfiguration) = title
 }
 
-@Component
-@Instantiate
-@Provides(specifications = Array(classOf[GDSWebModule]))
 class KeywordsTableModule(@Requires configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
   val order = 0
