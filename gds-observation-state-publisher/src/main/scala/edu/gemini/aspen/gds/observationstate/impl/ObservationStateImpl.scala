@@ -5,9 +5,7 @@ import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.api.CollectionError
 import org.scala_tools.time.Imports
 import edu.gemini.aspen.gds.observationstate.{ObservationStatePublisher, ObservationStateProvider, ObservationStateRegistrar}
-import collection.mutable.HashMap
-import collection.mutable.HashSet
-import collection.mutable.Set
+import collection.mutable.{SynchronizedMap, HashMap, SynchronizedSet, HashSet, Set}
 
 @Component
 @Instantiate
@@ -15,14 +13,14 @@ import collection.mutable.Set
 class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) extends ObservationStateRegistrar with ObservationStateProvider {
 
     class ObservationInfo {
-        val missingKeywords: Set[FitsKeyword] = HashSet[FitsKeyword]()
-        val errorKeywords: Set[(FitsKeyword, CollectionError.CollectionError)] = HashSet[(FitsKeyword, CollectionError.CollectionError)]()
-        val times: Set[(AnyRef, Option[Imports.Duration])] = HashSet[(AnyRef, Option[Imports.Duration])]() //todo: think which is the correct type here
+        val missingKeywords: Set[FitsKeyword] = new HashSet[FitsKeyword] with SynchronizedSet[FitsKeyword]
+        val errorKeywords: Set[(FitsKeyword, CollectionError.CollectionError)] = new HashSet[(FitsKeyword, CollectionError.CollectionError)] with SynchronizedSet[(FitsKeyword, CollectionError.CollectionError)]
+        val times: Set[(AnyRef, Option[Imports.Duration])] = new HashSet[(AnyRef, Option[Imports.Duration])] with SynchronizedSet[(AnyRef, Option[Imports.Duration])] //todo: think which is the correct type here
         var started = false
         var ended = false
     }
 
-    val obsInfoMap = HashMap.empty[DataLabel, ObservationInfo]
+    val obsInfoMap = new HashMap[DataLabel, ObservationInfo] with SynchronizedMap[DataLabel, ObservationInfo]
 
     override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
         obsInfoMap.getOrElseUpdate(label, new ObservationInfo).missingKeywords ++= keywords
