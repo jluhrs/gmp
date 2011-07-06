@@ -141,6 +141,7 @@
         <module>gds-epics-actors</module>
         <module>gds-instrument-status-actors</module>
         <module>gds-odb-actors</module>
+        <module>gds-constant-actors</module>
         <module>gds-obsevent-handler</module>
         <module>gds-fits-updater</module>
         <module>gds-datalabel-provider</module>
