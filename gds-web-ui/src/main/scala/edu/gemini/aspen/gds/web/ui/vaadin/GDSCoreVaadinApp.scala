@@ -9,6 +9,7 @@ import com.vaadin.ui.themes.BaseTheme
 import com.vaadin.data.util.ObjectProperty
 import edu.gemini.aspen.gds.web.ui.api.{GDSWebModuleFactory, StatusPanel, GDSWebModule}
 import com.vaadin.ui._
+import javax.swing.text.TabExpander
 
 /**
  * Main page of the GDS web UI
@@ -22,7 +23,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   var loginPanel = buildLoginPanel
   val userProperty = new ObjectProperty[String]("")
 
-  var gdsWebModules = List[TabSheet.Tab]()
+  val gdsWebModules = scala.collection.mutable.Map[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)]()
 
   /**
    * Called by Vaadin when the application needs to start
@@ -52,31 +53,26 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   /**
    * Listens for modules making up the tabs
    */
-  @Bind(id="gds-modules", optional = true, aggregate = true)
-  def bindGDSWebModule(module: GDSWebModuleFactory) {
-    LOG.info("GDSCoreVaadinApp> tab module factory detected " + module)
+  @Bind(id="gds-modules", optional = true, aggregate = true, specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory")
+  def bindGDSWebModule(moduleFactory: GDSWebModuleFactory) {
+    LOG.info("GDSCoreVaadinApp> tab module factory detected " + moduleFactory)
 
-    // Adds the tab built by the module
-    val gdsModule = module.buildWebModule
-
-    gdsWebModules = tabsSheet.addTab(gdsModule.buildTabContent(mainWindow), gdsModule.title, null) :: gdsWebModules
+    // Adds the tab built by the moduleFactory
+    val gdsModule = moduleFactory.buildWebModule
+    val tab = tabsSheet.addTab(gdsModule.buildTabContent(mainWindow), gdsModule.title, null)
+    gdsWebModules += moduleFactory -> (gdsModule, tab)
   }
 
   /**
    * Listens for services gone
    */
-  @Unbind(id="gds-modules")
-  def unbindModule(module: GDSWebModuleFactory) {
-    LOG.info("GDSCoreVaadinApp> tab module gone " + module)
+  @Unbind(id="gds-modules", specification = "edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory")
+  def unbindModule(moduleFactory: GDSWebModuleFactory) {
+    LOG.info("GDSCoreVaadinApp> tab module factory gone " + moduleFactory)
 
-    /*gdsWebModules filter {
-      _.getCaption == module.title
-    } map {
-      tabsSheet.removeTab(_)
+    gdsWebModules remove(moduleFactory) foreach {
+      case (module, tab) => tabsSheet.removeTab(tab)
     }
-    gdsWebModules = gdsWebModules filterNot {
-      _.getCaption == module.title
-    }*/
   }
 
   /**

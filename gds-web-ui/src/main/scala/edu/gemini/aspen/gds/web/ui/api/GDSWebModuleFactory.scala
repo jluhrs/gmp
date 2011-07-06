@@ -1,7 +1,5 @@
 package edu.gemini.aspen.gds.web.ui.api
 
-import com.vaadin.ui.{Window, Panel, Component}
-
 /**
  * A factory of GDSWebModules of a certain type.
  * It should return a new GDSWebModule for each invocation
