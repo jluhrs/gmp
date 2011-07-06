@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.observationstate
 
-import org.scala_tools.time.TypeImports._
+import org.scala_tools.time.Imports._
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.api.CollectionError
 

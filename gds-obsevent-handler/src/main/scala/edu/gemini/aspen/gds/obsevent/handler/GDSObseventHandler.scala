@@ -51,11 +51,10 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     }
 
     private def acqRequest(obsEvent: ObservationEvent, dataLabel: DataLabel) {
-        //todo: update ObservationStatePublisher
-
         obsEvent match {
             case OBS_PREP => {
                 eventLogger.addEventSet(dataLabel)
+                obsState.startObservation(dataLabel)
             }
             case _ =>
         }
@@ -189,8 +188,13 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
         processedList map {
             headersList => actor {
-                //todo: add file write to event logger
+                eventLogger.start(dataLabel, "FITS update")
+
                 new FitsUpdater(new File("/tmp"), dataLabel, headers).updateFitsHeaders()
+
+                eventLogger.end(dataLabel, "FITS update")
+                obsState.registerTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable)
+                obsState.endObservation(dataLabel)
             }
         }
     }
