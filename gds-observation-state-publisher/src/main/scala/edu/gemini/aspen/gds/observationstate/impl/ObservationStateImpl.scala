@@ -20,6 +20,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
         var ended = false
     }
 
+    //todo: this Map is never cleaned. We need a general strategy on when/who to clean. Maybe a periodic thread sends clean directives to all DBs
     val obsInfoMap = new HashMap[DataLabel, ObservationInfo] with SynchronizedMap[DataLabel, ObservationInfo]
 
     override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
