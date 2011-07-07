@@ -31,6 +31,15 @@ class KeywordsTableModule(@Requires configService: GDSConfigurationService) exte
 
   def defaultColumnDefinition(clazz: Class[_]) = new DefaultColumnDefinition(clazz)
 
+  def buildValidateButton(mainWindow: Window): Button = {
+    val button: Button = new Button("Validate")
+
+    button.addListener(((e: Button#ClickEvent) => {
+      mainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
+    }))
+    button
+  }
+
   override def buildTabContent(mainWindow:Window) = {
     val layout = new VerticalLayout
 
@@ -48,14 +57,11 @@ class KeywordsTableModule(@Requires configService: GDSConfigurationService) exte
     configService.getConfiguration foreach {
       v => table.addItem(configToItem(v), v)
     }
-    table
+    
     layout.addComponent(table)
     layout.setExpandRatio(table, 1.0f)
-    val button: Button = new Button("Validate")
-
-    button.addListener(((e: Button#ClickEvent) => {
-      mainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
-    }))
+    
+    val button = buildValidateButton(mainWindow)
 
     layout.addComponent(button)
     layout.setComponentAlignment(button, Alignment.MIDDLE_RIGHT)
