@@ -23,12 +23,10 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <bundle.symbolicName>edu.gemini.aspen.gmpserver</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmpserver</bundle.namespace>
 
-        <org.osgi.service.http.port>8888</org.osgi.service.http.port>
         <org.apache.felix.http.jettyEnabled>true</org.apache.felix.http.jettyEnabled>
         <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>
         <bundles.configuration.location>../src/main/etc/conf</bundles.configuration.location>
         <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
-        <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
 
         <felix.cm.loglevel>4</felix.cm.loglevel>
         <felix.log.level>1</felix.log.level>
