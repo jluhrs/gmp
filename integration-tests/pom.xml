@@ -160,6 +160,10 @@
             <artifactId>gds-performance-monitoring</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gds.ui</groupId>
+            <artifactId>gds-web-ui</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>jca-lib</artifactId>
         </dependency>
@@ -197,16 +201,6 @@
             <version>1.0.4-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.ops4j.pax.web</groupId>
-            <artifactId>pax-web-jetty-bundle</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ops4j.pax.web</groupId>
-            <artifactId>pax-web-spi</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.aspen.giapi.external</groupId>
             <artifactId>time_2.8.1</artifactId>
             <version>0.3</version>
@@ -215,6 +209,40 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>2.0rc3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.0rc3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-jetty-bundle</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-extender-whiteboard</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-spi</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.runner</groupId>
+            <artifactId>pax-runner</artifactId>
+            <version>1.5.0</version>
         </dependency>
     </dependencies>
 
