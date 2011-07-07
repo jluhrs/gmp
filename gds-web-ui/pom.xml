@@ -15,7 +15,7 @@
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.gemini.aspen.gds.ui</groupId>
+    <groupId>edu.gemini.aspen.gds.web.ui</groupId>
     <artifactId>gds-web-ui</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 

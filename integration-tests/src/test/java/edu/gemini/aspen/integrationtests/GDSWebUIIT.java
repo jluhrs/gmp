@@ -4,7 +4,6 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.ops4j.pax.runner.*;
@@ -63,8 +62,8 @@ public class GDSWebUIIT extends GDSIntegrationBase {
     }
 
     @Test
-    public void testTestStatus() throws Exception {
-        WebDriver driver = new FirefoxDriver();
+    public void testStatusText() throws Exception {
+        FirefoxDriver driver = new FirefoxDriver();
         String baseUrl = "http://localhost:" + GDS_HTTP_PORT + "/";
         Selenium selenium = new WebDriverBackedSelenium(driver, baseUrl);
 
@@ -72,6 +71,7 @@ public class GDSWebUIIT extends GDSIntegrationBase {
         assertEquals("GDS Management Console", selenium.getTitle());
         assertTrue(selenium.isTextPresent("Status"));
 
+        driver.close();
         selenium.stop();
     }
 

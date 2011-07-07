@@ -160,7 +160,7 @@
             <artifactId>gds-performance-monitoring</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen.gds.ui</groupId>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
             <artifactId>gds-web-ui</artifactId>
         </dependency>
         <dependency>
