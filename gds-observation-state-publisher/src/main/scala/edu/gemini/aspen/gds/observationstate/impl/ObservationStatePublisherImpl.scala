@@ -4,8 +4,7 @@ import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.api.CollectionError
 import edu.gemini.aspen.gds.observationstate.{ObservationStateConsumer, ObservationStatePublisher}
 import org.apache.felix.ipojo.annotations._
-import collection.mutable.HashSet
-import collection.mutable.Set
+import collection.mutable.{SynchronizedSet, HashSet, Set}
 
 /**
  * Component that publishes Observation state changes
@@ -14,7 +13,7 @@ import collection.mutable.Set
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationStatePublisher]))
 class ObservationStatePublisherImpl extends ObservationStatePublisher {
-    val registeredConsumers: Set[ObservationStateConsumer] = HashSet[ObservationStateConsumer]()
+    val registeredConsumers: Set[ObservationStateConsumer] = new HashSet[ObservationStateConsumer] with SynchronizedSet[ObservationStateConsumer]
 
     def publishStartObservation(label: DataLabel) {
         for (consumer <- registeredConsumers) {
