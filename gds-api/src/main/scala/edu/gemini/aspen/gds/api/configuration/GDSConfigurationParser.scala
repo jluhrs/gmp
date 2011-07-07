@@ -14,7 +14,7 @@ class GDSConfigurationParser extends RegexParsers {
 
     def lines = rep(line) <~ EOF
 
-    def line = (comment | configuration | CRLF)
+    def line = (comment | configuration | emptyLine)
 
     def configuration = (spaces ~ instrument
             ~ spaces ~ observationEvent
@@ -110,7 +110,7 @@ class GDSConfigurationParser extends RegexParsers {
 
     def whitespace = """[ \t]*""".r
 
-    def CRLF = "\r\n" | "\n"
+    def emptyLine = whitespace ~ "\r\n" | whitespace ~ "\n"
 
     def EOF = "\\z".r
 
