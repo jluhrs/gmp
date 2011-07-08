@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.api.configuration
 import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api._
 import org.junit.Assert._
-import org.junit.{Ignore, Test}
+import org.junit.Test
 
 /**
  * Specify how the GDSConfiguration parser should behave
@@ -33,14 +33,13 @@ class GDSConfigurationParserTest {
         }
     }
 
-    @Ignore
     @Test
     def testBlank {
         for (line <- blank) {
             val result = new GDSConfigurationParser().parseText(line)
             assertTrue("Error parsing line with following contents: ->|" + line + "|<-", result.successful)
             assertFalse(result.isEmpty)
-            assertEquals(List(), result.get)
+            assertEquals(List(None), result.get)
         }
     }
 
@@ -51,7 +50,7 @@ class GDSConfigurationParserTest {
             assertTrue(result.successful)
             assertFalse(result.isEmpty)
 
-            assertEquals(Comment(line), result.get(0))
+            assertEquals(Some(Comment(line)), result.get(0))
         }
     }
 
@@ -62,7 +61,7 @@ class GDSConfigurationParserTest {
             assertTrue(result.successful)
 
             assertFalse(result.isEmpty)
-            assertEquals(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_END_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem(KeywordSource.EPICS), Channel("ws:massAirmass"), ArrayIndex(0), FitsComment("Mean airmass for the observation")), result.get(0))
+            assertEquals(Some(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_END_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem(KeywordSource.EPICS), Channel("ws:massAirmass"), ArrayIndex(0), FitsComment("Mean airmass for the observation"))), result.get(0))
         }
 
     }
@@ -75,6 +74,6 @@ class GDSConfigurationParserTest {
         assertTrue(result.successful)
 
         assertFalse(result.isEmpty)
-        assertEquals(Comment("#comment"), result.get(0))
+        assertEquals(Some(Comment("#comment")), result.get(0))
     }
 }

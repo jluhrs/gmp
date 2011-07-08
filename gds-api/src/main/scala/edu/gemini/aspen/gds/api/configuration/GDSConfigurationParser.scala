@@ -12,9 +12,9 @@ case class Comment(comment: String)
 class GDSConfigurationParser extends RegexParsers {
     override val skipWhitespace = false
 
-    def lines = rep(line) <~ EOF
+    def lines = rep1sep(line, whitespace ~ CRLF) <~ (whitespace ~ EOF)
 
-    def line = (comment | configuration | emptyLine)
+    def line = opt(comment | configuration)
 
     def configuration = (spaces ~ instrument
             ~ spaces ~ observationEvent
@@ -112,11 +112,15 @@ class GDSConfigurationParser extends RegexParsers {
 
     def emptyLine = whitespace ~ "\r\n" | whitespace ~ "\n"
 
+    def CRLF = "\r\n" | "\n"
+
     def EOF = "\\z".r
 
     def parseFile(fileName: String) = {
         val file = Source.fromFile(fileName, "UTF8")
-        parseAll(lines, file.bufferedReader).get
+        parseAll(lines, file.bufferedReader).get collect {
+            case Some(x) => x
+        }
     }
 
     def parseText(text: String) = {
@@ -127,6 +131,13 @@ class GDSConfigurationParser extends RegexParsers {
 object GDSConfigurationParser {
     def main(args: Array[String]) {
         val parser = new GDSConfigurationParser()
-        parser.parseFile("src/main/resources/gds-keywords.conf")
+        if (!args.isEmpty) {
+            parser.parseFile(args(0))
+        } else {
+            val result = parser.parseFile("/Users/nbarriga/Development/giapi-osgi-trunk/gmp-server/src/main/etc/conf/gds-keywords.conf")
+            for (res <- result) {
+                println(res)
+            }
+        }
     }
 }
