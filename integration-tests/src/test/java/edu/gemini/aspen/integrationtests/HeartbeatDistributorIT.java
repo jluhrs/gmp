@@ -9,7 +9,6 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -24,21 +23,12 @@ import static org.ops4j.pax.exam.CoreOptions.options;
  */
 @RunWith(JUnit4TestRunner.class)
 public class HeartbeatDistributorIT extends FelixContainerConfigurationBase {
-    private final Logger LOG = Logger.getLogger(HeartbeatDistributorIT.class.getName());
-
     @Configuration
     public static Option[] withJMSProviderConfig() {
         return options(
                 mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
                 mavenBundle().artifactId("giapi-jms-util").groupId("edu.gemini.aspen").versionAsInProject(),
-                mavenBundle().artifactId("org.apache.felix.configadmin").groupId("org.apache.felix").version("1.2.8"),
-                mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").version("3.1.10"),
-                mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
-                mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
-                mavenBundle().artifactId("guava").groupId("com.google.guava").version("8.0.0"),
-                mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
-                mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").version("1.1.0"),
                 mavenBundle().artifactId("jms-activemq-broker").groupId("edu.gemini.jms").version("1.1.0"),
                 mavenBundle().artifactId("activemq-core").groupId("org.apache.activemq").version("5.4.2"),
