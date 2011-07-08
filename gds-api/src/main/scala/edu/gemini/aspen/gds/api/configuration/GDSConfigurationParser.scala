@@ -127,17 +127,3 @@ class GDSConfigurationParser extends RegexParsers {
         parseAll(lines, text)
     }
 }
-
-object GDSConfigurationParser {
-    def main(args: Array[String]) {
-        val parser = new GDSConfigurationParser()
-        if (!args.isEmpty) {
-            parser.parseFile(args(0))
-        } else {
-            val result = parser.parseFile("/Users/nbarriga/Development/giapi-osgi-trunk/gmp-server/src/main/etc/conf/gds-keywords.conf")
-            for (res <- result) {
-                println(res)
-            }
-        }
-    }
-}
