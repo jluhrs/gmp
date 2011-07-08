@@ -27,12 +27,12 @@ class ObservationStatePublisherImpl extends ObservationStatePublisher {
         }
     }
 
-    @Bind(aggregate = true)
+    @Bind(optional = true, aggregate = true)
     def bindConsumer(consumer: ObservationStateConsumer) {
         registeredConsumers += consumer
     }
 
-    @Unbind(aggregate = true)
+    @Unbind(optional = true, aggregate = true)
     def unbindConsumer(consumer: ObservationStateConsumer) {
         registeredConsumers -= consumer
     }
