@@ -4,17 +4,17 @@ import com.vaadin.Application;
 import java.util.logging.Logger
 import com.vaadin.terminal.ClassResource
 import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
-import org.apache.felix.ipojo.annotations.{Requires, Component, Bind, Unbind}
+import org.apache.felix.ipojo.annotations.{Requires, Bind, Unbind}
 import com.vaadin.ui.themes.BaseTheme
 import com.vaadin.data.util.ObjectProperty
 import edu.gemini.aspen.gds.web.ui.api.{GDSWebModuleFactory, StatusPanel, GDSWebModule}
-import com.vaadin.ui._
 import javax.swing.text.TabExpander
+import com.vaadin.ui._
 
 /**
  * Main page of the GDS web UI
  */
-@Component(name = "VaadinAppFactory")
+@org.apache.felix.ipojo.annotations.Component(name = "VaadinAppFactory")
 class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   private val LOG = Logger.getLogger(this.getClass.getName)
   val tabsSheet = new TabSheet()
@@ -80,7 +80,11 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
     val sortedModules = sortModules
     val tabs = findTabsPositions(sortedModules)
     tabs foreach {
-      case (t,i) => tabsSheet.setTabPosition(t, i)
+      case (t, i) => tabsSheet.setTabPosition(t, i)
+    }
+    // Set first as selected
+    tabs.headOption map {
+      case (t, _) => tabsSheet.setSelectedTab(t.getComponent)
     }
   }
 
