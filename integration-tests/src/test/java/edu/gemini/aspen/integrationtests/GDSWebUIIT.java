@@ -1,9 +1,7 @@
 package edu.gemini.aspen.integrationtests;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.ops4j.pax.runner.*;
@@ -12,18 +10,19 @@ import org.ops4j.pax.runner.platform.DefaultJavaRunner;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * These are integration tests for the Web UI of the GDS that use selenium
- *
+ * <p/>
  * An instance of GDS is started using pax-runner and the test are carried on in a separate thread
  */
-public class GDSWebUIIT extends GDSIntegrationBase {
+public class GDSWebUIIT {
     private static DefaultJavaRunner javaRunner;
     private static Run runner;
     private static int GDS_HTTP_PORT = 9999;
+    private FirefoxDriver driver;
+    private Selenium selenium;
 
     @BeforeClass
     public static void launchContainer() throws URISyntaxException, InterruptedException {
@@ -53,7 +52,7 @@ public class GDSWebUIIT extends GDSIntegrationBase {
 
         // Need to wait until the gmp-server is ready
         // todo: replace by a test on the http port
-        TimeUnit.SECONDS.sleep(15);
+        TimeUnit.SECONDS.sleep(20);
     }
 
     @AfterClass
@@ -61,18 +60,42 @@ public class GDSWebUIIT extends GDSIntegrationBase {
         javaRunner.shutdown();
     }
 
-    @Test
-    public void testStatusText() throws Exception {
-        FirefoxDriver driver = new FirefoxDriver();
+    @Before
+    public void setupSelenium() throws InterruptedException {
+        driver = new FirefoxDriver();
         String baseUrl = "http://localhost:" + GDS_HTTP_PORT + "/";
-        Selenium selenium = new WebDriverBackedSelenium(driver, baseUrl);
+        selenium = new WebDriverBackedSelenium(driver, baseUrl);
 
         selenium.open("/gds");
-        assertEquals("GDS Management Console", selenium.getTitle());
-        assertTrue(selenium.isTextPresent("Status"));
+        waitForCompletion(selenium);
+    }
 
-        driver.close();
+    @After
+    public void shutdownSelenium() {
         selenium.stop();
+    }
+
+    @Test
+    public void testTitle() throws Exception {
+        assertEquals("GDS Management Console", selenium.getTitle());
+    }
+
+    @Test
+    public void testHelpTab() throws Exception {
+        assertTrue(selenium.isElementPresent("id=GDS Help"));
+    }
+
+    private void waitForCompletion(Selenium selenium) throws InterruptedException {
+        for (int second = 0; ; second++) {
+            if (second >= 60) {
+                fail("timeout");
+            }
+            try {
+                if (selenium.isTextPresent("Running")) break;
+            } catch (Exception e) {
+            }
+            Thread.sleep(1000);
+        }
     }
 
 }
