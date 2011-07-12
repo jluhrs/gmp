@@ -124,7 +124,6 @@
         <module>gmp-epics-simulator</module>
         <module>gmp-epics-status-service</module>
         <module>gpi-bean</module>
-        <module>gmp-server</module>
         <module>gmp-heartbeat</module>
         <module>heartbeat-distributor-service</module>
         <module>giapi-tester</module>
@@ -153,6 +152,7 @@
         <module>gds-observation-state-publisher</module>
         <module>gds-web-ui</module>
         <module>gds-web-ui-keywords</module>
+        <module>gmp-server</module>
         <module>integration-tests</module>
     </modules>
 
