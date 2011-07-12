@@ -6,6 +6,7 @@ import model.GDSKeywordsDataSource
 import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import com.vaadin.ui.Window.Notification
 import com.vaadin.ui._
+import com.jensjansson.pagedtable.PagedTable
 
 /**
  * Module for the table to edit the keywords
@@ -28,7 +29,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   override def buildTabContent(mainWindow: Window) = {
     val layout = new VerticalLayout
 
-    val table = new Table("Keywords", dataSource)
+    val table = new PagedTable("Keywords")
+    table.setContainerDataSource(dataSource)
     //table.setSelectable(true)
     table.setNullSelectionAllowed(false)
     table.setImmediate(true)
@@ -44,6 +46,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
     val button = buildValidateButton(mainWindow)
 
+    layout.addComponent(table.createControls())
     layout.addComponent(button)
     layout.setComponentAlignment(button, Alignment.MIDDLE_RIGHT)
     layout.setSizeFull

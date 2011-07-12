@@ -44,7 +44,7 @@ class FitsKeywordPropertyFactoryTest {
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 
-  @Test(expected = classOf[InvalidValueException])
+  @Test(expected = classOf[InvalidValueException  ])
   def testLengthError {
     item.addItemProperty("FitsKeyword", new ObjectProperty[FitsKeyword]("KEY"))
 
