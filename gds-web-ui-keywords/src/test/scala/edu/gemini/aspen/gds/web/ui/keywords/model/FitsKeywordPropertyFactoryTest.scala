@@ -8,6 +8,7 @@ import org.junit.{Ignore, Test}
 import com.vaadin.data.util.{ObjectProperty, PropertysetItem}
 import edu.gemini.aspen.giapi.data.FitsKeyword
 import com.vaadin.data.Item
+import com.vaadin.data.Validator.InvalidValueException
 
 /**
  * Test of the property wrapper
@@ -41,6 +42,15 @@ class FitsKeywordPropertyFactoryTest {
 
     val updatedConfig = new GDSConfiguration("GPI", "OBS_START_EVENT", "NEWKEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
+  }
+
+  @Test(expected = classOf[InvalidValueException])
+  def testLengthError {
+    item.addItemProperty("FitsKeyword", new ObjectProperty[FitsKeyword]("KEY"))
+
+    val (textField, _) = factory.createItemAndWrapper(config, item)
+    // Simulates that the text field has been updated
+    textField.setValue("AAAAAAAAAAAAA")
   }
 
   @Test
