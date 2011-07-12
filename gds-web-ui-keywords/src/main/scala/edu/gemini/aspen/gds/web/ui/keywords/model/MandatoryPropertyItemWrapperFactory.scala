@@ -5,9 +5,9 @@ import edu.gemini.aspen.gds.api.{Mandatory, GDSConfiguration}
 import com.vaadin.ui.CheckBox
 
 /**
- * ConfigurationItemWrapperFactory for Mandatory that uses a CheckBox
+ * PropertyItemWrapperFactory for Mandatory that uses a CheckBox
  */
-class MandatoryConfigurationItemWrapperFactory extends ConfigurationItemWrapperFactory(classOf[Mandatory], classOf[CheckBox]) {
+class MandatoryPropertyItemWrapperFactory extends PropertyItemWrapperFactory(classOf[Mandatory], classOf[CheckBox]) {
   override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
     val checkBox = new CheckBox("", !config.mandatory.mandatory)
     item.getItemProperty(title).setValue(checkBox)

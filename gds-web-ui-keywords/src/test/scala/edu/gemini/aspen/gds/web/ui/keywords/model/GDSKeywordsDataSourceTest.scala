@@ -3,7 +3,6 @@ package edu.gemini.aspen.gds.web.ui.keywords.model
 import org.junit.Test
 import org.junit.Assert._
 import edu.gemini.aspen.gds.api.GDSConfiguration
-import edu.gemini.aspen.gds.web.ui.keywords.GDSKeywordsDataSource._
 import edu.gemini.aspen.gds.api.Conversions._
 import com.vaadin.data.Item
 
@@ -33,7 +32,7 @@ class GDSKeywordsDataSourceTest {
     def itemWrapper(config: GDSConfiguration, item: Item) = {
       
     }
-    val wrappers: List[WrappedConfigItem] = List()
+    val wrappers: List[GDSKeywordsDataSource.WrappedConfigItem] = List()
     assertEquals(config1, GDSKeywordsDataSource.itemToGDSConfiguration(config1, wrappers))
   }
 }

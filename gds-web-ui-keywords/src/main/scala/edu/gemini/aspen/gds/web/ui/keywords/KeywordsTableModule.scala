@@ -2,11 +2,9 @@ package edu.gemini.aspen.gds.web.ui.keywords
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import scala.Predef._
-import scala.collection.JavaConversions._
+import model.GDSKeywordsDataSource
 import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import com.vaadin.ui.Window.Notification
-import java.lang.reflect.Field
 import com.vaadin.ui._
 
 /**
