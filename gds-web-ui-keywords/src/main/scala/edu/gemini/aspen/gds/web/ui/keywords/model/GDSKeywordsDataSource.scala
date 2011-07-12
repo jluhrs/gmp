@@ -13,10 +13,10 @@ import edu.gemini.aspen.giapi.data.{FitsKeyword}
 class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedContainer {
 
   // Contains the non default column definitions
-  val columnsDefinitions = Map[Class[_], ConfigurationItemWrapperFactory](
-    classOf[Instrument] -> new InstrumentConfigurationItemWrapperFactory,
-    classOf[GDSEvent] -> new GDSEventConfigurationItemWrapperFactory,
-    classOf[FitsKeyword] -> new FitsKeywordConfigurationItemWrapperFactory
+  val columnsDefinitions = Map[Class[_], PropertyItemWrapperFactory](
+    classOf[Instrument] -> new InstrumentPropertyItemWrapperFactory,
+    classOf[GDSEvent] -> new GDSEventPropertyItemWrapperFactory,
+    classOf[FitsKeyword] -> new FitsKeywordPropertyFactory
   )
 
   addContainerProperties
@@ -41,7 +41,7 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
     }
   }
 
-  def defaultColumnDefinition(clazz: Class[_]) = new DefaultConfigurationItemWrapperFactory(clazz)
+  def defaultColumnDefinition(clazz: Class[_]) = new DefaultPropertyItemWrapperFactory(clazz)
 
   /**
    * Adds the container properties, i.e. the columns on the table
