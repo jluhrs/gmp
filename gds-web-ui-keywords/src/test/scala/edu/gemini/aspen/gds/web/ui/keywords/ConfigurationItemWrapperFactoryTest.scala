@@ -4,10 +4,10 @@ import org.junit.Test
 import org.junit.Assert._
 import com.vaadin.ui.CheckBox
 
-class ColumnDefinitionTest {
+class ConfigurationItemWrapperFactoryTest {
   @Test
   def testMandatoryColumnDefinition {
-    val definition = new MandatoryColumnDefinition
+    val definition = new MandatoryConfigurationItemWrapperFactory
     assertEquals("Mandatory", definition.title)
     assertEquals(classOf[CheckBox], definition.columnType)
   }
