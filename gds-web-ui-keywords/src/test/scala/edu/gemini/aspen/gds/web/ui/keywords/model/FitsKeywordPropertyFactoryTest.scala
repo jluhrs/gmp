@@ -13,21 +13,41 @@ import com.vaadin.data.Item
  * Test of the property wrapper
  */
 class FitsKeywordPropertyFactoryTest {
+  val factory = new FitsKeywordPropertyFactory
+  val config = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val item = new PropertysetItem
+
   @Test
   def testColumnDefinition {
-    val factory = new FitsKeywordPropertyFactory
     assertEquals("FitsKeyword", factory.title)
     assertEquals(classOf[TextField], factory.columnType)
   }
 
   @Test
   def testBuildItem {
-    val config = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
-    val item = new PropertysetItem
     item.addItemProperty("FitsKeyword", new ObjectProperty[FitsKeyword]("KEY"))
 
-    val factory = new FitsKeywordPropertyFactory
-    val function = factory.createItemAndWrapper(config, item)
-    assertEquals(config, function(config))
+    val (_, wrapperFunction) = factory.createItemAndWrapper(config, item)
+    assertEquals(config, wrapperFunction(config))
+  }
+
+  @Test
+  def testBuildAndChange {
+    item.addItemProperty("FitsKeyword", new ObjectProperty[FitsKeyword]("KEY"))
+
+    val (textField, wrapperFunction) = factory.createItemAndWrapper(config, item)
+    // Simulates that the text field has been updated
+    textField.setValue("NEWKEY")
+
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_EVENT", "NEWKEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    assertEquals(updatedConfig, wrapperFunction(config))
+  }
+
+  @Test
+  def testPopulateItem {
+    item.addItemProperty("FitsKeyword", new ObjectProperty[FitsKeyword]("KEY"))
+
+    val wrapperFunction = factory.populateItem(config, item)
+    assertEquals(config, wrapperFunction(config))
   }
 }

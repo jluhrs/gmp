@@ -15,7 +15,7 @@ class InstrumentPropertyItemWrapperFactory extends PropertyItemWrapperFactory(cl
       config
     }
 
-    wrapper
+    (config.instrument.name, wrapper)
   }
 }
 

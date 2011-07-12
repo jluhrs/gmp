@@ -24,7 +24,18 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
    * The function returned should take an incoming GDSConfiguration and produced a new one with only the
    * value in the UI control modified
    */
-  def createItemAndWrapper(config: GDSConfiguration, item: Item): (GDSConfiguration) => GDSConfiguration
+  def createItemAndWrapper(config: GDSConfiguration, item: Item): (AnyRef, GDSKeywordsDataSource.WrappedConfigItem)
+
+  /**
+   * Populates a given item out of the created item
+   *
+   * Acts as a strategy pattern
+   */
+  def populateItem(config: GDSConfiguration, item: Item): GDSKeywordsDataSource.WrappedConfigItem = {
+    val (value, wrapper) = createItemAndWrapper(config, item)
+    item.getItemProperty(title).setValue(value)
+    wrapper
+  }
 
   // find the property in the item
   protected def itemProperty(item: Item) = item.getItemProperty(title)

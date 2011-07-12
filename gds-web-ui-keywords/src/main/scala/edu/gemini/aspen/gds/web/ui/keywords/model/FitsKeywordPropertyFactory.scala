@@ -18,7 +18,7 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
       config.copy(keyword = new FitsKeyword(textField.getValue.toString))
     }
 
-    wrapper
+    (textField, wrapper)
   }
 }
 

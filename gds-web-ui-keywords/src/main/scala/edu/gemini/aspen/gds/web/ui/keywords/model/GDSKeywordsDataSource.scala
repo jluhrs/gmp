@@ -32,9 +32,10 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
         val item = addItem(i)
         // Add one itemProperty per displayed field
         val itemWrappers = displayedFields map {
-          f =>
+          f => {
             val cd = columnsDefinitions.getOrElse(f.getType, defaultColumnDefinition(f.getType))
-            cd.createItemAndWrapper(c, item)
+            cd.populateItem(c, item)
+          }
         }
         (i, c, itemWrappers)
       }

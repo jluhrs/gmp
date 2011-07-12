@@ -16,7 +16,7 @@ class MandatoryPropertyItemWrapperFactory extends PropertyItemWrapperFactory(cla
       config.copy(mandatory = Mandatory(checkBox.getValue == "1"))
     }
 
-    wrapper
+    (checkBox, wrapper)
   }
 }
 

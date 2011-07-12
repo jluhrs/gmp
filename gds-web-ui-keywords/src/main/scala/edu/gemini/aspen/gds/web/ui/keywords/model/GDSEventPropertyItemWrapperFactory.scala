@@ -28,7 +28,7 @@ class GDSEventPropertyItemWrapperFactory extends PropertyItemWrapperFactory(clas
       }
     }
 
-    wrapper
+    (comboBox, wrapper)
   }
 }
 
