@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.web.ui.keywords
+package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import org.junit.Test
 import org.junit.Assert._

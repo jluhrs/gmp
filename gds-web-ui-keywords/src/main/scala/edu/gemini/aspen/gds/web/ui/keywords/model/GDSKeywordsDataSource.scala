@@ -1,44 +1,9 @@
-package edu.gemini.aspen.gds.web.ui.keywords
+package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import scala.Predef._
-import scala.collection.JavaConversions._
-import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import com.vaadin.data.util.IndexedContainer
 import com.vaadin.data.Item
-import com.vaadin.ui._
-import edu.gemini.aspen.gds.api.{GDSEvent, Instrument, Mandatory, GDSConfiguration}
-import edu.gemini.aspen.giapi.data.{FitsKeyword, ObservationEvent}
-
-/**
- * This is a class that describes a cell in a table creating wrappers for each of them
- * so that they can be created and referred back
- *
- * There is a factory per column that represents a field
- *
- * Each column needs a title and a type
- */
-abstract class ConfigurationItemWrapperFactory(fieldClass: Class[_], val columnType: Class[_]) {
-  /**
-   * Name of the column, by default the field class name
-   */
-  def title = fieldClass.getSimpleName
-
-  /**
-   * This is a factory method that creates a property item, typically a UI control
-   * and a function wrapper that will ctake the UI control value back to the GDS Configuration
-   *
-   * The function returned should take an incoming GDSConfiguration and produced a new one with only the
-   * value in the UI control modified
-   */
-  def createItemAndWrapper(config: GDSConfiguration, item: Item): (GDSConfiguration) => GDSConfiguration
-
-  // find the property in the item
-  protected def itemProperty(item: Item) = item.getItemProperty(title)
-}
-
-object GDSKeywordsDataSource {
-  type WrappedConfigItem = (GDSConfiguration) => GDSConfiguration
-}
+import edu.gemini.aspen.gds.api.{GDSEvent, Instrument, GDSConfiguration}
+import edu.gemini.aspen.giapi.data.{FitsKeyword}
 
 /**
  * This class is the data source backing the Table that shows the keywords
@@ -97,38 +62,29 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
     classOf[GDSConfiguration].getDeclaredFields.toList take (3)
 
   /**
-   * Uses the wrapped functions to recursively get a new GDSConfiguration based on the actual values from the UI
-   */
-  protected[keywords] def itemToGDSConfiguration(config: GDSConfiguration, functions: List[GDSKeywordsDataSource.WrappedConfigItem]): GDSConfiguration = {
-    functions match {
-      case List() => config
-      case List(x) => x(config)
-      case x :: rest => x(itemToGDSConfiguration(config, rest))
-    }
-  }
-
-  /**
    * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
    */
   def toGDSConfiguration: List[GDSConfiguration] = {
     configWrapper map {
       case (i, c, itemWrappers) => {
-        itemToGDSConfiguration(c, itemWrappers)
+        GDSKeywordsDataSource.itemToGDSConfiguration(c, itemWrappers)
       }
     } toList
   }
 
 }
 
+object GDSKeywordsDataSource {
+  type WrappedConfigItem = (GDSConfiguration) => GDSConfiguration
 
-
-
-
-
-
-
-
-
-
-
-
+  /**
+   * Uses the wrapped functions to recursively get a new GDSConfiguration based on the actual values from the UI
+   */
+  protected[keywords] def itemToGDSConfiguration(config: GDSConfiguration, functions: List[WrappedConfigItem]): GDSConfiguration = {
+    functions match {
+      case List() => config
+      case List(x) => x(config)
+      case x :: rest => x(itemToGDSConfiguration(config, rest))
+    }
+  }
+}

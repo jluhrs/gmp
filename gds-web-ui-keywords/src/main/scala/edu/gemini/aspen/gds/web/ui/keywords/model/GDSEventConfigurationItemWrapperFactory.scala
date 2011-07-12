@@ -1,21 +1,13 @@
-package edu.gemini.aspen.gds.web.ui.keywords
+package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import scala.Predef._
-import scala.collection.JavaConversions._
-import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
-import com.vaadin.data.util.IndexedContainer
 import com.vaadin.data.Item
-import com.vaadin.ui._
-import edu.gemini.aspen.gds.api.{GDSEvent, Instrument, Mandatory, GDSConfiguration}
-import edu.gemini.aspen.giapi.data.{FitsKeyword, ObservationEvent}
+import edu.gemini.aspen.gds.api.{GDSEvent, GDSConfiguration}
+import com.vaadin.ui.NativeSelect
+import scala.collection.JavaConversions._
+import edu.gemini.aspen.giapi.data.ObservationEvent
 
 /**
- * This is a class that describes a cell in a table creating wrappers for each of them
- * so that they can be created and referred back
- *
- * There is a factory per column that represents a field
- *
- * Each column needs a title and a type
+ * ConfigurationItemWrapperFactory for GDSEvent that uses a ComboBox to select a Observation Event
  */
 class GDSEventConfigurationItemWrapperFactory extends ConfigurationItemWrapperFactory(classOf[GDSEvent], classOf[NativeSelect]) {
   val obsEvents = ObservationEvent.values().toList map {
@@ -39,18 +31,6 @@ class GDSEventConfigurationItemWrapperFactory extends ConfigurationItemWrapperFa
     wrapper
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
