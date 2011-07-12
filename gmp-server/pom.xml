@@ -444,6 +444,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>vaadin</artifactId>
             <version>6.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>pagedtable</artifactId>
+            <version>0.6.2</version>
+        </dependency>
     </dependencies>
 
     <profiles>
