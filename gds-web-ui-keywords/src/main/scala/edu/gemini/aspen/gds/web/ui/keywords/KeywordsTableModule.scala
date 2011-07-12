@@ -20,7 +20,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
     button.addListener(((e: Button#ClickEvent) => {
       mainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
-      println(dataSource.toGDSConfiguration)
+      println(dataSource.toGDSConfiguration.head)
     }))
     button
   }

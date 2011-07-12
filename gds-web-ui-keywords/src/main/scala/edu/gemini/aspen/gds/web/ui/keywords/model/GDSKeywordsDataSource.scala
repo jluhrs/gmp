@@ -15,7 +15,7 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
   // Contains the non default column definitions
   val columnsDefinitions = Map[Class[_], PropertyItemWrapperFactory](
     classOf[Instrument] -> new InstrumentPropertyItemWrapperFactory,
-    classOf[GDSEvent] -> new GDSEventPropertyItemWrapperFactory,
+    classOf[GDSEvent] -> new GDSEventPropertyFactory,
     classOf[FitsKeyword] -> new FitsKeywordPropertyFactory
   )
 

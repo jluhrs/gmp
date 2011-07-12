@@ -9,7 +9,7 @@ import edu.gemini.aspen.giapi.data.ObservationEvent
 /**
  * PropertyItemWrapperFactory for GDSEvent that uses a ComboBox to select a Observation Event
  */
-class GDSEventPropertyItemWrapperFactory extends PropertyItemWrapperFactory(classOf[GDSEvent], classOf[NativeSelect]) {
+class GDSEventPropertyFactory extends PropertyItemWrapperFactory(classOf[GDSEvent], classOf[NativeSelect]) {
   val obsEvents = ObservationEvent.values().toList map {
     _.name
   }
