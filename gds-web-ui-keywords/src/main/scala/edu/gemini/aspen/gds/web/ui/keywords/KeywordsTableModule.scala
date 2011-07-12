@@ -18,10 +18,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   def buildValidateButton(mainWindow: Window): Button = {
     val button: Button = new Button("Validate")
 
-    button.addListener(((e: Button#ClickEvent) => {
+    button.addListener((e: Button#ClickEvent) => {
       mainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
       println(dataSource.toGDSConfiguration.head)
-    }))
+    })
     button
   }
 

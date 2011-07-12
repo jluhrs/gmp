@@ -12,9 +12,8 @@ import com.vaadin.ui.TextField
 class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[FitsKeyword], classOf[TextField]) {
   override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
     val textField = new TextField("", config.keyword.getName)
-    itemProperty(item).setValue(textField)
 
-    def wrapper(config: GDSConfiguration): GDSConfiguration = {
+    def wrapper(config: GDSConfiguration) = {
       config.copy(keyword = new FitsKeyword(textField.getValue.toString))
     }
 

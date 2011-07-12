@@ -16,9 +16,8 @@ class GDSEventPropertyFactory extends PropertyItemWrapperFactory(classOf[GDSEven
 
   override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
     val comboBox = new NativeSelect("", obsEvents)
+    comboBox.setNullSelectionAllowed(false)
     comboBox.select(config.event.name)
-
-    item.getItemProperty(title).setValue(comboBox)
 
     def wrapper(config: GDSConfiguration): GDSConfiguration = {
       Option(comboBox.getValue) map {

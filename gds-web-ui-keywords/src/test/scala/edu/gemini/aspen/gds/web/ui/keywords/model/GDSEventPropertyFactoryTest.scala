@@ -30,6 +30,12 @@ class GDSEventPropertyFactoryTest {
   }
 
   @Test
+  def testSelectProperties {
+    val (select, _) = factory.createItemAndWrapper(config, item)
+    assertFalse(select.isNullSelectionAllowed)
+  }
+
+  @Test
   def testBuildAndChange {
     val (nativeSelect, wrapperFunction) = factory.createItemAndWrapper(config, item)
     // Simulates that the combo box has been updated
