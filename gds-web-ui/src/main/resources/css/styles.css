@@ -11,6 +11,11 @@
     vertical-align: middle;
 }
 
+/* Make the mandatory checkbox centered */
+.v-checkbox-mandatory-keyword {
+    text-align: center;
+}
+
 .v-label-gds-status {
     font-size:1em;
     font-weight:bold;
