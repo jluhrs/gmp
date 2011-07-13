@@ -2,8 +2,8 @@ package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import com.vaadin.data.util.IndexedContainer
 import com.vaadin.data.Item
-import edu.gemini.aspen.gds.api.{GDSEvent, Instrument, GDSConfiguration}
 import edu.gemini.aspen.giapi.data.{FitsKeyword}
+import edu.gemini.aspen.gds.api.{HeaderIndex, GDSEvent, Instrument, GDSConfiguration}
 
 /**
  * This class is the data source backing the Table that shows the keywords
@@ -16,7 +16,8 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
   val columnsDefinitions = Map[Class[_], PropertyItemWrapperFactory](
     classOf[Instrument] -> new InstrumentPropertyItemWrapperFactory,
     classOf[GDSEvent] -> new GDSEventPropertyFactory,
-    classOf[FitsKeyword] -> new FitsKeywordPropertyFactory
+    classOf[FitsKeyword] -> new FitsKeywordPropertyFactory,
+    classOf[HeaderIndex] -> new HeaderIndexPropertyFactory
   )
 
   addContainerProperties
@@ -60,7 +61,7 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
    * Returns a list of the fields of GDSConfiguration we are interested to display/edit
    */
   protected[keywords] def displayedFields =
-    classOf[GDSConfiguration].getDeclaredFields.toList take (3)
+    classOf[GDSConfiguration].getDeclaredFields.toList take (4)
 
   /**
    * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
