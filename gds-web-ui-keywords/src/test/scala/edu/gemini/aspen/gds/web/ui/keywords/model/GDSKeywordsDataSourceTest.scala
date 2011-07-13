@@ -30,7 +30,7 @@ class GDSKeywordsDataSourceTest {
     assertEquals(config1, GDSKeywordsDataSource.itemToGDSConfiguration(config1, Nil))
 
     def itemWrapper(config: GDSConfiguration, item: Item) = {
-      
+
     }
     val wrappers: List[GDSKeywordsDataSource.WrappedConfigItem] = List()
     assertEquals(config1, GDSKeywordsDataSource.itemToGDSConfiguration(config1, wrappers))
