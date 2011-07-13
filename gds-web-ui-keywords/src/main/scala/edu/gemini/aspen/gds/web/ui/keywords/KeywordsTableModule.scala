@@ -38,7 +38,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setImmediate(true)
     table.addStyleName("keywords-table")
     table.setSizeFull
-    //table.setPageLength(10)
+    table.setPageLength(25)
     table.setCacheRate(0.2)
     table.setEditable(true)
     table.setColumnCollapsingAllowed(true)
