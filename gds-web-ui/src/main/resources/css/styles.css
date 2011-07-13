@@ -1,5 +1,16 @@
 @import "../reindeer/styles.css";
 
+/* css for the keywords-table */
+/* Hide the caption of the table */
+.v-caption-keywords-table {
+    display: none;
+}
+
+/* Center cells vertically */
+.v-table-cell-content {
+    vertical-align: middle;
+}
+
 .v-label-gds-status {
     font-size:1em;
     font-weight:bold;
