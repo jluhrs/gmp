@@ -7,6 +7,8 @@ import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import com.vaadin.ui.Window.Notification
 import com.vaadin.ui._
 import com.jensjansson.pagedtable.PagedTable
+import scala.collection.JavaConversions._
+import com.vaadin.ui.Table.CellStyleGenerator
 
 /**
  * Module for the table to edit the keywords
@@ -34,12 +36,18 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     //table.setSelectable(true)
     table.setNullSelectionAllowed(false)
     table.setImmediate(true)
-    table.addStyleName("components-inside")
+    table.addStyleName("keywords-table")
     table.setSizeFull
     //table.setPageLength(10)
     table.setCacheRate(0.2)
     table.setEditable(true)
     table.setColumnCollapsingAllowed(true)
+
+    // Center each column
+    dataSource.getContainerPropertyIds foreach {
+      table.setColumnAlignment(_,
+        Table.ALIGN_LEFT);
+    }
 
     layout.addComponent(table)
     layout.setExpandRatio(table, 1.0f)

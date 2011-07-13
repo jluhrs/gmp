@@ -20,6 +20,7 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
     textField.addValidator(validator)
     textField.setImmediate(true)
     textField.setRequired(true)
+    textField.setMaxLength(8)
     textField.setInvalidAllowed(false)
 
     def wrapper(config: GDSConfiguration) = {
