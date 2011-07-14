@@ -8,7 +8,10 @@ import com.vaadin.ui.Window.Notification
 import com.vaadin.ui._
 import com.jensjansson.pagedtable.PagedTable
 import scala.collection.JavaConversions._
-import com.vaadin.ui.Table.CellStyleGenerator
+import com.vaadin.data.util.IndexedContainer._
+import com.vaadin.ui.Table.ColumnGenerator
+import com.vaadin.terminal.ThemeResource
+import themes.BaseTheme
 
 /**
  * Module for the table to edit the keywords
@@ -17,6 +20,9 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   val title = "Keyword Configuration"
   val order = 0
   val dataSource = new GDSKeywordsDataSource(configService.getConfiguration)
+  var deleteIcon = new ThemeResource("../runo/icons/16/document-delete.png")
+  var deleteTooltip = "Delete row"
+  val deleteProperty = "DEL"
 
   def buildValidateButton(mainWindow: Window): Button = {
     val button: Button = new Button("Validate")
@@ -26,6 +32,25 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
       println(dataSource.toGDSConfiguration.head)
     })
     button
+  }
+
+  def setupDeleteColumn(table: PagedTable) {
+    table.addGeneratedColumn(deleteProperty, new ColumnGenerator {
+      def generateCell(source: Table, itemId: AnyRef, columnId: AnyRef) = {
+        val deleteButton = new Button("")
+        deleteButton.setStyleName(BaseTheme.BUTTON_LINK)
+        deleteButton.setIcon(deleteIcon)
+        deleteButton.setDescription(deleteTooltip)
+        deleteButton.addListener((e: Button#ClickEvent) => {
+          dataSource.removeItem(itemId)
+          println("htoeo")
+        })
+        deleteButton
+      }
+    })
+    table.setColumnIcon(deleteProperty, deleteIcon)
+    table.setColumnHeader(deleteProperty, "")
+    table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
   }
 
   override def buildTabContent(mainWindow: Window) = {
@@ -42,6 +67,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setCacheRate(0.2)
     table.setEditable(true)
     table.setColumnCollapsingAllowed(true)
+    setupDeleteColumn(table)
 
     // Center each column
     dataSource.getContainerPropertyIds foreach {
