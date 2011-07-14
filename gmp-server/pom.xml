@@ -390,34 +390,9 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>fits-util</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>file-util</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-odb-actors</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>jini-driver</artifactId>
-            <version>1.0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>spdb-activator</artifactId>
-            <version>2011A.1.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>rr</artifactId>
-            <version>0.1.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
@@ -433,16 +408,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <groupId>edu.gemini.aspen.gds.web.ui</groupId>
             <artifactId>gds-web-ui-keywords</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin</artifactId>
-            <version>6.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-            <artifactId>pagedtable</artifactId>
-            <version>0.6.2</version>
         </dependency>
     </dependencies>
 
