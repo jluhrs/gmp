@@ -67,7 +67,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setCacheRate(0.2)
     table.setEditable(true)
     table.setColumnCollapsingAllowed(true)
+
     setupDeleteColumn(table)
+
+    //layout.
 
     // Center each column
     dataSource.getContainerPropertyIds foreach {

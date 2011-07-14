@@ -24,7 +24,8 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
     classOf[DefaultValue] -> new DefaultValuePropertyFactory,
     classOf[Subsystem] -> new SubsystemPropertyFactory,
     classOf[Channel] -> new ChannelPropertyFactory,
-    classOf[ArrayIndex] -> new ArrayIndexPropertyFactory
+    classOf[ArrayIndex] -> new ArrayIndexPropertyFactory,
+    classOf[FitsComment] -> new FitsCommentPropertyFactory
   )
 
   addContainerProperties
@@ -68,7 +69,7 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
    * Returns a list of the fields of GDSConfiguration we are interested to display/edit
    */
   protected[keywords] def displayedFields =
-    classOf[GDSConfiguration].getDeclaredFields.toList take (10)
+    classOf[GDSConfiguration].getDeclaredFields.toList take (11)
 
   /**
    * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
