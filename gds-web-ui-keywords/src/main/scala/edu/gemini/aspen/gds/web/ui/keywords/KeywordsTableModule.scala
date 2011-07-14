@@ -5,12 +5,12 @@ import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import model.GDSKeywordsDataSource
 import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import com.vaadin.ui.Window.Notification
-import com.vaadin.ui._
 import com.jensjansson.pagedtable.PagedTable
 import scala.collection.JavaConversions._
 import com.vaadin.data.util.IndexedContainer._
 import com.vaadin.ui.Table.ColumnGenerator
 import com.vaadin.terminal.ThemeResource
+import com.vaadin.ui._
 import themes.BaseTheme
 
 /**
@@ -23,16 +23,6 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   var deleteIcon = new ThemeResource("../runo/icons/16/document-delete.png")
   var deleteTooltip = "Delete row"
   val deleteProperty = "DEL"
-
-  def buildValidateButton(mainWindow: Window): Button = {
-    val button: Button = new Button("Validate")
-
-    button.addListener((e: Button#ClickEvent) => {
-      mainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
-      println(dataSource.toGDSConfiguration.head)
-    })
-    button
-  }
 
   def setupDeleteColumn(table: PagedTable) {
     table.addGeneratedColumn(deleteProperty, new ColumnGenerator {
@@ -70,23 +60,46 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
     setupDeleteColumn(table)
 
-    //layout.
-
     // Center each column
     dataSource.getContainerPropertyIds foreach {
-      table.setColumnAlignment(_,
-        Table.ALIGN_LEFT);
+      table.setColumnAlignment(_, Table.ALIGN_LEFT)
     }
 
     layout.addComponent(table)
     layout.setExpandRatio(table, 1.0f)
 
-    val button = buildValidateButton(mainWindow)
+    val pagingControls = table.createControls()
+    pagingControls.setWidth("100%")
+    pagingControls.setDebugId("pagingControls")
+    // Trick to get th yayouts right
+    pagingControls.getComponent(0).setWidth("100%")
+    layout.addComponent(pagingControls)
+    //layout.addComponent(statusRow(mainWindow))
 
-    layout.addComponent(table.createControls())
-    layout.addComponent(button)
-    layout.setComponentAlignment(button, Alignment.MIDDLE_RIGHT)
     layout.setSizeFull
     layout
+  }
+
+  def statusRow(mainWindow: Window) = {
+    val layout = new HorizontalLayout
+    val button = buildValidateButton(mainWindow)
+    val label = new Label("Total keywords: ")
+
+    layout.addComponent(label)
+    layout.addComponent(button)
+    layout.setComponentAlignment(label, Alignment.MIDDLE_LEFT)
+    layout.setExpandRatio(label, 1.0f)
+    layout.setComponentAlignment(button, Alignment.MIDDLE_RIGHT)
+    layout
+  }
+
+  def buildValidateButton(mainWindow: Window): Button = {
+    val button: Button = new Button("Validate")
+
+    button.addListener((e: Button#ClickEvent) => {
+      mainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
+      println(dataSource.toGDSConfiguration.head)
+    })
+    button
   }
 }
