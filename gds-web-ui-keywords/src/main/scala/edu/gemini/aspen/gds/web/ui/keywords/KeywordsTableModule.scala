@@ -71,10 +71,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     val pagingControls = table.createControls()
     pagingControls.setWidth("100%")
     pagingControls.setDebugId("pagingControls")
-    // Trick to get th yayouts right
+    // Trick to get th layouts right
     pagingControls.getComponent(0).setWidth("100%")
     layout.addComponent(pagingControls)
-    //layout.addComponent(statusRow(mainWindow))
+    layout.addComponent(statusRow(mainWindow))
 
     layout.setSizeFull
     layout
