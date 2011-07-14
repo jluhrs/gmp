@@ -209,7 +209,7 @@
         </dependency>
         <!-- Joda time dependencies -->
         <dependency>
-            <groupId>edu.gemini.aspen.giapi.external</groupId>
+            <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
             <artifactId>time_2.8.1</artifactId>
             <version>0.3</version>
         </dependency>
