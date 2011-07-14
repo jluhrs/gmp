@@ -108,6 +108,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
    */
   private def buildTopPanel = {
     val layout = new VerticalLayout
+    layout.setDebugId("Top-Panel")
     layout.setMargin(false)
     layout.addComponent(loginPanel)
     layout.addComponent(userPanel)
@@ -136,6 +137,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
 
   def buildLoginPanel = {
     val layout = new HorizontalLayout
+    layout.setDebugId("Login-Panel")
     val linkButton = new Button("Login")
     linkButton.setStyleName(BaseTheme.BUTTON_LINK)
     linkButton.addStyleName("gds-login-label")
@@ -151,7 +153,9 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
 
   def buildUserPanel = {
     val layout = new HorizontalLayout
+    layout.setDebugId("User-Panel")
     val subLayout = new HorizontalLayout
+    subLayout.setDebugId("User-SubPanel")
 
     val userLabel = new Label("User: ")
     //userLabel.setPropertyDataSource(userProperty)
@@ -160,6 +164,8 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
 
     subLayout.addComponent(userLabel)
     subLayout.addComponent(logoutButton)
+    subLayout.setWidth("100%")
+
     layout.addComponent(subLayout)
     layout.setComponentAlignment(subLayout, Alignment.MIDDLE_RIGHT)
     layout.setWidth("100%")
@@ -170,6 +176,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
 
   def buildBannerPanel = {
     val layout = new HorizontalLayout
+    layout.setDebugId("Banner-Layout")
 
     // Add the GDS Label
     val gdsLabel = new Label("GIAPI Data Service")
