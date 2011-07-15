@@ -4,7 +4,7 @@ import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Comp
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{ErrorCollectedValue, CollectedValue, ErrorPolicy}
+import edu.gemini.aspen.gds.api.{KeywordSource, ErrorCollectedValue, CollectedValue, ErrorPolicy}
 
 @Component
 @Instantiate
@@ -27,7 +27,9 @@ class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires 
     }
 
     private def checkMissing(label: DataLabel, headers: List[CollectedValue[_]]) {
-        val configList = configService.getConfiguration
+        val configList = configService.getConfiguration filterNot {
+            _.subsystem.name == KeywordSource.IFS //IFS keywords are not written by us, they are already in the file
+        }
         obsState.registerMissingKeyword(label, configList filterNot {
             config => headers exists {
                 collected => collected.keyword == config.keyword

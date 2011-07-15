@@ -150,6 +150,7 @@
         <module>gds-error-policy</module>
         <module>gds-health</module>
         <module>gds-observation-state-publisher</module>
+        <module>gds-fits-checker</module>
         <module>gds-web-ui</module>
         <module>gds-web-ui-keywords</module>
         <module>gmp-server</module>
