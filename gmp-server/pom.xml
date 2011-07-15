@@ -175,7 +175,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         </dependency>
         <!-- JCA Lib -->
         <dependency>
-            <groupId>edu.gemini.aspen</groupId>
+            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
             <artifactId>jca-lib</artifactId>
             <version>1.0.0</version>
         </dependency>

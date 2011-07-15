@@ -53,10 +53,8 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen</groupId>
+            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
             <artifactId>jca-lib</artifactId>
-            <version>1.0.0</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
