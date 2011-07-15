@@ -164,7 +164,7 @@
             <artifactId>gds-web-ui</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen</groupId>
+            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
             <artifactId>jca-lib</artifactId>
         </dependency>
         <dependency>
