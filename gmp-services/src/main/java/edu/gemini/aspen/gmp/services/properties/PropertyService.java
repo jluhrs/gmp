@@ -19,7 +19,6 @@ public class PropertyService extends JmsService {
     }
 
     public void process(JmsServiceRequest jmsRequest) throws ServiceException {
-
         MapMessage msg = jmsRequest.getMessage();
         if (msg == null) return;
 

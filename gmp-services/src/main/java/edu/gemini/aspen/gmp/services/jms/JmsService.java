@@ -34,7 +34,6 @@ public abstract class JmsService implements Service {
      * @throws edu.gemini.aspen.gmp.services.core.ServiceException
      */
     public void process(ServiceRequest request) throws ServiceException {
-
         if (request instanceof JmsServiceRequest) {
             JmsServiceRequest jmsRequest = (JmsServiceRequest) request;
             process(jmsRequest);

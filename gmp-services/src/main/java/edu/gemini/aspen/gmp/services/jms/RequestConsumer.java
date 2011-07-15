@@ -39,8 +39,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
             _consumer = _session.createConsumer(destination);
             _consumer.setMessageListener(this);
 
-            LOG.info(
-                    "Message Consumer started to receive service requests");
+            LOG.info("Message Consumer started to receive service requests");
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Exception starting up Service Request Consumer", e);
         }
@@ -52,7 +51,6 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
      * @param service A service to register
      */
     public void registerService(Service service) {
-
         if (service instanceof JmsService) {
             JmsService jmsService = (JmsService) service;
             jmsService.setJmsSession(_session);

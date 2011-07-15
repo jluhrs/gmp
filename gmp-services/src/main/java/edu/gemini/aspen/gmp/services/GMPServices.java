@@ -17,22 +17,21 @@ import java.util.logging.Logger;
 public class GMPServices {
     private final static Logger LOG = Logger.getLogger(GMPServices.class.getName());
 
-    private RequestConsumer _requestConsumer = null;
-    
-    @Property(name = "propertiesFile", value = "NOVALID", mandatory = true)
-    private String configurationFile;
+    private final RequestConsumer _requestConsumer;
 
-    @Requires
-    private JmsProvider provider;
+    private final String configurationFile;
 
-    private GMPServices() {
+    public GMPServices(@Requires JmsProvider provider,
+        @Property(name = "propertiesFile", value = "NOVALID", mandatory = true) String configurationFile) {
+        LOG.info("Starting Services bundle with configuration at " + configurationFile);
+
+        _requestConsumer = new RequestConsumer(provider);
+        this.configurationFile = configurationFile;
     }
 
     @Validate
     public void startServices() {
-        LOG.info("Starting Services bundle with configuration at " + configurationFile);
-
-        _requestConsumer = new RequestConsumer(provider);
+        LOG.info("Starting Services bundle");
 
         //property service
         Service propertyService = new PropertyService(new XMLFileBasedPropertyHolder(configurationFile));
@@ -43,6 +42,5 @@ public class GMPServices {
     public void stopServices() {
         LOG.info("Stopping Services bundle");
         _requestConsumer.close();
-        _requestConsumer = null;
     }
 }

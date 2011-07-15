@@ -50,7 +50,7 @@ public class XMLFileBasedPropertyHolder implements PropertyHolder {
         return Collections.unmodifiableMap(prop);
     }
 
-     private Document getPropertiesDocument(String configFileLocation) {
+    private Document getPropertiesDocument(String configFileLocation) {
         File confFile = new File(configFileLocation);
         if (!confFile.exists()) {
             throw new RuntimeException("Missing properties config file: " + configFileLocation);
