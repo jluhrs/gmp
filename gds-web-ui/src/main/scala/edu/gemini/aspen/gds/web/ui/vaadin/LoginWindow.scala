@@ -3,66 +3,54 @@ package edu.gemini.aspen.gds.web.ui.vaadin
 import com.vaadin.ui._
 import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import edu.gemini.aspen.gds.web.ui.api.DefaultAuthenticationService
-import com.vaadin.terminal.UserError
+import com.vaadin.ui.LoginForm.LoginListener
+import themes.BaseTheme
+import com.vaadin.ui.Window.Notification
 
 /**
  * Represents the LoginWindow
  */
 class LoginWindow(parent: GDSCoreVaadinApp) extends Window("Authentication Required !") {
-  val loginButton = new Button("Login")
-  val usernameField = new TextField("Username")
-  val passwordField = new PasswordField("Password")
-
-  loginButton.addListener((e: Button#ClickEvent) => tryLogin)
-
   setName("Login")
   setModal(true)
   setResizable(false)
-  setWidth("200px")
+  setWidth("365px")
+  setHeight("195px")
 
-  usernameField.setRequired(true)
-  passwordField.setRequired(true)
+  val layout = new VerticalLayout
+  layout.setWidth("348px")
+  layout.setHeight("186px")
+  layout.setMargin(true)
 
-  addComponent(new Label("Please login in order to edit configurations"))
-  addComponent(new Label)
-  addComponent(usernameField)
-  addComponent(passwordField)
-  addComponent(loginButton)
-
-  private def fieldValue(field: Field): Option[String] = {
-    field.getValue match {
-      case s: String if !s.isEmpty => Option[String](field.getValue.toString)
-      case _ => None
+  val loginForm = new LoginForm {
+    override def getLoginHTML() = {
+      val htmlBytes = super.getLoginHTML
+      val htmlString =  new String(htmlBytes)
+      htmlString.replace(
+        "<input class='v-textfield' style='display:block;",
+        "<input class='v-textfield' style='margin-bottom:10px; display:block;").getBytes
     }
   }
 
-  /**
-   * Tries to login or it shows an error
-   */
-  private def tryLogin {
-    val authPair = List(usernameField, passwordField) map {
-      f => f -> fieldValue(f)
-    } map {
-      case (field, value) => value.orElse {
-        showNotification(field.getCaption + " cannot be empty", Window.Notification.TYPE_WARNING_MESSAGE)
-        field.setComponentError(new UserError(field.getCaption + " cannot be empty"))
-        None
+  loginForm.addListener(new LoginListener {
+    def onLogin(event: LoginForm#LoginEvent) {
+      close()
+      if (authenticate(event.getLoginParameter("username"), event.getLoginParameter("password"))) {
+        close()
+      } else {
+        parent.getMainWindow.showNotification("Authentication Failed!", Notification.TYPE_ERROR_MESSAGE)
       }
     }
-    authPair match {
-      case Some(username) :: Some(password) :: Nil => {
-        if (authenticate(username, password)) {
-          parent.authenticated(username)
-          close()
-        }
-      }
-      case _ =>
-    }
-  }
+  })
+  loginForm.setWidth("350px")
+  loginForm.setHeight("186px")
+  layout.addComponent(loginForm)
+
+  setContent(layout)
 
   // TODO replace by an actual service
   def authenticate(username: String, password: String) = {
-    new DefaultAuthenticationService().authenticate(username, password)
+    !new DefaultAuthenticationService().authenticate(username, password)
   }
 
 }
