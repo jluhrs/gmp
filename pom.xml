@@ -95,7 +95,6 @@
     <modules>
         <module>poms</module>
         <module>provision</module>
-        <module>jca-lib</module>
         <module>epics-service</module>
         <module>giapi</module>
         <module>giapi-fileevent-handler</module>
