@@ -36,6 +36,7 @@ public class PropertyService extends JmsService {
 
             Message replyMessage = session.createTextMessage(reply);
             replyProducer.send(replyMessage);
+            replyProducer.close();
         } catch (JMSException e) {
             throw new ServiceException(e);
         }

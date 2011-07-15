@@ -12,7 +12,7 @@ import javax.jms.MapMessage;
  */
 public class JmsServiceRequest implements ServiceRequest {
 
-    private MapMessage _msg;
+    private final MapMessage _msg;
 
     public JmsServiceRequest(MapMessage msg) {
         _msg = msg;

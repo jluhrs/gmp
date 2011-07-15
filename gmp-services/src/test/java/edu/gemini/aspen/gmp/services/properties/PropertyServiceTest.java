@@ -16,6 +16,7 @@ public class PropertyServiceTest {
     private String propertyValue = "localhost";
     private PropertyHolder propertyHolder;
     private String requestedProperty;
+    private MessageProducer messageProducer;
 
     @Before
     public void setUp() throws Exception {
@@ -46,6 +47,7 @@ public class PropertyServiceTest {
 
         assertEquals(propertyValue, replyMessage.getText());
         verify(propertyHolder).getProperty(requestedProperty);
+        verify(messageProducer).close();
     }
 
     private JmsServiceRequest mockServiceRequest(MapMessage msg) throws JMSException {
@@ -63,7 +65,7 @@ public class PropertyServiceTest {
 
     private Session mockSession(Destination destination) throws JMSException {
         Session session = mock(Session.class);
-        MessageProducer messageProducer = mock(MessageProducer.class);
+        messageProducer = mock(MessageProducer.class);
         when(session.createProducer(destination)).thenReturn(messageProducer);
         return session;
     }
