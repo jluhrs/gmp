@@ -13,141 +13,141 @@ import org.junit.Assert._
 import edu.gemini.aspen.gds.api._
 
 class InstrumentStatusActorTest extends Mockito {
-    val defaultValue = "DEFAULT"
-    val fitsKeyword = new FitsKeyword("GPISTATUS")
-    val dataLabel = new DataLabel("GS-2011")
-    val statusDB = mock[StatusDatabaseService]
-    val statusItemName = "gpi:status1"
+  val defaultValue = "DEFAULT"
+  val fitsKeyword = new FitsKeyword("GPISTATUS")
+  val dataLabel = new DataLabel("GS-2011")
+  val statusDB = mock[StatusDatabaseService]
+  val statusItemName = "gpi:status1"
 
-    @Test
-    def testReplyToCollect {
-        val configuration = buildConfiguration(statusItemName, false)
+  @Test
+  def testReplyToCollect {
+    val configuration = buildConfiguration(statusItemName, false)
 
-        val referenceValue = "ok"
-        // mock return value
-        val statusItem = new BasicStatus[String](statusItemName, referenceValue)
-        statusDB.getStatusItem(statusItemName) returns statusItem
+    val referenceValue = "ok"
+    // mock return value
+    val statusItem = new BasicStatus[String](statusItemName, referenceValue)
+    statusDB.getStatusItem(statusItemName) returns statusItem
 
-        val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
+    val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
 
-        // Send a Collect message and wait the response
-        val result = instrumentStatusActor !! Collect
+    // Send a Collect message and wait the response
+    val result = instrumentStatusActor !! Collect
 
 
-        result() match {
-            case CollectedValue(keyword, value, comment, 0) :: Nil => {
-                assertEquals(fitsKeyword, keyword)
-                assertEquals(referenceValue, value)
-                assertEquals("Current global status of the instrument", comment)
-            }
-            case _ => fail("Should not reply other message ")
-        }
-
-        // verify mock
-        there was one(statusDB).getStatusItem(statusItemName)
+    result() match {
+      case CollectedValue(keyword, value, comment, 0) :: Nil => {
+        assertEquals(fitsKeyword, keyword)
+        assertEquals(referenceValue, value)
+        assertEquals("Current global status of the instrument", comment)
+      }
+      case _ => fail("Should not reply other message ")
     }
 
-    @Test
-    def testReplyToCollectIfStatusUnknown {
-        val configuration = buildConfiguration(statusItemName, false)
+    // verify mock
+    there was one(statusDB).getStatusItem(statusItemName)
+  }
 
-        // mock return value
-        statusDB.getStatusItem(statusItemName) returns null
+  @Test
+  def testReplyToCollectIfStatusUnknown {
+    val configuration = buildConfiguration(statusItemName, false)
 
-        val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
+    // mock return value
+    statusDB.getStatusItem(statusItemName) returns null
 
-        // Send a Collect message and wait the response
-        val result = instrumentStatusActor !! Collect
+    val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
 
-        result() match {
-            case CollectedValue(keyword, value, comment, 0) :: Nil => {
-                assertEquals(fitsKeyword, keyword)
-                assertEquals(defaultValue, value)
-                assertEquals("Current global status of the instrument", comment)
-            }
-            case _ => fail("Should not reply other message ")
-        }
+    // Send a Collect message and wait the response
+    val result = instrumentStatusActor !! Collect
 
-        // verify mock
-        there was one(statusDB).getStatusItem(statusItemName)
+    result() match {
+      case CollectedValue(keyword, value, comment, 0) :: Nil => {
+        assertEquals(fitsKeyword, keyword)
+        assertEquals(defaultValue, value)
+        assertEquals("Current global status of the instrument", comment)
+      }
+      case _ => fail("Should not reply other message ")
     }
 
-    @Test
-    def testErrorMandatoryItemAndStatusUnknown {
-        val configuration = buildConfiguration(statusItemName, true)
+    // verify mock
+    there was one(statusDB).getStatusItem(statusItemName)
+  }
 
-        // mock return value
-        statusDB.getStatusItem(statusItemName) returns null
+  @Test
+  def testErrorMandatoryItemAndStatusUnknown {
+    val configuration = buildConfiguration(statusItemName, true)
 
-        val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
+    // mock return value
+    statusDB.getStatusItem(statusItemName) returns null
 
-        // Send a Collect message and wait the response
-        val result = instrumentStatusActor !! Collect
+    val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
 
-        result() match {
-            case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
-                assertEquals(fitsKeyword, keyword)
-                assertEquals(CollectionError.MandatoryRequired, error)
-                assertEquals("Current global status of the instrument", comment)
-            }
-            case _ => fail("Should not reply other message ")
-        }
+    // Send a Collect message and wait the response
+    val result = instrumentStatusActor !! Collect
 
-        // verify mock
-        there was one(statusDB).getStatusItem(statusItemName)
+    result() match {
+      case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
+        assertEquals(fitsKeyword, keyword)
+        assertEquals(CollectionError.MandatoryRequired, error)
+        assertEquals("Current global status of the instrument", comment)
+      }
+      case _ => fail("Should not reply other message ")
     }
 
-    @Test
-    def testTypeMismatchError {
-        val configuration = GDSConfiguration("GPI",
-            "OBS_START_ACQ",
-            fitsKeyword,
-            0,
-            // note the type here
-            "DOUBLE",
-            true,
-            defaultValue,
-            "STATUS",
-            statusItemName,
-            0,
-            "Current global status of the instrument")
+    // verify mock
+    there was one(statusDB).getStatusItem(statusItemName)
+  }
 
-        val referenceValue = "ok"
-        // mock return value
-        val statusItem = new BasicStatus[String](statusItemName, referenceValue)
-        statusDB.getStatusItem(statusItemName) returns statusItem
+  @Test
+  def testTypeMismatchError {
+    val configuration = GDSConfiguration("GPI",
+      "OBS_START_ACQ",
+      fitsKeyword,
+      0,
+      // note the type here
+      "DOUBLE",
+      true,
+      defaultValue,
+      "STATUS",
+      statusItemName,
+      0,
+      "Current global status of the instrument")
 
-        val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
+    val referenceValue = "ok"
+    // mock return value
+    val statusItem = new BasicStatus[String](statusItemName, referenceValue)
+    statusDB.getStatusItem(statusItemName) returns statusItem
 
-        // Send a Collect message and wait the response
-        val result = instrumentStatusActor !! Collect
+    val instrumentStatusActor = new InstrumentStatusActor(statusDB, configuration)
 
-        result() match {
-            case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
-                assertEquals(fitsKeyword, keyword)
-                assertEquals(CollectionError.TypeMismatch, error)
-                assertEquals("Current global status of the instrument", comment)
-            }
-            case _ => fail("Should not reply other message ")
-        }
+    // Send a Collect message and wait the response
+    val result = instrumentStatusActor !! Collect
 
-        // verify mock
-        there was one(statusDB).getStatusItem(statusItemName)
+    result() match {
+      case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
+        assertEquals(fitsKeyword, keyword)
+        assertEquals(CollectionError.TypeMismatch, error)
+        assertEquals("Current global status of the instrument", comment)
+      }
+      case _ => fail("Should not reply other message ")
     }
 
+    // verify mock
+    there was one(statusDB).getStatusItem(statusItemName)
+  }
 
-    def buildConfiguration(statusItem: String, mandatory: Boolean): GDSConfiguration = {
-        GDSConfiguration("GPI",
-            "OBS_START_ACQ",
-            fitsKeyword,
-            0,
-            "STRING",
-            mandatory,
-            defaultValue,
-            "STATUS",
-            statusItem,
-            0,
-            "Current global status of the instrument")
-    }
+
+  def buildConfiguration(statusItem: String, mandatory: Boolean): GDSConfiguration = {
+    GDSConfiguration("GPI",
+      "OBS_START_ACQ",
+      fitsKeyword,
+      0,
+      "STRING",
+      mandatory,
+      defaultValue,
+      "STATUS",
+      statusItem,
+      0,
+      "Current global status of the instrument")
+  }
 }
 

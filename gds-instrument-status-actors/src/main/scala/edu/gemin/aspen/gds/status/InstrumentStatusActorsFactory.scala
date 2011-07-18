@@ -14,27 +14,27 @@ import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) extends KeywordActorsFactory {
-    val LOG = Logger.getLogger(classOf[InstrumentStatusActorsFactory].getName)
+  val LOG = Logger.getLogger(this.getClass.getName)
 
-    override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
-        configurationsForEvent(obsEvent) map {
-            new InstrumentStatusActor(statusDB, _)
-        }
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+    configurationsForEvent(obsEvent) map {
+      new InstrumentStatusActor(statusDB, _)
     }
+  }
 
-    override def getSource = KeywordSource.STATUS
+  override def getSource = KeywordSource.STATUS
 
-    /**
-     * Filters out only the configuration events relevant for a given observation event
-     */
-    private def configurationsForEvent(e: ObservationEvent) = {
-        actorsConfiguration filter {
-            _.event.name == e.toString
-        }
+  /**
+   * Filters out only the configuration events relevant for a given observation event
+   */
+  private def configurationsForEvent(e: ObservationEvent) = {
+    actorsConfiguration filter {
+      _.event.name == e.toString
     }
+  }
 
-    @Validate
-    def start() {
-        LOG.info("InstrumentStatusActorFactory started")
-    }
+  @Validate
+  def start() {
+    LOG.info("InstrumentStatusActorFactory started")
+  }
 }
