@@ -27,4 +27,9 @@ trait ObservationStateProvider {
      * Returns timing information for the processing of the observation events for a given DataLabel
      */
     def getTimes(label: DataLabel): Traversable[(AnyRef, Option[Duration])]
+
+    /**
+     * Returns the last DataLabel processed
+     */
+    def getLastDataLabel: Option[DataLabel]
 }

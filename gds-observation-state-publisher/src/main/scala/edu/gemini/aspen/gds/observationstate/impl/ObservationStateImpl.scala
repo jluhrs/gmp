@@ -6,6 +6,7 @@ import edu.gemini.aspen.gds.api.CollectionError
 import org.scala_tools.time.Imports
 import edu.gemini.aspen.gds.observationstate.{ObservationStatePublisher, ObservationStateProvider, ObservationStateRegistrar}
 import collection.mutable.{SynchronizedMap, HashMap, SynchronizedSet, HashSet, Set}
+import java.util.concurrent.atomic.AtomicReference
 
 @Component
 @Instantiate
@@ -22,6 +23,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
     //todo: this Map is never cleaned. We need a general strategy on when/who to clean. Maybe a periodic thread sends clean directives to all DBs
     val obsInfoMap = new HashMap[DataLabel, ObservationInfo] with SynchronizedMap[DataLabel, ObservationInfo]
+    var lastDataLabel = new AtomicReference[Option[DataLabel]](None)
 
     override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
         obsInfoMap.getOrElseUpdate(label, new ObservationInfo).missingKeywords ++= keywords
@@ -37,6 +39,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
     override def endObservation(label: DataLabel) {
         obsInfoMap.getOrElseUpdate(label, new ObservationInfo).ended = true
+        lastDataLabel.set(Some(label))
         obsStatePubl.publishEndObservation(label, getMissingKeywords(label), getKeywordsInError(label))
     }
 
@@ -63,5 +66,10 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
         obsInfoMap filter {
             case (key, value) => (value.started && !value.ended)
         } keySet
+    }
+
+    override def getLastDataLabel: Option[DataLabel] = {
+        //todo:add test
+        lastDataLabel.get()
     }
 }
