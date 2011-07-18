@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
-import com.vaadin.ui.{Label, Panel, Component, Window}
+import com.vaadin.ui.{Label, Panel, Component}
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
+import com.vaadin.Application;
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
     val title: String = "Status"
@@ -14,7 +15,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     var lastDataLabel: Label = _
     var times: Label = _
 
-    override def buildTabContent(mainWindow: Window): Component = {
+    override def buildTabContent(app: Application): Component = {
         status = new Label(statusDB.getStatusItem("gpi:gds:health").getValue.toString())
         processing = new Label(obsState.getObservationsInProgress.toString())
         lastDataLabel = new Label(obsState.getLastDataLabel map {

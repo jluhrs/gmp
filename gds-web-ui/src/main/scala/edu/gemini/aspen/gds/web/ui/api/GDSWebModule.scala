@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.api
 
 import com.vaadin.ui.Component
+import com.vaadin.Application;
 
 /**
  * A GDSWebModule will be added to the list of tabs and the

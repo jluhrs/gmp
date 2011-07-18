@@ -2,6 +2,7 @@ package edu.gemini.aspen.gds.web.ui.modules
 
 import com.vaadin.ui.{Label, Panel}
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
+import com.vaadin.Application;
 
 /**
  * Tab containing an About message
