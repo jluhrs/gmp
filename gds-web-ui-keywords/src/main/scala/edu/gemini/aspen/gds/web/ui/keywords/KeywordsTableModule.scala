@@ -63,7 +63,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.addStyleName("keywords-table")
     table.setSizeFull
     table.setPageLength(25)
-    table.setCacheRate(0.2)
+    table.setCacheRate(0.1)
     //table.setEditable(true)
     table.setColumnCollapsingAllowed(true)
     table.setColumnReorderingAllowed(true)
@@ -96,20 +96,19 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   def statusRow(mainWindow: Window) = {
     val layout = new HorizontalLayout
     val button = buildValidateButton(mainWindow)
-    val label = new Label("Total keywords: ")
+    val label = new Label("Keywords count: " + table.getContainerDataSource.size)
+    layout.addStyleName("keywords-control")
 
     layout.setWidth("100%")
-    layout.addStyleName("keywords-status")
+    layout.addStyleName("keywords-control")
     layout.addComponent(label)
     layout.addComponent(button)
     layout.setComponentAlignment(label, Alignment.MIDDLE_LEFT)
     layout.setExpandRatio(label, 1.0f)
     layout.setComponentAlignment(button, Alignment.MIDDLE_RIGHT)
-    layout
+    layout.setMargin(false)
 
-    val panel = new Panel()
-    panel.addComponent(layout)
-    panel
+    layout
   }
 
   def buildValidateButton(mainWindow: Window): Button = {

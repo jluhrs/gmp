@@ -16,6 +16,17 @@
     text-align: center;
 }
 
+.keywords-control .v-horizontallayout-margin {
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+}
+
+.keywords-control .v-label {
+    font-weight:bold;
+}
+
 .v-label-gds-status {
     font-size:1em;
     font-weight:bold;
