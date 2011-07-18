@@ -35,6 +35,10 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-obsevent-handler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-epics-actors</artifactId>
         </dependency>
         <dependency>

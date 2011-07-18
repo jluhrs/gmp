@@ -7,6 +7,8 @@ import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.Health
 import edu.gemini.aspen.giapi.util.jms.status.StatusSetter
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
+import edu.gemini.aspen.giapi.data.ObservationEventHandler
+import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 
 /**
  * OSGi component providing health information for the GDS
@@ -23,7 +25,7 @@ class GdsHealth(@Requires provider: JmsProvider) {
     private var validated = false
 
     private def updateHealth() {
-        LOG.info("Updating Health")
+        LOG.info("Updating Health to " + healthState.getHealth)
         if (validated) {
             healthSetter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
         }
@@ -58,18 +60,22 @@ class GdsHealth(@Requires provider: JmsProvider) {
         updateHealth()
     }
 
-    @Bind(id = "GDSObseventHandler", specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler")
-    def bindGDSObseventHandler() {
+    @Bind(aggregate = true, specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler", optional = true)
+    def bindGDSObseventHandler(evtHndlr: ObservationEventHandler) {
         LOG.info("Binding GDSObseventHandler")
-        healthState.registerGDSObseventHandler()
-        updateHealth()
+        if (evtHndlr.isInstanceOf[GDSObseventHandler]) {
+            healthState.registerGDSObseventHandler()
+            updateHealth()
+        }
     }
 
-    @Unbind(id = "GDSObseventHandler", specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler")
-    def unbindGDSObseventHandler() {
+    @Unbind(aggregate = true, specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler", optional = true)
+    def unbindGDSObseventHandler(evtHndlr: ObservationEventHandler) {
         LOG.info("Unbinding GDSObseventHandler")
-        healthState.unregisterGDSObseventHandler()
-        updateHealth()
+        if (evtHndlr.isInstanceOf[GDSObseventHandler]) {
+            healthState.unregisterGDSObseventHandler()
+            updateHealth()
+        }
     }
 
     @Bind(aggregate = true, optional = true)

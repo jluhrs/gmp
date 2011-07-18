@@ -11,6 +11,7 @@ import org.mockito.Mockito._
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
 import org.junit.{After, Before, Test}
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
+import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 
 class GdsHealthTest {
     val healthName = "gpi:gds:health"
@@ -67,7 +68,7 @@ class GdsHealthTest {
         latch = new CountDownLatch(2)
 
         gdsHealth.validate()
-        gdsHealth.bindGDSObseventHandler()
+        gdsHealth.bindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
         latch.await(1, TimeUnit.SECONDS)
         assertEquals(2, counter.get())
         assertEquals(new HealthStatus(healthName, Health.WARNING), lastStatusItem)
@@ -79,7 +80,7 @@ class GdsHealthTest {
         latch = new CountDownLatch(KeywordSource.maxId + 2)
 
         gdsHealth.validate()
-        gdsHealth.bindGDSObseventHandler()
+        gdsHealth.bindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
         val fact = mock(classOf[KeywordActorsFactory])
         for (source <- (KeywordSource.values - KeywordSource.NONE)) {
             when(fact.getSource).thenReturn(source)
@@ -108,7 +109,7 @@ class GdsHealthTest {
         testUnbind()
         counter = new AtomicInteger(0)
         latch = new CountDownLatch(1)
-        gdsHealth.unbindGDSObseventHandler()
+        gdsHealth.unbindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
         latch.await(1, TimeUnit.SECONDS)
         assertEquals(1, counter.get())
         assertEquals(new HealthStatus(healthName, Health.BAD), lastStatusItem)
