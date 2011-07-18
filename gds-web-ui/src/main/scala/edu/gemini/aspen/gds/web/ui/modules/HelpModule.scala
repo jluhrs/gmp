@@ -9,7 +9,7 @@ import com.vaadin.Application
  */
 class HelpModule extends GDSWebModule {
     val title = "GDS Help"
-    val order = 1
+    val order = 2
 
     override def buildTabContent(app: Application) = new Panel()
 }
