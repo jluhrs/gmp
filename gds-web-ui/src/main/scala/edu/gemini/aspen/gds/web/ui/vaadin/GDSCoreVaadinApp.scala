@@ -207,6 +207,10 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
     this.setUser(user)
     userProperty.setValue(user)
     toggleUserBasedVisibility
+    // Inform app changes
+    gdsWebModules.values.toList map {
+      case (m, _) => m.userChanged(user)
+    }
   }
 
 }

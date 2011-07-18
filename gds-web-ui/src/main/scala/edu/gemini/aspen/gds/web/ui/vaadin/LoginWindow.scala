@@ -37,6 +37,7 @@ class LoginWindow(parent: GDSCoreVaadinApp) extends Window("Authentication Requi
       close()
       if (authenticate(event.getLoginParameter("username"), event.getLoginParameter("password"))) {
         close()
+        parent.authenticated(event.getLoginParameter("username"))
       } else {
         parent.getMainWindow.showNotification("Authentication Failed!", Notification.TYPE_ERROR_MESSAGE)
       }

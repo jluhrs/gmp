@@ -24,4 +24,9 @@ trait GDSWebModule {
    * Implementations should override this method to produce the actual content
    */
   def buildTabContent(application: Application): Component
+
+  /**
+   * Called by the container to indicate that the user has changed
+   */
+  def userChanged(user: AnyRef):Unit = {}
 }

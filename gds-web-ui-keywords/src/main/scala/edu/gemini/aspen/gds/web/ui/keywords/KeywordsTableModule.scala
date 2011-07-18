@@ -21,6 +21,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   val title = "Keyword Configuration"
   val order = 0
   val dataSource = new GDSKeywordsDataSource(configService.getConfiguration)
+
+  val tabLayout = new VerticalLayout
+  val table = new Table("Keywords")
+
   var deleteIcon = new ThemeResource("../runo/icons/16/document-delete.png")
   var deleteTooltip = "Delete row"
   val deleteProperty = "DEL"
@@ -44,13 +48,16 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
   }
 
-  override def buildTabContent(app: Application) = {
-    val layout = new VerticalLayout
+  def getDataSource(user: AnyRef) = Option(user) map {_ => dataSource} getOrElse {new ReadOnlyGDSKeywordsDataSource(configService.getConfiguration)}
 
-    val table = new Table("Keywords")
-    table.setContainerDataSource(dataSource)
-    table.setContainerDataSource(new ReadOnlyGDSKeywordsDataSource(configService.getConfiguration))
-    //table.setSelectable(true)
+  override def userChanged(user: AnyRef) = {
+    table.setContainerDataSource(getDataSource(user))
+    table.requestRepaintAll()
+    tabLayout.replaceComponent(table, table)
+  }
+
+  override def buildTabContent(app: Application) = {
+    table.setContainerDataSource(getDataSource(app.getUser))
     table.setNullSelectionAllowed(false)
     table.setImmediate(true)
     table.addStyleName("keywords-table")
@@ -71,8 +78,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
       table.setColumnAlignment(_, Table.ALIGN_LEFT)
     }
 
-    layout.addComponent(table)
-    layout.setExpandRatio(table, 1.0f)
+    tabLayout.addComponent(table)
+    tabLayout.setExpandRatio(table, 1.0f)
 
     /*val pagingControls = table.createControls()
     pagingControls.setWidth("100%")
@@ -80,10 +87,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     // Trick to get th layouts right
     pagingControls.getComponent(0).setWidth("100%")
     layout.addComponent(pagingControls)*/
-    layout.addComponent(statusRow(app.getMainWindow))
+    tabLayout.addComponent(statusRow(app.getMainWindow))
 
-    layout.setSizeFull
-    layout
+    tabLayout.setSizeFull
+    tabLayout
   }
 
   def statusRow(mainWindow: Window) = {
