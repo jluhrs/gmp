@@ -8,6 +8,7 @@ import edu.gemini.aspen.gds.api.{GDSConfiguration, KeywordSource}
 import edu.gemini.aspen.giapi.data.{ObservationEvent, ObservationEventHandler, DataLabel}
 import org.apache.felix.ipojo.annotations.{Instantiate, Requires, Provides, Component}
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
+import scala.actors.Actor._
 
 @Component
 @Instantiate
@@ -16,7 +17,9 @@ class IfsKeywordsChecker(@Requires configService: GDSConfigurationService, @Requ
 
     override def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
         event match {
-            case ObservationEvent.OBS_END_DSET_WRITE => checkMissing(dataLabel, new File("/tmp/" + dataLabel + ".fits"), configService.getConfiguration) //todo: use a service to get the directory
+            case ObservationEvent.OBS_END_DSET_WRITE => actor {
+                checkMissing(dataLabel, new File("/tmp/" + dataLabel + ".fits"), configService.getConfiguration)
+            } //todo: use a service to get the directory
             case _ =>
         }
     }
