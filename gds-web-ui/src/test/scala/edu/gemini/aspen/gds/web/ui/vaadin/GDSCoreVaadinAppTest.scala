@@ -4,6 +4,7 @@ import org.junit.Test
 import org.junit.Assert._
 import edu.gemini.aspen.gds.web.ui.api.{GDSWebModule, GDSWebModuleFactory}
 import com.vaadin.ui.{Window, Panel}
+import com.vaadin.Application
 
 /**
  * Trivial tests
@@ -77,6 +78,6 @@ class GDSCoreVaadinAppTest {
   class DummyWebModule(val order:Int) extends GDSWebModule {
     val title = "title"
 
-    def buildTabContent(mainWindow: Window) = new Panel()
+    def buildTabContent(app: Application) = new Panel()
   }
 }

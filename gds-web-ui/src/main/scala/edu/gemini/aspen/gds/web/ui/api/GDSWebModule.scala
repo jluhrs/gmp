@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.api
 
-import com.vaadin.ui.{Window, Component}
+import com.vaadin.Application
+import com.vaadin.ui.Component
 
 /**
  * A GDSWebModule will be added to the list of tabs and the
@@ -22,5 +23,5 @@ trait GDSWebModule {
    *
    * Implementations should override this method to produce the actual content
    */
-  def buildTabContent(mainWindow: Window): Component
+  def buildTabContent(application: Application): Component
 }

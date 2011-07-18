@@ -50,7 +50,7 @@ class LoginWindow(parent: GDSCoreVaadinApp) extends Window("Authentication Requi
 
   // TODO replace by an actual service
   def authenticate(username: String, password: String) = {
-    !new DefaultAuthenticationService().authenticate(username, password)
+    new DefaultAuthenticationService().authenticate(username, password)
   }
 
 }

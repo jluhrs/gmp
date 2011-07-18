@@ -17,10 +17,7 @@ class GDSKeywordsDataSourceTest {
 
   @Test
   def testGDSDisplayedFields {
-    val config1 = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
-    val dataSource = new GDSKeywordsDataSource(List(config1))
-
-    assertFalse(dataSource.displayedFields.isEmpty)
+    assertFalse(GDSKeywordsDataSource.displayedFields.isEmpty)
   }
 
   @Test

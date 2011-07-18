@@ -59,7 +59,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
 
     // Adds the tab built by the moduleFactory
     val gdsModule = moduleFactory.buildWebModule
-    val tabContent = gdsModule.buildTabContent(mainWindow)
+    val tabContent = gdsModule.buildTabContent(this)
     tabContent.setDebugId(gdsModule.title)
     val tab = tabsSheet.addTab(tabContent, gdsModule.title, null)
     gdsWebModules += moduleFactory -> (gdsModule, tab)

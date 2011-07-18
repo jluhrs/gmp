@@ -40,7 +40,7 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
       case (c, i) => {
         val item = addItem(i)
         // Add one itemProperty per displayed field
-        val itemWrappers = displayedFields map {
+        val itemWrappers = GDSKeywordsDataSource.displayedFields map {
           f => {
             val cd = columnsDefinitions.getOrElse(f.getType, defaultColumnDefinition(f.getType))
             cd.populateItem(c, item)
@@ -57,19 +57,13 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
    * Adds the container properties, i.e. the columns on the table
    */
   protected[keywords] def addContainerProperties = {
-    displayedFields map {
+    GDSKeywordsDataSource.displayedFields map {
       c => {
         val cd = columnsDefinitions.getOrElse(c.getType, defaultColumnDefinition(c.getType))
         addContainerProperty(cd.title, cd.columnType, "")
       }
     }
   }
-
-  /**
-   * Returns a list of the fields of GDSConfiguration we are interested to display/edit
-   */
-  protected[keywords] def displayedFields =
-    classOf[GDSConfiguration].getDeclaredFields.toList take (11)
 
   /**
    * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
@@ -97,4 +91,10 @@ object GDSKeywordsDataSource {
       case x :: rest => x(itemToGDSConfiguration(config, rest))
     }
   }
+
+  /**
+   * Returns a list of the fields of GDSConfiguration we are interested to display/edit
+   */
+  protected[keywords] def displayedFields =
+    classOf[GDSConfiguration].getDeclaredFields.toList take (11)
 }

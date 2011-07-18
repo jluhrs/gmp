@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.web.ui.keywords
 
 import org.junit.Test
 import org.junit.Assert._
-import com.vaadin.ui.Window
+import com.vaadin.Application
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.GDSConfiguration
@@ -20,7 +20,8 @@ class KeywordsTableModuleFactoryTest extends Mockito {
     // test building the module
     val module = new KeywordsTableModuleFactory(configService).buildWebModule
     assertNotNull(module)
-    assertNotNull(module.buildTabContent(new Window()))
+    val app = mock[Application]
+    assertNotNull(module.buildTabContent(app))
   }
 
   @Test
