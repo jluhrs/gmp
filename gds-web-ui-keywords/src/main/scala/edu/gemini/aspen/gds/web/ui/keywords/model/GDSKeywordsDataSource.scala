@@ -4,16 +4,16 @@ import com.vaadin.data.util.IndexedContainer
 import com.vaadin.data.Item
 import edu.gemini.aspen.giapi.data.{FitsKeyword}
 import edu.gemini.aspen.gds.api._
-import com.vaadin.ui.Button
+import scala.collection.JavaConversions._
+import javax.management.remote.rmi._RMIConnection_Stub
 
 /**
  * This class is the data source backing the Table that shows the keywords
  *
  * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
  */
-class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedContainer {
-
-  // Contains the non default column definitions
+abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedContainer {
+  // Contains the factories for each column
   val columnsDefinitions = Map[Class[_], PropertyItemWrapperFactory](
     classOf[Instrument] -> new InstrumentPropertyItemWrapperFactory,
     classOf[GDSEvent] -> new GDSEventPropertyFactory,
@@ -29,6 +29,27 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
   )
 
   addContainerProperties
+
+  protected[keywords] def addContainerProperties;
+
+  def propertyIds: List[String] = getContainerPropertyIds map {
+    c: Any => c.toString
+  } toList
+
+  def propertyWidth(id: String): Int = columnsDefinitions find {
+    case (k, m) => m.title == id
+  } map {
+    _._2.width
+  } getOrElse (-1)
+}
+
+
+/**
+ * This class is the data source backing the Table that shows the keywords
+ *
+ * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
+ */
+class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSKeywordsDataSource(config) {
 
   // Contains a list of configurations and wrappers for the UI items
   val configWrapper = {
@@ -56,7 +77,7 @@ class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedConta
   /**
    * Adds the container properties, i.e. the columns on the table
    */
-  protected[keywords] def addContainerProperties = {
+  override protected[keywords] def addContainerProperties = {
     GDSKeywordsDataSource.displayedFields map {
       c => {
         val cd = columnsDefinitions.getOrElse(c.getType, defaultColumnDefinition(c.getType))

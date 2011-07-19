@@ -7,6 +7,8 @@ import edu.gemini.aspen.gds.api.{Instrument, GDSConfiguration}
  * PropertyItemWrapperFactory for Instrument that is read only
  */
 class InstrumentPropertyItemWrapperFactory extends PropertyItemWrapperFactory(classOf[Instrument], classOf[String]) {
+  override def width = 30
+
   override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
     itemProperty(item).setValue(config.instrument.name)
     itemProperty(item).setReadOnly(true)

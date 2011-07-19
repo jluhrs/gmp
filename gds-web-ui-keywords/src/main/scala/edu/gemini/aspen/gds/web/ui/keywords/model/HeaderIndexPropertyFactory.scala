@@ -20,6 +20,7 @@ class HeaderIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Head
     val select = new NativeSelect("", allowedHeaders)
     select.setNullSelectionAllowed(false)
     select.setInvalidAllowed(false)
+    select.addStyleName("small-combobox")
     select.select(config.index.index.toString)
     // In reality validator is not necessary for a NativeSelect
     select.addValidator(validator)

@@ -1,17 +1,15 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import com.vaadin.data.Item
-import edu.gemini.aspen.giapi.data.{FitsKeyword}
 import edu.gemini.aspen.gds.api._
-import com.vaadin.ui.Button
-import com.vaadin.data.util.{ObjectProperty, IndexedContainer}
+import com.vaadin.data.util.ObjectProperty
 
 /**
  * This class is the data source backing the Table that shows the keywords
  *
  * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
  */
-class ReadOnlyGDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedContainer {
+class ReadOnlyGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSKeywordsDataSource(config) {
   // Columns
   addContainerProperties
 
@@ -54,7 +52,7 @@ class ReadOnlyGDSKeywordsDataSource(config: List[GDSConfiguration]) extends Inde
   /**
    * Adds the container properties, i.e. the columns on the table
    */
-  protected[keywords] def addContainerProperties = {
+  override protected[keywords] def addContainerProperties = {
     GDSKeywordsDataSource.displayedFields map {
       c => {
         addContainerProperty(c.getType.getSimpleName, classOf[String], "")

@@ -18,6 +18,11 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
   def title = fieldClass.getSimpleName
 
   /**
+   * Width of the column, -1 by default
+   */
+  def width = -1
+
+  /**
    * This is a factory method that creates a property item, typically a UI control
    * and a function wrapper that will take the UI control value back to the GDS Configuration
    *

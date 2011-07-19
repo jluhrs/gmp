@@ -5,7 +5,7 @@ import _root_.edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import _root_.edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import com.vaadin.ui.Window.Notification
 import com.jensjansson.pagedtable.PagedTable
-import model.{ReadOnlyGDSKeywordsDataSource, GDSKeywordsDataSource}
+import model.{WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource, GDSKeywordsDataSource}
 import scala.collection.JavaConversions._
 import com.vaadin.data.util.IndexedContainer._
 import com.vaadin.ui.Table.ColumnGenerator
@@ -20,7 +20,7 @@ import com.vaadin.Application
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
   val order = 0
-  val dataSource = new GDSKeywordsDataSource(configService.getConfiguration)
+  val dataSource: GDSKeywordsDataSource = new WritableGDSKeywordsDataSource(configService.getConfiguration)
 
   val tabLayout = new VerticalLayout
   val table = new Table("Keywords")
@@ -50,12 +50,12 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
   }
 
-  def visibleColumns(user: AnyRef):Array[AnyRef] = {
-    val prop:List[_] = Option(user) map {
+  def visibleColumns(user: AnyRef): Array[AnyRef] = {
+    val prop = Option(user) map {
       _ => deleteProperty
     } toList
-    val cols:List[_] = getDataSource(user).getContainerPropertyIds toList
-    val p:List[_] = cols ++ prop
+    val cols = getDataSource(user).propertyIds
+    val p = cols ++ prop
     (p toArray).asInstanceOf[Array[AnyRef]]
   }
 
@@ -69,7 +69,6 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setContainerDataSource(getDataSource(user))
     // Update user dependant parts
     updateSaveButton(user)
-    println(visibleColumns(user))
     table.setVisibleColumns(visibleColumns(user))
     table.requestRepaintAll()
     tabLayout.replaceComponent(table, table)
@@ -104,8 +103,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     layout.addComponent(pagingControls)*/
     tabLayout.addComponent(statusRow(app))
     updateSaveButton(app.getUser)
-    println(visibleColumns(app.getUser))
     table.setVisibleColumns(visibleColumns(app.getUser))
+    dataSource.propertyIds map {
+      c => table.setColumnWidth(c, dataSource.propertyWidth(c))
+    }
 
     tabLayout.setSizeFull
     tabLayout
@@ -127,9 +128,9 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     layout.addComponent(saveButton)
     layout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT)
 
-//    val showAsTextButton = buildShowAsTextButton(app)
-//    layout.addComponent(showAsTextButton)
-//    layout.setComponentAlignment(showAsTextButton, Alignment.MIDDLE_RIGHT)
+    //    val showAsTextButton = buildShowAsTextButton(app)
+    //    layout.addComponent(showAsTextButton)
+    //    layout.setComponentAlignment(showAsTextButton, Alignment.MIDDLE_RIGHT)
 
     layout
   }
