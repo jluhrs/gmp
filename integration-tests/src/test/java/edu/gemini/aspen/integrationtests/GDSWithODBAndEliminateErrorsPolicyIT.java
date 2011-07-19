@@ -1,6 +1,11 @@
 package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
+import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
+import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
+import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
+import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.fits.FitsParseException;
@@ -59,6 +64,12 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
         TimeUnit.MILLISECONDS.sleep(400);
+        assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
+
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
