@@ -55,6 +55,7 @@ public class HeartbeatDistributorIT extends FelixContainerConfigurationBase {
 
     @Test
     public void checkNotification() throws Exception {
+        TimeUnit.MILLISECONDS.sleep(400);
         //register handlers
         JmsProvider provider = (JmsProvider) context.getService(context.getServiceReference("edu.gemini.jms.api.JmsProvider"));
 
