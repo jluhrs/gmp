@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
  * <p/>
  * An instance of GDS is started using pax-runner and the test are carried on in a separate thread
  */
+@Ignore
 public class GDSWebUIIT {
     private static DefaultJavaRunner javaRunner;
     private static Run runner;
@@ -32,7 +33,7 @@ public class GDSWebUIIT {
 
         // Change some properties to avoid port clashes
         String vmoProps = "--vmo=" +
-                " -Dconf.base=../src/main/etc/conf" +
+                " -Dconf.base=../src/test/resources/conf/gds_web_ui" +
                 " -Dlogs.dir=logs" +
                 " -Xverify:none" +
                 (" -Dorg.osgi.service.http.port=" + GDS_HTTP_PORT) +
@@ -83,6 +84,11 @@ public class GDSWebUIIT {
     @Test
     public void testHelpTab() throws Exception {
         assertTrue(selenium.isElementPresent("id=GDS Help"));
+    }
+
+    @Test
+    public void testKeywordsTable() throws Exception {
+        assertTrue(selenium.isElementPresent("id=Keyword Configuration"));
     }
 
     private void waitForCompletion(Selenium selenium) throws InterruptedException {

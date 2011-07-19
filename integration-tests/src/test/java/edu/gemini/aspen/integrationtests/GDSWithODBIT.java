@@ -1,6 +1,10 @@
 package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
+import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
+import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
+import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.fits.FitsParseException;
@@ -16,12 +20,8 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.CoreOptions.systemProperty;
+import static org.junit.Assert.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSWithODBIT extends GDSIntegrationBase {
@@ -44,7 +44,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
         );
     }
 
-    //@Test
+    @Test
     public void bundleExistence() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(400);
         assertNotNull(getBundle("edu.gemini.aspen.gds.odb"));
@@ -52,7 +52,12 @@ public class GDSWithODBIT extends GDSIntegrationBase {
 
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
-        TimeUnit.MILLISECONDS.sleep(400);
+        TimeUnit.MILLISECONDS.sleep(800);
+        
+        assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 

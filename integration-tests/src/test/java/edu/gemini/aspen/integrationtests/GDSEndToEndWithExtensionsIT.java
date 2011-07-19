@@ -27,14 +27,14 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         return options(
                 vmOption("-Xverify:none "),
                 mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").versionAsInProject(),
-                mavenBundle().artifactId("jca-lib").groupId("edu.gemini.aspen").versionAsInProject(),
+                mavenBundle().artifactId("jca-lib").groupId("edu.gemini.external.osgi.jca-lib").versionAsInProject(),
                 mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject()
         );
     }
 
     @Override
     protected String confDir() {
-        return "/src/test/resources/conf/services_with_ext";
+        return "/src/test/resources/conf/GDSEndToEndWithExtensionsIT";
     }
 
     @Test
@@ -47,6 +47,7 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         assertNotNull(getBundle("edu.gemini.aspen.gds.obsevent.handler"));
     }
 
+    // TODO: Use a file with extensions
     //@Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
         TimeUnit.MILLISECONDS.sleep(400);

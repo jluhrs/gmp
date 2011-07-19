@@ -32,7 +32,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         return options(
                 vmOption("-Xverify:none "),
                 mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").versionAsInProject(),
-                mavenBundle().artifactId("jca-lib").groupId("edu.gemini.aspen").versionAsInProject(),
+                mavenBundle().artifactId("jca-lib").groupId("edu.gemini.external.osgi.jca-lib").versionAsInProject(),
                 mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject()
         );
     }

@@ -50,7 +50,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
         return "/src/test/resources/conf/gds_with_error_policy";
     }
 
-    //@Test
+    @Test
     public void bundleExistence() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(400);
         assertNotNull(getBundle("edu.gemini.aspen.gds.odb"));
