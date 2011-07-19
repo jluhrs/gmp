@@ -69,7 +69,6 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     }
 
     override def getLastDataLabel: Option[DataLabel] = {
-        //todo:add test
         lastDataLabel.get()
     }
 }
