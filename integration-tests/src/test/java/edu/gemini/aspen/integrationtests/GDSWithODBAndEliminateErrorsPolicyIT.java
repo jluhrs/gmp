@@ -70,9 +70,9 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
 
         assertFalse(originalKeywords.contains("PIFSTNAM"));
 
-        sendObservationEvents(eventHandler);
+        sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
 
-        File finalFile = new File(FINAL_FITS_FILE);
+        File finalFile = new File(FITS_DIR + FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
         Set<String> afterProcessingKeywords = readFinalKeywords();

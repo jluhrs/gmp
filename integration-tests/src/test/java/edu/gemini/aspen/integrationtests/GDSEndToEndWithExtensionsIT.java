@@ -1,7 +1,11 @@
 package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.fits.FitsParseException;
+import edu.gemini.fits.Header;
+import edu.gemini.fits.Hedit;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -22,6 +26,16 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
+    protected static final String FINAL_FITS_FILE = "/tmp/N-FITS_WITH_EXTENSIONS.fits";
+    protected static final String INITIAL_FITS_FILE = "FITS_WITH_EXTENSIONS.fits";
+
+    @Before
+    @Override
+    public void removeFiles() {
+        removeTestFile(FINAL_FITS_FILE);
+        removeTestFile("/tmp/" + INITIAL_FITS_FILE);
+    }
+
     @Configuration
     public static Option[] gdsEpicsBundles() {
         return options(
@@ -47,28 +61,29 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         assertNotNull(getBundle("edu.gemini.aspen.gds.obsevent.handler"));
     }
 
-    // TODO: Use a file with extensions
     //@Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
         TimeUnit.MILLISECONDS.sleep(400);
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
-        copyInitialFile();
+        copyInitialFile(INITIAL_FITS_FILE, "/tmp/" + INITIAL_FITS_FILE);
 
-        Set<String> originalKeywords = readOriginalKeywords();
-
-        sendObservationEvents(eventHandler);
+        Set<String> originalKeywords = readKeywords("/tmp/" + INITIAL_FITS_FILE);
+        System.out.println(originalKeywords);
+        sendObservationEvents(eventHandler, new DataLabel("FITS_WITH_EXTENSIONS"));
 
         File finalFile = new File(FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
-        Set<String> afterProcessingKeywords = readFinalKeywords();
-        System.out.println(afterProcessingKeywords);
+        Hedit hEdit = new Hedit(new File(FINAL_FITS_FILE));
+        Header primaryHeader = hEdit.readPrimary();
+        Set<String> afterProcessingPrimaryKeywords = primaryHeader.getKeywords();
 
-        assertTrue(afterProcessingKeywords.containsAll(originalKeywords));
-        assertTrue(afterProcessingKeywords.contains("WINDSPEE"));
-        assertTrue(afterProcessingKeywords.contains("WINDDIRE"));
+        System.out.println(afterProcessingPrimaryKeywords);
+
+        assertTrue(afterProcessingPrimaryKeywords.containsAll(originalKeywords));
+        assertTrue(afterProcessingPrimaryKeywords.contains("WINDSPEE"));
     }
 
 }

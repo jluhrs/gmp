@@ -53,7 +53,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
         TimeUnit.MILLISECONDS.sleep(800);
-        
+
         assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
@@ -69,9 +69,9 @@ public class GDSWithODBIT extends GDSIntegrationBase {
 
         assertFalse(originalKeywords.contains("PIFSTNAM"));
 
-        sendObservationEvents(eventHandler);
+        sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
 
-        File finalFile = new File(FINAL_FITS_FILE);
+        File finalFile = new File(FITS_DIR + FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
         Set<String> afterProcessingKeywords = readFinalKeywords();

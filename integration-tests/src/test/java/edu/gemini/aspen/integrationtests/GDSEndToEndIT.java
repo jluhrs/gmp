@@ -5,6 +5,7 @@ import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.fits.FitsParseException;
 import org.junit.Test;
@@ -63,9 +64,9 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
 
         Set<String> originalKeywords = readOriginalKeywords();
 
-        sendObservationEvents(eventHandler);
+        sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
 
-        File finalFile = new File(FINAL_FITS_FILE);
+        File finalFile = new File(FITS_DIR + FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
         Set<String> afterProcessingKeywords = readFinalKeywords();
