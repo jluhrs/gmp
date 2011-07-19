@@ -11,17 +11,18 @@ import edu.gemini.aspen.giapi.data.ObservationEvent
  */
 class GDSEventPropertyFactory extends PropertyItemWrapperFactory(classOf[GDSEvent], classOf[NativeSelect]) {
   val obsEvents = ObservationEvent.values().toList map {
-    _.name
+    _.name.replace("OBS_", "")
   }
 
   override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
     val comboBox = new NativeSelect("", obsEvents)
     comboBox.setNullSelectionAllowed(false)
-    comboBox.select(config.event.name)
+    comboBox.select(config.event.name.replace("OBS_", ""))
+    comboBox.addStyleName("small-combobox")
 
     def wrapper(config: GDSConfiguration): GDSConfiguration = {
       Option(comboBox.getValue) map {
-        v => config.copy(event = GDSEvent(v.toString))
+        v => config.copy(event = GDSEvent("OBS_" + v.toString))
       } getOrElse {
         config
       }
@@ -30,16 +31,3 @@ class GDSEventPropertyFactory extends PropertyItemWrapperFactory(classOf[GDSEven
     (comboBox, wrapper)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

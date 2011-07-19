@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gds.web.ui.keywords
 
-import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
-import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
+import _root_.edu.gemini.aspen.gds.web.ui.api.GDSWebModule
+import _root_.edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
+import _root_.edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
 import com.vaadin.ui.Window.Notification
 import com.jensjansson.pagedtable.PagedTable
 import model.{ReadOnlyGDSKeywordsDataSource, GDSKeywordsDataSource}
@@ -29,6 +29,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   var deleteTooltip = "Delete row"
   val deleteProperty = "DEL"
 
+  val saveButton = new Button("Save..")
+
   def setupDeleteColumn(table: Table) {
     table.addGeneratedColumn(deleteProperty, new ColumnGenerator {
       def generateCell(source: Table, itemId: AnyRef, columnId: AnyRef) = {
@@ -48,12 +50,33 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
   }
 
-  def getDataSource(user: AnyRef) = Option(user) map {_ => dataSource} getOrElse {new ReadOnlyGDSKeywordsDataSource(configService.getConfiguration)}
+  def visibleColumns(user: AnyRef):Array[AnyRef] = {
+    val prop:List[_] = Option(user) map {
+      _ => deleteProperty
+    } toList
+    val cols:List[_] = getDataSource(user).getContainerPropertyIds toList
+    val p:List[_] = cols ++ prop
+    (p toArray).asInstanceOf[Array[AnyRef]]
+  }
+
+  def getDataSource(user: AnyRef) = Option(user) map {
+    _ => dataSource
+  } getOrElse {
+    new ReadOnlyGDSKeywordsDataSource(configService.getConfiguration)
+  }
 
   override def userChanged(user: AnyRef) = {
     table.setContainerDataSource(getDataSource(user))
+    // Update user dependant parts
+    updateSaveButton(user)
+    println(visibleColumns(user))
+    table.setVisibleColumns(visibleColumns(user))
     table.requestRepaintAll()
     tabLayout.replaceComponent(table, table)
+  }
+
+  def updateSaveButton(user: AnyRef) {
+    saveButton.setVisible(Option(user).isDefined)
   }
 
   override def buildTabContent(app: Application) = {
@@ -61,22 +84,14 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setNullSelectionAllowed(false)
     table.setImmediate(true)
     table.addStyleName("keywords-table")
-    table.setSizeFull
+    table.setSizeFull()
     table.setPageLength(25)
     table.setCacheRate(0.1)
     //table.setEditable(true)
     table.setColumnCollapsingAllowed(true)
     table.setColumnReorderingAllowed(true)
 
-    val user = app.getUser
-    Option(user) foreach {
-      _ => setupDeleteColumn(table)
-    }
-
-    // Center each column
-    dataSource.getContainerPropertyIds foreach {
-      table.setColumnAlignment(_, Table.ALIGN_LEFT)
-    }
+    setupDeleteColumn(table)
 
     tabLayout.addComponent(table)
     tabLayout.setExpandRatio(table, 1.0f)
@@ -87,37 +102,50 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     // Trick to get th layouts right
     pagingControls.getComponent(0).setWidth("100%")
     layout.addComponent(pagingControls)*/
-    tabLayout.addComponent(statusRow(app.getMainWindow))
+    tabLayout.addComponent(statusRow(app))
+    updateSaveButton(app.getUser)
+    println(visibleColumns(app.getUser))
+    table.setVisibleColumns(visibleColumns(app.getUser))
 
     tabLayout.setSizeFull
     tabLayout
   }
 
-  def statusRow(mainWindow: Window) = {
+  def statusRow(app: Application) = {
     val layout = new HorizontalLayout
-    val button = buildValidateButton(mainWindow)
-    val label = new Label("Keywords count: " + table.getContainerDataSource.size)
     layout.addStyleName("keywords-control")
-
+    layout.setMargin(false)
     layout.setWidth("100%")
     layout.addStyleName("keywords-control")
+    val label = new Label("Keywords count: " + table.getContainerDataSource.size)
+
     layout.addComponent(label)
-    layout.addComponent(button)
     layout.setComponentAlignment(label, Alignment.MIDDLE_LEFT)
     layout.setExpandRatio(label, 1.0f)
-    layout.setComponentAlignment(button, Alignment.MIDDLE_RIGHT)
-    layout.setMargin(false)
+
+    val saveButton = buildSaveButton(app)
+    layout.addComponent(saveButton)
+    layout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT)
+
+//    val showAsTextButton = buildShowAsTextButton(app)
+//    layout.addComponent(showAsTextButton)
+//    layout.setComponentAlignment(showAsTextButton, Alignment.MIDDLE_RIGHT)
 
     layout
   }
 
-  def buildValidateButton(mainWindow: Window): Button = {
-    val button: Button = new Button("Validate")
-
-    button.addListener((e: Button#ClickEvent) => {
-      mainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
-      println(dataSource.toGDSConfiguration.head)
+  private def buildSaveButton(app: Application): Button = {
+    saveButton.addListener((e: Button#ClickEvent) => {
+      app.getMainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
     })
-    button
+    saveButton
+  }
+
+  private def buildShowAsTextButton(app: Application): Button = {
+    val showAsTextButton = new Button("Show as text...")
+    showAsTextButton.addListener((e: Button#ClickEvent) => {
+      app.getMainWindow.showNotification("Display... " + configService, Notification.TYPE_HUMANIZED_MESSAGE)
+    })
+    showAsTextButton
   }
 }

@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.web.ui.keywords
 
 import org.junit.Test
 import org.junit.Assert._
-import com.vaadin.ui.Window
+import com.vaadin.Application
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.GDSConfiguration
@@ -18,7 +18,20 @@ class KeywordsTableModuleTest extends Mockito {
     configService.getConfiguration returns List[GDSConfiguration]()
     val module = new KeywordsTableModule(configService)
 
-    val window = mock[Window]
-    assertNotNull(module.statusRow(window))
+    val app = mock[Application]
+    assertNotNull(module.statusRow(app))
+  }
+
+  @Test
+  def testVisibleColumns() {
+    val configService = mock[GDSConfigurationService]
+    configService.getConfiguration returns List[GDSConfiguration]()
+    val module = new KeywordsTableModule(configService)
+
+    val tableColumnsForAnonymous = module.visibleColumns(null)
+    println(java.util.Arrays.toString(tableColumnsForAnonymous))
+
+    val tableColumnsForUser = module.visibleColumns("user")
+    println(java.util.Arrays.toString(tableColumnsForUser))
   }
 }
