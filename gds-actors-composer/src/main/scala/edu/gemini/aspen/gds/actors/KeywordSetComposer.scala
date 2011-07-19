@@ -21,61 +21,59 @@ case class AcquisitionRequestReply(obsEvent: ObservationEvent, dataLabel: DataLa
  * An actor that composes the items required to complete an observation using a set of actors
  */
 class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: KeywordsDatabase) extends Actor {
-    val LOG = KeywordSetComposer.LOG
+  val LOG = KeywordSetComposer.LOG
 
-    // Start automatically
-    start()
+  // Start automatically
+  start()
 
-    def act() {
-        loop {
-            react {
-                case AcquisitionRequest(obsEvent, dataLabel) => doCollection(sender, obsEvent, dataLabel)
-                case x: Any => throw new RuntimeException("Argument not known " + x)
-            }
-        }
+  def act() {
+    react {
+      case AcquisitionRequest(obsEvent, dataLabel) => doCollection(sender, obsEvent, dataLabel)
+      case _ => error("Unknown request type ")
     }
+  }
 
-    private def doCollection(sender: OutputChannel[Any], obsEvent: ObservationEvent, dataLabel: DataLabel) {
-        LOG.info("Keyword collection on dataset " + dataLabel + " for event " + obsEvent.name)
+  private def doCollection(sender: OutputChannel[Any], obsEvent: ObservationEvent, dataLabel: DataLabel) {
+    LOG.info("Keyword collection on dataset " + dataLabel + " for event " + obsEvent.name)
 
-        val dataFutures = requestCollection(obsEvent, dataLabel, actorsFactory.buildActors)
+    val dataFutures = requestCollection(obsEvent, dataLabel, actorsFactory.buildActors)
 
-        waitForDataAndReply(dataLabel, dataFutures) {
-            LOG.info("All collecting actors completed.")
-            // Reply to the original sender
-            sender ! AcquisitionRequestReply(obsEvent, dataLabel)
-        }
+    waitForDataAndReply(dataLabel, dataFutures) {
+      LOG.info("All collecting actors completed.")
+      // Reply to the original sender
+      sender ! AcquisitionRequestReply(obsEvent, dataLabel)
     }
+  }
 
-    private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => List[Actor]) = {
-        // Get the actors from the factory
-        val actors = actorsBuilder(obsEvent, dataLabel)
+  private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => List[Actor]) = {
+    // Get the actors from the factory
+    val actors = actorsBuilder(obsEvent, dataLabel)
 
-        // Start collecting
-        val dataFutures = for (dataActor <- actors) yield {
-            dataActor !! Collect
-        }
-        dataFutures
+    // Start collecting
+    val dataFutures = for (dataActor <- actors) yield {
+      dataActor !! Collect
     }
+    dataFutures
+  }
 
-    private def waitForDataAndReply(dataLabel: DataLabel, dataFutures: List[Future[Any]])(postAction: => Unit) {
-        // Wait for response
-        var i = 0
-        loopWhile(i < dataFutures.size) {
-            i += 1
-            dataFutures(i - 1).inputChannel.react {
-                case data => storeReply(dataLabel, data)
-            }
-        } andThen {
-            postAction
-        }
+  private def waitForDataAndReply(dataLabel: DataLabel, dataFutures: List[Future[Any]])(postAction: => Unit) {
+    // Wait for response
+    var i = 0
+    loopWhile(i < dataFutures.size) {
+      i += 1
+      dataFutures(i - 1).inputChannel.react {
+        case data => storeReply(dataLabel, data)
+      }
+    } andThen {
+      postAction
     }
+  }
 
-    private def storeReply(dataLabel: DataLabel, collectedValues: Any) {
-        for (value <- collectedValues.asInstanceOf[List[CollectedValue[_]]]) {
-            keywordsDatabase ! Store(dataLabel, value)
-        }
+  private def storeReply(dataLabel: DataLabel, collectedValues: Any) {
+    for (value <- collectedValues.asInstanceOf[List[CollectedValue[_]]]) {
+      keywordsDatabase ! Store(dataLabel, value)
     }
+  }
 
 }
 
@@ -83,7 +81,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
  * Companion object providing factory methods
  */
 object KeywordSetComposer {
-    private val LOG = Logger.getLogger(classOf[KeywordSetComposer].getName)
+  private val LOG = Logger.getLogger(classOf[KeywordSetComposer].getName)
 
-    def apply(actorsFactory: KeywordActorsFactory, keywordsDatabase: KeywordsDatabase) = new KeywordSetComposer(actorsFactory, keywordsDatabase)
+  def apply(actorsFactory: KeywordActorsFactory, keywordsDatabase: KeywordsDatabase) = new KeywordSetComposer(actorsFactory, keywordsDatabase)
 }
