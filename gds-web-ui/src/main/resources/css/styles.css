@@ -16,6 +16,7 @@
     text-align: center;
 }
 
+/* Add borders to the control panel at the bottom ot the keywords table */
 .keywords-control .v-horizontallayout-margin {
     padding-top: 5px;
     padding-right: 15px;
@@ -23,9 +24,17 @@
     padding-left: 15px;
 }
 
+/* Make the count of keywords bold */
 .keywords-control .v-label {
     font-weight:bold;
 }
+
+/* Make the count of keywords bold */
+.small-combobox .v-select-select     {
+    font-size: 0.8em;
+    font-weight: lighter;
+}
+
 
 .v-label-gds-status {
     font-size:1em;
