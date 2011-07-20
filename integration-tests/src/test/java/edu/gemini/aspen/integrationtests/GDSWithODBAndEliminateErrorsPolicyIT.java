@@ -43,7 +43,8 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
                 mavenBundle().artifactId("spdb-activator").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("rr").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("gds-odb-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-error-policy").groupId("edu.gemini.aspen.gds").versionAsInProject()
+                mavenBundle().artifactId("gds-error-policy").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                waitForFrameworkStartup()
         );
     }
 
@@ -60,13 +61,15 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
 
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
-        TimeUnit.MILLISECONDS.sleep(400);
+        TimeUnit.MILLISECONDS.sleep(600);
         assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
+        
+        TimeUnit.MILLISECONDS.sleep(400);
 
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
