@@ -5,6 +5,7 @@ import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import com.vaadin.Application
 import com.vaadin.ui.{Alignment, GridLayout, Label, Component}
+import org.scala_tools.time.Imports._
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
     val title: String = "Status"
@@ -85,13 +86,15 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     private def getLastDataLabel = {
         new Label(obsState.getLastDataLabel map {
             _.getName
-        } getOrElse "testing datalabel")
+        } getOrElse "S20110501S00002")
     }
 
     private def getTimes = {
         new Label(obsState.getLastDataLabel map {
-            obsState.getTimes(_).toString()
-        } getOrElse "tesint sldkfnsldf ;sdfjlsdfg times d;fj;lfsf s;dfjslk")
+            obsState.getTimes(_) map {
+                case (x: AnyRef, y: Option[Duration]) => (x, y.getOrElse(""))
+            } toString
+        } getOrElse "Set((OBS_PREP, PT0.104S), (OBS_START_ACQ, PT0.104S), (OBS_END_ACQ, PT0.104S), (OBS_START_READOUT, PT0.104S), (OBS_END_READOUT, PT0.104S), (OBS_START_DSET_WRITE, PT0.104S), (OBS_END_DSET_WRITE, PT0.104S), (FITS update, PT0.104S))")
     }
 
     private def getProcessing = {
@@ -101,14 +104,17 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     private def getMissingKeywords = {
         new Label(obsState.getLastDataLabel map {
             obsState.getMissingKeywords(_).toString()
-        } getOrElse "tesint sldkfnsldf ;sdfjlsdfg times d;fj;lfsf s;dfjslk")
+        } getOrElse List("TEST1", "TEST2", "TEST3", "TEST4", "TEST5").toString)
     }
 
     private def getKeywordsInError = {
         new Label(obsState.getLastDataLabel map {
             obsState.getKeywordsInError(_).toString()
-        } getOrElse "tesint sldkfnsldf ;sdfjlsdfg times d;fj;lfsf s;dfjslk")
+        } getOrElse List("TEST1", "TEST2", "TEST3").toString)
     }
+
+    //todo: change defaults to empty Strings
+    //todo: Change output. toString might not be the best way to present the data
 
     private def updateKeywords() {
         val newMissing = getMissingKeywords

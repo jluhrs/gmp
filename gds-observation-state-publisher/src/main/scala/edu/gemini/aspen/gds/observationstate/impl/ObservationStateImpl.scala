@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.observationstate.impl
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.api.CollectionError
-import org.scala_tools.time.Imports
+import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.observationstate.{ObservationStatePublisher, ObservationStateProvider, ObservationStateRegistrar}
 import collection.mutable.{SynchronizedMap, HashMap, SynchronizedSet, HashSet, Set}
 import java.util.concurrent.atomic.AtomicReference
@@ -16,7 +16,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     class ObservationInfo {
         val missingKeywords: Set[FitsKeyword] = new HashSet[FitsKeyword] with SynchronizedSet[FitsKeyword]
         val errorKeywords: Set[(FitsKeyword, CollectionError.CollectionError)] = new HashSet[(FitsKeyword, CollectionError.CollectionError)] with SynchronizedSet[(FitsKeyword, CollectionError.CollectionError)]
-        val times: Set[(AnyRef, Option[Imports.Duration])] = new HashSet[(AnyRef, Option[Imports.Duration])] with SynchronizedSet[(AnyRef, Option[Imports.Duration])] //todo: think which is the correct type here
+        val times: Set[(AnyRef, Option[Duration])] = new HashSet[(AnyRef, Option[Duration])] with SynchronizedSet[(AnyRef, Option[Duration])] //todo: think which is the correct type here
         var started = false
         var ended = false
     }
@@ -33,7 +33,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
         obsInfoMap.getOrElseUpdate(label, new ObservationInfo).errorKeywords ++= errors
     }
 
-    override def registerTimes(label: DataLabel, times: Traversable[(AnyRef, Option[Imports.Duration])]) {
+    override def registerTimes(label: DataLabel, times: Traversable[(AnyRef, Option[Duration])]) {
         obsInfoMap.getOrElseUpdate(label, new ObservationInfo).times ++= times
     }
 
@@ -50,7 +50,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
     //-----------------------------------------------------------------------
 
-    override def getTimes(label: DataLabel): Traversable[(AnyRef, Option[Imports.Duration])] = {
+    override def getTimes(label: DataLabel): Traversable[(AnyRef, Option[Duration])] = {
         obsInfoMap.getOrElse(label, new ObservationInfo).times
     }
 
