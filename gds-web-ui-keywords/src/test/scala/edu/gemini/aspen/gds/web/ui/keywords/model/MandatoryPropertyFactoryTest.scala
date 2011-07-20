@@ -18,7 +18,7 @@ class MandatoryPropertyFactoryTest {
 
   @Test
   def testColumnDefinition {
-    assertEquals("Mandatory", factory.title)
+    assertEquals("Mand.", factory.title)
     assertEquals(classOf[CheckBox], factory.columnType)
   }
 

@@ -15,12 +15,12 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
   /**
    * Name of the column, by default the field class name
    */
-  def title = fieldClass.getSimpleName
+  val title = fieldClass.getSimpleName
 
   /**
    * Width of the column, -1 by default
    */
-  def width = -1
+  val width = -1
 
   /**
    * This is a factory method that creates a property item, typically a UI control

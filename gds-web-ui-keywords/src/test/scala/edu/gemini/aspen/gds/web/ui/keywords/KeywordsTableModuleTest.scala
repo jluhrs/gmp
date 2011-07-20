@@ -53,12 +53,12 @@ class KeywordsTableModuleTest extends Mockito {
         "FitsKeyword",
         "HeaderIndex",
         "DataType",
-        "Mandatory",
+        "Mand.",
         "DefaultValue",
         "Subsystem",
         "Channel",
-        "ArrayIndex",
-        "FitsComment",
+        "index",
+        "Comment",
         "DEL"),
       tableColumnsForUser)
   }

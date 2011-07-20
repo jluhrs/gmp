@@ -10,6 +10,9 @@ import edu.gemini.aspen.gds.api.{FitsComment, GDSConfiguration}
  * the name of a FITS Keyword
  */
 class FitsCommentPropertyFactory extends PropertyItemWrapperFactory(classOf[FitsComment], classOf[TextField]) {
+  override val title = "Comment"
+  override val width = 120
+  
   val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
     // todo check the lenght
     def isValidString(value: String) = value.length <= 80
@@ -21,6 +24,7 @@ class FitsCommentPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
     textField.setImmediate(true)
     textField.setRequired(true)
     textField.setInvalidAllowed(false)
+    textField.setMaxLength(80)
 
     def wrapper(config: GDSConfiguration) = {
       config.copy(fitsComment = FitsComment(textField.getValue.toString))

@@ -8,6 +8,10 @@ import com.vaadin.ui.CheckBox
  * PropertyItemWrapperFactory for Mandatory that uses a CheckBox
  */
 class MandatoryPropertyFactory extends PropertyItemWrapperFactory(classOf[Mandatory], classOf[CheckBox]) {
+  override val width = 40
+
+  override val   title = "Mand."
+
   override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
     val checkBox = new CheckBox("", config.mandatory.mandatory)
     checkBox.setStyleName("mandatory-keyword")

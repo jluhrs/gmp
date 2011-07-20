@@ -10,6 +10,10 @@ import edu.gemini.aspen.gds.api.{ArrayIndex, GDSConfiguration}
  * the name of a FITS Keyword
  */
 class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[ArrayIndex], classOf[TextField]) {
+  override val width = 40
+
+  override val title = "index"
+
   val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
     def isValidString(value: String) = value.length <= 9
   }
@@ -20,6 +24,7 @@ class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Array
     textField.setImmediate(true)
     textField.setRequired(true)
     textField.setMaxLength(3)
+    textField.setWidth("30px")
     textField.setInvalidAllowed(false)
 
     def wrapper(config: GDSConfiguration) = {

@@ -16,11 +16,11 @@ class FitsCommentPropertyFactoryTest {
   val fitsComment = "my comment"
   val config = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, fitsComment)
   val item = new PropertysetItem
-  item.addItemProperty("FitsComment", new ObjectProperty[FitsComment](fitsComment))
+  item.addItemProperty("Comment", new ObjectProperty[FitsComment](fitsComment))
 
   @Test
   def testColumnDefinition {
-    assertEquals("FitsComment", factory.title)
+    assertEquals("Comment", factory.title)
     assertEquals(classOf[TextField], factory.columnType)
   }
 
