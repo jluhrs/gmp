@@ -11,7 +11,7 @@ import edu.gemini.aspen.gds.observationstate.{ObservationStatePublisher, Observa
 import edu.gemini.aspen.gds.api.Conversions._
 import collection.immutable.Set.Set1
 import edu.gemini.aspen.gds.api.{CollectionError}
-import edu.gemini.aspen.giapi.data.{ObservationEvent,, FitsKeyword}
+import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
 import org.scala_tools.time.Imports._
 
 class StatusModuleTest extends Mockito {
