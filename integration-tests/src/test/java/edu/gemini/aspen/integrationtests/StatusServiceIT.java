@@ -1,6 +1,8 @@
-package edu.gemini.aspen.giapi.statusservice;
+package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
+import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
+import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.jms.api.*;
 import org.junit.*;
 import org.junit.runner.*;
