@@ -2,6 +2,7 @@ package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
 import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
+import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
@@ -21,12 +22,8 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.CoreOptions.systemProperty;
+import static org.junit.Assert.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
@@ -64,6 +61,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
         TimeUnit.MILLISECONDS.sleep(400);
+        assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
