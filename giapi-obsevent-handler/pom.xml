@@ -38,6 +38,10 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
+            <artifactId>time_2.8.1</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
