@@ -71,6 +71,42 @@ Just some notes:
 - Can generate datalabels.
 - If data arrives with a label that already exists, a dash and a correlative number is appended to the name.
 
+\subsection gds_performance_testing GDS Performance Tests
+Testing was done to check the performance of GDS when confronted to many simultaneous keywords. To do
+so a special testing program and configuration was created
+
+- A test program was created in giapi-glue-cc that can post a large amount of status updates and seqexec keywords
+- A configuration matching the test program war written in gmp-server/src/main/etc/conf/gds-keywords-highcount.conf
+and it needs to be referred from GDSConfigurationServiceImpl-default.cfg
+
+The main objective is to determine the bounds of how fast GDS can process a file comparable to those required for GPI
+As a reference, we'd ideally be able to have expositions of one second and process the file in a compalable time
+
+The tests were carried out on 7/20/2011 on an iMac with all the components on the local machine
+
+Some results:
+1 Constructing actors takes an appreciable time, for example constructing 80 SEQEXEC actors takes 30-40 [ms]
+Construction of 508 STATUS actors takes 122 [ms] 
+2 Collection of SEQEXEC items takes ar appreciable time, e.g.:
+    FitsKeyword{name='OBSTYPE'} -> 12[ms]
+    FitsKeyword{name='SSA'} -> 14[ms]
+    FitsKeyword{name='OBSCLASS'} -> 14[ms]
+    FitsKeyword{name='OBSID'} -> 15[ms]
+    FitsKeyword{name='RAWCC'} -> 12[ms]
+This in an in memory call so, the slowness is probably due to the actor based design of TemporarySeqexecKeywordsDatabase
+3 The waiting part of KeywordSetComposer in the method waitForDataAndReply is suboptimal, e.g for SEQEXEC actor it produces:
+    Waiting for data took 109 [ms] 
+4 Requesting STATUS items is very fast, for example taking 160-180 [ms] to read 508 status items, this is probably coming mostly from the
+issue in 3
+
+Some recommendations by issue number:
+1.1 Use a single actor per set of keywords, for example only one Seqexec actor for the 80 requested keywords
+1.2 Reuse actor instances. This would complicate the design though since it would require keeping state
+2.1 Change TemporarySeqexecKeywordsDatabase to allow retrieval of multiple keywords at once, in combination with 1.2
+2.2 Add a method to make a copy of TemporarySeqexecKeywordsDatabase and operate on that, thus avoiding the issues related to
+the actor-based calls
+3.1 Redesign 3 so that waiting for data collection takes app the same as the slowest actor
+
 \subsection gds_memory_leaks_testing_sec GDS Memory Leaks Testing
 Testing for memory leaks are possible by using the acqloop.sh script at the src/examples dir in giapi-glue, and then
 checking the GDS using visualvm or jconsole
@@ -82,9 +118,6 @@ checking the GDS using visualvm or jconsole
 \li The output of the script would look like:
 \verbatim
 Starting Observation Process Example
-* About to connect() to localhost port 12345 (#0)
-*   Trying 127.0.0.1... * connected
-* Connected to localhost (127.0.0.1) port 12345 (#0)
 > POST / HTTP/1.1
 Host: localhost:12345
 Accept: */*
@@ -136,9 +169,9 @@ POST 6
 2011-07-06 22:04:27,775 [0x7fff7109fcc0] INFO  giapi.JmsProducer - Observation Event: OBS_END_DSET_WRITE datalabel: S20110427-01
 
 \endverbatim
+
 \li On jconsole the memory consumption can be checked on the Memory tab as shown below:
 \image html jconsole_memory_tab.png
 
-\attention As of 07/07/2011 there are at least two memory leaks identified 
 
 */
