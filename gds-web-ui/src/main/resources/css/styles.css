@@ -29,12 +29,9 @@
     font-weight:bold;
 }
 
-/* Make the count of keywords bold */
+/* Make the comboboxes to center */
 .small-combobox .v-select-select     {
-    font-size: 0.8em;
-    font-weight: lighter;
 }
-
 
 .v-label-gds-status {
     font-size:1em;

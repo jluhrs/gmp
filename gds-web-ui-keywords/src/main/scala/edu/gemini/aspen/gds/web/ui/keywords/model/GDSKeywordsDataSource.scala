@@ -5,7 +5,6 @@ import com.vaadin.data.Item
 import edu.gemini.aspen.giapi.data.{FitsKeyword}
 import edu.gemini.aspen.gds.api._
 import scala.collection.JavaConversions._
-import javax.management.remote.rmi._RMIConnection_Stub
 
 /**
  * This class is the data source backing the Table that shows the keywords
@@ -32,6 +31,11 @@ abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends Ind
 
   protected[keywords] def addContainerProperties;
 
+  /**
+   * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
+   */
+  def toGDSConfiguration: List[GDSConfiguration] = config
+
   def propertyIds: List[String] = getContainerPropertyIds map {
     c: Any => c.toString
   } toList
@@ -41,62 +45,6 @@ abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends Ind
   } map {
     _._2.width
   } getOrElse (-1)
-}
-
-
-/**
- * This class is the data source backing the Table that shows the keywords
- *
- * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
- */
-class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSKeywordsDataSource(config) {
-
-  // Contains a list of configurations and wrappers for the UI items
-  val configWrapper = {
-    // Give each config an id
-    val indexedConfig = config.zipWithIndex
-
-    // Add an item per
-    indexedConfig map {
-      case (c, i) => {
-        val item = addItem(i)
-        // Add one itemProperty per displayed field
-        val itemWrappers = GDSKeywordsDataSource.displayedFields map {
-          f => {
-            val cd = columnsDefinitions.getOrElse(f.getType, defaultColumnDefinition(f.getType))
-            cd.populateItem(c, item)
-          }
-        }
-        (i, c, itemWrappers)
-      }
-    }
-  }
-
-  def defaultColumnDefinition(clazz: Class[_]) = new DefaultPropertyItemWrapperFactory(clazz)
-
-  /**
-   * Adds the container properties, i.e. the columns on the table
-   */
-  override protected[keywords] def addContainerProperties = {
-    GDSKeywordsDataSource.displayedFields map {
-      c => {
-        val cd = columnsDefinitions.getOrElse(c.getType, defaultColumnDefinition(c.getType))
-        addContainerProperty(cd.title, cd.columnType, "")
-      }
-    }
-  }
-
-  /**
-   * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
-   */
-  def toGDSConfiguration: List[GDSConfiguration] = {
-    configWrapper map {
-      case (i, c, itemWrappers) => {
-        GDSKeywordsDataSource.itemToGDSConfiguration(c, itemWrappers)
-      }
-    } toList
-  }
-
 }
 
 object GDSKeywordsDataSource {

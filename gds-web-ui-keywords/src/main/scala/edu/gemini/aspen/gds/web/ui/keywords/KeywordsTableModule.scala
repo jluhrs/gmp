@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.web.ui.keywords
 
 import _root_.edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import _root_.edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import _root_.edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
+import _root_.edu.gemini.aspen.gds.web.ui.api.Preamble._
 import com.vaadin.ui.Window.Notification
 import com.jensjansson.pagedtable.PagedTable
 import model.{WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource, GDSKeywordsDataSource}
@@ -13,6 +13,8 @@ import com.vaadin.terminal.ThemeResource
 import com.vaadin.ui._
 import themes.BaseTheme
 import com.vaadin.Application
+import org.vaadin.dialogs.ConfirmDialog
+import org.vaadin.dialogs.DefaultConfirmDialogFactory
 
 /**
  * Module for the table to edit the keywords
@@ -39,8 +41,20 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
         deleteButton.setIcon(deleteIcon)
         deleteButton.setDescription(deleteTooltip)
         deleteButton.addListener((e: Button#ClickEvent) => {
-          dataSource.removeItem(itemId)
-          println("htoeo")
+          val message = "Do you want to delete the item " + itemId + "?\n" +
+            "Keyword: %s".format(dataSource.getItem(itemId).getItemProperty("FitsKeyword"))
+          ConfirmDialog.show(table.getApplication.getMainWindow, "Please Confirm:", message,
+            "Yes", "No", new ConfirmDialog.Listener() {
+
+              def onClose(dialog: ConfirmDialog) {
+                if (dialog.isConfirmed()) {
+                  // Confirmed to continue
+                  println(dataSource.getItem(itemId))
+                  dataSource.removeItem(itemId)
+                  println(dataSource.getItem(itemId))
+                }
+              }
+            })
         })
         deleteButton
       }
@@ -137,7 +151,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
   private def buildSaveButton(app: Application): Button = {
     saveButton.addListener((e: Button#ClickEvent) => {
-      app.getMainWindow.showNotification("Validating...", Notification.TYPE_HUMANIZED_MESSAGE)
+      println(dataSource.toGDSConfiguration)
+      app.getMainWindow.showNotification("Saving...", Notification.TYPE_HUMANIZED_MESSAGE)
     })
     saveButton
   }

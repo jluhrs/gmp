@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.web.ui.vaadin
 import com.vaadin.Application;
 import java.util.logging.Logger
 import com.vaadin.terminal.ClassResource
-import edu.gemini.aspen.gds.web.ui.api.VaadinUtilities._
+import edu.gemini.aspen.gds.web.ui.api.Preamble._
 import org.apache.felix.ipojo.annotations.{Requires, Bind, Unbind}
 import com.vaadin.ui.themes.BaseTheme
 import com.vaadin.data.util.ObjectProperty
