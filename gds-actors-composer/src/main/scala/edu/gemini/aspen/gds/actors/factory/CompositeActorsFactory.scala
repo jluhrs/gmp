@@ -19,48 +19,48 @@ trait CompositeActorsFactory extends KeywordActorsFactory
 @Provides(specifications = Array(classOf[CompositeActorsFactory]))
 @Instantiate
 class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends CompositeActorsFactory {
-    val LOG = Logger.getLogger(this.getClass.getName)
+  val LOG = Logger.getLogger(this.getClass.getName)
 
-    var factories: List[KeywordActorsFactory] = List()
+  var factories: List[KeywordActorsFactory] = List()
 
-    override def configure(configuration: List[GDSConfiguration]) {
-        factories foreach {
-            _.configure(configuration)
-        }
+  override def configure(configuration: List[GDSConfiguration]) {
+    factories foreach {
+      _.configure(configuration)
     }
+  }
 
-    override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
-        factories flatMap {
-            _.buildActors(obsEvent, dataLabel)
-        }
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
+    factories flatMap {
+      _.buildActors(obsEvent, dataLabel)
     }
+  }
 
-    /**
-     * Method called when a new KeywordActorsFactory is registered
-     */
-    @Bind(aggregate = true, optional = true)
-    def bindKeywordFactory(keywordFactory: KeywordActorsFactory) {
-        keywordFactory.configure(actorsConfiguration)
-        factories = keywordFactory :: factories
+  /**
+   * Method called when a new KeywordActorsFactory is registered
+   */
+  @Bind(aggregate = true, optional = true)
+  def bindKeywordFactory(keywordFactory: KeywordActorsFactory) {
+    keywordFactory.configure(actorsConfiguration)
+    factories = keywordFactory :: factories
+  }
+
+  /**
+   * Method called when a KeywordActorsFactory is unregistered
+   */
+  @Unbind(aggregate = true)
+  def unbindKeywordFactory(keywordFactory: KeywordActorsFactory) {
+    factories = factories filterNot {
+      _ == keywordFactory
     }
+  }
 
-    /**
-     * Method called when a KeywordActorsFactory is unregistered
-     */
-    @Unbind(aggregate = true)
-    def unbindKeywordFactory(keywordFactory: KeywordActorsFactory) {
-        factories = factories filterNot {
-            _ == keywordFactory
-        }
-    }
+  /**
+   * Method called when the Component is ready to start
+   */
+  @Validate
+  def startConfiguration() {
+    actorsConfiguration = configService.getConfiguration
 
-    /**
-     * Method called when the Component is ready to start
-     */
-    @Validate
-    def startConfiguration() {
-        actorsConfiguration = configService.getConfiguration
-
-        configure(actorsConfiguration)
-    }
+    configure(actorsConfiguration)
+  }
 }

@@ -38,7 +38,6 @@ trait TemporarySeqexecKeywordsDatabase extends Actor
 @Instantiate
 @Provides(specifications = Array(classOf[TemporarySeqexecKeywordsDatabase]))
 class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatabase {
-
   start()
 
   def act() {
@@ -52,7 +51,6 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
       }
     }
   }
-
 
   private val map = collection.mutable.Map.empty[DataLabel, collection.mutable.Map[FitsKeyword, AnyRef]]
 

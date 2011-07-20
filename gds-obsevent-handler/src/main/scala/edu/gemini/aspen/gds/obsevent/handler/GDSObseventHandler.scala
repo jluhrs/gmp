@@ -15,6 +15,7 @@ import java.util.logging.{Level, Logger}
 import edu.gemini.fits.{DefaultHeader, Header}
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
+import org.scala_tools.time.Imports._
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -188,9 +189,10 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
     actor {
       eventLogger.start(dataLabel, "FITS update")
-      LOG.info("Writing updated FITS file at " + new File(dataLabel.toString))
+      val start = new DateTime
       new FitsUpdater(new File("/tmp"), dataLabel, headers).updateFitsHeaders()
-
+      val end = new DateTime
+      LOG.info("Writing updated FITS file at " + new File(dataLabel.toString) + " took " + (start to end).toDuration)
       eventLogger.end(dataLabel, "FITS update")
       obsState.registerTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable)
       obsState.endObservation(dataLabel)

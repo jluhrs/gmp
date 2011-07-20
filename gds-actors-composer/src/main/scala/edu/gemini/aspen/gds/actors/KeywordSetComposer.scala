@@ -36,10 +36,11 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   private def doCollection(sender: OutputChannel[Any], obsEvent: ObservationEvent, dataLabel: DataLabel) {
     LOG.info("Keyword collection on dataset " + dataLabel + " for event " + obsEvent.name)
 
+    val s = System.currentTimeMillis()
     val dataFutures = requestCollection(obsEvent, dataLabel, actorsFactory.buildActors)
 
     waitForDataAndReply(dataLabel, dataFutures) {
-      LOG.info("All collecting actors completed.")
+      LOG.info(dataFutures.size + " collecting actors for " + obsEvent + " completed in " + (System.currentTimeMillis() - s) + " [ms]")
       // Reply to the original sender
       sender ! AcquisitionRequestReply(obsEvent, dataLabel)
     }
@@ -47,24 +48,33 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
 
   private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => List[Actor]) = {
     // Get the actors from the factory
+    val s = System.currentTimeMillis()
     val actors = actorsBuilder(obsEvent, dataLabel)
+    LOG.info("Building actors " + obsEvent + " in " + (System.currentTimeMillis() - s) + " [ms]")
 
+    val p = System.currentTimeMillis()
     // Start collecting
     val dataFutures = for (dataActor <- actors) yield {
       dataActor !! Collect
     }
+    LOG.info("Sending collection request for " + obsEvent + " took " + (System.currentTimeMillis() - p) + " [ms]")
     dataFutures
   }
 
   private def waitForDataAndReply(dataLabel: DataLabel, dataFutures: List[Future[Any]])(postAction: => Unit) {
     // Wait for response
     var i = 0
+    val s = System.currentTimeMillis()
     loopWhile(i < dataFutures.size) {
       i += 1
       dataFutures(i - 1).inputChannel.react {
-        case data => storeReply(dataLabel, data)
+        case data => {
+          LOG.fine("React in " + (System.currentTimeMillis() - s) + " [ms]")
+          storeReply(dataLabel, data)
+        }
       }
     } andThen {
+      LOG.info("Waiting for " + dataFutures.size + " data items took " + (System.currentTimeMillis() - s) + " [ms]")
       postAction
     }
   }

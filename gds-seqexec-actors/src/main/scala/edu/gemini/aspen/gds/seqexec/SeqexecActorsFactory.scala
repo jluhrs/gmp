@@ -11,14 +11,14 @@ import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class SeqexecActorsFactory(@Requires seqexecKeyDB: TemporarySeqexecKeywordsDatabase) extends KeywordActorsFactory {
 
-    override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
-        actorsConfiguration filter {
-            _.event.name == obsEvent.name()
-        } map {
-            c => new SeqexecActor(seqexecKeyDB, dataLabel, c)
-        }
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+    actorsConfiguration filter {
+      _.event.name == obsEvent.name()
+    } map {
+      c => new SeqexecActor(seqexecKeyDB, dataLabel, c)
     }
+  }
 
-    override def getSource = KeywordSource.SEQEXEC
+  override def getSource = KeywordSource.SEQEXEC
 
 }

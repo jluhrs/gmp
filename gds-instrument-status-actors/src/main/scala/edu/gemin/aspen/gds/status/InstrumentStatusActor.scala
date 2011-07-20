@@ -9,7 +9,9 @@ import edu.gemini.aspen.giapi.status.StatusDatabaseService
  */
 class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
   override def collectValues(): List[CollectedValue[_]] = {
+    val s = System.currentTimeMillis()
     val statusItem = Option(statusDB.getStatusItem(sourceChannel))
+    LOG.fine("Retrieving STATUS keyword " + fitsKeyword + " " + statusItem + " took " + (System.currentTimeMillis() - s) + "[ms]")
     statusItem map {
       s => Option(s.getValue)
     } map {
