@@ -1,11 +1,11 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
-import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import com.vaadin.Application
 import com.vaadin.ui.{Alignment, GridLayout, Label, Component}
 import org.scala_tools.time.Imports._
+import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
     val title: String = "Status"
@@ -13,12 +13,19 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     val (x, y) = (4, 6)
     val mainGrid = new GridLayout(x, y)
 
-    var status: Label = _
-    var processing: Label = _
-    var lastDataLabel: Label = _
-    var times: Label = _
-    var missing: Label = _
-    var errors: Label = _
+    val defaultLastDataLabel = "S20110501S00002"
+    val defaultStatus = "UNKNOWN"
+    val defaultTimes = "Set((OBS_PREP, PT0.104S), (OBS_START_ACQ, PT0.104S), (OBS_END_ACQ, PT0.104S), (OBS_START_READOUT, PT0.104S), (OBS_END_READOUT, PT0.104S), (OBS_START_DSET_WRITE, PT0.104S), (OBS_END_DSET_WRITE, PT0.104S), (FITS update, PT0.104S))"
+    val defaultProcessing = "Set()"
+    val defaultMissing = List("TEST1", "TEST2", "TEST3", "TEST4", "TEST5").toString
+    val defaultErrors = List("TEST1", "TEST2", "TEST3").toString
+
+    private var status: Label = _
+    private var processing: Label = _
+    private var lastDataLabel: Label = _
+    private var times: Label = _
+    private var missing: Label = _
+    private var errors: Label = _
 
     override def buildTabContent(app: Application): Component = {
         status = getStatus
@@ -79,38 +86,41 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
         times = newTimes
     }
 
-    private def getStatus = {
-        new Label(statusDB.getStatusItem("gpi:gds:health").getValue.toString())
+    private[status] def getStatus = {
+        new Label(statusDB.getStatusItem("gpi:gds:health") match {
+            case x: StatusItem[_] => x.getValue.toString
+            case _ => defaultStatus
+        })
     }
 
-    private def getLastDataLabel = {
+    private[status] def getLastDataLabel = {
         new Label(obsState.getLastDataLabel map {
             _.getName
-        } getOrElse "S20110501S00002")
+        } getOrElse defaultLastDataLabel)
     }
 
-    private def getTimes = {
+    private[status] def getTimes = {
         new Label(obsState.getLastDataLabel map {
             obsState.getTimes(_) map {
                 case (x: AnyRef, y: Option[Duration]) => (x, y.getOrElse(""))
             } toString
-        } getOrElse "Set((OBS_PREP, PT0.104S), (OBS_START_ACQ, PT0.104S), (OBS_END_ACQ, PT0.104S), (OBS_START_READOUT, PT0.104S), (OBS_END_READOUT, PT0.104S), (OBS_START_DSET_WRITE, PT0.104S), (OBS_END_DSET_WRITE, PT0.104S), (FITS update, PT0.104S))")
+        } getOrElse defaultTimes)
     }
 
-    private def getProcessing = {
+    private[status] def getProcessing = {
         new Label(obsState.getObservationsInProgress.toString())
     }
 
-    private def getMissingKeywords = {
+    private[status] def getMissingKeywords = {
         new Label(obsState.getLastDataLabel map {
             obsState.getMissingKeywords(_).toString()
-        } getOrElse List("TEST1", "TEST2", "TEST3", "TEST4", "TEST5").toString)
+        } getOrElse defaultMissing)
     }
 
-    private def getKeywordsInError = {
+    private[status] def getKeywordsInError = {
         new Label(obsState.getLastDataLabel map {
             obsState.getKeywordsInError(_).toString()
-        } getOrElse List("TEST1", "TEST2", "TEST3").toString)
+        } getOrElse defaultErrors)
     }
 
     //todo: change defaults to empty Strings
