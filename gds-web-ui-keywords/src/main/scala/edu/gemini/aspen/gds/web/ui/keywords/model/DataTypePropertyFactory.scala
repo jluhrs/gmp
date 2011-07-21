@@ -15,6 +15,8 @@ class DataTypePropertyFactory extends PropertyItemWrapperFactory(classOf[DataTyp
   override def createItemAndWrapper(config: GDSConfiguration) = {
     val select = new NativeSelect("", dataTypes)
     select.setNullSelectionAllowed(false)
+    select.setCaption("Data Type")
+    select.setRequired(true)
     select.select(config.dataType.name)
 
   def wrapper(config: GDSConfiguration): GDSConfiguration = {

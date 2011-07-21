@@ -14,7 +14,7 @@ import scala.collection.JavaConversions._
 abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedContainer {
   // Contains the factories for each column
   val columnsDefinitions = Map[Class[_], PropertyItemWrapperFactory](
-    classOf[Instrument] -> new InstrumentPropertyItemWrapperFactory,
+    classOf[Instrument] -> new InstrumentPropertyFactory,
     classOf[GDSEvent] -> new GDSEventPropertyFactory,
     classOf[FitsKeyword] -> new FitsKeywordPropertyFactory,
     classOf[HeaderIndex] -> new HeaderIndexPropertyFactory,

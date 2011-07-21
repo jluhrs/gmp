@@ -21,6 +21,8 @@ class FitsCommentPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
   override def createItemAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.fitsComment.value.toString)
     textField.addValidator(validator)
+    textField.setCaption("FITS Comment")
+    textField.setRequired(true)
     textField.setImmediate(true)
     textField.setRequired(true)
     textField.setInvalidAllowed(false)

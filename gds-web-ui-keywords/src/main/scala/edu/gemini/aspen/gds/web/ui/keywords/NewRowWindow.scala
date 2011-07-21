@@ -1,12 +1,14 @@
 package edu.gemini.aspen.gds.web.ui.keywords
 
+import _root_.edu.gemini.aspen.gds.web.ui.api.Preamble._
 import edu.gemini.aspen.gds.web.ui.api.DefaultAuthenticationService
 import com.vaadin.ui.LoginForm.LoginListener
 import com.vaadin.ui.Window.Notification
+import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.api.Conversions._
+import edu.gemini.aspen.giapi.data.FitsKeyword
 import com.vaadin.ui._
 import model._
-import edu.gemini.aspen.gds.api._
-import edu.gemini.aspen.giapi.data.FitsKeyword
 
 /**
  * Represents the LoginWindow
@@ -14,7 +16,7 @@ import edu.gemini.aspen.giapi.data.FitsKeyword
 class NewRowWindow(id: Int) extends Window("Add new row") {
   // Contains the factories for each column
   val columnsDefinitions = List(
-    new InstrumentPropertyItemWrapperFactory,
+    new InstrumentPropertyFactory,
     new GDSEventPropertyFactory,
     new FitsKeywordPropertyFactory,
     new HeaderIndexPropertyFactory,
@@ -36,23 +38,34 @@ class NewRowWindow(id: Int) extends Window("Add new row") {
   val layout = new FormLayout
   layout.setMargin(true)
   layout.setSizeUndefined()
+  val index = new Label(id.toString)
+  index.setCaption("Configuration ID")
 
-  columnsDefinitions map {
+  layout.addComponent(index)
+  val initialConfig = GDSConfiguration("GPI", "OBS_START_ACQ", "KEYWORD", 0, "DOUBLE", true, "NONE", "EPICS", "", 0, "")
+  val controlsAndWrappers = columnsDefinitions map {
     cd => {
-      //cd.
+      cd.createItemAndWrapper(initialConfig)
     }
   }
-  val index = new Label(id.toString)
-  val instrument = new TextField("Instrument")
-  instrument.setRequired(true)
+  controlsAndWrappers map {
+    case (c, _) => {
+       layout.addComponent(c)
+     }
+  }
 
-  //val initialConfig = GDSConfiguration("", "", "", 0, "DOUBLE", "")
+  val okButton = new Button("Ok")
+  okButton.addListener((e: Button#ClickEvent) => {
+    println(GDSKeywordsDataSource.itemToGDSConfiguration(initialConfig, controlsAndWrappers map {_._2}))
+    close()
+  )
+  layout.addComponent(okButton)
+  val cancelButton = new Button("Cancel")
+  cancelButton.addListener((e: Button#ClickEvent) => {
+    close()
+  })
+  layout.addComponent(cancelButton)
 
-  val observationEvent = new GDSEventPropertyFactory()
-  //observationEvent.setRequired(true)
-  layout.addComponent(index)
-  layout.addComponent(instrument)
-  //layout.addComponent(observationEvent)
   setContent(layout)
 
 }

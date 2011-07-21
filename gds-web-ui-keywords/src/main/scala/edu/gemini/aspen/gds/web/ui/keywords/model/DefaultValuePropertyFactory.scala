@@ -20,11 +20,10 @@ class DefaultValuePropertyFactory extends PropertyItemWrapperFactory(classOf[Def
   }
 
   override def createItemAndWrapper(config: GDSConfiguration) = {
-  //    val textField = new TextField("", config.nullValue.value) with Comparable[TextField] {
-  //      def compareTo(that: TextField) = this.getValue.toString.compareTo(that.getValue.toString)
-  //    }
     val textField = new DefaultValueTextField(config.nullValue)
     textField.addValidator(validator)
+    textField.setCaption("Default Value")
+    textField.setRequired(true)
     textField.setImmediate(true)
     textField.setRequired(true)
     textField.setMaxLength(80)

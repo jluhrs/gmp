@@ -16,6 +16,8 @@ class ChannelPropertyFactory extends PropertyItemWrapperFactory(classOf[Channel]
   override def createItemAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.channel.name)
     textField.addValidator(validator)
+    textField.setCaption("Channel")
+    textField.setRequired(true)
     textField.setImmediate(true)
     textField.setRequired(true)
     textField.setInvalidAllowed(false)

@@ -2,6 +2,7 @@ package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import com.vaadin.data.Item
 import edu.gemini.aspen.gds.api.GDSConfiguration
+import com.vaadin.ui.Component
 
 /**
  * This is a class that describes a cell in a table creating wrappers for each of them
@@ -29,7 +30,7 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
    * The function returned should take an incoming GDSConfiguration and produced a new one with only the
    * value in the UI control modified
    */
-  def createItemAndWrapper(config: GDSConfiguration): (AnyRef, GDSKeywordsDataSource.WrappedConfigItem)
+  def createItemAndWrapper(config: GDSConfiguration): (Component, GDSKeywordsDataSource.WrappedConfigItem)
 
   /**
    * Populates a given item out of the created item

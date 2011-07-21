@@ -14,6 +14,8 @@ class MandatoryPropertyFactory extends PropertyItemWrapperFactory(classOf[Mandat
 
   override def createItemAndWrapper(config: GDSConfiguration) = {
     val checkBox = new CheckBox("", config.mandatory.mandatory)
+    checkBox.setCaption("Mandatory")
+    checkBox.setRequired(true)
     checkBox.setStyleName("mandatory-keyword")
 
     def wrapper(config: GDSConfiguration): GDSConfiguration = {

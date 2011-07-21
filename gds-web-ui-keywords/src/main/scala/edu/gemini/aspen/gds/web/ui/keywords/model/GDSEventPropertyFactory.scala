@@ -16,6 +16,8 @@ class GDSEventPropertyFactory extends PropertyItemWrapperFactory(classOf[GDSEven
 
   override def createItemAndWrapper(config: GDSConfiguration) = {
     val comboBox = new NativeSelect("", obsEvents)
+    comboBox.setCaption("Observation Event")
+    comboBox.setRequired(true)
     comboBox.setNullSelectionAllowed(false)
     comboBox.select(config.event.name.replace("OBS_", ""))
     comboBox.addStyleName("small-combobox")

@@ -21,6 +21,8 @@ class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Array
   override def createItemAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.arrayIndex.value.toString)
     textField.addValidator(validator)
+    textField.setCaption("Array Index")
+    textField.setRequired(true)
     textField.setImmediate(true)
     textField.setRequired(true)
     textField.setMaxLength(3)

@@ -19,6 +19,8 @@ class HeaderIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Head
     val allowedHeaders = (0 to 10) map {_.toString}
     val select = new NativeSelect("", allowedHeaders)
     select.setNullSelectionAllowed(false)
+    select.setCaption("FITS Header")
+    select.setRequired(true)
     select.setInvalidAllowed(false)
     select.addStyleName("small-combobox")
     select.select(config.index.index.toString)

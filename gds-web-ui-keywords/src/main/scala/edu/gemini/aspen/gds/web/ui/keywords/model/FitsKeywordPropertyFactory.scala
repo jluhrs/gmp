@@ -18,6 +18,9 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
   override def createItemAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.keyword.getName)
     textField.addValidator(validator)
+    textField.setCaption("FITS Keyword")
+    textField.setRequired(true)
+    textField.addValidator(validator)
     textField.setImmediate(true)
     textField.setRequired(true)
     textField.setMaxLength(8)
