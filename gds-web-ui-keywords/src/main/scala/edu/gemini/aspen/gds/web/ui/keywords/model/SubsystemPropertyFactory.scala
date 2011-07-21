@@ -15,7 +15,7 @@ class SubsystemPropertyFactory extends PropertyItemWrapperFactory(classOf[Subsys
     _.toString
   }
 
-  override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
+  override def createItemAndWrapper(config: GDSConfiguration) = {
     val comboBox = new NativeSelect("", subSystems)
     comboBox.setNullSelectionAllowed(false)
     comboBox.select(config.subsystem.name.toString)

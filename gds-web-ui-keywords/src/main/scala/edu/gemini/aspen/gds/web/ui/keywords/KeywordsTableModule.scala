@@ -32,37 +32,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   val deleteProperty = "DEL"
 
   val saveButton = new Button("Save..")
-
-  def setupDeleteColumn(table: Table) {
-    table.addGeneratedColumn(deleteProperty, new ColumnGenerator {
-      def generateCell(source: Table, itemId: AnyRef, columnId: AnyRef) = {
-        val deleteButton = new Button("")
-        deleteButton.setStyleName(BaseTheme.BUTTON_LINK)
-        deleteButton.setIcon(deleteIcon)
-        deleteButton.setDescription(deleteTooltip)
-        deleteButton.addListener((e: Button#ClickEvent) => {
-          val message = "Do you want to delete the item " + itemId + "?\n" +
-            "Keyword: %s".format(dataSource.getItem(itemId).getItemProperty("FitsKeyword"))
-          ConfirmDialog.show(table.getApplication.getMainWindow, "Please Confirm:", message,
-            "Yes", "No", new ConfirmDialog.Listener() {
-
-              def onClose(dialog: ConfirmDialog) {
-                if (dialog.isConfirmed()) {
-                  // Confirmed to continue
-                  println(dataSource.getItem(itemId))
-                  dataSource.removeItem(itemId)
-                  println(dataSource.getItem(itemId))
-                }
-              }
-            })
-        })
-        deleteButton
-      }
-    })
-    table.setColumnIcon(deleteProperty, deleteIcon)
-    table.setColumnHeader(deleteProperty, "")
-    table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
-  }
+  val newRowButton = new Button("New row...")
 
   def visibleColumns(user: AnyRef): Array[AnyRef] = {
     val prop = Option(user) map {
@@ -73,7 +43,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     (p toArray).asInstanceOf[Array[AnyRef]]
   }
 
-  def getDataSource(user: AnyRef) = Option(user) map {
+  private def getDataSource(user: AnyRef) = Option(user) map {
     _ => dataSource
   } getOrElse {
     new ReadOnlyGDSKeywordsDataSource(configService.getConfiguration)
@@ -83,12 +53,16 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setContainerDataSource(getDataSource(user))
     // Update user dependant parts
     updateSaveButton(user)
+    updateNewButton(user)
     table.setVisibleColumns(visibleColumns(user))
     table.requestRepaintAll()
     tabLayout.replaceComponent(table, table)
   }
 
-  def updateSaveButton(user: AnyRef) {
+  private def updateNewButton(user: AnyRef) {
+    newRowButton.setVisible(Option(user).isDefined)
+  }
+  private def updateSaveButton(user: AnyRef) {
     saveButton.setVisible(Option(user).isDefined)
   }
 
@@ -105,6 +79,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnReorderingAllowed(true)
 
     setupDeleteColumn(table)
+    setupNewButton(table)
 
     tabLayout.addComponent(table)
     tabLayout.setExpandRatio(table, 1.0f)
@@ -117,6 +92,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     layout.addComponent(pagingControls)*/
     tabLayout.addComponent(statusRow(app))
     updateSaveButton(app.getUser)
+    updateNewButton(app.getUser)
     table.setVisibleColumns(visibleColumns(app.getUser))
     dataSource.propertyIds map {
       c => table.setColumnWidth(c, dataSource.propertyWidth(c))
@@ -139,7 +115,9 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     layout.setExpandRatio(label, 1.0f)
 
     val saveButton = buildSaveButton(app)
+    layout.addComponent(newRowButton)
     layout.addComponent(saveButton)
+    layout.setComponentAlignment(newRowButton, Alignment.MIDDLE_RIGHT)
     layout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT)
 
     //    val showAsTextButton = buildShowAsTextButton(app)
@@ -147,6 +125,43 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     //    layout.setComponentAlignment(showAsTextButton, Alignment.MIDDLE_RIGHT)
 
     layout
+  }
+
+  def setupDeleteColumn(table: Table) {
+    table.addGeneratedColumn(deleteProperty, new ColumnGenerator {
+      def generateCell(source: Table, itemId: AnyRef, columnId: AnyRef) = {
+        val deleteButton = new Button("")
+        deleteButton.setStyleName(BaseTheme.BUTTON_LINK)
+        deleteButton.setIcon(deleteIcon)
+        deleteButton.setDescription(deleteTooltip)
+        deleteButton.addListener((e: Button#ClickEvent) => {
+          val message = "Do you want to delete the item " + itemId + "?\n" +
+            "Keyword: %s".format(dataSource.getItem(itemId).getItemProperty("FitsKeyword"))
+          ConfirmDialog.show(table.getApplication.getMainWindow, "Please Confirm:", message,
+            "Yes", "No", new ConfirmDialog.Listener() {
+
+              def onClose(dialog: ConfirmDialog) {
+                if (dialog.isConfirmed()) {
+                  // Confirmed to continue
+                  dataSource.removeItem(itemId)
+                }
+              }
+            })
+        })
+        deleteButton
+      }
+    })
+    table.setColumnIcon(deleteProperty, deleteIcon)
+    table.setColumnHeader(deleteProperty, "")
+    table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
+  }
+
+  private def setupNewButton(table: Table) {
+    newRowButton.addListener((e: Button#ClickEvent) => {
+      table.getApplication.getMainWindow.addWindow(new NewRowWindow(getDataSource(table.getApplication.getUser).size))
+      //app.getMainWindow.showNotification("New Row... " + configService, Notification.TYPE_HUMANIZED_MESSAGE)
+    })
+    newRowButton
   }
 
   private def buildSaveButton(app: Application): Button = {

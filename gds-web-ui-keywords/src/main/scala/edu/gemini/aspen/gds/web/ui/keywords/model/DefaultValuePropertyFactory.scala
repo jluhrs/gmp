@@ -19,7 +19,7 @@ class DefaultValuePropertyFactory extends PropertyItemWrapperFactory(classOf[Def
     def isValidString(value: String) = value.length <= 80
   }
 
-  override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
+  override def createItemAndWrapper(config: GDSConfiguration) = {
   //    val textField = new TextField("", config.nullValue.value) with Comparable[TextField] {
   //      def compareTo(that: TextField) = this.getValue.toString.compareTo(that.getValue.toString)
   //    }

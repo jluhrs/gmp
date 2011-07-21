@@ -15,7 +15,7 @@ class HeaderIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Head
     def isValidString(value: String) = value.matches("""[\d+]+""")
   }
 
-  override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
+  override def createItemAndWrapper(config: GDSConfiguration) = {
     val allowedHeaders = (0 to 10) map {_.toString}
     val select = new NativeSelect("", allowedHeaders)
     select.setNullSelectionAllowed(false)

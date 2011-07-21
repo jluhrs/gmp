@@ -18,7 +18,7 @@ class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Array
     def isValidString(value: String) = value.length <= 9
   }
 
-  override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
+  override def createItemAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.arrayIndex.value.toString)
     textField.addValidator(validator)
     textField.setImmediate(true)

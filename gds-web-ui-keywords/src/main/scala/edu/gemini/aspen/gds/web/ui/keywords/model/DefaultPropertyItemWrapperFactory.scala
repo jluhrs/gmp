@@ -9,7 +9,7 @@ import edu.gemini.aspen.gds.api.GDSConfiguration
  * Should disappear
  */
 class DefaultPropertyItemWrapperFactory(clazz: Class[_]) extends PropertyItemWrapperFactory(clazz, classOf[String]) {
-  override def createItemAndWrapper(config: GDSConfiguration, item: Item) = {
+  override def createItemAndWrapper(config: GDSConfiguration) = {
     null
   }
 }

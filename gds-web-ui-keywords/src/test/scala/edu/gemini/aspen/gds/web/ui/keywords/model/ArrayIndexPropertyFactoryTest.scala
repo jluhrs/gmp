@@ -25,7 +25,7 @@ class ArrayIndexPropertyFactoryTest {
   def testBuildItem {
     item.addItemProperty("ArrayIndex", new ObjectProperty[ArrayIndex](0))
 
-    val (_, wrapperFunction) = factory.createItemAndWrapper(config, item)
+    val (_, wrapperFunction) = factory.createItemAndWrapper(config)
     assertEquals(config, wrapperFunction(config))
   }
 
@@ -33,7 +33,7 @@ class ArrayIndexPropertyFactoryTest {
   def testBuildAndChange {
     item.addItemProperty("ArrayIndex", new ObjectProperty[ArrayIndex](2))
 
-    val (select, wrapperFunction) = factory.createItemAndWrapper(config, item)
+    val (select, wrapperFunction) = factory.createItemAndWrapper(config)
     // Simulates that the text field has been updated
     select.setValue("2")
 

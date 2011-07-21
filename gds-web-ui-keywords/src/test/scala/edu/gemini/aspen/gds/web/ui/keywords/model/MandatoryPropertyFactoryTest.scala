@@ -24,19 +24,19 @@ class MandatoryPropertyFactoryTest {
 
   @Test
   def testBuildItem {
-    val (_, wrapperFunction) = factory.createItemAndWrapper(config, item)
+    val (_, wrapperFunction) = factory.createItemAndWrapper(config)
     assertEquals(config, wrapperFunction(config))
   }
 
   @Test
   def testCheckBoxProperties {
-    val (checkBox, _) = factory.createItemAndWrapper(config, item)
+    val (checkBox, _) = factory.createItemAndWrapper(config)
     assertNotNull(checkBox)
   }
 
   @Test
   def testBuildAndChange {
-    val (nativeSelect, wrapperFunction) = factory.createItemAndWrapper(config, item)
+    val (nativeSelect, wrapperFunction) = factory.createItemAndWrapper(config)
     // Simulates that the combo box has been updated
     nativeSelect.setValue(false)
 

@@ -29,7 +29,7 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
    * The function returned should take an incoming GDSConfiguration and produced a new one with only the
    * value in the UI control modified
    */
-  def createItemAndWrapper(config: GDSConfiguration, item: Item): (AnyRef, GDSKeywordsDataSource.WrappedConfigItem)
+  def createItemAndWrapper(config: GDSConfiguration): (AnyRef, GDSKeywordsDataSource.WrappedConfigItem)
 
   /**
    * Populates a given item out of the created item
@@ -37,7 +37,7 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
    * Acts as a strategy pattern
    */
   def populateItem(config: GDSConfiguration, item: Item): GDSKeywordsDataSource.WrappedConfigItem = {
-    val (value, wrapper) = createItemAndWrapper(config, item)
+    val (value, wrapper) = createItemAndWrapper(config)
     item.getItemProperty(title).setValue(value)
     wrapper
   }

@@ -26,13 +26,13 @@ class FitsCommentPropertyFactoryTest {
 
   @Test
   def testBuildItem {
-    val (_, wrapperFunction) = factory.createItemAndWrapper(config, item)
+    val (_, wrapperFunction) = factory.createItemAndWrapper(config)
     assertEquals(config, wrapperFunction(config))
   }
 
   @Test
   def testBuildAndChange {
-    val (textField, wrapperFunction) = factory.createItemAndWrapper(config, item)
+    val (textField, wrapperFunction) = factory.createItemAndWrapper(config)
     // Simulates that the text field has been updated
     val newComment: String = "another comment"
     textField.setValue(newComment)
