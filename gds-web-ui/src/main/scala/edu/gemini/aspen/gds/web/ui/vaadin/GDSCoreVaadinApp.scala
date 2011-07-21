@@ -26,18 +26,6 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
   val userProperty = new ObjectProperty[String]("")
 
   val gdsWebModules = scala.collection.mutable.Map[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)]()
-  tabsSheet.addListener(new SelectedTabChangeListener {
-    def selectedTabChange(p1: TabSheet#SelectedTabChangeEvent) {
-      val selectedTab = p1.getTabSheet.getTab(p1.getTabSheet.getSelectedTab)
-      val selectedEntry = gdsWebModules filter {
-        case (_, (module: GDSWebModule, tab: TabSheet.Tab)) => tab == selectedTab
-      }
-      selectedEntry.headOption.foreach {
-        tab: Tuple2[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)] => tab._2._1.tabSelected()
-      }
-
-    }
-  })
 
   /**
    * Called by Vaadin when the application needs to start
@@ -46,6 +34,18 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
    */
   override def init() {
     LOG.info("GDSCoreVaadinApp init> ")
+    tabsSheet.addListener(new SelectedTabChangeListener {
+      def selectedTabChange(event: TabSheet#SelectedTabChangeEvent) {
+        val selectedTab = event.getTabSheet.getTab(event.getTabSheet.getSelectedTab)
+        val selectedEntry = gdsWebModules filter {
+          case (_, (module: GDSWebModule, tab: TabSheet.Tab)) => tab == selectedTab
+        }
+        selectedEntry.headOption.foreach {
+          tab: Tuple2[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)] => tab._2._1.refresh()
+        }
+
+      }
+    })
     setTheme("gds")
     tabsSheet.setHeight("100%")
 
@@ -226,5 +226,5 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
       case (m, _) => m.userChanged(user)
     }
   }
-  
+
 }

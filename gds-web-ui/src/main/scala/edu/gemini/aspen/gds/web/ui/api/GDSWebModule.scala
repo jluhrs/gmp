@@ -8,30 +8,30 @@ import com.vaadin.Application;
  * main area of the GDS Web interface
  */
 trait GDSWebModule {
-    /**
-     * Title of the tab
-     */
-    val title: String
+  /**
+   * Title of the tab
+   */
+  val title: String
 
-    /**
-     * Order of the tab
-     */
-    val order: Int
+  /**
+   * Order of the tab
+   */
+  val order: Int
 
-    /**
-     * Builds a component to be added to the tab
-     *
-     * Implementations should override this method to produce the actual content
-     */
-    def buildTabContent(application: Application): Component
+  /**
+   * Builds a component to be added to the tab
+   *
+   * Implementations should override this method to produce the actual content
+   */
+  def buildTabContent(application: Application): Component
 
-    /**
-     * Called by the container to indicate that the user has changed
-     */
-    def userChanged(user: AnyRef): Unit = {}
+  /**
+   * Called by the container to indicate that the user has changed
+   */
+  def userChanged(user: AnyRef): Unit = {}
 
-    /**
-     * Called when the tab is selected
-     */
-    def tabSelected(): Unit = {}
+  /**
+   * Called when the module content needs to be refreshed
+   */
+  def refresh(): Unit = {}
 }
