@@ -13,7 +13,7 @@ import model._
 /**
  * Represents the LoginWindow
  */
-class NewRowWindow(id: Int) extends Window("Add new row") {
+class NewRowWindow(dataSource: GDSKeywordsDataSource) extends Window("Add new row") {
   // Contains the factories for each column
   val columnsDefinitions = List(
     new InstrumentPropertyFactory,
@@ -38,7 +38,7 @@ class NewRowWindow(id: Int) extends Window("Add new row") {
   val layout = new FormLayout
   layout.setMargin(true)
   layout.setSizeUndefined()
-  val index = new Label(id.toString)
+  val index = new Label((dataSource.size + 1).toString)
   index.setCaption("Configuration ID")
 
   layout.addComponent(index)
@@ -56,7 +56,8 @@ class NewRowWindow(id: Int) extends Window("Add new row") {
 
   val okButton = new Button("Ok")
   okButton.addListener((e: Button#ClickEvent) => {
-    val newItem = GDSKeywordsDataSource.itemToGDSConfiguration(initialConfig, controlsAndWrappers map {_._2})
+    val newConfig = GDSKeywordsDataSource.itemToGDSConfiguration(initialConfig, controlsAndWrappers map {_._2})
+    dataSource.addNewConfig(newConfig)
     close()
   })
   layout.addComponent(okButton)

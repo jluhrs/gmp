@@ -12,6 +12,8 @@ import scala.collection.JavaConversions._
  * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
  */
 abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedContainer {
+  def addNewConfig(config: GDSConfiguration) {}
+
   // Contains the factories for each column
   val columnsDefinitions = Map[Class[_], PropertyItemWrapperFactory](
     classOf[Instrument] -> new InstrumentPropertyFactory,

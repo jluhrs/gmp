@@ -11,7 +11,7 @@ import scala.collection.JavaConversions._
 class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSKeywordsDataSource(config) {
 
   // Contains a list of configurations and wrappers for the UI items
-  val configWrapper = {
+  var configWrapper = {
     // Give each config an id
     val indexedConfig = config.zipWithIndex
 
@@ -53,4 +53,16 @@ class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
     } toList
   }
 
+  override def addNewConfig(config: GDSConfiguration) {
+    val i = size
+    val item = addItemAfter(lastItemId, i)
+    // Add one itemProperty per displayed field
+    val itemWrappers = GDSKeywordsDataSource.displayedFields map {
+      f => {
+        val cd = columnsDefinitions.getOrElse(f.getType, defaultColumnDefinition(f.getType))
+        cd.populateItem(config, item)
+      }
+    }
+    configWrapper = ((i, config, itemWrappers) :: configWrapper).reverse
+  }
 }

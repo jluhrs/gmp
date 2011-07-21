@@ -158,7 +158,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
   private def setupNewButton(table: Table) {
     newRowButton.addListener((e: Button#ClickEvent) => {
-      table.getApplication.getMainWindow.addWindow(new NewRowWindow(getDataSource(table.getApplication.getUser).size))
+      table.getApplication.getMainWindow.addWindow(new NewRowWindow(getDataSource(table.getApplication.getUser)))
       //app.getMainWindow.showNotification("New Row... " + configService, Notification.TYPE_HUMANIZED_MESSAGE)
     })
     newRowButton

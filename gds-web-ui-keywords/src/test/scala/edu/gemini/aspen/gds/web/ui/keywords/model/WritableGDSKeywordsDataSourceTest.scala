@@ -28,6 +28,16 @@ class WritableGDSKeywordsDataSourceTest {
   }
 
   @Test
+  def testAddItem {
+    val config1 = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val config2 = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY2", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val dataSource = new WritableGDSKeywordsDataSource(List(config1))
+    dataSource.addNewConfig(config2)
+    assertEquals(2, dataSource.toGDSConfiguration.size)
+    assertEquals(config2, dataSource.toGDSConfiguration(1))
+  }
+
+  @Test
   def testDeleteItem {
     val config1 = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
     val dataSource = new WritableGDSKeywordsDataSource(List(config1))
