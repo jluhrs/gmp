@@ -24,19 +24,19 @@ class DataTypePropertyFactoryTest {
 
   @Test
   def testBuildItem {
-    val (_, wrapperFunction) = factory.createItemAndWrapper(config)
+    val (_, wrapperFunction) = factory.buildPropertyControlAndWrapper(config)
     assertEquals(config, wrapperFunction(config))
   }
 
   @Test
   def testSelectProperties {
-    val (select, _) = factory.createItemAndWrapper(config)
+    val (select, _) = factory.buildPropertyControlAndWrapper(config)
     assertFalse(select.isNullSelectionAllowed)
   }
 
   @Test
   def testBuildAndChange {
-    val (select, wrapperFunction) = factory.createItemAndWrapper(config)
+    val (select, wrapperFunction) = factory.buildPropertyControlAndWrapper(config)
     // Simulates that the combo box has been updated
     select.setValue("STRING")
 

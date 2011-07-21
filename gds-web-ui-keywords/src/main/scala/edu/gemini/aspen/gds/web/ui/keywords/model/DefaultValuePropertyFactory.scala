@@ -19,7 +19,7 @@ class DefaultValuePropertyFactory extends PropertyItemWrapperFactory(classOf[Def
     def isValidString(value: String) = value.length <= 80
   }
 
-  override def createItemAndWrapper(config: GDSConfiguration) = {
+  override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new DefaultValueTextField(config.nullValue)
     textField.addValidator(validator)
     textField.setCaption("Default Value")

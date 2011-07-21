@@ -25,7 +25,7 @@ class InstrumentPropertyFactoryTest {
   def testBuildItem {
     item.addItemProperty("Instrument", new ObjectProperty[Instrument]("GPI"))
 
-    val (_, wrapperFunction) = factory.createItemAndWrapper(config)
+    val (_, wrapperFunction) = factory.buildPropertyControlAndWrapper(config)
     assertEquals(config, wrapperFunction(config))
   }
 
@@ -33,7 +33,7 @@ class InstrumentPropertyFactoryTest {
   def testBuildAndChange {
     item.addItemProperty("ArrayIndex", new ObjectProperty[ArrayIndex](2))
 
-    val (select, wrapperFunction) = factory.createItemAndWrapper(config)
+    val (select, wrapperFunction) = factory.buildPropertyControlAndWrapper(config)
     // Simulates that the text field has been updated
     select.setValue("GEMS")
 

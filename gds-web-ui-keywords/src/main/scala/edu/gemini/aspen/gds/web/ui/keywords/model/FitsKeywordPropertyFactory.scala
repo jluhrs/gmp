@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import com.vaadin.data.Item
 import edu.gemini.aspen.gds.api.GDSConfiguration
 import edu.gemini.aspen.giapi.data.FitsKeyword
 import com.vaadin.ui.TextField
@@ -11,18 +10,12 @@ import com.vaadin.data.validator.AbstractStringValidator
  * the name of a FITS Keyword
  */
 class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[FitsKeyword], classOf[TextField]) {
-  val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
-    def isValidString(value: String) = value.length <= 9
-  }
-
-  override def createItemAndWrapper(config: GDSConfiguration) = {
+  override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.keyword.getName)
-    textField.addValidator(validator)
+    textField.addValidator(FitsKeywordPropertyFactory.validator)
     textField.setCaption("FITS Keyword")
     textField.setRequired(true)
-    textField.addValidator(validator)
     textField.setImmediate(true)
-    textField.setRequired(true)
     textField.setMaxLength(8)
     textField.setInvalidAllowed(false)
 
@@ -34,15 +27,8 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+object FitsKeywordPropertyFactory {
+  val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
+    def isValidString(value: String) = value.length < 9
+  }
+}

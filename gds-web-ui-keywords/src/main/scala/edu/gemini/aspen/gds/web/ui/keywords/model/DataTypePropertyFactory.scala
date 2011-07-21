@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 class DataTypePropertyFactory extends PropertyItemWrapperFactory(classOf[DataType], classOf[NativeSelect]) {
   val dataTypes = List("STRING", "DOUBLE", "INT")
 
-  override def createItemAndWrapper(config: GDSConfiguration) = {
+  override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val select = new NativeSelect("", dataTypes)
     select.setNullSelectionAllowed(false)
     select.setCaption("Data Type")

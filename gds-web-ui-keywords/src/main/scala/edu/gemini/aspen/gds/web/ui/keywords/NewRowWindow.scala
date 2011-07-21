@@ -45,7 +45,7 @@ class NewRowWindow(dataSource: GDSKeywordsDataSource) extends Window("Add new ro
   val initialConfig = GDSConfiguration("GPI", "OBS_START_ACQ", "KEYWORD", 0, "DOUBLE", true, "NONE", "EPICS", "", 0, "")
   val controlsAndWrappers = columnsDefinitions map {
     cd => {
-      cd.createItemAndWrapper(initialConfig)
+      cd.buildPropertyControlAndWrapper(initialConfig)
     }
   }
   controlsAndWrappers map {

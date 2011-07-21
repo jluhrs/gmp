@@ -28,7 +28,7 @@ class FitsKeywordPropertyFactoryTest {
   def testBuildItem {
     item.addItemProperty("FitsKeyword", new ObjectProperty[FitsKeyword]("KEY"))
 
-    val (_, wrapperFunction) = factory.createItemAndWrapper(config)
+    val (_, wrapperFunction) = factory.buildPropertyControlAndWrapper(config)
     assertEquals(config, wrapperFunction(config))
   }
 
@@ -36,7 +36,7 @@ class FitsKeywordPropertyFactoryTest {
   def testBuildAndChange {
     item.addItemProperty("FitsKeyword", new ObjectProperty[FitsKeyword]("KEY"))
 
-    val (textField, wrapperFunction) = factory.createItemAndWrapper(config)
+    val (textField, wrapperFunction) = factory.buildPropertyControlAndWrapper(config)
     // Simulates that the text field has been updated
     textField.setValue("NEWKEY")
 
@@ -44,11 +44,11 @@ class FitsKeywordPropertyFactoryTest {
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 
-  @Test(expected = classOf[InvalidValueException  ])
+  @Test(expected = classOf[InvalidValueException])
   def testLengthError {
     item.addItemProperty("FitsKeyword", new ObjectProperty[FitsKeyword]("KEY"))
 
-    val (textField, _) = factory.createItemAndWrapper(config)
+    val (textField, _) = factory.buildPropertyControlAndWrapper(config)
     // Simulates that the text field has been updated
     textField.setValue("AAAAAAAAAAAAA")
   }

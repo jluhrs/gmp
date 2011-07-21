@@ -24,13 +24,15 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
   val width = -1
 
   /**
-   * This is a factory method that creates a property item, typically a UI control
-   * and a function wrapper that will take the UI control value back to the GDS Configuration
+   * This is a factory method that creates a builds a controller that can handle a single property
+   * item af a configuration. It will return a UI control and a function wrapper
+   * that will take the value in the UI control back to the GDS Configuration
    *
    * The function returned should take an incoming GDSConfiguration and produced a new one with only the
-   * value in the UI control modified
+   * value in the UI control modified. The function will typically be a closure that can read the GUI control
+   * value
    */
-  def createItemAndWrapper(config: GDSConfiguration): (Component, GDSKeywordsDataSource.WrappedConfigItem)
+  def buildPropertyControlAndWrapper(config: GDSConfiguration): (Component, GDSKeywordsDataSource.WrappedConfigItem)
 
   /**
    * Populates a given item out of the created item
@@ -38,11 +40,9 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
    * Acts as a strategy pattern
    */
   def populateItem(config: GDSConfiguration, item: Item): GDSKeywordsDataSource.WrappedConfigItem = {
-    val (value, wrapper) = createItemAndWrapper(config)
+    val (value, wrapper) = buildPropertyControlAndWrapper(config)
     item.getItemProperty(title).setValue(value)
     wrapper
   }
 
-  // find the property in the item
-  protected def itemProperty(item: Item) = item.getItemProperty(title)
 }
