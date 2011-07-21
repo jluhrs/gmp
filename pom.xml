@@ -119,6 +119,7 @@
         <module>gmp-status-gateway</module>
         <module>gmp-statusdb</module>
         <module>cas</module>
+        <module>casdb</module>
         <module>gmp-epics-access</module>
         <module>gmp-epics-simulator</module>
         <module>gmp-epics-status-service</module>
