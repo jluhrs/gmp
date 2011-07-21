@@ -56,9 +56,9 @@ class NewRowWindow(id: Int) extends Window("Add new row") {
 
   val okButton = new Button("Ok")
   okButton.addListener((e: Button#ClickEvent) => {
-    println(GDSKeywordsDataSource.itemToGDSConfiguration(initialConfig, controlsAndWrappers map {_._2}))
+    val newItem = GDSKeywordsDataSource.itemToGDSConfiguration(initialConfig, controlsAndWrappers map {_._2})
     close()
-  )
+  })
   layout.addComponent(okButton)
   val cancelButton = new Button("Cancel")
   cancelButton.addListener((e: Button#ClickEvent) => {
