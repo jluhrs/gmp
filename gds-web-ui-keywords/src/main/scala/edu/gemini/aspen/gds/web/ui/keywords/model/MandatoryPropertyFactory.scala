@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import com.vaadin.data.Item
 import edu.gemini.aspen.gds.api.{Mandatory, GDSConfiguration}
 import com.vaadin.ui.CheckBox
 
@@ -10,7 +9,7 @@ import com.vaadin.ui.CheckBox
 class MandatoryPropertyFactory extends PropertyItemWrapperFactory(classOf[Mandatory], classOf[CheckBox]) {
   override val width = 40
 
-  override val   title = "Mand."
+  override val title = "Mand."
 
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val checkBox = new CheckBox("", config.mandatory.mandatory)

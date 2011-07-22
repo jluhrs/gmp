@@ -1,12 +1,9 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import org.junit.Assert._
-import com.vaadin.ui.TextField
 import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.Test
 import com.vaadin.data.util.{ObjectProperty, PropertysetItem}
-import edu.gemini.aspen.giapi.data.FitsKeyword
-import com.vaadin.data.Validator.InvalidValueException
 import edu.gemini.aspen.gds.api.{DefaultValue, GDSConfiguration}
 
 /**

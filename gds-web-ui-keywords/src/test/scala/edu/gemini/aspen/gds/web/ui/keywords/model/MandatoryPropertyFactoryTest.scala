@@ -5,7 +5,7 @@ import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.Test
 import com.vaadin.data.util.{ObjectProperty, PropertysetItem}
 import edu.gemini.aspen.gds.api.{Mandatory, GDSConfiguration}
-import com.vaadin.ui.{CheckBox, NativeSelect}
+import com.vaadin.ui.CheckBox
 
 /**
  * Test of the property wrapper

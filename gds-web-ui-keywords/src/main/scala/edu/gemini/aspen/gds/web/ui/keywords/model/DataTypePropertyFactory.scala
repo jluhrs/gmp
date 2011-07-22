@@ -1,19 +1,15 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import com.vaadin.data.Item
 import com.vaadin.ui.NativeSelect
-import edu.gemini.aspen.giapi.data.ObservationEvent
-import edu.gemini.aspen.gds.api.{FitsType, DataType, GDSEvent, GDSConfiguration}
+import edu.gemini.aspen.gds.api.{DataType, GDSConfiguration}
 import scala.collection.JavaConversions._
 
 /**
  * PropertyItemWrapperFactory for DataType that uses a ComboBox to select a given data type
  */
 class DataTypePropertyFactory extends PropertyItemWrapperFactory(classOf[DataType], classOf[NativeSelect]) {
-  val dataTypes = List("STRING", "DOUBLE", "INT")
-
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
-    val select = new NativeSelect("", dataTypes)
+    val select = new NativeSelect("", DataTypePropertyFactory.dataTypes)
     select.setNullSelectionAllowed(false)
     select.setCaption("Data Type")
     select.setRequired(true)
@@ -31,15 +27,6 @@ class DataTypePropertyFactory extends PropertyItemWrapperFactory(classOf[DataTyp
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+object DataTypePropertyFactory {
+  val dataTypes = List("STRING", "DOUBLE", "INT")
+}
