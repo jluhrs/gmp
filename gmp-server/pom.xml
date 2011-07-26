@@ -275,11 +275,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <version>0.2.0</version>
         </dependency>
         <!-- EPICS Simulator -->
-        <dependency>
+        <!--dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-epics-simulator</artifactId>
             <version>0.1.0</version>
-        </dependency>
+        </dependency-->
         <!-- GMP EPICS Status Service -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
