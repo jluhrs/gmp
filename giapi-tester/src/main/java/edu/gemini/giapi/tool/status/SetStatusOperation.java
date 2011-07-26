@@ -69,7 +69,7 @@ public class SetStatusOperation implements Operation {
             LOG.severe("If you indicate an alarm type, you must indicate severity and cause (message is optional).");
             return 0;
         }
-        StatusSetter setter = new StatusSetter(_statusItem.getName());
+        StatusSetter setter = new StatusSetter("GIAPI Tester", _statusItem.getName());
 
 
         try {

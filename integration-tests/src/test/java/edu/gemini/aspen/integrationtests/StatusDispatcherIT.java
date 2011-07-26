@@ -104,7 +104,7 @@ public class StatusDispatcherIT {
         TimeUnit.MILLISECONDS.sleep(400);
 
         //send StatusItem update via JMS
-        StatusSetter ss = new StatusSetter("gpi:status1");
+        StatusSetter ss = new StatusSetter("Test Status Setter", "gpi:status1");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<String>("gpi:status1", "gpi:status1"));
 

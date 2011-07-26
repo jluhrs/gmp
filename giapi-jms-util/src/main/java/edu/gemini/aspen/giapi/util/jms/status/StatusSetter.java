@@ -14,8 +14,8 @@ import javax.jms.Message;
  * This class encapsulates the code to publish a StatusItem update.
  */
 public class StatusSetter extends BaseMessageProducer {
-    public StatusSetter(String statusName) {
-        super("Status Setter", new DestinationData(JmsKeys.GMP_STATUS_DESTINATION_PREFIX + statusName, DestinationType.TOPIC));
+    public StatusSetter(String clientName, String statusName) {
+        super(clientName, new DestinationData(JmsKeys.GMP_STATUS_DESTINATION_PREFIX + statusName, DestinationType.TOPIC));
     }
 
     /**

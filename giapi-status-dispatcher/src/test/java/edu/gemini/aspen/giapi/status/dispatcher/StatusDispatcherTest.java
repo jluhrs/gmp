@@ -132,7 +132,7 @@ public class StatusDispatcherTest {
         agg.bindStatusHandler(dispatcher);
 
 
-        StatusSetter ss = new StatusSetter("gpi:b:1");
+        StatusSetter ss = new StatusSetter("Test Status Setter", "gpi:b:1");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<String>("gpi:b:1", "gpi:b:1"));
 
