@@ -55,14 +55,6 @@ The FITS headers that the seqexec provides, must be passed to the GDS. There are
 alternatives supported by tcl and java/scala. The most suitable seems to be XMLRPC, which has implementations in both
 languages, and is relatively simple, but much higher level than using plain http or tcp.
 
-\section gds_performance GDS Preliminary Performance Test
-
-- Average timing for event OBS_PREP: 38[ms]
-- Average timing for event OBS_START_ACQ: 18[ms]
-- Average timing for event OBS_END_ACQ: 20[ms]
-- Average timing for event OBS_END_DSET_WRITE: 23[ms]
-
-
 \section random_sec Random Rambling
 Just some notes:
 - The "current" DHS is not tags/current, but the trunk.
@@ -71,43 +63,111 @@ Just some notes:
 - Can generate datalabels.
 - If data arrives with a label that already exists, a dash and a correlative number is appended to the name.
 
-\subsection gds_performance_testing GDS Performance Tests
+\section gds_performance_testing GDS Performance Tests
+\subsection  Introduction
 Testing was done to check the performance of GDS when confronted to many simultaneous keywords. To do
 so a special testing program and configuration was created
 
-- A test program was created in giapi-glue-cc that can post a large amount of status updates and seqexec keywords
+- A test program was created in giapi-glue-cc that can post a large amount
+of status updates and seqexec keywords, and execute a sequence of observation events
 - A configuration matching the test program war written in gmp-server/src/main/etc/conf/gds-keywords-highcount.conf
 and it needs to be referred from GDSConfigurationServiceImpl-default.cfg
+- To test the EPICS part a casdb instance should be running
 
 The main objective is to determine the bounds of how fast GDS can process a file comparable to those required for GPI
-As a reference, we'd ideally be able to have expositions of one second and process the file in a compalable time
+As a reference, we'd ideally be able to have expositions of one second and process the file in a comparable time
 
 The tests were carried out on 7/20/2011 on an iMac with all the components on the local machine
 
-Some results:
-1 Constructing actors takes an appreciable time, for example constructing 80 SEQEXEC actors takes 30-40 [ms]
+\subsection Procedure
+The test procedure is as follows
+
+-# Checkout and build the giapi-osgi project
+-# Edit the GDSConfigurationServiceImpl-default.cfg to point to the gds-keywords-highcount.conf file
+-# Start casdb at the giapi source code dir:
+    java -jar casdb/target/casdb-0.1.0-jar-with-dependencies.jar -f integration-tests/src/test/resources/cas500channels.xml  
+-# Start the gmp-server and verify it is running normally
+-# Go to giapi-glue-cc/run/examples, build and run
+    ./runExample gpisimulator 
+  This produces an output like:
+\verbatim
+Starting GPI Simulation Test
+Simulating datalabel S1311707323
+<?xml version="1.0" encoding="UTF-8"?><methodResponse xmlns:ex="http://ws.apache.org/xmlrpc/namespaces/extensions"><params><param><value><boolean>1</boolean></value></param></params></methodResponse>
+time to post xmlrpc req:2.668 [ms]
+2011-07-26 15:08:43,516 [0x7fff7109fcc0] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_SCIENCE_DATA_PATH
+TempFile : /tmp/S1311707323.fits
+POST 0
+2011-07-26 15:08:43,786 [0x7fff7109fcc0] INFO  giapi.JmsProducer - Observation Event: OBS_PREP datalabel: S1311707323
+POST 1
+2011-07-26 15:08:44,187 [0x7fff7109fcc0] INFO  giapi.JmsProducer - Observation Event: OBS_START_ACQ datalabel: S1311707323
+POST 2
+2011-07-26 15:08:46,187 [0x7fff7109fcc0] INFO  giapi.JmsProducer - Observation Event: OBS_END_ACQ datalabel: S1311707323
+POST 3
+2011-07-26 15:08:46,388 [0x7fff7109fcc0] INFO  giapi.JmsProducer - Observation Event: OBS_START_READOUT datalabel: S1311707323
+POST 4
+2011-07-26 15:08:46,389 [0x7fff7109fcc0] INFO  giapi.JmsProducer - Observation Event: OBS_END_READOUT datalabel: S1311707323
+POST 5
+2011-07-26 15:08:46,392 [0x7fff7109fcc0] INFO  giapi.JmsProducer - Observation Event: OBS_START_DSET_WRITE datalabel: S1311707323
+POST 6
+2011-07-26 15:08:46,593 [0x7fff7109fcc0] INFO  giapi.JmsProducer - Observation Event: OBS_END_DSET_WRITE datalabel: S1311707323
+[15:08:46]
+\endverbatim
+-# This should produce a file with updated FITS keywords under:
+    /tmp/N-S1311707323.fits
+-# The timing of the events can be seen on the gmp log at
+    gmp-server/runner/logs/gmp.log
+\verbatim
+2011-07-26 15:29:29,764 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_PREP: 44[ms]
+2011-07-26 15:29:29,764 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_PREP DataLabel S1311708566: 14[ms]
+2011-07-26 15:29:29,765 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_ACQ: 605[ms]
+2011-07-26 15:29:29,765 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_ACQ DataLabel S1311708566: 118[ms]
+2011-07-26 15:29:29,765 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_ACQ: 47[ms]
+2011-07-26 15:29:29,765 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_ACQ DataLabel S1311708566: 41[ms]
+2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_READOUT: 8[ms]
+2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_READOUT DataLabel S1311708566: 11[ms]
+2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_READOUT: 7[ms]
+2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_READOUT DataLabel S1311708566: 8[ms]
+2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_DSET_WRITE: 5[ms]
+2011-07-26 15:29:29,767 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_DSET_WRITE DataLabel S1311708566: 6[ms]
+2011-07-26 15:29:29,767 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_DSET_WRITE: 151[ms]
+2011-07-26 15:29:29,767 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_DSET_WRITE DataLabel S1311708566: 120[ms]
+2011-07-26 15:29:29,803 INFO  [ForkJoinPool-1-worker-51] .aspen.gds.obsevent.handler.ReplyHandler -  Writing updated FITS file at S1311708566 took PT0.039S
+\endverbatim
+
+\subsection Results
+After analyzing some runs we can get some conclusions:
+-# It seems that for the amount of items required (80 SEQEXEC, 500 Status, 250 EPICS items) we need approximately 3[s] for the collection to be reliable
+-# Constructing actors takes an appreciable time, for example constructing 80 SEQEXEC actors takes 30-40 [ms]
 Construction of 508 STATUS actors takes 122 [ms] 
-2 Collection of SEQEXEC items takes ar appreciable time, e.g.:
+-# Collection of SEQEXEC items takes an appreciable time, e.g.:
     FitsKeyword{name='OBSTYPE'} -> 12[ms]
     FitsKeyword{name='SSA'} -> 14[ms]
     FitsKeyword{name='OBSCLASS'} -> 14[ms]
     FitsKeyword{name='OBSID'} -> 15[ms]
     FitsKeyword{name='RAWCC'} -> 12[ms]
 This in an in memory call so, the slowness is probably due to the actor based design of TemporarySeqexecKeywordsDatabase
-3 The waiting part of KeywordSetComposer in the method waitForDataAndReply is suboptimal, e.g for SEQEXEC actor it produces:
+-# The waiting part of KeywordSetComposer in the method waitForDataAndReply is suboptimal, e.g for SEQEXEC actor it produces:
     Waiting for data took 109 [ms] 
-4 Requesting STATUS items is very fast, for example taking 160-180 [ms] to read 508 status items, this is probably coming mostly from the
+-# Requesting STATUS items is very fast, for example taking 160-180 [ms] to read 508 status items, this is probably coming mostly from the
 issue in 3
+-# Posting a SEQEXEC XMLRPC request takes around 2-10[ms] however experience would suggest that making one HTTP request per keyword could be quite slow  
+-# Reading EPICS channels seems quite fast 1-2[ms] each
+-# It seems is not reliable to read so many EPICS channels ond there are exceptions reading some of them. It could be this is due to the cas side
+rather than the GDS part
 
-Some recommendations by issue number:
-1.1 Use a single actor per set of keywords, for example only one Seqexec actor for the 80 requested keywords
-1.2 Reuse actor instances. This would complicate the design though since it would require keeping state
-2.1 Change TemporarySeqexecKeywordsDatabase to allow retrieval of multiple keywords at once, in combination with 1.2
-2.2 Add a method to make a copy of TemporarySeqexecKeywordsDatabase and operate on that, thus avoiding the issues related to
+\subsection Recommendations
+Some recommendations:
+-# Use a single actor per set of keywords, for example only one Seqexec actor for the 80 requested keywords
+-# Reuse actor instances. This would complicate the design though since it would require keeping state
+-# Change TemporarySeqexecKeywordsDatabase to allow retrieval of multiple keywords at once
+-# Add a method to make a copy of TemporarySeqexecKeywordsDatabase and operate on that, thus avoiding the issues related to
 the actor-based calls
-3.1 Redesign 3 so that waiting for data collection takes app the same as the slowest actor
+-# Redesign 3 so that waiting for data collection takes app the same as the slowest actor
+-# Change the Posting of keywords to post many keywords at once and/or change it to use o lighter protocol
+-# Replace reading EPICS channels directly and instead use the latest snapshot stored in memory
 
-\subsection gds_memory_leaks_testing_sec GDS Memory Leaks Testing
+\section gds_memory_leaks_testing_sec GDS Memory Leaks Testing
 Testing for memory leaks are possible by using the acqloop.sh script at the src/examples dir in giapi-glue, and then
 checking the GDS using visualvm or jconsole
 
