@@ -1,6 +1,7 @@
 package edu.gemini.giapi.tool;
 
 import edu.gemini.giapi.tool.fileevents.MonitorFileEventsOperation;
+import edu.gemini.giapi.tool.obsevents.SendObsEventOperation;
 import edu.gemini.giapi.tool.parser.*;
 import edu.gemini.giapi.tool.arguments.*;
 import edu.gemini.giapi.tool.commands.CommandOperation;
@@ -16,7 +17,7 @@ import java.util.logging.LogManager;
 
 
 /**
- * The GIAPI Tester main class. 
+ * The GIAPI Tester main class.
  */
 public class GiapiTester {
 
@@ -47,7 +48,9 @@ public class GiapiTester {
         parser.registerArgument(new AlarmMessageArgument());
         parser.registerArgument(new GetStatusNamesArgument());
         parser.registerArgument(new MonitorObsEventArgument());
+        parser.registerArgument(new SendObsEventArgument());
         parser.registerArgument(new MonitorFileEventsArgument());
+        parser.registerArgument(new DataLabelArgument());
         parser.registerArgument(new ExpectedValueArgument());
 
         //possible operations
@@ -58,20 +61,21 @@ public class GiapiTester {
         parser.registerOperation(new SetStatusOperation());
         parser.registerOperation(new GetStatusNamesOperation());
         parser.registerOperation(new MonitorObsEventOperation());
+        parser.registerOperation(new SendObsEventOperation());
         parser.registerOperation(new MonitorFileEventsOperation());
 
         //get the Operation the parser found
         Operation op = parser.parse();
 
         if (op != null) {
-             execute(op);
+            execute(op);
         } else {
             Util.die("I'm sorry, what operation do you mean?");
         }
     }
 
     private static void execute(Operation op) throws Exception {
-        try{
+        try {
             System.exit(op.execute());
         } catch (Exception e) {
             Util.die("Error executing operation " + op + ", error message: " + e.getMessage());

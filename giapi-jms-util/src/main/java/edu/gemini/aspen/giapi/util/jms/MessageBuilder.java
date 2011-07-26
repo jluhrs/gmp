@@ -9,6 +9,8 @@ import edu.gemini.aspen.giapi.commands.Configuration;
 import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.data.DataLabel;
+import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.StatusVisitor;
 import edu.gemini.aspen.giapi.util.jms.status.StatusItemParser;
@@ -204,6 +206,19 @@ public final class MessageBuilder {
         }
 
         return bm;
+    }
+
+    public static Message buildObsEventMessage(Session session, ObservationEvent obsEvent, DataLabel label) throws JMSException {
+
+        Message msg = session.createMessage();
+
+        if (obsEvent == null) {
+            return msg; //an empty message.
+        }
+        msg.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME, obsEvent.name());
+        msg.setStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME, label.getName());
+
+        return msg;
     }
 
 }

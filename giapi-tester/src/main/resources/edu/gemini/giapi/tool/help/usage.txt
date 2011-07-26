@@ -90,7 +90,14 @@ DESCRIPTION
 
      -names
         Gets a list of all the status items registered in the database
-        
+
+     -sendObsEvent <observation-event-name>
+        Indicate that you want to send an observation event. Must be use
+        together with -dataLabel.
+
+     -dataLabel <dataLabel>
+        The DataLabel for which an observation event sent with -sendObsEvent should be sent.
+
      -obsEvents
         Starts listening for observation events coming through the GMP.
         Each observation event received is printed out to the screen.
