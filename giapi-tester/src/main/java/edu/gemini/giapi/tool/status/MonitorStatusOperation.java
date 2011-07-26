@@ -29,7 +29,7 @@ public class MonitorStatusOperation implements Operation {
 
     private String _host = "localhost";
 
-    private long _timeout;
+    private long _timeout = -1;
 
     private String _expectedValue;
 
@@ -104,15 +104,23 @@ public class MonitorStatusOperation implements Operation {
 
             getter.stopJms();
 
-            ScheduledFuture<Void> timeoutFuture = startTimeoutThread();
 
-            service.initialize();
+            if (_timeout > 0) {//wait the timeout
+                ScheduledFuture<Void> timeoutFuture = startTimeoutThread();
+                service.initialize();
 
-            waitForTimeout(service, timeoutFuture);
 
+                waitForTimeout(service, timeoutFuture);
+            } else if (_timeout == 0) {//exit now
+                //do nothing
+            } else {//wait forever
+                service.initialize();
+                Thread.sleep(Long.MAX_VALUE);
+            }
         } catch (JMSException e) {
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());
         }
+
         return 0;
     }
 

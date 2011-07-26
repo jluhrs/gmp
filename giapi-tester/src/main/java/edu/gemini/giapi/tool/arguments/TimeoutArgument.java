@@ -5,7 +5,7 @@ import edu.gemini.giapi.tool.parser.Util;
 
 /**
  * Timeout argument; used to express a period of time
- * (in milliseconds) for an operation to complete. 
+ * (in milliseconds) for an operation to complete.
  */
 public class TimeoutArgument extends AbstractArgument {
 
@@ -25,7 +25,7 @@ public class TimeoutArgument extends AbstractArgument {
         } catch (NumberFormatException ex) {
             Util.die("Timeout is a long integer number. Try -timeout <timeout>");
         }
-        if (timeout <= 0) {
+        if (timeout < 0) {
             Util.die("The timeout must be zero or a positive number. Please try again");
         }
     }
