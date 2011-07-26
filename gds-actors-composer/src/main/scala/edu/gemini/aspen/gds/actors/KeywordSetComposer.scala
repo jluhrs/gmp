@@ -69,7 +69,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
       i += 1
       dataFutures(i - 1).inputChannel.react {
         case data => {
-          LOG.fine("React in " + (System.currentTimeMillis() - s) + " [ms]")
+          LOG.finer("React in " + (System.currentTimeMillis() - s) + " [ms]")
           storeReply(dataLabel, data)
         }
       }
