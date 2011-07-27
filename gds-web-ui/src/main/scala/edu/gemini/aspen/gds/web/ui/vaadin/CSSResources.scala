@@ -11,7 +11,7 @@ import org.ops4j.pax.web.extender.whiteboard.ResourceMapping
 @Instantiate
 @Provides(specifications = Array(classOf[ResourceMapping]))
 class CSSResources extends DefaultResourceMapping {
-    setAlias("/VAADIN/themes/gds")
-    setPath("/css")
+  setAlias("/VAADIN/themes/gds")
+  setPath("/css")
 }
 

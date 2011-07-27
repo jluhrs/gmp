@@ -22,6 +22,8 @@ import java.io.{FileOutputStream, FileInputStream}
 class StaticResources(ctx: BundleContext) extends HttpServlet {
     @ServiceProperty(name = "alias", value = "/VAADIN")
     val label: String = "/VAADIN"
+  @ServiceProperty(name = "servlet-name", value = "VaadinResourcesServlet")
+  val servletName: String = "VaadinResourcesServlet"
     val vaadinBundle = findVaadinBundle(ctx)
 
     override def doGet(req: HttpServletRequest, resp: HttpServletResponse) {

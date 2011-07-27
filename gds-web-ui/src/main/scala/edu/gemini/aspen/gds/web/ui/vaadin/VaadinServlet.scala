@@ -22,7 +22,7 @@ import org.ops4j.pax.web.service.WebContainer
 @Component
 @Provides(specifications = Array(classOf[Servlet]))
 @Instantiate
-class VaadinServlet(@Requires(from = "VaadinAppFactory") val vaadinAppFactory: Factory, @Requires val webContainer:WebContainer) extends AbstractApplicationServlet {
+class VaadinServlet(@Requires(from = "VaadinAppFactory") val vaadinAppFactory: Factory, @Requires val webContainer: WebContainer) extends AbstractApplicationServlet {
   private val LOG = Logger.getLogger(this.getClass.getName)
   @ServiceProperty(name = "alias", value = "/gds")
   val label: String = "/gds"
