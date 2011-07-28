@@ -2,10 +2,7 @@ package edu.gemini.aspen.gmp.statusgw.osgi;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.statusgw.StatusDatabaseServiceDecorator;
-import edu.gemini.aspen.gmp.statusgw.jms.JmsStatusDispatcher;
-import edu.gemini.aspen.gmp.statusgw.jms.StatusItemRequestListener;
-import edu.gemini.aspen.gmp.statusgw.jms.StatusNamesRequestListener;
-import edu.gemini.aspen.gmp.statusgw.jms.StatusTopics;
+import edu.gemini.aspen.gmp.statusgw.jms.*;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
@@ -32,28 +29,35 @@ public class Activator implements BundleActivator {
 
         //Create the message consumer for status items requests
         BaseMessageConsumer consumer = new BaseMessageConsumer(
-               "Gateway Status Consumer",
+                "Gateway Status Consumer",
                 new DestinationData(StatusTopics.TOPIC_NAME,
                         DestinationType.TOPIC),
                 new StatusItemRequestListener(decorator, dispatcher),
-                new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY+ " = '" +JmsKeys.GW_STATUS_REQUEST_TYPE_ITEM +"'")
+                new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY + " = '" + JmsKeys.GW_STATUS_REQUEST_TYPE_ITEM + "'")
         );
 
 
         //Create the message consumer for status names requests
         BaseMessageConsumer namesConsumer = new BaseMessageConsumer(
-               "Gateway Status Names Consumer",
+                "Gateway Status Names Consumer",
                 new DestinationData(StatusTopics.TOPIC_NAME,
                         DestinationType.TOPIC),
                 new StatusNamesRequestListener(decorator, dispatcher),
-                new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY+ " = '" +JmsKeys.GW_STATUS_REQUEST_TYPE_NAMES +"'")
+                new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY + " = '" + JmsKeys.GW_STATUS_REQUEST_TYPE_NAMES + "'")
         );
 
+        //Create the message consumer for multiple status items requests
+        BaseMessageConsumer multipleStatusItemsConsumer = new BaseMessageConsumer(
+                "Gateway Multiple StatusItems Consumer",
+                new DestinationData(StatusTopics.TOPIC_NAME,
+                        DestinationType.TOPIC),
+                new MultipleStatusItemsRequestListener(decorator, dispatcher),
+                new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY + " = '" + JmsKeys.GW_STATUS_REQUEST_TYPE_ALL + "'")
+        );
 
         _jmsStatusTracker = new JmsProviderTracker(bundleContext,
-                consumer, namesConsumer, dispatcher);
+                consumer, namesConsumer, multipleStatusItemsConsumer, dispatcher);
         _jmsStatusTracker.open();
-
 
 
         _dbTracker = new StatusDatabaseTracker(bundleContext, decorator);
@@ -65,7 +69,7 @@ public class Activator implements BundleActivator {
 
         _dbTracker.close();
         _dbTracker = null;
-        
+
         _jmsStatusTracker.close();
         _jmsStatusTracker = null;
     }

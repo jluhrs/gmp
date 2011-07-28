@@ -19,6 +19,8 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
@@ -88,7 +90,7 @@ public class MessageBuilderTest {
 
         BytesMessage msg = (BytesMessage) MessageBuilder.buildStatusItemMessage(_mockedSession, statusItem);
 
-        verify(msg).writeByte((byte)0);
+        verify(msg).writeByte((byte) 0);
         verify(msg).writeUTF(statusName);
         verify(msg).writeInt(statusValue);
     }
@@ -104,7 +106,7 @@ public class MessageBuilderTest {
 
         BytesMessage msg = (BytesMessage) MessageBuilder.buildStatusItemMessage(_mockedSession, statusItem);
 
-        verify(msg).writeByte((byte)1);
+        verify(msg).writeByte((byte) 1);
         verify(msg).writeUTF(statusName);
         verify(msg).writeDouble(statusValue);
     }
@@ -120,7 +122,7 @@ public class MessageBuilderTest {
 
         BytesMessage msg = (BytesMessage) MessageBuilder.buildStatusItemMessage(_mockedSession, statusItem);
 
-        verify(msg).writeByte((byte)2);
+        verify(msg).writeByte((byte) 2);
         verify(msg).writeUTF(statusName);
         verify(msg).writeFloat(statusValue);
     }
@@ -144,7 +146,7 @@ public class MessageBuilderTest {
         when(m.readUTF()).thenReturn("b", "a");
 
         Set<String> statusNames = MessageBuilder.buildStatusNames(m);
-        
+
         assertFalse(statusNames.isEmpty());
         assertTrue(statusNames.contains("a"));
         assertTrue(statusNames.contains("b"));
@@ -155,7 +157,7 @@ public class MessageBuilderTest {
         Message m = mock(Message.class);
 
         Set<String> statusNames = MessageBuilder.buildStatusNames(m);
-        
+
         assertTrue(statusNames.isEmpty());
     }
 
@@ -170,7 +172,7 @@ public class MessageBuilderTest {
 
         BytesMessage msg = (BytesMessage) MessageBuilder.buildStatusItemMessage(_mockedSession, statusItem);
 
-        verify(msg).writeByte((byte)3);
+        verify(msg).writeByte((byte) 3);
         verify(msg).writeUTF(statusName);
         verify(msg).writeUTF(statusValue);
     }
@@ -222,7 +224,7 @@ public class MessageBuilderTest {
     @Test(expected = JMSException.class)
     public void testBuildCompletionInformationWithBadSequenceCommand() throws JMSException {
         mm.setStringProperty(JmsKeys.GMP_HANDLER_RESPONSE_KEY, HandlerResponse.Response.ERROR.toString());
-         mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, "BADCOMMAND");
+        mm.setStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY, "BADCOMMAND");
         MessageBuilder.buildCompletionInformation(mm);
     }
 
@@ -256,4 +258,21 @@ public class MessageBuilderTest {
         MessageBuilder.buildCompletionInformation(m);
     }
 
+    @Test
+    public void testSendMultipleStatusItems() throws JMSException {
+        List<StatusItem> items = new ArrayList<StatusItem>();
+        items.add(new BasicStatus<Float>("name1", 1.0f));
+        items.add(new BasicStatus<Float>("name2", 2.0f));
+
+        BytesMessage mockedMessage = mock(BytesMessage.class);
+        when(_mockedSession.createBytesMessage()).thenReturn(mockedMessage);
+
+        BytesMessage msg = (BytesMessage) MessageBuilder.buildMultipleStatusItemsMessage(_mockedSession, items);
+
+        verify(msg).writeInt(2);
+        verify(msg).writeUTF("name1");
+        verify(msg).writeFloat(1.0f);
+        verify(msg).writeUTF("name2");
+        verify(msg).writeFloat(2.0f);
+    }
 }

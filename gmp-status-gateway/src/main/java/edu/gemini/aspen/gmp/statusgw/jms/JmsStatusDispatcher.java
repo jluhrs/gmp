@@ -5,6 +5,8 @@ import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.jms.api.BaseMessageProducer;
 
 import javax.jms.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,9 +22,9 @@ public class JmsStatusDispatcher extends BaseMessageProducer {
     /**
      * Sends a status item via JMS
      *
-     * @param item the StatusItem to send
+     * @param item        the StatusItem to send
      * @param destination where to send it
-     * @throws JMSException 
+     * @throws JMSException
      */
     public void sendStatusItem(StatusItem item, Destination destination) throws JMSException {
         Message replyMessage = MessageBuilder.buildStatusItemMessage(_session, item);
@@ -32,7 +34,7 @@ public class JmsStatusDispatcher extends BaseMessageProducer {
     /**
      * Sends all the status names via JMS
      *
-     * @param names the status names to send
+     * @param names       the status names to send
      * @param destination where to send them
      * @throws JMSException
      */
@@ -46,13 +48,33 @@ public class JmsStatusDispatcher extends BaseMessageProducer {
 
         //create message, fill it and send it
         replyMessage.writeInt(names.size());
-        for(String name: names){
+        for (String name : names) {
             replyMessage.writeUTF(name);
         }
-        _producer.send(destination,replyMessage);
-
+        _producer.send(destination, replyMessage);
 
 
     }
 
+    /**
+     * Sends multiple status items via JMS
+     *
+     * @param items       the status items to send
+     * @param destination where to send them
+     * @throws JMSException
+     */
+    public void sendMultipleStatusItems(Collection<StatusItem> items, Destination destination) throws JMSException {
+
+        //just create an empty set so the client doesn't timeout
+        if (items == null) {
+            items = new ArrayList<StatusItem>();
+        }
+
+        //create message, fill it and send it
+        Message replyMessage = MessageBuilder.buildMultipleStatusItemsMessage(_session, items);
+
+        _producer.send(destination, replyMessage);
+
+
+    }
 }

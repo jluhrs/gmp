@@ -6,7 +6,7 @@ package edu.gemini.aspen.giapi.util.jms;
 public class JmsKeys {
 
     //Common keys
-    public final static String GMP_PREFIX  = "GMP";
+    public final static String GMP_PREFIX = "GMP";
     public final static String GMP_SEPARATOR = ".";
 
 
@@ -36,20 +36,21 @@ public class JmsKeys {
     public final static String GMP_SERVICES_LOG_LEVEL = "LEVEL";
 
     //Status Keys
-    public final static String GMP_STATUS_DESTINATION_PREFIX =  GMP_PREFIX + GMP_SEPARATOR + "STATUS" + GMP_SEPARATOR;
+    public final static String GMP_STATUS_DESTINATION_PREFIX = GMP_PREFIX + GMP_SEPARATOR + "STATUS" + GMP_SEPARATOR;
 
     //Heartbeat Keys
-    public final static String GMP_HEARTBEAT_DESTINATION =  GMP_PREFIX + GMP_SEPARATOR + "HEARTBEAT";
+    public final static String GMP_HEARTBEAT_DESTINATION = GMP_PREFIX + GMP_SEPARATOR + "HEARTBEAT";
 
     //Gateway Keys
 
-    private final static String GW_PREFIX  = "GW";
+    private final static String GW_PREFIX = "GW";
 
     //Gateway Status Keys
     public final static String GW_STATUS_REQUEST_DESTINATION = GW_PREFIX + GMP_SEPARATOR + "STATUS_REQUEST";
     public final static String GW_STATUS_REQUEST_TYPE_PROPERTY = "STATUS_REQUEST_TYPE";
     public final static String GW_STATUS_REQUEST_TYPE_ITEM = "STATUS_REQUEST_TYPE_ITEM";
     public final static String GW_STATUS_REQUEST_TYPE_NAMES = "STATUS_REQUEST_TYPE_NAMES";
+    public final static String GW_STATUS_REQUEST_TYPE_ALL = "STATUS_REQUEST_TYPE_ALL";
 
 
     //Gateway Command Keys

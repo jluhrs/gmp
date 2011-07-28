@@ -21,8 +21,7 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
-import java.util.Enumeration;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -198,6 +197,48 @@ public final class MessageBuilder {
 
         try {
             item.accept(serializer);
+        } catch (JMSException e) {
+            throw e;
+        } catch (Exception e) {
+            //this shouldn't happen, since the serializer only throws JMS Exceptions.
+            LOG.log(Level.SEVERE, "Received unexpected exception ", e);
+        }
+
+        return bm;
+    }
+
+    public static Collection<StatusItem> buildMultipleStatusItems(Message m) throws JMSException {
+        if (!(m instanceof BytesMessage)) {
+            return null;
+        }
+
+        BytesMessage bm = (BytesMessage) m;
+        List<StatusItem> items = new ArrayList<StatusItem>();
+        int count = bm.readInt();
+        try {
+            for (int i = 0; i < count; i++) {
+                items.add(StatusItemParser.parse(bm));
+            }
+        } catch (IllegalArgumentException ex) {
+            return items;
+        }
+        return items;
+    }
+
+    public static Message buildMultipleStatusItemsMessage(Session session, Collection<StatusItem> items) throws JMSException {
+
+        BytesMessage bm = session.createBytesMessage();
+
+        if (items == null || items.isEmpty()) {
+            return bm; //an empty message.
+        }
+
+        StatusVisitor serializer = new StatusSerializerVisitor(bm);
+        bm.writeInt(items.size());
+        try {
+            for (StatusItem item : items) {
+                item.accept(serializer);
+            }
         } catch (JMSException e) {
             throw e;
         } catch (Exception e) {
