@@ -4,14 +4,16 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 /**
  * StatusDatabase Tester.
  *
  * @author <Authors name>
- * @since <pre>01/17/2011</pre>
  * @version 1.0
+ * @since <pre>01/17/2011</pre>
  */
 public class StatusDatabaseTest {
     private static final String STATUS_NAME = "status";
@@ -33,9 +35,7 @@ public class StatusDatabaseTest {
     }
 
     /**
-     *
      * Test Method: getStatusItem(String name)
-     *
      */
     @Test
     public void testGetStatusItem() throws Exception {
@@ -58,13 +58,27 @@ public class StatusDatabaseTest {
     }
 
     /**
+     * Test Method: getAll()
+     */
+    @Test
+    public void testGetAll() throws Exception {
+        assertFalse(statusDatabase.getAll().iterator().hasNext());
+
+        statusDatabase.update(item);
+
+        Iterator it = statusDatabase.getAll().iterator();
+        assertTrue(it.hasNext());
+        assertEquals(item, it.next());
+        assertFalse(it.hasNext());
+    }
+
+    /**
      * Test the toString method
      */
     @Test
     public void testToString() throws Exception {
         assertEquals(statusDatabase.getName(), statusDatabase.toString());
     }
-
 
 
 }

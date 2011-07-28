@@ -14,9 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * The Status Database contains the most up to date information related to
  * the status items. All the status items received by the GMP are recorded here
-*/
+ */
 @Component
-@Instantiate(name="statusDB")
+@Instantiate(name = "statusDB")
 @Provides
 public class StatusDatabase implements StatusHandler, StatusDatabaseService {
 
@@ -30,7 +30,7 @@ public class StatusDatabase implements StatusHandler, StatusDatabaseService {
 
     @Override
     public String getName() {
-        return "Status Database";  
+        return "Status Database";
     }
 
     @Override
@@ -39,8 +39,13 @@ public class StatusDatabase implements StatusHandler, StatusDatabaseService {
     }
 
     @Override
-    public Set<String> getStatusNames(){
+    public Set<String> getStatusNames() {
         return Collections.unmodifiableSet(_db.keySet());
+    }
+
+    @Override
+    public Iterable<StatusItem> getAll() {
+        return Collections.unmodifiableCollection(_db.values());
     }
 
     @Override
