@@ -88,6 +88,9 @@ DESCRIPTION
      -set <status-type>=<status-name>=<status-value>=<alarm-severity>=<alarm-cause>[=<alarm-message>]
              Sets the value and alarm for the status item specified
 
+     -getAllStatus
+        Gets the most recent value for all status items.
+
      -names
         Gets a list of all the status items registered in the database
 

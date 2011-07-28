@@ -6,11 +6,8 @@ import edu.gemini.giapi.tool.parser.*;
 import edu.gemini.giapi.tool.arguments.*;
 import edu.gemini.giapi.tool.commands.CommandOperation;
 import edu.gemini.giapi.tool.help.HelpOperation;
-import edu.gemini.giapi.tool.status.GetStatusNamesOperation;
-import edu.gemini.giapi.tool.status.MonitorStatusOperation;
-import edu.gemini.giapi.tool.status.GetStatusOperation;
+import edu.gemini.giapi.tool.status.*;
 import edu.gemini.giapi.tool.obsevents.MonitorObsEventOperation;
-import edu.gemini.giapi.tool.status.SetStatusOperation;
 
 import java.io.IOException;
 import java.util.logging.LogManager;
@@ -47,6 +44,7 @@ public class GiapiTester {
         parser.registerArgument(new AlarmCauseArgument());
         parser.registerArgument(new AlarmMessageArgument());
         parser.registerArgument(new GetStatusNamesArgument());
+        parser.registerArgument(new GetAllStatusItemsArgument());
         parser.registerArgument(new MonitorObsEventArgument());
         parser.registerArgument(new SendObsEventArgument());
         parser.registerArgument(new MonitorFileEventsArgument());
@@ -60,6 +58,7 @@ public class GiapiTester {
         parser.registerOperation(new GetStatusOperation());
         parser.registerOperation(new SetStatusOperation());
         parser.registerOperation(new GetStatusNamesOperation());
+        parser.registerOperation(new GetAllStatusItemsOperation());
         parser.registerOperation(new MonitorObsEventOperation());
         parser.registerOperation(new SendObsEventOperation());
         parser.registerOperation(new MonitorFileEventsOperation());

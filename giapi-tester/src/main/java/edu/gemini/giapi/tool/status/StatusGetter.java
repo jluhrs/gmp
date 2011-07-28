@@ -9,6 +9,7 @@ import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 
 import javax.jms.*;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -42,6 +43,32 @@ public class StatusGetter extends BaseMessageProducer {
             tempConsumer.close();
 
             return MessageBuilder.buildStatusItem(reply);
+        } catch (JMSException e) {
+            throw new TesterException(e);
+        }
+    }
+
+    public Collection<StatusItem> getAllStatusItems() throws TesterException {
+
+        //request the value
+        try {
+            Message m = _session.createMessage();
+            m.setStringProperty(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY, JmsKeys.GW_STATUS_REQUEST_TYPE_ALL);
+
+
+            //create a consumer to receive the answer
+            Destination tempQueue = _session.createTemporaryQueue();
+            m.setJMSReplyTo(tempQueue);
+            MessageConsumer tempConsumer = _session.createConsumer(tempQueue);
+
+            //sendStatusItem the message
+            _producer.send(m);
+
+            Message reply = tempConsumer.receive(1000); //1000 msec to answer.
+
+            tempConsumer.close();
+
+            return MessageBuilder.buildMultipleStatusItems(reply);
         } catch (JMSException e) {
             throw new TesterException(e);
         }
