@@ -1,5 +1,6 @@
 package edu.gemini.aspen.giapi.status;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -32,5 +33,5 @@ public interface StatusDatabaseService {
      *
      * @return the Iterable of StatusItems
      */
-    Iterable<StatusItem> getAll();
+    Collection<StatusItem> getAll();
 }

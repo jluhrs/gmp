@@ -7,6 +7,7 @@ import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,7 +45,7 @@ public class StatusDatabase implements StatusHandler, StatusDatabaseService {
     }
 
     @Override
-    public Iterable<StatusItem> getAll() {
+    public Collection<StatusItem> getAll() {
         return Collections.unmodifiableCollection(_db.values());
     }
 
