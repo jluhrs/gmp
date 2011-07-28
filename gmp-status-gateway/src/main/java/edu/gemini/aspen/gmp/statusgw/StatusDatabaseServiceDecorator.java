@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.statusgw;
 import edu.gemini.aspen.giapi.status.StatusDatabaseService;
 import edu.gemini.aspen.giapi.status.StatusItem;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -19,7 +20,7 @@ public class StatusDatabaseServiceDecorator implements StatusDatabaseService {
         if (_service != null) {
             return _service.getStatusItem(name);
         }
-        return null;  
+        return null;
     }
 
     /**
@@ -27,9 +28,17 @@ public class StatusDatabaseServiceDecorator implements StatusDatabaseService {
      *
      * @return status names
      */
-    public Set<String> getStatusNames(){
+    public Set<String> getStatusNames() {
         if (_service != null) {
             return _service.getStatusNames();
+        }
+        return null;
+    }
+
+    @Override
+    public Collection<StatusItem> getAll() {
+        if (_service != null) {
+            return _service.getAll();
         }
         return null;
     }
@@ -37,6 +46,7 @@ public class StatusDatabaseServiceDecorator implements StatusDatabaseService {
     /**
      * Registers the real DatabaseService to be use by this decorator. Any
      * existing database service will be removed.
+     *
      * @param service the Status Database Service to be used
      */
     public void setDatabaseService(StatusDatabaseService service) {
@@ -44,7 +54,7 @@ public class StatusDatabaseServiceDecorator implements StatusDatabaseService {
     }
 
     /**
-     * Remove the existing database service from the system. 
+     * Remove the existing database service from the system.
      */
     public void removeDatabaseService() {
         _service = null;
