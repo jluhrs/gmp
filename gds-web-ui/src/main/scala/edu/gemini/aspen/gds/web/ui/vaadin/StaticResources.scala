@@ -20,36 +20,38 @@ import java.io.{FileOutputStream, FileInputStream}
 @Instantiate
 @Provides(specifications = Array(classOf[Servlet]))
 class StaticResources(ctx: BundleContext) extends HttpServlet {
-    @ServiceProperty(name = "alias", value = "/VAADIN")
-    val label: String = "/VAADIN"
+  @ServiceProperty(name = "alias", value = "/VAADIN")
+  val label: String = "/VAADIN"
   @ServiceProperty(name = "servlet-name", value = "VaadinResourcesServlet")
   val servletName: String = "VaadinResourcesServlet"
-    val vaadinBundle = findVaadinBundle(ctx)
+  val vaadinBundle = findVaadinBundle(ctx)
 
-    override def doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        val path = req.getPathInfo
-        val resourcePath = "VAADIN" + path
+  override def doGet(req: HttpServletRequest, resp: HttpServletResponse) {
+    val path = req.getPathInfo
+    val resourcePath = "VAADIN" + path
 
-        val u = vaadinBundle map {_.getResource(resourcePath)}
-        u map {
-            ur: URL =>
-                use(ur.openStream) {
-                    in => use(resp.getOutputStream()) {
-                        out => val buffer = new Array[Byte](1024)
-                        Iterator.continually(in.read(buffer))
-                                .takeWhile(_ != -1)
-                                .foreach {
-                            out.write(buffer, 0, _)
-                        }
-                    }
-                }
-        } getOrElse {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND)
-        }
+    val u = vaadinBundle map {
+      _.getResource(resourcePath)
     }
+    u map {
+      ur: URL =>
+        use(ur.openStream) {
+          in => use(resp.getOutputStream()) {
+            out => val buffer = new Array[Byte](1024)
+            Iterator.continually(in.read(buffer))
+              .takeWhile(_ != -1)
+              .foreach {
+              out.write(buffer, 0, _)
+            }
+          }
+        }
+    } getOrElse {
+      resp.sendError(HttpServletResponse.SC_NOT_FOUND)
+    }
+  }
 
-    def findVaadinBundle(ctx: BundleContext) =
-        ctx.getBundles().toList filter {
-            v: Bundle => "com.vaadin".equals(v.getSymbolicName())
-        } headOption
+  def findVaadinBundle(ctx: BundleContext) =
+    ctx.getBundles().toList filter {
+      v: Bundle => "com.vaadin".equals(v.getSymbolicName())
+    } headOption
 }

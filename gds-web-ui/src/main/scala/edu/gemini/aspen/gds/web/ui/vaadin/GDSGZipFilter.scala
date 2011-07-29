@@ -1,13 +1,11 @@
 package edu.gemini.aspen.gds.web.ui.vaadin
 
-import org.ops4j.pax.web.extender.whiteboard.runtime.DefaultResourceMapping
-import org.ops4j.pax.web.extender.whiteboard.ResourceMapping
 import javax.servlet.Filter
 import org.eclipse.jetty.servlets.GzipFilter
 import org.apache.felix.ipojo.annotations.{ServiceProperty, Provides, Instantiate, Component}
 
 /**
- * Resource mapper used to serve css from inside the bundle
+ * Filter that will apply gzip compression to the web ui
  */
 @Component
 @Instantiate
