@@ -11,9 +11,14 @@
     vertical-align: middle;
 }
 
-/* Make the mandatory checkbox centered */
-.v-checkbox-mandatory-keyword {
+/* Make the mandatory checkbox centered in the table */
+.v-table-cell-content .v-checkbox-mandatory-keyword {
     text-align: center;
+}
+
+/* Make the mandatory checkbox without label in the table */
+.v-table-cell-content .v-checkbox-mandatory-keyword label {
+    display: none;
 }
 
 /* Add borders to the control panel at the bottom ot the keywords table */
@@ -30,7 +35,7 @@
 }
 
 /* Make the comboboxes to center */
-.small-combobox .v-select-select     {
+.small-combobox .v-select-select {
 }
 
 .v-label-gds-status {
