@@ -12,7 +12,7 @@ import com.vaadin.ui.Component
  *
  * Each column needs a title and a type
  */
-abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: Class[_]) {
+abstract class PropertyItemWrapperFactory(val fieldClass: Class[_], val columnType: Class[_]) {
   /**
    * Name of the column, by default the field class name
    */
@@ -41,7 +41,7 @@ abstract class PropertyItemWrapperFactory(fieldClass: Class[_], val columnType: 
    */
   def populateItem(config: GDSConfiguration, item: Item): GDSKeywordsDataSource.WrappedConfigItem = {
     val (value, wrapper) = buildPropertyControlAndWrapper(config)
-    item.getItemProperty(title).setValue(value)
+    item.getItemProperty(fieldClass.getSimpleName).setValue(value)
     wrapper
   }
 

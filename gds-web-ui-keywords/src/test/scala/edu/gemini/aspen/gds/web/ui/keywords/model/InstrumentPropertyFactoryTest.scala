@@ -17,7 +17,7 @@ class InstrumentPropertyFactoryTest {
 
   @Test
   def testColumnDefinition {
-    assertEquals("Instrument", factory.title)
+    assertEquals("Inst.", factory.title)
     assertEquals(classOf[Label], factory.columnType)
   }
 

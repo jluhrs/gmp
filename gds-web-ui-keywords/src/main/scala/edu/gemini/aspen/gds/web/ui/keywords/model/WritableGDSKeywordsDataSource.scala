@@ -40,9 +40,17 @@ class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
     GDSKeywordsDataSource.displayedFields map {
       c => {
         val cd = columnsDefinitions.getOrElse(c.getType, defaultColumnDefinition(c.getType))
-        addContainerProperty(cd.title, cd.columnType, "")
+        addContainerProperty(cd.fieldClass.getSimpleName, cd.columnType, "")
       }
     }
+  }
+
+  override def propertyHeader(propertyId: String) = {
+    GDSKeywordsDataSource.displayedFields find {
+      _.getType.getSimpleName == propertyId
+    } map { f =>
+      columnsDefinitions.getOrElse(f.getType, defaultColumnDefinition(f.getType)).title
+    } getOrElse (propertyId)
   }
 
   override def toGDSConfiguration: List[GDSConfiguration] = {

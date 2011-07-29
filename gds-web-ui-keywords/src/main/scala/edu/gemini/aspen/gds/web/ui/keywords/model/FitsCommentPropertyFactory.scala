@@ -24,7 +24,6 @@ class FitsCommentPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
     textField.setCaption("FITS Comment")
     textField.setRequired(true)
     textField.setImmediate(true)
-    textField.setRequired(true)
     textField.setInvalidAllowed(false)
     textField.setMaxLength(80)
 

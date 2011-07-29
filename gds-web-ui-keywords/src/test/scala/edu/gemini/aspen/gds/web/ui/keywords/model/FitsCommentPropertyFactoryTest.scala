@@ -40,10 +40,4 @@ class FitsCommentPropertyFactoryTest {
     val updatedConfig = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "another comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
-
-  @Test
-  def testPopulateItem {
-    val wrapperFunction = factory.populateItem(config, item)
-    assertEquals(config, wrapperFunction(config))
-  }
 }

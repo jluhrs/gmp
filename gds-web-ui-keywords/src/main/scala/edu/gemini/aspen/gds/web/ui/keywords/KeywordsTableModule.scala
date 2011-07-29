@@ -15,6 +15,7 @@ import themes.BaseTheme
 import com.vaadin.Application
 import org.vaadin.dialogs.ConfirmDialog
 import org.vaadin.dialogs.DefaultConfirmDialogFactory
+import javax.management.remote.rmi._RMIConnection_Stub
 
 /**
  * Module for the table to edit the keywords
@@ -22,7 +23,7 @@ import org.vaadin.dialogs.DefaultConfirmDialogFactory
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
   val order = 0
-  val dataSource: GDSKeywordsDataSource = new WritableGDSKeywordsDataSource(configService.getConfiguration)
+  lazy val dataSource = new WritableGDSKeywordsDataSource(configService.getConfiguration)
 
   val tabLayout = new VerticalLayout
   val table = new Table("Keywords")
@@ -49,8 +50,16 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     new ReadOnlyGDSKeywordsDataSource(configService.getConfiguration)
   }
 
+  private def updateTableHeaders(user: AnyRef) = {
+    val ds = getDataSource(user)
+    ds.propertyIds foreach {
+      p => table.setColumnHeader(p, ds.propertyHeader(p))
+    }
+  }
+
   override def userChanged(user: AnyRef) = {
     table.setContainerDataSource(getDataSource(user))
+    updateTableHeaders(user)
     // Update user dependant parts
     updateSaveButton(user)
     updateNewButton(user)
@@ -74,7 +83,6 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setSizeFull()
     table.setPageLength(25)
     table.setCacheRate(0.1)
-    //table.setEditable(true)
     table.setColumnCollapsingAllowed(true)
     table.setColumnReorderingAllowed(true)
 

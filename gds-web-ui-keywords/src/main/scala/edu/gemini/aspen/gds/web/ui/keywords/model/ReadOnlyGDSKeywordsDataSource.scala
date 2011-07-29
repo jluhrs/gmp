@@ -34,6 +34,8 @@ class ReadOnlyGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
     }
   }
 
+  override def propertyHeader(propertyId: String) = propertyId
+
   def configToItem(config: GDSConfiguration) = {
     List[String](config.instrument.name.toString,
       config.event.name.toString,

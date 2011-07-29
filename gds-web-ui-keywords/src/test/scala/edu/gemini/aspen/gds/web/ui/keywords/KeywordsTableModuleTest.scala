@@ -53,13 +53,39 @@ class KeywordsTableModuleTest extends Mockito {
         "FitsKeyword",
         "HeaderIndex",
         "DataType",
-        "Mand.",
+        "Mandatory",
         "DefaultValue",
         "Subsystem",
         "Channel",
-        "index",
-        "Comment",
+        "ArrayIndex",
+        "FitsComment",
         "DEL"),
       tableColumnsForUser)
+  }
+
+  @Test
+  def testColumnHeaders() {
+    val configService = mock[GDSConfigurationService]
+    configService.getConfiguration returns List[GDSConfiguration]()
+    val module = new KeywordsTableModule(configService)
+
+    val app = mock[Application]
+    module.buildTabContent(app)
+
+    val tableColumnHeaders = module.table.getColumnHeaders
+    assertEquals(
+      List(
+        "Instrument",
+        "GDSEvent",
+        "FitsKeyword",
+        "HeaderIndex",
+        "DataType",
+        "Mandatory",
+        "DefaultValue",
+        "Subsystem",
+        "Channel",
+        "ArrayIndex",
+        "FitsComment"),
+      tableColumnHeaders.toList)
   }
 }
