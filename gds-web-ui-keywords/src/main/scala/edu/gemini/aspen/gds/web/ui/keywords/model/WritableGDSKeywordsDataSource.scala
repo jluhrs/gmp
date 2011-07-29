@@ -2,6 +2,7 @@ package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import edu.gemini.aspen.gds.api._
 import scala.collection.JavaConversions._
+import com.vaadin.data.Item
 
 /**
  * This class is the data source backing the Table that shows the keywords
@@ -9,10 +10,9 @@ import scala.collection.JavaConversions._
  * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
  */
 class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSKeywordsDataSource(config) {
-
   // Contains a list of configurations and wrappers for the UI items
   var configWrapper = {
-    // Give each config an id
+    // Give each config an propertyId
     val indexedConfig = config.zipWithIndex
 
     // Add an item per
@@ -20,13 +20,7 @@ class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
       case (c, i) => {
         val item = addItem(i)
         // Add one itemProperty per displayed field
-        val itemWrappers = GDSKeywordsDataSource.displayedFields map {
-          f => {
-            val cd = columnsDefinitions.getOrElse(f.getType, defaultColumnDefinition(f.getType))
-            cd.populateItem(c, item)
-          }
-        }
-        (i, c, itemWrappers)
+        (i, c, addItemWrapper(c, item))
       }
     }
   }
@@ -45,7 +39,7 @@ class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
     }
   }
 
-  override def propertyHeader(propertyId: String) = {
+  override protected[keywords] def propertyHeader(propertyId: String) = {
     GDSKeywordsDataSource.displayedFields find {
       _.getType.getSimpleName == propertyId
     } map { f =>
@@ -53,7 +47,7 @@ class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
     } getOrElse (propertyId)
   }
 
-  override def toGDSConfiguration: List[GDSConfiguration] = {
+  override protected[keywords] def toGDSConfiguration: List[GDSConfiguration] = {
     configWrapper collect {
       case (i, c, itemWrappers) if containsId(i) => {
         GDSKeywordsDataSource.itemToGDSConfiguration(c, itemWrappers)
@@ -61,16 +55,18 @@ class WritableGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
     } toList
   }
 
-  override def addNewConfig(config: GDSConfiguration) {
+  override protected[keywords] def addNewConfig(config: GDSConfiguration) {
     val i = size
     val item = addItemAfter(lastItemId, i)
-    // Add one itemProperty per displayed field
-    val itemWrappers = GDSKeywordsDataSource.displayedFields map {
+    configWrapper = ((i, config, addItemWrapper(config, item)) :: configWrapper).reverse
+  }
+
+  private def addItemWrapper(c: GDSConfiguration, item: Item):List[GDSKeywordsDataSource.ConfigUpdateFunction] = {
+    GDSKeywordsDataSource.displayedFields map {
       f => {
         val cd = columnsDefinitions.getOrElse(f.getType, defaultColumnDefinition(f.getType))
-        cd.populateItem(config, item)
+        cd.populateItem(c, item)
       }
     }
-    configWrapper = ((i, config, itemWrappers) :: configWrapper).reverse
   }
 }

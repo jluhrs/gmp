@@ -1,21 +1,14 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import com.vaadin.data.Item
 import edu.gemini.aspen.gds.api._
 import com.vaadin.data.util.ObjectProperty
 
 /**
- * This class is the data source backing the Table that shows the keywords
- *
- * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
+ * This class is a DataSource that is used for the Keywords Table Read-Only view
  */
 class ReadOnlyGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSKeywordsDataSource(config) {
-  // Columns
-  addContainerProperties
-
-  // Data
-  val configWrapper = {
-    // Give each config an id
+  {
+    // Give each config an propertyId
     val indexedConfig = config.zipWithIndex
 
     // Add an item per
@@ -34,9 +27,20 @@ class ReadOnlyGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
     }
   }
 
+  // The header is the same as the item
   override def propertyHeader(propertyId: String) = propertyId
 
-  def configToItem(config: GDSConfiguration) = {
+  // Add each property as a String
+  override protected[keywords] def addContainerProperties = {
+    GDSKeywordsDataSource.displayedFields map {
+      c => addContainerProperty(c.getType.getSimpleName, classOf[String], "")
+    }
+  }
+
+  /**
+   * Creates a row from a config item
+   */
+  private def configToItem(config: GDSConfiguration) = {
     List[String](config.instrument.name.toString,
       config.event.name.toString,
       config.keyword.getName.toString,
@@ -50,16 +54,4 @@ class ReadOnlyGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSK
       config.fitsComment.value.toString
     )
   }
-
-  /**
-   * Adds the container properties, i.e. the columns on the table
-   */
-  override protected[keywords] def addContainerProperties = {
-    GDSKeywordsDataSource.displayedFields map {
-      c => {
-        addContainerProperty(c.getType.getSimpleName, classOf[String], "")
-      }
-    }
-  }
-
 }

@@ -24,7 +24,7 @@ class WritableGDSKeywordsDataSourceTest {
   @Test
   def testWidth {
     val dataSource = new WritableGDSKeywordsDataSource(List(config1))
-    assertEquals(30, dataSource.propertyWidth("Inst."))
+    assertEquals(30, dataSource.propertyWidth("Instrument"))
   }
 
   @Test
@@ -52,7 +52,7 @@ class WritableGDSKeywordsDataSourceTest {
   def testItemToGDSConfiguration {
     assertEquals(config1, GDSKeywordsDataSource.itemToGDSConfiguration(config1, Nil))
 
-    val wrappers: List[GDSKeywordsDataSource.WrappedConfigItem] = List()
+    val wrappers: List[GDSKeywordsDataSource.ConfigUpdateFunction] = List()
     assertEquals(config1, GDSKeywordsDataSource.itemToGDSConfiguration(config1, wrappers))
   }
 }

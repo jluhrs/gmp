@@ -1,8 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import com.vaadin.data.util.IndexedContainer
-import com.vaadin.data.Item
-import edu.gemini.aspen.giapi.data.{FitsKeyword}
+import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api._
 import scala.collection.JavaConversions._
 
@@ -12,10 +11,6 @@ import scala.collection.JavaConversions._
  * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
  */
 abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedContainer {
-
-
-  def addNewConfig(config: GDSConfiguration) {}
-
   // Contains the factories for each column
   val columnsDefinitions = Map[Class[_], PropertyItemWrapperFactory](
     classOf[Instrument] -> new InstrumentPropertyFactory,
@@ -33,33 +28,51 @@ abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends Ind
 
   addContainerProperties
 
-  protected[keywords] def addContainerProperties
-
-  def propertyHeader(s: String):String
-
   /**
    * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
    */
-  def toGDSConfiguration: List[GDSConfiguration] = config
+  protected[keywords] def toGDSConfiguration: List[GDSConfiguration] = config
 
-  def propertyIds: List[String] = getContainerPropertyIds map {
-    c: Any => c.toString
+  /**
+   * Method to make the Table#getContainerPropertyIds behave more like scala
+   */
+  protected[keywords] def propertyIds: List[String] = getContainerPropertyIds collect {
+    case c: String => c
   } toList
 
-  def propertyWidth(id: String): Int = columnsDefinitions find {
-    case (k, m) => m.title == id
+  /**
+   * Returns the width of a given column
+   */
+  protected[keywords] def propertyWidth(propertyId: String): Int = columnsDefinitions find {
+    case (k, _) => k.getSimpleName == propertyId
   } map {
     _._2.width
   } getOrElse (-1)
+
+  /**
+   * Returns the header to use for a given column
+   */
+  protected[keywords] def propertyHeader(s: String):String
+
+  /**
+   * Adds the container properties, one per each column
+   */
+  protected[keywords] def addContainerProperties
+
+  /**
+   * Adds a new configuration item
+   */
+  protected[keywords] def addNewConfig(config: GDSConfiguration) {}
 }
 
 object GDSKeywordsDataSource {
-  type WrappedConfigItem = (GDSConfiguration) => GDSConfiguration
+  // Type of a function that can convert one config to another based on the contents of one GUI control
+  type ConfigUpdateFunction = (GDSConfiguration) => GDSConfiguration
 
   /**
    * Uses the wrapped functions to recursively get a new GDSConfiguration based on the actual values from the UI
    */
-  protected[keywords] def itemToGDSConfiguration(config: GDSConfiguration, functions: List[WrappedConfigItem]): GDSConfiguration = {
+  protected[keywords] def itemToGDSConfiguration(config: GDSConfiguration, functions: List[ConfigUpdateFunction]): GDSConfiguration = {
     functions match {
       case List() => config
       case List(x) => x(config)

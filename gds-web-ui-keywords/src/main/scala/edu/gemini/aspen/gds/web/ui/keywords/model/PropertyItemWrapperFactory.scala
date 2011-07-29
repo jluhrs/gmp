@@ -32,14 +32,14 @@ abstract class PropertyItemWrapperFactory(val fieldClass: Class[_], val columnTy
    * value in the UI control modified. The function will typically be a closure that can read the GUI control
    * value
    */
-  def buildPropertyControlAndWrapper(config: GDSConfiguration): (Component, GDSKeywordsDataSource.WrappedConfigItem)
+  def buildPropertyControlAndWrapper(config: GDSConfiguration): (Component, GDSKeywordsDataSource.ConfigUpdateFunction)
 
   /**
    * Populates a given item out of the created item
    *
    * Acts as a strategy pattern
    */
-  def populateItem(config: GDSConfiguration, item: Item): GDSKeywordsDataSource.WrappedConfigItem = {
+  def populateItem(config: GDSConfiguration, item: Item): GDSKeywordsDataSource.ConfigUpdateFunction = {
     val (value, wrapper) = buildPropertyControlAndWrapper(config)
     item.getItemProperty(fieldClass.getSimpleName).setValue(value)
     wrapper
