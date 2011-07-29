@@ -153,7 +153,7 @@ This in an in memory call so, the slowness is probably due to the actor based de
 issue in 3
 -# Posting a SEQEXEC XMLRPC request takes around 2-10[ms] however experience would suggest that making one HTTP request per keyword could be quite slow  
 -# Reading EPICS channels seems quite fast 1-2[ms] each
--# It seems is not reliable to read so many EPICS channels ond there are exceptions reading some of them. It could be this is due to the cas side
+-# It seems is not reliable to read so many EPICS channels and there are exceptions reading some of them. It could be this is due to the cas side
 rather than the GDS part
 
 \subsection Recommendations
