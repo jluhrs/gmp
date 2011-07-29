@@ -15,10 +15,10 @@ class InstrumentPropertyFactory extends PropertyItemWrapperFactory(classOf[Instr
     val label = new Label(config.instrument.name)
     label.setCaption("Instrument")
 
-    def wrapper(config: GDSConfiguration): GDSConfiguration = {
+    def updateFunction(config: GDSConfiguration) = {
       config
     }
 
-    (label, wrapper)
+    (label, updateFunction)
   }
 }

@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import com.vaadin.data.Item
 import com.vaadin.ui.TextField
 import com.vaadin.data.validator.AbstractStringValidator
 import edu.gemini.aspen.gds.api.{ArrayIndex, GDSConfiguration}
@@ -14,13 +13,9 @@ class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Array
 
   override val title = "index"
 
-  val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
-    def isValidString(value: String) = value.length <= 9
-  }
-
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.arrayIndex.value.toString)
-    textField.addValidator(validator)
+    textField.addValidator(ArrayIndexPropertyFactory.validator)
     textField.setCaption("Array Index")
     textField.setRequired(true)
     textField.setImmediate(true)
@@ -29,10 +24,16 @@ class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Array
     textField.setWidth("30px")
     textField.setInvalidAllowed(false)
 
-    def wrapper(config: GDSConfiguration) = {
+    def updateFunction(config: GDSConfiguration) = {
       config.copy(arrayIndex = ArrayIndex(textField.getValue.toString.toInt))
     }
 
-    (textField, wrapper)
+    (textField, updateFunction)
+  }
+}
+
+object ArrayIndexPropertyFactory {
+  val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
+    def isValidString(value: String) = value.length <= 9
   }
 }

@@ -17,10 +17,10 @@ class MandatoryPropertyFactory extends PropertyItemWrapperFactory(classOf[Mandat
     checkBox.setRequired(true)
     checkBox.setStyleName("mandatory-keyword")
 
-    def wrapper(config: GDSConfiguration): GDSConfiguration = {
+    def updateFunction(config: GDSConfiguration): GDSConfiguration = {
       config.copy(mandatory = Mandatory(checkBox.getValue.asInstanceOf[Boolean]))
     }
 
-    (checkBox, wrapper)
+    (checkBox, updateFunction)
   }
 }

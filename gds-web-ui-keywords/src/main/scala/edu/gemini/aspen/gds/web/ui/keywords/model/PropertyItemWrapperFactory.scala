@@ -40,9 +40,9 @@ abstract class PropertyItemWrapperFactory(val fieldClass: Class[_], val columnTy
    * Acts as a strategy pattern
    */
   def populateItem(config: GDSConfiguration, item: Item): GDSKeywordsDataSource.ConfigUpdateFunction = {
-    val (value, wrapper) = buildPropertyControlAndWrapper(config)
+    val (value, updateFunction) = buildPropertyControlAndWrapper(config)
     item.getItemProperty(fieldClass.getSimpleName).setValue(value)
-    wrapper
+    updateFunction
   }
 
 }

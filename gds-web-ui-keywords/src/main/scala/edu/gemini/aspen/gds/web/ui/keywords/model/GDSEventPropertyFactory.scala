@@ -17,7 +17,7 @@ class GDSEventPropertyFactory extends PropertyItemWrapperFactory(classOf[GDSEven
     select.select(config.event.name.replace("OBS_", ""))
     select.addStyleName("small-combobox")
 
-    def wrapper(config: GDSConfiguration): GDSConfiguration = {
+    def updateFunction(config: GDSConfiguration) = {
       Option(select.getValue) map {
         v => config.copy(event = GDSEvent("OBS_" + v.toString))
       } getOrElse {
@@ -25,7 +25,7 @@ class GDSEventPropertyFactory extends PropertyItemWrapperFactory(classOf[GDSEven
       }
     }
 
-    (select, wrapper)
+    (select, updateFunction)
   }
 }
 

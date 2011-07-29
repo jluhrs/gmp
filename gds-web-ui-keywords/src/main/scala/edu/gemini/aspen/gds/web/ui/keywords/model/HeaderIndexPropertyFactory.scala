@@ -22,7 +22,7 @@ class HeaderIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Head
     // In reality validator is not necessary for a NativeSelect
     select.addValidator(HeaderIndexPropertyFactory.validator)
 
-    def wrapper(config: GDSConfiguration): GDSConfiguration = {
+    def updateFunction(config: GDSConfiguration) = {
       Option(select.getValue) map {
         v => config.copy(index = HeaderIndex(v.toString.toInt))
       } getOrElse {
@@ -30,7 +30,7 @@ class HeaderIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Head
       }
     }
 
-    (select, wrapper)
+    (select, updateFunction)
   }
 }
 

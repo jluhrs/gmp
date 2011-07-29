@@ -15,7 +15,7 @@ class SubsystemPropertyFactory extends PropertyItemWrapperFactory(classOf[Subsys
     select.setRequired(true)
     select.select(config.subsystem.name.toString)
 
-    def wrapper(config: GDSConfiguration): GDSConfiguration = {
+    def updateFunction(config: GDSConfiguration) = {
       Option(select.getValue) map {
         v => config.copy(subsystem = Subsystem(KeywordSource.withName(v.toString)))
       } getOrElse {
@@ -23,7 +23,7 @@ class SubsystemPropertyFactory extends PropertyItemWrapperFactory(classOf[Subsys
       }
     }
 
-    (select, wrapper)
+    (select, updateFunction)
   }
 }
 

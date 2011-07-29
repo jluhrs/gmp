@@ -22,11 +22,11 @@ class ChannelPropertyFactory extends PropertyItemWrapperFactory(classOf[Channel]
     textField.setRequired(true)
     textField.setInvalidAllowed(false)
 
-    def wrapper(config: GDSConfiguration) = {
+    def updateFunction(config: GDSConfiguration) = {
       config.copy(channel = Channel(textField.getValue.toString))
     }
 
-    (textField, wrapper)
+    (textField, updateFunction)
   }
 }
 

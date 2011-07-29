@@ -18,11 +18,11 @@ class DefaultValuePropertyFactory extends PropertyItemWrapperFactory(classOf[Def
     textField.setMaxLength(80)
     textField.setInvalidAllowed(false)
 
-    def wrapper(config: GDSConfiguration) = {
+    def updateFunction(config: GDSConfiguration) = {
       config.copy(nullValue = DefaultValue(textField.getValue.toString))
     }
 
-    (textField, wrapper)
+    (textField, updateFunction)
   }
 }
 

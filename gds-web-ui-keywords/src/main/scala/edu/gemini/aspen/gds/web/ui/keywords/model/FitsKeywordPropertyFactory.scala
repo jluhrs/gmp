@@ -19,11 +19,11 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
     textField.setMaxLength(8)
     textField.setInvalidAllowed(false)
 
-    def wrapper(config: GDSConfiguration) = {
+    def updateFunction(config: GDSConfiguration) = {
       config.copy(keyword = new FitsKeyword(textField.getValue.toString))
     }
 
-    (textField, wrapper)
+    (textField, updateFunction)
   }
 }
 

@@ -15,7 +15,7 @@ class DataTypePropertyFactory extends PropertyItemWrapperFactory(classOf[DataTyp
     select.setRequired(true)
     select.select(config.dataType.name)
 
-  def wrapper(config: GDSConfiguration): GDSConfiguration = {
+  def updateFunction(config: GDSConfiguration) = {
       Option(select.getValue) map {
         v => config.copy(dataType = DataType(v.toString))
       } getOrElse {
@@ -23,10 +23,11 @@ class DataTypePropertyFactory extends PropertyItemWrapperFactory(classOf[DataTyp
       }
     }
 
-    (select, wrapper)
+    (select, updateFunction)
   }
 }
 
 object DataTypePropertyFactory {
+  // The list is here to save memory
   val dataTypes = List("STRING", "DOUBLE", "INT")
 }
