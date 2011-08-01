@@ -1,33 +1,41 @@
 package edu.gemini.aspen.gds.obsevent.handler
 
 import org.mockito.Mockito._
+import org.mockito.Matchers.anyString
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.api.{CompositeErrorPolicyImpl, KeywordValueActor}
 import org.junit.Test
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
+import java.io.File
+import edu.gemini.aspen.gmp.services.PropertyHolder
 
 
 class GDSObseventHandlerTest {
-    val actorsFactory = mock(classOf[CompositeActorsFactory])
-    val keywordsDatabase = new KeywordsDatabaseImpl()
+  val actorsFactory = mock(classOf[CompositeActorsFactory])
+  val propertyHolder = mock(classOf[PropertyHolder])
+  val keywordsDatabase = new KeywordsDatabaseImpl()
+  val tempDir = System.getProperty("java.io.tmpdir")
 
-    private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), mock(classOf[ObservationStateRegistrar]))
+  private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), mock(classOf[ObservationStateRegistrar]), propertyHolder)
 
-    @Test
-    def testGDSObseventHandler {
-        val dataLabel = new DataLabel("GS-2011")
+  @Test
+  def testGDSObseventHandler {
+    val dataLabel = new DataLabel("GS-2011")
+    when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
 
-        for (evt <- ObservationEvent.values()) {
-            when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
+    new File(tempDir, dataLabel.getName + ".fits").createNewFile()
 
-            observationHandler.onObservationEvent(evt, dataLabel)
+    for (evt <- ObservationEvent.values()) {
+      when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
 
-            Thread.sleep(300)
+      observationHandler.onObservationEvent(evt, dataLabel)
 
-            // verify mock
-            verify(actorsFactory).buildActors(evt, dataLabel)
-        }
+      Thread.sleep(300)
+
+      // verify mock
+      verify(actorsFactory).buildActors(evt, dataLabel)
     }
+  }
 }

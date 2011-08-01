@@ -16,6 +16,7 @@ import edu.gemini.fits.{DefaultHeader, Header}
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import org.scala_tools.time.Imports._
+import edu.gemini.aspen.gmp.services.PropertyHolder
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -24,8 +25,14 @@ import org.scala_tools.time.Imports._
 @Component(name = "GDSObseventHandler")
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
-class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requires keywordsDatabase: KeywordsDatabase, @Requires errorPolicy: CompositeErrorPolicy, @Requires obsState: ObservationStateRegistrar) extends ObservationEventHandler {
-  private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, obsState)
+// todo: reduce amount of dependencies
+class GDSObseventHandler(
+  @Requires actorsFactory: CompositeActorsFactory,
+  @Requires keywordsDatabase: KeywordsDatabase,
+  @Requires errorPolicy: CompositeErrorPolicy,
+  @Requires obsState: ObservationStateRegistrar,
+  @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
+  private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, obsState, propertyHolder)
 
   def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     replyHandler ! AcquisitionRequest(event, dataLabel)
@@ -33,7 +40,12 @@ class GDSObseventHandler(@Requires actorsFactory: CompositeActorsFactory, @Requi
 
 }
 
-class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, errorPolicy: ErrorPolicy, obsState: ObservationStateRegistrar) extends Actor {
+class ReplyHandler(
+  actorsFactory: CompositeActorsFactory,
+  keywordsDatabase: KeywordsDatabase,
+  errorPolicy: ErrorPolicy,
+  obsState: ObservationStateRegistrar,
+  propertyHolder: PropertyHolder) extends Actor {
   private val LOG = Logger.getLogger(this.getClass.getName)
   private val collectDeadline = 300L
   private val eventLogger = new EventLogger
@@ -68,12 +80,9 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     bookKeep.addObs(obsEvent, dataLabel)
 
     new KeywordSetComposer(actorsFactory, keywordsDatabase) ! AcquisitionRequest(obsEvent, dataLabel)
-
   }
 
   private def acqRequestReply(obsEvent: ObservationEvent, dataLabel: DataLabel) {
-
-
     //check that this obsevent collection reply hasn't already arrived but that the obsevent has.
     if (bookKeep.replyArrived(obsEvent, dataLabel)) {
       LOG.severe("Received data collection reply for observation event " + obsEvent + " for datalabel " + dataLabel + " twice")
@@ -133,12 +142,12 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
 
   private def logTiming(evt: ObservationEvent, label: DataLabel) {
     val avgTime = eventLogger.average(evt) map {
-      x => x.getMillis
+        x => x.getMillis
     } getOrElse {
       "unknown"
     }
     val currTime = eventLogger.retrieve(label, evt) map {
-      x => x.getMillis
+        x => x.getMillis
     } getOrElse {
       "unknown"
     }
@@ -173,7 +182,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     val maxHeader = (0 /: processedList)((i, m) => m.index.max(i))
 
     val headers: List[Header] = List.range(0, maxHeader + 1) map {
-      headerIndex => {
+        headerIndex => {
         val header = new DefaultHeader(headerIndex)
         processedList filter {
           _.index == headerIndex
@@ -190,7 +199,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory, keywordsDatabase: Keyw
     actor {
       eventLogger.start(dataLabel, "FITS update")
       val start = new DateTime
-      new FitsUpdater(new File("/tmp"), dataLabel, headers).updateFitsHeaders()
+      new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), dataLabel, headers).updateFitsHeaders()
       val end = new DateTime
       LOG.info("Writing updated FITS file at " + new File(dataLabel.toString) + " took " + (start to end).toDuration)
       eventLogger.end(dataLabel, "FITS update")
