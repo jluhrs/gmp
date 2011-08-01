@@ -1,5 +1,8 @@
 package edu.gemini.aspen.gmp.services.properties;
 
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -13,18 +16,21 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A property holder that will get the properties 
+ * A property holder that will get the properties
  * from an XML configuration stored in the OSGi
  * bundle configuration.
  */
+@Component
+@Provides
 public class XMLFileBasedPropertyHolder implements PropertyHolder {
     private static final String PROPERTY_TAG = "property";
     private static final String KEY_TAG = "key";
 
     private Map<String, String> _properties;
 
-    public XMLFileBasedPropertyHolder(String configFileLocation) {
-        Document doc = getPropertiesDocument(configFileLocation);
+    public XMLFileBasedPropertyHolder(
+            @Property(name = "propertiesFile", value = "NOVALID", mandatory = true) String configurationFile) {
+        Document doc = getPropertiesDocument(configurationFile);
         _properties = parseProperties(doc);
     }
 
@@ -37,7 +43,7 @@ public class XMLFileBasedPropertyHolder implements PropertyHolder {
         Map<String, String> prop = new HashMap<String, String>();
 
         for (Iterator it = root.elementIterator(PROPERTY_TAG); it.hasNext(); ) {
-            Element element = (Element)it.next();
+            Element element = (Element) it.next();
             Attribute at = element.attribute(KEY_TAG);
             if (at == null) {
                 throw new RuntimeException("Invalid Property. No Key found");

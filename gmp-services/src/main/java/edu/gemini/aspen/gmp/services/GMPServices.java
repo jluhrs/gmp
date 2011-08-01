@@ -2,10 +2,13 @@ package edu.gemini.aspen.gmp.services;
 
 import edu.gemini.aspen.gmp.services.core.Service;
 import edu.gemini.aspen.gmp.services.jms.RequestConsumer;
+import edu.gemini.aspen.gmp.services.properties.PropertyHolder;
 import edu.gemini.aspen.gmp.services.properties.PropertyService;
-import edu.gemini.aspen.gmp.services.properties.XMLFileBasedPropertyHolder;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.*;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Invalidate;
+import org.apache.felix.ipojo.annotations.Requires;
+import org.apache.felix.ipojo.annotations.Validate;
 
 import java.util.logging.Logger;
 
@@ -17,16 +20,14 @@ import java.util.logging.Logger;
 public class GMPServices {
     private final static Logger LOG = Logger.getLogger(GMPServices.class.getName());
 
-    private final RequestConsumer _requestConsumer;
+    private final RequestConsumer requestConsumer;
+    private final PropertyHolder propertyHolder;
 
-    private final String configurationFile;
+    public GMPServices(@Requires JmsProvider provider, @Requires PropertyHolder propertyHolder) {
+        this.propertyHolder = propertyHolder;
+        LOG.info("Starting Services bundle");
 
-    public GMPServices(@Requires JmsProvider provider,
-        @Property(name = "propertiesFile", value = "NOVALID", mandatory = true) String configurationFile) {
-        LOG.info("Starting Services bundle with configuration at " + configurationFile);
-
-        _requestConsumer = new RequestConsumer(provider);
-        this.configurationFile = configurationFile;
+        requestConsumer = new RequestConsumer(provider);
     }
 
     @Validate
@@ -34,13 +35,13 @@ public class GMPServices {
         LOG.info("Starting Services bundle");
 
         //property service
-        Service propertyService = new PropertyService(new XMLFileBasedPropertyHolder(configurationFile));
-        _requestConsumer.registerService(propertyService);
+        Service propertyService = new PropertyService(propertyHolder);
+        requestConsumer.registerService(propertyService);
     }
 
     @Invalidate
     public void stopServices() {
         LOG.info("Stopping Services bundle");
-        _requestConsumer.close();
+        requestConsumer.close();
     }
 }

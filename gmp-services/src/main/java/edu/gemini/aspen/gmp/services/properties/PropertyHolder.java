@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.services.properties;
 
 /**
- * Storage infraestructure for properties. 
+ * Storage infrastructure for properties.
  */
 public interface PropertyHolder {
 

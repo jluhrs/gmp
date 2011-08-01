@@ -1,15 +1,14 @@
 package edu.gemini.aspen.gmp.services.properties;
 
-import edu.gemini.aspen.gmp.services.properties.XMLFileBasedPropertyHolder;
+import edu.gemini.aspen.gmp.services.GMPServicesTest;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class XMLFileBasedPropertyHolderTest {
     @Test
     public void readProperties() {
-        XMLFileBasedPropertyHolder propertyHolder = new XMLFileBasedPropertyHolder(System.getProperty("user.dir") + "/src/test/resources/gmp-properties.xml");
+        XMLFileBasedPropertyHolder propertyHolder = new XMLFileBasedPropertyHolder(GMPServicesTest.class.getResource("gmp-properties.xml").getFile());
 
         assertEquals(propertyHolder.getProperty("GMP_HOST_NAME"), "localhost");
         assertEquals(propertyHolder.getProperty("DHS_ANCILLARY_DATA_PATH"), "/home/anunez/tmp");
