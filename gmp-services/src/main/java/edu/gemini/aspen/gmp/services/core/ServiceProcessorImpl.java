@@ -11,11 +11,7 @@ public class ServiceProcessorImpl implements ServiceProcessor {
 
     private static final Logger LOG = Logger.getLogger(ServiceProcessorImpl.class.getName());
 
-    private Map<ServiceType, Service> _services;
-
-    public ServiceProcessorImpl() {
-        _services = new HashMap<ServiceType, Service>();
-    }
+    private final Map<ServiceType, Service> _services = new HashMap<ServiceType, Service>();
 
     public void registerService(Service service) {
         if (service != null) {
@@ -29,7 +25,7 @@ public class ServiceProcessorImpl implements ServiceProcessor {
         if (service != null) {
             service.process(request);
         } else {
-            LOG.warning("No registered service to handle request (" + type.getName() +")");
+            LOG.warning("No registered service to handle request (" + type.getName() + ")");
         }
     }
 }

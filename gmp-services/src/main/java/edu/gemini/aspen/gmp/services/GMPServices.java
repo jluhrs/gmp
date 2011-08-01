@@ -5,10 +5,7 @@ import edu.gemini.aspen.gmp.services.jms.RequestConsumer;
 import edu.gemini.aspen.gmp.services.properties.PropertyHolder;
 import edu.gemini.aspen.gmp.services.properties.PropertyService;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Invalidate;
-import org.apache.felix.ipojo.annotations.Requires;
-import org.apache.felix.ipojo.annotations.Validate;
+import org.apache.felix.ipojo.annotations.*;
 
 import java.util.logging.Logger;
 
@@ -17,6 +14,7 @@ import java.util.logging.Logger;
  * when a JMS provider is found
  */
 @Component
+@Instantiate
 public class GMPServices {
     private final static Logger LOG = Logger.getLogger(GMPServices.class.getName());
 

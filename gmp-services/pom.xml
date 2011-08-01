@@ -12,7 +12,6 @@
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp.services</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.services</bundle.namespace>
-        <gmp.properties.conf>../src/test/resources/gmp.properties.conf</gmp.properties.conf>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,15 +25,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
