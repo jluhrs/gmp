@@ -13,11 +13,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-server</artifactId>
+    <version>0.12.0</version>
     <packaging>pom</packaging>
+
     <name>GMP Server Application</name>
     <description>The GMP Server</description>
-
-    <version>0.12.0</version>
 
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmpserver</bundle.symbolicName>
@@ -37,6 +37,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.8.1</scala-lang.version>
+        <gmp.version>${project.version}</gmp.version>
     </properties>
 
     <build>
@@ -213,7 +214,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-services</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </dependency>
         <!-- GMP Commands Sequence -->
         <dependency>
@@ -322,7 +323,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-tui</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -461,17 +462,17 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.framework</artifactId>
-                    <version>3.0.2</version>
+                    <version>3.2.1</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.main</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.2.1</version>
                 </dependency>
                 <dependency>
                     <groupId>org.ops4j.pax.runner</groupId>
                     <artifactId>pax-runner</artifactId>
-                    <version>1.5.0</version>
+                    <version>1.7.4</version>
                 </dependency>
                 <!-- GIAPI tester -->
                 <dependency>
@@ -484,17 +485,17 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.command</artifactId>
-                    <version>0.6.0</version>
+                    <version>0.8.0</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.runtime</artifactId>
-                    <version>0.6.0</version>
+                    <version>0.8.0</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.shell</artifactId>
-                    <version>0.6.0</version>
+                    <version>0.8.0</version>
                 </dependency>
                 <dependency>
                     <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
