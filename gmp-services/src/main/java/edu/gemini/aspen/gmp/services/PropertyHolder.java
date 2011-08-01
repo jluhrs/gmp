@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.services.properties;
+package edu.gemini.aspen.gmp.services;
 
 /**
  * Storage infrastructure for properties.

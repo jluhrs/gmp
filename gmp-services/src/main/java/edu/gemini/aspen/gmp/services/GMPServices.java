@@ -2,7 +2,6 @@ package edu.gemini.aspen.gmp.services;
 
 import edu.gemini.aspen.gmp.services.core.Service;
 import edu.gemini.aspen.gmp.services.jms.RequestConsumer;
-import edu.gemini.aspen.gmp.services.properties.PropertyHolder;
 import edu.gemini.aspen.gmp.services.properties.PropertyService;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;

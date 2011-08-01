@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.services.properties;
 
+import edu.gemini.aspen.gmp.services.PropertyHolder;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;

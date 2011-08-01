@@ -1,9 +1,11 @@
 package edu.gemini.aspen.gmp.services.properties;
 
-import edu.gemini.aspen.gmp.services.core.*;
+import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.aspen.gmp.services.PropertyHolder;
+import edu.gemini.aspen.gmp.services.core.ServiceException;
+import edu.gemini.aspen.gmp.services.core.ServiceType;
 import edu.gemini.aspen.gmp.services.jms.JmsService;
 import edu.gemini.aspen.gmp.services.jms.JmsServiceRequest;
-import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 
 import javax.jms.*;
 import java.util.logging.Logger;
