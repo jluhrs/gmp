@@ -4,7 +4,8 @@ package edu.gemini.aspen.gds.staticheaderreceiver
 import org.scalatest.junit.AssertionsForJUnit
 import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.{Before, Test}
-import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, ProgramIdDatabaseImpl, ProgramIdDatabase}
+import edu.gemini.aspen.gds.keywords.database.impl.ProgramIdDatabaseImpl
+import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, ProgramIdDatabase}
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{Store, Retrieve, Clean}
 import scala.Some
 

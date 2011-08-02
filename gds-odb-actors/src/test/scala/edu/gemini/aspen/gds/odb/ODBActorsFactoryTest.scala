@@ -6,7 +6,8 @@ import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.pot.spdb.IDBDatabaseService
-import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabaseImpl}
+import edu.gemini.aspen.gds.keywords.database.impl.ProgramIdDatabaseImpl
+import edu.gemini.aspen.gds.keywords.database.StoreProgramId
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 
 class ODBActorsFactoryTest extends Mockito {

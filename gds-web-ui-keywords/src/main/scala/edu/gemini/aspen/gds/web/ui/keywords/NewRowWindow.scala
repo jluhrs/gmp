@@ -7,8 +7,8 @@ import com.vaadin.ui.Window.Notification
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.data.FitsKeyword
-import com.vaadin.ui._
 import model._
+import com.vaadin.ui._
 
 /**
  * Represents the LoginWindow
@@ -32,7 +32,7 @@ class NewRowWindow(dataSource: GDSKeywordsDataSource) extends Window("Add new ro
   setName("Add new row")
   setModal(true)
   setResizable(false)
-  //setWidth("400px")
+  setWidth("400px")
   //setHeight("195px")
 
   val layout = new FormLayout
@@ -44,28 +44,32 @@ class NewRowWindow(dataSource: GDSKeywordsDataSource) extends Window("Add new ro
   layout.addComponent(index)
   val initialConfig = GDSConfiguration("GPI", "OBS_START_ACQ", "KEYWORD", 0, "DOUBLE", true, "NONE", "EPICS", "", 0, "")
   val controlsAndWrappers = columnsDefinitions map {
-    cd => {
-      cd.buildPropertyControlAndWrapper(initialConfig)
-    }
+    cd => cd.buildPropertyControlAndWrapper(initialConfig)
   }
   controlsAndWrappers map {
     case (c, _) => {
-       layout.addComponent(c)
-     }
+      layout.addComponent(c)
+    }
   }
+
+  val buttonLayout = new HorizontalLayout
 
   val okButton = new Button("Ok")
   okButton.addListener((e: Button#ClickEvent) => {
-    val newConfig = GDSKeywordsDataSource.itemToGDSConfiguration(initialConfig, controlsAndWrappers map {_._2})
+    val newConfig = GDSKeywordsDataSource.itemToGDSConfiguration(initialConfig, controlsAndWrappers map {
+      _._2
+    })
     dataSource.addNewConfig(newConfig)
     close()
   })
-  layout.addComponent(okButton)
+  buttonLayout.addComponent(okButton)
   val cancelButton = new Button("Cancel")
   cancelButton.addListener((e: Button#ClickEvent) => {
     close()
   })
-  layout.addComponent(cancelButton)
+  buttonLayout.addComponent(cancelButton)
+
+  layout.addComponent(buttonLayout)
 
   setContent(layout)
 

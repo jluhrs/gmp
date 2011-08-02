@@ -28,7 +28,7 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
 }
 
 object FitsKeywordPropertyFactory {
-  val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
-    def isValidString(value: String) = value.length < 9
+  val validator = new AbstractStringValidator("Value {0} must be a valid FITS Pattersless than 8 characters") {
+    def isValidString(value: String) = FitsKeyword.FITS_KEYWORD_PATTERN.matcher(value.toUpperCase).matches
   }
 }

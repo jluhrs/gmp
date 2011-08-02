@@ -14,8 +14,11 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
   override def collectValues(): List[CollectedValue[_]] = {
     val s = System.currentTimeMillis()
     val seqexecValue = (seqexecKeyDB !? Retrieve(dataLabel, fitsKeyword)).asInstanceOf[Option[Any]]
-    LOG.fine("Retrieving SEQEXEC keyword " + fitsKeyword + " took " + (System.currentTimeMillis() - s) + "[ms]")
 
-    seqexecValue map (valueToCollectedValue) orElse (defaultCollectedValue) toList
+    val t = seqexecValue map (valueToCollectedValue) orElse (defaultCollectedValue) toList
+
+    LOG.info("Retrieving SEQEXEC keyword " + fitsKeyword + " took " + (System.currentTimeMillis() - s) + "[ms]")
+    
+    t
   }
 }

@@ -3,14 +3,13 @@ package edu.gemini.aspen.gds.obsevent.handler
 import org.mockito.Mockito._
 import org.mockito.Matchers.anyString
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
+import edu.gemini.aspen.gds.keywords.database.impl.KeywordsDatabaseImpl
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.api.{CompositeErrorPolicyImpl, KeywordValueActor}
 import org.junit.Test
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import java.io.File
 import edu.gemini.aspen.gmp.services.PropertyHolder
-
 
 class GDSObseventHandlerTest {
   val actorsFactory = mock(classOf[CompositeActorsFactory])

@@ -1,7 +1,8 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.gds.keywords.database.{ProgramIdDatabaseImpl, ProgramIdDatabase}
+import edu.gemini.aspen.gds.keywords.database.impl.ProgramIdDatabaseImpl
+import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase
 
 /**
  * Needed by iPojo
