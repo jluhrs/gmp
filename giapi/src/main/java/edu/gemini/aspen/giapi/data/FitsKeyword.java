@@ -2,18 +2,20 @@ package edu.gemini.aspen.giapi.data;
 
 import com.google.common.base.Preconditions;
 
+import java.util.regex.Pattern;
+
 /**
  * Class representing a FitsKeyword
  * Non conforming keywords are not allowed
  */
 public class FitsKeyword {
+    public final static Pattern FITS_KEYWORD_PATTERN = Pattern.compile("[\\p{Upper}\\d-_]{1,8}");
     private final String name;
 
     public FitsKeyword(String name) {
         Preconditions.checkArgument(name != null);
-        Preconditions.checkArgument(!name.isEmpty());
+        Preconditions.checkArgument(FITS_KEYWORD_PATTERN.matcher(name.toUpperCase()).matches());
 
-        // TODO setup all the FITS restrictions before constructing
         this.name = name.toUpperCase();
     }
 
