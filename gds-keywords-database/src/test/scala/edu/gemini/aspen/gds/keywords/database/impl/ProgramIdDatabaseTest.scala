@@ -1,5 +1,6 @@
-package edu.gemini.aspen.gds.keywords.database
+package edu.gemini.aspen.gds.keywords.database.impl
 
+import impl.ProgramIdDatabaseImpl
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Test
 import edu.gemini.aspen.gds.api.Conversions._
@@ -15,7 +16,5 @@ class ProgramIdDatabaseTest extends AssertionsForJUnit {
       case Some(Some("id")) =>
       case _ => fail()
     }
-
-
   }
 }
