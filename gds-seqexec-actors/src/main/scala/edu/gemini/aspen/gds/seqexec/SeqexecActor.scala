@@ -16,6 +16,6 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
     val seqexecValue = (seqexecKeyDB !? Retrieve(dataLabel, fitsKeyword)).asInstanceOf[Option[Any]]
     LOG.fine("Retrieving SEQEXEC keyword " + fitsKeyword + " took " + (System.currentTimeMillis() - s) + "[ms]")
 
-    val t = seqexecValue map (valueToCollectedValue) orElse (defaultCollectedValue) toList
+    seqexecValue map (valueToCollectedValue) orElse (defaultCollectedValue) toList
   }
 }
