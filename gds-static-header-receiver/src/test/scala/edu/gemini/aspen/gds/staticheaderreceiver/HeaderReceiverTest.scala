@@ -69,10 +69,23 @@ class HeaderReceiverTest extends AssertionsForJUnit {
   def testXmlRpcReceiver() {
     val xml = new XmlRpcReceiver
     xml.storeKeyword("label", "key", 1)
+    xml.storeKeywords("label2", ("key,INT,1" :: "key2,DOUBLE,1.0" :: "key3,STRING,uno" :: Nil).toArray)
     xml.initObservation("id", "label")
     Thread.sleep(100) //allow for messages to arrive
     (db !? (1000, Retrieve("label", "key"))) match {
       case Some(Some(1)) =>
+      case _ => fail()
+    }
+    (db !? (1000, Retrieve("label2", "key"))) match {
+      case Some(Some(1)) =>
+      case _ => fail()
+    }
+    (db !? (1000, Retrieve("label2", "key2"))) match {
+      case Some(Some(1.0)) =>
+      case _ => fail()
+    }
+    (db !? (1000, Retrieve("label2", "key3"))) match {
+      case Some(Some("uno")) =>
       case _ => fail()
     }
     (pdb !? (1000, RetrieveProgramId("label"))) match {
