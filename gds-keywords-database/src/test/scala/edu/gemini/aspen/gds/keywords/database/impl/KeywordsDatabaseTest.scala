@@ -1,13 +1,12 @@
 package edu.gemini.aspen.gds.keywords.database.impl
 
-import impl.KeywordsDatabaseImpl
 import org.scalatest.junit.AssertionsForJUnit
 import edu.gemini.aspen.gds.api.CollectedValue
 import org.junit.{Before, Test}
 import org.junit.Assert._
 import edu.gemini.aspen.gds.api.Conversions._
-import edu.gemini.fits.{DefaultHeader, Header, HeaderItem}
 import edu.gemini.aspen.giapi.data.DataLabel
+import edu.gemini.aspen.gds.keywords.database._
 
 class KeywordsDatabaseTest extends AssertionsForJUnit {
   var db: KeywordsDatabaseImpl = null
