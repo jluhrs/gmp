@@ -1,9 +1,7 @@
-package edu.gemin.aspen.gds.status
+package edu.gemini.aspen.gds.status
 
 import org.junit.Assert._
 import org.junit.Test
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.Spec
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.Conversions._
@@ -11,10 +9,11 @@ import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.giapi.status.impl.BasicStatus
 import org.junit.Assert._
 import edu.gemini.aspen.gds.api._
+import edu.gemin.aspen.gds.status.InstrumentStatusActor
 
 class InstrumentStatusActorTest extends Mockito {
   val defaultValue = "DEFAULT"
-  val fitsKeyword = new FitsKeyword("GPISTATUS")
+  val fitsKeyword = new FitsKeyword("GPISTATU")
   val dataLabel = new DataLabel("GS-2011")
   val statusDB = mock[StatusDatabaseService]
   val statusItemName = "gpi:status1"
