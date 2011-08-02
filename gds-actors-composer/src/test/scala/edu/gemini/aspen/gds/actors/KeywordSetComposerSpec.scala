@@ -4,7 +4,7 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
-import edu.gemini.aspen.gds.keywords.database.KeywordsDatabaseImpl
+import edu.gemini.aspen.gds.keywords.database.impl.KeywordsDatabaseImpl
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 
 @RunWith(classOf[JUnitRunner])
@@ -47,7 +47,7 @@ class KeywordSetComposerSpec extends Spec with ShouldMatchers {
     val dummyActorsFactory = new DummyActorsFactory()
     val keywordsDatabase = new KeywordsDatabaseImpl()
     // Create composer
-    val composer = KeywordSetComposer(dummyActorsFactory, keywordsDatabase)
+    val composer = new KeywordSetComposer(dummyActorsFactory, keywordsDatabase)
     (dataLabel, composer)
   }
 }

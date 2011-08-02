@@ -21,7 +21,7 @@ trait CompositeActorsFactory extends KeywordActorsFactory
 class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends CompositeActorsFactory {
   val LOG = Logger.getLogger(this.getClass.getName)
 
-  var factories: List[KeywordActorsFactory] = List()
+  var factories = List[KeywordActorsFactory]()
 
   override def configure(configuration: List[GDSConfiguration]) {
     factories foreach {
@@ -29,7 +29,7 @@ class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationServic
     }
   }
 
-  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
     factories flatMap {
       _.buildActors(obsEvent, dataLabel)
     }
