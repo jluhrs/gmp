@@ -47,10 +47,6 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
-            <artifactId>gds-obsevent-handler</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-odb-actors</artifactId>
         </dependency>
         <dependency>
