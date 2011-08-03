@@ -133,7 +133,6 @@ class EpicsValuesActorTest extends Mockito {
 
     // Send an init message
     val result = epicsValueActor !! Collect
-    println(result())
 
     result() match {
       case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {

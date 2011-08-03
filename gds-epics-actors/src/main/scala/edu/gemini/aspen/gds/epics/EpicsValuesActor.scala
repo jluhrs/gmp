@@ -1,22 +1,36 @@
 package edu.gemini.aspen.gds.epics
 
-import edu.gemini.epics.EpicsReader
-import java.util.logging.Logger
 import edu.gemini.aspen.gds.api._
 import org.joda.time.DateTime
 import org.scala_tools.time.Imports._
+import edu.gemini.epics.{EpicsException, EpicsReader}
 
 /**
  * Very simple actor that can produce as a reply of a Collect request a single value
  * linked to a single fitsKeyword
  */
 class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
+  private val MAX_ATTEMPTS = 3;
+
+  /** Method to retry to read an epics channel if it fails once */
+  private def readChannelValue(attempt: Int): Option[AnyRef] = {
+    try {
+      Option(epicsReader.getValue(sourceChannel))
+    } catch {
+      case e: EpicsException => {
+        attempt match {
+          case 0 => None
+          case _ => readChannelValue(attempt - 1)
+        }
+      }
+    }
+  }
 
   override def collectValues(): List[CollectedValue[_]] = {
     val start = new DateTime
-    val readValue = Option(epicsReader.getValue(sourceChannel))
+    val readValue = readChannelValue(MAX_ATTEMPTS)
     val end = new DateTime
-    LOG.fine("Reading EPICS channel took " + (start to end).toDuration)
+    LOG.fine("Reading EPICS channel " + sourceChannel + " took " + (start to end).toDurationMillis + " [ms]")
 
     try {
       readValue map (convertCollectedValue) orElse (defaultCollectedValue) toList

@@ -47,7 +47,7 @@ class ReplyHandler(
   obsState: ObservationStateRegistrar,
   propertyHolder: PropertyHolder) extends Actor {
   private val LOG = Logger.getLogger(this.getClass.getName)
-  private val collectDeadline = 300L
+  private val collectDeadline = 5000L
   private val eventLogger = new EventLogger
   private val bookKeep = new ObsEventBookKeeping
 

@@ -67,8 +67,12 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   private def waitForDataAndReply(dataLabel: DataLabel, dataFutures: List[Future[Any]])(postAction: => Unit) {
     measureDuration("Waiting for " + dataFutures.size + " data items ") {
       // Wait for response
-      val v = Futures awaitAll (500, dataFutures: _*) collect {
+      val v = Futures awaitAll (5000, dataFutures: _*) collect {
         case Some(x: List[CollectedValue[_]]) => x
+        case None =>  {
+          LOG.warning("Missing return of collecting data")
+          Nil
+        }
         case x: Any => error("Cannot be " + x)
       }
 
