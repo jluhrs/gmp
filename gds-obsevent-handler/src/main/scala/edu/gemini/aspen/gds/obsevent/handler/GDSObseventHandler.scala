@@ -170,14 +170,13 @@ class ReplyHandler(
       updateFITSFile(dataLabel)
     } catch {
       case ex: FileNotFoundException => LOG.log(Level.SEVERE, ex.getMessage, ex)
-
     }
     keywordsDatabase ! Clean(dataLabel)
   }
 
   private def updateFITSFile(dataLabel: DataLabel) {
     //if the option is None, use an empty List
-    val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[Option[List[CollectedValue[_]]]].getOrElse(List())
+    val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[List[CollectedValue[_]]]
     val processedList = errorPolicy.applyPolicy(dataLabel, list)
     val maxHeader = (0 /: processedList)((i, m) => m.index.max(i))
 

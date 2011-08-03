@@ -36,8 +36,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    *
    * @param dataLabel to which the keywords belong
    * @param keyword keyword to store
-   * @param value value to associate to the keyword
-   */
+   * @param value value to associate to the keyword*/
   private def store(dataLabel: DataLabel, headerItem: List[CollectedValue[_]]) {
     map.put(dataLabel, headerItem ++ map.getOrElse(dataLabel, List[CollectedValue[_]]()))
   }
@@ -47,15 +46,14 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    *
    * @param dataLabel for which to retrieve data
    *
-   * @return a HashMap[String, AnyRef] containing the data for the given data set
-   */
-  private def retrieve(dataLabel: DataLabel): Option[List[CollectedValue[_]]] = map.get(dataLabel)
+   * @return a List[CollectedValue[_]] containing the collected values of the data set
+   * or an empty list if none found */
+  private def retrieve(dataLabel: DataLabel): List[CollectedValue[_]] = map.getOrElse(dataLabel, Nil)
 
   /**
    * Remove all keywords associated with a given DataLabel
    *
-   * @param dataLabel for which to remove data
-   */
+   * @param dataLabel for which to remove data */
   private def clean(dataLabel: DataLabel) {
     map.remove(dataLabel)
   }

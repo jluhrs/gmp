@@ -1,12 +1,13 @@
 package edu.gemini.aspen.gds.keywords.database.impl
 
 import org.scalatest.junit.AssertionsForJUnit
-import edu.gemini.aspen.gds.api.CollectedValue
+import _root_.edu.gemini.aspen.gds.api.CollectedValue
 import org.junit.{Before, Test}
 import org.junit.Assert._
-import edu.gemini.aspen.gds.api.Conversions._
-import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.keywords.database._
+import _root_.edu.gemini.aspen.gds.api.Conversions._
+import _root_.edu.gemini.aspen.giapi.data.DataLabel
+import _root_.edu.gemini.aspen.gds.keywords.database._
+import scala._
 
 class KeywordsDatabaseTest extends AssertionsForJUnit {
   var db: KeywordsDatabaseImpl = null
@@ -28,8 +29,8 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
     assertFalse(ret.isEmpty) //we didn't get a timeout
     ret foreach {
       _ match {
-        case c:Option[List[CollectedValue[_]]] => assertTrue(c.getOrElse(Nil).contains(item))
-        case a:Any => fail("Not valid value " + a)
+        case cv: List[_] => assertTrue(cv.contains(item))
+        case a: Any => fail("Not valid value" + a)
       }
     }
   }
@@ -41,21 +42,25 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
   }
 
 
+  def checkEmpty(ret: Option[Any]) {
+    assertFalse(ret.isEmpty)
+    ret map {
+      case c: List[_] => assertTrue(c.isEmpty)
+      case a: Any => error("Not a valid value " + a)
+    }
+  }
+
   @Test
   def retrieveEmpty() {
     val ret = db !? (1000, Retrieve(dataLabel))
-    assertFalse(ret.isEmpty)
-    val opt = ret.get.asInstanceOf[Option[List[CollectedValue[_]]]]
-    assertTrue(opt.isEmpty)
+    checkEmpty(ret)
   }
 
   @Test
   def retrieveWrongDataLabel() {
     db ! Store(dataLabel, colVal)
     val ret = db !? (1000, Retrieve("wrong"))
-    assertFalse(ret.isEmpty)
-    val opt = ret.get.asInstanceOf[Option[List[CollectedValue[_]]]]
-    assertTrue(opt.isEmpty)
+    checkEmpty(ret)
   }
 
   @Test

@@ -1,12 +1,13 @@
 package edu.gemini.aspen.gds.actors
 
 import java.util.logging.Logger
-import _root_.edu.gemini.aspen.gds.api._
-import _root_.edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import scala.actors.{Futures, OutputChannel, Actor}
 import org.scala_tools.time.Imports._
-import edu.gemini.aspen.gds.keywords.database.{StoreList, Store, KeywordsDatabase}
+import edu.gemini.aspen.gds.keywords.database.{StoreList, KeywordsDatabase}
 import org.joda.time.DateTime
+import scala._
 
 /**
  * Message to indicate that FITS header data collection should begin
@@ -66,11 +67,12 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   private def waitForDataAndReply(dataLabel: DataLabel, dataFutures: List[Future[Any]])(postAction: => Unit) {
     measureDuration("Waiting for " + dataFutures.size + " data items ") {
       // Wait for response
-      val v = Futures awaitAll (500, dataFutures: _*) map {
-        case c: Option[List[CollectedValue[_]]] => c getOrElse List[CollectedValue[_]]()
-      } flatten
+      val v = Futures awaitAll (500, dataFutures: _*) collect {
+        case Some(x: List[CollectedValue[_]]) => x
+        case x: Any => error("Cannot be " + x)
+      }
 
-      keywordsDatabase ! StoreList(dataLabel, v)
+      keywordsDatabase ! StoreList(dataLabel, v.flatten)
     }
 
     postAction
