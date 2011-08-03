@@ -4,7 +4,6 @@ import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectedValue
 import java.util.logging.Logger
-import scala._
 import edu.gemini.aspen.gds.keywords.database._
 
 /**

@@ -3,7 +3,6 @@ package edu.gemini.aspen.gds.keywords.database
 import edu.gemini.aspen.giapi.data.DataLabel
 import scala.actors.Actor
 import edu.gemini.aspen.gds.api.CollectedValue
-import scala._
 
 /**
   * Interface for the database */
