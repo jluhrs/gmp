@@ -1,21 +1,40 @@
 package edu.gemini.aspen.gds.seqexec
 
 
-import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabase
-import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Retrieve
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.RetrieveAll
+import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.gds.api.Conversions._
+import java.util.logging.Logger
 
 /**
- * Very simple actor that can produce as a reply of a Collect request a single value
- * linked to a single fitsKeyword
+ * Actor that collects all requested seqexec keywords at once
  */
-class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: DataLabel, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-  override def collectValues(): List[CollectedValue[_]] = {
-    val s = System.currentTimeMillis()
-    val seqexecValue = (seqexecKeyDB !? Retrieve(dataLabel, fitsKeyword)).asInstanceOf[Option[Any]]
-    LOG.fine("Retrieving SEQEXEC keyword " + fitsKeyword + " took " + (System.currentTimeMillis() - s) + "[ms]")
+class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: DataLabel, configurations: List[GDSConfiguration]) extends KeywordValueActor {
+  protected val LOG = Logger.getLogger(this.getClass.getName)
+  protected var seqexecValuesMap: Map[FitsKeyword, AnyRef] = _
 
-    seqexecValue map (valueToCollectedValue) orElse (defaultCollectedValue) toList
+  def collectValues(): List[CollectedValue[_]] = {
+    val s = System.currentTimeMillis()
+    seqexecValuesMap = (seqexecKeyDB !? RetrieveAll(dataLabel)).asInstanceOf[Map[FitsKeyword, AnyRef]]
+    //todo: after retrieving we should clean up the database
+    //seqexecKeyDB !? Clean(dataLabel)
+    LOG.fine("Retrieving All SEQEXEC keywords took " + (System.currentTimeMillis() - s) + "[ms]")
+
+    for {config <- configurations} yield {
+      new OneItemSeqexecValueActor(config, seqexecValuesMap).collectValues().head
+    }
   }
+
+  private class OneItemSeqexecValueActor(config: GDSConfiguration, map: Map[FitsKeyword, AnyRef]) extends OneItemKeywordValueActor(config) {
+    def collectValues(): List[CollectedValue[_]] = {
+      seqexecValuesMap.get(config.keyword) map {
+        valueToCollectedValue
+      } orElse {
+        defaultCollectedValue
+      } toList
+    }
+  }
+
 }

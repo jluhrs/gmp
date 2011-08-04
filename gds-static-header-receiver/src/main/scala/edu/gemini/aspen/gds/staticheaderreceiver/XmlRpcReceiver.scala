@@ -2,8 +2,6 @@ package edu.gemini.aspen.gds.staticheaderreceiver
 
 import edu.gemini.aspen.gds.api.Conversions._
 import scala.collection.JavaConversions._
-import collection.mutable.HashMap
-import edu.gemini.aspen.gds.api.DataType
 import java.util.logging.{Level, Logger}
 
 case class IntKeyword(keyword: String, value: Int)
