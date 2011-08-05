@@ -4,6 +4,7 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
+import java.util.Date;
 
 /**
  * Base class for all the Status Parsers. Reads the
@@ -23,11 +24,13 @@ public abstract class StatusParserBase<T> implements StatusParser<T> {
     public final StatusItem<T> parse(BytesMessage bm) throws JMSException {
         String name = bm.readUTF();
         T value = getValue(bm);
-        return buildStatusItem(name, value, bm);
+        Date timestamp = new Date(bm.readLong());
+        return buildStatusItem(name, value, timestamp, bm);
     }
 
     /**
      * Get the particular value for a status item out of the JMS message
+     *
      * @param bm the JMS message containing the value
      * @return value contained in the message
      * @throws JMSException in case of problems reading the message
@@ -40,13 +43,14 @@ public abstract class StatusParserBase<T> implements StatusParser<T> {
      * information needed to construct the specific Status Item.
      * Implementing classes will decide how to parse the message, if
      * needed
-     * @param name name of the status item to construct
-     * @param value the value of the status item
-     * @param bm JMS message containing additional information for
-     * the status item
-     * @return an instance of a Status Item
+     *
+     * @param name      name of the status item to construct
+     * @param value     the value of the status item
+     * @param timestamp
+     * @param bm        JMS message containing additional information for
+     *                  the status item  @return an instance of a Status Item
      * @throws JMSException in case there are problems reading the
-     * information from the JMS message
+     *                      information from the JMS message
      */
-    abstract StatusItem<T> buildStatusItem(String name, T value, BytesMessage bm) throws JMSException;
+    abstract StatusItem<T> buildStatusItem(String name, T value, Date timestamp, BytesMessage bm) throws JMSException;
 }

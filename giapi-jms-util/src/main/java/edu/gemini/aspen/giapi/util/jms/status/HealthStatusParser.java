@@ -6,6 +6,7 @@ import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
+import java.util.Date;
 
 /**
  * A parser for health status items
@@ -19,9 +20,12 @@ public class HealthStatusParser extends StatusParserBase<Health> {
             throw new IllegalArgumentException("No Health value associated to code " + healthCode);
 
         switch (healthCode) {
-            case 0: return Health.GOOD;
-            case 1: return Health.WARNING;
-            case 2: return Health.BAD;
+            case 0:
+                return Health.GOOD;
+            case 1:
+                return Health.WARNING;
+            case 2:
+                return Health.BAD;
         }
 
         //if we are here, then return the default health
@@ -29,7 +33,7 @@ public class HealthStatusParser extends StatusParserBase<Health> {
 
     }
 
-    StatusItem<Health> buildStatusItem(String name, Health value, BytesMessage bm) throws JMSException {
-        return new HealthStatus(name, value);
+    StatusItem<Health> buildStatusItem(String name, Health value, Date timestamp, BytesMessage bm) throws JMSException {
+        return new HealthStatus(name, value, timestamp);
     }
 }

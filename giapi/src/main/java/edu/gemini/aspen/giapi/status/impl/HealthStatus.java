@@ -4,6 +4,8 @@ import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.HealthStatusItem;
 import edu.gemini.aspen.giapi.status.StatusVisitor;
 
+import java.util.Date;
+
 /**
  * A Health Status Item
  */
@@ -13,8 +15,12 @@ public class HealthStatus extends BasicStatus<Health> implements HealthStatusIte
         return getValue();
     }
 
-    public HealthStatus(String name,  Health status) {
+    public HealthStatus(String name, Health status) {
         super(name, status);
+    }
+
+    public HealthStatus(String name, Health status, Date timestamp) {
+        super(name, status, timestamp);
     }
 
     @Override
@@ -22,6 +28,7 @@ public class HealthStatus extends BasicStatus<Health> implements HealthStatusIte
         return "HealthStatusItem{" +
                 "name='" + getName() + '\'' +
                 ", value=" + getValue() +
+                ", timestamp=" + getTimestamp() +
                 '}';
     }
 

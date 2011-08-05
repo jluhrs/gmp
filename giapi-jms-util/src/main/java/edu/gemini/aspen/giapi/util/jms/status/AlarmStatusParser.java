@@ -8,9 +8,10 @@ import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
+import java.util.Date;
 
 /**
- *  Specific parser to construct Alarm Status Items
+ * Specific parser to construct Alarm Status Items
  */
 
 public abstract class AlarmStatusParser<T> extends StatusParserBase<T> {
@@ -34,9 +35,9 @@ public abstract class AlarmStatusParser<T> extends StatusParserBase<T> {
     }
 
 
-    StatusItem<T> buildStatusItem(String name, T value, BytesMessage bm) throws JMSException {
+    StatusItem<T> buildStatusItem(String name, T value, Date timestamp, BytesMessage bm) throws JMSException {
         AlarmState alarmState = parseAlarmState(bm);
-        return new AlarmStatus<T>(name, value, alarmState);
+        return new AlarmStatus<T>(name, value, timestamp, alarmState);
     }
 
     abstract public T getValue(BytesMessage bm) throws JMSException;

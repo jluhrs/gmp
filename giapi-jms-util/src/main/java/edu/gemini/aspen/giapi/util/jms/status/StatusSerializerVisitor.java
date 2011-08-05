@@ -14,9 +14,9 @@ import javax.jms.JMSException;
 public class StatusSerializerVisitor implements StatusVisitor {
 
     /**
-	 * Offsets used to serialize the messages and distinguish
-	 * among the different types.
-	 */
+     * Offsets used to serialize the messages and distinguish
+     * among the different types.
+     */
     enum Offset {
         BASIC((byte) 0),
         ALARM((byte) 10),
@@ -35,30 +35,31 @@ public class StatusSerializerVisitor implements StatusVisitor {
     }
 
     /**
-	 * The message that will be filled in by this visitor
-	 */
+     * The message that will be filled in by this visitor
+     */
     private BytesMessage _msg;
 
     /**
      * Constructor. Takes as argument the byte message where
      * the status item will be serialized
+     *
      * @param bm JMS Bytes Message to be used to serialize the
-     * status item.
+     *           status item.
      */
     public StatusSerializerVisitor(BytesMessage bm) {
         _msg = bm;
     }
 
     /**
-	 * Serialize a Status Item into the JMS message
-	 */
+     * Serialize a Status Item into the JMS message
+     */
     public void visitStatusItem(StatusItem status) throws JMSException {
         _writeHeader(Offset.BASIC, status);
     }
 
     /**
-	 * Serialize a Alarm Status Item into the JMS message
-	 */
+     * Serialize a Alarm Status Item into the JMS message
+     */
     public void visitAlarmItem(AlarmStatusItem status) throws JMSException {
         _writeHeader(Offset.ALARM, status);
 
@@ -115,8 +116,8 @@ public class StatusSerializerVisitor implements StatusVisitor {
     }
 
     /**
-	 * Serialize a Health Status Item into the JMS message
-	 */
+     * Serialize a Health Status Item into the JMS message
+     */
     public void visitHealthItem(HealthStatusItem status) throws JMSException {
         _msg.writeByte(Offset.HEALTH.getOffset());
         _msg.writeUTF(status.getName());
@@ -131,19 +132,21 @@ public class StatusSerializerVisitor implements StatusVisitor {
                 _msg.writeInt(2);
                 break;
         }
+        _msg.writeLong(status.getTimestamp().getTime());
     }
 
     /**
-	 * Auxiliary method to write  common information
-	 * for all the status items, like the name and their
-	 * value. The offset is used when coding the
-	 * message to distinguish the different types of
-	 * status when reconstructing
+     * Auxiliary method to write  common information
+     * for all the status items, like the name and their
+     * value. The offset is used when coding the
+     * message to distinguish the different types of
+     * status when reconstructing
+     *
      * @param offset Offset to be used to distinguish different
-     * types of status items
-     * @param item the status item to encode
+     *               types of status items
+     * @param item   the status item to encode
      * @throws javax.jms.JMSException if a problem occurs while
-     * encoding the status item
+     *                                encoding the status item
      */
     private void _writeHeader(Offset offset, StatusItem item) throws JMSException {
 
@@ -153,18 +156,22 @@ public class StatusSerializerVisitor implements StatusVisitor {
             _msg.writeByte(offset.getOffset());
             _msg.writeUTF(item.getName());
             _msg.writeInt((Integer) o);
+            _msg.writeLong(item.getTimestamp().getTime());
         } else if (o instanceof Double) {
             _msg.writeByte((byte) (offset.getOffset() + 1));
             _msg.writeUTF(item.getName());
             _msg.writeDouble((Double) o);
+            _msg.writeLong(item.getTimestamp().getTime());
         } else if (o instanceof Float) {
             _msg.writeByte((byte) (offset.getOffset() + 2));
             _msg.writeUTF(item.getName());
-            _msg.writeFloat((Float)o);
+            _msg.writeFloat((Float) o);
+            _msg.writeLong(item.getTimestamp().getTime());
         } else if (o instanceof String) {
             _msg.writeByte((byte) (offset.getOffset() + 3));
             _msg.writeUTF(item.getName());
             _msg.writeUTF((String) o);
+            _msg.writeLong(item.getTimestamp().getTime());
         }
     }
 

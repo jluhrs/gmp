@@ -2,6 +2,8 @@ package edu.gemini.aspen.giapi.status.impl;
 
 import edu.gemini.aspen.giapi.status.*;
 
+import java.util.Date;
+
 /**
  * Implementation of an Alarm Status Item.
  */
@@ -18,8 +20,21 @@ public class AlarmStatus<T> extends BasicStatus<T> implements AlarmStatusItem<T>
         }
     }
 
+    public AlarmStatus(String name, T value, Date timestamp, AlarmState state) {
+        super(name, value, timestamp);
+        if (state == null) {
+            _state = AlarmState.DEFAULT;
+        } else {
+            _state = state;
+        }
+    }
+
     public AlarmStatus(String name, T value, AlarmSeverity severity, AlarmCause cause) {
         this(name, value, new AlarmState(severity, cause));
+    }
+
+    public AlarmStatus(String name, T value, Date timestamp, AlarmSeverity severity, AlarmCause cause) {
+        this(name, value, timestamp, new AlarmState(severity, cause));
     }
 
     public AlarmState getAlarmState() {
