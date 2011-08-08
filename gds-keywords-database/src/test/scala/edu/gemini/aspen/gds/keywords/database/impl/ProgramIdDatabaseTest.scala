@@ -5,6 +5,8 @@ import org.junit.Test
 import edu.gemini.aspen.gds.api.Conversions._
 import scala.Some
 import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, StoreProgramId}
+import org.joda.time.DateTimeUtils
+import java.util.concurrent.TimeUnit
 
 class ProgramIdDatabaseTest extends AssertionsForJUnit {
   @Test
@@ -17,4 +19,22 @@ class ProgramIdDatabaseTest extends AssertionsForJUnit {
       case _ => fail()
     }
   }
+
+  @Test
+  def testExpiration() {
+    val db = new ProgramIdDatabaseImpl {
+      override def expirationMillis = 5
+    }
+
+    db ! StoreProgramId("label", "id")
+
+    // Sleep a bit
+    TimeUnit.MILLISECONDS.sleep(10)
+
+    (db !? (1000, RetrieveProgramId("label"))) match {
+      case Some(None) => // we are ok
+      case x: Any => println(x); fail()
+    }
+  }
+
 }

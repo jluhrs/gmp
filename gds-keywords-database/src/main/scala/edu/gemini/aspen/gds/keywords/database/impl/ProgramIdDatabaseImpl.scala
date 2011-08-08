@@ -3,13 +3,19 @@ package edu.gemini.aspen.gds.keywords.database.impl
 import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, StoreProgramId, ProgramIdDatabase}
+import com.google.common.collect.MapMaker
+import scala.collection.JavaConversions._
+import java.util.concurrent.TimeUnit.MILLISECONDS
+import collection.mutable.ConcurrentMap
 
 /**
-  * Implementation of ProgramIdDatabase */
+ * Implementation of ProgramIdDatabase */
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[ProgramIdDatabase]))
 class ProgramIdDatabaseImpl extends ProgramIdDatabase {
+  // expiration of 1 day by default but can be overriden in a subclass
+  def expirationMillis = 24*60*60*1000
 
   start()
 
@@ -23,8 +29,7 @@ class ProgramIdDatabaseImpl extends ProgramIdDatabase {
     }
   }
 
-  //todo: clean db
-  private val map = collection.mutable.Map.empty[DataLabel, String]
+  private val map:ConcurrentMap[DataLabel, String] = new MapMaker().expireAfterWrite(expirationMillis, MILLISECONDS).makeMap[DataLabel, String]()
 
   override def store(dataLabel: DataLabel, programId: String) {
     this ! StoreProgramId(dataLabel, programId)
