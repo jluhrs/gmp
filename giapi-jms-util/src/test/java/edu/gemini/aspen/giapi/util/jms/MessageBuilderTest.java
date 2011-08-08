@@ -13,6 +13,7 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import org.apache.activemq.command.ActiveMQMapMessage;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
@@ -20,6 +21,7 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,9 +31,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -93,6 +93,44 @@ public class MessageBuilderTest {
         verify(msg).writeByte((byte) 0);
         verify(msg).writeUTF(statusName);
         verify(msg).writeInt(statusValue);
+        verify(msg).writeLong(anyLong());
+    }
+
+    @Test
+    public void testBuildIntegerStatusItemFromMessage() throws JMSException {
+        BytesMessage msg = constructIntMessageMock();
+
+
+        StatusItem statusItem = MessageBuilder.buildStatusItem(msg);
+
+
+        InOrder inOrder = inOrder(msg);
+
+        inOrder.verify(msg).getBodyLength();
+        inOrder.verify(msg).readByte();
+        inOrder.verify(msg).readUTF();
+        inOrder.verify(msg).readInt();
+        inOrder.verify(msg).readLong();
+        verifyNoMoreInteractions(msg);
+
+        assertEquals(0, statusItem.getValue());
+        assertEquals("item", statusItem.getName());
+
+    }
+
+    private BytesMessage constructIntMessageMock() throws JMSException {
+        BytesMessage message = mock(BytesMessage.class);
+
+        when(message.getBodyLength()).thenReturn(1L);
+        // 0 for int code
+        when(message.readUnsignedByte()).thenReturn(0);
+        // the name
+        when(message.readUTF()).thenReturn("item");
+        // 0 for status value
+        when(message.readInt()).thenReturn(0);
+        // the timestamp
+        when(message.readLong()).thenReturn((new Date()).getTime());
+        return message;
     }
 
     @Test
