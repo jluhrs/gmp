@@ -80,6 +80,7 @@ public enum StatusItemParser {
 
 
     private static Map<Integer, StatusItemParser> _types = new HashMap<Integer, StatusItemParser>();
+
     static {
         for (StatusItemParser itemParser : StatusItemParser.values()) {
             _types.put(itemParser._code, itemParser);
@@ -89,17 +90,18 @@ public enum StatusItemParser {
 
     /**
      * Creates a Status Item object from the JMS BytesMessage.
+     *
      * @param bm the bytes message JMS message containing information to
-     * deserialize a Status Item object
+     *           deserialize a Status Item object
      * @return a new Status Item object
      * @throws IllegalArgumentException if the information in the byte
-     * message contains invalid information to construct a Status Item
-     * @throws JMSException if there is a problem reading information from the
-     * BytesMessage
+     *                                  message contains invalid information to construct a Status Item
+     * @throws JMSException             if there is a problem reading information from the
+     *                                  BytesMessage
      */
     public static StatusItem parse(BytesMessage bm) throws IllegalArgumentException, JMSException {
         if (bm.getBodyLength() < 1) return null; // no content
-        int code = bm.readUnsignedByte();
+        int code = bm.readByte();
         StatusItemParser itemParser = _types.get(code);
         if (itemParser == null) throw new IllegalArgumentException("No Status Type associated to code " + code);
         return itemParser.parseStatus(bm);
