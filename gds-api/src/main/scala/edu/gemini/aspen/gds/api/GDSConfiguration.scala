@@ -10,8 +10,11 @@ case class HeaderIndex(index: Int)
 
 case class DataType(name: String)
 
+// A keyword marked as mandatory will be left empty and an error will be put in the log
+// if the value is not found
 case class Mandatory(mandatory: Boolean)
 
+// This value will be used if not mandatory and the value is not found
 case class DefaultValue(value: String)
 
 case class Subsystem(name: KeywordSource.Value)
