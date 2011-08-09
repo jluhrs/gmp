@@ -2,23 +2,29 @@ package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
 import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
+import edu.gemini.aspen.gds.api.ErrorPolicy;
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
+import edu.gemini.aspen.gds.observationstate.ObservationStateProvider;
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.fits.FitsParseException;
+import edu.gemini.fits.Header;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -68,8 +74,22 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
         assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
-        
+        assertNotNull(context.getService(context.getServiceReference(ObservationStateProvider.class.getName())));
+
         TimeUnit.MILLISECONDS.sleep(400);
+
+        //verify that the error policies are loaded
+        Set<String> errorPolicies = new HashSet<String>();
+        try {
+            for (ServiceReference ref : context.getServiceReferences(ErrorPolicy.class.getName(), null)) {
+                errorPolicies.add(context.getService(ref).getClass().getName());
+            }
+        } catch (InvalidSyntaxException ex) {
+            fail();
+        }
+        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.errorpolicy.ErrorsRemovedPolicy"));
+        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.errorpolicy.EnforceMandatoryPolicy"));
+        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.observationstate.impl.InspectPolicy"));
 
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
@@ -91,7 +111,11 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
 
         assertTrue(afterProcessingKeywords.containsAll(originalKeywords));
         assertTrue(afterProcessingKeywords.contains("PIFSTNAM"));
-        assertFalse(afterProcessingKeywords.contains("EPIC"));
+        assertTrue(afterProcessingKeywords.contains("EPIC"));
+        assertTrue(afterProcessingKeywords.contains("EPIC2"));
+        Header primary = readFinalPrimary();
+        assertEquals("default", primary.get("EPIC").getValue());//non mandatory item should have default value if not found
+        assertEquals("", primary.get("EPIC2").getValue()); //mandatory item should be present but empty if not found
     }
 
     private void postProgramIDToDataLabelLink() {

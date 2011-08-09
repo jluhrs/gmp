@@ -76,6 +76,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     protected void copyInitialFile() throws IOException, URISyntaxException {
         copyInitialFile(INITIAL_FITS_FILE, FITS_DIR + INITIAL_FITS_FILE);
     }
+
     protected void copyInitialFile(String src, String dest) throws IOException, URISyntaxException {
         InputStream in = GDSWithODBIT.class.getResourceAsStream(src);
         assertTrue(in.available() > 0);
@@ -121,6 +122,16 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         Hedit hEdit = new Hedit(new File(fileName));
         Header primaryHeader = hEdit.readPrimary();
         return primaryHeader.getKeywords();
+    }
+
+    protected Header readFinalPrimary() throws IOException, FitsParseException, InterruptedException {
+        return readPrimary(FITS_DIR + FINAL_FITS_FILE);
+
+    }
+
+    protected Header readPrimary(String fileName) throws IOException, FitsParseException, InterruptedException {
+        Hedit hEdit = new Hedit(new File(fileName));
+        return hEdit.readPrimary();
     }
 
     protected Set<String> readOriginalKeywords() throws IOException, FitsParseException, InterruptedException {
