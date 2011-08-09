@@ -8,6 +8,7 @@ import _root_.edu.gemini.aspen.gds.api.Conversions._
 import _root_.edu.gemini.aspen.giapi.data.DataLabel
 import _root_.edu.gemini.aspen.gds.keywords.database._
 import scala._
+import java.util.concurrent.TimeUnit
 
 class KeywordsDatabaseTest extends AssertionsForJUnit {
   var db: KeywordsDatabaseImpl = null
@@ -87,5 +88,24 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
     db !? (1000, Retrieve(dataLabel))
     db ! Clean(dataLabel)
     retrieveEmpty()
+  }
+
+  @Test
+  def testExpiration() {
+    val db = new KeywordsDatabaseImpl {
+      override def expirationMillis = 5
+    }
+
+    db ! Store(dataLabel, colVal)
+
+    // Sleep a bit
+    TimeUnit.MILLISECONDS.sleep(10)
+
+    val ret = db !? (1000, Retrieve(dataLabel))
+    assertFalse(ret.isEmpty) //we didn't get a timeout
+    ret match {
+      case Some(List()) => // we are ok
+      case x: Any => println(x); fail()
+    }
   }
 }

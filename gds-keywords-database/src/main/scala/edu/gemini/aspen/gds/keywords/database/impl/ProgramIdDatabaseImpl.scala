@@ -14,7 +14,7 @@ import collection.mutable.ConcurrentMap
 @Instantiate
 @Provides(specifications = Array(classOf[ProgramIdDatabase]))
 class ProgramIdDatabaseImpl extends ProgramIdDatabase {
-  // expiration of 1 day by default but can be overriden in a subclass
+  // expiration of 1 day by default but tests can override it
   def expirationMillis = 24*60*60*1000
 
   start()

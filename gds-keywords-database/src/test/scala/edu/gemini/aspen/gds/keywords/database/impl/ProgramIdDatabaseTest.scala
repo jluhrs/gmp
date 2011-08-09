@@ -5,7 +5,6 @@ import org.junit.Test
 import edu.gemini.aspen.gds.api.Conversions._
 import scala.Some
 import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, StoreProgramId}
-import org.joda.time.DateTimeUtils
 import java.util.concurrent.TimeUnit
 
 class ProgramIdDatabaseTest extends AssertionsForJUnit {
@@ -33,7 +32,7 @@ class ProgramIdDatabaseTest extends AssertionsForJUnit {
 
     (db !? (1000, RetrieveProgramId("label"))) match {
       case Some(None) => // we are ok
-      case x: Any => println(x); fail()
+      case _ => fail()
     }
   }
 
