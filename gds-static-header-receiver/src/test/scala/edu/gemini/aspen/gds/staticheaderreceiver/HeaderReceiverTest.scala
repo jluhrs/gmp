@@ -65,7 +65,6 @@ class HeaderReceiverTest extends AssertionsForJUnit {
 
   }
 
-
   @Test
   def testXmlRpcReceiver() {
     val xml = new XmlRpcReceiver

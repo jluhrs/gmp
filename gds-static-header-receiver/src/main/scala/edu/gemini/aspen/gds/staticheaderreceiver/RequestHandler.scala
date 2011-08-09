@@ -14,7 +14,6 @@ case class InitObservation(programId: String, dataLabel: DataLabel) extends Requ
 // store a keyword/value pair for a given data label
 case class StoreKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRef) extends RequestHandlerMessage
 
-
 /**
  * Singleton actor that forwards messages from the XMLRPC server to the appropriate DB
  */
@@ -29,13 +28,12 @@ object RequestHandler extends Reactor[RequestHandlerMessage] {
     this.programIdDB = programIdDB
   }
 
-
   def act() {
     loop {
       react {
         case InitObservation(programId, dataLabel) => initObservation(programId, dataLabel)
         case StoreKeyword(dataLabel, keyword, value) => storeKeyword(dataLabel, keyword, value)
-        case x: Any => throw new RuntimeException("Argument not known: " + x)
+        case _ => error("Argument not known")
       }
     }
   }

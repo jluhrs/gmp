@@ -4,6 +4,10 @@ import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
 import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
 import actors.Actor
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{RetrieveAll, Retrieve, Store, CleanAll, Clean}
+import collection.mutable.ConcurrentMap
+import com.google.common.collect.MapMaker
+import java.util.concurrent.TimeUnit._
+import scala.collection.JavaConversions._
 
 /**
  * Companion object used to logically group message classes.
@@ -40,6 +44,10 @@ trait TemporarySeqexecKeywordsDatabase extends Actor
 @Instantiate
 @Provides(specifications = Array(classOf[TemporarySeqexecKeywordsDatabase]))
 class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatabase {
+  type ValuesCollection = collection.mutable.Map[FitsKeyword, AnyRef]
+  // expiration of 1 day by default but tests can override it
+  def expirationMillis = 24 * 60 * 60 * 1000
+
   start()
 
   def act() {
@@ -50,12 +58,14 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
         case RetrieveAll(dataLabel) => reply(retrieveAll(dataLabel))
         case Clean(dataLabel) => clean(dataLabel)
         case CleanAll() => cleanAll()
-        case x: Any => throw new RuntimeException("Argument not known " + x)
+        case _ => error("Argument not known ")
       }
     }
   }
 
-  private val map = collection.mutable.Map.empty[DataLabel, collection.mutable.Map[FitsKeyword, AnyRef]]
+  private val map: ConcurrentMap[DataLabel, ValuesCollection] = new MapMaker().
+    expireAfterWrite(expirationMillis, MILLISECONDS)
+    .makeMap[DataLabel, ValuesCollection]()
 
   private def cleanAll() {
     map.clear()
@@ -65,7 +75,6 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
     map -= dataLabel
   }
 
-  //todo: clean map. Empty maps are being left over for each datalabel.
   private def retrieveValue(dataLabel: DataLabel, keyword: FitsKeyword): Option[AnyRef] = {
     map.get(dataLabel) flatMap {
       x => x.get(keyword)
