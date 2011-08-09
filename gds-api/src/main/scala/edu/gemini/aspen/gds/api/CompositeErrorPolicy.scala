@@ -15,35 +15,36 @@ trait CompositeErrorPolicy extends ErrorPolicy
 @Instantiate
 @Provides(specifications = Array(classOf[CompositeErrorPolicy]))
 class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPolicy {
-    var policies: List[ErrorPolicy] = List()
+  var policies: List[ErrorPolicy] = List()
 
-    // Apply all the original headers
-    override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
-        //iterative
-        //        var h = headers
-        //        for (ep <- policies) {
-        //            h = ep.applyPolicy(dataLabel, h)
-        //        }
-        //        h
+  // Apply all the original headers
+  override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
+    LOG.info("Applying policies: " + policies)
+    //iterative
+    //        var h = headers
+    //        for (ep <- policies) {
+    //            h = ep.applyPolicy(dataLabel, h)
+    //        }
+    //        h
 
-        //recursive
-        applyPolicies(dataLabel, policies.sortWith((a, b) => a.priority < b.priority), headers)
+    //recursive
+    applyPolicies(dataLabel, policies.sortWith((a, b) => a.priority < b.priority), headers)
+  }
+
+  private def applyPolicies(dataLabel: DataLabel, l: List[ErrorPolicy], headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
+    l match {
+      case Nil => headers
+      case _ => l.last.applyPolicy(dataLabel, applyPolicies(dataLabel, l.init, headers))
     }
 
-    private def applyPolicies(dataLabel: DataLabel, l: List[ErrorPolicy], headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
-        l match {
-            case Nil => headers
-            case _ => l.last.applyPolicy(dataLabel, applyPolicies(dataLabel, l.init, headers))
-        }
+  }
 
-    }
+  @Bind(optional = true, aggregate = true)
+  def bindPolicy(ep: ErrorPolicy) {
+    policies = ep :: policies
+  }
 
-    @Bind(optional = true)
-    def bindPolicy(ep: ErrorPolicy) {
-        policies = ep :: policies
-    }
-
-    @Validate
-    def validate() {
-    }
+  @Validate
+  def validate() {
+  }
 }
