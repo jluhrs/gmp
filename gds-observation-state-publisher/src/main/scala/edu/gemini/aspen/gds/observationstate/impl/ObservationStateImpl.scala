@@ -4,13 +4,13 @@ import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Comp
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.observationstate.{ObservationStatePublisher, ObservationStateProvider, ObservationStateRegistrar}
-import collection.mutable.{SynchronizedMap, HashMap, SynchronizedSet, HashSet, Set}
+import collection.mutable.{SynchronizedSet, HashSet, Set}
 import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.TimeUnit._
 import collection.mutable.ConcurrentMap
 import scala.collection.JavaConversions._
 import com.google.common.collect.MapMaker
-import edu.gemini.aspen.gds.api.{CollectedValue, CollectionError}
+import edu.gemini.aspen.gds.api.CollectionError
 
 @Component
 @Instantiate
