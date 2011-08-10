@@ -11,14 +11,14 @@ import collection.mutable.ConcurrentMap
 import scala.collection.JavaConversions._
 
 /**
-  * Component to store CollectedValue as HeaderItem, associated to DataLabel */
+ * Component to store CollectedValue as HeaderItem, associated to DataLabel */
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordsDatabase]))
 class KeywordsDatabaseImpl extends KeywordsDatabase {
   private val LOG = Logger.getLogger(this.getClass.getName)
   // expiration of 1 day by default but tests can override it
-  def expirationMillis = 24*60*60*1000
+  def expirationMillis = 24 * 60 * 60 * 1000
 
   start()
 
@@ -34,7 +34,9 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     }
   }
 
-  private val map:ConcurrentMap[DataLabel, List[CollectedValue[_]]] = new MapMaker().expireAfterWrite(expirationMillis, MILLISECONDS).makeMap[DataLabel, List[CollectedValue[_]]]()
+  private val map: ConcurrentMap[DataLabel, List[CollectedValue[_]]] = new MapMaker().
+    expireAfterWrite(expirationMillis, MILLISECONDS)
+    .makeMap[DataLabel, List[CollectedValue[_]]]()
 
   /**
    * Store the keyword
