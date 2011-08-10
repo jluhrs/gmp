@@ -9,21 +9,21 @@ import edu.gemini.epics.{EpicsChannelArray, EpicsChannel, NewEpicsReader}
  * linked to a single fitsKeyword
  */
 class NewEpicsValuesActor(epicsReader: NewEpicsReader, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-    override def collectValues(): List[CollectedValue[_]] = {
-        val readValue = if (arrayIndex > 0) {
-            Option(epicsReader.getChannel(sourceChannel)) map (extractEpicsItem)
-        } else {
-            Option(epicsReader.getArrayChannel(sourceChannel)) map (extractEpicsItemArray)
-        }
-        readValue map (valueToCollectedValue) orElse (defaultCollectedValue) toList
+  override def collectValues(): List[CollectedValue[_]] = {
+    val readValue = if (arrayIndex > 0) {
+      Option(epicsReader.getChannel(sourceChannel)) map (extractEpicsItem)
+    } else {
+      Option(epicsReader.getArrayChannel(sourceChannel)) map (extractEpicsItemArray)
     }
+    readValue map valueToCollectedValue toList
+  }
 
-    def extractEpicsItem(epicsValue: EpicsChannel[_]) = {
-        epicsValue.getValue
-    }
+  def extractEpicsItem(epicsValue: EpicsChannel[_]) = {
+    epicsValue.getValue
+  }
 
-    def extractEpicsItemArray(epicsValue: EpicsChannelArray[_]) = {
-        epicsValue.getValue()(arrayIndex)
-    }
+  def extractEpicsItemArray(epicsValue: EpicsChannelArray[_]) = {
+    epicsValue.getValue()(arrayIndex)
+  }
 
 }

@@ -12,71 +12,56 @@ import org.apache.log4j.Logger
  * for a given programID
  */
 class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configuration: List[GDSConfiguration]) extends KeywordValueActor {
-    type ExtractorFunction = SPProgram => Option[AnyRef]
-    type CollectorFunction = SPProgram => CollectedValue[_]
+  type ExtractorFunction = SPProgram => Option[AnyRef]
+  type CollectorFunction = SPProgram => CollectedValue[_]
 
-    // Defines a list of "channels" to functions map that can extract information from a SPProgram instance
-    // More methods can be added to the list to support more channels
-    val extractorFunctions = Map[String, ExtractorFunction](
-        "odb:piLastName" -> extractPILastName,
-        "odb:piFirstName" -> extractPIFirstName)
+  // Defines a list of "channels" to functions map that can extract information from a SPProgram instance
+  // More methods can be added to the list to support more channels
+  val extractorFunctions = Map[String, ExtractorFunction](
+    "odb:piLastName" -> extractPILastName,
+    "odb:piFirstName" -> extractPIFirstName)
 
-    start()
+  start()
 
+  override def collectValues(): List[CollectedValue[_]] = {
+    // Do the ODB query
+    val progId = SPProgramID.toProgramID(programID)
+    val dataObjOpt = Option(queryRunner.lookupProgramByID(progId)) map {
+      _.getDataObject
+    }
+    // Do a collect for each item or return a set of default values
+    dataObjOpt map {
+      _.asInstanceOf[SPProgram]
+    } map {
+      collectValuesFromProgram(_)
+    } getOrElse {
+      Nil
+    }
+  }
+
+  /**
+   * This method goes through the configuration and if a function is found for
+   * the channel value it will call the corresponding function returning a
+   * Collected Value
+   */
+  private def collectValuesFromProgram(program: SPProgram): List[CollectedValue[_]] = {
+    configuration flatMap {
+      c => new ODBOneValueActor(program, c).collectValues
+    }
+  }
+
+  private class ODBOneValueActor(program: SPProgram, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
     override def collectValues(): List[CollectedValue[_]] = {
-        // Do the ODB query
-        val progId = SPProgramID.toProgramID(programID)
-        val dataObjOpt = Option(queryRunner.lookupProgramByID(progId)) map {
-            _.getDataObject
-        }
-        // Do a collect for each item or return a set of default values
-        dataObjOpt map {
-            _.asInstanceOf[SPProgram]
-        } map {
-            collectValuesFromProgram(_)
-        } getOrElse {
-            collectNotFoundValues
-        }
+      val result = extractorFunctions.getOrElse(sourceChannel, unKnownChannelExtractor(_))(program)
+      result map valueToCollectedValue toList
     }
+  }
 
-    /**
-     * This method goes through the configuration and if a function is found for
-     * the channel value it will call the corresponding function returning a
-     * Collected Value
-     */
-    private def collectValuesFromProgram(program: SPProgram): List[CollectedValue[_]] = {
-        configuration flatMap {
-            c => new ODBOneValueActor(program, c).collectValues
-        }
-    }
+  // ExtractorFunction that can read the PI's First Name
+  def extractPIFirstName(spProgram: SPProgram) = Option(spProgram.getPIFirstName)
 
-    private class ODBOneValueActor(program: SPProgram, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-        override def collectValues(): List[CollectedValue[_]] = {
-            val result = extractorFunctions.getOrElse(sourceChannel, unKnownChannelExtractor(_)) (program)
-            result map (valueToCollectedValue) orElse (defaultCollectedValue) toList
-        }
-    }
+  def extractPILastName(spProgram: SPProgram) = Option(spProgram.getPILastName)
 
-    // ExtractorFunction that can read the PI's First Name
-    def extractPIFirstName(spProgram: SPProgram) = Option(spProgram.getPIFirstName)
-
-    def extractPILastName(spProgram: SPProgram) = Option(spProgram.getPILastName)
-
-    // Placeholder for queries that cannot be answered, e.g. if the channel is unknown
-    def unKnownChannelExtractor(spProgram: SPProgram):Option[AnyRef] = None
-
-    /**
-     * This method goes through the configuration and produced an error or a default value for each configuration
-     * item
-     * This is needed for the case a program is not found in the ODB
-     */
-    private def collectNotFoundValues: List[CollectedValue[_]] = {
-        configuration map { c =>
-            if (c.isMandatory) {
-                ErrorCollectedValue(c.keyword, CollectionError.MandatoryRequired, c.fitsComment.value, c.index.index)
-            } else {
-                DefaultCollectedValue(c.keyword, c.nullValue.value, c.fitsComment.value, c.index.index)
-            }
-        } toList
-    }
+  // Placeholder for queries that cannot be answered, e.g. if the channel is unknown
+  def unKnownChannelExtractor(spProgram: SPProgram): Option[AnyRef] = None
 }

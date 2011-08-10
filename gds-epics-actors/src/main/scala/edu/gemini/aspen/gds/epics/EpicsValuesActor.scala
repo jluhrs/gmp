@@ -12,7 +12,7 @@ import edu.gemini.epics.{EpicsException, EpicsReader}
 class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
   private val MAX_ATTEMPTS = 3;
 
-  /** Method to retry to read an epics channel if it fails once */
+  /**Method to retry to read an epics channel if it fails once */
   private def readChannelValue(attempt: Int): Option[AnyRef] = {
     try {
       Option(epicsReader.getValue(sourceChannel))
@@ -33,7 +33,7 @@ class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration
     LOG.fine("Reading EPICS channel " + sourceChannel + " took " + (start to end).toDurationMillis + " [ms]")
 
     try {
-      readValue map (convertCollectedValue) orElse (defaultCollectedValue) toList
+      readValue map convertCollectedValue toList
     } catch {
       case e: MatchError => {
         LOG.warning("Data for " + fitsKeyword + " keyword was not of the type specified in config file.")

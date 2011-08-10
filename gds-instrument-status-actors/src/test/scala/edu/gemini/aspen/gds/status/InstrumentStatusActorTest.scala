@@ -46,6 +46,8 @@ class InstrumentStatusActorTest extends Mockito {
     there was one(statusDB).getStatusItem(statusItemName)
   }
 
+  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testReplyToCollectIfStatusUnknown {
     val configuration = buildConfiguration(statusItemName, false)
@@ -59,11 +61,7 @@ class InstrumentStatusActorTest extends Mockito {
     val result = instrumentStatusActor !! Collect
 
     result() match {
-      case CollectedValue(keyword, value, comment, 0) :: Nil => {
-        assertEquals(fitsKeyword, keyword)
-        assertEquals(defaultValue, value)
-        assertEquals("Current global status of the instrument", comment)
-      }
+      case Nil =>
       case _ => fail("Should not reply other message ")
     }
 
@@ -71,6 +69,8 @@ class InstrumentStatusActorTest extends Mockito {
     there was one(statusDB).getStatusItem(statusItemName)
   }
 
+  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testErrorMandatoryItemAndStatusUnknown {
     val configuration = buildConfiguration(statusItemName, true)
@@ -84,11 +84,7 @@ class InstrumentStatusActorTest extends Mockito {
     val result = instrumentStatusActor !! Collect
 
     result() match {
-      case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
-        assertEquals(fitsKeyword, keyword)
-        assertEquals(CollectionError.MandatoryRequired, error)
-        assertEquals("Current global status of the instrument", comment)
-      }
+      case Nil =>
       case _ => fail("Should not reply other message ")
     }
 

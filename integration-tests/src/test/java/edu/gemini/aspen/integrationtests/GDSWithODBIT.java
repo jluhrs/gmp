@@ -40,7 +40,8 @@ public class GDSWithODBIT extends GDSIntegrationBase {
                 mavenBundle().artifactId("jini-driver").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("spdb-activator").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("rr").groupId("gemini-nocs").versionAsInProject(),
-                mavenBundle().artifactId("gds-odb-actors").groupId("edu.gemini.aspen.gds").versionAsInProject()
+                mavenBundle().artifactId("gds-odb-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-error-policy").groupId("edu.gemini.aspen.gds").versionAsInProject()//this is now needed always, to add missing keywords
         );
     }
 

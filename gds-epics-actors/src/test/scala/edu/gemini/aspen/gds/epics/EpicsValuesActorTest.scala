@@ -70,7 +70,8 @@ class EpicsValuesActorTest extends Mockito {
     there was one(epicsReader).getValue(channelName)
   }
 
-  // should provide a default value if the current one cannot be read
+  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testCollectingADefaultValue {
     val configuration = buildConfiguration(false, 0)
@@ -85,11 +86,7 @@ class EpicsValuesActorTest extends Mockito {
 
 
     result() match {
-      case CollectedValue(keyword, value, comment, 0) :: Nil => {
-        assertEquals(fitsKeyword, keyword)
-        assertEquals(nullValue.value, value)
-        assertEquals("Mean airmass for the observation", comment)
-      }
+      case Nil =>
       case _ => fail("Should not reply other message ")
     }
 
@@ -97,6 +94,8 @@ class EpicsValuesActorTest extends Mockito {
     there was one(epicsReader).getValue(channelName)
   }
 
+  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testCollectError {
     val configuration = buildConfiguration(true, 0)
@@ -110,11 +109,7 @@ class EpicsValuesActorTest extends Mockito {
     val result = epicsValueActor !! Collect
 
     result() match {
-      case ErrorCollectedValue(keyword, error, comment, 0) :: Nil => {
-        assertEquals(fitsKeyword, keyword)
-        assertEquals(CollectionError.MandatoryRequired, error)
-        assertEquals("Mean airmass for the observation", comment)
-      }
+      case Nil =>
       case _ => fail("Should not reply other message ")
     }
 

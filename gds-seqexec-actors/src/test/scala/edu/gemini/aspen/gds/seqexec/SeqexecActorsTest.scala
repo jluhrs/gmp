@@ -55,8 +55,9 @@ class SeqexecActorsTest {
   def testNotMandatoryNotFoundValue() {
     val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", false, "DEFAULT", "SEQEXEC", "KEY", 0, "my comment") :: Nil)
 
-    // Should produce the default value
-    assertEquals(List(DefaultCollectedValue("KEY", "DEFAULT", "my comment", 0)), seqActor.collectValues)
+    // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+    // it doesn't matter at this point if the item is mandatory or not
+    assertEquals(Nil, seqActor.collectValues)
   }
 
   /**
@@ -66,8 +67,9 @@ class SeqexecActorsTest {
   def testMandatoryNotFoundValue() {
     val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "DEFAULT", "SEQEXEC", "KEY", 0, "my comment") :: Nil)
 
-    // Should produce an empty list
-    assertEquals(List(ErrorCollectedValue("KEY", CollectionError.MandatoryRequired, "my comment", 0)), seqActor.collectValues)
+    // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+    // it doesn't matter at this point if the item is mandatory or not
+    assertEquals(Nil, seqActor.collectValues)
   }
 
   @Test

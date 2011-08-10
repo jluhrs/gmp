@@ -22,8 +22,10 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
     //seqexecKeyDB !? Clean(dataLabel)
     LOG.fine("Retrieving All SEQEXEC keywords took " + (System.currentTimeMillis() - s) + "[ms]")
 
-    for {config <- configurations} yield {
-      new OneItemSeqexecValueActor(config, seqexecValuesMap).collectValues().head
+    (for {config <- configurations} yield {
+      new OneItemSeqexecValueActor(config, seqexecValuesMap).collectValues().headOption
+    }) collect {
+      case x: Some[CollectedValue[_]] => x.get
     }
   }
 
@@ -31,8 +33,6 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
     def collectValues(): List[CollectedValue[_]] = {
       seqexecValuesMap.get(config.keyword) map {
         valueToCollectedValue
-      } orElse {
-        defaultCollectedValue
       } toList
     }
   }

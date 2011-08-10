@@ -16,7 +16,7 @@ class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSC
       s => Option(s.getValue)
     } map {
       x => valueToCollectedValue(x.get)
-    } orElse (defaultCollectedValue) toList
+    } toList
   }
 
 }
