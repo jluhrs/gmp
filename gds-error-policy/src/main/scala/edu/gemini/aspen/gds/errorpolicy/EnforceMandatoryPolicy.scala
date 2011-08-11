@@ -7,7 +7,8 @@ import edu.gemini.aspen.gds.api.{DefaultCollectedValue, ErrorPolicy, CollectionE
 
 
 /**
- * This policy transforms ErrorCollectedValues that have a CollectionError.MandatoryRequired cause, to a
+ * This policy adds missing items(i.e. that are in the configuration but not among the CollectedValues) and then
+ * transforms ErrorCollectedValues that have a CollectionError.MandatoryRequired cause, to a
  * CollectedValue with an empty string as a value, so that it gets written to the file.
  */
 @Component
