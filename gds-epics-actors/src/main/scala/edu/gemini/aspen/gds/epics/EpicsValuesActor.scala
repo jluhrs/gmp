@@ -19,9 +19,16 @@ class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration
     } catch {
       case e: EpicsException => {
         attempt match {
-          case 0 => None
+          case 0 => {
+            LOG.severe(configuration.channel.name + ": " + e.getMessage)
+            None
+          }
           case _ => readChannelValue(attempt - 1)
         }
+      }
+      case e: IllegalStateException => {
+        LOG.severe(configuration.channel.name + ": " + e.getMessage)
+        None
       }
     }
   }

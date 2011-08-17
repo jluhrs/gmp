@@ -1,34 +1,44 @@
 package edu.gemini.aspen.gds.epics
 
-import edu.gemini.epics.EpicsReader
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
+import edu.gemini.epics.{EpicsException, EpicsReader}
+import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
 
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends KeywordActorsFactory {
-    // Use dummy configuration
+class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKeywordActorsFactory {
 
-    override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
-        actorsConfiguration filter {
-            _.event.name == obsEvent.name
-        } map {
-            c => {
-                epicsReader.bindChannel(c.channel.name)
-                new EpicsValuesActor(epicsReader, c)
-            }
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+    actorsConfiguration filter {
+      _.event.name == obsEvent.name
+    } filter {
+      c => {
+        try {
+          epicsReader.bindChannel(c.channel.name)
+          true //if binding doesn't throw, we keep it
+        } catch {
+          case ex: EpicsException => {
+            LOG.severe(obsEvent.name() + ": " + ex.getMessage)
+            false //if binding throws, we log it and discard it
+          }
         }
+      }
+    } map {
+      c => {
+        new EpicsValuesActor(epicsReader, c)
+      }
     }
+  }
 
-    override def getSource = KeywordSource.EPICS
+  override def getSource = KeywordSource.EPICS
 
-    @Invalidate
-    def unbindAllChannels() {
-        // Unbind all required channels
-        actorsConfiguration map {
-            c => epicsReader.unbindChannel(c.channel.name)
-        }
+  @Invalidate
+  def unbindAllChannels() {
+    // Unbind all required channels
+    actorsConfiguration map {
+      c => epicsReader.unbindChannel(c.channel.name)
     }
+  }
 }
