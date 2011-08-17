@@ -27,11 +27,11 @@ import edu.gemini.aspen.gmp.services.PropertyHolder
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 // todo: reduce amount of dependencies
 class GDSObseventHandler(
-  @Requires actorsFactory: CompositeActorsFactory,
-  @Requires keywordsDatabase: KeywordsDatabase,
-  @Requires errorPolicy: CompositeErrorPolicy,
-  @Requires obsState: ObservationStateRegistrar,
-  @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
+                          @Requires actorsFactory: CompositeActorsFactory,
+                          @Requires keywordsDatabase: KeywordsDatabase,
+                          @Requires errorPolicy: CompositeErrorPolicy,
+                          @Requires obsState: ObservationStateRegistrar,
+                          @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
   private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, obsState, propertyHolder)
 
   def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
@@ -41,11 +41,11 @@ class GDSObseventHandler(
 }
 
 class ReplyHandler(
-  actorsFactory: CompositeActorsFactory,
-  keywordsDatabase: KeywordsDatabase,
-  errorPolicy: ErrorPolicy,
-  obsState: ObservationStateRegistrar,
-  propertyHolder: PropertyHolder) extends Actor {
+                    actorsFactory: CompositeActorsFactory,
+                    keywordsDatabase: KeywordsDatabase,
+                    errorPolicy: ErrorPolicy,
+                    obsState: ObservationStateRegistrar,
+                    propertyHolder: PropertyHolder) extends Actor {
   private val LOG = Logger.getLogger(this.getClass.getName)
   private val collectDeadline = 5000L
   private val eventLogger = new EventLogger
@@ -142,12 +142,12 @@ class ReplyHandler(
 
   private def logTiming(evt: ObservationEvent, label: DataLabel) {
     val avgTime = eventLogger.average(evt) map {
-        x => x.getMillis
+      x => x.getMillis
     } getOrElse {
       "unknown"
     }
     val currTime = eventLogger.retrieve(label, evt) map {
-        x => x.getMillis
+      x => x.getMillis
     } getOrElse {
       "unknown"
     }
@@ -181,7 +181,7 @@ class ReplyHandler(
     val maxHeader = (0 /: processedList)((i, m) => m.index.max(i))
 
     val headers: List[Header] = List.range(0, maxHeader + 1) map {
-        headerIndex => {
+      headerIndex => {
         val header = new DefaultHeader(headerIndex)
         processedList filter {
           _.index == headerIndex
@@ -198,7 +198,13 @@ class ReplyHandler(
     actor {
       eventLogger.start(dataLabel, "FITS update")
       val start = new DateTime
-      new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), dataLabel, headers).updateFitsHeaders()
+      (try {
+        Some(new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), dataLabel, headers))
+      } catch {
+        case ex => None
+      }) map {
+        updater: FitsUpdater => updater.updateFitsHeaders()
+      }
       val end = new DateTime
       LOG.info("Writing updated FITS file at " + new File(dataLabel.toString) + " took " + (start to end).toDuration)
       eventLogger.end(dataLabel, "FITS update")
