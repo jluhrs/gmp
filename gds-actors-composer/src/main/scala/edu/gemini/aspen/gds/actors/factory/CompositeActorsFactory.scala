@@ -1,10 +1,9 @@
 package edu.gemini.aspen.gds.actors.factory
 
 import org.apache.felix.ipojo.annotations._
-import java.util.logging.Logger
-import edu.gemini.aspen.gds.api.{KeywordValueActor, KeywordActorsFactory, GDSConfiguration}
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
+import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordActorsFactory, GDSConfiguration}
 
 /**
  * Interface for a Composite of Actors Factory required by OSGi
@@ -18,9 +17,7 @@ trait CompositeActorsFactory extends KeywordActorsFactory
 @Component
 @Provides(specifications = Array(classOf[CompositeActorsFactory]))
 @Instantiate
-class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends CompositeActorsFactory {
-  val LOG = Logger.getLogger(this.getClass.getName)
-
+class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends AbstractKeywordActorsFactory with CompositeActorsFactory {
   var factories = List[KeywordActorsFactory]()
 
   override def configure(configuration: List[GDSConfiguration]) {

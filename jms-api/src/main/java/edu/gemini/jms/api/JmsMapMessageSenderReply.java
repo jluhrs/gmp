@@ -32,7 +32,7 @@ public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
         Message m = sendMapMessageWithReply(destination, messageBuilder);
         T replyObject = waitForReply(m, timeout);
         long endTime = System.currentTimeMillis();
-        LOG.info("Sending/reply on " + destination + " took " + (endTime - startTime) + "   [ms]");
+        LOG.fine("Sending/reply on " + destination + " took " + (endTime - startTime) + "   [ms]");
         return replyObject;
 
     }

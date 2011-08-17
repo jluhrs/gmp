@@ -37,13 +37,13 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   }
 
   private def doCollection(sender: OutputChannel[Any], obsEvent: ObservationEvent, dataLabel: DataLabel) {
-    LOG.info("Keyword collection on dataset " + dataLabel + " for event " + obsEvent.name)
+    LOG.info("Starting keyword collection on dataset " + dataLabel + " for event " + obsEvent.name)
 
     val s = System.currentTimeMillis()
     val dataFutures = requestCollection(obsEvent, dataLabel, actorsFactory.buildActors)
 
     waitForDataAndReply(dataLabel, dataFutures) {
-      LOG.info(dataFutures.size + " collecting actors for " + obsEvent + " completed in " + (System.currentTimeMillis() - s) + " [ms]")
+      LOG.info("Finished keyword collection: " + dataFutures.size + " collecting actors for " + obsEvent + " completed in " + (System.currentTimeMillis() - s) + " [ms]")
       // Reply to the original sender
       sender ! AcquisitionRequestReply(obsEvent, dataLabel)
     }
@@ -69,7 +69,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
       // Wait for response
       val v = Futures awaitAll (5000, dataFutures: _*) collect {
         case Some(x: List[CollectedValue[_]]) => x
-        case None =>  {
+        case None => {
           LOG.warning("Missing return of collecting data")
           Nil
         }

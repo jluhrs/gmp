@@ -60,12 +60,12 @@ public class CadRecordImpl implements CadRecord {
         }
         epicsCad = new EpicsCad(cas);
         car = new CarRecord(cas, epicsTop.buildChannelName(name.toLowerCase() + "C"));
-        LOG.info("Finished constructing CAD record " + name);
+        LOG.fine("Finished constructing CAD record " + name);
     }
 
     @Override
     public synchronized void start() {
-        LOG.info("Validate " + seqCom.getName() + " CAD record");
+        LOG.fine("Validate " + seqCom.getName() + " CAD record");
 
         epicsCad.start(epicsTop, name, new AttributeListener(), new DirListener(), attributeNames);
         car.start();
@@ -73,7 +73,7 @@ public class CadRecordImpl implements CadRecord {
 
     @Override
     public synchronized void stop() {
-        LOG.info("InValidate " + seqCom.getName() + " CAD record");
+        LOG.fine("InValidate " + seqCom.getName() + " CAD record");
         epicsCad.stop();
         car.stop();
 
@@ -93,7 +93,7 @@ public class CadRecordImpl implements CadRecord {
         if (state != CadState.CLEAR)
             LOG.info("CAD Record: " + seqCom.getName() + " in State: " + state + " received Directive: " + dir);
         CadState newState = state.processDir(dir, epicsCad, cs, seqCom, car);
-        if (state != CadState.CLEAR) LOG.info("CAD Record: " + seqCom.getName() + " now in State: " + newState);
+        if (state != CadState.CLEAR) LOG.fine("CAD Record: " + seqCom.getName() + " now in State: " + newState);
         return newState;
     }
 

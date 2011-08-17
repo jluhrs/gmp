@@ -161,14 +161,14 @@ public class ActionManagerImpl implements ActionManager {
                             action.sendResponseToListeners(_handlerResponseTracker.getResponse(action));
                             //remove the action from the list of tracked actions
                             _handlerResponseTracker.removeTrackedAction(action);
-                            
+
                             //now, remove the element from the queue
                             _actionQueue.poll();
                             //iterate to the next element
                             action = _actionQueue.peek();
                         } else {
                             LOG.info("Received update for action " + action + " response " +
-                                     response + ". Waiting for the other parts of the action to complete...");
+                                    response + ". Waiting for the other parts of the action to complete...");
                             //in this case, the loop is aborted, since this action is not completed yet,
                             //so we have to keep waiting.
                             action = null;
@@ -194,8 +194,8 @@ public class ActionManagerImpl implements ActionManager {
                 } catch (InterruptedException e) {
                     LOG.info("Update Processor Thread interrupted. Exiting");
                     return;
-                } catch(Exception ex){
-                    LOG.log(Level.SEVERE,ex.getMessage(),ex);
+                } catch (Exception ex) {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
         }
@@ -220,13 +220,13 @@ public class ActionManagerImpl implements ActionManager {
 
     @Override
     public void registerAction(Action action) {
-        LOG.info("Start monitoring progress for Action " + action);
+        LOG.fine("Start monitoring progress for Action " + action);
         _actionQueue.add(action);
     }
 
     @Override
     public void unregisterAction(Action action) {
-        LOG.info("Stopped monitoring progress for Action " + action + ". Action Completed Immediately");
+        LOG.fine("Stopped monitoring progress for Action " + action + ". Action Completed Immediately");
         _actionQueue.remove(action);
     }
 

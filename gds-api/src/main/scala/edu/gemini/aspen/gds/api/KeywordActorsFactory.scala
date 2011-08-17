@@ -1,30 +1,36 @@
 package edu.gemini.aspen.gds.api
 
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import java.util.logging.Logger
 
 /**
  * Trait for objects that can provide a set of Actors
  * that can in turn retrieve keyword values
  */
 trait KeywordActorsFactory {
-    var actorsConfiguration: List[GDSConfiguration] = List()
+  var actorsConfiguration: List[GDSConfiguration] = List()
 
-    /**
-     * Request the factory to create and start actors required for the given observation event
-     */
-    def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor]
+  /**
+   * Request the factory to create and start actors required for the given observation event
+   */
+  def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor]
 
-    /**
-     * Passes the global GDS configuration along
-     */
-    def configure(configuration: List[GDSConfiguration]) {
-        actorsConfiguration = configuration filter {
-            _.subsystem.name == getSource
-        }
+  /**
+   * Passes the global GDS configuration along
+   */
+  def configure(configuration: List[GDSConfiguration]) {
+    actorsConfiguration = configuration filter {
+      _.subsystem.name == getSource
     }
+  }
 
-    /**
-     * Returns the source where the actors created by this factory will retrieve their data
-     */
-    def getSource: KeywordSource.Value = KeywordSource.NONE
+  /**
+   * Returns the source where the actors created by this factory will retrieve their data
+   */
+  def getSource: KeywordSource.Value = KeywordSource.NONE
+}
+
+
+abstract class AbstractKeywordActorsFactory extends KeywordActorsFactory {
+  protected val LOG = Logger.getLogger(this.getClass.getName)
 }

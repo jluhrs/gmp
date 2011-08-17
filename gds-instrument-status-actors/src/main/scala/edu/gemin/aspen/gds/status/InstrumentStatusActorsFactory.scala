@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemin.aspen.gds.status.InstrumentStatusActor
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import java.util.logging.Logger
-import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
+import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
 
 /**
  * Factory of Actors that can retrieve instrument status
@@ -13,9 +13,7 @@ import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) extends KeywordActorsFactory {
-  val LOG = Logger.getLogger(this.getClass.getName)
-
+class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) extends AbstractKeywordActorsFactory {
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
     configurationsForEvent(obsEvent) map {
       new InstrumentStatusActor(statusDB, _)
