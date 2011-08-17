@@ -1,11 +1,12 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJChannel;
+import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsException;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBR_Float;
@@ -27,20 +28,23 @@ import static org.mockito.Mockito.when;
 
 public class ChannelBindingSupportTest {
     private static final String CHANNEL_NAME = "tst:tst";
-    private Context context;
+    private CAJContext context;
     private EpicsClient epicsClient;
     private ChannelBindingSupport cbs;
-    private Channel channel;
+    private CAJChannel channel;
 
     @Before
     public void setUp() throws Exception {
         epicsClient = mock(EpicsClient.class);
-        context = mock(Context.class);
-        cbs = new ChannelBindingSupport(context, epicsClient);
 
-        channel = mock(Channel.class);
+        channel = mock(CAJChannel.class);
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(channel.getContext()).thenReturn(context);
         when(channel.getName()).thenReturn(CHANNEL_NAME);
+
+        context = mock(CAJContext.class);
+        when(context.createChannel(eq(CHANNEL_NAME), any(ConnectionListener.class))).thenReturn(channel);
+        cbs = new ChannelBindingSupport(context, epicsClient);
     }
 
     @Test
@@ -145,7 +149,7 @@ public class ChannelBindingSupportTest {
         cbs.bindChannel(CHANNEL_NAME);
 
         cbs.close();
-        
+
         verify(channel).destroy();
     }
 }

@@ -1,5 +1,6 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJChannel;
 import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.epics.EpicsClient;
@@ -35,7 +36,7 @@ public class EpicsObserverImplTest {
     private EpicsObserverImpl epicsObserver;
     private JCAContextController contextController;
     private CAJContext jcaContext;
-    private Channel channel;
+    private CAJChannel channel;
 
     @Before
     public void setUp() throws Exception {
@@ -52,7 +53,7 @@ public class EpicsObserverImplTest {
         jcaContext = mock(CAJContext.class);
         when(contextController.getJCAContext()).thenReturn(jcaContext);
 
-        channel = mock(Channel.class);
+        channel = mock(CAJChannel.class);
         when(jcaContext.createChannel(Matchers.<String>any(), Matchers.<ConnectionListener>anyObject())).thenReturn(channel);
         when(channel.getContext()).thenReturn(jcaContext);
     }

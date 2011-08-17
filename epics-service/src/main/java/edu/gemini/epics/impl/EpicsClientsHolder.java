@@ -1,9 +1,9 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.Maps;
 import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsException;
-import gov.aps.jca.Context;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class EpicsClientsHolder {
     private final ConcurrentMap<EpicsClient, Collection<String>> pendingClients = Maps.newConcurrentMap();
     private final ConcurrentMap<EpicsClient, ChannelBindingSupport> boundClients = Maps.newConcurrentMap();
 
-    public void connectNewClient(Context ctx, EpicsClient epicsClient, Collection<String> channels) {
+    public void connectNewClient(CAJContext ctx, EpicsClient epicsClient, Collection<String> channels) {
         if (!channels.isEmpty()) {
             ChannelBindingSupport cbs = subscribeToChannels(ctx, epicsClient, channels);
 
@@ -32,7 +32,7 @@ public class EpicsClientsHolder {
         }
     }
 
-    private ChannelBindingSupport subscribeToChannels(Context ctx, EpicsClient epicsClient, Collection<String> channels) {
+    private ChannelBindingSupport subscribeToChannels(CAJContext ctx, EpicsClient epicsClient, Collection<String> channels) {
         ChannelBindingSupport cbs = new ChannelBindingSupport(ctx, epicsClient);
         for (String channel : channels) {
             LOG.fine("Binding client " + epicsClient + " to channel " + channel);
@@ -88,7 +88,7 @@ public class EpicsClientsHolder {
     /**
      * Connects all the clients that were previously stored as pending
      */
-    public void connectAllPendingClients(Context ctx) {
+    public void connectAllPendingClients(CAJContext ctx) {
         for (Map.Entry<EpicsClient, Collection<String>> pendingClient : pendingClients.entrySet()) {
             connectNewClient(ctx, pendingClient.getKey(), pendingClient.getValue());
         }

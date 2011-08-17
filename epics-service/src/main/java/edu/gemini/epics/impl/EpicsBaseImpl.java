@@ -84,10 +84,23 @@ public class EpicsBaseImpl implements EpicsBase {
     }
 
     private void addNewChannel(String channelName) throws CAException, TimeoutException {
-        CAJChannel epicsChannel = (CAJChannel) _ctx.createChannel(channelName);
-        //TODO: Do we need to bind the channels asynchronously, using the connection listener?
-        _channels.putIfAbsent(channelName, epicsChannel);
-        _ctx.pendIO(5.0);
+        CAJChannel epicsChannel = null;
+        try {
+            epicsChannel = (CAJChannel) _ctx.createChannel(channelName);
+            //TODO: Do we need to bind the channels asynchronously, using the connection listener?
+            _ctx.pendIO(1.0);
+            _channels.putIfAbsent(channelName, epicsChannel);
+        } catch (CAException ex) {
+            if (epicsChannel != null) _ctx.destroyChannel(epicsChannel, true);
+            throw ex;
+        } catch (TimeoutException ex) {
+            if (epicsChannel != null) _ctx.destroyChannel(epicsChannel, true);
+            throw ex;
+        } catch (RuntimeException ex) {
+            if (epicsChannel != null) _ctx.destroyChannel(epicsChannel, true);
+            throw ex;
+        }
+
     }
 
     @Override

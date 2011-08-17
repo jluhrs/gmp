@@ -106,7 +106,19 @@ public class EpicsBaseImplTest {
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
         epicsBase.bindChannel(CHANNEL_NAME);
     }
-    
+
+    @Test(expected = EpicsException.class)
+    public void testCAExceptionWhileBindingChannelTwice() throws CAException {
+        when(context.createChannel(CHANNEL_NAME)).thenThrow(new CAException());
+
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
+        try {
+            epicsBase.bindChannel(CHANNEL_NAME);
+        } catch (Exception ex) {
+        }
+        epicsBase.bindChannel(CHANNEL_NAME);
+    }
+
     @Test(expected = EpicsException.class)
     public void testIllegalStateExceptionWhileBindingChannel() throws CAException {
         when(context.createChannel(CHANNEL_NAME)).thenThrow(new IllegalStateException());

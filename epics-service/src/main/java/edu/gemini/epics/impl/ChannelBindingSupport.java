@@ -1,12 +1,13 @@
 package edu.gemini.epics.impl;
 
+import com.cosylab.epics.caj.CAJChannel;
+import com.cosylab.epics.caj.CAJContext;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsClient;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
 import gov.aps.jca.event.ConnectionEvent;
 import gov.aps.jca.event.ConnectionListener;
@@ -32,7 +33,7 @@ import java.util.logging.Logger;
 public class ChannelBindingSupport {
     private static final Logger LOG = Logger.getLogger(ChannelBindingSupport.class.getName());
 
-    private final Context _ctx;
+    private final CAJContext _ctx;
     private final EpicsClient _epicsClient;
     private final Set<Channel> _channels = Sets.newHashSet();
     private boolean _closed;
@@ -62,10 +63,15 @@ public class ChannelBindingSupport {
 
                 LOG.info("Reconnecting channel " + ch.getName());
                 ch = ch.getContext().createChannel(ch.getName(), this);
-                ch.getContext().flushIO();
+                ch.getContext().pendIO(1.0);
 
             } catch (Exception e) {
                 LOG.log(Level.SEVERE, "Trouble reconnecting channel " + ch.getName(), e);
+                try {
+                    ch.destroy();
+                } catch (CAException ex) {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                }
             }
         }
 
@@ -129,7 +135,7 @@ public class ChannelBindingSupport {
         }
     };
 
-    public ChannelBindingSupport(Context ctx, EpicsClient epicsClient) throws EpicsException {
+    public ChannelBindingSupport(CAJContext ctx, EpicsClient epicsClient) throws EpicsException {
         Preconditions.checkArgument(ctx != null, "JCA Context cannot be null");
         Preconditions.checkArgument(epicsClient != null, "EpicsClient cannot be null");
         this._epicsClient = epicsClient;
@@ -159,10 +165,20 @@ public class ChannelBindingSupport {
     }
 
     public void bindChannel(String channel) throws EpicsException {
+        CAJChannel ch = null;
         try {
-            _channels.add(_ctx.createChannel(channel, connectionListener));
-            _ctx.flushIO();
-        } catch (CAException e) {
+            ch = (CAJChannel) _ctx.createChannel(channel, connectionListener);
+            _ctx.pendIO(1.0);
+            if (ch.getConnectionState() != Channel.ConnectionState.CONNECTED) {
+                throw new RuntimeException("Couldn't connect channel " + channel);
+            }
+            _channels.add(ch);
+        } catch (Exception e) {
+            try {
+                _ctx.destroyChannel(ch, true);
+            } catch (CAException e1) {
+                throw new EpicsException("Exception while adding a new channel", e);
+            }
             throw new EpicsException("Exception while adding a new channel", e);
         }
     }
