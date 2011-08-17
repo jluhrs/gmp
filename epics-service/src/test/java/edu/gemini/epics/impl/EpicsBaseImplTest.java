@@ -5,6 +5,7 @@ import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsService;
 import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
 import gov.aps.jca.TimeoutException;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,6 +26,7 @@ public class EpicsBaseImplTest {
 
     @Test
     public void testChannelBinding() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
@@ -35,6 +37,7 @@ public class EpicsBaseImplTest {
 
     @Test
     public void testChannelUnbinding() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
@@ -46,6 +49,7 @@ public class EpicsBaseImplTest {
 
     @Test
     public void testChannelUnbindingUnknownChannel() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
@@ -57,6 +61,7 @@ public class EpicsBaseImplTest {
     @Ignore
     @Test
     public void testChannelUnbindingChannelStillInUse() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
@@ -76,6 +81,7 @@ public class EpicsBaseImplTest {
 
     @Test
     public void testIsChannelKnown() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
 
@@ -88,6 +94,7 @@ public class EpicsBaseImplTest {
 
     @Test
     public void testClose() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         // Bind a channel

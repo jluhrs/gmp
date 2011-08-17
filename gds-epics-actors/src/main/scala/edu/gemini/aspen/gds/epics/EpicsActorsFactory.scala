@@ -20,7 +20,7 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
           true //if binding doesn't throw, we keep it
         } catch {
           case ex: EpicsException => {
-            LOG.severe(obsEvent.name() + ": " + ex.getMessage)
+            LOG.severe(ex.getMessage)
             false //if binding throws, we log it and discard it
           }
         }

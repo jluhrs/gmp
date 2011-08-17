@@ -6,6 +6,7 @@ import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsService;
 import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR_Float;
 import org.junit.Test;
@@ -23,6 +24,7 @@ public class EpicsReaderImplTest {
 
     @Test
     public void testReadValue() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         float[] simulatedValue = {1, 2};
@@ -47,6 +49,7 @@ public class EpicsReaderImplTest {
 
     @Test(expected = EpicsException.class)
     public void testReadValueWithCAException() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.get()).thenThrow(new CAException());
 
@@ -58,6 +61,7 @@ public class EpicsReaderImplTest {
 
     @Test(expected = EpicsException.class)
     public void testReadValueWithTimeoutException() throws CAException, TimeoutException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
         when(channel.getContext()).thenReturn(context);
 

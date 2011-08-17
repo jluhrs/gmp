@@ -6,6 +6,7 @@ import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.EpicsWriter;
 import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
 import org.junit.Test;
 
 import static org.mockito.Mockito.doThrow;
@@ -23,6 +24,7 @@ public class EpicsWriterImplTest {
 
     @Test
     public void testWriteValueWithPrimitiveDoubleArray() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         when(channel.getContext()).thenReturn(context);
@@ -45,6 +47,7 @@ public class EpicsWriterImplTest {
 
     @Test
     public void testWriteValueWithDoubleArray() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         when(channel.getContext()).thenReturn(context);
@@ -52,7 +55,7 @@ public class EpicsWriterImplTest {
         EpicsWriter epicsWriter = new EpicsWriterImpl(new EpicsService(context));
         epicsWriter.bindChannel(CHANNEL_NAME);
 
-        Double[] valuesAsObject = new Double[] {1., 2.};
+        Double[] valuesAsObject = new Double[]{1., 2.};
 
         epicsWriter.write(CHANNEL_NAME, valuesAsObject);
         verify(channel).put(simulatedValue);
@@ -60,6 +63,7 @@ public class EpicsWriterImplTest {
 
     @Test
     public void testWriteSingleValue() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         when(channel.getContext()).thenReturn(context);
@@ -81,6 +85,7 @@ public class EpicsWriterImplTest {
 
     @Test(expected = EpicsException.class)
     public void testWriteSingleValueWithCAException() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         doThrow(new CAException()).when(channel).put(singleValue);
@@ -93,6 +98,7 @@ public class EpicsWriterImplTest {
 
     @Test(expected = EpicsException.class)
     public void testWriteValueWithCAException() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
         when(context.createChannel(CHANNEL_NAME)).thenReturn(channel);
 
         doThrow(new CAException()).when(channel).put(simulatedValue);
