@@ -10,6 +10,7 @@ The GDS is comprised of the following bundles:
 - \subpage gds-epics-actors
 - \subpage gds-odb-actors
 - \subpage gds-instrument-status-actors
+- \subpage gds-keywords-database
 
 \section design_sec Design Issues
 
@@ -77,7 +78,8 @@ and it needs to be referred from GDSConfigurationServiceImpl-default.cfg
 The main objective is to determine the bounds of how fast GDS can process a file comparable to those required for GPI
 As a reference, we'd ideally be able to have expositions of one second and process the file in a comparable time
 
-The tests were carried out on 7/20/2011 on an iMac with all the components on the local machine
+The first round of tests were carried out on 7/20/2011 on an iMac with all the components on the local machine
+A second round of tests were carried out on 8/12/2011 on an iMac with all the components on the local machine
 
 \subsection Procedure
 The test procedure is as follows

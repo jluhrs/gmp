@@ -1,9 +1,17 @@
 /*! \page gds_user_manual GDS User Manual
+
 This page describes how to manage the Gemini Data Service.
 
+
 This manual is divided in the following sections:
+- \ref introduction
+- \ref sources
 - \ref gds_configuration_sec
 - \ref gds_troubleshooting_sec
+
+\section introduction Introduction
+
+\section sources Sources
 
 \section gds_configuration_sec Configuration
   The GDS is configured by editing the file $GMP_HOME/conf/gds-keywords.conf.
@@ -88,7 +96,5 @@ This manual is divided in the following sections:
 
 
 \section gds_troubleshooting_sec Troubleshooting
-
-
 
 */

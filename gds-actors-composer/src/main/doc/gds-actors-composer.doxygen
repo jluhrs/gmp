@@ -116,8 +116,7 @@
    <tr>
 </table> 
   \section gds-actors-composer_provides_sec Provided Services
-  This bundle provides several services, some of them are for internal use, but some are required for other command related
-  bundles.
+  This bundle provides the following OSGi services
  
   \section gds-actors-composer_requires_sec Required Services
   This bundle requires the following services to operate:

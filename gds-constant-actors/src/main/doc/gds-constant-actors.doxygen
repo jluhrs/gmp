@@ -1,0 +1,22 @@
+/*!
+  \page gds-constant-actors GDS Epics Actors
+  This bundle contains the actors and actors factory that can insert constant values to the FITS keyword set.
+  
+  Like all the other actor bundles y contains an actor factory that builds actors using the information from the GDS configuration, and the actors themselves just return the constant value for the keyword.
+ 
+  \section gds-constant-actors_config The bundle uses the common configuration format and use items of the CONSTANT source like:
+  \verbatim
+  #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Default    Source         Source                    Array     Comment
+  #     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
+  #  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------   -----------------
+      GPI          OBS_PREP      OBSERVATORY 0        STRING          F            NONE      CONSTANT     none     GEMINI     "Name of the Observatory"
+  \endverbatim
+ 
+  Where the Default Value will be stored at the keyword as is.
+ 
+  \section gds-constant-actors_provides_sec Provided Services
+  This bundle provides as a service the ConstantActorsFactory with the KeywordStatusActorFactory interface
+ 
+  \section gds-constant-actors_requires_sec Required Services
+  This bundle requires no services to operate:
+ */
