@@ -1,5 +1,10 @@
 package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
+import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
+import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
+import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
+import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import edu.gemini.fits.FitsParseException;
@@ -15,9 +20,12 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
@@ -59,31 +67,53 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         assertNotNull(getBundle("edu.gemini.aspen.gds.fits"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.epics"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.obsevent.handler"));
+        assertNotNull(getBundle("edu.gemini.aspen.gds.observationstate"));
     }
 
-    //@Test
+    @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
         TimeUnit.MILLISECONDS.sleep(400);
+        assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
         copyInitialFile(INITIAL_FITS_FILE, "/tmp/" + INITIAL_FITS_FILE);
 
-        Set<String> originalKeywords = readKeywords("/tmp/" + INITIAL_FITS_FILE);
+        List<Set<String>> originalKeywords = readAllExtensionsKeywords("/tmp/" + INITIAL_FITS_FILE);
         System.out.println(originalKeywords);
+        assertEquals(2, originalKeywords.size());
+
         sendObservationEvents(eventHandler, new DataLabel("FITS_WITH_EXTENSIONS"));
 
         File finalFile = new File(FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
         Hedit hEdit = new Hedit(new File(FINAL_FITS_FILE));
-        Header primaryHeader = hEdit.readPrimary();
-        Set<String> afterProcessingPrimaryKeywords = primaryHeader.getKeywords();
+        List<Header> allHeaders = hEdit.readAllHeaders();
+        assertEquals(2, allHeaders.size());
 
-        System.out.println(afterProcessingPrimaryKeywords);
+        List<Set<String>> afterProcessingAllExtensionsKeywords = new ArrayList<Set<String>>();
+        afterProcessingAllExtensionsKeywords.add(allHeaders.get(0).getKeywords());
+        afterProcessingAllExtensionsKeywords.add(allHeaders.get(1).getKeywords());
 
-        assertTrue(afterProcessingPrimaryKeywords.containsAll(originalKeywords));
-        assertTrue(afterProcessingPrimaryKeywords.contains("WINDSPEE"));
+        System.out.println(afterProcessingAllExtensionsKeywords);
+
+        for (int i = 0; i < originalKeywords.size(); i++) {
+            assertTrue(afterProcessingAllExtensionsKeywords.get(i).containsAll(originalKeywords.get(i)));
+        }
+
+        assertTrue(afterProcessingAllExtensionsKeywords.get(0).contains("WINDSPEE"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(0).contains("WINDDIRE"));
+
+        assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("AIRMASS"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("HUMIDITY"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("TAMBIENT"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("PRESSURE"));
+
     }
 
 }

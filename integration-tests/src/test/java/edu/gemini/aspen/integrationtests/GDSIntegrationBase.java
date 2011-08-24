@@ -15,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -122,6 +124,16 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         Hedit hEdit = new Hedit(new File(fileName));
         Header primaryHeader = hEdit.readPrimary();
         return primaryHeader.getKeywords();
+    }
+
+    protected List<Set<String>> readAllExtensionsKeywords(String fileName) throws IOException, FitsParseException, InterruptedException {
+        Hedit hEdit = new Hedit(new File(fileName));
+        List<Header> allHeaders = hEdit.readAllHeaders();
+        List<Set<String>> allKeywords = new ArrayList<Set<String>>();
+        for (Header header : allHeaders) {
+            allKeywords.add(header.getKeywords());
+        }
+        return allKeywords;
     }
 
     protected Header readFinalPrimary() throws IOException, FitsParseException, InterruptedException {
