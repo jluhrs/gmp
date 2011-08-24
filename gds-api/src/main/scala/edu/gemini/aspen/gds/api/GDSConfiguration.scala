@@ -39,5 +39,27 @@ case class GDSConfiguration(instrument: Instrument,
                             channel: Channel,
                             arrayIndex: ArrayIndex,
                             fitsComment: FitsComment) {
-    def isMandatory = mandatory.mandatory
+  def isMandatory = mandatory.mandatory
+
+  private def addTabs(str: String, tabs: Int) = {
+    var tabsStr = "\t"
+    for (i <- 1 to (tabs - str.length() / 8 - 1)) {
+      tabsStr += "\t"
+    }
+    str + tabsStr
+  }
+
+  def formatForConfigFile: String = {
+    instrument.name + "\t" +
+      addTabs(event.name, 3) +
+      addTabs(keyword.getName, 2) +
+      addTabs(index.index.toString, 1) +
+      addTabs(dataType.name, 1) +
+      addTabs((if (mandatory.mandatory) "T" else "F"), 1) +
+      addTabs(nullValue.value, 2) +
+      addTabs(subsystem.name.toString, 1) +
+      addTabs(channel.name, 3) +
+      addTabs(arrayIndex.value.toString, 1) +
+      "\"" + fitsComment.value + "\""
+  }
 }
