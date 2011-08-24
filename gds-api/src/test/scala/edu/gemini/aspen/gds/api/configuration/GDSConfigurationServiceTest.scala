@@ -3,9 +3,9 @@ package edu.gemini.aspen.gds.api.configuration
 import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api._
 import org.junit.Assert._
-import org.junit.{Before, Test}
 import edu.gemini.aspen.gds.api.Conversions._
 import java.io.{FileReader, FileWriter, BufferedWriter, BufferedReader, File}
+import org.junit.{Ignore, Before, Test}
 
 /**
  * Specify how the GDSConfiguration parser should behave
@@ -60,6 +60,7 @@ class GDSConfigurationServiceTest {
     assertTrue(readConfig.contains(config))
   }
 
+  @Ignore
   @Test
   def testAdd() {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
