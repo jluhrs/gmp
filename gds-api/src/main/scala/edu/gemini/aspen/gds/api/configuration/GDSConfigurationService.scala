@@ -59,9 +59,19 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
     writer.close()
   }
 
-  def saveConfiguration(config: List[GDSConfiguration]) {} //todo
+  def saveConfiguration(config: List[GDSConfiguration]) {
+
+  } //todo
 
   def updateConfiguration(config: List[GDSConfiguration]) {} //todo
 
-  def addConfiguration(config: List[GDSConfiguration]) {} //todo
+  def addConfiguration(config: List[GDSConfiguration]) {
+    val newFile = new File(configurationFile)
+    val writer = new BufferedWriter(new FileWriter(newFile, true))
+    for (configLine <- config) {
+      writer.append(configLine.formatForConfigFile)
+      writer.newLine()
+    }
+    writer.close()
+  } //todo
 }

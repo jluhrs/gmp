@@ -60,7 +60,6 @@ class GDSConfigurationServiceTest {
     assertTrue(readConfig.contains(config))
   }
 
-  @Ignore
   @Test
   def testAdd() {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
