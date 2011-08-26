@@ -25,7 +25,7 @@ trait GDSConfigurationService {
   /**
    * Updates elements that already exist, adds the new ones, and deletes missing ones
    */
-  def saveConfiguration(config: List[GDSConfiguration]): Unit
+  def saveConfiguration(config: List[Option[ConfigItem[_]]]): Unit
 
   /**
    * Updates the given configuration items
@@ -38,15 +38,91 @@ trait GDSConfigurationService {
   def addConfiguration(config: List[GDSConfiguration]): Unit
 }
 
-@Component
-@Provides(specifications = Array(classOf[GDSConfigurationService]))
-class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", value = "NOVALID", mandatory = true) configurationFile: String) extends GDSConfigurationService {
-  def getConfiguration: List[GDSConfiguration] = {
-    new GDSConfigurationParser().parseFile(configurationFile) filter {
+abstract class ConfigType[T] {
+  def ConfigTypeToString(item: ConfigItem[T]): String
+}
+
+object ConfigType {
+
+  implicit object ConfigurationType extends ConfigType[GDSConfiguration] {
+
+    override def ConfigTypeToString(item: ConfigItem[GDSConfiguration]): String = {
+      item.value.formatForConfigFile
+    }
+  }
+
+  implicit object CommentType extends ConfigType[Comment] {
+
+    override def ConfigTypeToString(item: ConfigItem[Comment]): String = {
+      item.value.toString
+    }
+  }
+
+}
+
+class ConfigItem[T](val value: T)(implicit val _type: ConfigType[T]) {
+  override def toString: String = "ConfigItem(" + value.toString() + ")"
+}
+
+object GDSConfigurationFile {
+
+
+  def getConfiguration(configurationFile: String): List[GDSConfiguration] = {
+    val contents: List[Option[ConfigItem[_]]] = new GDSConfigurationParser().parseFileRawResult(configurationFile).get map {
+      case Some(x: GDSConfiguration) => Some(new ConfigItem(x))
+      case Some(x: Comment) => Some(new ConfigItem(x))
+      case None => None
+    }
+    getConfiguration(contents)
+  }
+
+  def getConfiguration(contents: List[Option[ConfigItem[_]]]): List[GDSConfiguration] = {
+    contents collect {
+      case Some(x) => x
+    } filter {
+      _.isInstanceOf[ConfigItem[_]]
+    } map {
+      _.value
+    } filter {
       _.isInstanceOf[GDSConfiguration]
     } map {
       _.asInstanceOf[GDSConfiguration]
     }
+  }
+
+  def getConfigurationForUpdate(configurationFile: String): List[Option[ConfigItem[_]]] = {
+    new GDSConfigurationParser().parseFileRawResult(configurationFile).get map {
+      case Some(x: GDSConfiguration) => Some(new ConfigItem(x))
+      case Some(x: Comment) => Some(new ConfigItem(x))
+      case None => None
+    }
+  }
+
+  def saveConfiguration(configurationFile: String, contents: List[Option[ConfigItem[_]]]) {
+    val newFile = new File(configurationFile)
+    val writer = new BufferedWriter(new FileWriter(newFile))
+    for (configLine <- contents) {
+      configLine map {
+        case x => writer.write(x._type.ConfigTypeToString(x))
+      }
+      writer.newLine()
+    }
+    writer.close()
+  }
+}
+
+@Component
+@Provides(specifications = Array(classOf[GDSConfigurationService]))
+class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", value = "NOVALID", mandatory = true) configurationFile: String) extends GDSConfigurationService {
+  def getConfiguration: List[GDSConfiguration] = {
+    val parser = new GDSConfigurationParser()
+    val a = parser.parseFileRawResult(configurationFile)
+    parser.parseFile(configurationFile) filter {
+      _.isInstanceOf[GDSConfiguration]
+    } map {
+      _.asInstanceOf[GDSConfiguration]
+    }
+    GDSConfigurationFile.getConfiguration(configurationFile)
   }
 
   def newConfiguration(config: List[GDSConfiguration]) {
@@ -59,8 +135,12 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
     writer.close()
   }
 
-  def saveConfiguration(config: List[GDSConfiguration]) {
+  def getConfigurationForUpdate: List[Option[ConfigItem[_]]] = {
+    GDSConfigurationFile.getConfigurationForUpdate(configurationFile)
+  }
 
+  def saveConfiguration(config: List[Option[ConfigItem[_]]]) {
+    GDSConfigurationFile.saveConfiguration(configurationFile, config)
   } //todo
 
   def updateConfiguration(config: List[GDSConfiguration]) {} //todo
