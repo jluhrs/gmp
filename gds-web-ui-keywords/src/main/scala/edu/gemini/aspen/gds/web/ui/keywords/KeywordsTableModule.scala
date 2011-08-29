@@ -23,7 +23,7 @@ import javax.management.remote.rmi._RMIConnection_Stub
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
   val order = 0
-  lazy val dataSource = new WritableGDSKeywordsDataSource(configService.getConfiguration)
+  lazy val dataSource = new WritableGDSKeywordsDataSource(configService.getConfigurationForUpdate)
 
   val tabLayout = new VerticalLayout
   val table = new Table("Keywords")
@@ -47,7 +47,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   private def getDataSource(user: AnyRef) = Option(user) map {
     _ => dataSource
   } getOrElse {
-    new ReadOnlyGDSKeywordsDataSource(configService.getConfiguration)
+    new ReadOnlyGDSKeywordsDataSource(configService.getConfigurationForUpdate)
   }
 
   private def updateTableHeaders(user: AnyRef) = {
@@ -71,6 +71,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   private def updateNewButton(user: AnyRef) {
     newRowButton.setVisible(Option(user).isDefined)
   }
+
   private def updateSaveButton(user: AnyRef) {
     saveButton.setVisible(Option(user).isDefined)
   }
@@ -174,7 +175,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
   private def buildSaveButton(app: Application): Button = {
     saveButton.addListener((e: Button#ClickEvent) => {
-      println(dataSource.toGDSConfiguration)
+      configService.updateConfiguration(dataSource.toGDSConfiguration)
       app.getMainWindow.showNotification("Saving...", Notification.TYPE_HUMANIZED_MESSAGE)
     })
     saveButton

@@ -3,9 +3,9 @@ package edu.gemini.aspen.gds.web.ui.keywords
 import org.junit.Test
 import org.junit.Assert._
 import com.vaadin.Application
-import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.GDSConfiguration
+import edu.gemini.aspen.gds.api.configuration.{ConfigItem, GDSConfigurationService}
 
 /**
  * Trivial tests
@@ -15,7 +15,7 @@ class KeywordsTableModuleFactoryTest extends Mockito {
   def testBuildPanel = {
     // mock configuration service
     val configService = mock[GDSConfigurationService]
-    configService.getConfiguration returns List[GDSConfiguration]()
+    configService.getConfigurationForUpdate returns List[Option[ConfigItem[_]]]()
 
     // test building the module
     val module = new KeywordsTableModuleFactory(configService).buildWebModule

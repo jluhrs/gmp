@@ -3,10 +3,10 @@ package edu.gemini.aspen.gds.web.ui.keywords
 import org.junit.Test
 import org.junit.Assert._
 import com.vaadin.Application
-import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.GDSConfiguration
 import edu.gemini.aspen.giapi.data.FitsKeyword
+import edu.gemini.aspen.gds.api.configuration.{ConfigItem, GDSConfigurationService}
 
 /**
  * Construction tests
@@ -16,7 +16,7 @@ class KeywordsTableModuleTest extends Mockito {
   def testBuildPanel = {
     // mock configuration service
     val configService = mock[GDSConfigurationService]
-    configService.getConfiguration returns List[GDSConfiguration]()
+    configService.getConfigurationForUpdate returns List[Option[ConfigItem[_]]]()
     val module = new KeywordsTableModule(configService)
 
     val app = mock[Application]
@@ -26,7 +26,7 @@ class KeywordsTableModuleTest extends Mockito {
   @Test
   def testVisibleColumns() {
     val configService = mock[GDSConfigurationService]
-    configService.getConfiguration returns List[GDSConfiguration]()
+    configService.getConfigurationForUpdate returns List[Option[ConfigItem[_]]]()
     val module = new KeywordsTableModule(configService)
 
     val tableColumnsForAnonymous = module.visibleColumns(null)
@@ -66,7 +66,7 @@ class KeywordsTableModuleTest extends Mockito {
   @Test
   def testColumnHeaders() {
     val configService = mock[GDSConfigurationService]
-    configService.getConfiguration returns List[GDSConfiguration]()
+    configService.getConfigurationForUpdate returns List[Option[ConfigItem[_]]]()
     val module = new KeywordsTableModule(configService)
 
     val app = mock[Application]

@@ -2,20 +2,25 @@ package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import edu.gemini.aspen.gds.api._
 import com.vaadin.data.util.ObjectProperty
+import configuration.ConfigItem
 
 /**
  * This class is a DataSource that is used for the Keywords Table Read-Only view
  */
-class ReadOnlyGDSKeywordsDataSource(config: List[GDSConfiguration]) extends GDSKeywordsDataSource(config) {
+class ReadOnlyGDSKeywordsDataSource(config: List[Option[ConfigItem[_]]]) extends GDSKeywordsDataSource(config) {
   {
     // Give each config an propertyId
     val indexedConfig = config.zipWithIndex
 
     // Add an item per
-    indexedConfig map {
+    indexedConfig filter {
+      _._1.isDefined //filter out blank lines
+    } filter {
+      _._1.get.value.isInstanceOf[GDSConfiguration] //filter out comments
+    } map {
       case (c, i) => {
         val item = addItem(i)
-        val data = configToItem(c) zip GDSKeywordsDataSource.displayedFields
+        val data = configToItem(c.get.value.asInstanceOf[GDSConfiguration]) zip GDSKeywordsDataSource.displayedFields
 
         // Add one item per displayed field
         data map {

@@ -3,6 +3,7 @@ package edu.gemini.aspen.gds.web.ui.keywords.model
 import com.vaadin.data.util.IndexedContainer
 import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api._
+import configuration.ConfigItem
 import scala.collection.JavaConversions._
 
 /**
@@ -10,7 +11,9 @@ import scala.collection.JavaConversions._
  *
  * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
  */
-abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends IndexedContainer {
+abstract class GDSKeywordsDataSource(config: List[Option[ConfigItem[_]]]) extends IndexedContainer {
+  //index of the next item if we want to add one
+  var last: Int = config.size
   // Contains the factories for each column
   val columnsDefinitions = Map[Class[_], PropertyItemWrapperFactory](
     classOf[Instrument] -> new InstrumentPropertyFactory,
@@ -31,7 +34,7 @@ abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends Ind
   /**
    * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
    */
-  protected[keywords] def toGDSConfiguration: List[GDSConfiguration] = config
+  protected[keywords] def toGDSConfiguration: List[Option[ConfigItem[_]]] = config
 
   /**
    * Method to make the Table#getContainerPropertyIds behave more like scala
@@ -52,7 +55,7 @@ abstract class GDSKeywordsDataSource(config: List[GDSConfiguration]) extends Ind
   /**
    * Returns the header to use for a given column
    */
-  protected[keywords] def propertyHeader(s: String):String
+  protected[keywords] def propertyHeader(s: String): String
 
   /**
    * Adds the container properties, one per each column
