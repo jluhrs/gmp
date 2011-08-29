@@ -17,6 +17,8 @@ trait GDSConfigurationService {
    */
   def getConfiguration: List[GDSConfiguration]
 
+  def getConfigurationForUpdate: List[Option[ConfigItem[_]]]
+
   /**
    * Overwrites the current configuration file
    */
@@ -25,12 +27,7 @@ trait GDSConfigurationService {
   /**
    * Updates elements that already exist, adds the new ones, and deletes missing ones
    */
-  def saveConfiguration(config: List[Option[ConfigItem[_]]]): Unit
-
-  /**
-   * Updates the given configuration items
-   */
-  def updateConfiguration(config: List[GDSConfiguration]): Unit
+  def updateConfiguration(config: List[Option[ConfigItem[_]]]): Unit
 
   /**
    * Adds new configurations to the end of the file
@@ -62,6 +59,16 @@ object ConfigType {
 
 class ConfigItem[T](val value: T)(implicit val _type: ConfigType[T]) {
   override def toString: String = "ConfigItem(" + value.toString() + ")"
+
+  override def equals(other: Any): Boolean = other match {
+    case that: ConfigItem[_] => (that canEqual this) && value == that.value
+    case _ => false
+  }
+
+  // Used by equals and can be overrode by extensions
+  protected def canEqual(other: Any): Boolean = other.isInstanceOf[ConfigItem[_]]
+
+  override def hashCode: Int = 41 * (41 + value.##)
 }
 
 object GDSConfigurationFile {
@@ -139,11 +146,9 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
     GDSConfigurationFile.getConfigurationForUpdate(configurationFile)
   }
 
-  def saveConfiguration(config: List[Option[ConfigItem[_]]]) {
+  def updateConfiguration(config: List[Option[ConfigItem[_]]]) {
     GDSConfigurationFile.saveConfiguration(configurationFile, config)
-  } //todo
-
-  def updateConfiguration(config: List[GDSConfiguration]) {} //todo
+  }
 
   def addConfiguration(config: List[GDSConfiguration]) {
     val newFile = new File(configurationFile)
@@ -153,5 +158,5 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
       writer.newLine()
     }
     writer.close()
-  } //todo
+  }
 }
