@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import edu.gemini.aspen.gds.api._
-import configuration.{Comment, ConfigItem}
+import configuration.{ConfigItem, ConfigType, BlankLine}
 import scala.collection.JavaConversions._
 import com.vaadin.data.Item
 
@@ -10,7 +10,7 @@ import com.vaadin.data.Item
  *
  * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
  */
-class WritableGDSKeywordsDataSource(config: List[Option[ConfigItem[_]]]) extends GDSKeywordsDataSource(config) {
+class WritableGDSKeywordsDataSource(config: List[ConfigItem[_]]) extends GDSKeywordsDataSource(config) {
   // Contains a list of configurations and wrappers for the UI items
   var configWrapper = {
     // Give each config an propertyId
@@ -18,14 +18,12 @@ class WritableGDSKeywordsDataSource(config: List[Option[ConfigItem[_]]]) extends
 
     // Add an item per
     indexedConfig filter {
-      _._1.isDefined //filter out blank lines
-    } filter {
-      _._1.get.value.isInstanceOf[GDSConfiguration] //filter out comments
+      _._1.value.isInstanceOf[GDSConfiguration] //filter out comments and blank lines
     } map {
       case (c, i) => {
         val item = addItem(i)
         // Add one itemProperty per displayed field
-        (i, c.get.value.asInstanceOf[GDSConfiguration], addItemWrapper(c.get.value.asInstanceOf[GDSConfiguration], item))
+        (i, c.value.asInstanceOf[GDSConfiguration], addItemWrapper(c.value.asInstanceOf[GDSConfiguration], item))
       }
     }
   }
@@ -53,23 +51,28 @@ class WritableGDSKeywordsDataSource(config: List[Option[ConfigItem[_]]]) extends
     } getOrElse (propertyId)
   }
 
-  override protected[keywords] def toGDSConfiguration: List[Option[ConfigItem[_]]] = {
-    (config.zipWithIndex map {
-      case (opt: Some[ConfigItem[_]], index) => opt.get match {
-        case confItem: ConfigItem[_] => confItem.value match {
-          case _: GDSConfiguration => {
-            //if it's a GDSConfiguration
-            configWrapper find {
-              case (i, c, itemWrappers) => (i == index && containsId(index))
-            } map {
-              case (i, c, itemWrappers) => new ConfigItem(GDSKeywordsDataSource.itemToGDSConfiguration(c, itemWrappers)) //replace it with the new one
-            }
+  override protected[keywords] def toGDSConfiguration: List[ConfigItem[_]] = {
+    val modifiedItemList: List[ConfigItem[_]] = config.zipWithIndex map {
+      case (confItem: ConfigItem[_], index: Int) => {
+        if (confItem._type == ConfigType.ConfigurationType) {
+          //if it's a GDSConfiguration, replace modified items
+          configWrapper find {
+            case (i, c, itemWrappers) => (i == index && containsId(index))
+          } map {
+            case (i, c, itemWrappers) => new ConfigItem(GDSKeywordsDataSource.itemToGDSConfiguration(c, itemWrappers)) //replace it with the new one
+          } getOrElse {
+            new ConfigItem(new BlankLine) //if item was deleted, replace with blank line
           }
-          case x: Comment => Some(new ConfigItem(x)) //if it's a comment, leave it be
         }
-      }
-      case (None, index) => None //if it's a blank line, leave it be
-    }) ++ (for ((i, c, _) <- configWrapper if (i >= config.size)) yield Some(new ConfigItem(c)))
+        else if (confItem._type == ConfigType.CommentType) {
+          confItem //if it's a comment, leave it be
+        }
+        else if (confItem._type == ConfigType.BlankLineType) {
+          confItem //if it's a blank line, leave it be
+        }
+      }.asInstanceOf[ConfigItem[_]]
+    }
+    modifiedItemList ++ (for ((i, c, _) <- configWrapper if (i >= config.size)) yield new ConfigItem(c))
   }
 
   override def removeItem(itemId: AnyRef): Boolean = {

@@ -10,6 +10,17 @@ abstract class ConfigType[T] {
   def ConfigTypeToString(item: ConfigItem[T]): String
 }
 
+class BlankLine {
+  override def toString: String = ""
+
+  override def equals(other: Any): Boolean = other match {
+    case that: BlankLine => true
+    case _ => false
+  }
+
+  override def hashCode: Int = 41 + "".##
+}
+
 object ConfigType {
 
   implicit object ConfigurationType extends ConfigType[GDSConfiguration] {
@@ -22,6 +33,13 @@ object ConfigType {
   implicit object CommentType extends ConfigType[Comment] {
 
     override def ConfigTypeToString(item: ConfigItem[Comment]): String = {
+      item.value.toString
+    }
+  }
+
+  implicit object BlankLineType extends ConfigType[BlankLine] {
+
+    override def ConfigTypeToString(item: ConfigItem[BlankLine]): String = {
       item.value.toString
     }
   }

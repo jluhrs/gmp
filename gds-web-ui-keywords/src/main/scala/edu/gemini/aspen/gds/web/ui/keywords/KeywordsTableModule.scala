@@ -23,7 +23,7 @@ import javax.management.remote.rmi._RMIConnection_Stub
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
   val order = 0
-  lazy val dataSource = new WritableGDSKeywordsDataSource(configService.getConfigurationForUpdate)
+  lazy val dataSource = new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
 
   val tabLayout = new VerticalLayout
   val table = new Table("Keywords")
@@ -47,7 +47,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   private def getDataSource(user: AnyRef) = Option(user) map {
     _ => dataSource
   } getOrElse {
-    new ReadOnlyGDSKeywordsDataSource(configService.getConfigurationForUpdate)
+    new ReadOnlyGDSKeywordsDataSource(configService.getFullConfiguration)
   }
 
   private def updateTableHeaders(user: AnyRef) = {

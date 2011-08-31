@@ -7,20 +7,18 @@ import configuration.ConfigItem
 /**
  * This class is a DataSource that is used for the Keywords Table Read-Only view
  */
-class ReadOnlyGDSKeywordsDataSource(config: List[Option[ConfigItem[_]]]) extends GDSKeywordsDataSource(config) {
+class ReadOnlyGDSKeywordsDataSource(config: List[ConfigItem[_]]) extends GDSKeywordsDataSource(config) {
   {
     // Give each config an propertyId
     val indexedConfig = config.zipWithIndex
 
     // Add an item per
     indexedConfig filter {
-      _._1.isDefined //filter out blank lines
-    } filter {
-      _._1.get.value.isInstanceOf[GDSConfiguration] //filter out comments
+      _._1.value.isInstanceOf[GDSConfiguration] //filter out comments and blank lines
     } map {
       case (c, i) => {
         val item = addItem(i)
-        val data = configToItem(c.get.value.asInstanceOf[GDSConfiguration]) zip GDSKeywordsDataSource.displayedFields
+        val data = configToItem(c.value.asInstanceOf[GDSConfiguration]) zip GDSKeywordsDataSource.displayedFields
 
         // Add one item per displayed field
         data map {

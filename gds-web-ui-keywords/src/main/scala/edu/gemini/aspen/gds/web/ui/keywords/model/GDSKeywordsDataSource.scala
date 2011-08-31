@@ -11,7 +11,7 @@ import scala.collection.JavaConversions._
  *
  * It turn it can read the modified values on the table and produce an edited list of GDSConfigurations
  */
-abstract class GDSKeywordsDataSource(config: List[Option[ConfigItem[_]]]) extends IndexedContainer {
+abstract class GDSKeywordsDataSource(config: List[ConfigItem[_]]) extends IndexedContainer {
   //index of the next item if we want to add one
   var last: Int = config.size
   // Contains the factories for each column
@@ -34,7 +34,7 @@ abstract class GDSKeywordsDataSource(config: List[Option[ConfigItem[_]]]) extend
   /**
    * Returns a list of GDSConfiguration based of the originally passed but updated with the changes from the GUI
    */
-  protected[keywords] def toGDSConfiguration: List[Option[ConfigItem[_]]] = config
+  protected[keywords] def toGDSConfiguration: List[ConfigItem[_]] = config
 
   /**
    * Method to make the Table#getContainerPropertyIds behave more like scala

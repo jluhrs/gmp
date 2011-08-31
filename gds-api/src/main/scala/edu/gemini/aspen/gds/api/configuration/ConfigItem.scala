@@ -12,8 +12,8 @@ class ConfigItem[T](val value: T)(implicit val _type: ConfigType[T]) {
     case _ => false
   }
 
-  // Used by equals and can be overrode by extensions
-  protected def canEqual(other: Any): Boolean = other.isInstanceOf[ConfigItem[_]]
+  // Used by equals and can be overriden by extensions
+  def canEqual(other: Any): Boolean = other.isInstanceOf[ConfigItem[_]]
 
   override def hashCode: Int = 41 * (41 + value.##)
 }

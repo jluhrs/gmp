@@ -16,7 +16,7 @@ class KeywordsTableModuleTest extends Mockito {
   def testBuildPanel = {
     // mock configuration service
     val configService = mock[GDSConfigurationService]
-    configService.getConfigurationForUpdate returns List[Option[ConfigItem[_]]]()
+    configService.getFullConfiguration returns List[ConfigItem[_]]()
     val module = new KeywordsTableModule(configService)
 
     val app = mock[Application]
@@ -26,7 +26,7 @@ class KeywordsTableModuleTest extends Mockito {
   @Test
   def testVisibleColumns() {
     val configService = mock[GDSConfigurationService]
-    configService.getConfigurationForUpdate returns List[Option[ConfigItem[_]]]()
+    configService.getFullConfiguration returns List[ConfigItem[_]]()
     val module = new KeywordsTableModule(configService)
 
     val tableColumnsForAnonymous = module.visibleColumns(null)
@@ -66,7 +66,7 @@ class KeywordsTableModuleTest extends Mockito {
   @Test
   def testColumnHeaders() {
     val configService = mock[GDSConfigurationService]
-    configService.getConfigurationForUpdate returns List[Option[ConfigItem[_]]]()
+    configService.getFullConfiguration returns List[ConfigItem[_]]()
     val module = new KeywordsTableModule(configService)
 
     val app = mock[Application]

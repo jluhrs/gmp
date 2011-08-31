@@ -15,7 +15,7 @@ class KeywordsTableModuleFactoryTest extends Mockito {
   def testBuildPanel = {
     // mock configuration service
     val configService = mock[GDSConfigurationService]
-    configService.getConfigurationForUpdate returns List[Option[ConfigItem[_]]]()
+    configService.getFullConfiguration returns List[ConfigItem[_]]()
 
     // test building the module
     val module = new KeywordsTableModuleFactory(configService).buildWebModule

@@ -12,8 +12,8 @@ class ReadOnlyGDSKeywordsDataSourceTest {
 
   @Test
   def testWriteRead {
-    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(Some(new ConfigItem(config1))))
-    assertEquals(List(Some(new ConfigItem(config1))), dataSource.toGDSConfiguration)
+    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(new ConfigItem(config1)))
+    assertEquals(List(new ConfigItem(config1)), dataSource.toGDSConfiguration)
   }
 
   @Test
@@ -23,14 +23,14 @@ class ReadOnlyGDSKeywordsDataSourceTest {
 
   @Test
   def testWidth {
-    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(Some(new ConfigItem(config1))))
+    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(new ConfigItem(config1)))
 
     assertEquals(30, dataSource.propertyWidth("Instrument"))
   }
 
   @Test
   def testAddItem {
-    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(Some(new ConfigItem(config1))))
+    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(new ConfigItem(config1)))
 
     dataSource.addNewConfig(config2)
     // Cannot add a new config
@@ -39,7 +39,7 @@ class ReadOnlyGDSKeywordsDataSourceTest {
 
   @Test
   def testDeleteItem {
-    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(Some(new ConfigItem(config1))))
+    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(new ConfigItem(config1)))
 
     assertTrue(dataSource.removeItem(0))
     // Cannot remove an item
@@ -48,7 +48,7 @@ class ReadOnlyGDSKeywordsDataSourceTest {
 
   @Test
   def testColumnHeader {
-    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(Some(new ConfigItem(config1))))
+    val dataSource = new ReadOnlyGDSKeywordsDataSource(List(new ConfigItem(config1)))
 
     assertEquals("Instrument", dataSource.propertyHeader("Instrument"))
   }
