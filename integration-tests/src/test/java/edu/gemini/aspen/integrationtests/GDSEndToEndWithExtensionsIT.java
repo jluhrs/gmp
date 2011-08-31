@@ -88,7 +88,7 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         assertEquals(3, originalKeywords.size()); //primary + 2 extensions
 
         sendObservationEvents(eventHandler, new DataLabel("FITS_WITH_EXTENSIONS"));
-        TimeUnit.MILLISECONDS.sleep(1000);
+        TimeUnit.MILLISECONDS.sleep(2000);
 
         File finalFile = new File(FINAL_FITS_FILE);
         assertTrue(finalFile.exists());

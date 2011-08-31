@@ -65,6 +65,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         Set<String> originalKeywords = readOriginalKeywords();
 
         sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
+        TimeUnit.MILLISECONDS.sleep(1000);
 
         File finalFile = new File(FITS_DIR + FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
