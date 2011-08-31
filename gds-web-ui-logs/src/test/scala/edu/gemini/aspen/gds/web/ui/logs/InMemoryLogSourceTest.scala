@@ -8,18 +8,18 @@ import org.apache.log4j.spi.LoggingEvent
 import org.apache.log4j.{Level, Logger}
 
 /**
- * Tests for the InMemoryAppender class
+ * Tests for the InMemoryLogSource class
  */
-class InMemoryAppenderTest {
+class InMemoryLogSourceTest {
   @Test
   def testBuild {
-    val appender = new InMemoryAppender()
+    val appender = new InMemoryLogSource()
     assertNotNull(appender)
   }
 
   @Test
   def testAppend {
-    val appender = new InMemoryAppender()
+    val appender = new InMemoryLogSource()
     val event = newLoggingEvent
     appender.doAppend(event)
     assertEquals(1, appender.logEvents.size)

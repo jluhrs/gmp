@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[PaxAppender]))
-class InMemoryAppender extends PaxAppender {
+class InMemoryLogSource extends PaxAppender with LogSource {
   val MAXSIZE = 10000
   /** Service property that matches the configuration on the org.ops4j.pax.logging.cfg file */
   @ServiceProperty(name = "org.ops4j.pax.logging.appender.name", value = "GeminiAppender")
@@ -38,5 +38,5 @@ class InMemoryAppender extends PaxAppender {
     logEventsMap += i -> event
   }
 
-  def logEvents = logEventsMap.values
+  override def logEvents = logEventsMap.values
 }
