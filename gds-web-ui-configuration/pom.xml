@@ -30,6 +30,10 @@
             <artifactId>gds-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-services</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gds.web.ui</groupId>
             <artifactId>gds-web-ui</artifactId>
         </dependency>
