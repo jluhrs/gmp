@@ -27,16 +27,15 @@ class LoggingEventBeanQuery(queryDefinition: QueryDefinition, queryConfiguration
 
   def size() = logSource.logEvents.size
 
-  def constructBean() = {
-    throw new UnsupportedOperationException()
-  }
+  def constructBean() = throw new UnsupportedOperationException()
+
 }
 
 object LoggingEventBeanQuery {
-  val formatter = ISODateTimeFormat.dateTime().withZone(DateTimeZone.UTC)
+  val timeStampFormatter = ISODateTimeFormat.dateTime().withZone(DateTimeZone.UTC)
 
-  def formatTimeStamp(timeStamp: Long) = {
-    formatter.print(timeStamp)
-  }
+  def formatTimeStamp(timeStamp: Long) = timeStampFormatter.print(timeStamp)
+
+  def formatLoggerName(loggerName: String) = if (loggerName.contains(".")) loggerName.substring(loggerName.lastIndexOf(".")+1 , loggerName.size) else loggerName
 
 }

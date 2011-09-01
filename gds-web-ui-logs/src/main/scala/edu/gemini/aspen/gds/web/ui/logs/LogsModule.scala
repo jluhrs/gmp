@@ -33,6 +33,7 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     logTable.setColumnReorderingAllowed(true)
 
     logTable.addGeneratedColumn("timeStamp", LogsModule.timeStampGenerator)
+    logTable.addGeneratedColumn("loggerName", LogsModule.loggerNameGenerator)
 
     val layout = new VerticalLayout
     layout.setSizeFull()
@@ -64,4 +65,20 @@ object LogsModule {
       new Label(LoggingEventBeanQuery.formatTimeStamp(timeStamp.longValue()))
     }
   }
+  
+  /**
+   * Generator for the timestamp column, delegates to LoggingEventQuery the formatting of time */
+  val loggerNameGenerator = new Table.ColumnGenerator {
+    def generateCell(table: Table, itemId: AnyRef, columnId: AnyRef) = {
+      val b = table.getItem(itemId) match {
+        case b: BeanItem[_] => b
+        case _ => error("Should not happen ")
+      }
+      val loggerName = b.getItemProperty("loggerName").getValue.toString
+
+      new Label(LoggingEventBeanQuery.formatLoggerName(loggerName))
+    }
+  }
+
+  
 }
