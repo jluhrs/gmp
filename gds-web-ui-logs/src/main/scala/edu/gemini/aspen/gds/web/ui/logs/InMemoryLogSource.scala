@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * A PaxAppender service that will get log events from pax-logging */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[PaxAppender]))
+@Provides(specifications = Array(classOf[PaxAppender], classOf[LogSource]))
 class InMemoryLogSource extends PaxAppender with LogSource {
   val MAXSIZE = 10000
   /** Service property that matches the configuration on the org.ops4j.pax.logging.cfg file */
