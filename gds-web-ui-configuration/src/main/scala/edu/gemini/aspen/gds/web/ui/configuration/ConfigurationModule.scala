@@ -17,7 +17,7 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
   val order: Int = 5
 
 
-  private val _properties = createProperties(GmpProperties.values().toList)
+  val _properties = createProperties(GmpProperties.values().toList)
 
   private def createProperties(props: List[GmpProperties]): List[Property] = {
     if (props.isEmpty) {
@@ -27,7 +27,7 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
     }
   }
 
-  private class Property(val prop: GmpProperties) {
+  class Property(val prop: GmpProperties) {
     val textField = new TextField()
     val objectProperty = new ObjectProperty(prop.getDefault)
     textField.setPropertyDataSource(objectProperty)
