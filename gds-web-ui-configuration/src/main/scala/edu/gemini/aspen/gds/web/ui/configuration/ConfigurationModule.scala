@@ -9,34 +9,57 @@ import java.util.{Hashtable, Dictionary}
 import org.osgi.service.cm.Configuration
 import edu.gemini.aspen.gds.web.ui.api.Preamble._
 import com.vaadin.ui.{TextField, GridLayout, Button, Label, FormLayout, Panel, Component}
+import edu.gemini.aspen.gmp.services.properties.GmpProperties
+
 
 class ConfigurationModule(propHolder: PropertyHolder, configAdmin: ConfigurationAdmin) extends GDSWebModule {
   val title: String = "System Configuration"
   val order: Int = 5
 
-  import ConfigurationModule._
 
-  val gmp_host_name = new TextField()
-  val gmp_host_nameProp = new ObjectProperty(defaultGmp_host_name)
-  gmp_host_name.setPropertyDataSource(gmp_host_nameProp)
+  private val _properties = createProperties(GmpProperties.values().toList)
+
+  private def createProperties(props: List[GmpProperties]): List[Property] = {
+    if (props.isEmpty) {
+      Nil
+    } else {
+      new Property(props.head) :: createProperties(props.tail)
+    }
+  }
+
+  private class Property(val prop: GmpProperties) {
+    val textField = new TextField()
+    val objectProperty = new ObjectProperty(prop.getDefault)
+    textField.setPropertyDataSource(objectProperty)
+    val label = new Label("<b>" + prop.name() + "</b>", Label.CONTENT_XHTML)
+  }
 
   override def buildTabContent(app: Application): Component = {
-    val layout = new GridLayout(3, 1)
+    val layout = new GridLayout(3, GmpProperties.values().size + 1)
+    layout.setMargin(true)
+    layout.setSpacing(true)
 
-    layout.addComponent(new Label("GMP_HOST_NAME"))
-    layout.addComponent(gmp_host_name)
-    val okButton = new Button("Apply")
-    okButton.addListener((e: Button#ClickEvent) => {
-      setProperty("GMP_HOST_NAME", gmp_host_name.getValue.toString)
+    for (property <- _properties) {
+      layout.addComponent(property.label)
+      layout.addComponent(property.textField)
+      val button = new Button("Save")
+      button.addListener((e: Button#ClickEvent) => {
+        setProperty(property.prop.name(), property.textField.getValue.toString)
+      })
+      layout.addComponent(button)
+    }
+    val button = new Button("Reload")
+    button.addListener((e: Button#ClickEvent) => {
+      refresh()
     })
-
-
-    layout.addComponent(okButton)
+    layout.addComponent(button, 2, GmpProperties.values().size)
     layout
   }
 
   override def refresh() {
-    gmp_host_nameProp.setValue(getProperty("GMP_HOST_NAME"))
+    for (property <- _properties) {
+      property.objectProperty.setValue(getProperty(property.prop.name()))
+    }
   }
 
   private def getProperty(propName: String) = {
@@ -59,5 +82,5 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
 
 
 object ConfigurationModule {
-  val defaultGmp_host_name = "INVALID"
+
 }
