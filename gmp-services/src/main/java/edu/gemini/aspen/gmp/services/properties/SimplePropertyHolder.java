@@ -46,17 +46,6 @@ public class SimplePropertyHolder implements PropertyHolder, ManagedService {
 
     private Map<String, String> _properties = new HashMap<String, String>();
 
-
-    @Validate
-    public void validate() {
-
-    }
-
-    @Invalidate
-    public void inValidate() {
-
-    }
-
     @Override
     public void updated(Dictionary dictionary) throws ConfigurationException {
         Dictionary<String, String> dict = dictionary;
@@ -68,6 +57,15 @@ public class SimplePropertyHolder implements PropertyHolder, ManagedService {
 
     @Override
     public String getProperty(String key) {
-        return _properties.get(key);
+        String storedVal = _properties.get(key);
+        if (storedVal != null) {
+            return storedVal;
+        } else {
+            try {
+                return GmpProperties.valueOf(key).getDefault();
+            } catch (IllegalArgumentException ex) {
+                return "";
+            }
+        }
     }
 }
