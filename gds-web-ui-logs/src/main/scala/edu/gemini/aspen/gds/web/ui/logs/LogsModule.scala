@@ -2,37 +2,37 @@ package edu.gemini.aspen.gds.web.ui.logs
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import com.vaadin.Application
-import com.vaadin.ui.{VerticalLayout, Table, Component}
 import model.{LogSourceQueryDefinition, LoggingEventBeanQuery}
 import scala.collection.JavaConversions._
 import org.vaadin.addons.lazyquerycontainer._
+import com.vaadin.ui.{Label, VerticalLayout, Table, Component}
+import com.vaadin.data.util.BeanItem
+
 
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val title: String = "Logs"
-  val order: Int = 4
+  val order: Int = -1
   val logTable = new Table()
 
   override def buildTabContent(app: Application): Component = {
-    logTable.setSizeFull()
 
     val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
     val definition = new LogSourceQueryDefinition(logSource, false, 50)
 
-    //definition.
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
-    definition.addProperty("message", classOf[String], "DEFAULT", true, true)
-    //definition.addProperty("Reverse Index", classOf[Integer], 0, true, false)
-    //definition.addProperty("Editable", classOf[String], "", false, false)
-    //definition.addProperty(LazyQueryView.PROPERTY_ID_ITEM_STATUS, classOf[QueryItemStatus], QueryItemStatus.None, true, false)
-    //definition.addProperty(LazyQueryView.DEBUG_PROPERTY_ID_BATCH_INDEX, classOf[Int], 0, true, false)
-    //definition.addProperty(LazyQueryView.DEBUG_PROPERTY_ID_BATCH_QUERY_TIME, classOf[Long], 0, true, false)
-    //definition.addProperty(LazyQueryView.DEBUG_PROPERTY_ID_QUERY_INDEX, classOf[Int], 0, true, false)
-    //    val queryConfiguration= Map("taskService" -> "Sh");
-    //queryFactory.setQueryConfiguration(definition);
+    definition.addProperty("level", classOf[String], "", true, true)
+    definition.addProperty("loggerName", classOf[String], "", true, true)
+    definition.addProperty("message", classOf[String], "", true, true)
     queryFactory.setQueryDefinition(definition);
 
-    val container = new LazyQueryContainer(definition, queryFactory);
+    val container = new LazyQueryContainer(definition, queryFactory)
     logTable.setContainerDataSource(container)
+    logTable.setSelectable(true)
+    logTable.setSizeFull()
+    logTable.setColumnCollapsingAllowed(true)
+    logTable.setColumnReorderingAllowed(true)
+
+    logTable.addGeneratedColumn("timeStamp", LogsModule.timeStampGenerator)
 
     val layout = new VerticalLayout
     layout.setSizeFull()
@@ -47,5 +47,21 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
 
 }
 
+object LogsModule {
+  /**
+   * Generator for the timestamp column, delegates to LoggingEventQuery the formatting of time */
+  val timeStampGenerator = new Table.ColumnGenerator {
+    def generateCell(table: Table, itemId: AnyRef, columnId: AnyRef) = {
+      val b = table.getItem(itemId) match {
+        case b: BeanItem[_] => b
+        case _ => error("Should not happen ")
+      }
+      val timeStamp = b.getItemProperty("timeStamp").getValue match {
+        case l: java.lang.Long => l
+        case _ => error("Should not happen ")
+      }
 
-
+      new Label(LoggingEventBeanQuery.formatTimeStamp(timeStamp.longValue()))
+    }
+  }
+}
