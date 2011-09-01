@@ -20,27 +20,27 @@ public class SimplePropertyHolder implements PropertyHolder, ManagedService {
 
     @Property(name = "GMP_HOST_NAME", value = "NO_VALID", mandatory = true)
     public void setGMP_HOST_NAME(String GMP_HOST_NAME) {
-        _properties.put("GMP_HOST_NAME", GMP_HOST_NAME);
+        _properties.put(GmpProperties.GMP_HOST_NAME.name(), GMP_HOST_NAME);
     }
 
-    @Property(name = "DHS_ANCILLARY_DATA_PATH", value = "/NO_VALID", mandatory = true)
+    @Property(name = "DHS_ANCILLARY_DATA_PATH", value = "NO_VALID", mandatory = true)
     public void setDHS_ANCILLARY_DATA_PATH(String DHS_ANCILLARY_DATA_PATH) {
-        _properties.put("DHS_ANCILLARY_DATA_PATH", DHS_ANCILLARY_DATA_PATH);
+        _properties.put(GmpProperties.DHS_ANCILLARY_DATA_PATH.name(), DHS_ANCILLARY_DATA_PATH);
     }
 
-    @Property(name = "DHS_SCIENCE_DATA_PATH", value = "/NO_VALID", mandatory = true)
+    @Property(name = "DHS_SCIENCE_DATA_PATH", value = "NO_VALID", mandatory = true)
     public void setDHS_SCIENCE_DATA_PATH(String DHS_SCIENCE_DATA_PATH) {
-        _properties.put("DHS_SCIENCE_DATA_PATH", DHS_SCIENCE_DATA_PATH);
+        _properties.put(GmpProperties.DHS_SCIENCE_DATA_PATH.name(), DHS_SCIENCE_DATA_PATH);
     }
 
-    @Property(name = "DHS_INTERMEDIATE_DATA_PATH", value = "/NO_VALID", mandatory = true)
+    @Property(name = "DHS_INTERMEDIATE_DATA_PATH", value = "NO_VALID", mandatory = true)
     public void setDHS_INTERMEDIATE_DATA_PATH(String DHS_INTERMEDIATE_DATA_PATH) {
-        _properties.put("DHS_INTERMEDIATE_DATA_PATH", DHS_INTERMEDIATE_DATA_PATH);
+        _properties.put(GmpProperties.DHS_INTERMEDIATE_DATA_PATH.name(), DHS_INTERMEDIATE_DATA_PATH);
     }
 
     @Property(name = "DEFAULT", value = "NO_VALID", mandatory = true)
     public void setDEFAULT(String DEFAULT) {
-        _properties.put("DEFAULT", DEFAULT);
+        _properties.put(GmpProperties.DEFAULT.name(), DEFAULT);
     }
 
 
