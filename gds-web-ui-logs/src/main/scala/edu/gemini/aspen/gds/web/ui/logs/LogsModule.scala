@@ -3,28 +3,36 @@ package edu.gemini.aspen.gds.web.ui.logs
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import com.vaadin.Application
 import com.vaadin.ui.{VerticalLayout, Table, Component}
+import model.{LogSourceQueryDefinition, LoggingEventBeanQuery}
 import scala.collection.JavaConversions._
-import com.vaadin.data.util.{BeanItemContainer, IndexedContainer}
-import org.ops4j.pax.logging.spi.PaxLoggingEvent
-import org.vaadin.addons.lazyquerycontainer.{LazyQueryContainer, BeanQueryFactory}
+import org.vaadin.addons.lazyquerycontainer._
 
-class LogsModule(logSource:LogSource) extends GDSWebModule {
+class LogsModule(logSource: LogSource) extends GDSWebModule {
   val title: String = "Logs"
   val order: Int = 4
   val logTable = new Table()
-  val model = new LogsContainer(logSource)
 
   override def buildTabContent(app: Application): Component = {
     logTable.setSizeFull()
 
-   // val queryFactory = new BeanQueryFactory[PaxLoggingEvent](classOf[PaxLoggingEvent])
-    //val queryView = new BeanQueryView[PaxLoggingEvent](classOf[PaxLoggingEvent])
+    val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
+    val definition = new LogSourceQueryDefinition(logSource, false, 50)
 
-//    val queryConfiguration= Map("taskService" -> "Sh");
-  //  queryFactory.setQueryConfiguration(queryConfiguration);
+    //definition.
+    definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
+    definition.addProperty("message", classOf[String], "DEFAULT", true, true)
+    //definition.addProperty("Reverse Index", classOf[Integer], 0, true, false)
+    //definition.addProperty("Editable", classOf[String], "", false, false)
+    //definition.addProperty(LazyQueryView.PROPERTY_ID_ITEM_STATUS, classOf[QueryItemStatus], QueryItemStatus.None, true, false)
+    //definition.addProperty(LazyQueryView.DEBUG_PROPERTY_ID_BATCH_INDEX, classOf[Int], 0, true, false)
+    //definition.addProperty(LazyQueryView.DEBUG_PROPERTY_ID_BATCH_QUERY_TIME, classOf[Long], 0, true, false)
+    //definition.addProperty(LazyQueryView.DEBUG_PROPERTY_ID_QUERY_INDEX, classOf[Int], 0, true, false)
+    //    val queryConfiguration= Map("taskService" -> "Sh");
+    //queryFactory.setQueryConfiguration(definition);
+    queryFactory.setQueryDefinition(definition);
 
-    //val container=new LazyQueryContainer(queryFactory,50);
-    //logTable.setContainerDataSource(container)
+    val container = new LazyQueryContainer(definition, queryFactory);
+    logTable.setContainerDataSource(container)
 
     val layout = new VerticalLayout
     layout.setSizeFull()
@@ -39,13 +47,5 @@ class LogsModule(logSource:LogSource) extends GDSWebModule {
 
 }
 
-class LogsContainer(logSource:LogSource) extends BeanItemContainer[PaxLoggingEvent](classOf[PaxLoggingEvent]) {
-  /*addContainerProperty("TIMESTAMP", classOf[Long], 0)
-  addContainerProperty("COMPONENT", classOf[String], "")
-  addContainerProperty("MESSAGE", classOf[String], "")
-  addContainerProperty("ERROR", classOf[String], "")*/
-}
 
-object LogsModule {
 
-}
