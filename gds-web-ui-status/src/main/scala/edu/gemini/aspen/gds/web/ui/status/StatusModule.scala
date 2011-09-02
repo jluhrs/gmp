@@ -16,6 +16,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
 
   //labels
   val status = new Label()
+  status.setContentMode(Label.CONTENT_XHTML)
   val processing = new Label()
   val lastDataLabel = new Label()
   val times = new Label()

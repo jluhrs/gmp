@@ -2,14 +2,23 @@ package edu.gemini.aspen.gds.web.ui.status
 
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import com.vaadin.ui.Label
-import edu.gemini.aspen.giapi.status.{StatusItem, StatusDatabaseService}
 import org.scala_tools.time.Imports._
-
+import edu.gemini.aspen.giapi.status.{Health, HealthStatusItem, StatusItem, StatusDatabaseService}
 
 class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) {
   def getStatus = {
     statusDB.getStatusItem("gpi:gds:health") match {
-      case x: StatusItem[_] => x.getValue.toString
+      case x: StatusItem[_] => if (x.getValue == Health.GOOD) {
+        "<span style=\"color: green\">" + x.getValue.toString + "</span>"
+      } else
+      if (x.getValue == Health.WARNING) {
+        "<span style=\"color: orange\">" + x.getValue.toString + "</span>"
+      } else
+      if (x.getValue == Health.BAD) {
+        "<span style=\"color: red\">" + x.getValue.toString + "</span>"
+      } else {
+        x.getValue.toString
+      }
       case _ => StatusModule.defaultStatus
     }
   }
