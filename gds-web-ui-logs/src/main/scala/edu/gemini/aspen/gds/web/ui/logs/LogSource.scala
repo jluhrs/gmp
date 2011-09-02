@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gds.web.ui.logs
 
-import org.ops4j.pax.logging.spi.PaxLoggingEvent
+import model.LogEventWrapper
 
 /**
  * Interface for the OSGiService */
 trait LogSource {
-  def logEvents:Iterable[PaxLoggingEvent]
+  def logEvents:Iterable[LogEventWrapper]
 }

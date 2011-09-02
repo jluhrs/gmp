@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gds.web.ui.logs
 
+import model.LogEventWrapper
 import org.apache.felix.ipojo.annotations._
 import org.ops4j.pax.logging.spi.{PaxLoggingEvent, PaxAppender}
 import collection.mutable.ConcurrentMap
@@ -24,10 +25,10 @@ class InMemoryLogSource extends PaxAppender with LogSource {
 
   // We index with an artificial value to avoid collisions with timestamps
   val index = new AtomicInteger(0)
-  val logEventsMap: ConcurrentMap[Int, PaxLoggingEvent] = new MapMaker()
+  val logEventsMap: ConcurrentMap[Int, LogEventWrapper] = new MapMaker()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .maximumSize(MAXSIZE)
-    .makeMap[Int, PaxLoggingEvent]()
+    .makeMap[Int, LogEventWrapper]()
 
   @Validate
   def initLogListener() {
@@ -35,7 +36,7 @@ class InMemoryLogSource extends PaxAppender with LogSource {
 
   override def doAppend(event: PaxLoggingEvent) {
     val i = index.incrementAndGet()
-    logEventsMap += i -> event
+    logEventsMap += i -> new LogEventWrapper(event)
   }
 
   override def logEvents = logEventsMap.values

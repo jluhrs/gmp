@@ -5,17 +5,18 @@ import com.vaadin.Application
 import model.{LogSourceQueryDefinition, LoggingEventBeanQuery}
 import scala.collection.JavaConversions._
 import org.vaadin.addons.lazyquerycontainer._
-import com.vaadin.ui.{Label, VerticalLayout, Table, Component}
-import com.vaadin.data.util.BeanItem
-
+import com.vaadin.ui.{VerticalLayout, Table, Component}
+import java.util.logging.{Level, Logger}
 
 class LogsModule(logSource: LogSource) extends GDSWebModule {
+  val LOG = Logger.getLogger(this.getClass.getName)
   val title: String = "Logs"
   val order: Int = -1
   val logTable = new Table()
 
   override def buildTabContent(app: Application): Component = {
-
+    LOG.warning("Build module")
+    //LOG.log(Level.SEVERE, "Error module", new RuntimeException())
     val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
     val definition = new LogSourceQueryDefinition(logSource, false, 50)
 
@@ -32,16 +33,6 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     logTable.setColumnCollapsingAllowed(true)
     logTable.setColumnReorderingAllowed(true)
 
-/*    logTable.addGeneratedColumn("timeStamp", LogsModule.timeStampGenerator)
-    logTable.addGeneratedColumn("loggerName", LogsModule.loggerNameGenerator)
-    logTable.addGeneratedColumn("message", LogsModule.messageGenerator)
-
-    logTable.setVisibleColumns(Array("timeStamp", "level", "loggerName", "message"))
-    logTable.setColumnExpandRatio("timeStamp", 0.2f)
-    logTable.setColumnExpandRatio("level", 02f)
-    logTable.setColumnExpandRatio("loggerName", 0.2f)
-    logTable.setColumnExpandRatio("message", 0.4f)*/
-
     val layout = new VerticalLayout
     layout.setSizeFull()
     layout.addComponent(logTable)
@@ -52,54 +43,4 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
   override def refresh() {
     //count.setValue(logSource.logEvents.size)
   }
-
-}
-
-object LogsModule {
-  /**
-   * Generator for the timestamp column, delegates to LoggingEventQuery the formatting of time */
-  val timeStampGenerator = new Table.ColumnGenerator {
-    def generateCell(table: Table, itemId: AnyRef, columnId: AnyRef) = {
-      val b = table.getItem(itemId) match {
-        case b: BeanItem[_] => b
-        case _ => error("Should not happen ")
-      }
-      val timeStamp = b.getItemProperty("timeStamp").getValue match {
-        case l: java.lang.Long => l
-        case _ => error("Should not happen ")
-      }
-
-      new Label(LoggingEventBeanQuery.formatTimeStamp(timeStamp.longValue()))
-    }
-  }
-  
-  /**
-   * Generator for the loggerName column, delegates to LoggingEventQuery */
-  val loggerNameGenerator = new Table.ColumnGenerator {
-    def generateCell(table: Table, itemId: AnyRef, columnId: AnyRef) = {
-      val b = table.getItem(itemId) match {
-        case b: BeanItem[_] => b
-        case _ => error("Should not happen ")
-      }
-      val loggerName = b.getItemProperty("loggerName").getValue.toString
-
-      new Label(LoggingEventBeanQuery.formatLoggerName(loggerName))
-    }
-  }
-
-  /**
-   * Generator for the messageColumn, delegates to LoggingEventQuery the formatting of time */
-  val messageGenerator = new Table.ColumnGenerator {
-    def generateCell(table: Table, itemId: AnyRef, columnId: AnyRef) = {
-      val b = table.getItem(itemId) match {
-        case b: BeanItem[_] => b
-        case _ => error("Should not happen ")
-      }
-      val message = b.getItemProperty("message").getValue.toString
-
-      new Label(LoggingEventBeanQuery.formatMessage(message))
-    }
-  }
-
-  
 }
