@@ -38,6 +38,17 @@
 .small-combobox .v-select-select {
 }
 
+/* css for the logs table */
+/* For rows with warning */
+.v-table-logs .v-table-row-warn {
+    background-color:khaki;
+}
+
+/* For rows with error */
+.v-table-logs .v-table-row-error {
+    background-color:tomato;
+}
+
 .v-label-gds-status {
     font-size:1em;
     font-weight:bold;

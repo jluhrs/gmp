@@ -8,7 +8,6 @@ import org.apache.felix.ipojo.annotations.{Requires, Bind, Unbind}
 import com.vaadin.ui.themes.BaseTheme
 import com.vaadin.data.util.ObjectProperty
 import edu.gemini.aspen.gds.web.ui.api.{GDSWebModuleFactory, StatusPanel, GDSWebModule}
-import javax.swing.text.TabExpander
 import com.vaadin.ui._
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener
 

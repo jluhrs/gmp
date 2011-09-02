@@ -7,16 +7,21 @@ import scala.collection.JavaConversions._
 import org.vaadin.addons.lazyquerycontainer._
 import com.vaadin.ui.{VerticalLayout, Table, Component}
 import java.util.logging.{Level, Logger}
+import com.vaadin.ui.Table.CellStyleGenerator
 
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
   val title: String = "Logs"
   val order: Int = -1
   val logTable = new Table()
+  val styleGenerator = new CellStyleGenerator {
+    val styles = Map("WARN" -> "warn", "ERROR" -> "error")
 
-  override def buildTabContent(app: Application): Component = {
-    LOG.warning("Build module")
-    //LOG.log(Level.SEVERE, "Error module", new RuntimeException())
+    def getStyle(itemId: AnyRef, propertyId: AnyRef) = {
+      styles.getOrElse(container.getItem(itemId).getItemProperty("level").toString, "")
+    }
+  }
+  val container = {
     val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
     val definition = new LogSourceQueryDefinition(logSource, false, 50)
 
@@ -26,12 +31,20 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     definition.addProperty("message", classOf[String], "", true, true)
     queryFactory.setQueryDefinition(definition);
 
-    val container = new LazyQueryContainer(definition, queryFactory)
+    new LazyQueryContainer(definition, queryFactory)
+  }
+
+  override def buildTabContent(app: Application): Component = {
+    LOG.warning("Build module")
+    LOG.log(Level.SEVERE, "Error module", new RuntimeException())
+
     logTable.setContainerDataSource(container)
     logTable.setSelectable(true)
     logTable.setSizeFull()
-    logTable.setColumnCollapsingAllowed(true)
+    logTable.addStyleName("logs")
     logTable.setColumnReorderingAllowed(true)
+
+    logTable.setCellStyleGenerator(styleGenerator)
 
     val layout = new VerticalLayout
     layout.setSizeFull()
