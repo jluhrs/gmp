@@ -7,28 +7,41 @@ import org.vaadin.addons.lazyquerycontainer._
 import java.lang.UnsupportedOperationException
 import org.joda.time.format.ISODateTimeFormat
 import org.joda.time.DateTimeZone
+import reflect.BeanProperty
 
 /**
  * This class is used by the LazyQueryContainer to read beans representing log values to display on the screen
  * The BeanQuery in this case is read only */
-class LoggingEventBeanQuery(queryDefinition: QueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[PaxLoggingEvent](queryDefinition, queryConfiguration, sortPropertyIds, sortStates) {
+class LoggingEventBeanQuery(queryDefinition: QueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[LogEventWrapper](queryDefinition, queryConfiguration, sortPropertyIds, sortStates) {
   val logSource = queryDefinition match {
     case s: LogSourceQueryDefinition => s.logSource
     case _ => error("Should not happen")
   }
+  println(queryDefinition.getSortablePropertyIds)
 
-  def saveBeans(p1: List[PaxLoggingEvent], p2: List[PaxLoggingEvent], p3: List[PaxLoggingEvent]) {
+  def saveBeans(p1: List[LogEventWrapper], p2: List[LogEventWrapper], p3: List[LogEventWrapper]) {
     throw new UnsupportedOperationException()
   }
 
   def loadBeans(startIndex: Int, count: Int) = {
-    logSource.logEvents.takeRight(count).toList
+    println(queryDefinition.getSortablePropertyIds)
+    println(queryDefinition.getSortablePropertyIds)
+    logSource.logEvents.takeRight(count) map  {
+      new LogEventWrapper(_)
+    } toList
   }
 
   def size() = logSource.logEvents.size
 
   def constructBean() = throw new UnsupportedOperationException()
 
+}
+
+class LogEventWrapper(event:PaxLoggingEvent) {
+  @BeanProperty val level = event.getLevel
+  @BeanProperty val message = LoggingEventBeanQuery.formatMessage(event.getMessage)
+  @BeanProperty val timeStamp = LoggingEventBeanQuery.formatTimeStamp(event.getTimeStamp)
+  @BeanProperty val loggerName = LoggingEventBeanQuery.formatLoggerName(event.getLoggerName)
 }
 
 object LoggingEventBeanQuery {

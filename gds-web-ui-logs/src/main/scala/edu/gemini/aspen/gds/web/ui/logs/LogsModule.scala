@@ -32,11 +32,15 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     logTable.setColumnCollapsingAllowed(true)
     logTable.setColumnReorderingAllowed(true)
 
-    logTable.addGeneratedColumn("timeStamp", LogsModule.timeStampGenerator)
+/*    logTable.addGeneratedColumn("timeStamp", LogsModule.timeStampGenerator)
     logTable.addGeneratedColumn("loggerName", LogsModule.loggerNameGenerator)
     logTable.addGeneratedColumn("message", LogsModule.messageGenerator)
 
-    logTable.setVisibleColumns(new Array[AnyRef]("timeStamp", "level", "loggerName", "message"))
+    logTable.setVisibleColumns(Array("timeStamp", "level", "loggerName", "message"))
+    logTable.setColumnExpandRatio("timeStamp", 0.2f)
+    logTable.setColumnExpandRatio("level", 02f)
+    logTable.setColumnExpandRatio("loggerName", 0.2f)
+    logTable.setColumnExpandRatio("message", 0.4f)*/
 
     val layout = new VerticalLayout
     layout.setSizeFull()
