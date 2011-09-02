@@ -8,9 +8,8 @@ import org.osgi.service.cm.ConfigurationAdmin
 import java.util.{Hashtable, Dictionary}
 import org.osgi.service.cm.Configuration
 import edu.gemini.aspen.gds.web.ui.api.Preamble._
-import com.vaadin.ui.{TextField, GridLayout, Button, Label, FormLayout, Panel, Component}
 import edu.gemini.aspen.gmp.services.properties.GmpProperties
-
+import com.vaadin.ui.{GridLayout, Alignment, TextField, Button, Label, FormLayout, Panel, Component}
 
 class ConfigurationModule(propHolder: PropertyHolder, configAdmin: ConfigurationAdmin) extends GDSWebModule {
   val title: String = "System Configuration"
@@ -35,24 +34,31 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
   }
 
   override def buildTabContent(app: Application): Component = {
-    val layout = new GridLayout(3, GmpProperties.values().size + 1)
+    val layout = new GridLayout(2, GmpProperties.values().size + 1)
     layout.setMargin(true)
     layout.setSpacing(true)
 
     for (property <- _properties) {
       layout.addComponent(property.label)
       layout.addComponent(property.textField)
-      val button = new Button("Save")
-      button.addListener((e: Button#ClickEvent) => {
-        setProperty(property.prop.name(), property.textField.getValue.toString)
-      })
-      layout.addComponent(button)
     }
-    val button = new Button("Reload")
-    button.addListener((e: Button#ClickEvent) => {
+
+    val buttonLayout = new GridLayout(2, 1)
+    buttonLayout.setSpacing(true)
+
+    val saveButton = new Button("Save")
+    saveButton.addListener((e: Button#ClickEvent) => {
+      save()
+    })
+    buttonLayout.addComponent(saveButton)
+
+    val reloadButton = new Button("Reload")
+    reloadButton.addListener((e: Button#ClickEvent) => {
       refresh()
     })
-    layout.addComponent(button, 2, GmpProperties.values().size)
+    buttonLayout.addComponent(reloadButton)
+
+    layout.addComponent(buttonLayout, 1, GmpProperties.values().size)
     layout
   }
 
@@ -64,6 +70,21 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
 
   private def getProperty(propName: String) = {
     propHolder.getProperty(propName)
+  }
+
+  private def save() {
+    var config: Configuration = configAdmin.listConfigurations("(service.factorypid=edu.gemini.aspen.gmp.services.properties.SimplePropertyHolder)")(0)
+
+    var props: Dictionary[String, String] = config.getProperties.asInstanceOf[Dictionary[String, String]]
+
+    if (props == null) {
+      props = new Hashtable[String, String]()
+    }
+    for (property <- _properties) {
+      props.put(property.prop.name(), property.textField.getValue.toString)
+    }
+    config.update(props)
+
   }
 
   private def setProperty(propName: String, propValue: String) {
