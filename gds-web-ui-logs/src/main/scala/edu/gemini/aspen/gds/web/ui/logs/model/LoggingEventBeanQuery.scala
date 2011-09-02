@@ -33,9 +33,12 @@ class LoggingEventBeanQuery(queryDefinition: QueryDefinition, queryConfiguration
 
 object LoggingEventBeanQuery {
   val timeStampFormatter = ISODateTimeFormat.dateTime().withZone(DateTimeZone.UTC)
+  val MAX_MESSAGE_LENGTH = 100
 
   def formatTimeStamp(timeStamp: Long) = timeStampFormatter.print(timeStamp)
 
   def formatLoggerName(loggerName: String) = if (loggerName.contains(".")) loggerName.substring(loggerName.lastIndexOf(".")+1 , loggerName.size) else loggerName
+
+  def formatMessage(message: String) = if (message.size > MAX_MESSAGE_LENGTH) message.substring(0, MAX_MESSAGE_LENGTH)+ "..." else message
 
 }

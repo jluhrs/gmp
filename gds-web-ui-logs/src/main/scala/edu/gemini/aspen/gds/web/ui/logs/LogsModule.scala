@@ -34,6 +34,9 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
 
     logTable.addGeneratedColumn("timeStamp", LogsModule.timeStampGenerator)
     logTable.addGeneratedColumn("loggerName", LogsModule.loggerNameGenerator)
+    logTable.addGeneratedColumn("message", LogsModule.messageGenerator)
+
+    logTable.setVisibleColumns(new Array[AnyRef]("timeStamp", "level", "loggerName", "message"))
 
     val layout = new VerticalLayout
     layout.setSizeFull()
@@ -67,7 +70,7 @@ object LogsModule {
   }
   
   /**
-   * Generator for the timestamp column, delegates to LoggingEventQuery the formatting of time */
+   * Generator for the loggerName column, delegates to LoggingEventQuery */
   val loggerNameGenerator = new Table.ColumnGenerator {
     def generateCell(table: Table, itemId: AnyRef, columnId: AnyRef) = {
       val b = table.getItem(itemId) match {
@@ -77,6 +80,20 @@ object LogsModule {
       val loggerName = b.getItemProperty("loggerName").getValue.toString
 
       new Label(LoggingEventBeanQuery.formatLoggerName(loggerName))
+    }
+  }
+
+  /**
+   * Generator for the messageColumn, delegates to LoggingEventQuery the formatting of time */
+  val messageGenerator = new Table.ColumnGenerator {
+    def generateCell(table: Table, itemId: AnyRef, columnId: AnyRef) = {
+      val b = table.getItem(itemId) match {
+        case b: BeanItem[_] => b
+        case _ => error("Should not happen ")
+      }
+      val message = b.getItemProperty("message").getValue.toString
+
+      new Label(LoggingEventBeanQuery.formatMessage(message))
     }
   }
 
