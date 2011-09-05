@@ -4,13 +4,11 @@ import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Comp
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.observationstate.{ObservationStatePublisher, ObservationStateProvider, ObservationStateRegistrar}
-import collection.mutable.{SynchronizedSet, HashSet, Set}
-import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.TimeUnit._
-import collection.mutable.ConcurrentMap
 import scala.collection.JavaConversions._
 import com.google.common.collect.MapMaker
 import edu.gemini.aspen.gds.api.CollectionError
+import collection.mutable.{SynchronizedStack, SynchronizedSet, HashSet, Set, ConcurrentMap}
 
 @Component
 @Instantiate
@@ -25,20 +23,23 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     val times: Set[(AnyRef, Option[Duration])] = new HashSet[(AnyRef, Option[Duration])] with SynchronizedSet[(AnyRef, Option[Duration])] //todo: think which is the correct type here
     var started = false
     var ended = false
+    var inError = false
   }
 
   val obsInfoMap: ConcurrentMap[DataLabel, ObservationInfo] = new MapMaker().
     expireAfterWrite(expirationMillis, MILLISECONDS)
     .makeMap[DataLabel, ObservationInfo]()
 
-  val lastDataLabel = new AtomicReference[Option[DataLabel]](None)
+  val lastDataLabels = new SynchronizedStack[DataLabel]()
 
   override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).missingKeywords ++= keywords
+    obsInfoMap.getOrElseUpdate(label, new ObservationInfo).inError = true
   }
 
   override def registerCollectionError(label: DataLabel, errors: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).errorKeywords ++= errors
+    obsInfoMap.getOrElseUpdate(label, new ObservationInfo).inError = true
   }
 
   override def registerTimes(label: DataLabel, times: Traversable[(AnyRef, Option[Duration])]) {
@@ -47,8 +48,9 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def endObservation(label: DataLabel) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).ended = true
-    lastDataLabel.set(Some(label))
+    lastDataLabels.push(label)
     obsStatePubl.publishEndObservation(label, getMissingKeywords(label), getKeywordsInError(label))
+
   }
 
   override def startObservation(label: DataLabel) {
@@ -57,6 +59,14 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
   }
 
   //-----------------------------------------------------------------------
+
+  def isInError(label: DataLabel): Boolean = {
+    obsInfoMap.getOrElse(label, new ObservationInfo).inError
+  }
+
+  def getLastDataLabel(n: Int): Traversable[DataLabel] = {
+    lastDataLabels.take(n)
+  }
 
   override def getTimes(label: DataLabel): Traversable[(AnyRef, Option[Duration])] = {
     obsInfoMap.getOrElse(label, new ObservationInfo).times
@@ -77,6 +87,6 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
   }
 
   override def getLastDataLabel: Option[DataLabel] = {
-    lastDataLabel.get()
+    lastDataLabels.headOption
   }
 }

@@ -40,6 +40,22 @@ class ObservationStateImplTest {
   }
 
   @Test
+  def testLastDataLabels() {
+    val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
+    obsState.startObservation("label1")
+    obsState.startObservation("label2")
+    obsState.endObservation("label2")
+    assertEquals(new DataLabel("label2") :: Nil, obsState.getLastDataLabel(2))
+
+    obsState.endObservation("label1")
+    assertEquals(new DataLabel("label1") :: new DataLabel("label2") :: Nil, obsState.getLastDataLabel(2))
+
+    obsState.startObservation("label3")
+    obsState.endObservation("label3")
+    assertEquals(new DataLabel("label3") :: new DataLabel("label1") :: Nil, obsState.getLastDataLabel(2))
+  }
+
+  @Test
   def testMissing() {
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
     obsState.startObservation("label1")
@@ -55,6 +71,16 @@ class ObservationStateImplTest {
     obsState.registerCollectionError("label1", List((new FitsKeyword("a"), CollectionError.GenericError)))
     obsState.registerCollectionError("label1", List((new FitsKeyword("b"), CollectionError.GenericError)))
     assertEquals(new Set2((new FitsKeyword("b"), CollectionError.GenericError), (new FitsKeyword("a"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
+  }
+
+  @Test
+  def testInError() {
+    val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
+    assertFalse(obsState.isInError("label1"))
+    obsState.startObservation("label1")
+    assertFalse(obsState.isInError("label1"))
+    obsState.registerCollectionError("label1", List((new FitsKeyword("a"), CollectionError.GenericError)))
+    assertTrue(obsState.isInError("label1"))
   }
 
   @Test
