@@ -23,12 +23,13 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
   }
   val container = {
     val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
-    val definition = new LogSourceQueryDefinition(logSource, false, 50)
+    val definition = new LogSourceQueryDefinition(logSource, false, 100)
 
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
     definition.addProperty("level", classOf[String], "", true, true)
     definition.addProperty("loggerName", classOf[String], "", true, true)
     definition.addProperty("message", classOf[String], "", true, true)
+    definition.addProperty("stackTrace", classOf[String], "", true, true)
     queryFactory.setQueryDefinition(definition);
 
     new LazyQueryContainer(definition, queryFactory)

@@ -18,7 +18,6 @@ class LoggingEventBeanQuery(queryDefinition: QueryDefinition, queryConfiguration
     "level" -> { _.level.toString },
     "loggerName" -> { _.loggerName },
     "message" -> { _.message }
-
   )
   
   val logSource = queryDefinition match {

@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger
 @Instantiate
 @Provides(specifications = Array(classOf[PaxAppender], classOf[LogSource]))
 class InMemoryLogSource extends PaxAppender with LogSource {
-  val MAXSIZE = 10000
+  val MAXSIZE = 1000
   /** Service property that matches the configuration on the org.ops4j.pax.logging.cfg file */
   @ServiceProperty(name = "org.ops4j.pax.logging.appender.name", value = "GeminiAppender")
   val name = "GeminiAppender"

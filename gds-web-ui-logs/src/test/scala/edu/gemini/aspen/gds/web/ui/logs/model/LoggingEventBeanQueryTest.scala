@@ -39,7 +39,7 @@ class LoggingEventBeanQueryTest extends Mockito {
   }
 
   def buildEvent(index: Long): LogEventWrapper =
-    new LogEventWrapper(new PaxLevelImpl(Level.ERROR), index, "message" + index, "logger")
+    new LogEventWrapper(new PaxLevelImpl(Level.ERROR), index, "message" + index, "logger", Array())
 
   def buildEvent: LogEventWrapper = buildEvent(0)
 
