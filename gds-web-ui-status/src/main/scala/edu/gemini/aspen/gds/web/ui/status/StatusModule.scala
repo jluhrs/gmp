@@ -56,7 +56,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     mainGrid.addComponent(processing, 1, 1, 3, 1)
     mainGrid.addComponent(new Label("<b>Last DataSet:</b>", Label.CONTENT_XHTML), 0, 2)
     mainGrid.addComponent(lastDataLabel, 1, 2)
-    mainGrid.addComponent(new Label("<b>Time to Process last DataSet:</b>", Label.CONTENT_XHTML), 0, 3)
+    mainGrid.addComponent(new Label("<b>Time to update FITS for last DataSet:</b>", Label.CONTENT_XHTML), 0, 3)
     mainGrid.addComponent(times, 1, 3, 3, 3)
     mainGrid.addComponent(new Label("<b>Missing Keywords from last DataSet:</b>", Label.CONTENT_XHTML), 0, 4)
     mainGrid.addComponent(missing, 1, 4, 3, 4)
@@ -85,10 +85,10 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
 object StatusModule {
   //default values
   val defaultStatus = "UNKNOWN"
-  val defaultProcessing = "Set()"
-  val defaultLastDataLabel = "S20110501S00002"
-  val defaultTimes = "Set((OBS_PREP, PT0.104S), (OBS_START_ACQ, PT0.104S), (OBS_END_ACQ, PT0.104S), (OBS_START_READOUT, PT0.104S), (OBS_END_READOUT, PT0.104S), (OBS_START_DSET_WRITE, PT0.104S), (OBS_END_DSET_WRITE, PT0.104S), (FITS update, PT0.104S))"
-  val defaultMissing = List("TEST1", "TEST2", "TEST3", "TEST4", "TEST5").toString
-  val defaultErrors = List("TEST1", "TEST2", "TEST3").toString
+  val defaultProcessing = ""
+  val defaultLastDataLabel = ""
+  val defaultTimes = ""
+  val defaultMissing = ""
+  val defaultErrors = ""
 
 }

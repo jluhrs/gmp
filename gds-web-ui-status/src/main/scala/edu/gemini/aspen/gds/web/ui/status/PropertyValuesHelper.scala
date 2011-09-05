@@ -1,9 +1,11 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
-import com.vaadin.ui.Label
 import org.scala_tools.time.Imports._
-import edu.gemini.aspen.giapi.status.{Health, HealthStatusItem, StatusItem, StatusDatabaseService}
+import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
+import org.scala_tools.time.Imports._
+import edu.gemini.aspen.giapi.data.FitsKeyword
+import edu.gemini.aspen.gds.api.CollectionError
 
 class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) {
   def getStatus = {
@@ -31,25 +33,33 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
 
   def getTimes = {
     obsState.getLastDataLabel map {
-      obsState.getTimes(_) map {
-        case (x: AnyRef, y: Option[Duration]) => (x, y.getOrElse(""))
-      } toString
+      obsState.getTimes(_) filter {
+        case (x: AnyRef, y: Option[Duration]) => x == "FITS update"
+      } map {
+        case (x: AnyRef, y: Option[Duration]) => y map {
+          case t: Duration => t.getMillis.toString + "[ms]"
+        } getOrElse ""
+      } head
     } getOrElse StatusModule.defaultTimes
   }
 
   def getProcessing = {
-    obsState.getObservationsInProgress.toString()
+    obsState.getObservationsInProgress.addString(new StringBuilder(), ",").toString()
   }
 
   def getMissingKeywords = {
     obsState.getLastDataLabel map {
-      obsState.getMissingKeywords(_).toString()
+      obsState.getMissingKeywords(_) map {
+        case x: FitsKeyword => x.getName
+      } addString(new StringBuilder(), ", ") toString()
     } getOrElse StatusModule.defaultMissing
   }
 
   def getKeywordsInError = {
     obsState.getLastDataLabel map {
-      obsState.getKeywordsInError(_).toString()
+      obsState.getKeywordsInError(_) map {
+        case (x: FitsKeyword, y: CollectionError.CollectionError) => x.getName
+      } addString(new StringBuilder(), ",") toString()
     } getOrElse StatusModule.defaultErrors
   }
 }
