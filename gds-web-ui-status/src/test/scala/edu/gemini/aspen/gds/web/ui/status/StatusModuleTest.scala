@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import org.specs2.mock.Mockito
+import org.mockito.Matchers._
 import org.junit.Assert._
 import com.vaadin.Application
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
@@ -19,6 +20,7 @@ class StatusModuleTest extends Mockito {
     val obsState = mock[ObservationStateProvider]
     obsState.getObservationsInProgress returns List()
     obsState.getLastDataLabel returns None
+    obsState.getLastDataLabel(anyInt) returns None
 
     // mock configuration service
     val module = new StatusModule(statusDB, obsState)

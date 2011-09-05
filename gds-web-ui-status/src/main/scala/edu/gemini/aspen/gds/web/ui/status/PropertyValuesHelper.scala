@@ -4,8 +4,8 @@ import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
 import org.scala_tools.time.Imports._
-import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api.CollectionError
+import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
 
 class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) {
   def getStatus = {
@@ -25,10 +25,18 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
     }
   }
 
+  def isInError(label: DataLabel) = {
+    obsState.isInError(label)
+  }
+
   def getLastDataLabel = {
-    obsState.getLastDataLabel map {
+    getLastDataLabels(1).headOption.getOrElse(StatusModule.defaultLastDataLabel)
+  }
+
+  def getLastDataLabels(n: Int) = {
+    obsState.getLastDataLabel(n) map {
       _.getName
-    } getOrElse StatusModule.defaultLastDataLabel
+    }
   }
 
   def getTimes = {
@@ -44,22 +52,31 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
   }
 
   def getProcessing = {
-    obsState.getObservationsInProgress.addString(new StringBuilder(), ",").toString()
+    obsState.getObservationsInProgress.addString(new StringBuilder(), ", ").toString()
   }
 
-  def getMissingKeywords = {
+  def getMissingKeywords: String = {
     obsState.getLastDataLabel map {
-      obsState.getMissingKeywords(_) map {
-        case x: FitsKeyword => x.getName
-      } addString(new StringBuilder(), ", ") toString()
+      getMissingKeywords(_)
     } getOrElse StatusModule.defaultMissing
   }
 
-  def getKeywordsInError = {
+  def getMissingKeywords(label: DataLabel): String = {
+    obsState.getMissingKeywords(label) map {
+      case x: FitsKeyword => x.getName
+    } addString(new StringBuilder(), ", ") toString()
+
+  }
+
+  def getKeywordsInError: String = {
     obsState.getLastDataLabel map {
-      obsState.getKeywordsInError(_) map {
-        case (x: FitsKeyword, y: CollectionError.CollectionError) => x.getName
-      } addString(new StringBuilder(), ",") toString()
+      getKeywordsInError(_)
     } getOrElse StatusModule.defaultErrors
+  }
+
+  def getKeywordsInError(label: DataLabel): String = {
+    obsState.getKeywordsInError(label) map {
+      case (x: FitsKeyword, y: CollectionError.CollectionError) => x.getName
+    } addString(new StringBuilder(), ",") toString()
   }
 }
