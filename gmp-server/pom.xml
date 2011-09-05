@@ -395,11 +395,11 @@
             <artifactId>gds-health</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-odb-actors</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-constant-actors</artifactId>
@@ -428,6 +428,11 @@
         <dependency>
             <groupId>edu.gemini.aspen.gds.web.ui</groupId>
             <artifactId>gds-web-ui-status</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-logs</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

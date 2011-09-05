@@ -233,8 +233,13 @@
             <artifactId>confirmdialog</artifactId>
             <version>1.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
+            <artifactId>vaadin-lazyquerycontainer</artifactId>
+            <version>1.2.9</version>
+        </dependency>
         <!-- ODB Dependencies -->
-        <!--dependency>
+        <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>jini-driver</artifactId>
             <version>1.0.4-SNAPSHOT</version>
@@ -248,7 +253,7 @@
             <groupId>gemini-nocs</groupId>
             <artifactId>rr</artifactId>
             <version>0.1.0</version>
-        </dependency-->
+        </dependency>
         <!-- FITS dependencies -->
         <dependency>
             <groupId>gemini-nocs</groupId>
