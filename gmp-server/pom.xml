@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -38,6 +37,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.8.1</scala-lang.version>
         <gmp.version>${project.version}</gmp.version>
+        <pax-runner.version>1.7.4</pax-runner.version>
     </properties>
 
     <build>
@@ -54,7 +54,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                     <haveDot>true</haveDot>
                     <quiet>false</quiet>
                     <input>../</input>
-                    <projectName>"GIAPI - GMP"</projectName>
+                    <projectName>"GIAPI - GMP (Version: ${gmp.version})"</projectName>
                     <generateLatex>true</generateLatex>
                     <generateHtml>true</generateHtml>
                     <htmlHeader>${basedir}/src/main/doc/header.html</htmlHeader>
@@ -293,12 +293,12 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>gmp-webconsole-branding</artifactId>
             <version>0.1.0</version>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-webconsole-docs</artifactId>
             <version>0.1.0</version>
             <type>war</type>
-        </dependency-->
+        </dependency>
         <!-- Commands Handlers State Service -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -395,11 +395,11 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <artifactId>gds-health</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-odb-actors</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-constant-actors</artifactId>
@@ -436,9 +436,19 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <!--dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>console</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
             <artifactId>widget-rpc</artifactId>
             <version>1.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>console</artifactId>
+            <version>1.1.6</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.external.osgi.com.google.gwt</groupId>
@@ -453,11 +463,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <external.dir>external</external.dir>
-                <bundle.dir>bundle</bundle.dir>
-                <obr.repository.url>file:///${user.home}/.m2/repository/repository.xml</obr.repository.url>
-            </properties>
         </profile>
         <profile>
             <id>production</id>
@@ -468,9 +473,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 </property>
             </activation>
             <properties>
-                <external.dir>external</external.dir>
-                <bundle.dir>external</bundle.dir>
-                <obr.repository.url>file:///${user.home}/.m2/repository/repository.xml</obr.repository.url>
+                <maven.app.root>$GPI_ROOT</maven.app.root>
             </properties>
             <dependencies>
                 <!-- Felix core -->
@@ -484,6 +487,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                     <artifactId>org.apache.felix.main</artifactId>
                     <version>3.2.1</version>
                 </dependency>
+                <!-- PAX Runner -->
                 <dependency>
                     <groupId>org.ops4j.pax.runner</groupId>
                     <artifactId>pax-runner</artifactId>

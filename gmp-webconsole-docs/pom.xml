@@ -19,7 +19,7 @@
     <artifactId>gmp-webconsole-docs</artifactId>
     <version>0.1.0</version>
 
-    <name>GMP Docs Static Serving Servlet</name>
+    <name>GMP Docs Servlet</name>
 
     <!--packaging>bundle</packaging-->
     <packaging>war</packaging>

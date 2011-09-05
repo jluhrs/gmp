@@ -1,26 +1,31 @@
 /*! \page release_notes Release Notes
 
-
-<h2>
-Release Notes - Gemini Instrument Application Programmer Interface -  Release 11. February 24, 2011
-</h2>
-<ul>
-<li>Add EPICS channels simulation to Channel Access Server
-</li>
-<li>Add EPICS Status Service to GMP to export instrument status items to EPICS
-</li>
-<li>giapi-tester functionality updates
-</li>
-<li>Migrate ant build system to Maven
-</li>
-<li>Create documentation in doxygen
-</li>
-<li>Upgrade to OSGi V4 and Felix
-</li>
-<li>Adopt iPojo/ConfigAdmin/FileInstall
-</li>
-<li>Add web based UI to show/edit the bundle's properties
-</li>
-</ul>
+<h2> Release Notes - GMP Server -  Release 12-BETA. August 17, 2011 </h2>
+    <ul>
+        <li>giapi-tester in encapsulated on a bash script called giapi-tester.sh</li>
+        <li>GMP can be run as a daemon</li>
+        <li>Beta implementation of Giapi Data Service (GDS)</li>
+        <li>[GIAPI-379] Status items carry a timestamp from giapi-glue to GMP</li>
+        <li>[GIAPI-294] Switched to use Felix 3.2.1/Pax runner 1.7.4</li>
+        <li>[GIAPI-168] Add documentation to /doc route on the local web server</li>
+        <li>[GIAPI-671}	Add option to giapi-tester to show the timestamp of the status items in the db</li>
+        <li>[GIAPI-216] Added support to send commands on the Felix shell, gmp-tui</li>
+        <li>[GIAPI-296]	Expose PropertyHolder as an internal service to obtain service properties</li>
+        <li>[GIAPI-612]	giapi-tester needs a way to dump whole the statusDB</li>
+        <li>[GIAPI-613]	Ability to send observation events via giapi-tester</li>
+        <li>[GIAPI-684]	Ensure giapi-tester can be called from anywhere</li>
+        <li>[GIAPI-614]	Default timeout for monitor command of giapi-tester should be infinite</li>
+    </ul>
+<h2> Release Notes - GMP Server -  Release 11. February 24, 2011 </h2>
+    <ul>
+        <li>Add EPICS channels simulation to Channel Access Server </li>
+        <li>Add EPICS Status Service to GMP to export instrument status items to EPICS </li>
+        <li>giapi-tester functionality updates </li>
+        <li>Migrate ant build system to Maven </li>
+        <li>Create documentation in doxygen </li>
+        <li>Upgrade to OSGi V4 and Felix </li>
+        <li>Adopt iPojo/ConfigAdmin/FileInstall </li>
+        <li>Add web based UI to show/edit the bundle's properties </li>
+    </ul>
 
  */

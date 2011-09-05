@@ -4,3 +4,4 @@
 
 Bundle-Activator:
 Web-ContextPath: docs
+Import-Package: org.eclipse.jetty.servlet

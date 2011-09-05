@@ -61,7 +61,6 @@
             <filtered>true</filtered>
             <includes>
                 <include>start.sh</include>
-                <include>gmp.sh</include>
                 <include>gmp-server</include>
             </includes>
         </fileSet>
@@ -91,6 +90,7 @@
             <directory>src/main/doc</directory>
             <outputDirectory>/</outputDirectory>
             <fileMode>0644</fileMode>
+            <filtered>true</filtered>
             <includes>
                 <include>*.txt</include>
             </includes>

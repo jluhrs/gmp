@@ -61,9 +61,8 @@ RUN LOCALLY
 -----------
 To run the application locally you need to install pax-runner and set it so that pax-run.sh/pax-run.bat is available
 in your PATH. You can get pax-runner at
-http://repo1.maven.org/maven2/org/ops4j/pax/runner/pax-runner-assembly/1.5.0/pax-runner-assembly-1.5.0-jdk15.tar.gz
-
-Untar the file and add the pax-runner-1.5.0/bin to the global PATH
+http://repo1.maven.org/maven2/org/ops4j/pax/runner/pax-runner-assembly/1.7.4/pax-runner-assembly-1.7.4-jdk15.tar.gz
+Untar the file and add the pax-runner-1.7.4/bin to the global PATH
 
 Then you can run it using the included startgmp.sh script
 

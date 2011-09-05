@@ -20,7 +20,7 @@
  * Complete details about the GMP can be found in the GIAPI Design and Use
  * document.
  *
- * - \subpage user_manual
+ * - \subpage gmp_user_manual
  * - \subpage gds_user_manual
  * - \subpage release_notes
  * - \subpage known_issues_and_bugs
