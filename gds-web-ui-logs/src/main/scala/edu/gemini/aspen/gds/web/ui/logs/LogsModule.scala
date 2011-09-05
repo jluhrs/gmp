@@ -9,13 +9,11 @@ import java.util.logging.{Level, Logger}
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.ui.Table.{ColumnGenerator, CellStyleGenerator}
 import com.vaadin.ui.themes.BaseTheme
-import org.vaadin.dialogs.ConfirmDialog
 import com.vaadin.event.ItemClickEvent
 import edu.gemini.aspen.gds.web.ui.api.Preamble._
 import com.vaadin.ui._
 import com.vaadin.data.Container.{Filter, Filterable}
-
-
+import com.vaadin.data.{Property, Container}
 
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
@@ -86,7 +84,9 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     levelSelect.addItem("INFO")
     levelSelect.addItem("WARN")
     levelSelect.addItem("ERROR")
-    //levelSelect.add
+    levelSelect.addListener((e:Property.ValueChangeEvent) => {
+      println(e.getProperty)
+    })
 
     filterPanel.addComponent(levelSelect)
 
