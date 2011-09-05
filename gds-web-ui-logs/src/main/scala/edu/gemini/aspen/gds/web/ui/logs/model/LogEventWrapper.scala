@@ -12,7 +12,7 @@ case class LogEventWrapper(level0: PaxLevel, timeStamp0: Long, message0: String,
     this (event.getLevel, event.getTimeStamp, event.getMessage, event.getLoggerName, event.getThrowableStrRep)
   }
 
-  @BeanProperty val level = level0
+  @BeanProperty val level = level0.toString
   @BeanProperty val message = LoggingEventBeanQuery.formatMessage(message0)
   @BeanProperty val timeStamp = LoggingEventBeanQuery.formatTimeStamp(timeStamp0)
   @BeanProperty val loggerName = LoggingEventBeanQuery.formatLoggerName(loggerName0)

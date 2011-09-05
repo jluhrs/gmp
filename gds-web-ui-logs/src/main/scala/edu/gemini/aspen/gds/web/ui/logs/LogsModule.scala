@@ -2,12 +2,20 @@ package edu.gemini.aspen.gds.web.ui.logs
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import com.vaadin.Application
-import model.{LogSourceQueryDefinition, LoggingEventBeanQuery}
+import model.{LogsContainer, LogSourceQueryDefinition, LoggingEventBeanQuery}
 import scala.collection.JavaConversions._
 import org.vaadin.addons.lazyquerycontainer._
-import com.vaadin.ui.{VerticalLayout, Table, Component}
 import java.util.logging.{Level, Logger}
-import com.vaadin.ui.Table.CellStyleGenerator
+import com.vaadin.terminal.ThemeResource
+import com.vaadin.ui.Table.{ColumnGenerator, CellStyleGenerator}
+import com.vaadin.ui.themes.BaseTheme
+import org.vaadin.dialogs.ConfirmDialog
+import com.vaadin.event.ItemClickEvent
+import edu.gemini.aspen.gds.web.ui.api.Preamble._
+import com.vaadin.ui._
+import com.vaadin.data.Container.{Filter, Filterable}
+
+
 
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
@@ -21,6 +29,8 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
       styles.getOrElse(container.getItem(itemId).getItemProperty("level").toString, "")
     }
   }
+  val expandIcon = new ThemeResource("../runo/icons/16/arrow-right.png")
+  val expandTooltip = "Show stack trace"
   val container = {
     val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
     val definition = new LogSourceQueryDefinition(logSource, false, 100)
@@ -29,10 +39,10 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     definition.addProperty("level", classOf[String], "", true, true)
     definition.addProperty("loggerName", classOf[String], "", true, true)
     definition.addProperty("message", classOf[String], "", true, true)
-    definition.addProperty("stackTrace", classOf[String], "", true, true)
+    definition.addProperty("stackTrace", classOf[Button], "", true, false)
     queryFactory.setQueryDefinition(definition);
 
-    new LazyQueryContainer(definition, queryFactory)
+    new LogsContainer(definition, queryFactory)
   }
 
   override def buildTabContent(app: Application): Component = {
@@ -46,9 +56,41 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     logTable.setColumnReorderingAllowed(true)
 
     logTable.setCellStyleGenerator(styleGenerator)
+    logTable.setColumnHeader("stackTrace", "")
+    logTable.addGeneratedColumn("stackTrace", new ColumnGenerator {
+      def generateCell(source: Table, itemId: AnyRef, columnId: AnyRef) = {
+        if (!container.getItem(itemId).getItemProperty("stackTrace").toString.isEmpty) {
+          val stackTraceButton = new Button("")
+          stackTraceButton.setStyleName(BaseTheme.BUTTON_LINK)
+          stackTraceButton.setIcon(expandIcon)
+          stackTraceButton.setDescription(expandTooltip)
+          stackTraceButton.addListener((e: Button#ClickEvent) => {
+            new Window("Stack Trace").setVisible(true)
+            //.center()
+
+          })
+          stackTraceButton
+        } else {
+          new Label()
+        }
+      }
+    })
 
     val layout = new VerticalLayout
     layout.setSizeFull()
+    val filterPanel = new Panel()
+    val levelSelect = new NativeSelect()
+    levelSelect.setCaption("Level")
+    levelSelect.setInvalidAllowed(false)
+
+    levelSelect.addItem("INFO")
+    levelSelect.addItem("WARN")
+    levelSelect.addItem("ERROR")
+    //levelSelect.add
+
+    filterPanel.addComponent(levelSelect)
+
+    layout.addComponent(filterPanel)
     layout.addComponent(logTable)
     layout.setExpandRatio(logTable, 1.0f)
     layout

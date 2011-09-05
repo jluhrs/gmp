@@ -11,7 +11,7 @@ import java.util.logging.Logger
 /**
  * This class is used by the LazyQueryContainer to read beans representing log values to display on the screen
  * The BeanQuery in this case is read only */
-class LoggingEventBeanQuery(queryDefinition: QueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[LogEventWrapper](queryDefinition, queryConfiguration, sortPropertyIds, sortStates) {
+class LoggingEventBeanQuery(queryDefinition: LogSourceQueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[LogEventWrapper](queryDefinition, queryConfiguration, sortPropertyIds, sortStates) {
   val LOG = Logger.getLogger(this.getClass.getName)
   val sortingFunctions = Map[String, (LogEventWrapper) => String](
     "timeStamp" ->  { _.timeStamp },
@@ -30,7 +30,7 @@ class LoggingEventBeanQuery(queryDefinition: QueryDefinition, queryConfiguration
   }
 
   def loadBeans(startIndex: Int, count: Int) = {
-    val result = logSource.logEvents.drop(startIndex - 1).take(count) toList
+    val result = filteredLogs.drop(startIndex - 1).take(count) toList
 
     val sortableCol = if (!sortPropertyIds.isEmpty) sortPropertyIds(0).toString else "timeStamp"
     val ascending = if (!sortStates.isEmpty) sortStates(0) else true
@@ -44,16 +44,17 @@ class LoggingEventBeanQuery(queryDefinition: QueryDefinition, queryConfiguration
     }
   }
 
-  def size() = logSource.logEvents.size
+  def size() = filteredLogs.size
 
   def constructBean() = throw new UnsupportedOperationException()
 
+  private def filteredLogs = queryDefinition.filterResults(logSource.logEvents)
 }
 
 object LoggingEventBeanQuery {
   val timeStampFormatter = ISODateTimeFormat.dateTime().withZone(DateTimeZone.UTC)
-  val MAX_MESSAGE_LENGTH = 100
-
+  val MAX_MESSAGE_LENGTH = 150
+  
   def formatTimeStamp(timeStamp: Long) = timeStampFormatter.print(timeStamp)
 
   def formatLoggerName(loggerName: String) = if (loggerName.contains(".")) loggerName.substring(loggerName.lastIndexOf(".") + 1, loggerName.size) else loggerName

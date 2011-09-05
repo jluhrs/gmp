@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.web.ui.logs.model
 
-import org.junit.Test
 import org.junit.Assert._
 import org.joda.time.{DateTimeZone, DateTime}
 import org.joda.time.format.ISODateTimeFormat
@@ -8,9 +7,11 @@ import com.google.common.collect.Maps
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.web.ui.logs.LogSource
 import org.ops4j.pax.logging.spi.PaxLevel
-import org.ops4j.pax.logging.service.internal.PaxLevelImpl
 import org.apache.log4j.Level
 import scala.collection.JavaConversions._
+import org.junit.{Ignore, Test}
+import org.ops4j.pax.logging.service.internal.PaxLevelImpl
+import com.vaadin.data.util.filter.{And, Compare}
 
 class LoggingEventBeanQueryTest extends Mockito {
   val logSource = mock[LogSource]
@@ -38,8 +39,10 @@ class LoggingEventBeanQueryTest extends Mockito {
     assertEquals(1, loader.loadBeans(0, 1).size)
   }
 
-  def buildEvent(index: Long): LogEventWrapper =
-    new LogEventWrapper(new PaxLevelImpl(Level.ERROR), index, "message" + index, "logger", Array())
+  def buildEvent(index: Long, level:Level): LogEventWrapper =
+    new LogEventWrapper(new PaxLevelImpl(level), index, "message" + index, "logger", Array())
+
+  def buildEvent(index: Long): LogEventWrapper = buildEvent(index, Level.ERROR)
 
   def buildEvent: LogEventWrapper = buildEvent(0)
 
@@ -86,6 +89,33 @@ class LoggingEventBeanQueryTest extends Mockito {
     for (i <- 10 to 0) {
       assertEquals(LoggingEventBeanQuery.formatTimeStamp(i), logs(i).timeStamp)
     }
+  } 
+
+  @Test
+  def loadWithTwoFilters {
+    val logEvents = for (i <- 0 to 10) yield buildEvent(i)
+    logSource.logEvents returns logEvents
+
+    // Add a filter
+    definition.addContainerFilter(new And(new Compare.Equal("level", "DEBUG"), new Compare.Equal("logger", "unknown")))
+    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array("timeStamp"), Array(false))
+    val logs = loader.loadBeans(0, 20)
+    assertTrue(logs.isEmpty)
+  }
+
+  @Test
+  def loadWithFilter {
+    // Add two level of logs
+    val debugLogEvents = (for (i <- 0 to 10) yield buildEvent(i, Level.DEBUG)) toList
+    val errorLogEvents = (for (i <- 0 to 10) yield buildEvent(i, Level.ERROR)) toList
+    val logEvents = debugLogEvents ::: errorLogEvents
+    logSource.logEvents returns logEvents
+
+    // Add a filter
+    definition.addContainerFilter(new Compare.Equal("level", "DEBUG"))
+    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array("timeStamp"), Array(false))
+    val logs = loader.loadBeans(0, 20)
+    assertEquals(11, logs.size)
   }
 
   @Test
