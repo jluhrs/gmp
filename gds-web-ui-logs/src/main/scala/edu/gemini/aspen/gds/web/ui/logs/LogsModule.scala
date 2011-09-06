@@ -39,9 +39,6 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
   }
 
   override def buildTabContent(app: Application): Component = {
-    LOG.warning("Build module")
-    LOG.log(Level.SEVERE, "Error module", new RuntimeException())
-
     logTable.setContainerDataSource(container)
     logTable.setSelectable(true)
     logTable.setSizeFull()

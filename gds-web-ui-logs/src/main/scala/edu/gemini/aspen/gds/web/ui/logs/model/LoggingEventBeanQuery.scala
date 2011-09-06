@@ -13,18 +13,18 @@ import java.util.logging.Logger
  * The BeanQuery in this case is read only */
 class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[LogEventWrapper](queryDefinition0, queryConfiguration, sortPropertyIds, sortStates) {
   val LOG = Logger.getLogger(this.getClass.getName)
-  val queryDefinition = queryDefinition0.asInstanceOf[LogSourceQueryDefinition]
   val sortingFunctions = Map[String, (LogEventWrapper) => String](
     "timeStamp" ->  { _.timeStamp },
     "level" -> { _.level.toString },
     "loggerName" -> { _.loggerName },
     "message" -> { _.message }
   )
-  
-  val logSource = queryDefinition match {
-    case s: LogSourceQueryDefinition => s.logSource
+
+  val queryDefinition = queryDefinition0 match {
+    case q:LogSourceQueryDefinition => q
     case _ => error("Should not happen")
   }
+  val logSource = queryDefinition.logSource
 
   def saveBeans(p1: List[LogEventWrapper], p2: List[LogEventWrapper], p3: List[LogEventWrapper]) {
     throw new UnsupportedOperationException()
