@@ -13,7 +13,7 @@ trait HeaderReceiver
  * Component that starts the XMLRPC server and starts the actor that forwards messages to the appropriate database
  */
 @Component
-@Instantiate
+//@Instantiate
 @Provides(specifications = Array(classOf[HeaderReceiver]))
 class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase, @Requires programIdDB: ProgramIdDatabase) extends HeaderReceiver {
     private val webServer = XmlRpcServerFactory.newServer("HeaderReceiver", classOf[XmlRpcReceiver], 12345)
