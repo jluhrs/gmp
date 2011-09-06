@@ -16,8 +16,8 @@ class GDSObseventHandlerTest {
   val propertyHolder = mock(classOf[PropertyHolder])
   val keywordsDatabase = new KeywordsDatabaseImpl()
   val tempDir = System.getProperty("java.io.tmpdir")
-
-  private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), mock(classOf[ObservationStateRegistrar]), propertyHolder)
+  val registrar = mock(classOf[ObservationStateRegistrar])
+  private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), registrar, propertyHolder)
 
   @Test
   def testGDSObseventHandler {
@@ -36,5 +36,61 @@ class GDSObseventHandlerTest {
       // verify mock
       verify(actorsFactory).buildActors(evt, dataLabel)
     }
+    verify(registrar).startObservation(dataLabel)
+    Thread.sleep(100)
+    verify(registrar).endObservation(dataLabel)
+  }
+
+
+  @Test
+  def testWithMissingEvent {
+    val dataLabel = new DataLabel("GS-2011")
+    when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
+
+    new File(tempDir, dataLabel.getName + ".fits").createNewFile()
+
+    for (evt <- ObservationEvent.values()) {
+      if (evt != ObservationEvent.OBS_START_ACQ) {
+        when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
+
+        observationHandler.onObservationEvent(evt, dataLabel)
+
+        Thread.sleep(300)
+
+        // verify mock
+        verify(actorsFactory).buildActors(evt, dataLabel)
+      }
+    }
+    verify(registrar).startObservation(dataLabel)
+    verify(registrar, times(0)).endObservation(dataLabel)
+    Thread.sleep(5500)
+    verify(registrar).endObservation(dataLabel)
+  }
+
+  @Test
+  def testWithSlowEvent {
+    val dataLabel = new DataLabel("GS-2011")
+    when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
+
+    new File(tempDir, dataLabel.getName + ".fits").createNewFile()
+
+    for (evt <- ObservationEvent.values()) {
+      when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
+
+      if (evt != ObservationEvent.OBS_START_ACQ) {
+        observationHandler.onObservationEvent(evt, dataLabel)
+
+        Thread.sleep(300)
+
+        // verify mock
+        verify(actorsFactory).buildActors(evt, dataLabel)
+      }
+    }
+    verify(registrar).startObservation(dataLabel)
+    verify(registrar, times(0)).endObservation(dataLabel)
+    Thread.sleep(1500)
+    observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
+    Thread.sleep(1500)
+    verify(registrar).endObservation(dataLabel)
   }
 }

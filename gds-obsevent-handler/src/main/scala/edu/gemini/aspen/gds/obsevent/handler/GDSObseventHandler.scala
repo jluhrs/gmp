@@ -100,19 +100,40 @@ class ReplyHandler(
         if (bookKeep.allRepliesArrived(dataLabel)) {
           bookKeep.clean(dataLabel)
           endWrite(dataLabel)
+          endAcqRequestReply(obsEvent, dataLabel)
         } else {
-          LOG.severe("Received data collection reply for " + obsEvent + " for dataset " + dataLabel + ", but data collection on other observation events hasn't finished")
-          //todo: sleep one second and retry
-          //                    actor {
-          //                        Thread.sleep(1000)
-          //                        this ! AcquisitionRequestReply(obsEvent, dataLabel)
-          //                    }
-          return
+          LOG.warning("Received data collection reply for " + obsEvent + " for dataset " + dataLabel + ", but data collection on other observation events hasn't finished. Wait and retry.")
+          //sleep one second and retry (5 times)
+          actor {
+            def retry(retries: Int, sleep: Long) {
+              Thread.sleep(sleep)
+              if (bookKeep.allRepliesArrived(dataLabel)) {
+                //OK, can continue
+                bookKeep.clean(dataLabel)
+                endWrite(dataLabel)
+                endAcqRequestReply(obsEvent, dataLabel)
+              } else if (retries > 1) {
+                //retry
+                LOG.warning("Still haven't completed data collection on other observation events hasn't finished. Wait and retry.")
+                retry(retries - 1, sleep)
+              } else {
+                //we failed, wrap things up anyway
+                bookKeep.clean(dataLabel)
+                endWrite(dataLabel)
+                endAcqRequestReply(obsEvent, dataLabel)
+                LOG.severe("Retry limit for " + obsEvent + " for dataset " + dataLabel + " reached. FITS file is probably incomplete.")
+              }
+            }
+            retry(5, 1000)
+          }
         }
       }
-      case _ =>
+      case _ => endAcqRequestReply(obsEvent, dataLabel)
     }
 
+  }
+
+  private def endAcqRequestReply(obsEvent: ObservationEvent, dataLabel: DataLabel) {
     eventLogger.end(dataLabel, obsEvent)
 
     enforceTimeConstraints(obsEvent, dataLabel)
