@@ -7,14 +7,9 @@ import scala.collection.JavaConversions._
 import org.vaadin.addons.lazyquerycontainer._
 import java.util.logging.{Level, Logger}
 import com.vaadin.terminal.ThemeResource
-import com.vaadin.ui.Table.{ColumnGenerator, CellStyleGenerator}
-import com.vaadin.ui.themes.BaseTheme
-import com.vaadin.event.ItemClickEvent
+import com.vaadin.ui.Table.{CellStyleGenerator}
 import edu.gemini.aspen.gds.web.ui.api.Preamble._
 import com.vaadin.ui._
-import com.vaadin.data.Container.{Filter, Filterable}
-import com.vaadin.data.{Property, Container}
-import com.vaadin.data.util.filter.Compare
 
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
@@ -38,7 +33,6 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     definition.addProperty("level", classOf[String], "", true, true)
     definition.addProperty("loggerName", classOf[String], "", true, true)
     definition.addProperty("message", classOf[String], "", true, true)
-    definition.addProperty("stackTrace", classOf[Label], "", true, false)
     queryFactory.setQueryDefinition(definition);
 
     new LogsContainer(definition, queryFactory)
@@ -55,47 +49,10 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     logTable.setColumnReorderingAllowed(true)
 
     logTable.setCellStyleGenerator(styleGenerator)
-    logTable.setColumnHeader("stackTrace", "")
-    logTable.addGeneratedColumn("stackTrace", new ColumnGenerator {
-      def generateCell(source: Table, itemId: AnyRef, columnId: AnyRef) = {
-        if (!container.getItem(itemId).getItemProperty("stackTrace").toString.isEmpty) {
-          val stackTraceButton = new Button("")
-          stackTraceButton.setStyleName(BaseTheme.BUTTON_LINK)
-          stackTraceButton.setIcon(expandIcon)
-          stackTraceButton.setDescription(expandTooltip)
-          stackTraceButton.addListener((e: Button#ClickEvent) => {
-          })
-          stackTraceButton
-        } else {
-          new Label()
-        }
-      }
-    })
 
     val layout = new VerticalLayout
     layout.setSizeFull()
-    val filterPanel = new Panel()
-    val levelSelect = new NativeSelect()
-    levelSelect.setCaption("Level")
-    levelSelect.setInvalidAllowed(false)
-    levelSelect.setImmediate(true)
 
-    levelSelect.addItem("ALL")
-    levelSelect.addItem("INFO")
-    levelSelect.addItem("WARN")
-    levelSelect.addItem("ERROR")
-    levelSelect.addListener((e:Property.ValueChangeEvent) => {
-      container.removeAllContainerFilters()
-      e.getProperty.toString match {
-        case "ALL" =>
-        case x => {println("add filter " + x);container.addContainerFilter(new Compare.Equal("level", x))}
-      }
-      logTable.setContainerDataSource(container)
-    })
-
-    filterPanel.addComponent(levelSelect)
-
-    layout.addComponent(filterPanel)
     layout.addComponent(logTable)
     layout.setExpandRatio(logTable, 1.0f)
     layout
