@@ -11,8 +11,9 @@ import java.util.logging.Logger
 /**
  * This class is used by the LazyQueryContainer to read beans representing log values to display on the screen
  * The BeanQuery in this case is read only */
-class LoggingEventBeanQuery(queryDefinition: LogSourceQueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[LogEventWrapper](queryDefinition, queryConfiguration, sortPropertyIds, sortStates) {
+class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[LogEventWrapper](queryDefinition0, queryConfiguration, sortPropertyIds, sortStates) {
   val LOG = Logger.getLogger(this.getClass.getName)
+  val queryDefinition = queryDefinition0.asInstanceOf[LogSourceQueryDefinition]
   val sortingFunctions = Map[String, (LogEventWrapper) => String](
     "timeStamp" ->  { _.timeStamp },
     "level" -> { _.level.toString },

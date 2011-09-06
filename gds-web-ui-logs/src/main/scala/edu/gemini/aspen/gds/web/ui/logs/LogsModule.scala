@@ -85,7 +85,6 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     levelSelect.addItem("WARN")
     levelSelect.addItem("ERROR")
     levelSelect.addListener((e:Property.ValueChangeEvent) => {
-      println(e.getProperty)
     })
 
     filterPanel.addComponent(levelSelect)
