@@ -18,7 +18,7 @@ class HeaderIndexPropertyFactoryTest {
 
   @Test
   def testColumnDefinition {
-    assertEquals("HeaderIndex", factory.title)
+    assertEquals("Header", factory.title)
     assertEquals(classOf[NativeSelect], factory.columnType)
   }
 

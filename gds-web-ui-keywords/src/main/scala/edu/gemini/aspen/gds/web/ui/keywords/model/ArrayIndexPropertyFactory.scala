@@ -33,7 +33,8 @@ class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Array
 }
 
 object ArrayIndexPropertyFactory {
-  val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
-    def isValidString(value: String) = value.length <= 9
+  private val INDEX_MATCHER = """\d+""".r
+  val validator = new AbstractStringValidator("Value {0} must be a positive integer") {
+    def isValidString(value: String) = INDEX_MATCHER.findFirstIn(value).isDefined
   }
 }

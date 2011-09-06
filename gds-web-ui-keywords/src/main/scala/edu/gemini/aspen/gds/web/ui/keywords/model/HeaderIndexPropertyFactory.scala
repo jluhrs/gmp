@@ -10,6 +10,9 @@ import com.vaadin.ui.NativeSelect
  * the name of a FITS Keyword
  */
 class HeaderIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[HeaderIndex], classOf[NativeSelect]) {
+  override val width = 60
+  override val title = "Header" 
+  
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val allowedHeaders = (0 to 10) map {_.toString}
     val select = new NativeSelect("", allowedHeaders)

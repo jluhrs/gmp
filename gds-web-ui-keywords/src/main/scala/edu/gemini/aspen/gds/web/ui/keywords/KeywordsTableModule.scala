@@ -1,21 +1,17 @@
 package edu.gemini.aspen.gds.web.ui.keywords
 
-import _root_.edu.gemini.aspen.gds.web.ui.api.GDSWebModule
-import _root_.edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import _root_.edu.gemini.aspen.gds.web.ui.api.Preamble._
-import com.vaadin.ui.Window.Notification
-import com.jensjansson.pagedtable.PagedTable
-import model.{WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource, GDSKeywordsDataSource}
+import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
+import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
+import edu.gemini.aspen.gds.web.ui.api.Preamble._
+import model.{WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource}
 import scala.collection.JavaConversions._
-import com.vaadin.data.util.IndexedContainer._
 import com.vaadin.ui.Table.ColumnGenerator
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.ui._
 import themes.BaseTheme
 import com.vaadin.Application
 import org.vaadin.dialogs.ConfirmDialog
-import org.vaadin.dialogs.DefaultConfirmDialogFactory
-import javax.management.remote.rmi._RMIConnection_Stub
+import com.vaadin.ui.Window.Notification
 
 /**
  * Module for the table to edit the keywords
@@ -93,12 +89,6 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     tabLayout.addComponent(table)
     tabLayout.setExpandRatio(table, 1.0f)
 
-    /*val pagingControls = table.createControls()
-    pagingControls.setWidth("100%")
-    pagingControls.setDebugId("pagingControls")
-    // Trick to get th layouts right
-    pagingControls.getComponent(0).setWidth("100%")
-    layout.addComponent(pagingControls)*/
     tabLayout.addComponent(statusRow(app))
     updateSaveButton(app.getUser)
     updateNewButton(app.getUser)
@@ -128,10 +118,6 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     layout.addComponent(saveButton)
     layout.setComponentAlignment(newRowButton, Alignment.MIDDLE_RIGHT)
     layout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT)
-
-    //    val showAsTextButton = buildShowAsTextButton(app)
-    //    layout.addComponent(showAsTextButton)
-    //    layout.setComponentAlignment(showAsTextButton, Alignment.MIDDLE_RIGHT)
 
     layout
   }
@@ -163,12 +149,12 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnIcon(deleteProperty, deleteIcon)
     table.setColumnHeader(deleteProperty, "")
     table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
+    table.setColumnWidth(deleteProperty, 20)
   }
 
   private def setupNewButton(table: Table) {
     newRowButton.addListener((e: Button#ClickEvent) => {
       table.getApplication.getMainWindow.addWindow(new NewRowWindow(getDataSource(table.getApplication.getUser)))
-      //app.getMainWindow.showNotification("New Row... " + configService, Notification.TYPE_HUMANIZED_MESSAGE)
     })
     newRowButton
   }
@@ -181,11 +167,4 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     saveButton
   }
 
-  private def buildShowAsTextButton(app: Application): Button = {
-    val showAsTextButton = new Button("Show as text...")
-    showAsTextButton.addListener((e: Button#ClickEvent) => {
-      app.getMainWindow.showNotification("Display... " + configService, Notification.TYPE_HUMANIZED_MESSAGE)
-    })
-    showAsTextButton
-  }
 }

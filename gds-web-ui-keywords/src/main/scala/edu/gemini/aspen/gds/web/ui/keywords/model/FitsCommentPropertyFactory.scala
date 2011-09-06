@@ -11,8 +11,7 @@ import edu.gemini.aspen.gds.api.{FitsComment, GDSConfiguration}
  */
 class FitsCommentPropertyFactory extends PropertyItemWrapperFactory(classOf[FitsComment], classOf[TextField]) {
   override val title = "Comment"
-  override val width = 120
-
+  override val width = 140
 
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.fitsComment.value.toString)
@@ -32,8 +31,7 @@ class FitsCommentPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
 }
 
 object FitsCommentPropertyFactory {
-  val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
-    // todo check the lenght
-    def isValidString(value: String) = value.length <= 80
+  val validator = new AbstractStringValidator("Value {0} must be less than 68 characters") {
+    def isValidString(value: String) = value.nonEmpty && value.length <= 68
   }
 }

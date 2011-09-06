@@ -27,9 +27,8 @@ class DefaultValuePropertyFactory extends PropertyItemWrapperFactory(classOf[Def
 }
 
 object DefaultValuePropertyFactory {
-  val validator = new AbstractStringValidator("Value {0} must be less than 8 characters") {
-    // todo verify max allowed length
-    def isValidString(value: String) = value.length <= 80
+  val validator = new AbstractStringValidator("Value {0} must be less than 68 characters") {
+    def isValidString(value: String) = value.nonEmpty && value.length <= 68
   }
 }
 

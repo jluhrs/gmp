@@ -9,6 +9,8 @@ import edu.gemini.aspen.giapi.data.ObservationEvent
  * PropertyItemWrapperFactory for GDSEvent that uses a ComboBox to select a Observation Event
  */
 class GDSEventPropertyFactory extends PropertyItemWrapperFactory(classOf[GDSEvent], classOf[NativeSelect]) {
+  override val width = 175
+
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val select = new NativeSelect("", GDSEventPropertyFactory.obsEvents)
     select.setCaption("Observation Event")
