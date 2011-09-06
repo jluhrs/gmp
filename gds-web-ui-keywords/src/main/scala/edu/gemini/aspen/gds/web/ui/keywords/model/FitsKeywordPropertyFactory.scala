@@ -10,6 +10,8 @@ import com.vaadin.data.validator.AbstractStringValidator
  * the name of a FITS Keyword
  */
 class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[FitsKeyword], classOf[TextField]) {
+  override val width = 150
+
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.keyword.getName)
     textField.addValidator(FitsKeywordPropertyFactory.validator)

@@ -8,6 +8,8 @@ import scala.collection.JavaConversions._
  * PropertyItemWrapperFactory for DataType that uses a ComboBox to select a given data type
  */
 class DataTypePropertyFactory extends PropertyItemWrapperFactory(classOf[DataType], classOf[NativeSelect]) {
+  override val width = 100
+  
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val select = new NativeSelect("", DataTypePropertyFactory.dataTypes)
     select.setNullSelectionAllowed(false)

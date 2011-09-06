@@ -8,6 +8,8 @@ import edu.gemini.aspen.gds.api.{Subsystem, KeywordSource, GDSConfiguration}
  * PropertyItemWrapperFactory for GDSEvent that uses a ComboBox to select a Observation Event
  */
 class SubsystemPropertyFactory extends PropertyItemWrapperFactory(classOf[Subsystem], classOf[NativeSelect]) {
+  override val width = 120
+
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val select = new NativeSelect("", SubsystemPropertyFactory.subSystems)
     select.setNullSelectionAllowed(false)

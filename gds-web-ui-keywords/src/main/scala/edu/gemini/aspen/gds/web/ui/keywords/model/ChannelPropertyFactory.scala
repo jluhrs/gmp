@@ -9,6 +9,8 @@ import edu.gemini.aspen.gds.api.{Channel, GDSConfiguration}
  * PropertyItemWrapperFactory for Channel that uses a TextField to enter the channel name
  */
 class ChannelPropertyFactory extends PropertyItemWrapperFactory(classOf[Channel], classOf[TextField]) {
+  override val width = 150
+
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.channel.name)
     textField.addValidator(ChannelPropertyFactory.validator)
@@ -16,6 +18,7 @@ class ChannelPropertyFactory extends PropertyItemWrapperFactory(classOf[Channel]
     textField.setRequired(true)
     textField.setImmediate(true)
     textField.setRequired(true)
+    textField.setMaxLength(80)
     textField.setInvalidAllowed(false)
 
     def updateFunction(config: GDSConfiguration) = {
