@@ -14,7 +14,7 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
 
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.keyword.getName)
-    textField.addValidator(FitsKeywordPropertyFactory.validator)
+    textField.addValidator(FitsKeywordPropertyFactory.validator(textField))
     textField.setCaption("FITS Keyword")
     textField.setImmediate(true)
     textField.setValidationVisible(true)
@@ -31,7 +31,16 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
 }
 
 object FitsKeywordPropertyFactory {
-  val validator = new AbstractStringValidator("Value {0} must be a valid FITS Keyword,less than 8 characters") {
+  def validator(textField: TextField) = new AbstractStringValidator("Value {0} must be a valid FITS Keyword, more than 0 and up to 8 characters") {
     def isValidString(value: String) = FitsKeyword.FITS_KEYWORD_PATTERN.matcher(value.toUpperCase).matches
+
+    override def validate(value: AnyRef) {
+      if (!isValid(value)) {
+        textField.addStyleName("validation-error")
+      } else {
+        textField.removeStyleName("validation-error")
+      }
+      super.validate(value)
+    }
   }
 }
