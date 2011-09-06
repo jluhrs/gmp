@@ -20,7 +20,7 @@ class FitsCommentPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
     textField.setImmediate(true)
     textField.setInvalidAllowed(false)
     textField.setMaxLength(68)
-    textField.setWidth("68em")
+    textField.setWidth("100%")
 
     def updateFunction(config: GDSConfiguration) = {
       config.copy(fitsComment = FitsComment(textField.getValue.toString))

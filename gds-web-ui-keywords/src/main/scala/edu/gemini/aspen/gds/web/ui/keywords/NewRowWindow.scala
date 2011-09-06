@@ -33,7 +33,6 @@ class NewRowWindow(dataSource: GDSKeywordsDataSource) extends Window("Add new ro
   setModal(true)
   setResizable(false)
   setWidth("400px")
-  //setHeight("195px")
 
   val layout = new FormLayout
   layout.setMargin(true)
@@ -48,6 +47,7 @@ class NewRowWindow(dataSource: GDSKeywordsDataSource) extends Window("Add new ro
   }
   controlsAndWrappers map {
     case (c, _) => {
+      c.setSizeUndefined()
       layout.addComponent(c)
     }
   }
