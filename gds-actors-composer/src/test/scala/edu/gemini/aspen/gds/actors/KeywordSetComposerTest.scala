@@ -66,6 +66,36 @@ class KeywordSetComposerTest {
     }
   }
 
+  @Test
+  def testExceptionActor() {
+    // Generate dataset
+    val dataLabel = new DataLabel("GS-2011")
+
+    val noActorsFactory = mock(classOf[KeywordActorsFactory])
+    when(noActorsFactory.buildActors(ObservationEvent.OBS_END_READOUT, dataLabel)).thenReturn({
+      new KeywordValueActor {
+        override def collectValues(): List[CollectedValue[_]] = {
+          throw new NullPointerException()
+        }
+      } :: Nil
+    })
+
+    val keywordsDatabase = new KeywordsDatabaseImpl()
+    // Create composer
+    val composer = new KeywordSetComposer(noActorsFactory, keywordsDatabase)
+
+    // Send an init message
+    val result = composer !! AcquisitionRequest(ObservationEvent.OBS_END_READOUT, dataLabel)
+
+    result() match {
+      case AcquisitionRequestReply(obsEvent, replyDataSet) => {
+        assertEquals(replyDataSet, dataLabel)
+        assertEquals(obsEvent, ObservationEvent.OBS_END_READOUT)
+      }
+      case _ => fail("Should not reply other message")
+    }
+  }
+
   private def createFixture = {
     // Generate dataset
     val dataLabel = new DataLabel("GS-2011")
