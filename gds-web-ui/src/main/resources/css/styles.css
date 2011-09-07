@@ -21,6 +21,10 @@
     display: none;
 }
 
+input.v-textfield-validation-error {
+    background-color: tomato;
+}
+
 /* Add borders to the control panel at the bottom ot the keywords table */
 .keywords-control .v-horizontallayout-margin {
     padding-top: 5px;
@@ -30,6 +34,11 @@
 }
 
 /* Make the count of keywords bold */
+.keywords-control .v-label {
+    font-weight:bold;
+}
+
+/* Make the backround of fields with error validations red  */
 .keywords-control .v-label {
     font-weight:bold;
 }

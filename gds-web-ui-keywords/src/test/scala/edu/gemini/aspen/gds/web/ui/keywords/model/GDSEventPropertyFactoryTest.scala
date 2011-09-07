@@ -41,7 +41,7 @@ class GDSEventPropertyFactoryTest {
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 
-  @Test
+  //@Test
   def testPopulateItem {
     val wrapperFunction = factory.populateItem(config, item)
     assertEquals(config, wrapperFunction(config))

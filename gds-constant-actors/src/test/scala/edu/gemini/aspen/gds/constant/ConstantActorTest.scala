@@ -11,7 +11,7 @@ class ConstantActorTest {
     @Test
     def testActor() {
         val constActor = new ConstantActor(buildConfiguration("key1", "val1") :: buildConfiguration("key2", "val2") :: Nil)
-        assertEquals(CollectedValue("key1", "val1", "", 0) :: CollectedValue("key2", "val2", "", 0) :: Nil, constActor.collectValues())
+        assertEquals(CollectedValue("key1", "val1", "COMMENT", 0) :: CollectedValue("key2", "val2", "COMMENT", 0) :: Nil, constActor.collectValues())
     }
 
     @Test
@@ -24,10 +24,10 @@ class ConstantActorTest {
             false,
             "val1",
             "CONSTANT",
-            "",
+            "NONE",
             0,
-            "") :: Nil)
-        assertEquals(ErrorCollectedValue("key1", CollectionError.TypeMismatch, "", 0) :: Nil, constActor.collectValues())
+            "COMMENT") :: Nil)
+        assertEquals(ErrorCollectedValue("key1", CollectionError.TypeMismatch, "COMMENT", 0) :: Nil, constActor.collectValues())
     }
 
     @Test
@@ -60,8 +60,8 @@ class ConstantActorTest {
             false,
             value,
             "CONSTANT",
-            "",
+            "NONE",
             0,
-            "")
+            "COMMENT")
     }
 }

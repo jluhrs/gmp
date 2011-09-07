@@ -7,6 +7,7 @@ abstract class FitsType[T] {
 }
 
 object FitsType {
+  val typeNames = List("STRING", "DOUBLE", "INT")
 
   implicit object IntegerType extends FitsType[Int] {
 

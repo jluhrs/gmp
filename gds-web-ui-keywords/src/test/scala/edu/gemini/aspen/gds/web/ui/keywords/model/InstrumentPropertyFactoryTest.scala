@@ -12,7 +12,7 @@ import edu.gemini.aspen.gds.api.{Instrument, ArrayIndex, GDSConfiguration}
  */
 class InstrumentPropertyFactoryTest {
   val factory = new InstrumentPropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
   val item = new PropertysetItem
 
   @Test
@@ -38,7 +38,7 @@ class InstrumentPropertyFactoryTest {
     select.setValue("GEMS")
 
     // Cannot change the instrument
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 }

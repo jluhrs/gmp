@@ -11,7 +11,7 @@ import edu.gemini.aspen.gds.api.{DefaultValue, GDSConfiguration}
  */
 class DefaultValuePropertyFactoryTest {
   val factory = new DefaultValuePropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "NULL", "SEQEXEC", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "NULL", "SEQEXEC", "KEY", 0, "my comment")
   val item = new PropertysetItem
   item.addItemProperty("DefaultValue", new ObjectProperty[DefaultValue]("NOTNULL"))
 
@@ -33,7 +33,7 @@ class DefaultValuePropertyFactoryTest {
     // Simulates that the text field has been updated
     textField.setValue("NOTNULL")
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "NOTNULL", "SEQEXEC", "KEY", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "NOTNULL", "SEQEXEC", "KEY", 0, "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 

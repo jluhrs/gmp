@@ -1,29 +1,43 @@
 package edu.gemini.aspen.gds.api
 
-import edu.gemini.aspen.giapi.data.FitsKeyword
+import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
 
 case class Instrument(name: String)
 
-case class GDSEvent(name: String)
+case class GDSEvent(name: String) {
+  require(ObservationEvent.valueOf(name) != null)
+}
 
-case class HeaderIndex(index: Int)
+case class HeaderIndex(index: Int) {
+  require(index >= 0)
+}
 
-case class DataType(name: String)
+case class DataType(name: String) {
+  require(FitsType.typeNames.contains(name))
+}
 
 // A keyword marked as mandatory will be left empty and an error will be put in the log
 // if the value is not found
 case class Mandatory(mandatory: Boolean)
 
 // This value will be used if not mandatory and the value is not found
-case class DefaultValue(value: String)
+case class DefaultValue(value: String) {
+  require(value.nonEmpty)
+}
 
 case class Subsystem(name: KeywordSource.Value)
 
-case class Channel(name: String)
+case class Channel(name: String) {
+  require(name.nonEmpty)
+}
 
-case class ArrayIndex(value: Int)
+case class ArrayIndex(value: Int) {
+  require(value >= 0)
+}
 
-case class FitsComment(value: String)
+case class FitsComment(value: String) {
+  require(value.nonEmpty)
+}
 
 /**
  * Encapsulates a configuration item of GDS

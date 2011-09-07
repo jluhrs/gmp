@@ -14,7 +14,7 @@ import com.vaadin.data.Validator.InvalidValueException
  */
 class ChannelPropertyFactoryTest {
   val factory = new ChannelPropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "a:b", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "a:b", 0, "my comment")
   val item = new PropertysetItem
   item.addItemProperty("Channel", new ObjectProperty[Channel]("a:b"))
 
@@ -36,7 +36,7 @@ class ChannelPropertyFactoryTest {
     // Simulates that the text field has been updated
     textField.setValue("c:d")
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "c:d", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "c:d", 0, "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 

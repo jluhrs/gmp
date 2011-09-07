@@ -14,7 +14,7 @@ import edu.gemini.aspen.gds.api.{FitsComment, GDSConfiguration}
 class FitsCommentPropertyFactoryTest {
   val factory = new FitsCommentPropertyFactory
   val fitsComment = "my comment"
-  val config = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, fitsComment)
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, fitsComment)
   val item = new PropertysetItem
   item.addItemProperty("Comment", new ObjectProperty[FitsComment](fitsComment))
 
@@ -37,7 +37,7 @@ class FitsCommentPropertyFactoryTest {
     val newComment: String = "another comment"
     textField.setValue(newComment)
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_EVENT", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "another comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "another comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 }
