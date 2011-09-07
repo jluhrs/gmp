@@ -21,7 +21,10 @@
     display: none;
 }
 
+/* Make the background of fields with a validation error red */
 input.v-textfield-validation-error {
+    -webkit-border-image: none;
+    -webkit-border-radius: 3px;
     background-color: tomato;
 }
 
@@ -33,18 +36,10 @@ input.v-textfield-validation-error {
     padding-left: 15px;
 }
 
+
 /* Make the count of keywords bold */
 .keywords-control .v-label {
     font-weight:bold;
-}
-
-/* Make the backround of fields with error validations red  */
-.keywords-control .v-label {
-    font-weight:bold;
-}
-
-/* Make the comboboxes to center */
-.small-combobox .v-select-select {
 }
 
 /* css for the logs table */
@@ -56,6 +51,19 @@ input.v-textfield-validation-error {
 /* For rows with error */
 .v-table-logs .v-table-row-error {
     background-color:tomato;
+}
+
+.v-table-logs .v-table-focus .v-table-cell-wrapper {
+    white-space: normal;
+}
+
+.v-table-logs .v-table-cell-wrapper {
+    white-space: normal;
+}
+
+/* Progress indicator should be hidden */
+.v-progressindicator-hidden {
+    display: none;
 }
 
 .v-label-gds-status {

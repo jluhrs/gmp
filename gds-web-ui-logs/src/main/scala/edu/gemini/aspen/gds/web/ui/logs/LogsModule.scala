@@ -14,7 +14,7 @@ import com.vaadin.ui._
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
   val title: String = "Logs"
-  val order: Int = 2
+  val order: Int = 1
   val logTable = new Table()
   val styleGenerator = new CellStyleGenerator {
     val styles = Map("WARN" -> "warn", "ERROR" -> "error")

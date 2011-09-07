@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gds.web.ui.vaadin
 
-import com.vaadin.ui._
 import org.apache.felix.ipojo.annotations.{Unbind, Bind, Provides, Instantiate}
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.web.ui.api.{StatusPanelModule, StatusPanel}
+import com.vaadin.ui._
 
 /**
  * Component that con display a status panel composing status panel modules
@@ -31,6 +31,10 @@ class StatusPanelImpl extends StatusPanel {
 
     layout.setHeight("30px")
     layout.setWidth("100%")
+    val progress = new ProgressIndicator()
+    progress.addStyleName("hidden")
+    progress.setPollingInterval(2000)
+    layout.addComponent(progress)
 
     new Panel(layout)
   }

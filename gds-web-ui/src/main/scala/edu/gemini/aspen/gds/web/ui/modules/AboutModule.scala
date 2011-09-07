@@ -10,7 +10,7 @@ import com.vaadin.ui.{Alignment, VerticalLayout, Label, Panel}
  */
 class AboutModule extends GDSWebModule {
   val title = "About"
-  val order = 3
+  val order = 5
 
   override def buildTabContent(app: Application): com.vaadin.ui.Component = {
     val aboutLabel = new Label("About GDS")

@@ -10,7 +10,7 @@ import edu.gemini.aspen.gds.api.Conversions._
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
   val title: String = "Status"
-  val order: Int = 1
+  val order: Int = 0
   val topGrid = new GridLayout(2, 6)
   val nLast = 10
   val bottomGrid = new GridLayout(2, nLast + 1)

@@ -18,7 +18,7 @@ import com.vaadin.ui.Window.Notification
  */
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
-  val order = 0
+  val order = 2
   lazy val dataSource = new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
 
   val tabLayout = new VerticalLayout

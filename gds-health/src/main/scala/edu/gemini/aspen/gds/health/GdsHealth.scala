@@ -132,7 +132,7 @@ class GdsHealth(@Requires provider: JmsProvider) {
     }
 
     def getHealth = {
-      LOG.fine("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actors.toList)
+      LOG.info("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actors.toList)
       if (obsEvtHndl) {
         if (actors.reduceLeft({
           _ && _

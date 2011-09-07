@@ -8,12 +8,12 @@ import com.vaadin.ui.{VerticalLayout, Panel}
  * Component containing an iframe with help as html
  */
 class HelpModule extends GDSWebModule {
-    val title = "GDS Help"
-    val order = 2
+  val title = "GDS Help"
+  val order = 4
 
-    override def buildTabContent(app: Application) = {
-      val layout = new VerticalLayout
-      layout.setSizeFull()
-      layout
-    }
+  override def buildTabContent(app: Application) = {
+    val layout = new VerticalLayout
+    layout.setSizeFull()
+    layout
+  }
 }

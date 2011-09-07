@@ -13,8 +13,7 @@ import com.vaadin.ui.{GridLayout, Alignment, TextField, Button, Label, FormLayou
 
 class ConfigurationModule(propHolder: PropertyHolder, configAdmin: ConfigurationAdmin) extends GDSWebModule {
   val title: String = "System Configuration"
-  val order: Int = 5
-
+  val order: Int = 3
 
   val _properties = createProperties(GmpProperties.values().toList)
 
