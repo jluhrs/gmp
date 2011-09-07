@@ -82,14 +82,14 @@ class GdsHealthTest {
     gdsHealth.validate()
     gdsHealth.bindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
     val fact = mock(classOf[KeywordActorsFactory])
-    for (source <- (KeywordSource.values - KeywordSource.NONE)) {
+    for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS)) {
       when(fact.getSource).thenReturn(source)
       gdsHealth.bindActorFactory(fact)
     }
 
     gdsHealth.bindHeaderReceiver()
     latch.await(1, TimeUnit.SECONDS)
-    assertEquals(KeywordSource.maxId + 2, counter.get())
+    assertEquals(KeywordSource.maxId + 1, counter.get())
     assertTrue(lastStatusItem.getName == healthName && lastStatusItem.getValue == Health.GOOD)
   }
 

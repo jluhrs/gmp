@@ -96,7 +96,7 @@ class GdsHealth(@Requires provider: JmsProvider) {
   private class HealthState {
     private val LOG = Logger.getLogger(this.getClass.getName)
 
-    private val actors = new Array[Boolean](KeywordSource.maxId - 1) //Booleans are initialized to false
+    private val actors = new Array[Boolean](5) //Booleans are initialized to false
 
     private var obsEvtHndl = false
     private var headerRec = false
