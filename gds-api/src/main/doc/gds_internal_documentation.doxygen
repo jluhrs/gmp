@@ -79,7 +79,7 @@ The main objective is to determine the bounds of how fast GDS can process a file
 As a reference, we'd ideally be able to have expositions of one second and process the file in a comparable time
 
 The first round of tests were carried out on 7/20/2011 on an iMac with all the components on the local machine
-A second round of tests were carried out on 8/12/2011 on an iMac with all the components on the local machine
+A second round of tests were carried out on 9/08/2011 on an iMac with all the components on the local machine
 
 \subsection Procedure
 The test procedure is as follows
@@ -90,10 +90,10 @@ The test procedure is as follows
     java -jar casdb/target/casdb-0.1.0-jar-with-dependencies.jar -f integration-tests/src/test/resources/cas500channels.xml  
 -# Start the gmp-server and verify it is running normally
 -# Go to giapi-glue-cc/run/examples, build and run
-    ./runExample gpisimulator 
+    ./runExample obshighcount
   This produces an output like:
 \verbatim
-Starting GPI Simulation Test
+Starting GDS High Count Simulation Test
 Simulating datalabel S1311707323
 <?xml version="1.0" encoding="UTF-8"?><methodResponse xmlns:ex="http://ws.apache.org/xmlrpc/namespaces/extensions"><params><param><value><boolean>1</boolean></value></param></params></methodResponse>
 time to post xmlrpc req:2.668 [ms]
@@ -119,22 +119,23 @@ POST 6
     /tmp/N-S1311707323.fits
 -# The timing of the events can be seen on the gmp log at
     gmp-server/runner/logs/gmp.log
+-# The following gives the average time after 160 rounds
 \verbatim
-2011-07-26 15:29:29,764 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_PREP: 44[ms]
-2011-07-26 15:29:29,764 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_PREP DataLabel S1311708566: 14[ms]
-2011-07-26 15:29:29,765 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_ACQ: 605[ms]
-2011-07-26 15:29:29,765 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_ACQ DataLabel S1311708566: 118[ms]
-2011-07-26 15:29:29,765 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_ACQ: 47[ms]
-2011-07-26 15:29:29,765 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_ACQ DataLabel S1311708566: 41[ms]
-2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_READOUT: 8[ms]
-2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_READOUT DataLabel S1311708566: 11[ms]
-2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_READOUT: 7[ms]
-2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_READOUT DataLabel S1311708566: 8[ms]
-2011-07-26 15:29:29,766 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_DSET_WRITE: 5[ms]
-2011-07-26 15:29:29,767 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_DSET_WRITE DataLabel S1311708566: 6[ms]
-2011-07-26 15:29:29,767 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_DSET_WRITE: 151[ms]
-2011-07-26 15:29:29,767 INFO  [ForkJoinPool-1-worker-47] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_DSET_WRITE DataLabel S1311708566: 120[ms]
-2011-07-26 15:29:29,803 INFO  [ForkJoinPool-1-worker-51] .aspen.gds.obsevent.handler.ReplyHandler -  Writing updated FITS file at S1311708566 took PT0.039S
+2011-09-08 14:42:56,585 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_PREP: 6[ms]
+2011-09-08 14:42:56,585 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_PREP DataLabel S1315503772: 5[ms]
+2011-09-08 14:42:56,586 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_ACQ: 128[ms]
+2011-09-08 14:42:56,586 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_ACQ DataLabel S1315503772: 1040[ms]
+2011-09-08 14:42:56,586 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_ACQ: 14[ms]
+2011-09-08 14:42:56,586 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_ACQ DataLabel S1315503772: 18[ms]
+2011-09-08 14:42:56,586 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_READOUT: 2[ms]
+2011-09-08 14:42:56,586 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_READOUT DataLabel S1315503772: 1[ms]
+2011-09-08 14:42:56,587 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_READOUT: 2[ms]
+2011-09-08 14:42:56,587 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_READOUT DataLabel S1315503772: 1[ms]
+2011-09-08 14:42:56,587 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_START_DSET_WRITE: 1[ms]
+2011-09-08 14:42:56,587 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_START_DSET_WRITE DataLabel S1315503772: 1[ms]
+2011-09-08 14:42:56,587 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Average timing for event OBS_END_DSET_WRITE: 200[ms]
+2011-09-08 14:42:56,587 INFO  [ForkJoinPool-1-worker-9] .aspen.gds.obsevent.handler.ReplyHandler -  Timing for event OBS_END_DSET_WRITE DataLabel S1315503772: 141[ms]
+2011-09-08 14:42:56,597 INFO  [ForkJoinPool-1-worker-16] .aspen.gds.obsevent.handler.ReplyHandler -  Writing updated FITS file at S1315503772 took PT0.012S
 \endverbatim
 
 \subsection Results
@@ -142,13 +143,6 @@ After analyzing some runs we can get some conclusions:
 -# It seems that for the amount of items required (80 SEQEXEC, 500 Status, 250 EPICS items) we need approximately 3[s] for the collection to be reliable
 -# Constructing actors takes an appreciable time, for example constructing 80 SEQEXEC actors takes 30-40 [ms]
 Construction of 508 STATUS actors takes 122 [ms] 
--# Collection of SEQEXEC items takes an appreciable time, e.g.:
-    FitsKeyword{name='OBSTYPE'} -> 12[ms]
-    FitsKeyword{name='SSA'} -> 14[ms]
-    FitsKeyword{name='OBSCLASS'} -> 14[ms]
-    FitsKeyword{name='OBSID'} -> 15[ms]
-    FitsKeyword{name='RAWCC'} -> 12[ms]
-This in an in memory call so, the slowness is probably due to the actor based design of TemporarySeqexecKeywordsDatabase
 -# The waiting part of KeywordSetComposer in the method waitForDataAndReply is suboptimal, e.g for SEQEXEC actor it produces:
     Waiting for data took 109 [ms] 
 -# Requesting STATUS items is very fast, for example taking 160-180 [ms] to read 508 status items, this is probably coming mostly from the
@@ -157,14 +151,9 @@ issue in 3
 -# Reading EPICS channels seems quite fast 1-2[ms] each
 -# It seems is not reliable to read so many EPICS channels and there are exceptions reading some of them. It could be this is due to the cas side
 rather than the GDS part
-
+-# The first 
 \subsection Recommendations
 Some recommendations:
--# Use a single actor per set of keywords, for example only one Seqexec actor for the 80 requested keywords
--# Reuse actor instances. This would complicate the design though since it would require keeping state
--# Change TemporarySeqexecKeywordsDatabase to allow retrieval of multiple keywords at once
--# Add a method to make a copy of TemporarySeqexecKeywordsDatabase and operate on that, thus avoiding the issues related to
-the actor-based calls
 -# Redesign 3 so that waiting for data collection takes app the same as the slowest actor
 -# Change the Posting of keywords to post many keywords at once and/or change it to use o lighter protocol
 -# Replace reading EPICS channels directly and instead use the latest snapshot stored in memory

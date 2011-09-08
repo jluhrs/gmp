@@ -1,6 +1,8 @@
 package edu.gemini.aspen.gds.api
 
-
+/**
+ * List of possible sources for keyword values
+ * NOT: If you add more sources here, check the gds-health-module */
 object KeywordSource extends Enumeration {
     val SEQEXEC = Value //sent previously by seqexec
     val EPICS = Value //to be collected from EPICS channels
