@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.actors
 
-import java.util.logging.Logger
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import scala.actors.{Futures, OutputChannel, Actor}
@@ -8,6 +7,7 @@ import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.keywords.database.{StoreList, KeywordsDatabase}
 import org.joda.time.DateTime
 import scala._
+import java.util.logging.{Level, Logger}
 
 /**
  * Message to indicate that FITS header data collection should begin
@@ -52,7 +52,14 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => List[Actor]) = {
     // Get the actors from the factory
     val actors = measureDuration("Building actors for event:" + obsEvent) {
-      actorsBuilder(obsEvent, dataLabel)
+      try {
+        actorsBuilder(obsEvent, dataLabel)
+      } catch {
+        case e => {
+          LOG.log(Level.SEVERE, "Caught an exception from an actor factory", e)
+          Nil
+        }
+      }
     }
 
     // Start collecting
@@ -67,7 +74,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   private def waitForDataAndReply(dataLabel: DataLabel, dataFutures: List[Future[Any]])(postAction: => Unit) {
     measureDuration("Waiting for " + dataFutures.size + " data items ") {
       // Wait for response
-      val v = Futures awaitAll (5000, dataFutures: _*) collect {
+      val v = Futures awaitAll(5000, dataFutures: _*) collect {
         case Some(x: List[CollectedValue[_]]) => x
         case None => {
           LOG.warning("Missing return of collecting data")
