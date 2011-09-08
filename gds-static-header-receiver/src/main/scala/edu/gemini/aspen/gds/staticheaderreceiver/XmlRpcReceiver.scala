@@ -35,11 +35,12 @@ class XmlRpcReceiver {
   }
 
   def storeKeywords(dataLabel: String, keywords: Array[Object]): Boolean = {
+
     for (keyword <- keywords) {
       val pieces = keyword.asInstanceOf[String].split(",")
-      val key = pieces(0)
-      val dataType = pieces(1)
-      val value = pieces(2)
+      val key = pieces(0).trim()
+      val dataType = pieces(1).trim()
+      val value = pieces(2).trim()
       try {
         dataType match {
           case "INT" => RequestHandler ! StoreKeyword(dataLabel, key, value.toInt.asInstanceOf[AnyRef])
