@@ -10,11 +10,7 @@ import edu.gemini.epics.JCAContextController;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.TimeoutException;
-import gov.aps.jca.event.ContextExceptionEvent;
-import gov.aps.jca.event.ContextExceptionListener;
-import gov.aps.jca.event.ContextMessageEvent;
-import gov.aps.jca.event.ContextMessageListener;
-import gov.aps.jca.event.ContextVirtualCircuitExceptionEvent;
+import gov.aps.jca.event.*;
 
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentMap;
@@ -51,7 +47,7 @@ public class EpicsBaseImpl implements EpicsBase {
                 }
 
                 public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
-                    LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
+                    LOG.log(Level.WARNING, "Trouble in JCA Context: " + cvce.getVirtualCircuit() + " Status: " + cvce.getStatus());
                 }
             });
             _ctx.addContextMessageListener(new ContextMessageListener() {
@@ -63,9 +59,9 @@ public class EpicsBaseImpl implements EpicsBase {
     }
 
     @Override
-    public synchronized void bindChannel(String channel) throws EpicsException {
+    public synchronized void bindChannelAsync(String channel) throws EpicsException {
         try {
-            bindNewChannel(channel);
+            bindNewChannel(channel, true, null);
         } catch (CAException e) {
             throw new EpicsException("Problem on Channel Access", e);
         } catch (TimeoutException e) {
@@ -75,21 +71,69 @@ public class EpicsBaseImpl implements EpicsBase {
         }
     }
 
-    private void bindNewChannel(String channelName) throws CAException, TimeoutException {
+    @Override
+    public boolean isChannelConnected(String channel) {
+        return isChannelKnown(channel) && _channels.get(channel).getConnectionState() == Channel.ConnectionState.CONNECTED;
+    }
+
+    @Override
+    public synchronized void bindChannelAsync(String channel, ConnectionListener listener) throws EpicsException {
+        try {
+            bindNewChannel(channel, true, listener);
+        } catch (CAException e) {
+            throw new EpicsException("Problem on Channel Access", e);
+        } catch (TimeoutException e) {
+            throw new EpicsException("Timeout while binding to epics channel " + channel, e);
+        } catch (IllegalStateException e) {
+            throw new EpicsException("Epics channel in incorrect state " + channel, e);
+        }
+    }
+
+    @Override
+    public synchronized void bindChannel(String channel) throws EpicsException {
+        try {
+            bindNewChannel(channel, false, null);
+        } catch (CAException e) {
+            throw new EpicsException("Problem on Channel Access", e);
+        } catch (TimeoutException e) {
+            throw new EpicsException("Timeout while binding to epics channel " + channel, e);
+        } catch (IllegalStateException e) {
+            throw new EpicsException("Epics channel in incorrect state " + channel, e);
+        }
+    }
+
+    private void bindNewChannel(String channelName, boolean async, ConnectionListener listener) throws CAException, TimeoutException {
         synchronized (_ctx) {
             if (!isChannelKnown(channelName)) {
-                addNewChannel(channelName);
+                addNewChannel(channelName, async, listener);
             }
         }
     }
 
-    private void addNewChannel(String channelName) throws CAException, TimeoutException {
+
+    private void addNewChannel(String channelName, boolean async, ConnectionListener listener) throws CAException, TimeoutException {
         CAJChannel epicsChannel = null;
-        epicsChannel = (CAJChannel) _ctx.createChannel(channelName);
-        //TODO: Do we need to bind the channels asynchronously, using the connection listener?
-        _ctx.pendIO(1.0);
-        if (epicsChannel.getConnectionState() != Channel.ConnectionState.CONNECTED) {
-            throw new IllegalStateException("Channel " + channelName + " cannot be connected");
+        if (async) {
+            if (listener != null) {
+                epicsChannel = (CAJChannel) _ctx.createChannel(channelName, listener);
+            } else {
+                epicsChannel = (CAJChannel) _ctx.createChannel(channelName, new ConnectionListener() {
+                    @Override
+                    public void connectionChanged(ConnectionEvent ev) {
+                        //do nothing, this is just so the channel can be created asynchronously
+                        //here we should make sure that the channel is closed and invalidated.
+//                if(!ev.isConnected()) {
+//                    EpicsBaseImpl.this.unbindChannel(channelName);
+//                }
+                    }
+                });
+            }
+        } else {
+            epicsChannel = (CAJChannel) _ctx.createChannel(channelName);
+            _ctx.pendIO(1.0);
+            if (epicsChannel.getConnectionState() != Channel.ConnectionState.CONNECTED) {
+                throw new IllegalStateException("Channel " + channelName + " cannot be connected");
+            }
         }
         _channels.putIfAbsent(channelName, epicsChannel);
     }

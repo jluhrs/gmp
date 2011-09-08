@@ -7,6 +7,8 @@ import edu.gemini.epics.EpicsService;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.TimeoutException;
+import gov.aps.jca.event.ConnectionEvent;
+import gov.aps.jca.event.ConnectionListener;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -18,6 +20,7 @@ import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
 
 public class EpicsBaseImplTest {
     private static final String CHANNEL_NAME = "tst:tst";
@@ -33,6 +36,18 @@ public class EpicsBaseImplTest {
         epicsBase.bindChannel(CHANNEL_NAME);
 
         assertNotNull(epicsBase.getChannel(CHANNEL_NAME));
+    }
+
+    @Test
+    public void testChannelBindingAsync() throws CAException {
+        when(channel.getConnectionState()).thenReturn(Channel.ConnectionState.CONNECTED);
+        when(context.createChannel(eq(CHANNEL_NAME), (ConnectionListener) any())).thenReturn(channel);
+
+        EpicsBaseImpl epicsBase = new EpicsBaseImpl(new EpicsService(context));
+        epicsBase.bindChannelAsync(CHANNEL_NAME);
+
+        assertNotNull(epicsBase.getChannel(CHANNEL_NAME));
+        assertTrue(epicsBase.isChannelConnected(CHANNEL_NAME));
     }
 
     @Test
