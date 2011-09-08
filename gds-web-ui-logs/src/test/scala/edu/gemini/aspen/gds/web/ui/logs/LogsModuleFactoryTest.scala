@@ -13,6 +13,7 @@ class LogsModuleFactoryTest extends Mockito {
   def testBuildPanel = {
     // mock log service
     val logsSource = mock[LogSource]
+    logsSource.logEvents returns List()
 
     // test building the module
     val module = new LogsModuleFactory(logsSource).buildWebModule
