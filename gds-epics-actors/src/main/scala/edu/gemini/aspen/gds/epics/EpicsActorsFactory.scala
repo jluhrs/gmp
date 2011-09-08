@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.epics
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.epics.{EpicsException, EpicsReader}
-import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
+import edu.gemini.aspen.gds.api.{GDSConfiguration, AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
 
 @Component
 @Instantiate
@@ -14,20 +14,25 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
     actorsConfiguration filter {
       _.event.name == obsEvent.name
     } filter {
-      c => {
-        try {
-          epicsReader.bindChannel(c.channel.name)
-          true //if binding doesn't throw, we keep it
-        } catch {
-          case ex: EpicsException => {
-            LOG.severe(ex.getMessage)
-            false //if binding throws, we log it and discard it
-          }
-        }
-      }
+      c => epicsReader.isChannelConnected(c.channel.name)
     } map {
       c => {
         new EpicsValuesActor(epicsReader, c)
+      }
+    }
+  }
+
+  override def configure(configuration: List[GDSConfiguration]) = {
+    super.configure(configuration)
+    actorsConfiguration foreach {
+      c => {
+        try {
+          epicsReader.bindChannelAsync(c.channel.name)
+        } catch {
+          case ex: EpicsException => {
+            LOG.severe(ex.getMessage)
+          }
+        }
       }
     }
   }
