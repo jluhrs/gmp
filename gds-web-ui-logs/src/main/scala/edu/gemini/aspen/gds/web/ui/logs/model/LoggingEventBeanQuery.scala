@@ -60,6 +60,6 @@ object LoggingEventBeanQuery {
 
   def formatLoggerName(loggerName: String) = if (loggerName.contains(".")) loggerName.substring(loggerName.lastIndexOf(".") + 1, loggerName.size) else loggerName
 
-  def formatMessage(message: String) = message//if (message.size > MAX_MESSAGE_LENGTH) message.substring(0, MAX_MESSAGE_LENGTH) + "..." else message
+  def formatMessage(message: String) = if (message.size > MAX_MESSAGE_LENGTH) message.substring(0, MAX_MESSAGE_LENGTH) + "..." else message
 
 }

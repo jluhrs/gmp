@@ -44,6 +44,8 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     logTable.setSizeFull()
     logTable.addStyleName("logs")
     logTable.setColumnReorderingAllowed(true)
+    logTable.setSortContainerPropertyId("timeStamp")
+    logTable.setSortAscending(false)
 
     logTable.setCellStyleGenerator(styleGenerator)
 

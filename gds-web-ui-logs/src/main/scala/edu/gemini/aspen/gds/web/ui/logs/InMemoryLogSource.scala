@@ -39,5 +39,5 @@ class InMemoryLogSource extends PaxAppender with LogSource {
     logEventsMap += i -> new LogEventWrapper(event)
   }
 
-  override def logEvents = logEventsMap.values.toList.reverse
+  override def logEvents = logEventsMap.values
 }
