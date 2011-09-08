@@ -28,15 +28,15 @@
         <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
 
         <felix.cm.loglevel>4</felix.cm.loglevel>
-        <felix.log.level>1</felix.log.level>
+        <felix.log.level>0</felix.log.level>
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
         <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
-        <ipojo.log.level>debug</ipojo.log.level>
+        <ipojo.log.level>info</ipojo.log.level>
 
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.8.1</scala-lang.version>
-        <gmp.version>${project.version}</gmp.version>
+        <gmp.version>0.12.0</gmp.version>
         <pax-runner.version>1.7.4</pax-runner.version>
     </properties>
 
