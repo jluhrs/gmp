@@ -26,7 +26,7 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
   }
 
   def check(label: DataLabel, item: CollectedValue[_]) {
-    val ret = db !? (1000, Retrieve(label))
+    val ret = db !?(1000, Retrieve(label))
     assertFalse(ret.isEmpty) //we didn't get a timeout
     ret foreach {
       _ match {
@@ -34,6 +34,14 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
         case a: Any => fail("Not valid value" + a)
       }
     }
+  }
+
+  @Test
+  def testMethods() {
+    db.store(dataLabel, colVal)
+    val ret = db.retrieve(dataLabel)
+    assertEquals(1, ret.size)
+    assertEquals(colVal, ret(0))
   }
 
   @Test
@@ -53,14 +61,14 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
 
   @Test
   def retrieveEmpty() {
-    val ret = db !? (1000, Retrieve(dataLabel))
+    val ret = db !?(1000, Retrieve(dataLabel))
     checkEmpty(ret)
   }
 
   @Test
   def retrieveWrongDataLabel() {
     db ! Store(dataLabel, colVal)
-    val ret = db !? (1000, Retrieve("wrong"))
+    val ret = db !?(1000, Retrieve("wrong"))
     checkEmpty(ret)
   }
 
@@ -85,7 +93,7 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
 
   @Test
   def testClean() {
-    db !? (1000, Retrieve(dataLabel))
+    db !?(1000, Retrieve(dataLabel))
     db ! Clean(dataLabel)
     retrieveEmpty()
   }
@@ -101,7 +109,7 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
     // Sleep a bit
     TimeUnit.MILLISECONDS.sleep(10)
 
-    val ret = db !? (1000, Retrieve(dataLabel))
+    val ret = db !?(1000, Retrieve(dataLabel))
     assertFalse(ret.isEmpty) //we didn't get a timeout
     ret match {
       case Some(List()) => // we are ok

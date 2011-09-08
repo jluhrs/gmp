@@ -5,8 +5,20 @@ import scala.actors.Actor
 import edu.gemini.aspen.gds.api.CollectedValue
 
 /**
-  * Interface for the database */
-trait KeywordsDatabase extends Actor
+ * Interface for the database */
+trait KeywordsDatabase extends Actor {
+  //store a CollectedValue associated with a data label
+  def store(dataLabel: DataLabel, value: CollectedValue[_]): Unit
+
+  //store a List of CollectedValue associated with a data label
+  def storeList(dataLabel: DataLabel, value: List[CollectedValue[_]]): Unit
+
+  //retrieve all CollectedValues associated with a data label
+  def retrieve(dataLabel: DataLabel): List[CollectedValue[_]]
+
+  //remove all the CollectedValues associated with a data label
+  def clean(dataLabel: DataLabel): Unit
+}
 
 //case classes define the messages accepted by the DataBase
 sealed trait KeywordsDatabaseAction

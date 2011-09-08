@@ -9,6 +9,7 @@ import com.google.common.collect.MapMaker
 import java.util.concurrent.TimeUnit._
 import collection.mutable.ConcurrentMap
 import scala.collection.JavaConversions._
+import scala.actors.Actor._
 
 /**
  * Component to store CollectedValue as HeaderItem, associated to DataLabel */
@@ -25,13 +26,30 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   def act() {
     loop {
       react {
-        case Store(dataLabel: DataLabel, value: CollectedValue[_]) => store(dataLabel, List[CollectedValue[_]](value))
-        case StoreList(dataLabel: DataLabel, value: List[CollectedValue[_]]) => store(dataLabel, value)
-        case Retrieve(dataLabel) => reply(retrieve(dataLabel))
-        case Clean(dataLabel) => clean(dataLabel)
+        case Store(dataLabel: DataLabel, value: CollectedValue[_]) => _store(dataLabel, List[CollectedValue[_]](value))
+        case StoreList(dataLabel: DataLabel, value: List[CollectedValue[_]]) => _store(dataLabel, value)
+        case Retrieve(dataLabel) => reply(_retrieve(dataLabel))
+        case Clean(dataLabel) => _clean(dataLabel)
         case x => error("Argument not known " + x)
       }
     }
+  }
+
+  def store(dataLabel: DataLabel, value: CollectedValue[_]) {
+    this ! Store(dataLabel, value)
+  }
+
+  def storeList(dataLabel: DataLabel, value: List[CollectedValue[_]]) {
+    this ! StoreList(dataLabel, value)
+  }
+
+  def retrieve(dataLabel: DataLabel): List[CollectedValue[_]] = {
+    val ret = this !?(1000, Retrieve(dataLabel))
+    ret.asInstanceOf[Option[List[CollectedValue[_]]]] getOrElse Nil
+  }
+
+  def clean(dataLabel: DataLabel) {
+    this ! Clean(dataLabel)
   }
 
   private val map: ConcurrentMap[DataLabel, List[CollectedValue[_]]] = new MapMaker().
@@ -44,7 +62,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    * @param dataLabel to which the keywords belong
    * @param keyword keyword to store
    * @param value value to associate to the keyword*/
-  private def store(dataLabel: DataLabel, headerItem: List[CollectedValue[_]]) {
+  private def _store(dataLabel: DataLabel, headerItem: List[CollectedValue[_]]) {
     map.put(dataLabel, headerItem ++ map.getOrElse(dataLabel, List[CollectedValue[_]]()))
   }
 
@@ -55,13 +73,13 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    *
    * @return a List[CollectedValue[_]] containing the collected values of the data set
    * or an empty list if none found */
-  private def retrieve(dataLabel: DataLabel): List[CollectedValue[_]] = map.getOrElse(dataLabel, Nil)
+  private def _retrieve(dataLabel: DataLabel): List[CollectedValue[_]] = map.getOrElse(dataLabel, Nil)
 
   /**
    * Remove all keywords associated with a given DataLabel
    *
    * @param dataLabel for which to remove data */
-  private def clean(dataLabel: DataLabel) {
+  private def _clean(dataLabel: DataLabel) {
     map.remove(dataLabel)
   }
 
