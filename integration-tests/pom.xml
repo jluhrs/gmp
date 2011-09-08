@@ -257,6 +257,19 @@
             <artifactId>pax-runner</artifactId>
             <version>1.7.4</version>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.cas</groupId>
+            <artifactId>cas</artifactId>
+        </dependency>
     </dependencies>
-
+    <repositories>
+        <repository>
+            <url>http://epics.sourceforge.net/maven2/</url>
+            <id>CAJ</id>
+        </repository>
+    </repositories>
 </project>
