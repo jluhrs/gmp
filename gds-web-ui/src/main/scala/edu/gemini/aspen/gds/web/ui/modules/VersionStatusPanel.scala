@@ -7,9 +7,9 @@ import com.vaadin.data.util.ObjectProperty
 @org.apache.felix.ipojo.annotations.Component
 @Instantiate
 @Provides(specifications = Array(classOf[StatusPanelModule]))
-class CurrentStatusPanel extends AbstractStatusPanelModule {
-  val order = 0
-  val label = "Status:"
-  val item = "Running"
-  val property = new ObjectProperty[String]("Running")
+class VersionStatusPanel extends AbstractStatusPanelModule {
+  val order = 1
+  val label = "Version:"
+  val item = System.getProperty("gmp.version")
+  val property = new ObjectProperty[String](item)
 }

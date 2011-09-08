@@ -7,7 +7,7 @@ import edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory
  * Factory for the AboutModule
  */
 @Component
-@Instantiate
+//@Instantiate
 @Provides(specifications = Array(classOf[GDSWebModuleFactory]))
 class AboutModuleFactory extends GDSWebModuleFactory {
   override def buildWebModule = new AboutModule
