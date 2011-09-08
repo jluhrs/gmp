@@ -31,10 +31,6 @@ class StatusPanelImpl extends StatusPanel {
 
     layout.setHeight("30px")
     layout.setWidth("100%")
-    val progress = new ProgressIndicator()
-    progress.addStyleName("hidden")
-    progress.setPollingInterval(2000)
-    layout.addComponent(progress)
 
     new Panel(layout)
   }
