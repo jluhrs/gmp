@@ -13,7 +13,7 @@ class HelpModule extends GDSWebModule {
   val order = 4
 
   override def buildTabContent(app: Application) = {
-    val e = new Embedded("GDS Help", new ExternalResource("docs"));
+    val e = new Embedded("GDS Help", new ExternalResource("docs/gds_user_manual.html"));
     e.setType(Embedded.TYPE_BROWSER);
     e.setSizeFull()
 
