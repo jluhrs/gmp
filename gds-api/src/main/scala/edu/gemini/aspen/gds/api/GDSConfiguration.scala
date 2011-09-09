@@ -35,9 +35,7 @@ case class ArrayIndex(value: Int) {
   require(value >= 0)
 }
 
-case class FitsComment(value: String) {
-  require(value.nonEmpty)
-}
+case class FitsComment(value: String)
 
 /**
  * Encapsulates a configuration item of GDS

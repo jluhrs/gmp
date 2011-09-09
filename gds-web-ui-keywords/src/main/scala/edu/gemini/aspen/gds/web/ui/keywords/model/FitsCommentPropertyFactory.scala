@@ -16,7 +16,7 @@ class FitsCommentPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
     val textField = new TextField("", config.fitsComment.value.toString)
     textField.addValidator(FitsCommentPropertyFactory.validator(textField))
     textField.setCaption("FITS Comment")
-    textField.setRequired(true)
+    textField.setRequired(false)
     textField.setImmediate(true)
     textField.setInvalidAllowed(false)
     textField.setMaxLength(68)
