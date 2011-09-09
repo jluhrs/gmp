@@ -34,7 +34,7 @@ object FitsCommentPropertyFactory {
   val MAX_LENGTH = 68
 
   def validator(textField: TextField) = new AbstractStringValidator("Value {0} must be less than 68 characters and cannot be empty, enter NONE if not used") {
-    def isValidString(value: String) = value.nonEmpty
+    def isValidString(value: String) = value.size < MAX_LENGTH
 
     override def validate(value: AnyRef) {
       if (!isValid(value)) {
