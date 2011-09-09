@@ -36,14 +36,13 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     val prop = Option(user) map {
       _ => deleteProperty
     } toList
-    val cols = getDataSource(user).propertyIds
+    val cols = dataSource.propertyIds
     val p = cols ++ prop
     (p toArray).asInstanceOf[Array[AnyRef]]
   }
 
-  private def getDataSource(user: AnyRef): GDSKeywordsDataSource = {
+  protected[keywords] def updateDataSource(user: AnyRef): GDSKeywordsDataSource = {
     Option(user) match {
-      case Some(u) if u == lastUser => dataSource
       case Some(u) => dataSource = new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
       case None => dataSource = new ReadOnlyGDSKeywordsDataSource(configService.getFullConfiguration)
     }
@@ -52,14 +51,14 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
 
   private def updateTableHeaders(user: AnyRef) = {
-    val ds = getDataSource(user)
-    ds.propertyIds foreach {
-      p => table.setColumnHeader(p, ds.propertyHeader(p))
+    dataSource.propertyIds foreach {
+      p => table.setColumnHeader(p, dataSource.propertyHeader(p))
     }
   }
 
   override def userChanged(user: AnyRef) = {
-    table.setContainerDataSource(getDataSource(user))
+    updateDataSource(user)
+    table.setContainerDataSource(dataSource)
     updateTableHeaders(user)
     // Update user dependant parts
     updateSaveButton(user)
@@ -78,7 +77,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   }
 
   override def buildTabContent(app: Application) = {
-    table.setContainerDataSource(getDataSource(app.getUser))
+    updateDataSource(app.getUser)
+    table.setContainerDataSource(dataSource)
     table.setNullSelectionAllowed(false)
     table.setImmediate(true)
     table.addStyleName("keywords-table")
@@ -128,8 +128,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   }
 
   override def refresh(app: Application) {
-    //userChanged(app.getUser)
-    table.setContainerDataSource(getDataSource(app.getUser))
+    updateDataSource(app.getUser)
+    table.setContainerDataSource(dataSource)
     table.requestRepaintAll()
     tabLayout.replaceComponent(table, table)
   }
@@ -166,7 +166,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
   private def setupNewButton(table: Table) {
     newRowButton.addListener((e: Button#ClickEvent) => {
-      table.getApplication.getMainWindow.addWindow(new NewRowWindow(getDataSource(table.getApplication.getUser)))
+      table.getApplication.getMainWindow.addWindow(new NewRowWindow(dataSource))
     })
     newRowButton
   }
@@ -175,6 +175,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     saveButton.addListener((e: Button#ClickEvent) => {
       configService.updateConfiguration(dataSource.toGDSConfiguration)
       app.getMainWindow.showNotification("Saving...", Notification.TYPE_HUMANIZED_MESSAGE)
+      //todo: check that file hasn't changed between the time it was read and now.
     })
     saveButton
   }

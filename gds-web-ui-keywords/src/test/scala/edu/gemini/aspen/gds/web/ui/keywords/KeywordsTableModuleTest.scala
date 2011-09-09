@@ -29,6 +29,8 @@ class KeywordsTableModuleTest extends Mockito {
     configService.getFullConfiguration returns List[ConfigItem[_]]()
     val module = new KeywordsTableModule(configService)
 
+    module.updateDataSource(null)
+
     val tableColumnsForAnonymous = module.visibleColumns(null)
     assertArrayEquals(
       Array[AnyRef](
