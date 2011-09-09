@@ -53,7 +53,7 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
 
     val reloadButton = new Button("Reload")
     reloadButton.addListener((e: Button#ClickEvent) => {
-      refresh()
+      refresh(app)
     })
     buttonLayout.addComponent(reloadButton)
 
@@ -61,7 +61,7 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
     layout
   }
 
-  override def refresh() {
+  override def refresh(app: Application) {
     for (property <- _properties) {
       property.objectProperty.setValue(getProperty(property.prop.name()))
     }

@@ -30,7 +30,7 @@ class ConfigurationModuleTest {
 
     val app = mock(classOf[Application])
     assertNotNull(module.buildTabContent(app))
-    module.refresh()
+    module.refresh(app)
 
     assertEquals(propertyHolder.getProperty(module._properties.head.prop.name()), module._properties.head.textField.getValue.toString)
 

@@ -40,7 +40,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
           case (_, (module: GDSWebModule, tab: TabSheet.Tab)) => tab == selectedTab
         }
         selectedEntry.headOption.foreach {
-          tab: Tuple2[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)] => tab._2._1.refresh()
+          tab: Tuple2[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)] => tab._2._1.refresh(GDSCoreVaadinApp.this)
         }
 
       }
@@ -75,7 +75,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
     val tabContent = gdsModule.buildTabContent(this)
     tabContent.setDebugId(gdsModule.title)
     val tab = tabsSheet.addTab(tabContent, gdsModule.title, null)
-    gdsWebModules += moduleFactory -> (gdsModule, tab)
+    gdsWebModules += moduleFactory ->(gdsModule, tab)
     putTabsInOrder
   }
 

@@ -144,7 +144,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   }
 
 
-  override def refresh() {
+  override def refresh(app: Application) {
     statusProp.setValue(propertySources.getStatus)
     processingProp.setValue(propertySources.getProcessing)
     lastDataLabelProp.setValue(propertySources.getLastDataLabel)

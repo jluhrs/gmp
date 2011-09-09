@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.web.ui.keywords
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.gds.web.ui.api.Preamble._
-import model.{WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource}
+import model.{GDSKeywordsDataSource, WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource}
 import scala.collection.JavaConversions._
 import com.vaadin.ui.Table.ColumnGenerator
 import com.vaadin.terminal.ThemeResource
@@ -19,7 +19,8 @@ import com.vaadin.ui.Window.Notification
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
   val order = 2
-  lazy val dataSource = new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
+  var dataSource: GDSKeywordsDataSource = _
+  var lastUser: AnyRef = _
 
   val tabLayout = new VerticalLayout
   val table = new Table("Keywords")
@@ -40,11 +41,15 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     (p toArray).asInstanceOf[Array[AnyRef]]
   }
 
-  private def getDataSource(user: AnyRef) = Option(user) map {
-    _ => dataSource
-  } getOrElse {
-    new ReadOnlyGDSKeywordsDataSource(configService.getFullConfiguration)
+  private def getDataSource(user: AnyRef): GDSKeywordsDataSource = {
+    Option(user) match {
+      case Some(u) if u == lastUser => dataSource
+      case Some(u) => dataSource = new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
+      case None => dataSource = new ReadOnlyGDSKeywordsDataSource(configService.getFullConfiguration)
+    }
+    dataSource
   }
+
 
   private def updateTableHeaders(user: AnyRef) = {
     val ds = getDataSource(user)
@@ -120,6 +125,13 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     layout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT)
 
     layout
+  }
+
+  override def refresh(app: Application) {
+    //userChanged(app.getUser)
+    table.setContainerDataSource(getDataSource(app.getUser))
+    table.requestRepaintAll()
+    tabLayout.replaceComponent(table, table)
   }
 
   def setupDeleteColumn(table: Table) {

@@ -33,5 +33,5 @@ trait GDSWebModule {
   /**
    * Called when the module content needs to be refreshed
    */
-  def refresh(): Unit = {}
+  def refresh(app: Application): Unit = {}
 }
