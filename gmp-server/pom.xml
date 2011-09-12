@@ -178,7 +178,7 @@
         <dependency>
             <groupId>edu.gemini.external.osgi.jca-lib</groupId>
             <artifactId>jca-lib</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </dependency>
         <!-- Epics Service -->
         <dependency>
