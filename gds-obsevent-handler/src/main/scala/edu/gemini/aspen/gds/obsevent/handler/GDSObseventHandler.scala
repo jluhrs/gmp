@@ -222,9 +222,22 @@ class ReplyHandler(
       (try {
         Some(new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), dataLabel, headers))
       } catch {
-        case ex => None
+        case ex => {
+          LOG.log(Level.WARNING, ex.getMessage, ex)
+          obsState.registerError(dataLabel, "Problem writing FITS file")
+          None
+        }
       }) map {
-        updater: FitsUpdater => updater.updateFitsHeaders()
+        updater: FitsUpdater => {
+          try {
+            updater.updateFitsHeaders()
+          } catch {
+            case ex => {
+              obsState.registerError(dataLabel, "Problem writing FITS file")
+              LOG.log(Level.WARNING, ex.getMessage, ex)
+            }
+          }
+        }
       }
       val end = new DateTime
       LOG.info("Writing updated FITS file at " + new File(dataLabel.toString) + " took " + (start to end).toDuration)

@@ -34,12 +34,21 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).missingKeywords ++= keywords
+    if (!keywords.isEmpty) {
+      obsInfoMap.getOrElseUpdate(label, new ObservationInfo).inError = true
+    }
+  }
+
+  //todo: use cause for something
+  override def registerError(label: DataLabel, cause: String) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).inError = true
   }
 
   override def registerCollectionError(label: DataLabel, errors: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).errorKeywords ++= errors
-    obsInfoMap.getOrElseUpdate(label, new ObservationInfo).inError = true
+    if (!errors.isEmpty) {
+      obsInfoMap.getOrElseUpdate(label, new ObservationInfo).inError = true
+    }
   }
 
   override def registerTimes(label: DataLabel, times: Traversable[(AnyRef, Option[Duration])]) {
@@ -60,11 +69,11 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   //-----------------------------------------------------------------------
 
-  def isInError(label: DataLabel): Boolean = {
+  override def isInError(label: DataLabel): Boolean = {
     obsInfoMap.getOrElse(label, new ObservationInfo).inError
   }
 
-  def getLastDataLabel(n: Int): Traversable[DataLabel] = {
+  override def getLastDataLabel(n: Int): Traversable[DataLabel] = {
     lastDataLabels.take(n)
   }
 
