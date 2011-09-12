@@ -265,11 +265,10 @@
             <groupId>edu.gemini.cas</groupId>
             <artifactId>cas</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.cas</groupId>
+            <artifactId>casdb</artifactId>
+            <version>0.1.0</version>
+        </dependency>
     </dependencies>
-    <repositories>
-        <repository>
-            <url>http://epics.sourceforge.net/maven2/</url>
-            <id>CAJ</id>
-        </repository>
-    </repositories>
 </project>
