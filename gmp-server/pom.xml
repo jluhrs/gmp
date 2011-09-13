@@ -214,7 +214,7 @@
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-services</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
         <!-- GMP Commands Sequence -->
         <dependency>

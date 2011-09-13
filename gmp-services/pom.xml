@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-services</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
 
     <name>GMP GIAPI Services</name>
     <description>Services provided by the GMP</description>
