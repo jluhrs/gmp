@@ -33,6 +33,11 @@ public class SimplePropertyHolder implements PropertyHolder, ManagedService {
         _properties.put(GmpProperties.DHS_SCIENCE_DATA_PATH.name(), DHS_SCIENCE_DATA_PATH);
     }
 
+    @Property(name = "DHS_PERMANENT_SCIENCE_DATA_PATH", value = "NO_VALID", mandatory = true)
+    public void setDHS_PERMANENT_SCIENCE_DATA_PATH(String DHS_PERMANENT_SCIENCE_DATA_PATH) {
+        _properties.put(GmpProperties.DHS_PERMANENT_SCIENCE_DATA_PATH.name(), DHS_PERMANENT_SCIENCE_DATA_PATH);
+    }
+
     @Property(name = "DHS_INTERMEDIATE_DATA_PATH", value = "NO_VALID", mandatory = true)
     public void setDHS_INTERMEDIATE_DATA_PATH(String DHS_INTERMEDIATE_DATA_PATH) {
         _properties.put(GmpProperties.DHS_INTERMEDIATE_DATA_PATH.name(), DHS_INTERMEDIATE_DATA_PATH);

@@ -4,9 +4,10 @@
     GIAPI. Each property has a string value associated.
 -->
 <properties>
-   <property key="GMP_HOST_NAME">localhost</property>
-   <property key="DHS_ANCILLARY_DATA_PATH">/home/anunez/tmp</property>
-   <property key="DHS_SCIENCE_DATA_PATH">/home/anunez/tmp</property>
-   <property key="DHS_INTERMEDIATE_DATA_PATH">/home/anunez/tmp</property>
-   <property key="DEFAULT"> </property>
+    <property key="GMP_HOST_NAME">localhost</property>
+    <property key="DHS_ANCILLARY_DATA_PATH">/home/anunez/tmp</property>
+    <property key="DHS_SCIENCE_DATA_PATH">/home/anunez/tmp</property>
+    <property key="DHS_PERMANENT_SCIENCE_DATA_PATH">/home/anunez/tmp</property>
+    <property key="DHS_INTERMEDIATE_DATA_PATH">/home/anunez/tmp</property>
+    <property key="DEFAULT"></property>
 </properties>

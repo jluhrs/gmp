@@ -69,6 +69,7 @@ public class SimplePropertyHolderIT extends FelixContainerConfigurationBase {
         assertEquals("localhost", ((PropertyHolder) context.getService(context.getServiceReference(PropertyHolder.class.getName()))).getProperty("GMP_HOST_NAME"));
         assertEquals("/tmp", ((PropertyHolder) context.getService(context.getServiceReference(PropertyHolder.class.getName()))).getProperty("DHS_ANCILLARY_DATA_PATH"));
         assertEquals("/tmp", ((PropertyHolder) context.getService(context.getServiceReference(PropertyHolder.class.getName()))).getProperty("DHS_SCIENCE_DATA_PATH"));
+        assertEquals("/tmp/perm", ((PropertyHolder) context.getService(context.getServiceReference(PropertyHolder.class.getName()))).getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH"));
         assertEquals("/tmp", ((PropertyHolder) context.getService(context.getServiceReference(PropertyHolder.class.getName()))).getProperty("DHS_INTERMEDIATE_DATA_PATH"));
         assertEquals("", ((PropertyHolder) context.getService(context.getServiceReference(PropertyHolder.class.getName()))).getProperty("DEFAULT"));
     }
@@ -90,6 +91,9 @@ public class SimplePropertyHolderIT extends FelixContainerConfigurationBase {
 
         Thread.sleep(1000);
         assertEquals("bla", ((PropertyHolder) context.getService(context.getServiceReference(PropertyHolder.class.getName()))).getProperty("GMP_HOST_NAME"));
+
+        //put the original back, just in case ;)
+        props.put("GMP_HOST_NAME", "localhost");
 
     }
 }

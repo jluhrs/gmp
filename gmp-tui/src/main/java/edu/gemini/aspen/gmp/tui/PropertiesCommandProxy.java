@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.tui;
 
-import edu.gemini.aspen.gmp.services.GMPProperties;
 import edu.gemini.aspen.gmp.services.PropertyHolder;
+import edu.gemini.aspen.gmp.services.properties.GmpProperties;
 import org.apache.felix.ipojo.annotations.*;
 import org.apache.felix.service.command.Descriptor;
 
@@ -24,8 +24,8 @@ public class PropertiesCommandProxy {
 
     @Descriptor("Shows the properties exposed by gmp-server")
     public void properties() {
-        for (GMPProperties val: GMPProperties.values()) {
-            System.out.println(val.name() + " = "  +propertyHolder.getProperty(val.name()));
+        for (GmpProperties val : GmpProperties.values()) {
+            System.out.println(val.name() + " = " + propertyHolder.getProperty(val.name()));
         }
     }
 
