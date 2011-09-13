@@ -5,7 +5,12 @@ import java.io.File
 import edu.gemini.fits.{Hedit, Header}
 import collection.JavaConversions._
 import edu.gemini.aspen.gds.api.Predef._
-import java.util.logging.Logger
+import actors.Reactor
+import java.util.logging.{Level, Logger}
+
+case class Update(namingFunction: DataLabel => String = {
+  label => FitsUpdater.toFitsFileName(label)
+})
 
 /**
  * Class that can take an existing file and add the headers passed in the constructor
@@ -13,7 +18,7 @@ import java.util.logging.Logger
  * The FitsUpdater must preserve all the existing data and only add or update the headers
  * passed at construction
  */
-class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, headers: List[Header]) {
+class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, headers: List[Header]) extends Reactor[Update] {
   protected val LOG = Logger.getLogger(this.getClass.getName)
   require(fromDirectory.exists, {
     LOG.severe("Directory " + fromDirectory + " doesn't exist")
@@ -35,6 +40,23 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
     LOG.severe("Datalabel is null")
     "Datalabel is null"
   })
+  start()
+
+  def act() {
+    loop {
+      react {
+        case Update(namingFunction) => {
+          try {
+            updateFitsHeaders(namingFunction)
+          } catch {
+            case ex => {
+              LOG.log(Level.WARNING, ex.getMessage, ex)
+            }
+          }
+        }
+      }
+    }
+  }
 
   /**
    * Updates the headers in the destination file, adding to the current set of
@@ -43,9 +65,9 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
    * @param namingFunction, it is a an optional method to name the new file. It is a relative name, not absolute. For example: {label => "N-" + label.getName + ".fits"}
    */
   def updateFitsHeaders(namingFunction: DataLabel => String = {
-    label => toFitsFileName(label)
+    label => FitsUpdater.toFitsFileName(label)
   }) {
-    val originalFile = new File(fromDirectory, toFitsFileName(dataLabel))
+    val originalFile = new File(fromDirectory, FitsUpdater.toFitsFileName(dataLabel))
     val destinationFile = new File(toDirectory, namingFunction(dataLabel))
     copy(originalFile, destinationFile)
 
@@ -57,6 +79,7 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
     updatedHeaders map {
       h => hEdit.updateHeader(getUpdatedKeywords(h), h.getIndex)
     }
+
   }
 
   private def getUpdatedKeywords(header: Header) = {
@@ -66,6 +89,10 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
     }
   }
 
+
+}
+
+object FitsUpdater {
   def toFitsFileName(dataLabel: DataLabel) = dataLabel.toString + ".fits"
 
 }
