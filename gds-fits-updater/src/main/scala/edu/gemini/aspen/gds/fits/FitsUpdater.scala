@@ -13,15 +13,23 @@ import java.util.logging.Logger
  * The FitsUpdater must preserve all the existing data and only add or update the headers
  * passed at construction
  */
-class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
+class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, headers: List[Header]) {
   protected val LOG = Logger.getLogger(this.getClass.getName)
-  require(path.exists, {
-    LOG.severe("Directory " + path + " doesn't exist")
-    "Directory " + path + " doesn't exist"
+  require(fromDirectory.exists, {
+    LOG.severe("Directory " + fromDirectory + " doesn't exist")
+    "Directory " + fromDirectory + " doesn't exist"
   })
-  require(path.isDirectory, {
-    LOG.severe(path + " is not a directory")
-    path + " is not a directory"
+  require(fromDirectory.isDirectory, {
+    LOG.severe(fromDirectory + " is not a directory")
+    fromDirectory + " is not a directory"
+  })
+  require(toDirectory.exists, {
+    LOG.severe("Directory " + toDirectory + " doesn't exist")
+    "Directory " + toDirectory + " doesn't exist"
+  })
+  require(toDirectory.isDirectory, {
+    LOG.severe(toDirectory + " is not a directory")
+    toDirectory + " is not a directory"
   })
   require(dataLabel != null, {
     LOG.severe("Datalabel is null")
@@ -32,10 +40,14 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
    * Updates the headers in the destination file, adding to the current set of
    * headers the ones passed in the constructor
    *
-   * @param namingFunction, it is a an optional method to rename the file to a new name
+   * @param namingFunction, it is a an optional method to name the new file. It is a relative name, not absolute. For example: {label => "N-" + label.getName + ".fits"}
    */
-  def updateFitsHeaders(namingFunction: DataLabel => File = newFitsFile) {
-    val destinationFile = copyOriginal
+  def updateFitsHeaders(namingFunction: DataLabel => String = {
+    label => toFitsFileName(label)
+  }) {
+    val originalFile = new File(fromDirectory, toFitsFileName(dataLabel))
+    val destinationFile = new File(toDirectory, namingFunction(dataLabel))
+    copy(originalFile, destinationFile)
 
     val hEdit = new Hedit(destinationFile)
     val updatedHeaders = headers sortBy {
@@ -54,14 +66,6 @@ class FitsUpdater(path: File, dataLabel: DataLabel, headers: List[Header]) {
     }
   }
 
-  private def copyOriginal = {
-    val originalFile = new File(path, toFitsFileName(dataLabel))
-    val destinationFile = newFitsFile(dataLabel)
-
-    copy(originalFile, destinationFile)
-  }
-
   def toFitsFileName(dataLabel: DataLabel) = dataLabel.toString + ".fits"
 
-  def newFitsFile(dataLabel: DataLabel) = new File(path, "N-" + toFitsFileName(dataLabel))
 }

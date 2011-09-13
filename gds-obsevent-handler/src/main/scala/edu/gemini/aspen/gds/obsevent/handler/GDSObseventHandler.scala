@@ -220,7 +220,7 @@ class ReplyHandler(
       eventLogger.start(dataLabel, "FITS update")
       val start = new DateTime
       (try {
-        Some(new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), dataLabel, headers))
+        Some(new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), new File(propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")), dataLabel, headers))
       } catch {
         case ex => {
           LOG.log(Level.WARNING, ex.getMessage, ex)
