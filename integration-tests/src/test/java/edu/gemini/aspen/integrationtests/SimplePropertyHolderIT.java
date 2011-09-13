@@ -94,6 +94,11 @@ public class SimplePropertyHolderIT extends FelixContainerConfigurationBase {
 
         //put the original back, just in case ;)
         props.put("GMP_HOST_NAME", "localhost");
+        //push the configuration dictionary to the SmsService
+        config.update(props);
+        //sleep to allow time to write file before exiting
+        Thread.sleep(1000);
+        assertEquals("localhost", ((PropertyHolder) context.getService(context.getServiceReference(PropertyHolder.class.getName()))).getProperty("GMP_HOST_NAME"));
 
     }
 }
