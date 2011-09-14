@@ -29,14 +29,15 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
  * Base class for the integration tests related to the GDS
  */
 public class GDSIntegrationBase extends FelixContainerConfigurationBase {
-    protected static final String FINAL_FITS_FILE = "N-S20110427-01.fits";
+    protected static final String FINAL_FITS_FILE = "S20110427-01.fits";
     protected static final String INITIAL_FITS_FILE = "S20110427-01.fits";
-    protected static final String FITS_DIR = "/tmp/";
+    protected static final String INITIAL_FITS_DIR = "/tmp/";
+    protected static final String FINAL_FITS_DIR = "/tmp/perm/";
 
     @Before
     public void removeFiles() {
-        removeTestFile(FITS_DIR + FINAL_FITS_FILE);
-        removeTestFile(FITS_DIR + INITIAL_FITS_FILE);
+        removeTestFile(FINAL_FITS_DIR + FINAL_FITS_FILE);
+        removeTestFile(INITIAL_FITS_DIR + INITIAL_FITS_FILE);
     }
 
     @Configuration
@@ -76,7 +77,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     }
 
     protected void copyInitialFile() throws IOException, URISyntaxException {
-        copyInitialFile(INITIAL_FITS_FILE, FITS_DIR + INITIAL_FITS_FILE);
+        copyInitialFile(INITIAL_FITS_FILE, INITIAL_FITS_DIR + INITIAL_FITS_FILE);
     }
 
     protected void copyInitialFile(String src, String dest) throws IOException, URISyntaxException {
@@ -117,7 +118,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     }
 
     protected Set<String> readFinalKeywords() throws IOException, FitsParseException, InterruptedException {
-        return readKeywords(FITS_DIR + FINAL_FITS_FILE);
+        return readKeywords(FINAL_FITS_DIR + FINAL_FITS_FILE);
     }
 
     protected Set<String> readKeywords(String fileName) throws IOException, FitsParseException, InterruptedException {
@@ -137,7 +138,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     }
 
     protected Header readFinalPrimary() throws IOException, FitsParseException, InterruptedException {
-        return readPrimary(FITS_DIR + FINAL_FITS_FILE);
+        return readPrimary(FINAL_FITS_DIR + FINAL_FITS_FILE);
 
     }
 
@@ -147,6 +148,6 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     }
 
     protected Set<String> readOriginalKeywords() throws IOException, FitsParseException, InterruptedException {
-        return readKeywords(FITS_DIR + INITIAL_FITS_FILE);
+        return readKeywords(INITIAL_FITS_DIR + INITIAL_FITS_FILE);
     }
 }

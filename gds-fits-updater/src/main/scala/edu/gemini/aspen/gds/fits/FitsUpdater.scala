@@ -28,6 +28,9 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
     LOG.severe(fromDirectory + " is not a directory")
     fromDirectory + " is not a directory"
   })
+  if (!toDirectory.exists) {
+    toDirectory.mkdirs()
+  }
   require(toDirectory.exists, {
     LOG.severe("Directory " + toDirectory + " doesn't exist")
     "Directory " + toDirectory + " doesn't exist"

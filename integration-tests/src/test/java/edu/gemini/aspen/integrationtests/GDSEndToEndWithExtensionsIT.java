@@ -34,7 +34,7 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
-    protected static final String FINAL_FITS_FILE = "/tmp/N-FITS_WITH_EXTENSIONS.fits";
+    protected static final String FINAL_FITS_FILE = "/tmp/perm/FITS_WITH_EXTENSIONS.fits";
     protected static final String INITIAL_FITS_FILE = "FITS_WITH_EXTENSIONS.fits";
 
     @Before

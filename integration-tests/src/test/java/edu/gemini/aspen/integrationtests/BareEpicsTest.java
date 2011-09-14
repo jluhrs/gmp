@@ -6,6 +6,7 @@ import com.cosylab.epics.caj.cas.util.MemoryProcessVariable;
 import gov.aps.jca.*;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.cas.ServerContext;
+import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBR_Int;
 import gov.aps.jca.event.ConnectionEvent;
 import gov.aps.jca.event.ConnectionListener;
@@ -64,7 +65,7 @@ public class BareEpicsTest {
     public void destroyAndReCreateVariable() throws CAException, InterruptedException, TimeoutException, BrokenBarrierException, java.util.concurrent.TimeoutException {
 
         //create process variable and register it
-        MemoryProcessVariable pv = new MemoryProcessVariable("test", null, DBR_Int.TYPE, new int[]{0});
+        MemoryProcessVariable pv = new MemoryProcessVariable("test", null, DBR_Int.TYPE, new int[]{2});
         server.registerProcessVaribale(pv);
 
         //Create a client context
@@ -90,7 +91,9 @@ public class BareEpicsTest {
         //check that channel is connected
         assertEquals(Channel.ConnectionState.CONNECTED, ch.getConnectionState());
         //check that value can be read
-        assertEquals(0, ((int[]) ch.get().getValue())[0]);
+        DBR dbr = ch.get();
+        clientContext.pendIO(0);
+        assertEquals(2, ((int[]) dbr.getValue())[0]);
 
         //unregister process variable and destroy it
         server.unregisterProcessVaribale("test");
@@ -110,7 +113,9 @@ public class BareEpicsTest {
         //check that channel is connected
         assertEquals(Channel.ConnectionState.CONNECTED, ch.getConnectionState());
         //check that value can be read, and it is the new value
-        assertEquals(1, ((int[]) ch.get().getValue())[0]);
+        dbr = ch.get();
+        clientContext.pendIO(0);
+        assertEquals(1, ((int[]) dbr.getValue())[0]);
 
     }
 
@@ -119,7 +124,7 @@ public class BareEpicsTest {
     public void withDestroyAndCreateServer() throws CAException, InterruptedException, TimeoutException, BrokenBarrierException, java.util.concurrent.TimeoutException {
 
         //create process variable and register it
-        MemoryProcessVariable pv = new MemoryProcessVariable("test", null, DBR_Int.TYPE, new int[]{0});
+        MemoryProcessVariable pv = new MemoryProcessVariable("test", null, DBR_Int.TYPE, new int[]{2});
         server.registerProcessVaribale(pv);
 
         //Create a client context
@@ -145,7 +150,9 @@ public class BareEpicsTest {
         //check that channel is connected
         assertEquals(Channel.ConnectionState.CONNECTED, ch.getConnectionState());
         //check that value can be read
-        assertEquals(0, ((int[]) ch.get().getValue())[0]);
+        DBR dbr = ch.get();
+        clientContext.pendIO(0);
+        assertEquals(2, ((int[]) dbr.getValue())[0]);
 
         //unregister process variable and destroy it
         server.unregisterProcessVaribale("test");
@@ -170,7 +177,9 @@ public class BareEpicsTest {
         //check that channel is connected
         assertEquals(Channel.ConnectionState.CONNECTED, ch.getConnectionState());
         //check that value can be read, and it is the new value
-        assertEquals(1, ((int[]) ch.get().getValue())[0]);
+        dbr = ch.get();
+        clientContext.pendIO(0);
+        assertEquals(1, ((int[]) dbr.getValue())[0]);
 
     }
 
