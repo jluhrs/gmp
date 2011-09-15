@@ -9,6 +9,7 @@ import scala.collection.JavaConversions._
 import com.google.common.collect.MapMaker
 import edu.gemini.aspen.gds.api.CollectionError
 import collection.mutable.{SynchronizedStack, SynchronizedSet, HashSet, Set, ConcurrentMap}
+import java.util.Date
 
 @Component
 @Instantiate
@@ -24,13 +25,12 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     var started = false
     var ended = false
     var inError = false
+    var timestamp = new Date()
   }
 
   val obsInfoMap: ConcurrentMap[DataLabel, ObservationInfo] = new MapMaker().
     expireAfterWrite(expirationMillis, MILLISECONDS)
     .makeMap[DataLabel, ObservationInfo]()
-
-  val lastDataLabels = new SynchronizedStack[DataLabel]()
 
   override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).missingKeywords ++= keywords
@@ -57,9 +57,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def endObservation(label: DataLabel) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).ended = true
-    lastDataLabels.push(label)
     obsStatePubl.publishEndObservation(label, getMissingKeywords(label), getKeywordsInError(label))
-
   }
 
   override def startObservation(label: DataLabel) {
@@ -74,7 +72,11 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
   }
 
   override def getLastDataLabel(n: Int): Traversable[DataLabel] = {
-    lastDataLabels.take(n)
+    obsInfoMap.toList.sortWith({
+      (a: (DataLabel, ObservationInfo), b: (DataLabel, ObservationInfo)) => (a._2.timestamp.compareTo(b._2.timestamp) >= 0)
+    }).take(n) map {
+      a: (DataLabel, ObservationInfo) => a._1
+    }
   }
 
   override def getTimes(label: DataLabel): Traversable[(AnyRef, Option[Duration])] = {
@@ -96,6 +98,6 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
   }
 
   override def getLastDataLabel: Option[DataLabel] = {
-    lastDataLabels.headOption
+    getLastDataLabel(1).headOption
   }
 }

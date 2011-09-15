@@ -36,7 +36,7 @@ class ObservationStateImplTest {
     assertEquals(Some(new DataLabel("label2")), obsState.getLastDataLabel)
 
     obsState.endObservation("label1")
-    assertEquals(Some(new DataLabel("label1")), obsState.getLastDataLabel)
+    assertEquals(Some(new DataLabel("label2")), obsState.getLastDataLabel)
   }
 
   @Test
@@ -45,14 +45,14 @@ class ObservationStateImplTest {
     obsState.startObservation("label1")
     obsState.startObservation("label2")
     obsState.endObservation("label2")
-    assertEquals(new DataLabel("label2") :: Nil, obsState.getLastDataLabel(2))
+    assertEquals(new DataLabel("label2") :: new DataLabel("label1") :: Nil, obsState.getLastDataLabel(2))
 
     obsState.endObservation("label1")
-    assertEquals(new DataLabel("label1") :: new DataLabel("label2") :: Nil, obsState.getLastDataLabel(2))
+    assertEquals(new DataLabel("label2") :: new DataLabel("label1") :: Nil, obsState.getLastDataLabel(2))
 
     obsState.startObservation("label3")
     obsState.endObservation("label3")
-    assertEquals(new DataLabel("label3") :: new DataLabel("label1") :: Nil, obsState.getLastDataLabel(2))
+    assertEquals(new DataLabel("label3") :: new DataLabel("label2") :: Nil, obsState.getLastDataLabel(2))
   }
 
   @Test
