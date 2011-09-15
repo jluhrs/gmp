@@ -223,8 +223,8 @@ class ReplyHandler(
         Some(new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), new File(propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")), dataLabel, headers))
       } catch {
         case ex => {
-          LOG.log(Level.WARNING, ex.getMessage, ex)
           obsState.registerError(dataLabel, "Problem writing FITS file")
+          LOG.log(Level.SEVERE, ex.getMessage, ex)
           None
         }
       }) map {
@@ -234,7 +234,7 @@ class ReplyHandler(
           } catch {
             case ex => {
               obsState.registerError(dataLabel, "Problem writing FITS file")
-              LOG.log(Level.WARNING, ex.getMessage, ex)
+              LOG.log(Level.SEVERE, ex.getMessage, ex)
             }
           }
         }
