@@ -24,7 +24,7 @@ class GDSConfigurationParser extends RegexParsers {
     ~ spaces ~ headerIndex
     ~ spaces ~ datatype
     ~ spaces ~ mandatory
-    ~ spaces ~ nullValue
+    ~ spaces ~ defaultValue
     ~ spaces ~ subsystem
     ~ spaces ~ channelName
     ~ spaces ~ arrayIndex
@@ -75,7 +75,7 @@ class GDSConfigurationParser extends RegexParsers {
   }
 
   //todo:change to defaultValue
-  def nullValue = """\w+""".r ^^ {
+  def defaultValue = """\w+""".r ^^ {
     x => DefaultValue(x)
   }
 
@@ -95,8 +95,8 @@ class GDSConfigurationParser extends RegexParsers {
     x => ArrayIndex(x.toInt)
   }
 
-  def comment = """#.*""".r ^^ {
-    x => Comment(x)
+  def comment = spaces ~> """#.*""".r ^^ {
+    x => Comment(x.trim)
   }
 
   def fitscomment = "\"" ~> internalComment <~ "\"" ^^ {
@@ -111,8 +111,6 @@ class GDSConfigurationParser extends RegexParsers {
   }
 
   def whitespace = """[ \t]*""".r
-
-  def emptyLine = whitespace ~ "\r\n" | whitespace ~ "\n"
 
   def CRLF = "\r\n" | "\n"
 

@@ -25,8 +25,10 @@ object GDSConfigurationFile {
   }
 
   def getFullConfiguration(configurationFile: String): List[ConfigItem[_]] = {
-    var results = new GDSConfigurationParser().parseFileRawResult(configurationFile).get
-    if (results.last.isEmpty) {
+    var results = new GDSConfigurationParser().parseFileRawResult(configurationFile).getOrElse(Nil)
+
+    //if last line is empty, remove it
+    if (!results.isEmpty && results.last.isEmpty) {
       results = results.reverse.tail.reverse
     }
 
