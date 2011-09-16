@@ -64,44 +64,36 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
                 } catch (CAException ex) {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
-
             }
         });
-
-        try {
-            //TODO: this is UGLY!! need a way to see that the server is up and running
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
     }
 
     /**
-      * Destroys the jca context and waits for the thread to return.
-      *
-      * @throws CAException if there are problems with Channel Access
-      * @throws java.lang.IllegalStateException
-      *                     if the context has already been destroyed.
-      */
-     @Invalidate
-     public void stop() throws CAException {
-         for (String name : channels.keySet()) {
-             Channel ch = channels.get(name);
-             if (ch instanceof AbstractChannel) {
-                 ((AbstractChannel) ch).destroy(server);
-             } else if (ch instanceof AbstractAlarmChannel) {
-                 ((AbstractAlarmChannel) ch).destroy(server);
-             } else {
-                 LOG.warning("Unknown channel type: " + ch.getClass().getName());
-             }
-         }
-         channels.clear();
-         executor.shutdown();
-         serverContext.destroy();
-         channels = null;
-         server = null;
-         serverContext = null;
-     }
+     * Destroys the jca context and waits for the thread to return.
+     *
+     * @throws CAException if there are problems with Channel Access
+     * @throws java.lang.IllegalStateException
+     *                     if the context has already been destroyed.
+     */
+    @Invalidate
+    public void stop() throws CAException {
+        for (String name : channels.keySet()) {
+            Channel ch = channels.get(name);
+            if (ch instanceof AbstractChannel) {
+                ((AbstractChannel) ch).destroy(server);
+            } else if (ch instanceof AbstractAlarmChannel) {
+                ((AbstractAlarmChannel) ch).destroy(server);
+            } else {
+                LOG.warning("Unknown channel type: " + ch.getClass().getName());
+            }
+        }
+        channels.clear();
+        executor.shutdown();
+        serverContext.destroy();
+        channels = null;
+        server = null;
+        serverContext = null;
+    }
 
     @Override
     public <T> Channel<T> createChannel(String name, T value) throws CAException {
@@ -110,7 +102,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
 
     @Override
     public <T> Channel<T> createChannel(String name, List<T> values) throws CAException {
-        if(values == null || values.isEmpty()){
+        if (values == null || values.isEmpty()) {
             throw new IllegalArgumentException("At least one value must be passed");
         }
         Channel ch = null;
@@ -122,10 +114,10 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
             ch = createDoubleChannel(name, values.size());
         } else if (values.get(0) instanceof String) {
             ch = createStringChannel(name, values.size());
-        } else if (values.get(0) instanceof Enum){
-            Class<? extends Enum> clazz = (Class<? extends Enum>)values.get(0).getClass();
+        } else if (values.get(0) instanceof Enum) {
+            Class<? extends Enum> clazz = (Class<? extends Enum>) values.get(0).getClass();
             ch = createEnumChannel(name, values.size(), clazz);
-        }else{
+        } else {
             throw new IllegalArgumentException("Unsupported item type " + values.get(0).getClass());
         }
         ch.setValue(values);
@@ -134,12 +126,12 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
 
     @Override
     public <T> AlarmChannel<T> createAlarmChannel(String name, T value) throws CAException {
-        return createAlarmChannel(name,ImmutableList.of(value));
+        return createAlarmChannel(name, ImmutableList.of(value));
     }
 
     @Override
     public <T> AlarmChannel<T> createAlarmChannel(String name, List<T> values) throws CAException {
-        if(values == null || values.isEmpty()){
+        if (values == null || values.isEmpty()) {
             throw new IllegalArgumentException("At least one value must be passed");
         }
         AlarmChannel ch = null;
@@ -151,10 +143,10 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
             ch = createDoubleAlarmChannel(name, values.size());
         } else if (values.get(0) instanceof String) {
             ch = createStringAlarmChannel(name, values.size());
-        } else if (values.get(0) instanceof Enum){
-            Class<? extends Enum> clazz = (Class<? extends Enum>)values.get(0).getClass();
+        } else if (values.get(0) instanceof Enum) {
+            Class<? extends Enum> clazz = (Class<? extends Enum>) values.get(0).getClass();
             ch = createEnumAlarmChannel(name, values.size(), clazz);
-        }else {
+        } else {
             throw new IllegalArgumentException("Unsupported item type " + values.get(0).getClass());
         }
         ch.setValue(values);
@@ -164,11 +156,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Integer
      *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
     private Channel<Integer> createIntegerChannel(String name, int length) {
@@ -189,11 +179,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Float
      *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
     private Channel<Float> createFloatChannel(String name, int length) {
@@ -214,11 +202,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Double
      *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
     private Channel<Double> createDoubleChannel(String name, int length) {
@@ -239,11 +225,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type String
      *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
     private Channel<String> createStringChannel(String name, int length) {
@@ -264,21 +248,19 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Enum
      *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
-     * @param clazz the enum class
+     * @param clazz  the enum class
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private <T extends Enum<T>> Channel<T> createEnumChannel(String name,int length, Class<T> clazz) {
+    private <T extends Enum<T>> Channel<T> createEnumChannel(String name, int length, Class<T> clazz) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
-            if (ch instanceof EnumChannel && ((EnumChannel) ch).getEnumClass().equals(clazz)){
+            if (ch instanceof EnumChannel && ((EnumChannel) ch).getEnumClass().equals(clazz)) {
                 return (EnumChannel<T>) ch;
             } else {
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type EnumChannel<"+clazz.getSimpleName()+">");
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type EnumChannel<" + clazz.getSimpleName() + ">");
             }
         }
         EnumChannel<T> ch = new EnumChannel<T>(name, length, clazz);
@@ -286,16 +268,14 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
         channels.put(name, ch);
         return ch;
     }
+
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Integer,
      * that is able to raise an alarm.
      *
-     *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
     private AlarmChannel<Integer> createIntegerAlarmChannel(String name, int length) {
@@ -317,12 +297,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Float,
      * that is able to raise an alarm.
      *
-     *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
     private AlarmChannel<Float> createFloatAlarmChannel(String name, int length) {
@@ -344,12 +321,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Double,
      * that is able to raise an alarm.
      *
-     *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
     private AlarmChannel<Double> createDoubleAlarmChannel(String name, int length) {
@@ -372,12 +346,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * Creates a new channel, with a simulated EPICS process variable(PV) of type String,
      * that is able to raise an alarm.
      *
-     *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
     private AlarmChannel<String> createStringAlarmChannel(String name, int length) {
@@ -395,25 +366,24 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
         channels.put(name, ch);
         return ch;
     }
+
     /**
      * Creates a new channel, with a simulated EPICS process variable(PV) of type Enum,
      * that is able to raise an alarm.
      *
-     *
-     * @param name name of the PV in EPICS
+     * @param name   name of the PV in EPICS
      * @param length length of the PV data
-     * @param clazz the enum class
+     * @param clazz  the enum class
      * @return the new channel
-     *
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private <T extends Enum<T>> AlarmChannel<T> createEnumAlarmChannel(String name,int length, Class<T> clazz) {
+    private <T extends Enum<T>> AlarmChannel<T> createEnumAlarmChannel(String name, int length, Class<T> clazz) {
         if (channels.containsKey(name)) {
             Channel ch = channels.get(name);
-            if (ch instanceof EnumAlarmChannel && ((EnumAlarmChannel) ch).getEnumClass().equals(clazz)){
+            if (ch instanceof EnumAlarmChannel && ((EnumAlarmChannel) ch).getEnumClass().equals(clazz)) {
                 return (EnumAlarmChannel<T>) ch;
             } else {
-                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type EnumAlarmChannel<"+clazz.getSimpleName()+">");
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type EnumAlarmChannel<" + clazz.getSimpleName() + ">");
             }
         }
         EnumAlarmChannel<T> ch = new EnumAlarmChannel<T>(name, length, clazz);
@@ -421,6 +391,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
         channels.put(name, ch);
         return ch;
     }
+
     /**
      * Removes channel from internal Map, unregisters from server and destroys PV
      *
@@ -445,8 +416,6 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
             }
         }
     }
-
-
 
 
     /**

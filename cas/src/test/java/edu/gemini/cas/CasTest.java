@@ -24,13 +24,14 @@ public class CasTest {
     private ChannelAccessServerImpl giapicas;
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         giapicas = new ChannelAccessServerImpl();
         giapicas.start();
     }
 
     @After
-    public void tearDown() throws Exception{
+    public void tearDown() throws Exception {
+        Thread.sleep(20);//can't start and stop immediately, and our tests are too short
         giapicas.stop();
     }
 
@@ -40,6 +41,7 @@ public class CasTest {
     @Test
     public void testStartStop() throws Exception {
 
+        Thread.sleep(20);//can't start and stop immediately
         giapicas.stop();
 
         giapicas.start();
@@ -160,8 +162,8 @@ public class CasTest {
      */
     @Test
     public void testWriteArray() throws Exception {
-        Channel<Integer> ch = giapicas.createChannel(varname, ImmutableList.of(0,0,0));
-        ch.setValue(ImmutableList.of(3,4,5));
+        Channel<Integer> ch = giapicas.createChannel(varname, ImmutableList.of(0, 0, 0));
+        ch.setValue(ImmutableList.of(3, 4, 5));
 
         DBR dbr = ch.getDBR();
 
@@ -264,15 +266,15 @@ public class CasTest {
         giapicas.destroyChannel(ch);
         ch = giapicas.createAlarmChannel("string", "1");
         giapicas.destroyChannel(ch);
-        ch = giapicas.createAlarmChannel("int",1);
+        ch = giapicas.createAlarmChannel("int", 1);
         giapicas.destroyChannel(ch);
-        ch = giapicas.createAlarmChannel("float",1.0f);
+        ch = giapicas.createAlarmChannel("float", 1.0f);
         giapicas.destroyChannel(ch);
-        ch = giapicas.createAlarmChannel("double",1.0);
+        ch = giapicas.createAlarmChannel("double", 1.0);
         giapicas.destroyChannel(ch);
-        ch = giapicas.createAlarmChannel("string","1");
+        ch = giapicas.createAlarmChannel("string", "1");
         giapicas.destroyChannel(ch);
-        ch = giapicas.createAlarmChannel("enum",Dir.CLEAR);
+        ch = giapicas.createAlarmChannel("enum", Dir.CLEAR);
         giapicas.destroyChannel(ch);
     }
 
@@ -323,14 +325,16 @@ public class CasTest {
         }
 
     }
-    private enum Dir{
+
+    private enum Dir {
         MARK,
         CLEAR,
         PRESET,
         START,
         STOP
     }
-    private enum State{
+
+    private enum State {
         IDLE,
         PAUSED,
         BUSY,
@@ -338,9 +342,9 @@ public class CasTest {
     }
 
     @Test
-    public void testEnumChannels() throws Exception{
+    public void testEnumChannels() throws Exception {
         Dir d = Dir.MARK;
-        Channel<Dir> ch=giapicas.createChannel("test", d);
+        Channel<Dir> ch = giapicas.createChannel("test", d);
         DBR dbr = ch.getDBR();
 
         int num = dbr.getCount();
@@ -349,9 +353,9 @@ public class CasTest {
         short[] objarr = (short[]) obj;
         assertEquals(d.ordinal(), objarr[0]);
         obj = dbr.convert(DBRType.STRING).getValue();
-        assertEquals(d.name(), ((String[])obj)[0]);
+        assertEquals(d.name(), ((String[]) obj)[0]);
 
-        d= Dir.PRESET;
+        d = Dir.PRESET;
         ch.setValue(d);
         dbr = ch.getDBR();
 
@@ -361,10 +365,10 @@ public class CasTest {
         objarr = (short[]) obj;
         assertEquals(d.ordinal(), objarr[0]);
         obj = dbr.convert(DBRType.STRING).getValue();
-        assertEquals(d.name(), ((String[])obj)[0]);
+        assertEquals(d.name(), ((String[]) obj)[0]);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testEnumWrongType() throws Exception {
         Channel ch = giapicas.createChannel("test", Dir.MARK);
         ch.setValue(State.BUSY);
@@ -389,7 +393,7 @@ public class CasTest {
         Channel<Integer> ch = giapicas.createChannel(varname, 1);
         ch.setValue(3);
 
-        List<Integer> values= ch.getAll();
+        List<Integer> values = ch.getAll();
 
 
         assertEquals(1, values.size());
