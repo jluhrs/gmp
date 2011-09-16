@@ -17,6 +17,7 @@ class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsD
 
   override def newXmlRpcHandlerMapping(): XmlRpcHandlerMapping = {
     val phm = new PropertyHandlerMapping()
+    phm.setVoidMethodEnabled(true)
     phm.addHandler("HeaderReceiver", classOf[XmlRpcReceiver])
     phm
   }
@@ -25,5 +26,10 @@ class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsD
   def start() {
     RequestHandler.setDatabases(keywordsDatabase, programIdDB)
     RequestHandler.start()
+  }
+
+  @Invalidate
+  def stop() {
+    // Do nothing as is not apparently possible to stop RequestHandler
   }
 }

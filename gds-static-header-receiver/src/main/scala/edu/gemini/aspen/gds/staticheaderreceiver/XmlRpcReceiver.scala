@@ -13,29 +13,23 @@ case class IntKeyword(keyword: String, value: Int)
 class XmlRpcReceiver {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
-  //todo: check if it is possible to expose a method that returns nothing.
-  def initObservation(programId: String, dataLabel: String): Boolean = {
+  def initObservation(programId: String, dataLabel: String) {
     RequestHandler ! InitObservation(programId, dataLabel)
-    true
   }
 
-  def storeKeyword(dataLabel: String, keyword: String, value: String): Boolean = {
+  def storeKeyword(dataLabel: String, keyword: String, value: String) {
     RequestHandler ! StoreKeyword(dataLabel, keyword, value)
-    true
   }
 
-  def storeKeyword(dataLabel: String, keyword: String, value: Double): Boolean = {
+  def storeKeyword(dataLabel: String, keyword: String, value: Double) {
     RequestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
-    true
   }
 
-  def storeKeyword(dataLabel: String, keyword: String, value: Int): Boolean = {
+  def storeKeyword(dataLabel: String, keyword: String, value: Int) {
     RequestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
-    true
   }
 
-  def storeKeywords(dataLabel: String, keywords: Array[Object]): Boolean = {
-
+  def storeKeywords(dataLabel: String, keywords: Array[Object]) {
     for (keyword <- keywords) {
       val pieces = keyword.asInstanceOf[String].split(",")
       val key = pieces(0).trim()
@@ -52,7 +46,6 @@ class XmlRpcReceiver {
         case ex: java.lang.NumberFormatException => LOG.log(Level.SEVERE, ex.getMessage, ex)
       }
     }
-    true
   }
 }
 
