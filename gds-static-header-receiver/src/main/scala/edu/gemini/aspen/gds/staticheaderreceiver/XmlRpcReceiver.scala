@@ -10,7 +10,7 @@ case class IntKeyword(keyword: String, value: Int)
  * XMLRPC server, forwards calls to a singleton actor, needed because this class
  * is instantiated by the XMLRPC library, so we cannot pass parameters to it.
  */
-class XmlRpcReceiver(requestHandler:RequestHandler) {
+class XmlRpcReceiver(requestHandler: RequestHandler) {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
   def initObservation(programId: String, dataLabel: String) {

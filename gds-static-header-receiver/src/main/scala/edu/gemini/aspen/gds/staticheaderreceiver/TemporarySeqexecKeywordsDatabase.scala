@@ -77,7 +77,7 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
 
   private def retrieveValue(dataLabel: DataLabel, keyword: FitsKeyword): Option[AnyRef] = {
     map.get(dataLabel) flatMap {
-      x => x.get(keyword)
+        x => x.get(keyword)
     }
   }
 
