@@ -10,23 +10,23 @@ case class IntKeyword(keyword: String, value: Int)
  * XMLRPC server, forwards calls to a singleton actor, needed because this class
  * is instantiated by the XMLRPC library, so we cannot pass parameters to it.
  */
-class XmlRpcReceiver {
+class XmlRpcReceiver(requestHandler:RequestHandler) {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
   def initObservation(programId: String, dataLabel: String) {
-    RequestHandler ! InitObservation(programId, dataLabel)
+    requestHandler ! InitObservation(programId, dataLabel)
   }
 
   def storeKeyword(dataLabel: String, keyword: String, value: String) {
-    RequestHandler ! StoreKeyword(dataLabel, keyword, value)
+    requestHandler ! StoreKeyword(dataLabel, keyword, value)
   }
 
   def storeKeyword(dataLabel: String, keyword: String, value: Double) {
-    RequestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
+    requestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
   }
 
   def storeKeyword(dataLabel: String, keyword: String, value: Int) {
-    RequestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
+    requestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
   }
 
   def storeKeywords(dataLabel: String, keywords: Array[Object]) {
@@ -37,9 +37,9 @@ class XmlRpcReceiver {
       val value = pieces(2).trim()
       try {
         dataType match {
-          case "INT" => RequestHandler ! StoreKeyword(dataLabel, key, value.toInt.asInstanceOf[AnyRef])
-          case "DOUBLE" => RequestHandler ! StoreKeyword(dataLabel, key, value.toDouble.asInstanceOf[AnyRef])
-          case "STRING" => RequestHandler ! StoreKeyword(dataLabel, key, value.toString.asInstanceOf[AnyRef])
+          case "INT" => requestHandler ! StoreKeyword(dataLabel, key, value.toInt.asInstanceOf[AnyRef])
+          case "DOUBLE" => requestHandler ! StoreKeyword(dataLabel, key, value.toDouble.asInstanceOf[AnyRef])
+          case "STRING" => requestHandler ! StoreKeyword(dataLabel, key, value.toString.asInstanceOf[AnyRef])
           case x => LOG.severe("Wrong data type: " + x)
         }
       } catch {

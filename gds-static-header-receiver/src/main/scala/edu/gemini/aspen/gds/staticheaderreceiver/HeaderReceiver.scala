@@ -20,8 +20,8 @@ class SeqexecHeaderReceiver(@Requires keywordsDatabase: TemporarySeqexecKeywords
 
     @Validate
     def start() {
-        RequestHandler.setDatabases(keywordsDatabase, programIdDB)
-        RequestHandler.start()
+        //RequestHandler.setDatabases(keywordsDatabase, programIdDB)
+        //RequestHandler.start()
         webServer.start();
     }
 

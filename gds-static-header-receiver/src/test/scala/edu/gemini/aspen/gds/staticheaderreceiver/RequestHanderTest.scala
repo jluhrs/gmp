@@ -9,16 +9,14 @@ import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, ProgramIdDatab
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{Store, Retrieve, Clean}
 import scala.Some
 
-class HeaderReceiverTest extends AssertionsForJUnit {
-  var db: TemporarySeqexecKeywordsDatabase = _
-  var pdb: ProgramIdDatabase = _
+class RequestHanderTest extends AssertionsForJUnit {
+  val db = new TemporarySeqexecKeywordsDatabaseImpl
+  val pdb = new ProgramIdDatabaseImpl
+  val requestHandler = new RequestHandler(db, pdb)
 
   @Before
   def setup() {
-    db = new TemporarySeqexecKeywordsDatabaseImpl
-    pdb = new ProgramIdDatabaseImpl
-    RequestHandler.setDatabases(db, pdb)
-    RequestHandler.start()
+    requestHandler.start()
   }
 
   @Test
@@ -46,28 +44,37 @@ class HeaderReceiverTest extends AssertionsForJUnit {
 
   @Test
   def testRequestHandler() {
-    RequestHandler ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
+    requestHandler ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
     Thread.sleep(100) //allow for messages to arrive
     (db !? (1000, Retrieve("label", "key"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
 
-    RequestHandler ! InitObservation("programId", "label")
+    requestHandler ! InitObservation("programId", "label")
     Thread.sleep(100)
     (pdb !? (1000, RetrieveProgramId("label"))) match {
       case Some(Some("programId")) =>
       case _ => fail()
     }
+  }
 
-    //todo: test wrong message handling???
-    //RequestHandler ! "wrong message"
+  @Test
+  def testRequestHandlerStop() {
+    requestHandler ! ExitRequestHandler()
+    requestHandler ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
+    Thread.sleep(100) //allow for messages to arrive
+    // There should be no keys in the db
+    (db !? (1000, Retrieve("label", "key"))) match {
+      case Some(Some(1)) => fail()
+      case _ =>
+    }
 
   }
 
   @Test
   def testXmlRpcReceiver() {
-    val xml = new XmlRpcReceiver
+    val xml = new XmlRpcReceiver(requestHandler)
     xml.storeKeyword("label", "key", 1)
     xml.storeKeywords("label2", ("key,INT,1" :: "key2,DOUBLE,1.0" :: "key3,STRING,uno" :: Nil).toArray)
     xml.initObservation("id", "label")
