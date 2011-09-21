@@ -2,8 +2,6 @@ package edu.gemini.aspen.gds.web.ui.vaadin
 
 import com.vaadin.ui._
 import edu.gemini.aspen.gds.web.ui.api.Preamble._
-import com.vaadin.ui.LoginForm.LoginListener
-import themes.BaseTheme
 import com.vaadin.ui.Window.Notification
 import edu.gemini.aspen.gds.web.ui.api.AuthenticationService
 
@@ -33,15 +31,13 @@ class LoginWindow(parent: GDSCoreVaadinApp, authenticationService: Authenticatio
     }
   }
 
-  loginForm.addListener(new LoginListener {
-    def onLogin(event: LoginForm#LoginEvent) {
+  loginForm.addListener((event: LoginForm#LoginEvent) => {
+    close()
+    if (authenticate(event.getLoginParameter("username"), event.getLoginParameter("password"))) {
       close()
-      if (authenticate(event.getLoginParameter("username"), event.getLoginParameter("password"))) {
-        close()
-        parent.authenticated(event.getLoginParameter("username"))
-      } else {
-        parent.getMainWindow.showNotification("Authentication Failed!", Notification.TYPE_ERROR_MESSAGE)
-      }
+      parent.authenticated(event.getLoginParameter("username"))
+    } else {
+      parent.getMainWindow.showNotification("Authentication Failed!", Notification.TYPE_ERROR_MESSAGE)
     }
   })
   loginForm.setWidth("350px")

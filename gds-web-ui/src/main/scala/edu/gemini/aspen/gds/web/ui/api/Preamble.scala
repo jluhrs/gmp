@@ -4,6 +4,8 @@ import com.vaadin.ui._
 import com.vaadin.event.ItemClickEvent
 import com.vaadin.data.Item.PropertySetChangeEvent
 import com.vaadin.data.{Property, Container}
+import com.vaadin.ui.Window._
+import com.vaadin.ui.LoginForm.LoginListener
 
 /**
  * Utility methods to make vaadin easier to use with scala
@@ -33,8 +35,14 @@ object Preamble {
 
   implicit def propertyValueChangeWrapper(func: (Property.ValueChangeEvent) => Unit) =
     new Property.ValueChangeListener {
-      override def valueChange(event:Property.ValueChangeEvent) {
+      override def valueChange(event: Property.ValueChangeEvent) {
         func(event)
       }
     }
+
+  implicit def login(func: (LoginForm#LoginEvent) => Unit) = new LoginListener {
+      def onLogin(event: LoginForm#LoginEvent) {
+        func(event)
+      }
+  }
 }
