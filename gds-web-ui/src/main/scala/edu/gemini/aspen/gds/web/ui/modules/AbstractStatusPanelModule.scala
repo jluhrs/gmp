@@ -17,7 +17,8 @@ abstract class AbstractStatusPanelModule extends StatusPanelModule {
   def buildModule = {
     val layout = new HorizontalLayout
     layout.setHeight("100%")
-    layout.setWidth("200")
+    //layout.setWidth("200")
+    layout.setSpacing(true)
 
     itemLabel.setStyleName("gds-status")
     itemValue.setStyleName("gds-status")
@@ -31,6 +32,7 @@ abstract class AbstractStatusPanelModule extends StatusPanelModule {
 
     layout
   }
+
 }
 
 

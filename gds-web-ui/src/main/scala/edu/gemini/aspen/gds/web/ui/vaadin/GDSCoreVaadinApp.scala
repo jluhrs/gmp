@@ -40,9 +40,9 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
           case (_, (module: GDSWebModule, tab: TabSheet.Tab)) => tab == selectedTab
         }
         selectedEntry.headOption.foreach {
-            tab: Tuple2[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)] => tab._2._1.refresh(GDSCoreVaadinApp.this)
+          tab: Tuple2[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)] => tab._2._1.refresh(GDSCoreVaadinApp.this)
         }
-
+        statusPanel.refresh
       }
     })
     setTheme("gds")
@@ -139,7 +139,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     val user = Option(getUser)
 
     user map {
-        _ =>
+      _ =>
         userPanel.setVisible(true)
         loginPanel.setVisible(false)
     } getOrElse {

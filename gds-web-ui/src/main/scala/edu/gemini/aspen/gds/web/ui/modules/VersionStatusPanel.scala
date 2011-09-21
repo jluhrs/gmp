@@ -8,7 +8,7 @@ import com.vaadin.data.util.ObjectProperty
 @Instantiate
 @Provides(specifications = Array(classOf[StatusPanelModule]))
 class VersionStatusPanel extends AbstractStatusPanelModule {
-  val order = 1
+  override val order = 1
   val label = "Version:"
   val item = System.getProperty("gmp.version")
   val property = new ObjectProperty[String](item)

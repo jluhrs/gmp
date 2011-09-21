@@ -26,13 +26,20 @@ class StatusPanelImpl extends StatusPanel {
       m =>
         val statusItem = m.buildModule
         layout.addComponent(statusItem)
-        layout.setComponentAlignment(statusItem, Alignment.MIDDLE_CENTER)
+        layout.setComponentAlignment(statusItem, Alignment.MIDDLE_LEFT)
     }
 
     layout.setHeight("30px")
     layout.setWidth("100%")
 
     new Panel(layout)
+  }
+
+
+  def refresh {
+    modules foreach {
+      m => m.refresh
+    }
   }
 
   @Bind(optional = true, aggregate = true)

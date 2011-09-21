@@ -21,7 +21,8 @@ class StatusPanelTest {
   def testBuildPanelWithOneModule = {
     val statusPanel = new StatusPanelImpl
     statusPanel.bindStatusPanelModule(new StatusPanelModule {
-      val order = 0
+      override val order = 0
+
       def buildModule = new Panel
     })
     val panel = statusPanel.buildStatusPanel
@@ -33,11 +34,13 @@ class StatusPanelTest {
   def testPanelOrder = {
     val statusPanel = new StatusPanelImpl
     statusPanel.bindStatusPanelModule(new StatusPanelModule {
-      val order = 0
+      override val order = 0
+
       def buildModule = new Panel
     })
     statusPanel.bindStatusPanelModule(new StatusPanelModule {
-      val order = 1
+      override val order = 1
+
       def buildModule = new VerticalLayout
     })
     val panel = statusPanel.buildStatusPanel

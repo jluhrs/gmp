@@ -9,7 +9,7 @@ import java.net.InetAddress
 @Instantiate
 @Provides(specifications = Array(classOf[StatusPanelModule]))
 class HostnameStatusPanel extends AbstractStatusPanelModule {
-  val order = 2
+  override val order = 2
   val label = "Hostname:"
   val item = InetAddress.getLocalHost.getHostName
   val property = new ObjectProperty[String](item)
