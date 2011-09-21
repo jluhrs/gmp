@@ -28,7 +28,7 @@ trait GDSWebModule {
   /**
    * Called by the container to indicate that the user has changed
    */
-  def userChanged(user: AnyRef): Unit = {}
+  def userChanged(user: Option[String]): Unit = {}
 
   /**
    * Called when the module content needs to be refreshed

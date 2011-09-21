@@ -34,7 +34,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
   def visibleColumns(user: AnyRef): Array[AnyRef] = {
     val prop = Option(user) map {
-      _ => deleteProperty
+        _ => deleteProperty
     } toList
     val cols = dataSource.propertyIds
     val p = cols ++ prop
@@ -52,11 +52,11 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
   private def updateTableHeaders(user: AnyRef) = {
     dataSource.propertyIds foreach {
-      p => table.setColumnHeader(p, dataSource.propertyHeader(p))
+        p => table.setColumnHeader(p, dataSource.propertyHeader(p))
     }
   }
 
-  override def userChanged(user: AnyRef) = {
+  private def switchUser(user: String) = {
     updateDataSource(user)
     table.setContainerDataSource(dataSource)
     updateTableHeaders(user)
@@ -66,6 +66,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setVisibleColumns(visibleColumns(user))
     table.requestRepaintAll()
     tabLayout.replaceComponent(table, table)
+  }
+
+  override def userChanged(user: Option[String]) = {
+    user map switchUser
   }
 
   private def updateNewButton(user: AnyRef) {
@@ -99,7 +103,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     updateNewButton(app.getUser)
     table.setVisibleColumns(visibleColumns(app.getUser))
     dataSource.propertyIds map {
-      c => table.setColumnWidth(c, dataSource.propertyWidth(c))
+        c => table.setColumnWidth(c, dataSource.propertyWidth(c))
     }
 
     tabLayout.setSizeFull

@@ -26,7 +26,7 @@ class StatusPanelImpl extends StatusPanel {
       m =>
         val statusItem = m.buildModule
         layout.addComponent(statusItem)
-        layout.setComponentAlignment(statusItem, Alignment.MIDDLE_RIGHT)
+        layout.setComponentAlignment(statusItem, Alignment.MIDDLE_CENTER)
     }
 
     layout.setHeight("30px")

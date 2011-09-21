@@ -15,7 +15,7 @@ import edu.gemini.aspen.gds.web.ui.api.{AuthenticationService, GDSWebModuleFacto
  * Main page of the GDS web UI
  */
 @org.apache.felix.ipojo.annotations.Component(name = "VaadinAppFactory")
-class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticationService:AuthenticationService) extends Application {
+class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticationService: AuthenticationService) extends Application {
   private val LOG = Logger.getLogger(this.getClass.getName)
   val tabsSheet = new TabSheet()
   val mainWindow = new Window("GDS Management Console")
@@ -40,7 +40,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
           case (_, (module: GDSWebModule, tab: TabSheet.Tab)) => tab == selectedTab
         }
         selectedEntry.headOption.foreach {
-          tab: Tuple2[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)] => tab._2._1.refresh(GDSCoreVaadinApp.this)
+            tab: Tuple2[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)] => tab._2._1.refresh(GDSCoreVaadinApp.this)
         }
 
       }
@@ -139,7 +139,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     val user = Option(getUser)
 
     user map {
-      _ =>
+        _ =>
         userPanel.setVisible(true)
         loginPanel.setVisible(false)
     } getOrElse {
@@ -174,7 +174,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     logoutButton.addStyleName("gds-login-label")
     logoutButton.addListener((e: Button#ClickEvent) => {
       mainWindow.showNotification("Logging out...", Window.Notification.TYPE_WARNING_MESSAGE)
-      authenticated(null)
+      authenticated(None)
     })
 
     userLabel.addStyleName("gds-user-label")
@@ -224,9 +224,11 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
   /**
    * Called whet the user completes authentication
    */
-  def authenticated(user: String) {
+  def authenticated(user: Option[String]) {
     this.setUser(user)
-    userProperty.setValue(user)
+    user map {
+      userProperty.setValue(_)
+    }
     toggleUserBasedVisibility
     // Inform app changes
     gdsWebModules.values.toList map {
