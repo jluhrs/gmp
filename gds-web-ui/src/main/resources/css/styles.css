@@ -71,10 +71,25 @@ input.v-textfield-validation-error {
     font-weight:bold;
 }
 
-.v-button-gds-login-label {
+/* Style of the link on the right top side for login/logout */
+.v-button-gds-login-label .v-button-wrap .v-button-caption {
     padding-top: 5px;
     padding-bottom: 5px;
-    font-size: 3em;
+    padding-right: 12px;
+    font-weight:bold;
+}
+
+/* Style for the user label on the top left side */
+.v-label-gds-user-label {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 12px;
+    font-weight: bold;
+}
+
+/* Style for the user label on the top left side */
+.v-label-gds-username {
+    color: red;
 }
 
 .v-label-gds-title {

@@ -19,10 +19,10 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
   private val LOG = Logger.getLogger(this.getClass.getName)
   val tabsSheet = new TabSheet()
   val mainWindow = new Window("GDS Management Console")
-  val userLabel = new Label("User: ")
+  val userProperty = new ObjectProperty[String]("")
+  val userLabel = new Label(userProperty)
   val userPanel = buildUserPanel
   var loginPanel = buildLoginPanel
-  val userProperty = new ObjectProperty[String]("")
 
   val gdsWebModules = scala.collection.mutable.Map[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)]()
 
@@ -76,7 +76,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     tabContent.setDebugId(gdsModule.title)
     val tab = tabsSheet.addTab(tabContent, gdsModule.title, null)
     gdsWebModules += moduleFactory ->(gdsModule, tab)
-    putTabsInOrder
+    putTabsInOrder()
   }
 
   def sortModules = {
@@ -91,7 +91,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     yield (t, i)
   }
 
-  def putTabsInOrder {
+  def putTabsInOrder() {
     val sortedModules = sortModules
     val tabs = findTabsPositions(sortedModules)
     tabs foreach {
@@ -113,7 +113,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     gdsWebModules remove (moduleFactory) foreach {
       case (module, tab) => tabsSheet.removeTab(tab)
     }
-    putTabsInOrder
+    putTabsInOrder()
   }
 
   /**
@@ -155,7 +155,6 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     linkButton.setStyleName(BaseTheme.BUTTON_LINK)
     linkButton.addStyleName("gds-login-label")
 
-
     linkButton.addListener((e: Button#ClickEvent) => mainWindow.addWindow(new LoginWindow(this, authenticationService)))
 
     layout.addComponent(linkButton)
@@ -172,12 +171,21 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     subLayout.setDebugId("User-SubPanel")
     val logoutButton = new Button("Logout")
     logoutButton.setStyleName(BaseTheme.BUTTON_LINK)
+    logoutButton.addStyleName("gds-login-label")
+    logoutButton.addListener((e: Button#ClickEvent) => {
+      mainWindow.showNotification("Logging out...", Window.Notification.TYPE_WARNING_MESSAGE)
+      authenticated(null)
+    })
 
-    val userLabel = new Label("User: ")
-    //userLabel.setPropertyDataSource(userProperty)
-    layout.addComponent(userLabel)
-    layout.setComponentAlignment(userLabel, Alignment.MIDDLE_RIGHT)
-    layout.setExpandRatio(userLabel, 1.0f)
+    userLabel.addStyleName("gds-user-label")
+    userLabel.addStyleName("gds-username")
+    val userCaption = new Label("Username: ")
+    userCaption.setStyleName("gds-user-label")
+    subLayout.addComponent(userCaption)
+    subLayout.addComponent(userLabel)
+    layout.addComponent(subLayout)
+    layout.setComponentAlignment(subLayout, Alignment.MIDDLE_LEFT)
+    layout.setExpandRatio(subLayout, 1.0f)
     layout.addComponent(logoutButton)
     layout.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT)
 
@@ -218,7 +226,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
    */
   def authenticated(user: String) {
     this.setUser(user)
-    userLabel.setValue("User :" + user)
+    userProperty.setValue(user)
     toggleUserBasedVisibility
     // Inform app changes
     gdsWebModules.values.toList map {
