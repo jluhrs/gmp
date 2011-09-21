@@ -1,10 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.api
 
-import org.apache.felix.ipojo.annotations.{Validate, Property, Provides, Component}
-import java.io.File
-import xml.XML
-import edu.gemini.aspen.gds.web.ui.api.AuthenticationService
-
+/**
+ * Representation of a web ui user */
 case class GDSUser(username:String, roles: String, password:String)
 
 

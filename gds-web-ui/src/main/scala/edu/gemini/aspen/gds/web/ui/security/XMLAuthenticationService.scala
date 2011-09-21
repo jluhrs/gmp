@@ -1,12 +1,13 @@
-package edu.gemini.aspen.gds.web.ui.modules
+package edu.gemini.aspen.gds.web.ui.security
 
 import org.apache.felix.ipojo.annotations.{Validate, Property, Provides, Component}
 import java.io.File
 import xml.XML
 import edu.gemini.aspen.gds.web.ui.api.{GDSUser, AuthenticationService}
 import java.util.logging.Logger
-import java.security.MessageDigest
 
+/**
+ * Implementation of Authentication Service that takes an XML file containing the users/passwords */
 @Component
 @Provides(specifications = Array(classOf[AuthenticationService]))
 class XMLAuthenticationService(@Property(name = "usersXMLFile", value = "NOVALID", mandatory = true) filename: String) extends AuthenticationService {
@@ -37,8 +38,11 @@ class XMLAuthenticationService(@Property(name = "usersXMLFile", value = "NOVALID
 
   @Validate
   def start() {
+    // Required for ipojo
   }
 
+  /**
+   * Authenticate a given user */
   override def authenticate(username: String, password: String) = findUser(username) match {
     case Some(GDSUser(_, _, storedPassword)) if (encoder.encode(password) == storedPassword) => true
     case _ => false
@@ -46,23 +50,4 @@ class XMLAuthenticationService(@Property(name = "usersXMLFile", value = "NOVALID
 
   private def findUser(username: String) = users.get(username)
 
-}
-
-trait Encoder {
-  def encode(value: String): String
-}
-
-private class SHA1Encoder extends Encoder {
-  val sha = MessageDigest.getInstance("SHA1")
-  def encode(value: String) = {
-    val d = sha.digest(value.getBytes)
-    // Return in hex
-    d map {
-      "%02x".format(_)
-    } mkString
-  }
-}
-
-private class DefaultEncoder extends Encoder {
-  def encode(value: String) = value
 }

@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.web.ui.modules
+package edu.gemini.aspen.gds.web.ui.security
 
 import org.junit.Test
 import org.junit.Assert._
