@@ -1,4 +1,20 @@
-/*! \page gmp_ipojo IPojo in GIAPI/GMP
- *
- * TBD
+/*! \page gmp_ipojo IPojo in GIAPI
+
+ GMP runs on the OSGi platform which gives a lot of advantages in terms of modularity.
+ The platform is designed around dynamic services that can appear/disappear at any time
+ and thus it requires an extra effort to use correctly, in particular dependency management
+ is a bit more difficult to handle.
+
+ Several options are available to reduce the programming burden in OSGi, all arounnd the concept
+ of components that can automate the search and removal of dependencies of services. Examples of
+ these tools are Spring-DM, OSGi Declarative service and iPojo
+
+ For GMP we decided to use iPojo as it seemed the simplest to use and could be integrated into
+ the maven based toolchain. As all tools it has some benefits and drawbacks:
+
+ Pluses
+ -# It make it very easy to build new components and services using annotations
+ -# 
+
+ Writing components:
  */
