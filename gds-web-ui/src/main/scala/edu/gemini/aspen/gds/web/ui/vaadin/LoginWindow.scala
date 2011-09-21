@@ -2,30 +2,31 @@ package edu.gemini.aspen.gds.web.ui.vaadin
 
 import com.vaadin.ui._
 import edu.gemini.aspen.gds.web.ui.api.Preamble._
-import edu.gemini.aspen.gds.web.ui.api.DefaultAuthenticationService
 import com.vaadin.ui.LoginForm.LoginListener
 import themes.BaseTheme
 import com.vaadin.ui.Window.Notification
+import edu.gemini.aspen.gds.web.ui.api.AuthenticationService
 
 /**
  * Represents the LoginWindow
  */
-class LoginWindow(parent: GDSCoreVaadinApp) extends Window("Authentication Required !") {
+class LoginWindow(parent: GDSCoreVaadinApp, authenticationService: AuthenticationService) extends Window("Authentication Required !") {
   setName("Login")
   setModal(true)
   setResizable(false)
   setWidth("365px")
-  setHeight("195px")
+  setHeight("210px")
 
   val layout = new VerticalLayout
   layout.setWidth("348px")
-  layout.setHeight("186px")
+  layout.setHeight("168px")
   layout.setMargin(true)
 
   val loginForm = new LoginForm {
     override def getLoginHTML() = {
       val htmlBytes = super.getLoginHTML
-      val htmlString =  new String(htmlBytes)
+      val htmlString = new String(htmlBytes)
+      // Needs to do ugly replacement to be compatible with Password Managers
       htmlString.replace(
         "<input class='v-textfield' style='display:block;",
         "<input class='v-textfield' style='margin-bottom:10px; display:block;").getBytes
@@ -44,14 +45,13 @@ class LoginWindow(parent: GDSCoreVaadinApp) extends Window("Authentication Requi
     }
   })
   loginForm.setWidth("350px")
-  loginForm.setHeight("186px")
+  loginForm.setHeight("180px")
   layout.addComponent(loginForm)
 
   setContent(layout)
 
-  // TODO replace by an actual service
   def authenticate(username: String, password: String) = {
-    new DefaultAuthenticationService().authenticate(username, password)
+    authenticationService.authenticate(username, password)
   }
 
 }

@@ -7,15 +7,15 @@ import edu.gemini.aspen.gds.web.ui.api.Preamble._
 import org.apache.felix.ipojo.annotations.{Requires, Bind, Unbind}
 import com.vaadin.ui.themes.BaseTheme
 import com.vaadin.data.util.ObjectProperty
-import edu.gemini.aspen.gds.web.ui.api.{GDSWebModuleFactory, StatusPanel, GDSWebModule}
 import com.vaadin.ui._
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener
+import edu.gemini.aspen.gds.web.ui.api.{AuthenticationService, GDSWebModuleFactory, StatusPanel, GDSWebModule}
 
 /**
  * Main page of the GDS web UI
  */
 @org.apache.felix.ipojo.annotations.Component(name = "VaadinAppFactory")
-class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
+class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticationService:AuthenticationService) extends Application {
   private val LOG = Logger.getLogger(this.getClass.getName)
   val tabsSheet = new TabSheet()
   val mainWindow = new Window("GDS Management Console")
@@ -156,7 +156,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel) extends Application {
     linkButton.addStyleName("gds-login-label")
 
 
-    linkButton.addListener((e: Button#ClickEvent) => mainWindow.addWindow(new LoginWindow(this)))
+    linkButton.addListener((e: Button#ClickEvent) => mainWindow.addWindow(new LoginWindow(this, authenticationService)))
 
     layout.addComponent(linkButton)
     layout.setComponentAlignment(linkButton, Alignment.MIDDLE_RIGHT)

@@ -2,32 +2,33 @@ package edu.gemini.aspen.gds.web.ui.vaadin
 
 import org.junit.Test
 import org.junit.Assert._
-import edu.gemini.aspen.gds.web.ui.api.{GDSWebModule, GDSWebModuleFactory}
 import com.vaadin.ui.{Window, Panel}
 import com.vaadin.Application
+import edu.gemini.aspen.gds.web.ui.api.{DefaultAuthenticationService, GDSWebModule, GDSWebModuleFactory}
 
 /**
  * Trivial tests
  */
 class GDSCoreVaadinAppTest {
   val statusPanel = new StatusPanelImpl()
+  val authenticationService = new DefaultAuthenticationService()
 
   @Test
   def testBuildUserPanel = {
-    val panel = new GDSCoreVaadinApp(statusPanel).buildUserPanel
+    val panel = new GDSCoreVaadinApp(statusPanel, authenticationService).buildUserPanel
     assertNotNull(panel)
   }
 
   @Test
   def testBuildBannerPanel = {
-    val panel = new GDSCoreVaadinApp(statusPanel).buildBannerPanel
+    val panel = new GDSCoreVaadinApp(statusPanel, authenticationService).buildBannerPanel
     assertNotNull(panel)
   }
 
   @Test
   def testTabsSortingWithoutFactories = {
     // the test will be applied to the functions sorting rather than to the tabSheet
-    val app = new GDSCoreVaadinApp(statusPanel)
+    val app = new GDSCoreVaadinApp(statusPanel, authenticationService)
     assertTrue(app.sortModules.isEmpty)
     assertTrue(app.findTabsPositions(app.sortModules).isEmpty)
   }
@@ -35,7 +36,7 @@ class GDSCoreVaadinAppTest {
   @Test
   def testTabsSortingWithFactories = {
     // the test will be applied to the functions sorting rather than to the tabSheet
-    val app = new GDSCoreVaadinApp(statusPanel)
+    val app = new GDSCoreVaadinApp(statusPanel, authenticationService)
     val module0 = new DummyWebModule(0)
     val module1 = new DummyWebModule(1)
     // Add two factories
@@ -55,7 +56,7 @@ class GDSCoreVaadinAppTest {
   @Test
   def testTabsSortingWithOneFactoryGone = {
     // the test will be applied to the functions sorting rather than to the tabSheet
-    val app = new GDSCoreVaadinApp(statusPanel)
+    val app = new GDSCoreVaadinApp(statusPanel, authenticationService)
     val module0 = new DummyWebModule(0)
     val module1 = new DummyWebModule(1)
     val factory0 = new GDSWebModuleFactory {
