@@ -10,7 +10,7 @@ import edu.gemini.aspen.gds.api.{ArrayIndex, GDSConfiguration}
  */
 class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[ArrayIndex], classOf[TextField]) {
   override val width = 40
-  override val title = "index"
+  override val title = "Index"
 
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField("", config.arrayIndex.value.toString)

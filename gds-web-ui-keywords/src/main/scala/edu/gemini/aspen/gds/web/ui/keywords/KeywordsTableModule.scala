@@ -14,74 +14,87 @@ import org.vaadin.dialogs.ConfirmDialog
 import com.vaadin.ui.Window.Notification
 
 /**
- * Module for the table to edit the keywords
- */
+ * Module for the table to edit the keywords */
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
   val order = 2
-  var dataSource: GDSKeywordsDataSource = _
-  var lastUser: AnyRef = _
-
+  var dataSource: GDSKeywordsDataSource = buildDataSource(None)
+  
   val tabLayout = new VerticalLayout
   val table = new Table("Keywords")
 
   var deleteIcon = new ThemeResource("../runo/icons/16/document-delete.png")
-  var deleteTooltip = "Delete row"
+  val deleteTooltip = "Delete row"
   val deleteProperty = "DEL"
 
   val saveButton = new Button("Save..")
   val newRowButton = new Button("New row...")
 
-  def visibleColumns(user: AnyRef): Array[AnyRef] = {
-    val prop = Option(user) map {
+  def visibleColumns(user: Option[String]): Array[AnyRef] = {
+    val prop = user map {
         _ => deleteProperty
     } toList
+
+    println(prop)
     val cols = dataSource.propertyIds
     val p = cols ++ prop
     (p toArray).asInstanceOf[Array[AnyRef]]
   }
 
-  protected[keywords] def updateDataSource(user: AnyRef): GDSKeywordsDataSource = {
-    Option(user) match {
-      case Some(u) => dataSource = new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
-      case None => dataSource = new ReadOnlyGDSKeywordsDataSource(configService.getFullConfiguration)
+  protected[keywords] def buildDataSource(user: Option[String]): GDSKeywordsDataSource = {
+    user match {
+      case Some(u) => new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
+      case None => new ReadOnlyGDSKeywordsDataSource(configService.getFullConfiguration)
     }
-    dataSource
   }
 
 
-  private def updateTableHeaders(user: AnyRef) = {
+  private def updateTableColumns() = {
     dataSource.propertyIds foreach {
         p => table.setColumnHeader(p, dataSource.propertyHeader(p))
     }
+    dataSource.propertyIds foreach {
+        c => table.setColumnWidth(c, dataSource.propertyWidth(c))
+    }
+    table.setColumnWidth(deleteProperty, 20)
   }
 
-  private def switchUser(user: String) = {
-    updateDataSource(user)
+  override def userChanged(user: Option[String]) = {
+    dataSource = buildDataSource(user)
     table.setContainerDataSource(dataSource)
-    updateTableHeaders(user)
-    // Update user dependant parts
-    updateSaveButton(user)
-    updateNewButton(user)
+    user match {
+      case Some(u) => {
+        setupDeleteColumn(table)
+        updateTableColumns()
+        // Update user dependant parts
+        updateSaveButton(user)
+        updateNewButton(user)
+      }
+      case _ => {
+        table.removeGeneratedColumn(deleteProperty)
+      }
+    }
     table.setVisibleColumns(visibleColumns(user))
     table.requestRepaintAll()
     tabLayout.replaceComponent(table, table)
   }
 
-  override def userChanged(user: Option[String]) = {
-    user map switchUser
+  private def updateNewButton(user: Option[String]) {
+    newRowButton.setVisible(user.isDefined)
   }
 
-  private def updateNewButton(user: AnyRef) {
-    newRowButton.setVisible(Option(user).isDefined)
+  private def updateSaveButton(user: Option[String]) {
+    saveButton.setVisible(user.isDefined)
   }
 
-  private def updateSaveButton(user: AnyRef) {
-    saveButton.setVisible(Option(user).isDefined)
+  def getAppUser(app: Application): Option[String] = {
+    app.getUser match {
+      case Some(x: String) => Some[String](x)
+      case _ => None
+    }
   }
 
   override def buildTabContent(app: Application) = {
-    updateDataSource(app.getUser)
     table.setContainerDataSource(dataSource)
     table.setNullSelectionAllowed(false)
     table.setImmediate(true)
@@ -92,21 +105,16 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnCollapsingAllowed(true)
     table.setColumnReorderingAllowed(true)
 
-    setupDeleteColumn(table)
     setupNewButton(table)
 
     tabLayout.addComponent(table)
     tabLayout.setExpandRatio(table, 1.0f)
 
     tabLayout.addComponent(statusRow(app))
-    updateSaveButton(app.getUser)
-    updateNewButton(app.getUser)
-    table.setVisibleColumns(visibleColumns(app.getUser))
-    dataSource.propertyIds map {
-        c => table.setColumnWidth(c, dataSource.propertyWidth(c))
-    }
 
     tabLayout.setSizeFull
+    userChanged(getAppUser(app))
+
     tabLayout
   }
 
@@ -132,7 +140,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   }
 
   override def refresh(app: Application) {
-    updateDataSource(app.getUser)
+    val user = getAppUser(app)
+    dataSource = buildDataSource(user)
     table.setContainerDataSource(dataSource)
     table.requestRepaintAll()
     tabLayout.replaceComponent(table, table)
@@ -163,7 +172,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
       }
     })
     table.setColumnIcon(deleteProperty, deleteIcon)
-    table.setColumnHeader(deleteProperty, "")
+    table.setColumnHeader(deleteProperty, deleteProperty)
     table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
     table.setColumnWidth(deleteProperty, 20)
   }

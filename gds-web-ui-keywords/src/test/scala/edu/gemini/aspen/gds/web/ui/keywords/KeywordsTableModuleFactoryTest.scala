@@ -21,6 +21,7 @@ class KeywordsTableModuleFactoryTest extends Mockito {
     val module = new KeywordsTableModuleFactory(configService).buildWebModule
     assertNotNull(module)
     val app = mock[Application]
+    app.getUser returns None
     assertNotNull(module.buildTabContent(app))
   }
 

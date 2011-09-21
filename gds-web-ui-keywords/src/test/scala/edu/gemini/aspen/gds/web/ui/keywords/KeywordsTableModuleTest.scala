@@ -1,12 +1,10 @@
 package edu.gemini.aspen.gds.web.ui.keywords
 
-import org.junit.Test
 import org.junit.Assert._
 import com.vaadin.Application
 import org.specs2.mock.Mockito
-import edu.gemini.aspen.gds.api.GDSConfiguration
-import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api.configuration.{ConfigItem, GDSConfigurationService}
+import org.junit.Test
 
 /**
  * Construction tests
@@ -29,9 +27,9 @@ class KeywordsTableModuleTest extends Mockito {
     configService.getFullConfiguration returns List[ConfigItem[_]]()
     val module = new KeywordsTableModule(configService)
 
-    module.updateDataSource(null)
+    module.buildDataSource(None)
 
-    val tableColumnsForAnonymous = module.visibleColumns(null)
+    val tableColumnsForAnonymous = module.visibleColumns(None)
     assertArrayEquals(
       Array[AnyRef](
         "Instrument",
@@ -47,7 +45,7 @@ class KeywordsTableModuleTest extends Mockito {
         "FitsComment"),
       tableColumnsForAnonymous)
 
-    val tableColumnsForUser = module.visibleColumns("user")
+    val tableColumnsForUser = module.visibleColumns(Option("user"))
     assertArrayEquals(
       Array[AnyRef](
         "Instrument",
@@ -72,22 +70,24 @@ class KeywordsTableModuleTest extends Mockito {
     val module = new KeywordsTableModule(configService)
 
     val app = mock[Application]
+    app.getUser returns Some("User")
     module.buildTabContent(app)
 
     val tableColumnHeaders = module.table.getColumnHeaders
     assertEquals(
       List(
-        "Instrument",
+        "Inst.",
         "GDSEvent",
         "FitsKeyword",
-        "HeaderIndex",
+        "Header",
         "DataType",
-        "Mandatory",
+        "Mand.",
         "DefaultValue",
         "Subsystem",
         "Channel",
-        "ArrayIndex",
-        "FitsComment"),
+        "Index",
+        "Comment",
+        "DEL"),
       tableColumnHeaders.toList)
   }
 }

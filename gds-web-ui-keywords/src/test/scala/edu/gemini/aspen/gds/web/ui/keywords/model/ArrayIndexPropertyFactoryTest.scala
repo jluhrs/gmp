@@ -17,7 +17,7 @@ class ArrayIndexPropertyFactoryTest {
 
   @Test
   def testColumnDefinition {
-    assertEquals("index", factory.title)
+    assertEquals("Index", factory.title)
     assertEquals(classOf[TextField], factory.columnType)
   }
 

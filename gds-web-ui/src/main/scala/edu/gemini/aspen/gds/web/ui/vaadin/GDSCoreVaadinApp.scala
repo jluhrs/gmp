@@ -136,7 +136,10 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
    * Decides what panel to show depending on whether there is a user logged or not
    */
   private def toggleUserBasedVisibility {
-    val user = Option(getUser)
+    val user = getUser match {
+      case Some(x:String) => Some(x)
+      case _ => None
+    }
 
     user map {
       _ =>
