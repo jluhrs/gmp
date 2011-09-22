@@ -39,7 +39,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   class Entry {
     var dataLabel = ""
     var times: String = ""
-    var status = ""
     var missing = ""
     var errors = ""
   }
@@ -55,7 +54,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     if (dataLabels.isEmpty) {
       entry.dataLabel = ""
       entry.times = ""
-      entry.status = ""
       entry.missing = ""
       entry.errors = ""
       updateLastObservations(entries.tail, dataLabels)
@@ -64,14 +62,11 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
 
     val dataLabel = dataLabels.head
     entry.dataLabel = dataLabel
+    entry.times = propertySources.getTimes(dataLabel)
     if (propertySources.isInError(dataLabel)) {
-      entry.status = "<span style=\"color: red\">ERROR</span>"
-      entry.times = propertySources.getTimes(dataLabel)
       entry.missing = propertySources.getMissingKeywords(dataLabel)
       entry.errors = propertySources.getKeywordsInError(dataLabel)
     } else {
-      entry.status = "<span style=\"color: green\">OK</span>"
-      entry.times = propertySources.getTimes(dataLabel)
       entry.missing = ""
       entry.errors = ""
     }
@@ -111,24 +106,32 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   }
 
   private def generateAccordion() {
-    for (entry <- lastDataLabels) {
+    for (entry: Entry <- lastDataLabels) {
       if (!entry.dataLabel.equals("")) {
-        val grid = new GridLayout(2, 3)
-        grid.setMargin(true)
-        grid.setSpacing(true)
-        grid.setSizeFull()
-        grid.setColumnExpandRatio(0, 1.0f)
-        grid.setColumnExpandRatio(1, 3.0f)
-        grid.addComponent(new Label("<b>Time to update FITS for last DataSet:</b>", Label.CONTENT_XHTML))
-        grid.addComponent(new Label(entry.times))
-        grid.addComponent(new Label("<b>Missing Keywords from last DataSet:</b>", Label.CONTENT_XHTML))
-        grid.addComponent(new Label(entry.missing))
-        grid.addComponent(new Label("<b>Error Collecting Keywords from last DataSet:</b>", Label.CONTENT_XHTML))
-        grid.addComponent(new Label(entry.errors))
         if (propertySources.isInError(entry.dataLabel)) {
+          val grid = new GridLayout(2, 3)
+          grid.setMargin(true)
+          grid.setSpacing(true)
+          grid.setSizeFull()
+          grid.setColumnExpandRatio(0, 1.0f)
+          grid.setColumnExpandRatio(1, 3.0f)
+          grid.addComponent(new Label("<b>Time to update FITS for last DataSet:</b>", Label.CONTENT_XHTML))
+          grid.addComponent(new Label(entry.times))
+          grid.addComponent(new Label("<b>Missing Keywords from last DataSet:</b>", Label.CONTENT_XHTML))
+          grid.addComponent(new Label(entry.missing))
+          grid.addComponent(new Label("<b>Error Collecting Keywords from last DataSet:</b>", Label.CONTENT_XHTML))
+          grid.addComponent(new Label(entry.errors))
           accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/cancel.png"))
         }
         else {
+          val grid = new GridLayout(2, 1)
+          grid.setMargin(true)
+          grid.setSpacing(true)
+          grid.setSizeFull()
+          grid.setColumnExpandRatio(0, 1.0f)
+          grid.setColumnExpandRatio(1, 3.0f)
+          grid.addComponent(new Label("<b>Time to update FITS for last DataSet:</b>", Label.CONTENT_XHTML))
+          grid.addComponent(new Label(entry.times))
           accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/ok.png"))
         }
       }
