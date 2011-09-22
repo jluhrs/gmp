@@ -59,7 +59,7 @@ public class ActiveMQBroker implements Broker {
         private String url = ConfigDefaults.BROKER_URL;
         private boolean deleteMsgOnStartup = ConfigDefaults.BROKER_DELETE_MESSAGES_ON_STARTUP;
         private boolean useAdvisoryMessages = ConfigDefaults.BROKER_USE_ADVISORY_MESSAGES;
-        private int jmxRmiServerPort = ConfigDefaults.BROKER_JMX_RMI_PORT;
+        private int jmxRmiServerPort = ConfigDefaults.BROKER_JMX_RMI_PORT;  
         private int jmxConnectorPort = ConfigDefaults.BROKER_JMX_CONNECTOR_PORT;
 
         public Builder useJmx(boolean useJmx) {
@@ -109,7 +109,7 @@ public class ActiveMQBroker implements Broker {
 
 
     public void start() {
-        LOG.info("Starting up ActiveMQ Broker");
+        LOG.info("Starting up ActiveMQ AMQ Broker");
         try {
             _broker.start();
             if (_broker.waitUntilStarted()) {

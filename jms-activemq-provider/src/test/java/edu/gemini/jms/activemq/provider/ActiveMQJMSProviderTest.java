@@ -9,6 +9,7 @@ public class ActiveMQJMSProviderTest {
     public void testConstruction() {
         String brokerUrl = "vm:testBroker?persistent=false";
         ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl);
+        provider.startConnection();
 
         assertNotNull(provider.getConnectionFactory());
     }

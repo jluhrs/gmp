@@ -21,24 +21,18 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     private ConnectionFactory _factory;
     private static final String DEFAULT_BROKER_URL = "failover:(tcp://localhost:61616)";
 
-    @Property(name = "brokerUrl", value = DEFAULT_BROKER_URL, mandatory = true)
-    private String brokerUrl;
+    private final String brokerUrl;
 
-    ActiveMQJmsProvider() {
-    }
-
-    public ActiveMQJmsProvider(String url) {
+    public ActiveMQJmsProvider(@Property(name = "brokerUrl", value = DEFAULT_BROKER_URL, mandatory = true)String url) {
         this.brokerUrl = url;
-        startConnection();
+        // Setup the connection factory
+            LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
+            _factory = new ActiveMQConnectionFactory(brokerUrl);
     }
 
     @Validate
     public void startConnection() {
-        if (_factory == null) {
-            // Setup the connection factory
-            LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
-            _factory = new ActiveMQConnectionFactory(brokerUrl);
-        }
+        // Required for iPojo
     }
 
     /**

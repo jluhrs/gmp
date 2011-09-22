@@ -14,65 +14,65 @@ import static edu.gemini.jms.activemq.broker.ConfigDefaults.*;
  * @author cquiroz
  */
 @Component
+@Provides
 public class ActiveMQBrokerComponent {
     private static final Logger LOG = Logger.getLogger(ActiveMQBrokerComponent.class.getName());
 
-    private Broker _broker = null;
+    private final Broker _broker;
 
-    @Property(name = "useJmx", value = "" + BROKER_PERSISTENT, mandatory = true)
-    private boolean useJmx;
+    private final boolean useJmx;
 
-    @Property(name = "persistent", value = "" + BROKER_PERSISTENT, mandatory = true)
-    private boolean isPersistent;
+    private final boolean isPersistent;
 
-    @Property(name = "brokerName", value = BROKER_NAME, mandatory = true)
-    private String brokerName;
+    private final String brokerName;
 
-    @Property(name = "brokerUrl", value = BROKER_URL, mandatory = true)
-    private String url;
+    private final String url;
 
-    @Property(name = "deleteMsgOnStartup", value = "" + BROKER_DELETE_MESSAGES_ON_STARTUP, mandatory = true)
-    private boolean deleteMsgOnStartup;
+    private final boolean deleteMsgOnStartup;
 
-    @Property(name = "useAdvisoryMessages", value = "" + BROKER_USE_ADVISORY_MESSAGES, mandatory = true)
-    private boolean useAdvisoryMessages;
+    private final boolean useAdvisoryMessages;
 
-    @Property(name = "jmxRmiServerPort", value = "" + BROKER_JMX_RMI_PORT, mandatory = true)
-    private int jmxRmiServerPort;
+    private final int jmxRmiServerPort;
 
-    @Property(name = "jmxConnectorPort", value = "" + BROKER_JMX_CONNECTOR_PORT, mandatory = true)
-    private int jmxConnectorPort;
+    private final int jmxConnectorPort;
 
-    @Updated
-    private void updatedConfiguration() {
-        LOG.info("Updating configuration of ActiveMQ broker with URL:" + url);
-        if (_broker == null) {
-            _broker = activemq()
-                    .name(brokerName)
-                    .url(url)
-                    .useJmx(useJmx)
-                    .persistent(isPersistent)
-                    .useAdvisoryMessages(useAdvisoryMessages)
-                    .deleteMsgOnStartup(deleteMsgOnStartup)
-                    .jmxConnectorPort(jmxConnectorPort)
-                    .jmxRrmiServerPort(jmxRmiServerPort)
-                    .build();
-        } else {
-            LOG.warning("Cannot reconfigure a running ActiveMQ Broker");
-        }
-        LOG.info("Updated configuration of ActiveMQ broker");
+    public ActiveMQBrokerComponent(@Property(name = "useJmx", value = "" + BROKER_PERSISTENT, mandatory = true) boolean useJmx,
+            @Property(name = "persistent", value = "" + BROKER_PERSISTENT, mandatory = true) boolean persistent,
+            @Property(name = "brokerName", value = BROKER_NAME, mandatory = true) String brokerName,
+            @Property(name = "brokerUrl", value = BROKER_URL, mandatory = true) String url,
+            @Property(name = "deleteMsgOnStartup", value = "" + BROKER_DELETE_MESSAGES_ON_STARTUP, mandatory = true) boolean deleteMsgOnStartup,
+            @Property(name = "useAdvisoryMessages", value = "" + BROKER_USE_ADVISORY_MESSAGES, mandatory = true) boolean useAdvisoryMessages,
+            @Property(name = "jmxRmiServerPort", value = "" + BROKER_JMX_RMI_PORT, mandatory = true) int jmxRmiServerPort,
+            @Property(name = "jmxConnectorPort", value = "" + BROKER_JMX_CONNECTOR_PORT, mandatory = true) int jmxConnectorPort) {
+        this.useJmx = useJmx;
+        isPersistent = persistent;
+        this.brokerName = brokerName;
+        this.url = url;
+        this.deleteMsgOnStartup = deleteMsgOnStartup;
+        this.useAdvisoryMessages = useAdvisoryMessages;
+        this.jmxRmiServerPort = jmxRmiServerPort;
+        this.jmxConnectorPort = jmxConnectorPort;
+
+        _broker = activemq()
+                .name(brokerName)
+                .url(url)
+                .useJmx(useJmx)
+                .persistent(isPersistent)
+                .useAdvisoryMessages(useAdvisoryMessages)
+                .deleteMsgOnStartup(deleteMsgOnStartup)
+                .jmxConnectorPort(jmxConnectorPort)
+                .jmxRrmiServerPort(jmxRmiServerPort)
+                .build();
     }
 
     @Validate
-    public void startBroker() {
+    public synchronized void startBroker() {
         LOG.info("Starting ActiveMQ broker with URL:" + url);
         _broker.start();
     }
 
     @Invalidate
-    public void stopBroker() {
-        if (_broker != null) {
-            _broker.shutdown();
-        }
+    public synchronized void stopBroker() {
+        _broker.shutdown();
     }
 }
