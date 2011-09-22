@@ -39,16 +39,20 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
     }
   }
 
-  def getTimes = {
+  def getTimes: String = {
     obsState.getLastDataLabel map {
-      obsState.getTimes(_) filter {
-        case (x: AnyRef, y: Option[Duration]) => x == "FITS update"
-      } map {
-        case (x: AnyRef, y: Option[Duration]) => y map {
-          case t: Duration => t.getMillis.toString + "[ms]"
-        } getOrElse ""
-      } head
+      getTimes(_)
     } getOrElse StatusModule.defaultTimes
+  }
+
+  def getTimes(label: DataLabel): String = {
+    obsState.getTimes(label) filter {
+      case (x: AnyRef, y: Option[Duration]) => x == "FITS update"
+    } map {
+      case (x: AnyRef, y: Option[Duration]) => y map {
+        case t: Duration => t.getMillis.toString + "[ms]"
+      } getOrElse ""
+    } head
   }
 
   def getProcessing = {
@@ -79,4 +83,5 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
       case (x: FitsKeyword, y: CollectionError.CollectionError) => x.getName
     } addString(new StringBuilder(), ",") toString()
   }
+
 }
