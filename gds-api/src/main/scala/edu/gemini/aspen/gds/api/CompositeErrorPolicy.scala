@@ -19,7 +19,7 @@ class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPol
 
   // Apply all the original headers
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
-    LOG.info("Applying policies: " + policies)
+    LOG.info("Applying policies: " + policies.foldLeft("")((B, A) => B + " " + A.getClass.getCanonicalName))
     //iterative
     //        var h = headers
     //        for (ep <- policies) {
