@@ -14,7 +14,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val order: Int = 0
   val topGrid = new GridLayout(2, 3)
   val nLast = 10
-  val bottomGrid = new GridLayout(2, nLast + 1)
   val accordion = new Accordion()
   val bottomPanel = new Panel("<b>Last " + nLast + " Observations</b>")
   val propertySources = new PropertyValuesHelper(statusDB, obsState)
