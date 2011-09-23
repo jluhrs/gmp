@@ -5,8 +5,9 @@
  This manual is divided in the following sections
  - \ref requirements
  - \ref package
- - \ref how_to_run
+ - \ref run_daemon
  - \ref telnet
+ - \ref how_to_exit
  - \ref web_console
  - \ref gmp_configuration
  - \ref giapi_tester
@@ -67,23 +68,6 @@
 
  This directory can be freely deleted
  
- \section how_to_run How to run the Gemini Master Process
- To start the GMP go to the $GMP_HOME/bin directory and call the start.sh script
- 
- At the end of the start the process should be running and there will be a prompt in the screen which is the
- Felix \em gogo console. Press <enter> if you don't see the prompt.
- 
- Type \b help to see the list of available commands and you will see console like this:
- 
- \image html console_help.jpg
- \image latex console_help.jpg
- 
- To see a list of all the bundles that form the Gemini Master process, you can type
- \b lb in the console. You will see an output similar to:
- 
- \image html bundle_list.jpg
- \image latex bundle_list.jpg
- 
  \subsection run_daemon Running the GMP as a Daemon
  
  The $GMP_HOME/bin/gmp-server script can be used to run the GMP as a daemon. It can be used as an init.d script, for
@@ -101,6 +85,26 @@
  to create an empty password file, disallowing remote access to stop the daemon. It must be stopped locally
  using the provided script. When we provide an RPM, there will be a method for creating a valid password file. At that time,
  you will be able to <tt>$ telnet machine_name 8008</tt>, and issue a \c shutdown command.
+ 
+ \section how_to_run How to run in non daemon mode
+ To start the GMP go to the $GMP_HOME/bin directory and call the start.sh script
+ 
+ At the end of the start the process should be running and there will be a prompt in the screen which is the
+ Felix \em gogo console. Press <enter> if you don't see the prompt.
+ 
+ Type \b help to see the list of available commands and you will see console like this:
+ 
+ \image html console_help.jpg
+ \image latex console_help.jpg
+ 
+ To see a list of all the bundles that form the Gemini Master process, you can type
+ \b lb in the console. You will see an output similar to:
+ 
+ \image html bundle_list.jpg
+ \image latex bundle_list.jpg
+ 
+ If GMP is started in this mode it should be stopped with the command \b exit 0.
+ Exiting takes a while and you should let it finish exiting gracefully
  
  \section telnet Telnet Interface
  
