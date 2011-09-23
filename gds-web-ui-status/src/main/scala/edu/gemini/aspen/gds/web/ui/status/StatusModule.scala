@@ -107,30 +107,26 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   private def generateAccordion() {
     for (entry: Entry <- lastDataLabels) {
       if (!entry.dataLabel.equals("")) {
-        if (propertySources.isInError(entry.dataLabel)) {
-          val grid = new GridLayout(2, 3)
-          grid.setMargin(true)
-          grid.setSpacing(true)
-          grid.setSizeFull()
-          grid.setColumnExpandRatio(0, 1.0f)
-          grid.setColumnExpandRatio(1, 3.0f)
-          grid.addComponent(new Label("<b>Time to update FITS for last DataSet:</b>", Label.CONTENT_XHTML))
-          grid.addComponent(new Label(entry.times))
+        val grid = new GridLayout(2, 3)
+        grid.setMargin(true)
+        grid.setSpacing(true)
+        grid.setSizeFull()
+        grid.setColumnExpandRatio(0, 1.0f)
+        grid.setColumnExpandRatio(1, 3.0f)
+        grid.addComponent(new Label("<b>Time to update FITS for last DataSet:</b>", Label.CONTENT_XHTML))
+        grid.addComponent(new Label(entry.times))
+        if (entry.missing.length() > 0) {
           grid.addComponent(new Label("<b>Missing Keywords from last DataSet:</b>", Label.CONTENT_XHTML))
           grid.addComponent(new Label(entry.missing))
+        }
+        if (entry.errors.length() > 0) {
           grid.addComponent(new Label("<b>Error Collecting Keywords from last DataSet:</b>", Label.CONTENT_XHTML))
           grid.addComponent(new Label(entry.errors))
+        }
+        if (propertySources.isInError(entry.dataLabel)) {
           accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/cancel.png"))
         }
         else {
-          val grid = new GridLayout(2, 1)
-          grid.setMargin(true)
-          grid.setSpacing(true)
-          grid.setSizeFull()
-          grid.setColumnExpandRatio(0, 1.0f)
-          grid.setColumnExpandRatio(1, 3.0f)
-          grid.addComponent(new Label("<b>Time to update FITS for last DataSet:</b>", Label.CONTENT_XHTML))
-          grid.addComponent(new Label(entry.times))
           accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/ok.png"))
         }
       }
