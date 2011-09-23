@@ -20,7 +20,7 @@ class CurrentStatusPanel(@Requires statusDB: StatusDatabaseService) extends Abst
     property.setValue(getStatus)
   }
 
-  def getStatus = {
+  private def getStatus = {
     statusDB.getStatusItem("gpi:gds:health") match {
       case x: StatusItem[_] => if (x.getValue == Health.GOOD) {
         "<span style=\"color: green\">" + x.getValue.toString + "</span>"
