@@ -7,10 +7,27 @@ based instruments, such as GPI.
 \section gds_bundles_sec Bundles
 The GDS is comprised of the following bundles:
 - \subpage gds-actors-composer
+- \subpage gds-config-validator
+- \subpage gds-constant-actors
 - \subpage gds-epics-actors
-- \subpage gds-odb-actors
+- \subpage gds-error-policy
+- \subpage gds-fits-checker
+- \subpage gds-fits-updater
+- \subpage gds-health
 - \subpage gds-instrument-status-actors
 - \subpage gds-keywords-database
+- \subpage gds-observation-state
+- \subpage gds-obsevent-handler
+- \subpage gds-odb-actors
+- \subpage gds-performance-monitoring
+- \subpage gds-seqexec-actors
+- \subpage gds-static-header-receiver
+- \subpage gds-web-ui
+- \subpage gds-web-ui-configuration
+- \subpage gds-web-ui-keywords
+- \subpage gds-web-ui-logs
+- \subpage gds-web-ui-status
+
 
 \section design_sec Design Issues
 
