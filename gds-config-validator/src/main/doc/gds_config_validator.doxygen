@@ -1,0 +1,22 @@
+/*!
+  \page gds-config-validator GDS Config Validator
+  This bundle contains a class that can be executed on the command line, to validate configuration files.
+
+  To check a file type:
+  \verbatim
+    $ java -jar $PATH_TO_JAR/gds-config-validator-0.1.0-jar-with-dependencies.jar  -f file_to_check
+  \endverbatim
+  You can use the -h option for help.
+
+  There is also a shell script provided at gds-config-validator/src/main/etc/bin/gds-validator.sh that in the future
+  should set that appropriate paths and should be installed on the machine where the GDS is running.
+
+  \section gds-config-validator_config Configuration
+  This bundle has no configuration options.
+
+  \section gds-config-validator_provides_sec Provided Services
+  This bundle doesn't provide services, as it is intended to be ran standalone on the command line.
+
+  \section gds-config-validator_requires_sec Required Services
+  This bundle doesn't require external services, as it is intended to be ran standalone on the command line.
+ */
