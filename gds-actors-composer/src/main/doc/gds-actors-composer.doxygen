@@ -97,7 +97,7 @@
    <tr>
         <td>Source</td>
         <td>The source of the keyword value</td>
-        <td>EPICS/STATUS/SEQEXEC/ODB/CONSTANT</td>
+        <td>EPICS/STATUS/SEQEXEC/ODB/CONSTANT/IFS</td>
    </tr>
    <tr>
         <td>Source Channel</td>
