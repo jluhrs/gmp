@@ -5,7 +5,8 @@
   There are basically two classes, one that builds actors using the information from the GDS configuration, and the
   actors that read the status values from the EPICS Service 
  
-  \section gds-epics-actors_config The bundle uses the common configuration format and use items of the EPICS suource like:
+  \section gds-epics-actors_config Configuration
+  The bundle uses the common configuration format and use items of the EPICS source like:
   \verbatim
   #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Default    Source         Source                    Array     Comment
   #     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
