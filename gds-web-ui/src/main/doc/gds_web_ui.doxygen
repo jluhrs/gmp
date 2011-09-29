@@ -1,0 +1,19 @@
+/*!
+  \page gds-web-ui GDS Web UI
+  This bundle provides the infrastructure for GDS's Web-based user interface. Each tab in the UI should implement the
+  \ref edu.gemini.aspen.gds.web.ui.api.GDSWebModule "GDSWebModule" interface, and it will be automatically added to the main page.
+
+  \section gds-web-ui_config Configuration
+  This bundle doesn't require any configuration.
+
+  \section gds-web-ui_provides_sec Provided Services
+   This bundle doesn't provide OSGi services.
+
+  \section gds-web-ui_requires_sec Required Services
+  This bundle requires the following services to operate:
+
+  - \ref org.apache.felix.ipojo.Factory
+  - \ref org.ops4j.pax.web.service.WebContainer
+  - \ref edu.gemini.aspen.giapi.status.StatusDatabaseService
+  - \ref org.osgi.service.useradmin.UserAdmin
+ */
