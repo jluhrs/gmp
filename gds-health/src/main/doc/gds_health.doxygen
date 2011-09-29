@@ -6,13 +6,13 @@
   - WARNING: if one or more keyword collecting actors, or the \ref gds-static-header-receiver are missing.
   - BAD: if the \ref gds-obsevent-handler is missing.
 
-  \section gds-epics-actors_config Configuration
+  \section gds-health_config Configuration
    The bundle doesn't require configuring.
 
-  \section gds-epics-actors_provides_sec Provided Services
+  \section gds-health_provides_sec Provided Services
   This bundle provides doesn't provide any OSGi services, as it just instantiates a component that sends status item updates.
 
-  \section gds-epics-actors_requires_sec Required Services
+  \section gds-health_requires_sec Required Services
   This bundle requires the following service to operate:
 
   - \ref edu.gemini.jms.api.JmsProvider "JmsProvider"

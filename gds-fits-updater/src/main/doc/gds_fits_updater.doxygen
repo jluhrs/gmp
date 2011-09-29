@@ -5,9 +5,9 @@
   \section gds-fits-updater_config Configuration
   The bundle doesn't require configuring.
 
-  \section gds-epics-actors_provides_sec Provided Services
+  \section gds-fits-updater_provides_sec Provided Services
   This bundle doesn't provide OSGi services. It just provides the classes FitsReader and FitsUpdater to read and update FITS files.
 
-  \section gds-epics-actors_requires_sec Required Services
+  \section gds-fits-updater_requires_sec Required Services
   This bundle doesn't require any OSGi services.
  */
