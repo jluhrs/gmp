@@ -5,7 +5,8 @@
   Like other actor bundles it contains an actor factory that builds an actor using the information from the GDS configuration, and the actor
    retrieves the values from the TemporarySeqexecKeywordsDatabase.
 
-  \section gds-constant-actors_config The bundle uses the common configuration format and use items of the CONSTANT source like:
+  \section gds-constant-actors_config Configuration
+  The bundle uses the common configuration format and use items of the CONSTANT source like:
   \verbatim
   #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Default    Source         Source                    Array     Comment
   #     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
