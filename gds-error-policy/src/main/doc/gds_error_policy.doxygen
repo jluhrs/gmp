@@ -1,0 +1,18 @@
+/*!
+  \page gds-error-policy GDS Error Policy
+  This bundle contains components intended to process the list of collected keywords before they get written into the FITS file.
+   Currently there are two components: the EnforceMandatoryPolicy and the ErrorsRemovedPolicy. The first one
+  adds keywords that are missing or in error, using default values. The second one removes all keywords still marked as being in error, before they get written to the file.
+  If any of those were mandatory, the previous policy would have added a default value for it.
+
+  \section gds-error-policy_config Configuration
+  This bundle doesn't require any configuration.
+
+  \section gds-error-policy_provides_sec Provided Services
+   This bundle provides as a service several components implementing the \ref edu.gemini.aspen.gds.api.ErrorPolicy interface.
+
+  \section gds-error-policy_requires_sec Required Services
+  This bundle requires the following services to operate:
+
+  - \ref edu.gemini.aspen.gds.api.configuration.GDSConfigurationService    "GDSConfigurationService"
+ */
