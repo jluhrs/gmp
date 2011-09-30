@@ -9,16 +9,19 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, ObservationEventHandler, D
 import org.apache.felix.ipojo.annotations.{Instantiate, Requires, Provides, Component}
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import scala.actors.Actor._
+import edu.gemini.aspen.gmp.services.PropertyHolder
 
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
-class IfsKeywordsChecker(@Requires configService: GDSConfigurationService, @Requires obsState: ObservationStateRegistrar) extends ObservationEventHandler {
+class IfsKeywordsChecker(@Requires configService: GDSConfigurationService,
+                         @Requires obsState: ObservationStateRegistrar,
+                         @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
 
   override def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     event match {
       case ObservationEvent.OBS_END_DSET_WRITE => actor {
-        checkMissing(dataLabel, new File("/tmp/" + dataLabel + ".fits"), configService.getConfiguration)
+        checkMissing(dataLabel, new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH"), dataLabel + ".fits"), configService.getConfiguration)
       } //todo: use a service to get the directory
       case _ =>
     }
