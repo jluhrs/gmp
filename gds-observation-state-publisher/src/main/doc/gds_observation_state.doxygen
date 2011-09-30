@@ -18,8 +18,8 @@
   \section gds-observation-state_requires_sec Required Services
   This bundle requires the following services to operate:
 
-  - \ref edu.gemini.aspen.gds.api.configuration.GDSConfigurationService    "GDSConfigurationService"
+  - \ref edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 
   Also, components implementing the following interface will be bound:
-  - \ref edu.gemini.aspen.gds.observationstate.ObservationStateConsumer "ObservationStateConsumer"
+  - \ref edu.gemini.aspen.gds.observationstate.ObservationStateConsumer
  */

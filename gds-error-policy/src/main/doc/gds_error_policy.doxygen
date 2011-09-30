@@ -14,5 +14,5 @@
   \section gds-error-policy_requires_sec Required Services
   This bundle requires the following services to operate:
 
-  - \ref edu.gemini.aspen.gds.api.configuration.GDSConfigurationService    "GDSConfigurationService"
+  - \ref edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
  */

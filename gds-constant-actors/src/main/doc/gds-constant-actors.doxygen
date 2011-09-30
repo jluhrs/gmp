@@ -1,8 +1,8 @@
 /*!
   \page gds-constant-actors GDS Constant Actors
-  This bundle contains the actors and actors factory that can insert constant values to the FITS keyword set.
+  This bundle contains the actors and actor factories that can insert constant values to the FITS keyword set.
   
-  Like all the other actor bundles y contains an actor factory that builds actors using the information from the GDS configuration, and the actors themselves just return the constant value for the keyword.
+  Like all the other actor bundles it contains an actor factory that builds actors using the information from the GDS configuration, and the actors themselves just return the constant value for the keyword.
  
   \section gds-constant-actors_config The bundle uses the common configuration format and use items of the CONSTANT source like:
   \verbatim

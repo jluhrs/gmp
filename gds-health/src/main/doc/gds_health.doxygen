@@ -18,7 +18,7 @@
   - \ref edu.gemini.jms.api.JmsProvider "JmsProvider"
 
   Additionally, it binds the following services:
-  - \ref edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver "HeaderReceiver"
+  - \ref edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver
   - \ref edu.gemini.aspen.giapi.data.ObservationEventHandler "ObservationEventHandler"
-  - \ref edu.gemini.aspen.gds.api.KeywordActorsFactory "KeywordActorsFactory"
+  - \ref edu.gemini.aspen.gds.api.KeywordActorsFactory
  */

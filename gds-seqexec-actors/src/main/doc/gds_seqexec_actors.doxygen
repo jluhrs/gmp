@@ -22,5 +22,5 @@
   \section gds-seqexec-actors_requires_sec Required Services
   This bundle requires the following services to operate:
 
-  - \ref edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabase "TemporarySeqexecKeywordsDatabase"
+  - \ref edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabase
  */

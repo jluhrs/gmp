@@ -1,6 +1,6 @@
 /*!
   \page gds-epics-actors GDS Epics Actors
-  This bundle contains the actors and actors factory that can gather data values from EPICS to GDS
+  This bundle contains the actors and actor factories that can gather data values from EPICS to GDS
   
   There are basically two classes, one that builds actors using the information from the GDS configuration, and the
   actors that read the status values from the EPICS Service 

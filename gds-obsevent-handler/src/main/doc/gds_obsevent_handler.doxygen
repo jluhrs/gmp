@@ -14,9 +14,9 @@
   \section gds-obsevent-handler_requires_sec Required Services
   This bundle requires the following services to operate:
 
-  - \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory    "CompositeActorsFactory"
-  - \ref edu.gemini.aspen.gds.keywords.database.KeywordsDatabase       "KeywordsDatabase"
-  - \ref edu.gemini.aspen.gds.api.CompositeErrorPolicy                 "CompositeErrorPolicy"
-  - \ref edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar "ObservationStateRegistrar"
+  - \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
+  - \ref edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
+  - \ref edu.gemini.aspen.gds.api.CompositeErrorPolicy
+  - \ref edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
   - \ref edu.gemini.aspen.gmp.services.PropertyHolder           "PropertyHolder"
  */

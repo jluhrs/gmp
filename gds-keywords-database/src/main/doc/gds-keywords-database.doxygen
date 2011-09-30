@@ -12,8 +12,8 @@
   \section gds-keywords-database_provides_sec Provided Services
   The bundle provides two OSGi services
 
-  \ - KeywordsDatabase This service is an actor based store correlating DataLabels to CollectedValues
-  \ - ProgramIdDatabase This service contain a mapping between the Gemini's program id and data labels
+   - KeywordsDatabase This service is an actor based store correlating DataLabels to CollectedValues
+   - ProgramIdDatabase This service contain a mapping between the Gemini's program id and data labels
  
   \section gds-keywords-database_requires_sec Required Services
   This bundle does not requires any external services

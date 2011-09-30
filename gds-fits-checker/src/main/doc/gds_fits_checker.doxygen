@@ -14,6 +14,6 @@
   \section gds-fits-checker_requires_sec Required Services
   This bundle requires the following services to operate:
 
-  - \ref edu.gemini.aspen.gds.api.configuration.GDSConfigurationService "GDSConfigurationService"
-  - \ref edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar "ObservationStateRegistrar"
+  - \ref edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
+  - \ref edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
  */
