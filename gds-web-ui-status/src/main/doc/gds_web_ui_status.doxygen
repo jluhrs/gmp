@@ -1,0 +1,20 @@
+/*!
+  \page gds-web-ui-status GDS Web UI Keyword Configuration
+  This bundle adds a tab to the Web UI, where you can view the status of the latest observations. It provides information
+  on whether an observation's FITS file was successfully processed, and if not, show if any keywords are missing or
+  produced an error when trying to collect them. For more information about an erroneous observation you should check the logs.
+
+\image html web-ui-status.png
+
+  \section gds-web-ui-status_config Configuration
+  This bundle doesn't require any configuration.
+
+  \section gds-web-ui-status_provides_sec Provided Services
+   This bundle provides a \ref edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory service.
+
+  \section gds-web-ui-status_requires_sec Required Services
+  This bundle requires the following services to operate:
+
+  - \ref edu.gemini.aspen.giapi.status.StatusDatabaseService
+  - \ref edu.gemini.aspen.gds.observationstate.ObservationStateProvider
+  */

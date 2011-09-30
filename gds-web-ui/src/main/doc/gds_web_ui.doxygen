@@ -1,7 +1,7 @@
 /*!
   \page gds-web-ui GDS Web UI
   This bundle provides the infrastructure for GDS's Web-based user interface. Each tab in the UI should implement the
-  \ref edu.gemini.aspen.gds.web.ui.api.GDSWebModule "GDSWebModule" interface, and it will be automatically added to the main page.
+  \ref edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory "GDSWebModuleFactory" interface, and it will be automatically added to the main page.
 
   \section gds-web-ui_config Configuration
   This bundle doesn't require any configuration.

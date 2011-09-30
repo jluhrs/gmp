@@ -1,0 +1,17 @@
+/*!
+  \page gds-web-ui-logs GDS Web UI Logs
+  This bundle adds a tab to the Web UI, where you can view the GMP logs.
+
+\image html web-ui-logs.png
+
+  \section gds-web-ui-logs_config Configuration
+  This bundle doesn't require any configuration.
+
+  \section gds-web-ui-logs_provides_sec Provided Services
+   This bundle provides \ref edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory, \ref org.ops4j.pax.logging.spi.PaxAppender
+    and \ref edu.gemini.aspen.gds.web.ui.logs.LogSource services.
+
+  \section gds-web-ui-logs_requires_sec Required Services
+  This bundle doesn't require any OSGi services.
+
+  */
