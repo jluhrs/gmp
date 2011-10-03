@@ -1,104 +1,153 @@
 /*! \page release_notes Release Notes
 
-<h2> Release Notes - GMP Server -  Release 12-BETA. August 17, 2011 </h2>
-    <ul>
-        <li>giapi-tester in encapsulated on a bash script called giapi-tester.sh</li>
-        <li>GMP can be run as a daemon</li>
-        <li>Beta implementation of Giapi Data Service (GDS)</li>
-        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 12
-    
+<h2> <a href='http://swgserv01:8080/secure/ReleaseNote.jspa?projectId=10120&version=10664'> Release Notes - Gemini Instrument Application Programmer Interface - Version Release 13 - <b>Unreleased</b> </a></h2>
+
+ <h2> Release Notes - Gemini Instrument Application Programmer Interface - Version Release 12 - Release Date: 09/Sep/11
+  </h2>
+ <h2>        Bug
+ </h2>
+ <ul>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-171'>GIAPI-171</a>] -         Shutdown command shouldn&#39;t park the instrument
+ </li>
+ </ul>
+
+ <h2>        Improvement
+ </h2>
+ <ul>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-94'>GIAPI-94</a>] -         Enable getTCSContext Functionality
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-133'>GIAPI-133</a>] -         Create Handlers State Service
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-139'>GIAPI-139</a>] -         Do a final review of GMP-status-service
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-163'>GIAPI-163</a>] -         Unify all the GMP versions for easier release management
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-166'>GIAPI-166</a>] -         Make the log show in the web console
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-167'>GIAPI-167</a>] -         Limit the items shown in the webconsole to only the interesting ones for GMP
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-168'>GIAPI-168</a>] -         Add a link to the documentation on the web console
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-169'>GIAPI-169</a>] -         Make Action Class on gmp-commands module immutable
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-170'>GIAPI-170</a>] -         Remove GMP servlet
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-172'>GIAPI-172</a>] -         Incorporate multicast admin to shutdown OSGi Apps to GMP
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-175'>GIAPI-175</a>] -         Document configuration files and options
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-176'>GIAPI-176</a>] -         epics-service bundle must use configuration file
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-177'>GIAPI-177</a>] -         Clean up Epics Service + Add unit tests
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-183'>GIAPI-183</a>] -         Complete structure in GMP Developers Documentation
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-185'>GIAPI-185</a>] -         Convert Logging Service to iPojo
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-188'>GIAPI-188</a>] -         GIAPI tester must initialize Log4J
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-189'>GIAPI-189</a>] -         Hearbeat Service must track JMS Provider
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-190'>GIAPI-190</a>] -         Add a Heartbeat consumer service
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-191'>GIAPI-191</a>] -         Remove gmp-epics-status-service/src/main/etc directory if not needed
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-192'>GIAPI-192</a>] -         StatusHandler.update() must use a parametrized StatusItem
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-193'>GIAPI-193</a>] -         Refactor code in EpicsStatusService
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-194'>GIAPI-194</a>] -         Convert C++/GMP integration documentation to Doxygen
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-195'>GIAPI-195</a>] -         Improve documentation on how to test StatusItem updates to EPICS channels
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-196'>GIAPI-196</a>] -         Make the default timeout for Commands a constant
+ </li>
+ </ul>
+
+ <h2>        Story
+ </h2>
+ <ul>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-92'>GIAPI-92</a>] -         Enable EPICS Status Monitoring Functionality
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-201'>GIAPI-201</a>] -         As A GIAPI developer I want to complete the implementation of all the commands
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-205'>GIAPI-205</a>] -         As a GIAPI developer I need a new module for Integration Tests so I don&#39;t need to put test components inside regular bundles
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-207'>GIAPI-207</a>] -         As a GIAPI-developer I want to do a stress tests for commands to detect possible memory leaks
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-216'>GIAPI-216</a>] -         As a GMP user I want to issue GIAPI commands on the Felix Command Line
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-294'>GIAPI-294</a>] -         Upgrade Felix/Pax-runner
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-296'>GIAPI-296</a>] -         Expose PropertyHolder as an internal service to obtain service properties
+ </li>
+ <li>[<a href='http://swgserv01:8080/browse/GIAPI-671'>GIAPI-671</a>] -         Add option to giapi-tester to show the timestamp of the status items in the db
+ </li>
+ </ul>
+
+
+<h2>Release Notes - Gemini Instrument Application Programmer Interface - Version Release 11 - Release Date: 25/Feb/11
+ </h2>
 <h2>        Bug
 </h2>
 <ul>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-171'>GIAPI-171</a>] -         Shutdown command shouldn&#39;t park the instrument
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-143'>GIAPI-143</a>] -         @Update is being called twice, and @Validate once, all concurrently.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-186'>GIAPI-186</a>] -         Null Configuration should be valid for sequence commands
 </li>
 </ul>
-        
+
 <h2>        Improvement
 </h2>
 <ul>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-94'>GIAPI-94</a>] -         Enable getTCSContext Functionality
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-91'>GIAPI-91</a>] -         Add EPICS JCAS bundle integration
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-133'>GIAPI-133</a>] -         Create Handlers State Service
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-122'>GIAPI-122</a>] -         Add Guava Bundle
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-139'>GIAPI-139</a>] -         Do a final review of GMP-status-service
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-123'>GIAPI-123</a>] -         Rework the assembly part of gmp-server to generate self contained artifacts
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-163'>GIAPI-163</a>] -         Unify all the GMP versions for easier release management
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-126'>GIAPI-126</a>] -         Test that deployment package works in Linux
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-166'>GIAPI-166</a>] -         Make the log show in the web console
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-127'>GIAPI-127</a>] -         Test that deployment package doesn&#39;t need Internet
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-167'>GIAPI-167</a>] -         Limit the items shown in the webconsole to only the interesting ones for GMP
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-128'>GIAPI-128</a>] -         Add documentation to deployment package
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-168'>GIAPI-168</a>] -         Add a link to the documentation on the web console
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-131'>GIAPI-131</a>] -         Convert jms-activemq-broker to iPOJO
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-169'>GIAPI-169</a>] -         Make Action Class on gmp-commands module immutable
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-136'>GIAPI-136</a>] -         Create main GMP documentation and pictures
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-170'>GIAPI-170</a>] -         Remove GMP servlet
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-138'>GIAPI-138</a>] -         Generate doxygen and include it in release tar file
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-172'>GIAPI-172</a>] -         Incorporate multicast admin to shutdown OSGi Apps to GMP
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-142'>GIAPI-142</a>] -         Create build script
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-175'>GIAPI-175</a>] -         Document configuration files and options
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-144'>GIAPI-144</a>] -         Add EPICS channels simulation to Channel Access Server
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-176'>GIAPI-176</a>] -         epics-service bundle must use configuration file
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-145'>GIAPI-145</a>] -         Add EPICS Status Service to GMP to export instrument status items to EPICS
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-177'>GIAPI-177</a>] -         Clean up Epics Service + Add unit tests
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-146'>GIAPI-146</a>] -         giapi-tester functionality updates
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-183'>GIAPI-183</a>] -         Complete structure in GMP Developers Documentation
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-147'>GIAPI-147</a>] -         Migrate ant build system to Maven
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-185'>GIAPI-185</a>] -         Convert Logging Service to iPojo
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-148'>GIAPI-148</a>] -         Create documentation in doxygen
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-188'>GIAPI-188</a>] -         GIAPI tester must initialize Log4J
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-149'>GIAPI-149</a>] -         Upgrade to OSGi V4 and Felix
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-189'>GIAPI-189</a>] -         Hearbeat Service must track JMS Provider
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-150'>GIAPI-150</a>] -         Adopt iPojo/ConfigAdmin/FileInstall
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-190'>GIAPI-190</a>] -         Add a Heartbeat consumer service
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-151'>GIAPI-151</a>] -         Add web based UI to show/edit the bundle&#39;s properties
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-191'>GIAPI-191</a>] -         Remove gmp-epics-status-service/src/main/etc directory if not needed
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-152'>GIAPI-152</a>] -         Ensure the GMP start script runs with csh shell
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-192'>GIAPI-192</a>] -         StatusHandler.update() must use a parametrized StatusItem
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-154'>GIAPI-154</a>] -         Test newer activeMQ (3.2.4)
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-193'>GIAPI-193</a>] -         Refactor code in EpicsStatusService
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-159'>GIAPI-159</a>] -         Add info on giapi-tester to doxygen docs
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-194'>GIAPI-194</a>] -         Convert C++/GMP integration documentation to Doxygen
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-164'>GIAPI-164</a>] -         Update ICD-50 (C++ glue) and upload to DMT
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-195'>GIAPI-195</a>] -         Improve documentation on how to test StatusItem updates to EPICS channels 
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-165'>GIAPI-165</a>] -         Reorganize and expand mainpage of doxygen documentation
 </li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-196'>GIAPI-196</a>] -         Make the default timeout for Commands a constant
-</li>
-</ul>
-        
-<h2>        Story
-</h2>
-<ul>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-92'>GIAPI-92</a>] -         Enable EPICS Status Monitoring Functionality
-</li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-201'>GIAPI-201</a>] -         As A GIAPI developer I want to complete the implementation of all the commands
-</li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-205'>GIAPI-205</a>] -         As a GIAPI developer I need a new module for Integration Tests so I don&#39;t need to put test components inside regular bundles
-</li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-207'>GIAPI-207</a>] -         As a GIAPI-developer I want to do a stress tests for commands to detect possible memory leaks
-</li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-216'>GIAPI-216</a>] -         As a GMP user I want to issue GIAPI commands on the Felix Command Line
-</li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-294'>GIAPI-294</a>] -         Upgrade Felix/Pax-runner
-</li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-296'>GIAPI-296</a>] -         Expose PropertyHolder as an internal service to obtain service properties
-</li>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-671'>GIAPI-671</a>] -         Add option to giapi-tester to show the timestamp of the status items in the db
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-180'>GIAPI-180</a>] -         Update CSS style for documentation to show Gemini Logo aligned to the right in the header
 </li>
 </ul>
-    
-    </ul>
-<h2> Release Notes - GMP Server -  Release 11. February 24, 2011 </h2>
-    <ul>
-        <li>Add EPICS channels simulation to Channel Access Server </li>
-        <li>Add EPICS Status Service to GMP to export instrument status items to EPICS </li>
-        <li>giapi-tester functionality updates </li>
-        <li>Migrate ant build system to Maven </li>
-        <li>Create documentation in doxygen </li>
-        <li>Upgrade to OSGi V4 and Felix </li>
-        <li>Adopt iPojo/ConfigAdmin/FileInstall </li>
-        <li>Add web based UI to show/edit the bundle's properties </li>
-    </ul>
 
  */
