@@ -28,7 +28,6 @@ The GDS is comprised of the following bundles:
 - \subpage gds-web-ui-logs
 - \subpage gds-web-ui-status
 
-
 \section design_sec Design Issues
 
 \subsection composition_sec Data Values Composition
@@ -66,7 +65,6 @@ the seqexec can query for GIAPI based instruments. The major disadvantage is the
 software like the DHS. For consistency and simplicity, if this option is taken, the communication with the new external
 service should use the same protocol as the one used in \ref fits_seqexec_sec.
 - Generate datalabels independently in GDS and DHS, and ensure no collisions will happen by changing the naming convention.
-
 
 \subsection fits_seqexec_sec Sending FITS Headers from Seqexec to GDS
 The FITS headers that the seqexec provides, must be passed to the GDS. There aren't many suitable remote communication
@@ -240,6 +238,5 @@ POST 6
 
 \li On jconsole the memory consumption can be checked on the Memory tab as shown below:
 \image html jconsole_memory_tab.png
-
 
 */

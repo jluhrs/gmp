@@ -38,8 +38,7 @@ case class ArrayIndex(value: Int) {
 case class FitsComment(value: String)
 
 /**
- * Encapsulates a configuration item of GDS
- */
+ * Encapsulates a configuration item of GDS */
 case class GDSConfiguration(instrument: Instrument,
                             event: GDSEvent,
                             keyword: FitsKeyword,

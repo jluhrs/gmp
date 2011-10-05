@@ -2,6 +2,7 @@ package edu.gemini.aspen.gds.api
 
 import edu.gemini.aspen.giapi.data.DataLabel
 import java.util.logging.Logger
+import scala.collection._
 
 /**
  * Defines an error policy
@@ -20,7 +21,7 @@ trait ErrorPolicy {
    * @param headers Proposed set of headers
    * @return A list of headers to be written to the fits file
    */
-  def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]]
+  def applyPolicy(dataLabel: DataLabel, headers: immutable.List[CollectedValue[_]]): immutable.List[CollectedValue[_]]
 }
 
 /**
@@ -30,5 +31,5 @@ class DefaultErrorPolicy extends ErrorPolicy {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
   // Let all the original headers to be applied
-  override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = headers
+  override def applyPolicy(dataLabel: DataLabel, headers: immutable.List[CollectedValue[_]]): immutable.List[CollectedValue[_]] = headers
 }

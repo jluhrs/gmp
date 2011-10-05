@@ -1,13 +1,18 @@
 package edu.gemini.aspen.gds.api
 
 import edu.gemini.fits.{HeaderItem, DefaultHeaderItem}
+import scala.collection._
 
+/**
+ * Defines a type class for Fits keywords */
 abstract class FitsType[T] {
   def collectedValueToHeaderItem(collectedValue: CollectedValue[T]): HeaderItem
 }
 
+/**
+ * Implicit conversions that limit what values can be passed as Fits Keywords */
 object FitsType {
-  val typeNames = List("STRING", "DOUBLE", "INT")
+  val typeNames = immutable.List("STRING", "DOUBLE", "INT")
 
   implicit object IntegerType extends FitsType[Int] {
 

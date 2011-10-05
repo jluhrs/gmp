@@ -3,8 +3,7 @@ package edu.gemini.aspen.gds.api
 import edu.gemini.aspen.giapi.data.FitsKeyword
 
 /**
- * Message indicating the value collected by GDS was the default
- */
+ * Message indicating the value collected by GDS was the default */
 class DefaultCollectedValue[T](keyword: FitsKeyword, value: T, comment: String, index: Int)(override implicit val _type: FitsType[T]) extends CollectedValue[T](keyword, value, comment, index) {
     // Can only equal the same type
     override protected def canEqual(other: Any): Boolean = other.isInstanceOf[DefaultCollectedValue[_]]

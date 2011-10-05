@@ -1,12 +1,12 @@
 package edu.gemini.aspen.gds.api
 
 import java.util.logging.{Logger, Level}
+import scala.collection._
 
 /**
  * Abstract class extending a KeywordValueActor adding some useful methods
  *
- * Actors reading from different sources can extend this class to simplify building those actors
- */
+ * Actors reading from different sources can extend this class to simplify building those actors */
 abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) extends KeywordValueActor {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
@@ -23,14 +23,12 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
   override def exceptionHandler = {
     case e: Exception => {
       LOG log (Level.SEVERE, "Unhandled exception while collecting data item", e)
-      reply(List(ErrorCollectedValue(fitsKeyword, CollectionError.GenericError, fitsComment, headerIndex)))
+      reply(immutable.List(ErrorCollectedValue(fitsKeyword, CollectionError.GenericError, fitsComment, headerIndex)))
     }
   }
 
   /**
-   * Method to convert a value read from a given source to the type requested in the configuration
-   *
-   */
+   * Method to convert a value read from a given source to the type requested in the configuration */
   protected def valueToCollectedValue(value: Any): CollectedValue[_] = dataType match {
     // Anything can be converted to a string
     case DataType("STRING") => CollectedValue(fitsKeyword, value.toString, fitsComment, headerIndex)
@@ -42,7 +40,12 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
     case _ => newMismatchError
   }
 
-  private def newMismatchError = ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
+  private def newDoubleCollectedValue(value: Any):CollectedValue[_] = value match {
+    case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue, fitsComment, headerIndex)
+    case _ => newMismatchError
+  }
+
+  private def collectedValueFromInt(value: Int):CollectedValue[_] = CollectedValue(fitsKeyword, value, fitsComment, headerIndex)
 
   private def newIntCollectedValue(value: Any) = value match {
     case x: java.lang.Long => {
@@ -55,11 +58,6 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
     case _ => newMismatchError
   }
 
-  private def collectedValueFromInt(value: Int) = CollectedValue(fitsKeyword, value, fitsComment, headerIndex)
-
-  private def newDoubleCollectedValue(value: Any) = value match {
-    case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue, fitsComment, headerIndex)
-    case _ => newMismatchError
-  }
+  private def newMismatchError = ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
 
 }

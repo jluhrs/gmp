@@ -3,8 +3,7 @@ package edu.gemini.aspen.gds.api
 import edu.gemini.aspen.giapi.data.FitsKeyword
 
 /**
- * Enumeration of possible errors
- */
+ * Enumeration of possible errors */
 object CollectionError extends Enumeration {
     type CollectionError = Value
     val MandatoryRequired = Value("MandatoryRequired")
@@ -15,8 +14,7 @@ object CollectionError extends Enumeration {
 }
 
 /**
- * Message indicating the result of a collection event was as error
- */
+ * Message indicating the result of a collection event was as error */
 class ErrorCollectedValue(keyword: FitsKeyword, val error: CollectionError.CollectionError, comment: String, index: Int) extends CollectedValue[String](keyword, "", comment, index) {
     override val isError = true
 
@@ -28,8 +26,7 @@ class ErrorCollectedValue(keyword: FitsKeyword, val error: CollectionError.Colle
 }
 
 /**
- * Companion object used to place implicit conversions
- */
+ * Companion object used to place apply/unapply */
 object ErrorCollectedValue {
     def apply(keyword: FitsKeyword, error: CollectionError.CollectionError, comment: String, index: Int) = new ErrorCollectedValue(keyword, error, comment, index)
 

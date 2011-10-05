@@ -4,8 +4,7 @@ import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.fits.HeaderItem
 
 /**
- * Message indicating the resulting values
- */
+ * Message indicating the resulting values */
 class CollectedValue[T] protected(val keyword: FitsKeyword, val value: T, val comment: String, val index: Int)(implicit val _type: FitsType[T]) {
     val isError = false
 
@@ -23,8 +22,7 @@ class CollectedValue[T] protected(val keyword: FitsKeyword, val value: T, val co
 }
 
 /**
- * Companion object used to place implicit conversions, apply and unapply
- */
+ * Companion object used to place implicit conversions, apply and unapply */
 object CollectedValue {
     implicit def collectedValueToHeaderItem[T](collectedValue: CollectedValue[T])(implicit _type: FitsType[T]): HeaderItem = {
         _type.collectedValueToHeaderItem(collectedValue)

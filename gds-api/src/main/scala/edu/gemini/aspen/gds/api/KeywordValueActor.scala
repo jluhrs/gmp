@@ -1,11 +1,12 @@
 package edu.gemini.aspen.gds.api
 
 import actors.Actor
+import scala.collection._
 
 /**
  * Message indicating that a value should be collected
  */
-case class Collect()
+case object Collect
 
 /**
  * Trait for an actor that retrieve a specific value
@@ -13,13 +14,13 @@ case class Collect()
  * It is expected that the reply will be a List[CollectedValues]
  */
 trait KeywordValueActor extends Actor {
-    start()
+  start()
 
-    override def act() {
-        react {
-            case Collect => reply(collectValues())
-        }
+  override def act() {
+    react {
+      case Collect => reply(collectValues())
     }
+  }
 
-    def collectValues(): List[CollectedValue[_]]
+  def collectValues(): immutable.List[CollectedValue[_]]
 }

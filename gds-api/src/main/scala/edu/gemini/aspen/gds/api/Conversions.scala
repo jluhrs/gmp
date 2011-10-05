@@ -2,7 +2,6 @@ package edu.gemini.aspen.gds.api
 
 import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
 
-
 /**
  * Place to put implicit conversions for Java classes.
  */
