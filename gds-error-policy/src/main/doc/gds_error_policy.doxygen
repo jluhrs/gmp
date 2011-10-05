@@ -1,7 +1,9 @@
 /*!
   \page gds-error-policy GDS Error Policy
   This bundle contains components intended to process the list of collected keywords before they get written into the FITS file.
-   Currently there are two components: the EnforceMandatoryPolicy and the ErrorsRemovedPolicy. The first one
+  These components define error policies that are used to handle the collected values that are marked as error.
+
+  Currently there are two components: the EnforceMandatoryPolicy and the ErrorsRemovedPolicy. The first one
   adds keywords that are missing or in error, using default values. The second one removes all keywords still marked as being in error, before they get written to the file.
   If any of those were mandatory, the previous policy would have added a default value for it.
 
