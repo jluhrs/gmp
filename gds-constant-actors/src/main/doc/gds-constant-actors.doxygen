@@ -12,7 +12,7 @@
       GPI          OBS_PREP      OBSERVATORY 0        STRING          F            Default_value      CONSTANT     none     GEMINI     "Name of the Observatory"
   \endverbatim
  
-  Where the Default Value will be stored at the keyword as is.
+  Where the Default Value will be stored at the keyword "as is". Though the Source Channel is not used some value needs to be provided, "none" is recommended
  
   \section gds-constant-actors_provides_sec Provided Services
   This bundle provides as a service the ConstantActorsFactory with the KeywordStatusActorFactory interface

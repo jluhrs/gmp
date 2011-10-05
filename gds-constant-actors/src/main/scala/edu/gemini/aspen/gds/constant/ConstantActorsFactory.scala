@@ -2,7 +2,6 @@ package edu.gemini.aspen.gds.constant
 
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import java.util.logging.Logger
 import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
 
 /**
