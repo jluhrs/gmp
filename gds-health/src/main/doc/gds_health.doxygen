@@ -10,14 +10,14 @@
    The bundle doesn't require configuring.
 
   \section gds-health_provides_sec Provided Services
-  This bundle provides doesn't provide any OSGi services, as it just instantiates a component that sends status item updates.
+  This bundle doesn't provide any OSGi services, as it just instantiates a component that sends status item updates.
 
   \section gds-health_requires_sec Required Services
   This bundle requires the following service to operate:
 
   - \ref edu.gemini.jms.api.JmsProvider "JmsProvider"
 
-  Additionally, it binds the following services:
+  Additionally, it optionally binds the following services:
   - \ref edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver
   - \ref edu.gemini.aspen.giapi.data.ObservationEventHandler "ObservationEventHandler"
   - \ref edu.gemini.aspen.gds.api.KeywordActorsFactory
