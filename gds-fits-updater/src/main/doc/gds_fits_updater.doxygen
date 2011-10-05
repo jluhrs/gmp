@@ -1,6 +1,6 @@
 /*!
   \page gds-fits-updater GDS FITS Updater
-  This bundle contains classes the read and update FITS files.
+  This bundle contains classes that read and update FITS files.
 
   \section gds-fits-updater_config Configuration
   The bundle doesn't require configuring.
