@@ -1,6 +1,6 @@
 /*!
   \page gds-instrument-status-actors GDS Instrument Status Actors
-  This bundle contains the actors and actors factory that can gather data values from the Instrument Status to GDS
+  This bundle contains the actors and actors factory that can gather data values from Instrument Statuses to GDS
   
   There are basically two classes, one that builds actors using the information from the GDS configuration, and the
   actors that read the status values from the Status Database
