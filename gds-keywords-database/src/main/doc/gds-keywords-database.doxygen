@@ -1,9 +1,13 @@
 /*!
  \page gds-keywords-database GDS Keywords Database
-  This bundle contains a simple in-memory database used to store keywords the GDS. GDS collects
-  keyword values for each data label and stores them in this database.
+  This bundle contains two simple in-memory databases
+  \- KeywordsDatabase: used to store keywords the GDS
+  \- ProgramIdDatabase: Maps between program ids and data labels.
 
-  Additionally, this bundle has another in-memory database to store a mapping between Gemini's program id and the data labels being processed.
+  GDS collects keyword values for each data label and stores them in the KeywordsDatabase until they can be written to the FITS file.
+
+  The ProgramIdDatabase stores a mapping between Gemini's program id and the data labels being processed. This mapping is provided by the Seqexec and is used to query ODB about the
+  program properties
 
   Both databases are not persistent, this is by design, and it is meant to simplify the system and persistence was not deemed necessary as observations tend to be short. It the future, for robustness' sake a persistent option could be implemented.
 
