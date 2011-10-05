@@ -4,6 +4,7 @@ import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordActorsFactory, GDSConfiguration}
+import scala.collection._
 
 /**
  * Interface for a Composite of Actors Factory required by OSGi
@@ -12,29 +13,30 @@ trait CompositeActorsFactory extends KeywordActorsFactory
 
 /**
  * A composite Actors Factory that can listen for OSGi services registered as
- * keyword actors factories
- */
+ * keyword actors factories */
 @Component
-@Provides(specifications = Array(classOf[CompositeActorsFactory]))
 @Instantiate
+@Provides(specifications = Array(classOf[CompositeActorsFactory]))
 class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends AbstractKeywordActorsFactory with CompositeActorsFactory {
-  var factories = List[KeywordActorsFactory]()
+  // List of composed factories
+  @volatile var factories = immutable.List[KeywordActorsFactory]()
 
-  override def configure(configuration: List[GDSConfiguration]) {
+  override def configure(configuration: immutable.List[GDSConfiguration]) {
+    // Configure each factory in the composite
     factories foreach {
       _.configure(configuration)
     }
   }
 
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+    // Collects all actors built by each factory
     factories flatMap {
       _.buildActors(obsEvent, dataLabel)
     }
   }
 
   /**
-   * Method called when a new KeywordActorsFactory is registered
-   */
+   * Method called when a new KeywordActorsFactory is registered */
   @Bind(aggregate = true, optional = true)
   def bindKeywordFactory(keywordFactory: KeywordActorsFactory) {
     keywordFactory.configure(actorsConfiguration)
@@ -42,8 +44,7 @@ class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationServic
   }
 
   /**
-   * Method called when a KeywordActorsFactory is unregistered
-   */
+   * Method called when a KeywordActorsFactory is unregistered */
   @Unbind(aggregate = true)
   def unbindKeywordFactory(keywordFactory: KeywordActorsFactory) {
     factories = factories filterNot {
@@ -52,8 +53,7 @@ class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationServic
   }
 
   /**
-   * Method called when the Component is ready to start
-   */
+   * Method called when the Component is ready to start */
   @Validate
   def startConfiguration() {
     actorsConfiguration = configService.getConfiguration

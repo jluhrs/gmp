@@ -1,8 +1,8 @@
 /*!
  \page gds-actors-composer GDS Actors Composer
-  This bundle contains the core logic of the Gemini Data Service (GDS). GDS is a process used to complete data collection
-  reacting to observation events and sample values from different subsystems that are to be stored in the resulting
-  observation file, normally a FITS file.
+  This bundle contains the core logic of the Gemini Data Service (GDS). GDS is a process used to complete the data
+  collection stage of GIAPI based instruments, reacting to observation events and sample values
+  from different subsystems that are to be stored in the resulting observation file as keywords in a FITS file.
  
   This module contains 3 main parts:
  
@@ -10,28 +10,32 @@
   - \ref gds-keyword_factory_composite
   - \ref gds-keyword_factory_configuration
  
+  \section gds-keyword_values_composer Keyword Value Composer
+  The Keyword Value Composer is an actor based class that takes care of launching and controlling other actors built by
+  the KeywordActorFactory services. The composer will launch these sub-actors in response to observation events sent
+  by the instrument. The actors will collect their results and use those at the end of the observation
+  to compose the whole data sample. This can be better expressed in the sequence command below:
+ 
+  \image html keyword-value-composer-collaboration.jpg
+ 
   \section gds-keyword_factory_composite Keyword Factory Composite
   The bundle includes an OSGi based \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory.scala "CompositeActorsFactory"
-  which is a software composite of other OSGi-based KeywordActorFactory services and manages them together.
+  which is a software composite of other OSGi-based KeywordActorFactory services. The factories are collected using OSGi service discovery.
  
-  This arrangement is necessary as the KeywordFactory classes often need to access other OSGi services and thus cannot
-  be directly instantiated. Using the Composite also avoids the need for the KeywordValueComposer to know about this
+  Each KeywordActorFactory knows how to build actors of a type that can read data of a specific source, so we can have an Epics
+  KeywordActorFactory, an ODB KeywordActorFactory, etc
+
+  This arrangement is necessary as the KeywordActorFactory classes often need to access other OSGi services and thus cannot
+  be directly instantiated. Using the Composite also reduces the need for the KeywordValueComposer to know about these
   extra OSGi dependencies and makes it very easy to extend to new actors types as needed.
  
   The interaction between the CompositeActorsFactory and the KeywordActorFactory classes is shown in the diagram below
  
   \image html keyword-actor-factory-composite.jpg
  
-  \section gds-keyword_values_composer Keyword Value Composer
-  The Keyword Value Composer is an actor based class that takes care of launching and controlling other actors built by
-  the Keyword Actors Factory. The composer will launch these sub-actors, collect their result and use them at the end
-  to compose the whole data sample. This can be better expressed in the sequence command below:
- 
-  \image html keyword-value-composer-collaboration.jpg
- 
   \section gds-keyword_factory_configuration GDS Configuration
-  The configuration to the GDS is centralized in a single file. This file is pased as a single parameter to the Keyword Factory Composite
-  and then further passed to the different KeywordActorsFactory
+  The configuration to the GDS is centralized in a single file. This file is pased as a single parameter to the CompositeActorsFactory
+  and then further passed to the each KeywordActorsFactory
 
   The current format of the configuration file can be show below:
 \verbatim
@@ -62,7 +66,7 @@
    <tr>
         <th>Column Name</th>
         <th>Description</th>
-        <th>Allowed Volues</th>
+        <th>Allowed Values</th>
    </tr>
    <tr>
         <td>Instrument</td>
@@ -71,8 +75,8 @@
    </tr>
    <tr>
         <td>Event</td>
-        <td>The value will be acquired by GDS upon th given </td>
-        <td>OBS_PREP, OBS_END_ACQ, OBS_START_ACQ</td>
+        <td>The value will be acquired by GDS upon the given event</td>
+        <td>OBS_PREP, OBS_END_ACQ, OBS_START_ACQ, OBS_START_READOUT, OBS_END_READOUT, OBS_START_DSET_WRITE, OBS_END_DSET_WRITE</td>
    </tr>
    <tr>
         <td>Keyword Name in FITS</td>
@@ -111,16 +115,19 @@
    </tr>
    <tr>
         <td>Comment</td>
-        <td>A comment to be included in the FITSN keyword</td>
+        <td>A comment to be included in the FITS keyword</td>
         <td>Any text enclosed in quotes</td>
    <tr>
 </table> 
   \section gds-actors-composer_provides_sec Provided Services
-  This bundle provides the following OSGi services
+  This bundle provides the following OSGi services:
+  - \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory.scala "CompositeActorsFactory"
  
   \section gds-actors-composer_requires_sec Required Services
   This bundle requires the following services to operate:
+  - \ref edu.gemini.aspen.gds.api.configuration.GDSConfigurationService "GDS Configuration Service"
  
   \section gds-actors-composer_configuration_sec Configuration
+  There are no configurable properties on this bundle
 
  */

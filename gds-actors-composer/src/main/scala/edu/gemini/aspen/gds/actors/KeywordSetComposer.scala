@@ -2,11 +2,12 @@ package edu.gemini.aspen.gds.actors
 
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import scala.actors.{Futures, OutputChannel, Actor}
+import scala.actors._
+import scala.actors.Actor._
+import scala.collection._
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.keywords.database.{StoreList, KeywordsDatabase}
 import org.joda.time.DateTime
-import scala._
 import java.util.logging.{Level, Logger}
 
 /**
@@ -49,16 +50,15 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     }
   }
 
-  private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => List[Actor]) = {
+  private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => immutable.List[Actor]):immutable.List[Future[Any]] = {
     // Get the actors from the factory
     val actors = measureDuration("Building actors for event:" + obsEvent) {
       try {
         actorsBuilder(obsEvent, dataLabel)
       } catch {
-        case e => {
+        case e =>
           LOG.log(Level.SEVERE, "Caught an exception from an actor factory", e)
           Nil
-        }
       }
     }
 
@@ -71,16 +71,16 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     dataFutures
   }
 
-  private def waitForDataAndReply(dataLabel: DataLabel, dataFutures: List[Future[Any]])(postAction: => Unit) {
+  private def waitForDataAndReply(dataLabel: DataLabel, dataFutures: immutable.List[Future[Any]])(postAction: => Unit) {
     measureDuration("Waiting for " + dataFutures.size + " data items ") {
       // Wait for response
-      val v = Futures awaitAll(5000, dataFutures: _*) collect {
-        case Some(x: List[CollectedValue[_]]) => x
-        case None => {
+      val v = Futures.awaitAll(5000, dataFutures: _*).collect {
+        case Some(l: List[_]) => l collect {
+          case x:CollectedValue[_] => x
+        }
+        case None =>
           LOG.warning("Missing return of collecting data")
           Nil
-        }
-        case x: Any => error("Cannot be " + x)
       }
 
       keywordsDatabase ! StoreList(dataLabel, v.flatten)
@@ -89,12 +89,14 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     postAction
   }
 
+  /**
+   * Interceptor method to measure how long a given action takes */
   private def measureDuration[T](msg: String)(action: => T): T = {
     val s = new DateTime()
-    val r = action
+    val result = action
     val e = new DateTime()
     LOG.fine(msg + " took " + (s to e).toDuration + " [ms]")
-    r
+    result
   }
 
 }

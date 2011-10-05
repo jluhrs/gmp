@@ -5,8 +5,7 @@ import edu.gemini.aspen.gds.keywords.database.impl.KeywordsDatabaseImpl
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import edu.gemini.aspen.gds.api.{CollectedValue, KeywordValueActor, KeywordActorsFactory}
-import edu.gemini.aspen.gds.api.CollectedValue.apply
-import edu.gemini.aspen.giapi.data.{FitsKeyword, ObservationEvent, DataLabel}
+import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import actors.Futures
 import org.junit.Test
 
@@ -76,7 +75,7 @@ class KeywordSetComposerTest {
     when(actorsFactory.buildActors(ObservationEvent.OBS_END_READOUT, dataLabel)).thenReturn({
       new KeywordValueActor {
         override def collectValues(): List[CollectedValue[_]] = {
-          throw new NullPointerException()
+          throw new IllegalStateException
         }
       } :: Nil
     })
@@ -103,7 +102,7 @@ class KeywordSetComposerTest {
     val dataLabel = new DataLabel("GS-2011")
 
     val actorsFactory = mock(classOf[KeywordActorsFactory])
-    when(actorsFactory.buildActors(ObservationEvent.OBS_END_READOUT, dataLabel)).thenThrow(new NullPointerException())
+    when(actorsFactory.buildActors(ObservationEvent.OBS_END_READOUT, dataLabel)).thenThrow(new IllegalStateException())
 
     val keywordsDatabase = new KeywordsDatabaseImpl()
     // Create composer
