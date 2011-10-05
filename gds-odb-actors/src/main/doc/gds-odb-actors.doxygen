@@ -3,14 +3,14 @@
 This bundle contains the actors and actors factory that can collect data values from the ODB
 
 In a nutshell, when an observation is performed we need to gather some information related to the program that
-is performing the and store the required keywords in the resulting FITS file. For example, we may want to get
+is performing the observation and store the required keywords in the resulting FITS file. For example, we may want to get
 information about the current observation's PI name, email, etc. We can do that by querying the ODB using the program ID.
  
 A difficulty in this approach is that the GDS actors are activated upon Observation Events sent from the
 instrument but those events do not contain the program ID but rather the observation data label. Thus we need a
 way to link the data label and the program ID.
 
-In our design we requires that the system starting the observation, currently the Seqexec, sends to the GDS
+In our design, we require that the system starting the observation, currently the Seqexec, sends to the GDS
 the correlation between the program ID and the data label. This needs to be performed \b before instructing the
 Instrument to perform the actual observation to avoid data race conditions.
 
@@ -19,7 +19,7 @@ can acces through a simple HTTP call. The interaction between these components i
 
 \image html gds-program-id-interaction.jpg
 
-In the bundle there are basically two classes:,
+In the bundle there are two classes:
 
 - \ref edu.gemini.aspen.gds.odb.ODBActorsFactory "ODBActorsFactory", this factory builds actors using the information
 from the GDS configuration
@@ -83,7 +83,7 @@ This bundle provides as a service the \ref edu.gemini.aspen.gds.odb.ODBActorsFac
 the KeywordStatusActorFactory interface that is used by the \ref gds-actors-composer "Actors Composer"
 
 \section gds-odb-actors_requires_sec Required Services
-This bundle requires the JiniDriver to got a reference to an IDBDatabaseService services, so it uses indirectly
+This bundle requires the JiniDriver to get a reference to an IDBDatabaseService instance, so it uses indirectly
 two services:
 
 - \ref edu.gemini.pot.spdb.IDBDatabaseService "IDBDatabaseService"
