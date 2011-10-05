@@ -1,11 +1,14 @@
 /*!
   \page gds-observation-state GDS Observation State
-  This bundle contains three components. InspectPolicy is an ErrorPolicy that checks keywords before they are written
-  to a FITS file to see if any are in error or missing. ObservationStateImpl maintains information about the state of
+  This bundle contains three components that cas store and inform about the processing state of each observation.
+  
+  \- InspectPolicy is an ErrorPolicy that checks keywords before they are written
+  to a FITS file to see if any are in error or missing.
+  \- ObservationStateImpl maintains information about the state of
   current and past observations. It can be used as an ObservationStateProvider to query for the state of observations, or as an ObservationStateRegistrar, to
-  input information about a given observation. Finally, ObservationStatePublisherImpl lets you register clients that will receive
+  input information about a given observation.
+  \- ObservationStatePublisherImpl lets you register clients that will receive
   updates on the state of observations. Use this one if you want updates to be pushed to you, instead of polling the service.
-
 
   \section gds-observation-state_config Configuration
   This bundle doesn't require any configuration.
