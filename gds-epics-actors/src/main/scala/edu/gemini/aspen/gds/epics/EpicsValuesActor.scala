@@ -4,6 +4,8 @@ import edu.gemini.aspen.gds.api._
 import org.joda.time.DateTime
 import org.scala_tools.time.Imports._
 import edu.gemini.epics.{EpicsException, EpicsReader}
+import scala.annotation.tailrec
+import scala.collection._
 
 /**
  * Very simple actor that can produce as a reply of a Collect request a single value
@@ -12,28 +14,25 @@ import edu.gemini.epics.{EpicsException, EpicsReader}
 class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
   private val MAX_ATTEMPTS = 3;
 
-  /**Method to retry to read an epics channel if it fails once */
+  /** Method to retry to read an epics channel if it fails once */
   private def readChannelValue(attempt: Int): Option[AnyRef] = {
     try {
       Option(epicsReader.getValue(sourceChannel))
     } catch {
-      case e: EpicsException => {
-        attempt match {
+      case e: EpicsException => attempt match {
           case 0 => {
             LOG.severe(configuration.channel.name + ": " + e.getMessage)
             None
           }
           case _ => readChannelValue(attempt - 1)
         }
-      }
-      case e: IllegalStateException => {
+      case e: IllegalStateException =>
         LOG.severe(configuration.channel.name + ": " + e.getMessage)
         None
-      }
     }
   }
 
-  override def collectValues(): List[CollectedValue[_]] = {
+  override def collectValues(): immutable.List[CollectedValue[_]] = {
     val start = new DateTime
     val readValue = readChannelValue(MAX_ATTEMPTS)
     val end = new DateTime
@@ -44,7 +43,7 @@ class EpicsValuesActor(epicsReader: EpicsReader, configuration: GDSConfiguration
     } catch {
       case e: MatchError => {
         LOG.warning("Data for " + fitsKeyword + " keyword was not of the type specified in config file.")
-        List(ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex))
+        immutable.List(ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex))
       }
     }
   }

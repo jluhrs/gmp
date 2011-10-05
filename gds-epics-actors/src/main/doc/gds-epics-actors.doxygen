@@ -11,7 +11,7 @@
   #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Default    Source         Source                    Array     Comment
   #     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
   #  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------   -----------------
-      GPI          OBS_START_ACQ    AVALUE           0        DOUBLE          F            NONE      EPICS        ws:epicsChannel              NULL     "EPCIS value"
+      GPI          OBS_START_ACQ    AVALUE           0        DOUBLE          F            NONE      EPICS        ws:epicsChannel              NULL     "EPICS value"
   \endverbatim
  
   Where the channel name is the channel name whose values we want to include in the FITS-file. For EPICS arrays the Array Index can be used to select the correct

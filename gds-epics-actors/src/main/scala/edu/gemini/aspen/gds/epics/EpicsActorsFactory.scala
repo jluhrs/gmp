@@ -4,6 +4,7 @@ import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.epics.{EpicsException, EpicsReader}
 import edu.gemini.aspen.gds.api.{GDSConfiguration, AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
+import scala.collection._
 
 @Component
 @Instantiate
@@ -14,18 +15,18 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
     actorsConfiguration filter {
       _.event.name == obsEvent.name
     } filter {
-      c => epicsReader.isChannelConnected(c.channel.name)
+        c => epicsReader.isChannelConnected(c.channel.name)
     } map {
-      c => {
+        c => {
         new EpicsValuesActor(epicsReader, c)
       }
     }
   }
 
-  override def configure(configuration: List[GDSConfiguration]) = {
+  override def configure(configuration: immutable.List[GDSConfiguration]) {
     super.configure(configuration)
     actorsConfiguration foreach {
-      c => {
+        c => {
         try {
           epicsReader.bindChannelAsync(c.channel.name)
         } catch {
@@ -43,7 +44,7 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
   def unbindAllChannels() {
     // Unbind all required channels
     actorsConfiguration map {
-      c => epicsReader.unbindChannel(c.channel.name)
+        c => epicsReader.unbindChannel(c.channel.name)
     }
   }
 }
