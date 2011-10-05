@@ -1,11 +1,10 @@
 package edu.gemini.aspen.gds.api.configuration
 
-import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api._
 import org.junit.Assert._
 import edu.gemini.aspen.gds.api.Conversions._
-import java.io.{FileReader, FileWriter, BufferedWriter, BufferedReader, File}
-import org.junit.{Ignore, Before, Test}
+import java.io.File
+import org.junit.Test
 import edu.gemini.aspen.gds.api.Predef._
 
 /**
@@ -24,7 +23,6 @@ class GDSConfigurationServiceTest {
     assertTrue(config.contains(GDSConfiguration("GPI", "OBS_END_ACQ", "AIRMASS", 0, "DOUBLE", false, "NONE", "EPICS", "ws:massAirmass", 0, "Mean airmass for the observation")))
     //todo: check for the rest of the items
   }
-
 
   @Test
   def testGet() {

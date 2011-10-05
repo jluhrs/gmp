@@ -1,17 +1,15 @@
 package scala.edu.gemini.aspen.gds.api
 
-import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Test
-import org.junit.Assert.assertTrue
+import org.junit.Assert._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.api._
-import org.mockito.Mockito._
-import org.junit.Assert._
+import scala.collection._
 
-class OneItemKeywordValueTest extends AssertionsForJUnit {
+class OneItemKeywordValueTest {
 
   class TestValueActor(configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
-    def collectValues(): List[CollectedValue[_]] = Nil
+    def collectValues() = immutable.List[CollectedValue[_]]()
 
     def testValueToCollectedValue(value: Any) = valueToCollectedValue(value)
   }
