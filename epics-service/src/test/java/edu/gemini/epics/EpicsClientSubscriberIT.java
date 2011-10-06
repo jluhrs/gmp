@@ -14,7 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Basic integration test for EpicsService \verifying that the services can run and its properties be set
+ * Basic integration test for EpicsService verifying that the services can run and its properties be set
  */
 @RunWith(JUnit4TestRunner.class)
 public class EpicsClientSubscriberIT extends EpicsServiceBaseIntegration {

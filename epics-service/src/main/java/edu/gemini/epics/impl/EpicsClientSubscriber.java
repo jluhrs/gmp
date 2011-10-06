@@ -36,7 +36,7 @@ public class EpicsClientSubscriber {
     /**
      * Called when an EpicsClient appears. It will try to bind to the client right away if possible or it will
      * save it to be started later on
-     * <p/>
+     * <br>
      * The services properties of the epicsClient will determine which channels will listen to
      *
      * @param epicsClient       An OSGi service implementing EpicsClient that appears in the system

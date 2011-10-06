@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Utility class that keeps track of EpicsClient so that keeps track of services that have been registered
  * but not started as well as clients already started
- * <p/>
+ * <br>
  * This class is coded defensively against errors in the EpicsClient objects
  */
 public class EpicsClientsHolder {

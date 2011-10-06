@@ -23,7 +23,7 @@ public interface EpicsObserver {
     void registerEpicsClient(EpicsClient client, Collection<String> channels);
 
     /**
-     * The counter part to (@link registerEpicsClient}, it will stop sending
+     * The counter part to {@link registerEpicsClient}, it will stop sending
      * updates to the client.
      *
      * If a previously unknown client is passed the request is ignored
