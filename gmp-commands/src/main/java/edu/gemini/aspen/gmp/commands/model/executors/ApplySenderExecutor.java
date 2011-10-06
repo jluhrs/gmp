@@ -12,7 +12,7 @@ import java.util.Set;
  * Sequence Command executor for the APPLY Sequence Command. It's job
  * APPLY is more complex than normal sequence commands since an instrument can
  * have more than one handler to deal with a particular APPLY configuration.
- * <p/>
+ * <br>
  * This executor attempts to decompose the APPLY configuration to find
  * the handler(s) that will process it.
  */

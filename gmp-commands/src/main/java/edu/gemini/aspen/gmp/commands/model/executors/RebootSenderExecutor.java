@@ -11,7 +11,7 @@ import edu.gemini.aspen.gmp.commands.model.RebootManager;
  * An executor for the REBOOT sequence command.It will initiate the reboot
  * if the activity is PRESET or PRESET/START and will return immediately
  * to the client with a COMPLETED response.
- * <p/>
+ * <br>
  * It is an error to try to CANCEL a REBOOT sequence command. The
  * reboot itself is delegated to a {@link RebootManager} object that
  * will process the command. The arguments are validated by this class
