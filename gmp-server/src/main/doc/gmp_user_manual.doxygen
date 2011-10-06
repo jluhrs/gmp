@@ -138,7 +138,9 @@
  \section giapi_tester GIAPI Tester
  The giapi-tester is a command line tool you can use to test various API features. You can find it in
  $GMP_HOME/bin/giapi-tester.sh. For usage information, type <tt>./giapi-tester.sh -?</tt>. If using <tt>csh</tt>, type
- <tt>./giapi-tester.sh -\?</tt>.
+ <tt>./giapi-tester.sh -\?</tt>, which produces the following output:
+
+ \include usage.txt
  
  \section gmp_configuration Configuration
  

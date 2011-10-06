@@ -31,6 +31,7 @@
         <felix.log.level>0</felix.log.level>
         <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
         <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
+        <felix.fileinstall.poll>2000</felix.fileinstall.poll>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
         <ipojo.log.level>info</ipojo.log.level>
 
@@ -62,7 +63,7 @@
                     <stripFromPath>${basedir}</stripFromPath>
                     <extractAll>true</extractAll>
                     <imagePath>src/main/doc/ src/main/doc/gemini_records/</imagePath>
-                    <examplePath>src/main/doc/gemini_records</examplePath>
+                    <examplePath>src/main/doc/gemini_records ../giapi-tester/src/main/resources/edu/gemini/giapi/tool/help</examplePath>
                 </configuration>
             </plugin>
             <plugin>
@@ -331,6 +332,11 @@
             <version>0.0.1</version>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-obsevents</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-api</artifactId>
             <version>0.1.0-SNAPSHOT</version>
@@ -359,11 +365,6 @@
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-epics-actors</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen</groupId>
-            <artifactId>giapi-obsevents</artifactId>
-            <version>0.1.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
