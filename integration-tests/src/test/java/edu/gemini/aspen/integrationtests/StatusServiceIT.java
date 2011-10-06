@@ -19,11 +19,11 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
  * on the other related dependencies
  *
  * For testing it uses pax-exam to create a felix based run time. Different set of bundles are used for
- * different test according to the filter set with the @AppliesTo annotation as in
+ * different test according to the filter set with the \@AppliesTo annotation as in
  *
  * <a href="http://paxrunner.ops4j.org/display/paxexam/Advanced+JUnit+usage">Pax-examn</a>
  *
- * @cquiroz
+ * @author cquiroz
  */
 @RunWith(JUnit4TestRunner.class)
 public class StatusServiceIT {

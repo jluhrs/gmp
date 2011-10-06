@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 /**
  * These are integration tests for the Web UI of the GDS that use selenium
- * <p/>
+ * <br>
  * An instance of GDS is started using pax-runner and the test are carried on in a separate thread
  */
 @Ignore
