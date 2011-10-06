@@ -4,7 +4,7 @@ import edu.gemini.aspen.giapi.commands.Configuration;
 
 /**
  * Main exportable interface of the bundle
- * <p/>
+ * <br>
  * HandlersStateService defines a service that can indicate the availability
  * of handlers or consumers for a given configuration. It can be used to detect
  * whether a configuration is fully handled by message consumers or if some parts are
