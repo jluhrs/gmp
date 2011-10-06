@@ -5,7 +5,7 @@ import javax.jms.MapMessage;
 
 /**
  * This interface defines objects that can convert a regular message into one ready to be sent
- * <p/>
+ * <br>
  * For example an implementation could set parameters and members of the message
  */
 public interface MapMessageBuilder {

@@ -9,10 +9,10 @@ import javax.jms.TemporaryQueue;
 
 /**
  * Base class to model a request/reply communication using JMS.
- * <p/>
+ * <br>
  * Implementations of this class need to define how to reconstruct the
  * reply message in the communication as an Object with the method buildResponse
- * <p/>
+ * <br>
  * Also they need to customize what kind of consumer will be used to get the reply
  * overriding the method createReplyConsumer. For example the reply could be a temporary
  * queue or a fixed queue with a correlationID selector
