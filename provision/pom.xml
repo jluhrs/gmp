@@ -221,7 +221,7 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin</artifactId>
-            <version>6.6.2</version>
+            <version>${vaadin.version}</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
