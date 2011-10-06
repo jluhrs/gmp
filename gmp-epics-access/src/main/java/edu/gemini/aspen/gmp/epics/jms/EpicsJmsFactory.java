@@ -9,10 +9,10 @@ import javax.jms.JMSException;
 import java.util.logging.Logger;
 
 /**
- * This class creates JMS messages that containsn the EPICS channel update
+ * This class creates JMS messages that contains the EPICS channel update
  * information.
- * <p/>
- * The messages constructed by this factory will be deserialized by the
+ * <br>
+ * The messages constructed by this factory will be de-serialized by the
  * client code that is interested on receiving EPICS status updates.
  *
  */
@@ -23,7 +23,7 @@ public class EpicsJmsFactory {
 
     /**
      * Data type and byte codes used to encode the EPICS updates into JMS
-     * messges
+     * messages
      */
     private enum DataType {
 

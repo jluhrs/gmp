@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.epics;
 /**
  * Interface for classes that keep track of registering
  * <code>EpicsUpdateListener</code> to get epics channel updates.
- * <p/>
+ * <br>
  * Implementations of this class will process the epics channel
  * updates received by invoking the listeners registered.
  * The listeners will be invoked in a separate execution thread.

@@ -6,7 +6,7 @@ import java.util.Set;
  * An Epics Configuration contains information about
  * the valid epics channels that can be monitored
  * through the Gemini Master Process.
- * <p/>
+ * <br>
  * The Epics Configuration information is collected
  * at startup by the GMP through the Epics Access bundle.
  */

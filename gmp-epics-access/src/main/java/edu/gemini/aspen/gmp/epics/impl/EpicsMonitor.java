@@ -16,8 +16,7 @@ import java.util.logging.Logger;
 /**
  * This class monitors the EPICS channels acting as an EpicsClient.
  * The updates are delegated for further processing to an EpicsRegistrar
- * <p/>
- * <p/>
+ * <br>
  * It allows to register <code>EpicsUpdateListener</code> objects, which
  * will be invoked whenever an update to the monitored EPICS channel is
  * received.
@@ -29,14 +28,9 @@ public class EpicsMonitor implements EpicsClient {
     private static final Logger LOG = Logger.getLogger(EpicsMonitor.class.getName());
     private volatile boolean connected = false;
 
-    @Requires
-    private EpicsRegistrar _registrar;
-
-    @Requires
-    private JmsProvider _provider;
-
-    @Requires
-    private EpicsConfiguration _epicsConfig;
+    private final EpicsRegistrar _registrar;
+    private final JmsProvider _provider;
+    private final EpicsConfiguration _epicsConfig;
 
     @ServiceProperty(name = "edu.gemini.epics.EpicsClient.EPICS_CHANNELS")
     private String[] props;
@@ -44,15 +38,13 @@ public class EpicsMonitor implements EpicsClient {
     private EpicsConfigRequestConsumer _epicsRequestConsumer;
     private EpicsStatusUpdater _epicsStatusUpdater;
 
-    private EpicsMonitor() {
-    }
-
-    public EpicsMonitor(EpicsRegistrar registrar, JmsProvider provider) {
+    public EpicsMonitor(@Requires EpicsRegistrar registrar, @Requires JmsProvider provider, @Requires EpicsConfiguration epicsConfig) {
         if (registrar == null) {
             throw new IllegalArgumentException("Cannot create an EpicsMonitor with a null registrar");
         }
         _registrar = registrar;
         _provider = provider;
+        _epicsConfig =  epicsConfig;
     }
 
     public void channelChanged(String channel, Object value) {
