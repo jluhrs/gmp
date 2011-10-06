@@ -4,7 +4,7 @@
   This bundles contains some general services for GIAPI clients over JMS
  
   \section gmp-services_provides_sec Provided Services
-  This bundle provides a \ref edu.gemini.aspen.gmp.services.properties.PropertyHolder "PropertyHolder"  services
+  This bundle provides a \ref edu.gemini.aspen.gmp.services.PropertyHolder "PropertyHolder"  services
   that can be used by OSGI components to get the values of GMP Services
 
   It also provides a \ref edu.gemini.aspen.gmp.services.properties.PropertyService "PropertyService" that can answer queries for

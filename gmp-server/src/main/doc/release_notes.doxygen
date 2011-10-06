@@ -91,7 +91,7 @@
 <h2>        Bug
 </h2>
 <ul>
-<li>[<a href='http://swgserv01:8080/browse/GIAPI-143'>GIAPI-143</a>] -         @Update is being called twice, and @Validate once, all concurrently.
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-143'>GIAPI-143</a>] -         \@Update is being called twice, and \@Validate once, all concurrently.
 </li>
 <li>[<a href='http://swgserv01:8080/browse/GIAPI-186'>GIAPI-186</a>] -         Null Configuration should be valid for sequence commands
 </li>

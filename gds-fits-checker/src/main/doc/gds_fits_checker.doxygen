@@ -1,6 +1,6 @@
 /*!
   \page gds-fits-checker GDS FITS Checker
-  This bundle contains a service that checks if the IFS wrote the appropriate keywords in the FITS file delivered. The required
+  This bundle contains a service that checks if the instrument has written in the FITS file delivered, the minimum set of keywords promised The required
   keywords are read from the GDS configuration file, explained at \ref gds-keyword_factory_configuration.
 
   \section gds-fits-checker_config Configuration

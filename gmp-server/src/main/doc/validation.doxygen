@@ -431,7 +431,6 @@ Of course, you can change these values and update the test application according
        0       1       0       0       0       1
 \endverbatim
 
-
    <b>Test with access to the TCS via EPICS:</b>
 
    First, configure the TCS Context Service to not use simulation:
@@ -458,7 +457,7 @@ Of course, you can change these values and update the test application according
    Adjust the IP to the one used by the TCS. For full details about the
    Epics Service, see the \ref epics-service documentation.
 
-   Now start the GMP server as indicated in the \ref user_manual.
+   Now start the GMP server as indicated in the \ref gmp_user_manual.
 
    And then start the tcscontext application in the GIAPI C++ Glue code:
 
@@ -513,7 +512,7 @@ If you don't get an output like this, either you don't have access to the TCS
 or your GMP configuration is incorrect.
 
 \subsection validation_testing_sec EPICS Status Service Integration Tests
-\li Start the GMP as indicated in the \ref user_manual.
+\li Start the GMP as indicated in the \ref gmp_user_manual.
 \li The EPICS status items that are configured in the GMP are defined in the \ref giapi-epics-status-mapping.xml file. See the
 \ref gmp-epics-status-service bundle documentation for more details.
 
@@ -570,7 +569,7 @@ The valid values for health, severity and alarm cause, can be found in the giapi
 
 
 \subsection comm_records_testing_sec GMP Commands Records Integration Tests
-\li Start the GMP as indicated in the \ref user_manual.
+\li Start the GMP as indicated in the \ref gmp_user_manual.
 \li For this test you will also need tcl code in http://source.gemini.edu/software/giapi/giapi-eng/ocs-test-scripts/trunk.
 \li Check the code to a directory we'll call ocs-test-scripts/, in a Linux machine with ocswish installed.
 \li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh any-command</tt>.
@@ -621,7 +620,7 @@ epicsMutexLock failed." is normal).
 
 \subsection comm_memory_leaks_testing_sec GMP Commands Memory Leaks Testing
 Testing for memory leaks are possible by using the stress.sh script and the checking the GMP using visualvm or jconsole
-\li Start the GMP as indicated in the \ref user_manual.
+\li Start the GMP as indicated in the \ref gmp_user_manual.
 \li For this test you will also need tcl code in http://source.gemini.edu/software/giapi/giapi-eng/ocs-test-scripts/trunk.
 \li Check the code to a directory we'll call ocs-test-scripts/, in a Linux machine with ocswish installed.
 \li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh any-command</tt>.
@@ -647,11 +646,11 @@ Sending PARK
 \attention A small memory leak was found as explained in \ref known_issues_and_bugs 
 
 \subsection gds_testing_sec Integrated GDS + GMP Commands Records Tests
-\li Start the GMP as indicated in the \ref user_manual.
+\li Start the GMP as indicated in the \ref gmp_user_manual.
 \li For this test you will also need tcl code in http://source.gemini.edu/software/giapi/giapi-eng/ocs-test-scripts/trunk.
 \li Check the code to a directory we'll call ocs-test-scripts/, in a Linux machine with ocswish installed.
 \li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ sh runExample.sh observe-simulator</tt>.
-\li In ocs-test-scripts/, run <tt>$ ./observeTest.itcl<tt>. Remember to set the
+\li In ocs-test-scripts, run <tt>$ ./observeTest.itcl<tt>. Remember to set the
 \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
 \li The command should take a few seconds before exiting without any exceptions (a message like "epicsThreadOnceOsd
 epicsMutexLock failed." is normal).

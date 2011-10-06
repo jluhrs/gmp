@@ -23,7 +23,7 @@
  *
  * \subsection testing_sec Testing Procedure
  * \li Configure the GMP Epics Status Service to use giapi-glue-cc/src/examples/stresstest.xml (see \ref cas_configuration_sec)
- * \li Build and start the GMP on the desired machine (see \ref main, \ref usage_sec)
+ * \li Build and start the GMP on the desired machine (see \ref main, \ref run_daemon)
  * \li To check that everything is running correctly, you can run <tt>caget gpi:status1</tt> and see if it can read a
  * value. Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running
  * \li Run the \c epicsclients.sh script in giapi-glue-cc/src/examples/ to connect clients to all the EPICS channels.

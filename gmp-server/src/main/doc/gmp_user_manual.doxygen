@@ -7,7 +7,7 @@
  - \ref package
  - \ref run_daemon
  - \ref telnet
- - \ref how_to_exit
+ - \ref how_to_run
  - \ref web_console
  - \ref gmp_configuration
  - \ref giapi_tester
@@ -90,7 +90,7 @@
  To start the GMP go to the $GMP_HOME/bin directory and call the start.sh script
  
  At the end of the start the process should be running and there will be a prompt in the screen which is the
- Felix \em gogo console. Press <enter> if you don't see the prompt.
+ Felix \em gogo console. Press \<enter\> if you don't see the prompt.
  
  Type \b help to see the list of available commands and you will see console like this:
  
@@ -110,7 +110,7 @@
  
  A telnet daemon is included that gives access to the shell remotely. To reach the GMP server type
  
- \c telnet \c <hostname> \c 15001
+ \c telnet \c \<hostname\> \c 15001
  
  \attention There is a bug in the telnet daemon, if you press CTRL+C to exit the telnet client will hang. This doesn't
  affect the GMP inner workings. Use CTRL-D to exit the telnet client instead.
@@ -121,7 +121,7 @@
  \section web_console Web Console Interface
  A Web interface to the GMP OSGi container is available at
  
- \c http://<hostname>:8888/admin
+ \c http://\<hostname\>:8888/admin
  
  \subsection console_security Security:
  
