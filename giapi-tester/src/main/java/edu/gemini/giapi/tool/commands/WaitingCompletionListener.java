@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Class that implements CompletionListener and that can wait for a given
  * time for a response, otherwise it returns an Error.
- * <p/>
+ * <br>
  * Note that this listener can only accept one response, attempts to use
  * again will throw an IllegalStateException
  */

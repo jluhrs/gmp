@@ -8,7 +8,7 @@ public interface Argument {
     /**
      * Returns true if the argument requires a parameter.
      * For instance, to if the argument needs to be
-     * specified as -arg <val>, then the argument 'arg' requires
+     * specified as -arg \<val\>, then the argument 'arg' requires
      * a parameter.
      *
      * @return true if the argument requires a parameter.
