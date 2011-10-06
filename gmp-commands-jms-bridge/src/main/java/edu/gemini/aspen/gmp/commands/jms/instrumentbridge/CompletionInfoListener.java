@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 /**
  * This is a consumer of CompletionInfo messages send over JMS.
- * <p/>
+ * <br>
  * Whenever an action in the client code is finished, it has to report back to
  * the GMP with their completion information. Completion information can be
  * either COMPLETED or ERROR.

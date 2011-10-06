@@ -28,9 +28,9 @@ public class Command {
 
     /**
      * Builds a new immutable Command object.
-     * <p/>
+     * <br>
      * Null parameters are not allowed.
-     * <p/>
+     * <br>
      * Commands that need to pass a configuration like REBOOT and APPLY should use other
      * constructor
      *
@@ -50,7 +50,7 @@ public class Command {
 
     /**
      * Builds a new immutable Command object.
-     * <p/>
+     * <br>
      * Null parameters are not allowed.
      *
      * @param sequenceCommand The Sequence sequenceCommand to send, like INIT or REBOOT

@@ -20,7 +20,7 @@ import javax.jms.MessageConsumer;
 /**
  * This class is able to send a command message to the GW_COMMAND_TOPIC
  * and receive the immediate response of the command
- * <p/>
+ * <br>
  * Additionally it can keep listening for commands in case it is necessary
  * This happens when the command doesn't complete immediately
  */

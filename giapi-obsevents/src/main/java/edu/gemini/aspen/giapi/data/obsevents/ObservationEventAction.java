@@ -20,7 +20,7 @@ import java.util.Collections;
  * {@link edu.gemini.aspen.giapi.data.obsevents.ObservationEventHandlerComposite}
  * allowing the registration of multiple handlers to be invoked whenever
  * a new {@link edu.gemini.aspen.giapi.data.ObservationEvent} is received.
- * <p/>
+ * <br>
  * The registered handlers are invoked in their own threads, allowing parallel
  * execution of different handlers. This class also makes sure the events are
  * processed by the handlers in the same order they are received.  

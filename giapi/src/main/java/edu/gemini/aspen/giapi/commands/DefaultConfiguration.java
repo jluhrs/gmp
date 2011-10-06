@@ -10,9 +10,9 @@ import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 
 /**
  * A straightforward implementation of {@link Configuration}
- * <p/>
+ * <br>
  * DefaultConfiguration is fully immutable it cannot be changed
- * <p/>
+ * <br>
  * Empty Configurations are not allowed to be built
  */
 public final class DefaultConfiguration implements Configuration {

@@ -26,7 +26,7 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
  *
  * <a href="http://paxrunner.ops4j.org/display/paxexam/Advanced+JUnit+usage">Pax-examn</a>
  *
- * @cquiroz
+ * @author cquiroz
  */
 @RunWith(JUnit4TestRunner.class)
 public class ActiveMQJMSProviderIT {

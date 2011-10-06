@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * A ConfigPathNavigator allows to iterate over a Configuration by
  * looking at the different ConfigPath as a tree.
- * <p/>
+ * <br>
  * The ConfigPathNavigator allows to get several ConfigPath elements
  * out of a given configuration. However, these objects are used
  * mostly to traverse a Configuration rather than accessing a particular
@@ -46,7 +46,7 @@ public class ConfigPathNavigator {
     /**
      * Get the child paths for the given configuration, starting
      * with the path argument.
-     * <p/>
+     * <br>
      * For instance, if the configuration contains:
      * <code>
      *   gpi:cc:filter.name = X

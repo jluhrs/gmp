@@ -10,7 +10,7 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 
 /**
- * Extension of {@link edu.gemini.jms.api.JmsMapMessageSenderReply} that can understand and decode a
+ * Extension of {@link edu.gemini.jms.api.JmsMapMessageSenderReply<T>} that can understand and decode a
  * reply of a {@link edu.gemini.aspen.giapi.commands.SequenceCommand} in the form
  * of a {@link edu.gemini.aspen.giapi.commands.HandlerResponse}
  */

@@ -1,21 +1,20 @@
 package edu.gemini.aspen.giapi.data.obsevents.osgi;
 
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
-import org.osgi.util.tracker.ServiceTracker;
-
-import java.util.logging.Logger;
-
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
-import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
-import edu.gemini.aspen.giapi.data.obsevents.ObservationEventHandlerComposite;
 import edu.gemini.aspen.giapi.data.obsevents.ObservationEventAction;
+import edu.gemini.aspen.giapi.data.obsevents.ObservationEventHandlerComposite;
+import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.osgi.JmsProviderTracker;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
+
+import java.util.logging.Logger;
 
 /**
  * Activator for the Observation Event Monitor
@@ -51,8 +50,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         //and start tracking for observation event handlers as well...
         _tracker = new ServiceTracker(bundleContext, ObservationEventHandler.class.getName(), this);
         _tracker.open();
-
-
     }
 
     public void stop(BundleContext bundleContext) throws Exception {

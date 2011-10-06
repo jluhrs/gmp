@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 /**
  * This component listens to commands sent over JMS and forwards them to CommandSender, basically
  * acting as a Bridge between clients and the CommandSender
- * <p/>
+ * <br>
  * It also creates listeners to track responses to the commands
  */
 @Component

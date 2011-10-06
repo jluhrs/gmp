@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 /**
  * A ConsumerStateHolder that gets its information out of the advisory messages
  * provided by ActiveMQ
- * <p/>
+ * <br>
  * See <a href="http://activemq.apache.org/advisory-message.html">Advisory Messages</a>
  */
 public class AdvisoriesConsumerStateHolder extends BaseMessageConsumer implements MessageListener, ConsumerStateHolder {

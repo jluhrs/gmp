@@ -67,9 +67,9 @@ public class MockedJMSArtifactsBase {
 
     /**
      * This method allows tests to define what reply message a consumer will return
-     * <p/>
+     * <br>
      * It is useful to simulate responses to a given command
-     * <p/>
+     * <br>
      * Call it after you have called the createMockedObjects
      *
      * @param message

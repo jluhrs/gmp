@@ -16,10 +16,10 @@ import java.util.UUID;
  * This class sends sequence commands to the GMP using the jms-client bridge
  * interface over JMS but it implements by itself the {@link edu.gemini.aspen.giapi.commands.CommandSender}
  * interface hiding whether the connection is local or remote
- * <p/>
+ * <br>
  * This class is not designed to be an OSGi service as it would conflict with other internal
  * CommandSender objects.
- * <p/>
+ * <br>
  * Instead it is meant to be used as a standalone client
  */
 public class CommandSenderClient implements CommandSender {

@@ -4,11 +4,11 @@ import java.util.Set;
 
 /**
  * Configuration interface.
- * <p/>
+ * <br>
  * A configuration is made up of parameters. Each parameter has a key and a
  * value. The OCS commands an instrument by demanding that the instrument
  * match a specified configuration.
- * <p/>
+ * <br>
  * This interface provides mechanisms to:
  * a) get the value associated to a given parameter (identified by key)
  * b) get all the keys present in the configuration.

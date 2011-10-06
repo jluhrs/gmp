@@ -4,7 +4,7 @@ package edu.gemini.aspen.giapi.commands;
  * A ConfigPath can be used to refer to a set of items
  * in a Configuration tree. It is modeled after the <code>PioPath</code>
  * in the Gemini OCS.
- * <p/>
+ * <br>
  * The path is composed of a series of names separated by the ':' character
  */
 public final class ConfigPath implements Comparable<ConfigPath> {
@@ -159,7 +159,7 @@ public final class ConfigPath implements Comparable<ConfigPath> {
     /**
      * Return the child path, assuming the given path is part of this
      * ConfigPath.
-     * <p/>
+     * <br>
      * For instance, if this path is "gpi:cc:filter.name", a call
      * to <code>getChildPath(new ConfigPath("gpi"))</code> will
      * return a path to "gpi:cc".
