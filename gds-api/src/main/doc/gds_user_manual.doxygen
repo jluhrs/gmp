@@ -1,35 +1,141 @@
 /*! \page gds_user_manual GDS User Manual
 
-This page describes how to manage the Gemini Data Service.
-
+This page describes how to use ande manage the Gemini Data Service.
 
 This manual is divided in the following sections:
 - \ref introduction
 - \ref sources
 - \ref gds_configuration_sec
+- \ref gds_web_ui_sec
 - \ref gds_troubleshooting_sec
 
 \section introduction Introduction
+GDS stands for GIAPI Data Service and is one of the parts of the GIAPI overall design. 
+In the past instruments would use the DHS to transfer data that would compose the final.
+FITS file. Different sources will send there comntributions to the DHS which would compose
+it into the final file
+
+In GIAPI a different approach is taken, where the instrument writes the FITS file with a 
+minimal set of keywords and the GDS takes cares of "completing" the file by requesting keywords
+to different data sources.
+
+The instrument and the GDS are decoupled by virtue of using events that the instrument TLC fires
+in sequence and that GDS can listen for. As the insttrument does not need to wait for the events
+to complete, if the GDS fails, it will not interfere with the rest of the instrument
+
+\subsection ObservationEvents
+The interaction between the instrument and GDS is defined by a series
+of events, that must be fired in order while performing an observation as described in the GIAPI
+Design and Use Document. 
+
+The events are listed below
+<table>
+    <tr>
+        <th>Event Time</th>
+        <th>GIAPI Observation Event</th>
+        <th>Used in GDS</th>
+    </tr>
+    <tr>
+        <td>T1</td>
+	<td>OBS_PREP</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>T2</td>
+        <td>OBS_START_ACQ</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>T3</td>
+        <td>OBS_END_ACQ</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>T4</td>
+        <td>OBS_START_READOUT</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>T5</td>
+        <td>OBS_END_READOUT</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>T6</td>
+        <td>OBS_START_DSET_WRITE</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>T7</td>
+        <td>OBS_END_DSET_WRITE</td>
+        <td>Yes</td>
+    </tr>
+</table>
+
+The observation process is nevertheless driven by Seqexec which sends an observation event,
+filst querying the DHS for the next available data label. Seqexec also needs to send to GDS
+whatever keywords are only available in Seqexec.
+
+After that the process is driven by the Insrument and GDS
+
+The following picture describes the process of events and data gathering
+
+\image html gds-sequence.jpg
 
 \section sources Sources
+GDS is designed to support different data sources and use them to gother the keywords to be
+placed in the resulting FITS files.
+As of version 0.13.0 the following sources are supported
+
+<table>
+    <tr>
+        <th>Source</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>EPICS</td>
+        <td>Can read epics channels at the moment of the observation event. It supports INT, STRING and DOUBLE channels and can extract a specific array entry</td>
+    </tr>
+    <tr>
+        <td>SEQEXEC</td>
+        <td>Reads values provided by Seqexec through the GDS XMLRPC interface</td>
+    </tr>
+    <tr>
+        <td>ODB</td>
+        <td>Can connect to the ODB and retrieve a program's data, like PI's name, etc</td>
+    </tr>
+    <tr>
+        <td>STATUS</td>
+        <td>It reads the last status value posted by the instrument</td>
+    </tr>
+    <tr>
+        <td>CONSTANT</td>
+        <td>It will insert a fixed value in a given FITS keyword</td>
+    </tr>
+    <tr>
+        <td>INSTRUMENT</td>
+        <td>This is not a keymord source but it behaves very similarly. It will verify that the instrument has included a certain required</td>
+    </tr>
+</table>
+
+The names of the sources are used in the Configuration file as shown in the next section
 
 \section gds_configuration_sec Configuration
-  The GDS is configured by editing the file $GMP_HOME/conf/gds-keywords.conf.
+  The GDS is configured by editing the file $GMP_HOME/conf/gds-keywords.conf
 
-  \attention The GDS configuration will change once the Configuration GUI is done.
+  \attention Though the GDS configuration can be edited by hand, you can also use the Web Configuration GUI.
 
  The configuration file looks like this:
 
  \verbatim
  #
- #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Null      Subsystem       Subsystem                 Array     Comment
+ #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Null      Source          Source                    Array     Comment
  #     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
  #  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------   -----------------
  #
     GPI          OBS_END_ACQ      AIRMASS          0        DOUBLE          F            NONE        EPICS       ws:massAirmass              NULL     "Mean airmass for the observation"
  ...
  \endverbatim
-
 
  <table>
     <tr>
@@ -94,7 +200,75 @@ This manual is divided in the following sections:
     </tr>
  </table>
 
+\section gds_web_ui_sec GDS Web UI
+To view the status of the GDS or change the configuration you can use the GDS web interface
+To access it, go to  your browser and go to the address http://\<gdshostname\>:8888/gds
+
+The web ui includes a header and a footer with generic information and several tabs that
+will be discussed below
+
+\subsection gds_web_ui_status Status
+This tab will show the current status of GDS as well as the last 10 observations and their result.
+The following image shows how the status page looks like
+
+\image html gds_web_ui_status.png
+
+\subsection gds_web_ui_logs Logs
+This is a view of the last logs sorted by time. ERRORS and WARNINGS are highlighted
+
+\image html gds_web_ui_logs.png
+
+\subsection gds_web_ui_keywords Keyword Configuration
+This tabs allows to view and edit the configuration file as in \ref gds_configuration_sec 
+
+\image html gds_web_ui_keyword_configuration.png
+
+In edit mode the fields become controls to change the keyword configuration. There are also add and delete buttons
+To edit the configuration you need to be logged in using the Login button on the top right corner
+
+\image html gds_web_ui_keyword_configuration_edit.png
+
+\subsection gds_web_ui_configuration System Configuration
+
+This tab allows to edit the configuration of properties that affect the GDS. These include:
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>GMP_HOSTNAME</td>
+        <td>Name of the host where gmp is running</td>
+    </tr>
+    <tr>
+        <td>DHS_ANCILLIARY_DATA_PATH</td>
+        <td>File path for the ancilliary files</td>
+    </tr>
+    <tr>
+        <td>DHS_SCIENCE_PATH</td>
+        <td>File path where the instrument will store the files acquired during an observation</td>
+    </tr>
+    <tr>
+        <td>DHS_PERMANENT_SCIENCE_PATH</td>
+        <td>Path where GDS writes processed final files</td>
+    </tr>
+    <tr>
+        <td>DHS_INTERMEDIATE_DATA_PATH</td>
+        <td>Path where intermedatie files can be stored</td>
+    </tr>
+</table>
+
+\image html gds_web_ui_system_configuration.png
+\subsection gds_web_ui_help Help
+Self-hosted help
+
+\image html gds_web_ui_help.png
 
 \section gds_troubleshooting_sec Troubleshooting
 
+\subsection gds_web_ui_troubleshooting GDS Web UI
+- Got a session expiration error like:
+\image html gds_web_ui_session_expired.png
+
+That only means that the browser window was inactive for too long. Just restart
 */
