@@ -9,10 +9,10 @@ public interface CommandSender {
 
     /**
      * Sends a Command to a registered handler.
-     * <p/>
+     * <br>
      * Synchronously wait for the recipient to notify that the command was received
      * and returns a HandlerResponse back to the caller.
-     * <p/>
+     * <br>
      * If there is no answer after a predefined time, the call will return
      * a HandlerResponse containing an error message.
      *
@@ -27,10 +27,10 @@ public interface CommandSender {
 
     /**
      * Sends a Command to the registered clients and waits a maximum timeout.
-     * <p/>
+     * <br>
      * Synchronously wait for the recipient to notify that the command was received
      * and returns a HandlerResponse back to the caller.
-     * <p/>
+     * <br>
      * If there is no immediate answer, the call will return
      * a HandlerResponse containing an error message.
      *
