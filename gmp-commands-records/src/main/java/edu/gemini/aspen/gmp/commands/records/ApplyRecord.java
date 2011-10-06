@@ -57,8 +57,11 @@ public class ApplyRecord {
     /**
      * Constructor
      *
-     * @param cas Channel Access Server to use
-     * @param cs  Command Sender to use
+     * @param cas           Channel Access Server to use
+     * @param cs            Command Sender to use
+     * @param epicsTop      The Top level for the Epics Channel
+     * @param xmlFileName   XML Configuration File
+     * @param xsdFileName   Schema of the configuration file
      */
     protected ApplyRecord(@Requires ChannelAccessServer cas,
                           @Requires CommandSender cs,
