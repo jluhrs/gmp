@@ -2,7 +2,6 @@ package edu.gemini.aspen.giapi.util.jms;
 
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
-import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.jms.api.BaseMessageProducer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
@@ -22,6 +21,7 @@ public class ObsEventSender extends BaseMessageProducer {
      * Sets a status item name and value
      *
      * @param obsEvent obs event to send via JMS
+     * @param label The data label this events refers to
      * @throws javax.jms.JMSException
      */
     public void send(ObservationEvent obsEvent, DataLabel label) throws JMSException {

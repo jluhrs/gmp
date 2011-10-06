@@ -16,10 +16,10 @@ import java.util.logging.Logger;
  * specific status items. This way, client code can register one specific
  * Status Handler to be invoked whenever a change to a particular Status
  * Item occurs.
- * <p/>
+ * <br>
  * The StatusDispatcher will listen for all the Status Items that arrive over
  * the network (it does this as a client of the GIAPI Status Service).
- * <p/>
+ * <br>
  * The Status Dispatcher will map status items names to specific handlers to
  * be invoked. It will provide mechanisms for client code to register these
  * handlers and associate them with particular status items.

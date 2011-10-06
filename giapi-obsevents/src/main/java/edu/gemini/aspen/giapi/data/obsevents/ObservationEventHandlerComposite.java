@@ -9,7 +9,7 @@ import java.util.Set;
  * This interface defines a composite for {@link ObservationEventHandler}s.
  * When an Observation Event occurs, the method
  * {@link #onObservationEvent(edu.gemini.aspen.giapi.data.ObservationEvent, DataLabel)}
- * will invoke all the registerd handlers, so they get and process the
+ * will invoke all the registered handlers, so they get and process the
  * received event.
  */
 public interface ObservationEventHandlerComposite extends ObservationEventHandler {
@@ -30,7 +30,7 @@ public interface ObservationEventHandlerComposite extends ObservationEventHandle
     /**
      * Return an unmodifiable view of the handlers registered
      * in this composite.
-     * @return an unmodifiable {@link Set} containing the handlers
+     * @return an unmodifiable {@link java.util.Set} containing the handlers
      * registered in this composite
      */
     Set<ObservationEventHandler> getHandlers();

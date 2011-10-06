@@ -1,7 +1,6 @@
 package edu.gemini.aspen.giapi.util.jms;
 
 import com.google.common.base.Preconditions;
-import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.jms.api.FormatException;
 
@@ -11,7 +10,7 @@ import javax.jms.Message;
 
 /**
  * Class that can parse a Map message sent over JMS and convert it into a
- * {@link Command}
+ * {@link edu.gemini.aspen.giapi.commands.Command}
  */
 public class HandlerResponseMessageParser {
     private final MapMessage mapMessage;
