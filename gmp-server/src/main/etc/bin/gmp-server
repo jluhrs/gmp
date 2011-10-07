@@ -3,7 +3,7 @@
 # init.d script to manage a container based on an OSGi framework
 #
 set -e # stop on errors
-set -u # Don't allow using non defined variables
+#set -u # Don't allow using non defined variables
 #
 #              <startlevels> <startprio> <stopprio>
 # chkconfig:   345 80 80
@@ -28,7 +28,7 @@ if [ -z $JAVA_HOME ]; then
 fi
 
 # It still JAVA_HOME not defined exit
-if ! [ -z $JAVA_HOME ]; then
+if [ -z $JAVA_HOME ]; then
     echo "Please define your java home var on JAVA_HOME"
     exit -1
 fi

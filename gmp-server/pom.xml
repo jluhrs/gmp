@@ -17,7 +17,10 @@
 
     <name>GMP Server Application</name>
     <description>The GMP Server</description>
-
+    <organization>
+        <url>http://www.gemini.edu</url>
+        <name>Gemini Observatory</name>
+    </organization>
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmpserver</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmpserver</bundle.namespace>
@@ -63,7 +66,9 @@
                     <stripFromPath>${basedir}</stripFromPath>
                     <extractAll>true</extractAll>
                     <imagePath>src/main/doc/ src/main/doc/gemini_records/</imagePath>
-                    <examplePath>src/main/doc/gemini_records ../giapi-tester/src/main/resources/edu/gemini/giapi/tool/help</examplePath>
+                    <examplePath>src/main/doc/gemini_records
+                        ../giapi-tester/src/main/resources/edu/gemini/giapi/tool/help
+                    </examplePath>
                 </configuration>
             </plugin>
             <plugin>
@@ -118,6 +123,220 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.1-alpha-1</version>
+                <executions>
+                    <execution>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <group>Gemini</group>
+                    <mappings>
+                        <!--jars-->
+                        <mapping>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/bundles</directory>
+                            <!--<dependency/>-->
+                            <!--<dependency>-->
+                            <!--<excludes>-->
+                            <!--<exclude>org.ops4j.pax.runner:pax-runner</exclude>-->
+                            <!--<exclude>edu.gemini.aspen:giapi-tester</exclude>-->
+                            <!--</excludes>-->
+                            <!--</dependency>-->
+                            <!--<dependency>-->
+                            <!--<includes>-->
+
+                            <!--</includes>-->
+                            <!--</dependency>-->
+                            <sources>
+                                <source>
+                                    <location>target/archive-tmp/bundles/</location>
+                                </source>
+                            </sources>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!-- gmp-server bundle-->
+                        <mapping>
+                            <directory>
+                                /gemsoft/opt/gpi/${project.artifactId}-${project.version}/bundles/edu/gemini/aspen/gmp/gmp-server/
+                            </directory>
+                            <sources>
+                                <source>
+                                    <location>${user.home}/.m2/repository/edu/gemini/aspen/gmp/gmp-server/</location>
+                                </source>
+                            </sources>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--felix bundles-->
+                        <mapping>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/felix</directory>
+                            <sources>
+                                <source>
+                                    <location>target/archive-tmp/felix/</location>
+                                </source>
+                            </sources>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--&lt;!&ndash;docs&ndash;&gt;-->
+                        <!--<mapping>-->
+                        <!--<sources>-->
+                        <!--<source>-->
+                        <!--<location>target/site/doxygen</location>-->
+                        <!--</source>-->
+                        <!--</sources>-->
+                        <!--<directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/doc</directory>-->
+                        <!--<documentation>true</documentation>-->
+                        <!--<filemode>644</filemode>-->
+                        <!--<username>software</username>-->
+                        <!--<groupname>gemini</groupname>-->
+                        <!--</mapping>-->
+
+                        <!--config files-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>src/main/etc/conf</location>
+                                    <filter>true</filter>
+                                </source>
+                            </sources>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/conf</directory>
+                            <configuration>true</configuration>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--executables-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>src/main/etc/bin/start.sh</location>
+                                    <filter>true</filter>
+                                </source>
+                                <source>
+                                    <location>../giapi-tester/src/main/etc/bin/giapi-tester.sh</location>
+                                </source>
+                            </sources>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/bin</directory>
+                            <filemode>755</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--to bin/-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>src/main/etc/bin/runner.args</location>
+                                </source>
+                                <!--<source>-->
+                                <!--<location>../giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar-->
+                                <!--</location>-->
+                                <!--</source>-->
+                            </sources>
+                            <dependency>
+                                <includes>
+                                    <include>edu.gemini.aspen:giapi-tester</include>
+                                    <include>org.ops4j.pax.runner:pax-runner</include>
+                                </includes>
+                            </dependency>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/bin</directory>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--init script-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>src/main/etc/bin/gmp-server</location>
+                                    <filter>true</filter>
+                                </source>
+                            </sources>
+                            <directory>/etc/init.d</directory>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>755</filemode>
+                            <username>root</username>
+                            <groupname>root</groupname>
+                        </mapping>
+                    </mappings>
+                    <needarch>noarch</needarch>
+                    <targetOS>linux</targetOS>
+                    <targetVendor>redhat</targetVendor>
+                    <requires>
+                        <require>java &gt;= 1.6.0</require>
+                    </requires>
+                    <release>11</release>
+                    <verifyScriptlet>
+                        <script>
+                            #chek for user?
+                            #this line doesn't work. How to use it?
+                            #if id -u software1 &amp;&gt;/dev/null ; then echo "Warning: User software does not exist"
+                            &gt;&amp;2;fi
+                        </script>
+                    </verifyScriptlet>
+                    <preinstallScriptlet>
+                        <script>
+                            #check for user, or create it?
+                        </script>
+                    </preinstallScriptlet>
+                    <postinstallScriptlet>
+                        <script>
+                            #create logs/ directory
+                            mkdir -p /gemsoft/opt/gpi/${project.artifactId}-${project.version}/logs
+
+                            #change user/group for all files(particularly directories)
+                            chown -R software.gemini /gemsoft/opt/gpi/${project.artifactId}-${project.version}/
+
+                            #copy/create appropriate module.properties
+
+                            #add pax runner jars
+
+                            #chkconfig
+                            if [ $1 -eq 1 ]; then
+                            chkconfig --add gmp-server
+                            chkconfig --level 345 gmp-server on
+                            fi
+
+                            #symlink /gemsoft/opt/gpi/gmp -> /gemsoft/opt/gpi/gmp-server-$VERSION
+                            if [ $1 -ne 1 ]; then
+                            rm -f /gemsoft/opt/gpi/gmp
+                            fi
+                            ln -s /gemsoft/opt/gpi/${project.artifactId}-${project.version}/ /gemsoft/opt/gpi/gmp
+                        </script>
+                    </postinstallScriptlet>
+                    <preremoveScriptlet>
+                        <script>
+                            #chkconfig
+                            if [ $1 -eq 0 ]; then
+                            chkconfig --del gmp-server
+                            fi
+                        </script>
+                    </preremoveScriptlet>
+                    <postremoveScriptlet>
+                        <script>
+                            #delete leftover directories
+                            if [ $1 -eq 0 ]; then
+                            rm -rf /gemsoft/opt/gpi/${project.artifactId}-${project.version}
+                            rm /gemsoft/opt/gpi/gmp
+                            fi
+                        </script>
+                    </postremoveScriptlet>
+                </configuration>
             </plugin>
         </plugins>
         <!-- Do filtering of files in etc for different environments -->
