@@ -45,7 +45,6 @@
         <fileSet>
             <directory>src/main/etc/bin</directory>
             <outputDirectory>/bin</outputDirectory>
-            <filtered>true</filtered>
             <includes>
                 <include>runner.args</include>
             </includes>
@@ -68,7 +67,6 @@
             <directory>../giapi-tester/src/main/etc/bin</directory>
             <fileMode>0755</fileMode>
             <outputDirectory>/bin</outputDirectory>
-            <filtered>true</filtered>
             <includes>
                 <include>giapi-tester.sh</include>
                 <include>gpi-all-commands-test.sh</include>
