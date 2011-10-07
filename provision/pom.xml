@@ -22,6 +22,7 @@
         <org.activemq.core.version>5.5.0</org.activemq.core.version>
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.8.1</scala-lang.version>
+        <vaadin.version>6.7.0</vaadin.version>
     </properties>
 
     <!--
