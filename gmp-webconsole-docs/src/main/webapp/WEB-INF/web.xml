@@ -10,7 +10,7 @@
         <servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
         <init-param>
             <param-name>resourceBase</param-name>
-            <param-value>../../doc</param-value>
+            <param-value>../../docs</param-value>
         </init-param>
         <init-param>
             <param-name>dirAllowed</param-name>
