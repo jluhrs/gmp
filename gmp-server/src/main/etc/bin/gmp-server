@@ -37,6 +37,10 @@ fi
 which java > /dev/null || { echo "Need java in PATH to run"; exit 1; }
 
 # Verify existing variables
+if [ -z $GPI_ROOT ]; then
+    GPI_ROOT=/gemsoft/opt/gpi/
+    echo "GPI_ROOT not set. Using $GPI_ROOT"
+fi
 if ! [ -d $GPI_ROOT ]; then
     echo "$GPI_ROOT directory not found"
     exit -1

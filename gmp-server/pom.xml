@@ -144,18 +144,6 @@
                         <!--jars-->
                         <mapping>
                             <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/bundles</directory>
-                            <!--<dependency/>-->
-                            <!--<dependency>-->
-                            <!--<excludes>-->
-                            <!--<exclude>org.ops4j.pax.runner:pax-runner</exclude>-->
-                            <!--<exclude>edu.gemini.aspen:giapi-tester</exclude>-->
-                            <!--</excludes>-->
-                            <!--</dependency>-->
-                            <!--<dependency>-->
-                            <!--<includes>-->
-
-                            <!--</includes>-->
-                            <!--</dependency>-->
                             <sources>
                                 <source>
                                     <location>target/archive-tmp/bundles/</location>
@@ -194,19 +182,19 @@
                             <username>software</username>
                             <groupname>gemini</groupname>
                         </mapping>
-                        <!--&lt;!&ndash;docs&ndash;&gt;-->
-                        <!--<mapping>-->
-                        <!--<sources>-->
-                        <!--<source>-->
-                        <!--<location>target/site/doxygen</location>-->
-                        <!--</source>-->
-                        <!--</sources>-->
-                        <!--<directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/doc</directory>-->
-                        <!--<documentation>true</documentation>-->
-                        <!--<filemode>644</filemode>-->
-                        <!--<username>software</username>-->
-                        <!--<groupname>gemini</groupname>-->
-                        <!--</mapping>-->
+                        <!--docs-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>target/site/doxygen</location>
+                                </source>
+                            </sources>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/docs</directory>
+                            <documentation>true</documentation>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
 
                         <!--config files-->
                         <mapping>
@@ -282,13 +270,13 @@
                     <requires>
                         <require>java &gt;= 1.6.0</require>
                     </requires>
-                    <release>11</release>
+                    <release>1</release>
                     <verifyScriptlet>
                         <script>
                             #chek for user?
                             #this line doesn't work. How to use it?
                             #if id -u software1 &amp;&gt;/dev/null ; then echo "Warning: User software does not exist"
-                            &gt;&amp;2;fi
+                            ;fi
                         </script>
                     </verifyScriptlet>
                     <preinstallScriptlet>
@@ -309,10 +297,10 @@
                             #add pax runner jars
 
                             #chkconfig
-                            if [ $1 -eq 1 ]; then
-                            chkconfig --add gmp-server
-                            chkconfig --level 345 gmp-server on
-                            fi
+                            #if [ $1 -eq 1 ]; then
+                            #chkconfig --add gmp-server
+                            #chkconfig --level 345 gmp-server on
+                            #fi
 
                             #symlink /gemsoft/opt/gpi/gmp -> /gemsoft/opt/gpi/gmp-server-$VERSION
                             if [ $1 -ne 1 ]; then
@@ -324,9 +312,9 @@
                     <preremoveScriptlet>
                         <script>
                             #chkconfig
-                            if [ $1 -eq 0 ]; then
-                            chkconfig --del gmp-server
-                            fi
+                            #if [ $1 -eq 0 ]; then
+                            #chkconfig --del gmp-server
+                            #fi
                         </script>
                     </preremoveScriptlet>
                     <postremoveScriptlet>
