@@ -40,6 +40,7 @@
 
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.8.1</scala-lang.version>
+        <vaadin.version>6.6.7</vaadin.version>
         <gmp.version>0.12.0</gmp.version>
         <vaadin.version>6.7.0</vaadin.version>
         <pax-runner.version>1.7.4</pax-runner.version>
@@ -519,12 +520,6 @@
             <artifactId>gmp-webconsole-docs</artifactId>
             <version>0.1.0</version>
             <type>war</type>
-        </dependency>
-        <!-- Commands Handlers State Service -->
-        <dependency>
-            <groupId>edu.gemini.aspen.gmp</groupId>
-            <artifactId>gmp-handlers-state-service</artifactId>
-            <version>0.1.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
