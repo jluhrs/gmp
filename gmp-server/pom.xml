@@ -191,6 +191,7 @@
                             </sources>
                             <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/docs</directory>
                             <documentation>true</documentation>
+                            <directoryIncluded>false</directoryIncluded>
                             <filemode>644</filemode>
                             <username>software</username>
                             <groupname>gemini</groupname>
@@ -297,10 +298,10 @@
                             #add pax runner jars
 
                             #chkconfig
-                            #if [ $1 -eq 1 ]; then
-                            #chkconfig --add gmp-server
-                            #chkconfig --level 345 gmp-server on
-                            #fi
+                            if [ $1 -eq 1 ]; then
+                            chkconfig --add gmp-server
+                            chkconfig --level 345 gmp-server on
+                            fi
 
                             #symlink /gemsoft/opt/gpi/gmp -> /gemsoft/opt/gpi/gmp-server-$VERSION
                             if [ $1 -ne 1 ]; then
@@ -312,9 +313,9 @@
                     <preremoveScriptlet>
                         <script>
                             #chkconfig
-                            #if [ $1 -eq 0 ]; then
-                            #chkconfig --del gmp-server
-                            #fi
+                            if [ $1 -eq 0 ]; then
+                            chkconfig --del gmp-server
+                            fi
                         </script>
                     </preremoveScriptlet>
                     <postremoveScriptlet>

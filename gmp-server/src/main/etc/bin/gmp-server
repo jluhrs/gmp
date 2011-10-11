@@ -18,21 +18,6 @@ set -e # stop on errors
 PAX_RUNNER_VERSION=${pax-runner.version}
 GMP_VERSION=${gmp.version}
 
-# Try to guess JAVA_HOME
-if [ -z $JAVA_HOME ]; then
-    if [ -n $JDK_PATH ]; then
-        JAVA_HOME=$JDK_PATH
-    elif [ -n $JDK_HOME ]; then
-        JAVA_HOME=$JDK_HOME
-    fi
-fi
-
-# It still JAVA_HOME not defined exit
-if [ -z $JAVA_HOME ]; then
-    echo "Please define your java home var on JAVA_HOME"
-    exit -1
-fi
-
 # Confirm that java is available
 which java > /dev/null || { echo "Need java in PATH to run"; exit 1; }
 
@@ -46,11 +31,8 @@ if ! [ -d $GPI_ROOT ]; then
     exit -1
 fi
 
-# Verify jps exist
-if ! [ -x $JAVA_HOME/bin/jps ]; then
-    echo "$JAVA_HOME/bin/jps file not found"
-    exit -1
-fi
+# Confirm that jps is available
+which jps > /dev/null || { echo "Need jps in PATH to run"; exit 1; }
 
 # App variables
 app_name=gmp-server
@@ -59,10 +41,11 @@ pid_file=${app_root}/bin/${app_name}.pid
 log_file=${app_root}/logs/${app_name}.out
 
 # pax-runner needs this dir to run
-if ! [ -d $HOME/.pax/runner ]; then
-    mkdir -p $HOME/.pax/runner
-    touch $HOME/.pax/runner/org.ops4j.pax.runner.daemon.password.file
+if ! [ -d ~software/.pax/runner ]; then
+    mkdir -p ~software/.pax/runner
+    touch ~software/.pax/runner/org.ops4j.pax.runner.daemon.password.file
 fi
+
 
 #
 # - get PID from .pid file if it exists and check if it is running
@@ -77,14 +60,10 @@ set -e # reenable
 function startContainer() {
     if [ -z ${pid_isrunning} ]; then
         echo "Starting ${app_name} version $GMP_VERSION"
-        pushd ${app_root}/bin > /dev/null
         # Will start pax-runner as a daemon reading the configuration from the file bin/runner.args
-        exec java -cp ${app_root}/bin/pax-runner-$PAX_RUNNER_VERSION.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd &> ${log_file} &
-        wait $!
-        sleep 2
+        su - software -c "pushd ${app_root}/bin > /dev/null; exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd &> ${log_file}; wait $!; sleep 4; popd > /dev/null"
         # Get the pid with jps
-        $JAVA_HOME/bin/jps -l | grep "org.apache.felix.main.Main" | sed "s/[[:space:]]*\([\d]*\) .*/\1/" > ${pid_file}
-        popd > /dev/null
+        su - software -c "jps -l | grep \"org.apache.felix.main.Main\" | sed \"s/[[:space:]]*\([\d]*\) .*/\1/\" > ${pid_file}"
         echo "Started ${app_name}"
     else
         echo "${app_name} already running with pid ${pid}"
@@ -97,12 +76,13 @@ function startContainer() {
 function stopContainer() {
   if [ ! -z ${pid_isrunning} ]; then
     echo "Stopping ${app_name} with pid ${pid}"
-    exec java -cp ${app_root}/bin/pax-runner-$PAX_RUNNER_VERSION.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop
-    wait $!
+    su - software -c "exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop; wait $!"
+    #wait $!
   else
     echo "${app_name} not running"
   fi
 }
+
 
 #
 # Kill the GMP process
