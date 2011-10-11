@@ -1,26 +1,21 @@
 /*!
- * \page cas Channel Access Server
- *
- * This bundle provides a <a href="http://jca.cosylab.com/">Java Channel Access Server</a>, providing a soft IOC
- * infrastructure to implement EPICS databases in Java.
- *
- * \section cas_provides_sec Provided Services
- * The \ref edu.gemini.cas.ChannelAccessServerImpl "ChannelAccessServerImpl" class provides the main entry point to the \ref cas
- * bundle. It implements the \ref edu.gemini.cas.ChannelAccessServer and \ref edu.gemini.cas.ChannelFactory interfaces,
- * exposing them as an OSGi service. This services allows the creation of Integer, Float, Double and String EPICS
- * process variables.
- *
- * \section cas_requires_sec Required Services
- * This bundle requires no other OSGi services.
- * \section cas_configuration_sec Configuration
- * This bundle has no configuration options.
- *
- */
-
-
-
-
-
+ \page cas Channel Access Server
+ 
+  This bundle provides a <a href="http://jca.cosylab.com/">Java Channel Access Server</a>, providing a soft IOC
+  infrastructure to implement EPICS databases in Java.
+ 
+  \section cas_provides_sec Provided Services
+  The \ref edu.gemini.cas.impl.ChannelAccessServerImpl "ChannelAccessServerImpl" class provides the main entry point to the \ref cas
+  bundle. It implements the \ref edu.gemini.cas.ChannelAccessServer and \ref edu.gemini.cas.ChannelFactory interfaces,
+  exposing them as an OSGi service. This services allows the creation of Integer, Float, Double and String EPICS
+  process variables.
+ 
+  \section cas_requires_sec Required Services
+  This bundle requires no other OSGi services.
+  \section cas_configuration_sec Configuration
+  This bundle has no configuration options.
+ 
+*/
 
 /*! \package edu.gemini.cas
  * Test documentation for the cas package
