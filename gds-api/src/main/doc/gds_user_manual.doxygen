@@ -270,5 +270,5 @@ Self-hosted help
 - Got a session expiration error like:
 \image html gds_web_ui_session_expired.png
 
-That only means that the browser window was inactive for too long. Just restart
+That only means that the browser window was inactive for too long. Just refresh the page
 */
