@@ -19,7 +19,7 @@
   \image html keyword-value-composer-collaboration.jpg
  
   \section gds-keyword_factory_composite Keyword Factory Composite
-  The bundle includes an OSGi based \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory.scala "CompositeActorsFactory"
+  The bundle includes an OSGi based \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory "CompositeActorsFactory"
   which is a software composite of other OSGi-based KeywordActorFactory services. The factories are collected using OSGi service discovery.
  
   Each KeywordActorFactory knows how to build actors of a type that can read data of a specific source, so we can have an Epics
@@ -117,11 +117,11 @@
         <td>Comment</td>
         <td>A comment to be included in the FITS keyword</td>
         <td>Any text enclosed in quotes</td>
-   <tr>
+   </tr>
 </table> 
   \section gds-actors-composer_provides_sec Provided Services
   This bundle provides the following OSGi services:
-  - \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory.scala "CompositeActorsFactory"
+  - \ref edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory "CompositeActorsFactory"
  
   \section gds-actors-composer_requires_sec Required Services
   This bundle requires the following services to operate:

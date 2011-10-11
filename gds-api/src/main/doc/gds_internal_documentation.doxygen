@@ -177,7 +177,7 @@ Some recommendations:
 Testing for memory leaks are possible by using the acqloop.sh script at the src/examples dir in giapi-glue, and then
 checking the GDS using visualvm or jconsole
 
-\li Start the GMP-GDS as indicated in the \ref user_manual.
+\li Start the GMP-GDS as indicated in the \ref gmp_user_manual.
 \li Start the sequence command example in <tt> giapi-glue-cc/src/examples/ </tt> with: <tt>$ ./acqloop.sh </tt>. You may want to edit the script to change the amount of iterations
 \li Start jconsole (Installed as part of the JDK) and make it connect to the org.apache.felix.main.Main process
 \li The script should run for quite a while sending observation commands in sequence to the GDS and then to the simulated instrument
