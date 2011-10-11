@@ -6,7 +6,6 @@ import org.joda.time.format.ISODateTimeFormat
 import com.google.common.collect.Maps
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.web.ui.logs.LogSource
-import org.ops4j.pax.logging.spi.PaxLevel
 import org.apache.log4j.Level
 import scala.collection.JavaConversions._
 import org.junit.{Ignore, Test}
@@ -91,6 +90,7 @@ class LoggingEventBeanQueryTest extends Mockito {
     }
   } 
 
+  @Ignore("Filer disabled")
   @Test
   def loadWithTwoFilters {
     val logEvents = for (i <- 0 to 10) yield buildEvent(i)
@@ -103,6 +103,7 @@ class LoggingEventBeanQueryTest extends Mockito {
     assertTrue(logs.isEmpty)
   }
 
+  @Ignore("Filer disabled")
   @Test
   def loadWithFilter {
     // Add two level of logs

@@ -36,20 +36,20 @@ class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
     val sortableCol = if (!sortPropertyIds.isEmpty) sortPropertyIds(0).toString else "timeStamp"
     val ascending = if (!sortStates.isEmpty) sortStates(0) else true
 
-    val r = result sortBy sortingFunctions(sortableCol)
+    val sortedLog = result sortBy sortingFunctions(sortableCol)
 
-    if (!ascending) {
-      r reverse
+    if (ascending) {
+      sortedLog
     } else {
-      r
+      sortedLog reverse
     }
   }
 
-  def size() = filteredLogs.size
+  def size():Int = Option(filteredLogs).getOrElse(Nil).size
 
   def constructBean() = throw new UnsupportedOperationException()
 
-  private def filteredLogs = queryDefinition.filterResults(logSource.logEvents)
+  private def filteredLogs = logSource.logEvents
 }
 
 object LoggingEventBeanQuery {

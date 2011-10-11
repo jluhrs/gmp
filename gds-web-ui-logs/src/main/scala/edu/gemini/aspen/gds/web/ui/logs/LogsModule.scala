@@ -5,7 +5,7 @@ import com.vaadin.Application
 import model.{LogsContainer, LogSourceQueryDefinition, LoggingEventBeanQuery}
 import scala.collection.JavaConversions._
 import org.vaadin.addons.lazyquerycontainer._
-import java.util.logging.{Level, Logger}
+import java.util.logging.Logger
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.ui.Table.{CellStyleGenerator}
 import edu.gemini.aspen.gds.web.ui.api.Preamble._
@@ -27,7 +27,7 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
   val expandTooltip = "Show stack trace"
   val container = {
     val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
-    val definition = new LogSourceQueryDefinition(logSource, false, 100)
+    val definition = new LogSourceQueryDefinition(logSource, false, 300)
 
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
     definition.addProperty("level", classOf[String], "", true, true)
@@ -55,5 +55,9 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     layout.addComponent(logTable)
     layout.setExpandRatio(logTable, 1.0f)
     layout
+  }
+
+  override def refresh(app: Application) {
+    container.refresh()
   }
 }

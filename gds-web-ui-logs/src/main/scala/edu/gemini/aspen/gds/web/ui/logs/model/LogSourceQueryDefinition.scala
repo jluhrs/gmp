@@ -2,9 +2,8 @@ package edu.gemini.aspen.gds.web.ui.logs.model
 
 import org.vaadin.addons.lazyquerycontainer.LazyQueryDefinition
 import edu.gemini.aspen.gds.web.ui.logs.LogSource
-import com.vaadin.data.Container.{Filter, Filterable}
+import com.vaadin.data.Container.Filter
 import com.vaadin.data.util.BeanItem
-import com.vaadin.data.util.filter.Compare
 
 /**
  * Placeholder class needed to let LoggingEventBeanQuery access logSource */
