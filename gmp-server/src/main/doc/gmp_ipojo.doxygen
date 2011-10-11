@@ -1,11 +1,11 @@
 /*! \page gmp_ipojo IPojo in GIAPI
 
  GMP runs on the OSGi platform which gives a lot of advantages in terms of modularity.
- The platform is designed around dynamic services that can appear/disappear at any time
- and thus it requires an extra effort to use correctly, in particular dependency management
+ OSGi is designed around dynamic services that can appear/disappear at any time
+ and thus it requires an extra effort to use correctly. In particular, dependency management
  is a bit more difficult to handle.
 
- Several options are available to reduce the programming burden in OSGi, all arounnd the concept
+ Several options are available to reduce the programming burden in OSGi, all around the concept
  of components that can automate the search and removal of dependencies of services. Examples of
  these tools are Spring-DM, OSGi Declarative service and iPojo
 
@@ -14,7 +14,27 @@
 
  Pluses
  -# It make it very easy to build new components and services using annotations
- -# 
+ -# Consumption of services is very simple and they can be injected ussing setters and/or constructor parameters
+ -# It is compatible with the Configuration Admin service to centralize configurations
+ -# As it uses bytecode manipulation at compilation time, it should be faster than other alternatives
+ -# The iPojo design should hide the threading complexities of service creation and dissapearance
+
+Minuses
+ -# Due to the bytecode manipulation there is quite a bit of magic on iPojo components
+ -# For the same reason, some components cannot be used in other settings, for example in other bundles' integration tests
+ -# There are a few bugs on the implementation. For exapmle you need to have a \@Validate tag even if you don't
+ need, or your component won't start
+ -# While scala an iPojo play along ok, it was discovered that the combination of the scala compiler
+ and the iPojo manipulator produce files that are no fully valid. Thus the java verifier needs to be disabled
+ addin the -Xnoverify directive at startup 
 
  Writing components:
+
+ To write components you should refer to the official documentation at \link http://felix.apache.org/site/apache-felix-ipojo.html \endlink
+
+ Additionally we have been using the following coventions for iPojo
+
+ -# As much as possible use constructor injection. This makes it possible to create immutable objects and makes it easier to unit testing
+ -# For configuration use ConfigAdmin again passing the configuration as connstructor params
+ -# Remember to add at least one annotation to enable iPojo lifecycle, e.g. \@Validate or \@Invalidate
  */
