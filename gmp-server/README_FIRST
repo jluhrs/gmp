@@ -116,4 +116,5 @@ there is a script called
 
 buildrelease.sh
 
-
+This script also builds rpm package for instalation in RedHat Linux. You should have rpm installed in your build machine. If you are building
+on OSX, you should check that you have a file called .rpmmacros in your home directory which contains "%_tmppath   /tmp" (without the quotes).
