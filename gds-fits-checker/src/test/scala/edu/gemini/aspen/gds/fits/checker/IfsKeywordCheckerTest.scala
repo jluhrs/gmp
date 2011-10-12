@@ -24,7 +24,7 @@ class IfsKeywordCheckerTest {
     val checker = new IfsKeywordsChecker(conf, obsState, ph)
     copy(new File(classOf[IfsKeywordCheckerTest].getResource("S20110427-01.fits").toURI), new File("/tmp/S20110427-01.fits"))
     checker.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, "S20110427-01")
-    Thread.sleep(100)
+    Thread.sleep(200)
     verify(obsState, times(1)).registerMissingKeyword("S20110427-01", new Set1[FitsKeyword](new FitsKeyword("TELSCOP")))
   }
 
@@ -38,7 +38,7 @@ class IfsKeywordCheckerTest {
     val checker = new IfsKeywordsChecker(conf, obsState, ph)
     copy(new File(classOf[IfsKeywordCheckerTest].getResource("S20110427-01.fits").toURI), new File("/tmp/S20110427-01.fits"))
     checker.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, "S20110427-01")
-    Thread.sleep(100)
+    Thread.sleep(200)
     verifyZeroInteractions(obsState)
   }
 }
