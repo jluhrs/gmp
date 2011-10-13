@@ -18,7 +18,6 @@
     <packaging>pom</packaging>
 
     <properties>
-
         <org.activemq.core.version>5.5.0</org.activemq.core.version>
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.8.1</scala-lang.version>
@@ -32,7 +31,6 @@
     -->
 
     <dependencies>
-        <!-- BeginLevel 1-->
         <!-- Felix Shell and remote shell -->
         <dependency>
             <groupId>org.apache.felix</groupId>
@@ -48,12 +46,12 @@
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-api</artifactId>
-            <version>1.6.2</version>
+            <version>1.6.3</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
-            <version>1.6.2</version>
+            <version>1.6.3</version>
         </dependency>
         <!-- Configuration admin felix service -->
         <dependency>
@@ -66,8 +64,6 @@
             <artifactId>org.apache.felix.configadmin</artifactId>
             <version>1.2.8</version>
         </dependency>
-        <!-- End Start Level 1-->
-        <!-- Begin Level 2 -->
         <!-- Felix web console -->
         <dependency>
             <groupId>org.apache.felix</groupId>
@@ -93,22 +89,22 @@
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-jetty-bundle</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.7</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-extender-war</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.7</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-extender-whiteboard</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.7</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-spi</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.7</version>
         </dependency>
         <!-- Felix iPOJO -->
         <dependency>
@@ -131,7 +127,6 @@
             <artifactId>org.apache.felix.ipojo.webconsole</artifactId>
             <version>1.6.0</version>
         </dependency>
-        <!-- End Level 2-->
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>com.springsource.javax.jms</artifactId>
