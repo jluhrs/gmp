@@ -45,7 +45,7 @@ public class ActiveMQBrokerComponent {
             @Property(name = "jmxRmiServerPort", value = "" + BROKER_JMX_RMI_PORT, mandatory = true) int jmxRmiServerPort,
             @Property(name = "jmxConnectorPort", value = "" + BROKER_JMX_CONNECTOR_PORT, mandatory = true) int jmxConnectorPort) {
         this.useJmx = useJmx;
-        isPersistent = persistent;
+        this.isPersistent = persistent;
         this.brokerName = brokerName;
         this.url = url;
         this.deleteMsgOnStartup = deleteMsgOnStartup;

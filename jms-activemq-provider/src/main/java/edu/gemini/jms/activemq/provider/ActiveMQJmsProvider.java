@@ -23,11 +23,11 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     private final String brokerUrl;
 
-    public ActiveMQJmsProvider(@Property(name = "brokerUrl", value = DEFAULT_BROKER_URL, mandatory = true)String url) {
+    public ActiveMQJmsProvider(@Property(name = "brokerUrl", value = DEFAULT_BROKER_URL, mandatory = true) String url) {
         this.brokerUrl = url;
         // Setup the connection factory
-            LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
-            _factory = new ActiveMQConnectionFactory(brokerUrl);
+        LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
+        _factory = new ActiveMQConnectionFactory(brokerUrl);
     }
 
     @Validate

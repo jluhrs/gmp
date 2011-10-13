@@ -35,7 +35,6 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
         _ => deleteProperty
     } toList
 
-    println(prop)
     val cols = dataSource.propertyIds
     val p = cols ++ prop
     (p toArray).asInstanceOf[Array[AnyRef]]
