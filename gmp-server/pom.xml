@@ -271,18 +271,13 @@
                     <requires>
                         <require>java &gt;= 1.6.0</require>
                     </requires>
-                    <release>1</release>
-                    <verifyScriptlet>
-                        <script>
-                            #chek for user?
-                            #this line doesn't work. How to use it?
-                            #if id -u software1 &amp;&gt;/dev/null ; then echo "Warning: User software does not exist"
-                            ;fi
-                        </script>
-                    </verifyScriptlet>
+                    <release>2</release>
                     <preinstallScriptlet>
                         <script>
                             #check for user, or create it?
+                            id -u software &amp;&gt; /dev/null || useradd software -g gemini -m &amp;&gt; /dev/null ||
+                            (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt;
+                            /dev/null) || echo "Problem: could not create user software"
                         </script>
                     </preinstallScriptlet>
                     <postinstallScriptlet>
