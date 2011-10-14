@@ -16,7 +16,7 @@
 
  \subsection epics_subscription_test Epics Subscription Channels Integration Tests
 
-     The epicssubscription application will monitor two channels: \c ws:wsFilter.VALL and \c ws:cpWf.
+     The epicssubscription application will monitor two channels: \c gpi:ws:wsFilter.VALL and \c gpi:ws:cpWf.
      Whenever an update is received, the values will be displayed in the console.
 
      Before running the application, make sure the EPCS Simulator is running and
@@ -25,14 +25,14 @@
 \verbatim
     <channels>
        <channel>
-           <name>ws:wsFilter.VALL</name>
+           <name>gpi:ws:wsFilter.VALL</name>
            <type>double</type>
            <size>10</size>
            <updateRate>5</updateRate>
        </channel>
 
         <channel>
-            <name>ws:cpWf</name>
+            <name>gpi:ws:cpWf</name>
             <type>byte</type>
             <size>20</size>
             <updateRate>7</updateRate>
@@ -47,11 +47,14 @@ Of course, you can change these values and update the test application according
      <tt>$ ./runExample.sh epicssubscription</tt>
 
      and you should get something similar to:
+
+\attention In Release 13.0 the Epics Simulator has been disabled in preparation for integration. You may not see updates to the
+channels below
 \verbatim
     Starting Epics Subscription Demo
-    2011-02-25 11:00:47,792 [0x2ab4c9a45260] INFO  giapi.GeminiUtilImpl - Subscribe epics status ws:wsFilter.VALL
-    2011-02-25 11:00:47,805 [0x2ab4c9a45260] INFO  giapi.GeminiUtilImpl - Subscribe epics status ws:cpWf
-    Channel Changed ws:wsFilter.VALL
+    2011-02-25 11:00:47,792 [0x2ab4c9a45260] INFO  giapi.GeminiUtilImpl - Subscribe epics status gpi:ws:wsFilter.VALL
+    2011-02-25 11:00:47,805 [0x2ab4c9a45260] INFO  giapi.GeminiUtilImpl - Subscribe epics status gpi:ws:cpWf
+    Channel Changed gpi:ws:wsFilter.VALL
     Value [0] = 0.697006
     Value [1] = 0.983262
     Value [2] = 0.759258
@@ -62,9 +65,9 @@ Of course, you can change these values and update the test application according
     Value [7] = 0.865949
     Value [8] = 0.59004
     Value [9] = 0.87209
-    Channel Changed ws:cpWf
+    Channel Changed gpi:ws:cpWf
     Value: {222 18 139 96 53 39 239 9 163 221 117 129 193 153 71 159 50 31 218 9 }
-    Channel Changed ws:wsFilter.VALL
+    Channel Changed gpi:ws:wsFilter.VALL
     Value [0] = 0.144421
     Value [1] = 0.516714
     Value [2] = 0.787672
@@ -128,7 +131,22 @@ Of course, you can change these values and update the test application according
 
            <tt>$./runExample.sh obsevent</tt>
 
-           You'll see a bunch of messages in the console, make sure you don't see anything that looks like an error.
+           You'll see a bunch of messages in the console, like:
+
+    \verbatim
+    Starting Observation Event Example
+    2011-10-14 10:07:38,778 [0x2acb102ca150] INFO  giapi.JmsProducer - Observation Event: OBS_PREP datalabel: S2009020201-1
+    2011-10-14 10:07:38,802 [0x2acb102ca150] INFO  giapi.JmsProducer - Observation Event: OBS_START_ACQ datalabel: S2009020201-1
+    2011-10-14 10:07:38,804 [0x2acb102ca150] INFO  giapi.JmsProducer - Observation Event: OBS_END_ACQ datalabel: S2009020201-1
+    2011-10-14 10:07:38,805 [0x2acb102ca150] INFO  giapi.JmsProducer - Observation Event: OBS_START_READOUT datalabel: S2009020201-1
+    2011-10-14 10:07:38,806 [0x2acb102ca150] INFO  giapi.JmsProducer - Observation Event: OBS_END_READOUT datalabel: S2009020201-1
+    2011-10-14 10:07:38,807 [0x2acb102ca150] INFO  giapi.JmsProducer - Observation Event: OBS_START_DSET_WRITE datalabel: S2009020201-1
+    2011-10-14 10:07:38,808 [0x2acb102ca150] INFO  giapi.JmsProducer - Observation Event: OBS_END_DSET_WRITE datalabel: S2009020201-1
+    2011-10-14 10:07:38,809 [0x2acb102ca150] WARN  giapi.JmsProducer - The datalabel cannot be empty for observation event OBS_END_DSET_WRITE
+    This is an expected error, the dataset label was empty. No message was sent to GMP
+    2011-10-14 10:07:38,809 [0x2acb102ca150] WARN  giapi.JmsProducer - The datalabel cannot be empty for observation event OBS_END_DSET_WRITE
+    This is an expected error, the dataset label was empty. No message was sent to GMP
+    \endverbatim
 
            In the giapi-tester, you should see:
     \verbatim
@@ -140,8 +158,8 @@ Of course, you can change these values and update the test application according
     [S2009020201-1/OBS_START_DSET_WRITE]
     [S2009020201-1/OBS_END_DSET_WRITE]
     \endverbatim
-            Make sure the order is exactly the one shown above.
 
+           Make sure the order is exactly the one shown above.
 
  \subsection logging_test Logging Service Integration Tests
 
@@ -355,8 +373,16 @@ Of course, you can change these values and update the test application according
        <tt>$ ./runExample.sh services</tt>
 \verbatim
     Starting Services Util Example
-    2011-02-25 11:42:09,229 [0x2b3764b1e260] INFO  giapi.ServicesUtilImpl - Property requested for key: GMP_HOST_NAME
+    2011-10-14 10:18:28,981 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: GMP_HOST_NAME
     Hostname: localhost
+    2011-10-14 10:18:29,000 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_ANCILLARY_DATA_PATH
+    Ancilliary Data Path: /tmp
+    2011-10-14 10:18:29,085 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_SCIENCE_DATA_PATH
+    Science Path: /tmp
+    2011-10-14 10:18:29,120 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_INTERMEDIATE_DATA_PATH
+    Intermediate Data Path: /tmp
+    2011-10-14 10:18:29,160 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: DEFAULT
+    Default: 
 \endverbatim
 
        Confirm that the value obtained matches the one in the configuration file.
@@ -516,13 +542,13 @@ or your GMP configuration is incorrect.
 \li The EPICS status items that are configured in the GMP are defined in the \ref giapi-epics-status-mapping.xml file. See the
 \ref gmp-epics-status-service bundle documentation for more details.
 
-To check that everything is running correctly, you can run <tt>$ caget -a gpi:status1</tt> and see if it can read a
+To check that everything is running correctly, you can run <tt>$ caget -a gpi:state</tt> and see if it can read a
 value. Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running. You should see
 something like this:
 \verbatim
-    gpi:status1                    2011-03-01 10:07:07.040000 2
+    gpi:state                      2011-10-13 12:46:01.835000 0
 \endverbatim
-The value returned should match the initial value specified in the \ref giapi-epics-status-mapping.xml file.
+The value returned should match the value specified in the \ref giapi-epics-status-mapping.xml file.
 
 \li Run <tt>$ camonitor gpi:status1 gpi:status2</tt> to connect clients to some EPICS channels.
 Remember to set the \c EPICS_CA_ADDR_LIST environment variable to point to the IP where the GMP is running.
