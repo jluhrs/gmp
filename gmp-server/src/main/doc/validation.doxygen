@@ -89,26 +89,36 @@ channels below
      (see documentation for giapi-tester here):
 
      <tt>$ ./giapi-tester.sh -fileEvents</tt>
-     \verbatim
-     Feb 25, 2011 11:03:21 AM edu.gemini.jms.activemq.provider.ActiveMQJmsProvider __validated
-     INFO: ActiveMQ JMS Provider setup with url: tcp://localhost:61616
-     log4j:WARN No appenders could be found for logger (org.apache.activemq.transport.WireFormatNegotiator).
-     log4j:WARN Please initialize the log4j system properly.
-     Feb 25, 2011 11:03:21 AM edu.gemini.jms.api.BaseJmsArtifact startJms
-     INFO: Started JMS Artifact [File Event Test Client]
-     \endverbatim
 
      Now run the fileevents application:
 
       <tt>$./runExample.sh fileevents</tt>
 
-      You'll see a bunch of messages in the console, make sure you don't see anything that looks like an error.
+      You'll see a bunch of messages in the console like
+    \verbatim
+    Starting File Event Example
+    Ancillary File Event: 01myfile1.txt, S2009020201-1
+    2011-10-14 11:41:10,316 [0x7fff70cddcc0] WARN  giapi.JmsProducer - The datalabel cannot be empty for file events 
+    Expected error - Dataset label not specified. No message should have been sent 
+    2011-10-14 11:41:10,316 [0x7fff70cddcc0] WARN  giapi.JmsProducer - The filename cannot be empty for file events 
+    Expected error - Filename not specified. No message should have been sent 
+    2011-10-14 11:41:10,316 [0x7fff70cddcc0] WARN  giapi.JmsProducer - The filename cannot be empty for file events 
+    Expected error - No filename nor dataset specified. No message should have been sent 
+    Intermediate File Event: 02myfile1.txt, S2009020201-1, null
+    Intermediate File Event: 03myfile1.txt, S2009020201-1, hint
+    2011-10-14 11:41:10,317 [0x7fff70cddcc0] WARN  giapi.JmsProducer - The datalabel cannot be empty for file events 
+    Expected error - Dataset label not specified. No message should have been sent 
+    2011-10-14 11:41:10,317 [0x7fff70cddcc0] WARN  giapi.JmsProducer - The filename cannot be empty for file events 
+    Expected error - Filename not specified. No message should have been sent 
+    2011-10-14 11:41:10,317 [0x7fff70cddcc0] WARN  giapi.JmsProducer - The filename cannot be empty for file events 
+    Expected error - No filename nor dataset specified. No message should have been sent      
+    \endverbatim
 
       In the giapi-tester, you should see:
     \verbatim
     Ancillary File Event    [S2009020201-1/01myfile1.txt]
     Intermediate File Event [S2009020201-1/02myfile1.txt/null]
-    Intermediate File Event [S2009020201-1/03myfile2.txt/hint]
+    Intermediate File Event [S2009020201-1/03myfile2.txt/hint]    
     \endverbatim
 
 
