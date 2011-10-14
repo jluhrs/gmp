@@ -57,11 +57,11 @@ public class ApplyRecord {
     /**
      * Constructor
      *
-     * @param cas           Channel Access Server to use
-     * @param cs            Command Sender to use
-     * @param epicsTop      The Top level for the Epics Channel
-     * @param xmlFileName   XML Configuration File
-     * @param xsdFileName   Schema of the configuration file
+     * @param cas         Channel Access Server to use
+     * @param cs          Command Sender to use
+     * @param epicsTop    The Top level for the Epics Channel
+     * @param xmlFileName XML Configuration File
+     * @param xsdFileName Schema of the configuration file
      */
     protected ApplyRecord(@Requires ChannelAccessServer cas,
                           @Requires CommandSender cs,
@@ -317,6 +317,13 @@ public class ApplyRecord {
                 LOG.info("Received CAR status change: " + state);
                 if (state == CarRecord.Val.ERR) {
                     car.setError(Math.max(id, car.getClId()), message, errorCode);
+                }
+                for (CadRecord cad : cads) {
+                    //if any CAR is in error, then global CAR should be in error
+                    if (cad.getCar().getState() == CarRecord.Val.ERR) {
+                        car.setError(Math.max(id, cad.getCar().getClId()), message, errorCode);
+                        return;
+                    }
                 }
                 if (!processing && state == CarRecord.Val.IDLE) {
                     for (CadRecord cad : cads) {
