@@ -54,7 +54,9 @@ public class MonitorFileEventsOperation implements Operation {
 
         try {
             consumer.startJms(provider);
+            Thread.sleep(Long.MAX_VALUE);//wait for events until somebody quits the application
         } catch (JMSException e) {
+            e.printStackTrace();
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());
         }
         return 0;
