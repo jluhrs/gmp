@@ -8,6 +8,7 @@ import edu.gemini.giapi.tool.commands.CommandOperation;
 import edu.gemini.giapi.tool.help.HelpOperation;
 import edu.gemini.giapi.tool.status.*;
 import edu.gemini.giapi.tool.obsevents.MonitorObsEventOperation;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;
 import java.util.logging.LogManager;
@@ -91,6 +92,8 @@ public class GiapiTester {
                 System.err.println("Couldn't read logging configuration");
             }
         }
+        // Also configure Log4J as is used by ActiveMQ
+        PropertyConfigurator.configure(GiapiTester.class.getResource("log4j.properties"));
     }
 
 }
