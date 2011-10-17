@@ -48,18 +48,6 @@
         </pluginManagement>
     </build>
 
-    <!-- Clover needs to be downloaded directly from atlassian -->
-    <pluginRepositories>
-        <pluginRepository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>atlassian-m2-repository</id>
-            <name>Atlassian Maven 2.x Repository</name>
-            <url>http://repository.atlassian.com/maven2</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

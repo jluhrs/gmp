@@ -209,7 +209,7 @@
         <pluginRepository>
             <!-- Maven central mirror -->
             <id>edu.gemini.plugins-releases-local</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/plugins-releases-local</url>
+            <url>http://build.cl.gemini.edu:8081/artifactory/plugins-releases</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
