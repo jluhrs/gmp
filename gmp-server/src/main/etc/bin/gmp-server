@@ -6,7 +6,7 @@ set -e # stop on errors
 #set -u # Don't allow using non defined variables
 #
 #              <startlevels> <startprio> <stopprio>
-# chkconfig:   345 80 80
+# chkconfig:   345 75 15
 # description: The gmp-server application
 #
 # NOTE: the 2 comments above and the following 4 variable values will probably
@@ -64,7 +64,10 @@ function startContainer() {
         su - software -c "pushd ${app_root}/bin > /dev/null; exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd &> ${log_file}; wait $!; sleep 4; popd > /dev/null"
         # Get the pid with jps
         su - software -c "jps -l | grep \"org.apache.felix.main.Main\" | sed \"s/[[:space:]]*\([\d]*\) .*/\1/\" > ${pid_file}"
+        retval = $?
+        sleep 10
         echo "Started ${app_name}"
+        return $retval
     else
         echo "${app_name} already running with pid ${pid}"
     fi
@@ -77,7 +80,9 @@ function stopContainer() {
   if [ ! -z ${pid_isrunning} ]; then
     echo "Stopping ${app_name} with pid ${pid}"
     su - software -c "exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop; wait $!"
-    #wait $!
+    retval = $?
+    sleep 10
+    return $retval
   else
     echo "${app_name} not running"
   fi
