@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gds.web.ui</groupId>
     <artifactId>gds-web-ui-keywords</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <name>GDS Web UI - Keywords Editor</name>
     <description>GDS Web UI - Keywords Editor</description>
