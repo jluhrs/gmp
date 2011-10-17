@@ -14,6 +14,7 @@ import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
@@ -51,6 +52,8 @@ public class SequenceCommandExecutorStrategyTest {
         assertEquals(HandlerResponse.createError(ApplySenderExecutor.ERROR_MSG), response);
     }
 
+    //can't run this test, as it tries to reboot the machine
+    @Ignore
     @Test
     public void testExecuteReboot() {
         Configuration configuration = emptyConfiguration();
