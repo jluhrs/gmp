@@ -1,8 +1,8 @@
 /*! \page gds_user_manual GDS User Manual
 
-This page describes how to use ande manage the Gemini Data Service.
+This page describes how to use and manage the Gemini Data Service.
 
-This manual is divided in the following sections:
+This manual contains the following sections:
 - \ref introduction
 - \ref sources
 - \ref gds_configuration_sec
@@ -10,25 +10,25 @@ This manual is divided in the following sections:
 - \ref gds_troubleshooting_sec
 
 \section introduction Introduction
-GDS stands for GIAPI Data Service and is one of the parts of the GIAPI overall design. 
-In the past instruments would use the DHS to transfer data that would compose the final.
-FITS file. Different sources will send there comntributions to the DHS which would compose
+GDS stands for GIAPI Data Service and is one of the components on GIAPI's overall design. 
+In the past instruments would use the DHS to contribute data that would compose the final
+FITS file. Different sources will send their contributions to the DHS, which would compose
 it into the final file
 
-In GIAPI a different approach is taken, where the instrument writes the FITS file with a 
-minimal set of keywords and the GDS takes cares of "completing" the file by requesting keywords
-to different data sources.
+In GIAPI, a different approach is taken, where the instrument writes the FITS file with a 
+minimal set of keywords and GIAPI's component GDS takes cares of "completing" the file by
+requesting keywords to different data sources.
 
-The instrument and the GDS are decoupled by virtue of using events that the instrument TLC fires
-in sequence and that GDS can listen for. As the insttrument does not need to wait for the events
-to complete, if the GDS fails, it will not interfere with the rest of the instrument
+The instrument and the GDS are decoupled by means of events that the instrument TLC fires
+in sequence, and that GDS can listen for. As the instrument does not need to wait for the events
+to complete, if GDS fails, it will not interfere with the rest of the instrument's operation.
 
 \subsection ObservationEvents
 The interaction between the instrument and GDS is defined by a series
 of events, that must be fired in order while performing an observation as described in the GIAPI
 Design and Use Document. 
 
-The events are listed below
+The events are listed below:
 <table>
     <tr>
         <th>Event Time</th>
@@ -38,32 +38,32 @@ The events are listed below
     <tr>
         <td>T1</td>
 	<td>OBS_PREP</td>
-        <td>Yes</td>
+        <td>Depends on configuration</td>
     </tr>
     <tr>
         <td>T2</td>
         <td>OBS_START_ACQ</td>
-        <td>Yes</td>
+        <td>Depends on configuration</td>
     </tr>
     <tr>
         <td>T3</td>
         <td>OBS_END_ACQ</td>
-        <td>Yes</td>
+        <td>Depends on configuration</td>
     </tr>
     <tr>
         <td>T4</td>
         <td>OBS_START_READOUT</td>
-        <td>No</td>
+        <td>Depends on configuration</td>
     </tr>
     <tr>
         <td>T5</td>
         <td>OBS_END_READOUT</td>
-        <td>No</td>
+        <td>Depends on configuration</td>
     </tr>
     <tr>
         <td>T6</td>
         <td>OBS_START_DSET_WRITE</td>
-        <td>No</td>
+        <td>Depends on configuration</td>
     </tr>
     <tr>
         <td>T7</td>
@@ -72,19 +72,29 @@ The events are listed below
     </tr>
 </table>
 
-The observation process is nevertheless driven by Seqexec which sends an observation event,
-filst querying the DHS for the next available data label. Seqexec also needs to send to GDS
-whatever keywords are only available in Seqexec.
+The observation process is nevertheless driven by Seqexec which sends the command
+to the instrument, first querying the DHS for the next available data label.
+Seqexec also needs to send to GDS whatever keywords it needs to be included in the FITS file.
 
-After that the process is driven by the Insrument and GDS
+The whole sequence of steps for an observation is listep below:
+- An observation is triggered on Seqexec, e.g. by a manual command of the user
+- Seqexec gets a new data label from the DHS
+- Seqexec sends to the GDS a mapping between the data label and the program id being observed
+- Seqexec sends a list of keywords for that data label to GDS
+- Seqexec sends and observation sequence command to the Instrument
+- The instrument starts the observation and sends observation events along the way
+- GDS reacts to those events gathering data from the predefined data sources according to the configuration
+- The instrument writes the basic FITS file and sends the last observation event
+- GDS reviews the collected data and writes the extended keywords onto the FITS file
 
 The following picture describes the process of events and data gathering
 
 \image html gds-sequence.jpg
 
 \section sources Sources
-GDS is designed to support different data sources and use them to gother the keywords to be
-placed in the resulting FITS files.
+GDS is designed to support different data sources from where data can be gathered. The data is used to complete
+the keywords placed in the final FITS files.
+
 As of version 0.13.0 the following sources are supported
 
 <table>
@@ -102,7 +112,7 @@ As of version 0.13.0 the following sources are supported
     </tr>
     <tr>
         <td>ODB</td>
-        <td>Can connect to the ODB and retrieve a program's data, like PI's name, etc</td>
+        <td>Can connect to the ODB and retrieve program's data, like PI's name, etc</td>
     </tr>
     <tr>
         <td>STATUS</td>
@@ -114,14 +124,14 @@ As of version 0.13.0 the following sources are supported
     </tr>
     <tr>
         <td>INSTRUMENT</td>
-        <td>This is not a keymord source but it behaves very similarly. It will verify that the instrument has included a certain required</td>
+        <td>This is not a keyword source but it behaves very similarly. It will verify that the instrument has included a required keyword</td>
     </tr>
 </table>
 
 The names of the sources are used in the Configuration file as shown in the next section
 
 \section gds_configuration_sec Configuration
-  The GDS is configured by editing the file $GMP_HOME/conf/gds-keywords.conf
+  The GDS is configured using the file $GMP_HOME/conf/gds-keywords.conf
 
   \attention Though the GDS configuration can be edited by hand, you can also use the Web Configuration GUI.
 
@@ -137,20 +147,22 @@ The names of the sources are used in the Configuration file as shown in the next
  ...
  \endverbatim
 
+ Where each row defines a keyword. The meaning of each of the columns is given in the table below
+
  <table>
     <tr>
  	<th>Column Title</th>
  	<th>Column Description</th>
-     <th>Possible Values</th>
+        <th>Possible Values</th>
     </tr>
     <tr>
  	<td>Instrument Name</td>
- 	<td>Instrument for which this keyword is valid</td>
+ 	<td>Instrument for which this confguration is valid</td>
  	<td>GPI</td>
     </tr>
     <tr>
  	<td>Event</td>
- 	<td>Observation event that trigger the collection of this keyword's value</td>
+ 	<td>Observation event that triggers the collection of the keyword's value</td>
  	<td>OBS_PREP, OBS_START_ACQ, OBS_END_ACQ, OBS_START_READOUT, OBS_END_READOUT, OBS_START_DSET_WRITE, OBS_END_DSET_WRITE</td>
     </tr>
     <tr>
@@ -160,7 +172,7 @@ The names of the sources are used in the Configuration file as shown in the next
     </tr>
     <tr>
  	<td>FITS Header</td>
- 	<td>In which header should this value be: primary(0) or an extension(1-)</td>
+ 	<td>In which header should this value be: primary(0) or an extension(1, 2, 3, ...)</td>
  	<td>0, 1, 2...</td>
     </tr>
     <tr>
@@ -179,14 +191,14 @@ The names of the sources are used in the Configuration file as shown in the next
  	<td>Any alphanumeric string</td>
     </tr>
     <tr>
- 	<td>Subsystem</td>
+ 	<td>Source</td>
  	<td>Which subsytem provides this value</td>
  	<td>EPICS, STATUS, SEQEXEC, ODB</td>
     </tr>
     <tr>
- 	<td>Subsystem Channel</td>
+ 	<td>Source Channel</td>
  	<td>Name of the channel in the subsystem, where the keyword value can be retrieved (ex. An EPICs channel, a StatusItem name, etc...)</td>
- 	<td></td>
+ 	<td>Depends on the type of the source</td>
     </tr>
     <tr>
  	<td>Array Index</td>
@@ -196,19 +208,19 @@ The names of the sources are used in the Configuration file as shown in the next
     <tr>
  	<td>Comment</td>
  	<td>Comment accompanying the keyword in the FITS file</td>
- 	<td>Any alphanumeric string</td>
+ 	<td>Any alphanumeric string in quotes</td>
     </tr>
  </table>
 
 \section gds_web_ui_sec GDS Web UI
 To view the status of the GDS or change the configuration you can use the GDS web interface
-To access it, go to  your browser and go to the address http://\<gdshostname\>:8888/gds
+at the address http://\<gdshostname\>:8888/gds
 
-The web ui includes a header and a footer with generic information and several tabs that
+The Web UI includes a header and a footer with generic information and several tabs that
 will be discussed below
 
 \subsection gds_web_ui_status Status
-This tab will show the current status of GDS as well as the last 10 observations and their result.
+This tab will show the current status of GDS as well as the result of the last 10 observations.
 The following image shows how the status page looks like
 
 \image html gds_web_ui_status.png
