@@ -269,13 +269,11 @@
                     <requires>
                         <require>java &gt;= 1.6.0</require>
                     </requires>
-                    <release>2</release>
+                    <release>3</release>
                     <preinstallScriptlet>
                         <script>
                             #check for user, or create it?
-                            id -u software &amp;&gt; /dev/null || useradd software -g gemini -m &amp;&gt; /dev/null ||
-                            (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt;
-                            /dev/null) || echo "Problem: could not create user software"
+                            id -u software &amp;&gt; /dev/null || useradd software -g gemini -m &amp;&gt; /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user software"
                         </script>
                     </preinstallScriptlet>
                     <postinstallScriptlet>
