@@ -19,7 +19,7 @@
     <artifactId>giapi-tester</artifactId>
     <version>0.1.0</version>
 
-    <name>${bundle.symbolicName} [${bundle.namespace}]</name>
+    <name>GIAPI Tester</name>
 
     <packaging>jar</packaging>
 
