@@ -10,7 +10,7 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>edu.gemini.aspen.gmp.epics-top</bundle.symbolicName>
+        <bundle.symbolicName>edu.gemini.aspen.gmp.epics.top</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.epics.top</bundle.namespace>
     </properties>
 
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo</artifactId>
-            <version>1.6.8</version>
+            <version>${org.apache.felix.ipojo}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
