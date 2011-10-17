@@ -99,6 +99,15 @@
  * - \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender"
  * - \ref edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder "ActionMessageBuilder"
  *
- * \section gmp-commands_configuration_sec Configuration
- * This bundle doesn't have any configurable properties
+  \section gmp-commands_configuration_sec Configuration
+   This bundle has one configuration file: \ref edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutorStrategy-gpi.cfg. This file has
+  only the \c instrumentStartupScript configuration parameter, that must be set to the appropriate script. For instance "instrumentStartupScript=gpi-tlcd".
+
+   A bit of configuration is also needed for the REBOOT functionality. The option \tt requiretty must not be set, the user \tt software must have permission
+   to execute init.d scripts, chkconfig and shutdown, and no password needs to be asked. A snippet of a valid config file follows:
+   \verbatim
+    #Defaults    requiretty
+
+    software ALL = NOPASSWD: ALL
+   \endverbatim
  */

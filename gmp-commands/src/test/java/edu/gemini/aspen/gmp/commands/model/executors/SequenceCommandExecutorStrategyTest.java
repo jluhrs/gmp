@@ -30,7 +30,7 @@ public class SequenceCommandExecutorStrategyTest {
 
     @Before
     public void setUp() throws Exception {
-        strategy = new SequenceCommandExecutorStrategy(builder, manager);
+        strategy = new SequenceCommandExecutorStrategy(builder, manager, "noscript");
     }
 
 

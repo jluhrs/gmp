@@ -13,7 +13,12 @@ import java.util.logging.Logger;
  */
 public class LinuxRebootManager implements RebootManager {
     private static final Logger LOG = Logger.getLogger(LinuxRebootManager.class.getName());
-    private String instrumentStartupScript = "gpi-tlcd";
+    private String instrumentStartupScript;
+
+    public LinuxRebootManager(String instrumentStartupScript) {
+        LOG.fine("Constructing reboot manager with script: " + instrumentStartupScript);
+        this.instrumentStartupScript = instrumentStartupScript;
+    }
 
     @Override
     synchronized public void reboot(RebootArgument arg) {

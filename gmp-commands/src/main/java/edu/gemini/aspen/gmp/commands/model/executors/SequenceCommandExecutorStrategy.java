@@ -18,7 +18,6 @@ import org.apache.felix.ipojo.annotations.*;
  * As this class is exported as an OSGi service it will be used by ActionManager
  */
 @Component
-@Instantiate
 @Provides
 public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor {
     private final SequenceCommandExecutor _defaultExecutor;
@@ -32,10 +31,15 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
      * @param manager the Action Manager that keeps track of the actions
      */
     public SequenceCommandExecutorStrategy(@Requires ActionMessageBuilder builder,
-                                           @Requires ActionManager manager) {
+                                           @Requires ActionManager manager,
+                                           @Property(name = "instrumentStartupScript", value = "INVALID", mandatory = true) String instrumentStartupScript) {
         _defaultExecutor = new DefaultSenderExecutor(builder);
         _applyExecutor = new ApplySenderExecutor(builder, manager);
-        _rebootExecutor = new RebootSenderExecutor(new LinuxRebootManager());
+        _rebootExecutor = new RebootSenderExecutor(new LinuxRebootManager(instrumentStartupScript));
+    }
+
+    @Validate
+    public void validate() {
     }
 
     @Override
