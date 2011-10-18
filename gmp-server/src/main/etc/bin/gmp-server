@@ -64,7 +64,7 @@ function startContainer() {
         su - software -c "pushd ${app_root}/bin > /dev/null; exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd &> ${log_file}; wait $!; sleep 4; popd > /dev/null"
         # Get the pid with jps
         su - software -c "jps -l | grep \"org.apache.felix.main.Main\" | sed \"s/[[:space:]]*\([\d]*\) .*/\1/\" > ${pid_file}"
-        retval = $?
+        retval=$?
         sleep 10
         echo "Started ${app_name}"
         return $retval
@@ -80,7 +80,7 @@ function stopContainer() {
   if [ ! -z ${pid_isrunning} ]; then
     echo "Stopping ${app_name} with pid ${pid}"
     su - software -c "exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop; wait $!"
-    retval = $?
+    retval=$?
     sleep 10
     return $retval
   else
