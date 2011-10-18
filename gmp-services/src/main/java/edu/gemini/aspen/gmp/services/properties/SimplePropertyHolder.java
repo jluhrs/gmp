@@ -1,9 +1,11 @@
 package edu.gemini.aspen.gmp.services.properties;
 
 import edu.gemini.aspen.gmp.services.PropertyHolder;
-import org.apache.felix.ipojo.annotations.*;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
+import org.apache.felix.ipojo.annotations.Updated;
 import org.osgi.service.cm.ConfigurationException;
-import org.osgi.service.cm.ManagedService;
 
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -16,7 +18,7 @@ import java.util.Map;
  */
 @Component
 @Provides
-public class SimplePropertyHolder implements PropertyHolder, ManagedService {
+public class SimplePropertyHolder implements PropertyHolder {
 
     @Property(name = "GMP_HOST_NAME", value = "NO_VALID", mandatory = true)
     public void setGMP_HOST_NAME(String GMP_HOST_NAME) {
@@ -48,10 +50,9 @@ public class SimplePropertyHolder implements PropertyHolder, ManagedService {
         _properties.put(GmpProperties.DEFAULT.name(), DEFAULT);
     }
 
-
     private Map<String, String> _properties = new HashMap<String, String>();
 
-    @Override
+    @Updated
     public void updated(Dictionary dictionary) throws ConfigurationException {
         Dictionary<String, String> dict = dictionary;
         Enumeration<String> elems = dict.keys();
