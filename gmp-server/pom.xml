@@ -61,7 +61,7 @@
                     <quiet>false</quiet>
                     <input>../</input>
                     <projectName>"GIAPI - GMP (Version: ${gmp.version})"</projectName>
-                    <generateLatex>true</generateLatex>
+                    <generateLatex>false</generateLatex>
                     <generateHtml>true</generateHtml>
                     <htmlHeader>${basedir}/src/main/doc/header.html</htmlHeader>
                     <htmlFooter>${basedir}/src/main/doc/footer.html</htmlFooter>
@@ -102,6 +102,19 @@
                             </includes>
                         </resource>
                     </resources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <executable>html2text</executable>
+                    <arguments>
+                        <argument>-o</argument>
+                        <argument>target/README</argument>
+                        <argument>target/site/doxygen/gmp_user_manual.html</argument>
+                    </arguments>
                 </configuration>
             </plugin>
             <plugin>
@@ -185,7 +198,7 @@
                             <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/</directory>
                             <sources>
                                 <source>
-                                    <location>src/main/doc/README.txt</location>
+                                    <location>target/README</location>
                                 </source>
                             </sources>
                             <directoryIncluded>false</directoryIncluded>

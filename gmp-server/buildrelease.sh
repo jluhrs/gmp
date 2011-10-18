@@ -17,4 +17,4 @@ mvn clean install
 
 # Do the documentation
 cd $script_path
-mvn -Pproduction resources:copy-resources doxygen:report assembly:assembly rpm:rpm
+mvn -Pproduction resources:copy-resources doxygen:report exec:exec assembly:assembly rpm:rpm

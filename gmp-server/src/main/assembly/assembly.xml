@@ -94,6 +94,15 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>target</directory>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>0644</fileMode>
+            <filtered>true</filtered>
+            <includes>
+                <include>README</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>${user.home}/.m2/repository/edu/gemini/aspen/gmp/gmp-server/</directory>
             <outputDirectory>bundles/edu/gemini/aspen/gmp/gmp-server/</outputDirectory>
         </fileSet>

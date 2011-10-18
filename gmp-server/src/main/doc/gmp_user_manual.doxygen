@@ -27,7 +27,7 @@
  
  The following list details the files and directories in gmp
  
- \li $GMP_HOME/README.txt\n
+ \li $GMP_HOME/README\n
    Basic documentation to get started.
  
  \li $GMP_HOME/bin\n
@@ -36,7 +36,7 @@
  \li $GMP_HOME/bin/start.sh\n
    Bash script used to start the GMP
  
- \li $GMP_HOME/bin/gmpserver\n
+ \li $GMP_HOME/bin/gmp-server\n
    Bash script used to start the GMP as a daemon
  
  \li $GMP_HOME/bin/giapi-tester.sh
