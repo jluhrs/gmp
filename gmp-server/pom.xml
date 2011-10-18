@@ -180,6 +180,19 @@
                             <username>software</username>
                             <groupname>gemini</groupname>
                         </mapping>
+                        <!--readme-->
+                        <mapping>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/</directory>
+                            <sources>
+                                <source>
+                                    <location>src/main/doc/README.txt</location>
+                                </source>
+                            </sources>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
                         <!--docs-->
                         <mapping>
                             <sources>
@@ -269,7 +282,7 @@
                     <requires>
                         <require>java &gt;= 1.6.0</require>
                     </requires>
-                    <release>3</release>
+                    <release>4</release>
                     <preinstallScriptlet>
                         <script>
                             #check for user, or create it?
