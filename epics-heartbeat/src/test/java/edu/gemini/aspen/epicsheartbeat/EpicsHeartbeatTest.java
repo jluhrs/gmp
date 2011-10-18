@@ -1,5 +1,7 @@
 package edu.gemini.aspen.epicsheartbeat;
 
+import edu.gemini.aspen.gmp.epics.top.EpicsTop;
+import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.aspen.gmp.heartbeat.Heartbeat;
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatDistributor;
 import edu.gemini.cas.Channel;
@@ -10,6 +12,7 @@ import org.apache.activemq.broker.BrokerService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 
@@ -24,6 +27,7 @@ public class EpicsHeartbeatTest {
     HeartbeatDistributor hbDist;
     Heartbeat hb;
     ChannelAccessServerImpl cas;
+    EpicsTop top;
 
     @Before
     public void setUp() throws Exception {
@@ -42,6 +46,8 @@ public class EpicsHeartbeatTest {
 
         hbDist = new HeartbeatDistributor(provider);
         hbDist.start();
+
+        top = new EpicsTopImpl("gpitest");
     }
 
     @After
@@ -55,15 +61,15 @@ public class EpicsHeartbeatTest {
 
     @Test
     public void test() throws Exception {
-        EpicsHeartbeat ehb = new EpicsHeartbeat(cas,"gmp:heartbeat");
+        EpicsHeartbeat ehb = new EpicsHeartbeat(cas, top, "gmp:heartbeat");
         ehb.initialize();
-        Channel<Integer> ch = cas.createChannel("gmp:heartbeat",0);
+        Channel<Integer> ch = cas.createChannel("gpitest:gmp:heartbeat", 0);
 
         hbDist.bindHeartbeatConsumer(ehb);
 
         Thread.sleep(1200);
 
-        assertNotSame(0,((int[])ch.getDBR().getValue())[0]);
+        assertNotSame(0, ((int[]) ch.getDBR().getValue())[0]);
 
         hbDist.unbindHeartbeatConsumer(ehb);
         ehb.shutdown();

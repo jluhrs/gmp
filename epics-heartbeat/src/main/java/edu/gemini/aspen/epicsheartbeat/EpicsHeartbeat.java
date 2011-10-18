@@ -1,5 +1,6 @@
 package edu.gemini.aspen.epicsheartbeat;
 
+import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.Channel;
@@ -23,27 +24,31 @@ public class EpicsHeartbeat implements HeartbeatConsumer {
     @Requires
     private ChannelAccessServer cas;
 
+    @Requires
+    private EpicsTop epicsTop;
+
     @Property(name = "channelName", value = "INVALID", mandatory = true)
     private String channelName;
 
-    private Channel<Integer> ch=null;
+    private Channel<Integer> ch = null;
 
-    private EpicsHeartbeat(){
+    private EpicsHeartbeat() {
 
     }
 
-    public EpicsHeartbeat(ChannelAccessServer cas, String channelName){
-        this.channelName=channelName;
-        this.cas=cas;
+    public EpicsHeartbeat(ChannelAccessServer cas, EpicsTop epicsTop, String channelName) {
+        this.channelName = channelName;
+        this.cas = cas;
+        this.epicsTop = epicsTop;
     }
 
     @Validate
     public void initialize() throws CAException {
-        ch=cas.createChannel(channelName,-1);
+        ch = cas.createChannel(epicsTop.buildChannelName(channelName), -1);
     }
 
     @Invalidate
-    public void shutdown(){
+    public void shutdown() {
         cas.destroyChannel(ch);
     }
 
@@ -63,7 +68,7 @@ public class EpicsHeartbeat implements HeartbeatConsumer {
         try {
             ch.setValue(beatNumber);
         } catch (CAException e) {
-            LOG.log(Level.SEVERE,e.getMessage(),e);
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }
