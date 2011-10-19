@@ -3,90 +3,23 @@
  These pages describes how to run, use, monitor and configure the GMP Server
  
  This manual is divided in the following sections
- - \ref requirements
- - \ref package
- - \ref run_daemon
- - \ref telnet
- - \ref how_to_run
+ - \ref readme
+ - \ref felix_console
  - \ref web_console
  - \ref gmp_configuration
  - \ref giapi_tester
- 
- \section requirements Requirements
- 
- The only requirement is  Java 1.6 runtime installed (or higher). You can verify it with the command:
- 
- \c > \c java \c -version
- 
+
  GMP has been tested in Mac OSX's java 1.6.0_22 and RedHat 5.5 64 bits with Sun's JDK 1.6.0_17
  
- \section package Package contents
- 
- The GMP is delivered as tar.gz or .zip package containing the binaries, configuration and this documentation.
- Unpack the content of this file to the $GMP_HOME directory.
- 
- The following list details the files and directories in gmp
- 
- \li $GMP_HOME/README\n
-   Basic documentation to get started.
- 
- \li $GMP_HOME/bin\n
-   Directory containing scripts and binaries to launch the GMP server
- 
- \li $GMP_HOME/bin/start.sh\n
-   Bash script used to start the GMP
- 
- \li $GMP_HOME/bin/gmp-server\n
-   Bash script used to start the GMP as a daemon
- 
- \li $GMP_HOME/bin/giapi-tester.sh
-   Bash script used to start the GIAPI tester application
- 
- \li $GMP_HOME/bin/pax-runner-1.7.4.jar\n
-   Pax runner binary is a launcher for OSGi applications (Replaces oscar's launcher)
- 
- \li $GMP_HOME/bin/runner.args\n
-   Arguments passed to pax-runner
- 
- \li $GMP_HOME/bundles\n
-   All the bundles that compose the gmp server stored as a maven repository
- 
- \li $GMP_HOME/conf\n
-    Configuration files
- 
- \li $GMP_HOME/conf/services\n
-   Configuration files of specific OSGi services. These files are observed at runtime and modifications are
-    reflected on the running services
- 
- \li $GMP_HOME/felix\n
-    OSGi container
- 
- \li $GMP_HOME/logs\n
-   Directory with the application log
- 
- When the application is launched a directory under $GMP_HOME/bin/runner is created and contains a cache of the OSGi bundles binaries.
+ \section readme README contents
 
- This directory can be freely deleted
- 
+ \verbinclude README
+
  \subsection run_daemon Running the GMP as a Daemon
  
- The $GMP_HOME/bin/gmp-server script can be used to run the GMP as a daemon. It can be used as an init.d script, for
- which you need to copy it to /etc/init.d/ and run <tt>$ chkconfig --add gmp-server</tt>, or you can run it directly
- from the original location. It can take one of the following parameters:
+ The $GMP_HOME/bin/gmp-server script can be used to run the GMP as a daemon. 
  
- \ - <tt>start</tt>, that starts the GMP if no other GMP instance is
- running
- \ - <tt>stop</tt>, that stops a running GMP. If the GMP doesn't go down gracefully, for instance in case of
- a bundle in an infinite loop, it will force the process to exit.
- \ - <tt>status</tt> tells whether the GMP is running
- \ - <tt>kill</tt> forcefully kills the GMP
- 
- \attention Until an RPM is provided, you need to <tt>$ touch ~/.pax/runner/org.ops4j.pax.runner.daemon.password.file</tt>,
- to create an empty password file, disallowing remote access to stop the daemon. It must be stopped locally
- using the provided script. When we provide an RPM, there will be a method for creating a valid password file. At that time,
- you will be able to <tt>$ telnet machine_name 8008</tt>, and issue a \c shutdown command.
- 
- \section how_to_run How to run in non daemon mode
+ \section felix_console Felix console
  To start the GMP go to the $GMP_HOME/bin directory and call the start.sh script
  
  At the end of the start the process should be running and there will be a prompt in the screen which is the
@@ -105,19 +38,7 @@
  
  If GMP is started in this mode it should be stopped with the command \b exit 0.
  Exiting takes a while and you should let it finish exiting gracefully
- 
- \section telnet Telnet Interface
- 
- A telnet daemon is included that gives access to the shell remotely. To reach the GMP server type
- 
- \c telnet \c \<hostname\> \c 15001
- 
- \attention There is a bug in the telnet daemon, if you press CTRL+C to exit the telnet client will hang. This doesn't
- affect the GMP inner workings. Use CTRL-D to exit the telnet client instead.
- 
- \subsection telnet_security Telnet Security
- There is no security in place for the telnet shell, anybody that can reach the telnet daemon can login to it
- 
+
  \section web_console Web Console Interface
  A Web interface to the GMP OSGi container is available at
  
@@ -140,7 +61,7 @@
  $GMP_HOME/bin/giapi-tester.sh. For usage information, type <tt>./giapi-tester.sh -?</tt>. If using <tt>csh</tt>, type
  <tt>./giapi-tester.sh -\?</tt>, which produces the following output:
 
- \include usage.txt
+ \verbinclude usage.txt
  
  \section gmp_configuration Configuration
  
@@ -154,12 +75,16 @@
  OSGi Components and/or Services are created using configurations defined in the $GMP_HOME/conf/services directory. These
  configurations are just string key-value properties, so for more complex items those properties often point
  to other files under the $GMP_HOME/conf directory.
-The configuration files are watched at runtime and if modified the new values will be sent to the corresponding service. This is done through the Felix File Install bundle at <a href="http://felix.apache.org/site/apache-felix-file-install.html">File install</a>
+ The configuration files are watched at runtime and if modified the new values will be sent to the corresponding service.
+ This is done through the Felix File Install bundle at <a href="http://felix.apache.org/site/apache-felix-file-install.html">File install</a>
  
  \subsection log_configuration Log Configuration
- Since GMP is using several components each using different log systems like Log4J, JULI and OSGi Log the decision was take to use <a href="http://team.ops4j.org/wiki/display/paxlogging/Pax+Logging">Pax-Logging</a> which is a bundle capable of capturing all these logs ane unify them into a single logging service. 
+ Since GMP is using several components each using different log systems like Log4J, JULI and OSGi Log the decision was
+ taken to use <a href="http://team.ops4j.org/wiki/display/paxlogging/Pax+Logging">Pax-Logging</a> which is a bundle
+ capable of capturing all these logs ane unify them into a single logging service.
 
-The output of all the logs goes to a Log4J component using the standard log4j configuration files and stored under $GMP_HOME/conf/services/org.ops4j.pax.logging.cfg 
+ The output of all the logs goes to a Log4J component using the standard log4j configuration files and stored
+ under $GMP_HOME/conf/services/org.ops4j.pax.logging.cfg
  
  \subsection changes How to change configuration parameters
  

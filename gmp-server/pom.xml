@@ -68,7 +68,7 @@
                     <stripFromPath>${basedir}</stripFromPath>
                     <extractAll>true</extractAll>
                     <imagePath>src/main/doc/ src/main/doc/gemini_records/</imagePath>
-                    <examplePath>src/main/doc/gemini_records ../giapi-tester/src/main/resources/edu/gemini/giapi/tool/help</examplePath>
+                    <examplePath>src/main/doc/gemini_records target/site/doxygen</examplePath>
                 </configuration>
             </plugin>
             <plugin>
@@ -90,9 +90,17 @@
                     <resources>
                         <resource>
                             <directory>src/main/doc</directory>
+                            <filtering>true</filtering>
                             <includes>
                                 <include>gpidoc.css</include>
                                 <include>gemini.jpg</include>
+                                <include>README</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>../giapi-tester/src/main/resources/edu/gemini/giapi/tool/help</directory>
+                            <includes>
+                                <include>usage.txt</include>
                             </includes>
                         </resource>
                         <resource>
@@ -102,19 +110,6 @@
                             </includes>
                         </resource>
                     </resources>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <configuration>
-                    <executable>html2text</executable>
-                    <arguments>
-                        <argument>-o</argument>
-                        <argument>target/README</argument>
-                        <argument>target/site/doxygen/gmp_user_manual.html</argument>
-                    </arguments>
                 </configuration>
             </plugin>
             <plugin>
@@ -198,7 +193,7 @@
                             <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/</directory>
                             <sources>
                                 <source>
-                                    <location>target/README</location>
+                                    <location>target/site/doxygen/README</location>
                                 </source>
                             </sources>
                             <directoryIncluded>false</directoryIncluded>

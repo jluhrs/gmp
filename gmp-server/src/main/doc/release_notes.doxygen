@@ -1,9 +1,263 @@
 /*! \page release_notes Release Notes
 
-<h2> <a href='http://swgserv01:8080/secure/ReleaseNote.jspa?projectId=10120&version=10664'> Release Notes - Gemini Instrument Application Programmer Interface - Version Release 13 - <b>Unreleased</b> </a></h2>
+<h1>        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 13</h1>
 
- <h2> Release Notes - Gemini Instrument Application Programmer Interface - Version Release 12 - Release Date: 09/Sep/11
-  </h2>
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-200'>GIAPI-200</a>] -         Stopping EPICS Service throws an IllegalArgumentException
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-293'>GIAPI-293</a>] -         Sometimes ActiveMQ doesn&#39;t start in Linux
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-483'>GIAPI-483</a>] -         Check whats happening with recurrently failing integration tests GDSWithODBIT and StatusDispatcherIT
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-492'>GIAPI-492</a>] -         DefaultErrorPolicy not being applied by CompositeErrorPolicy
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-560'>GIAPI-560</a>] -         Memory leak on ForkJoinTask after a sequence of observation events
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-561'>GIAPI-561</a>] -         Memory leaks on ConsumerId after long set of ObservationEvents
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-608'>GIAPI-608</a>] -         FitsUpdate fails to set keywords when a header contains comments  A failing test is available in GDSEndToEndWithExtensionsIT
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-609'>GIAPI-609</a>] -         Reloading the gds-actors-composer bundle does not work properly
+It does not react properly to updates
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-689'>GIAPI-689</a>] -         Missing acquisition reply from KeywordSetComposer to GDSObseventHandler when no keywords are needed for an event
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-690'>GIAPI-690</a>] -         If acquisition reply for OBS_END_DSET_WRITE arrives before other events are ready, the file is not written
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-691'>GIAPI-691</a>] -         If one EPICS channel times out while connecting, all EpicsValueActor take too long to complete because they must queue at channel binding.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-692'>GIAPI-692</a>] -         Keyword Configuration tab in web ui should reread config file when refresh is pressed on browser (maybe also after saving)
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-732'>GIAPI-732</a>] -         gds-static-header-receiver bundle cannot be restarted
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-733'>GIAPI-733</a>] -         After restarting epics-service bundle, gds-epcis-actors can no longer collect any data.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-736'>GIAPI-736</a>] -         CARepeater sometimes is launched and keeps alive after GMP exits
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-738'>GIAPI-738</a>] -         Problem with reconnecting EPICS channel using JCA
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-757'>GIAPI-757</a>] -         Logs are out of order in web UI, even when selecting to order by timestamp
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-758'>GIAPI-758</a>] -         gds-fits-checker should use PropertyHolder to get the directory of the FITS file
+</li>
+</ul>
+
+<h2>        Epic
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-202'>GIAPI-202</a>] -         Gemini Data Service
+</li>
+</ul>
+
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-140'>GIAPI-140</a>] -         Link JIRA issues to release document of GMP
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-141'>GIAPI-141</a>] -         Show properties of GMPServices on the web interface
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-157'>GIAPI-157</a>] -         Integrate giapi-tester&#39;s usage.txt into doxygen documentation
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-181'>GIAPI-181</a>] -         Create README file for distribution automatically based on the content of user_manual.doxygen
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-182'>GIAPI-182</a>] -         Create iPojo documentation in doxygen
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-187'>GIAPI-187</a>] -         Augment &quot;Services&quot; C++ example to read all the properties
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-198'>GIAPI-198</a>] -         CAS shouldn&#39;t have an idle wait at startup
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-423'>GIAPI-423</a>] -         Epics Simulator cannot be stopped, when the bundle is stopped it continues simulating values
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-478'>GIAPI-478</a>] -         Add methods to KeywordsDatabase
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-484'>GIAPI-484</a>] -         Upgrade to latest jca/caj from sourceforge.
+</li>
+</ul>
+
+<h2>        Story
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-203'>GIAPI-203</a>] -         Review the design of the Giapi Data Service and update the working plan
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-209'>GIAPI-209</a>] -         As a GMP user I want to send reboot commands with the init script
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-218'>GIAPI-218</a>] -         Create a prototype of a component to obtain datalabels
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-219'>GIAPI-219</a>] -         Keywords Set Composer: Create a component that will initiate the retrieval of FITS keywords values, wait for the responses and store the information in a database
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-220'>GIAPI-220</a>] -         Keywords Value Actors: Create the interface for a component that will gather values for a defined set of FITS keywords and implement one that will access the instrument status database in the GMP
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-221'>GIAPI-221</a>] -         Create a prototype of a database to store values associated to keywords.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-222'>GIAPI-222</a>] -         Implement a prototype of the Observation Event Handlers that will react upon reception of the Observation Events to start the processing of the GDS
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-223'>GIAPI-223</a>] -         Implement a component that is capable of updating FITS files.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-257'>GIAPI-257</a>] -         Add ability to install GMP as an RPM
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-258'>GIAPI-258</a>] -         Limit the amount of logging in GMP (Change Log.info to Log.fine where appropriate)
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-265'>GIAPI-265</a>] -         Build base API for the Data Service
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-297'>GIAPI-297</a>] -         Improve GDS configuration parser, accepting more diverse inputs
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-298'>GIAPI-298</a>] -         Add support for array items in EpicsValueActor
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-300'>GIAPI-300</a>] -         Create InstrumentStatusActor
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-301'>GIAPI-301</a>] -         Cleanup gds-fits-updater
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-302'>GIAPI-302</a>] -         Study error handling of independent actors
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-303'>GIAPI-303</a>] -         Implement writing to extensions FITS headers
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-304'>GIAPI-304</a>] -         Design how to ensure timely data collection
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-305'>GIAPI-305</a>] -         Create integration tests for processing FITS files
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-306'>GIAPI-306</a>] -         Change FITS Updater to use actor model
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-307'>GIAPI-307</a>] -         Add an unbind method to EpicsService/EpicsBase
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-308'>GIAPI-308</a>] -         Handle data types in GDS
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-309'>GIAPI-309</a>] -         Define/Refine KeywordsDatabase interface
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-310'>GIAPI-310</a>] -         Add FitsKeyword restrictions
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-311'>GIAPI-311</a>] -         Create script to validate GDS configuration file
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-312'>GIAPI-312</a>] -         Create GUI for editing and validating GDS configuration file
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-313'>GIAPI-313</a>] -         Cleanup the Keywords Database after writing the FITS file
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-315'>GIAPI-315</a>] -         Create Actors for access ODB
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-316'>GIAPI-316</a>] -         Design how to get information from Seqexec that goes to the FITS headers
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-378'>GIAPI-378</a>] -         We need for the GDS framework to enforce that the observation events arrive in order and we need to produce notifications in case they don&#39;t.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-379'>GIAPI-379</a>] -         Add timestamp to status items
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-381'>GIAPI-381</a>] -         Evaluate how to get JMX:RMI and Jini:RMI to play along. Currently both cannot run on the same virtual machine
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-383'>GIAPI-383</a>] -         Modify the standalone gmp-server to connect to the Jini based ODB. it requires changing the startup properties
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-384'>GIAPI-384</a>] -         Use Osgi-based XML RPC server like the one from oscar http://oscar-osgi.sourceforge.net/repo/xmlrpc/
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-385'>GIAPI-385</a>] -         Move all wrapped osgi dependencies to its own project
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-386'>GIAPI-386</a>] -         Prepare GDS Design Review
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-415'>GIAPI-415</a>] -         Complete ODB data gathering actors
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-416'>GIAPI-416</a>] -         Complete integration tests of FITS updater service
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-419'>GIAPI-419</a>] -         Complete Handle supported data types in GDS
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-421'>GIAPI-421</a>] -         Implement a component to tell when the GDS is ready to operate, ie that all dependencies have been fulfilled (GDS Health Publisher)
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-424'>GIAPI-424</a>] -         Add the ability to write keywords to all extensions
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-425'>GIAPI-425</a>] -         Add the ability to write a keyword with a constant value (Defined in the config)
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-426'>GIAPI-426</a>] -         Fix commands to work with latest TLC and GMP.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-429'>GIAPI-429</a>] -         Create a full integration test, from tcl/tk -&gt; GMP -&gt; giapi-cc -&gt; TLC -&gt; (AOC|IFS|CAL), with real images.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-430'>GIAPI-430</a>] -         Add support for default values in all keyword value collecting actors.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-431'>GIAPI-431</a>] -         Verify that IFS generated FITS file has all mandatory keywords.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-432'>GIAPI-432</a>] -         Enforce the mandatory flag on keywords.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-433'>GIAPI-433</a>] -         Expose all TLC StatusItems to EPICS
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-434'>GIAPI-434</a>] -         Define good practices in scala for GPI
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-480'>GIAPI-480</a>] -         Change the way observations events are handled so you can use any source against any OBS EVENT
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-481'>GIAPI-481</a>] -         Seqexec Actors should handle the case that the type passed to the DB doesn&#39;t match the type requested by the configuration
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-491'>GIAPI-491</a>] -         Test memory usage of GDS, possibly using a modified giapi-glue-cc/src/examples/obsacq
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-493'>GIAPI-493</a>] -         Observation Error Publisher
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-494'>GIAPI-494</a>] -         Create GUI skeleton
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-495'>GIAPI-495</a>] -         Create System Configuration GUI
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-496'>GIAPI-496</a>] -         Create Status GUI
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-497'>GIAPI-497</a>] -         Create Log GUI
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-498'>GIAPI-498</a>] -         Create Observation Status GUI
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-499'>GIAPI-499</a>] -         Create GUI for displaying the GDS configuration file
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-543'>GIAPI-543</a>] -         Write TLC change request
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-554'>GIAPI-554</a>] -         Add authentication to gds web interface
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-556'>GIAPI-556</a>] -         Make the tabs ordered
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-557'>GIAPI-557</a>] -         Add cancel to login window
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-558'>GIAPI-558</a>] -         Add proper session expired handling
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-559'>GIAPI-559</a>] -         Add a simple cache implementation to the internal GDS databases so that items are not stored forever
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-562'>GIAPI-562</a>] -         Perform stress test with 200 StatusItems, 100 EPICS channels, 10 values from ODB and 10 from seqexec.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-606'>GIAPI-606</a>] -         Add gzip compression filter to the web ui
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-616'>GIAPI-616</a>] -         Create UserAdmin implementation
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-618'>GIAPI-618</a>] -         Review TLC code
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-620'>GIAPI-620</a>] -         Verify internal ICD implementations (TLC &lt;-&gt; AOC/IFS/CAL)
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-622'>GIAPI-622</a>] -         XMLRPC server should accept several keywords in the same call
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-623'>GIAPI-623</a>] -         The waiting part of KeywordSetComposer in the method waitForDataAndReply is suboptimal.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-624'>GIAPI-624</a>] -         Use a single actor per set of keywords for Seqexec
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-625'>GIAPI-625</a>] -         Re-run GDS performance tests from Sprint 9
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-668'>GIAPI-668</a>] -         Add validation error message when editing GDS keywords table
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-673'>GIAPI-673</a>] -         Release of GMP 0.12.0-BETA
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-674'>GIAPI-674</a>] -         GDS Configuration service writer
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-735'>GIAPI-735</a>] -         Make Fitsupdater write files to a directory defined in the configuration
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-737'>GIAPI-737</a>] -         Improve GDS Web UI Status Display
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-759'>GIAPI-759</a>] -         GDS documentation
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-761'>GIAPI-761</a>] -         Release release 13
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-776'>GIAPI-776</a>] -         GPI integration to GEA tests
+</li>
+</ul>
+
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-118'>GIAPI-118</a>] -         Only one instance of GMP must be running at all time
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-670'>GIAPI-670</a>] -         Upgrade version of ActiveMQ CMS
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-760'>GIAPI-760</a>] -         Test latest ActiveMQ (5.5.0) in Linux (and maybe OSX)
+</li>
+</ul>
+
+ <h1> Release Notes - Gemini Instrument Application Programmer Interface - Version Release 12 - Release Date: 09/Sep/11
+  </h1>
  <h2>        Bug
  </h2>
  <ul>
@@ -86,8 +340,8 @@
  </ul>
 
 
-<h2>Release Notes - Gemini Instrument Application Programmer Interface - Version Release 11 - Release Date: 25/Feb/11
- </h2>
+<h1>Release Notes - Gemini Instrument Application Programmer Interface - Version Release 11 - Release Date: 25/Feb/11
+ </h1>
 <h2>        Bug
 </h2>
 <ul>
