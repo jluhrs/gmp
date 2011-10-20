@@ -61,12 +61,30 @@
                 <version>2.15.2</version>
                 <executions>
                     <execution>
+                        <id>cc</id>
                         <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
+                            <goal>cc</goal>
                         </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <useFsc>true</useFsc>
+                            <once>true</once>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>cc-compiletest</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>cc</goal>
+                        </goals>
+                        <configuration>
+                            <mainSourceDir>../test/</mainSourceDir>
+                            <useFsc>true</useFsc>
+                            <once>true</once>
+                        </configuration>
                     </execution>
                 </executions>
+
                 <configuration>
                     <scalaVersion>${scala-lang.version}</scalaVersion>
                     <args>
