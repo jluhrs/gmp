@@ -290,7 +290,7 @@
                     <requires>
                         <require>java &gt;= 1.6.0</require>
                     </requires>
-                    <release>4</release>
+                    <release>1</release>
                     <preinstallScriptlet>
                         <script>
                             #check for user, or create it?
