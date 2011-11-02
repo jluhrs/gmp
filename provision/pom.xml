@@ -20,7 +20,7 @@
     <properties>
         <org.activemq.core.version>5.5.0</org.activemq.core.version>
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
-        <scala-lang.version>2.8.1</scala-lang.version>
+        <scala-lang.version>2.9.1</scala-lang.version>
         <vaadin.version>6.7.0</vaadin.version>
     </properties>
 
@@ -205,8 +205,8 @@
         <!-- Joda time dependencies -->
         <dependency>
             <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
-            <artifactId>time_2.8.1</artifactId>
-            <version>0.3</version>
+            <artifactId>time_2.9.1</artifactId>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
