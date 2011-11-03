@@ -55,7 +55,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("gmp-services").groupId("edu.gemini.aspen.gmp").versionAsInProject(),
                 mavenBundle().artifactId("gds-keywords-database").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-performance-monitoring").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("time_2.8.1").groupId("edu.gemini.external.osgi.org.scala-tools.time").versionAsInProject(),
+                mavenBundle().artifactId("time_2.9.1").groupId("edu.gemini.external.osgi.org.scala-tools.time").versionAsInProject(),
                 mavenBundle().artifactId("joda-time").groupId("joda-time").versionAsInProject(),
                 mavenBundle().artifactId("gds-actors-composer").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-fits-updater").groupId("edu.gemini.aspen.gds").versionAsInProject(),
