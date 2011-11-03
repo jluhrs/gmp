@@ -17,29 +17,28 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
   override val priority = 2
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
-    headers // ++ constructValuesForMissing(getMissing(headers))
-    //    map {
-    //      case ErrorCollectedValue(keyword, CollectionError.MandatoryRequired, comment, index) => new CollectedValue(keyword, "", comment, index)
-    //      case c => c
-    //    }
+    headers ++ constructValuesForMissing(getMissing(headers)) map {
+      case ErrorCollectedValue(keyword, CollectionError.MandatoryRequired, comment, index) => CollectedValue(keyword, "", comment, index)
+      case c => c
+    }
   }
 
-  //  private def getMissing(headers: List[CollectedValue[_]]): List[GDSConfiguration] = {
-  //    configService.getConfiguration filterNot {
-  //      config => headers exists {
-  //        collected => collected.keyword == config.keyword
-  //      }
-  //    }
-  //  }
-  //
-  //  private def constructValuesForMissing(configurations: List[GDSConfiguration]): List[CollectedValue[_]] = {
-  //    val list = configurations map {
-  //      case config => if (config.isMandatory) {
-  //        new CollectedValue[String](config.keyword, "", config.fitsComment.value, config.index.index)
-  //      } else {
-  //        new DefaultCollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index)
-  //      }
-  //    }
-  //    list.asInstanceOf[List[CollectedValue[_]]]
-  //  }
+  private def getMissing(headers: List[CollectedValue[_]]): List[GDSConfiguration] = {
+    configService.getConfiguration filterNot {
+      config => headers exists {
+        collected => collected.keyword == config.keyword
+      }
+    }
+  }
+
+  private def constructValuesForMissing(configurations: List[GDSConfiguration]): List[CollectedValue[_]] = {
+    val list = configurations map {
+      case config => if (config.isMandatory) {
+        CollectedValue(config.keyword, "", config.fitsComment.value, config.index.index)
+      } else {
+        new DefaultCollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index)
+      }
+    }
+    list.asInstanceOf[List[CollectedValue[_]]]
+  }
 }

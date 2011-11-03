@@ -6,9 +6,8 @@ import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.api._
 import configuration.GDSConfigurationService
 import org.mockito.Mockito.{when, mock}
-import org.junit.{Ignore, Test}
+import org.junit.Test
 
-@Ignore
 class EnforceMandatoryPolicyTest {
   val dataLabel = new DataLabel("some name")
 
