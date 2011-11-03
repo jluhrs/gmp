@@ -7,7 +7,7 @@ import org.junit.Test
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher
 import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
 import edu.gemini.aspen.gds.api.CollectionError
-import collection.immutable.Set.Set2
+import collection.immutable.Set
 import java.util.concurrent.TimeUnit
 
 class ObservationStateImplTest {
@@ -70,7 +70,7 @@ class ObservationStateImplTest {
     obsState.startObservation("label1")
     obsState.registerCollectionError("label1", List((new FitsKeyword("a"), CollectionError.GenericError)))
     obsState.registerCollectionError("label1", List((new FitsKeyword("b"), CollectionError.GenericError)))
-    assertEquals(new Set2((new FitsKeyword("b"), CollectionError.GenericError), (new FitsKeyword("a"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
+    assertEquals(Set((new FitsKeyword("b"), CollectionError.GenericError), (new FitsKeyword("a"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
   }
 
   @Test
@@ -93,7 +93,7 @@ class ObservationStateImplTest {
     obsState.registerCollectionError("label1", List((new FitsKeyword("b"), CollectionError.GenericError)))
 
     // Verify it is there
-    assertEquals(new Set2((new FitsKeyword("b"), CollectionError.GenericError), (new FitsKeyword("a"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
+    assertEquals(Set((new FitsKeyword("b"), CollectionError.GenericError), (new FitsKeyword("a"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
 
     TimeUnit.MILLISECONDS.sleep(5)
 

@@ -93,6 +93,8 @@
 
                 <configuration>
                     <scalaVersion>${scala-lang.version}</scalaVersion>
+                    <recompileMode>modified-only</recompileMode>
+                    <failOnMultipleScalaVersions>true</failOnMultipleScalaVersions>
                     <args>
                         <arg>-unchecked</arg>
                         <arg>-deprecation</arg>
@@ -109,6 +111,7 @@
                         <include>**/*Spec.class</include>
                         <include>**/*Test.class</include>
                     </includes>
+                    <failIfNoTests>true</failIfNoTests>
                 </configuration>
             </plugin>
         </plugins>
