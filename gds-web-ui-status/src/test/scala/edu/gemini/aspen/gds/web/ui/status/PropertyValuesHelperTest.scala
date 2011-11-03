@@ -8,7 +8,7 @@ import org.junit.Assert.assertEquals
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.{Health, StatusDatabaseService}
 import edu.gemini.aspen.gds.api.CollectionError
-import collection.immutable.Set.Set1
+import collection.immutable.Set
 import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
 import edu.gemini.aspen.gds.api.Conversions._
 import org.scala_tools.time.Imports._
@@ -51,18 +51,18 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals("label", module.getLastDataLabel)
 
     obsState.registerCollectionError("label", List((new FitsKeyword("KEYWORD"), CollectionError.GenericError)))
-    assertEquals(new Set1((new FitsKeyword("KEYWORD"), CollectionError.GenericError)).toString, module.getKeywordsInError)
+    assertEquals(Set((new FitsKeyword("KEYWORD"), CollectionError.GenericError)).toString, module.getKeywordsInError)
 
     obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD")))
-    assertEquals(new Set1(new FitsKeyword("KEYWORD")).toString, module.getMissingKeywords)
+    assertEquals(Set(new FitsKeyword("KEYWORD")).toString, module.getMissingKeywords)
 
     obsState.startObservation("label2")
-    assertEquals(new Set1("label2").toString, module.getProcessing)
+    assertEquals(Set("label2").toString, module.getProcessing)
 
     assertEquals("BAD", module.getStatus)
 
     obsState.registerTimes("label", List((ObservationEvent.OBS_PREP, Some(new Duration(1, 2)))))
-    assertEquals(new Set1((ObservationEvent.OBS_PREP, new Duration(1, 2))).toString, module.getTimes)
+    assertEquals(Set((ObservationEvent.OBS_PREP, new Duration(1, 2))).toString, module.getTimes)
   }
 
 }

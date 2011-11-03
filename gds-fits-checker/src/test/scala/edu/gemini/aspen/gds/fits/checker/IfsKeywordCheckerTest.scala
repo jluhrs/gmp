@@ -7,11 +7,13 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.gds.api.Conversions._
-import collection.immutable.Set.Set1
+import collection.immutable.Set
 import edu.gemini.aspen.gmp.services.PropertyHolder
 import edu.gemini.aspen.gds.api.Predef._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
+import collection.immutable.HashSet.HashSet1
+import collection.immutable.HashSet
 
 class IfsKeywordCheckerTest {
   @Test
@@ -25,7 +27,7 @@ class IfsKeywordCheckerTest {
     copy(new File(classOf[IfsKeywordCheckerTest].getResource("S20110427-01.fits").toURI), new File("/tmp/S20110427-01.fits"))
     checker.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, "S20110427-01")
     Thread.sleep(200)
-    verify(obsState, times(1)).registerMissingKeyword("S20110427-01", new Set1[FitsKeyword](new FitsKeyword("TELSCOP")))
+    verify(obsState, times(1)).registerMissingKeyword("S20110427-01", Set[FitsKeyword](new FitsKeyword("TELSCOP")))
   }
 
   @Test

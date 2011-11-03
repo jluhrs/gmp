@@ -55,7 +55,7 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
     assertFalse(ret.isEmpty)
     ret map {
       case c: List[_] => assertTrue(c.isEmpty)
-      case a: Any => error("Not a valid value " + a)
+      case a: Any => sys.error("Not a valid value " + a)
     }
   }
 

@@ -15,7 +15,7 @@ import collection.mutable.ConcurrentMap
 @Provides(specifications = Array(classOf[ProgramIdDatabase]))
 class ProgramIdDatabaseImpl extends ProgramIdDatabase {
   // expiration of 1 day by default but tests can override it
-  def expirationMillis = 24*60*60*1000
+  def expirationMillis = 24 * 60 * 60 * 1000
 
   start()
 
@@ -24,12 +24,12 @@ class ProgramIdDatabaseImpl extends ProgramIdDatabase {
       react {
         case StoreProgramId(dataLabel, programId) => internalStore(dataLabel, programId)
         case RetrieveProgramId(dataLabel) => sender ! retrieve(dataLabel)
-        case x => error("Argument not known: " + x)
+        case x => sys.error("Argument not known: " + x)
       }
     }
   }
 
-  private val map:ConcurrentMap[DataLabel, String] = new MapMaker().expireAfterWrite(expirationMillis, MILLISECONDS).makeMap[DataLabel, String]()
+  private val map: ConcurrentMap[DataLabel, String] = new MapMaker().expireAfterWrite(expirationMillis, MILLISECONDS).makeMap[DataLabel, String]()
 
   override def store(dataLabel: DataLabel, programId: String) {
     this ! StoreProgramId(dataLabel, programId)

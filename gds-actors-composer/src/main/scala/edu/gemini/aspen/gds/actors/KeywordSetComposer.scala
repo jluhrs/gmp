@@ -33,7 +33,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   def act() {
     react {
       case AcquisitionRequest(obsEvent, dataLabel) => doCollection(sender, obsEvent, dataLabel)
-      case _ => error("Unknown request type ")
+      case _ => sys.error("Unknown request type ")
     }
   }
 
@@ -50,7 +50,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     }
   }
 
-  private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => immutable.List[Actor]):immutable.List[Future[Any]] = {
+  private def requestCollection(obsEvent: ObservationEvent, dataLabel: DataLabel, actorsBuilder: (ObservationEvent, DataLabel) => immutable.List[Actor]): immutable.List[Future[Any]] = {
     // Get the actors from the factory
     val actors = measureDuration("Building actors for event:" + obsEvent) {
       try {
@@ -76,7 +76,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
       // Wait for response
       val v = Futures.awaitAll(5000, dataFutures: _*).collect {
         case Some(l: List[_]) => l collect {
-          case x:CollectedValue[_] => x
+          case x: CollectedValue[_] => x
         }
         case None =>
           LOG.warning("Missing return of collecting data")

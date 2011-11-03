@@ -29,7 +29,7 @@ class RequestHandler(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
         case InitObservation(programId, dataLabel) => initObservation(programId, dataLabel)
         case StoreKeyword(dataLabel, keyword, value) => storeKeyword(dataLabel, keyword, value)
         case ExitRequestHandler() => exit()
-        case _ => error("Argument not known")
+        case _ => sys.error("Argument not known")
       }
     }
   }

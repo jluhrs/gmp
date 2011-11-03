@@ -30,7 +30,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
         case StoreList(dataLabel: DataLabel, value: List[CollectedValue[_]]) => _store(dataLabel, value)
         case Retrieve(dataLabel) => reply(_retrieve(dataLabel))
         case Clean(dataLabel) => _clean(dataLabel)
-        case x => error("Argument not known " + x)
+        case x => sys.error("Argument not known " + x)
       }
     }
   }

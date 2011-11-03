@@ -12,22 +12,26 @@ class ChannelBuilder(filename: String) {
   private val channelFactory = new ChannelAccessServerImpl
   channelFactory.start()
 
-  val channels:Seq[Channel[_]] = src match {
-    case <channels>{channels @ _*}</channels> => {
-      for {channel @ <channel>{_*}</channel> <- channels
-        name = (channel \\ "name").head.text
-        channelType = (channel \\ "type").head.text
-        value = (channel \\ "value").head.text
+  val channels: Seq[Channel[_]] = src match {
+    case <channels>
+      {channels@_*}
+      </channels> => {
+      for {channel@ <channel>
+        {_*}
+        </channel> <- channels
+           name = (channel \\ "name").head.text
+           channelType = (channel \\ "type").head.text
+           value = (channel \\ "value").head.text
       } yield buildChannel(channelType, name, value)
     }
-    case _ => error("Bad format")
+    case _ => sys.error("Bad format")
   }
 
-  private def buildChannel(channelType:String, name: String, value: String): Channel[_] = channelType.toLowerCase match {
+  private def buildChannel(channelType: String, name: String, value: String): Channel[_] = channelType.toLowerCase match {
     case "string" => channelFactory.createChannel[String](name, value)
     case "double" => channelFactory.createChannel[Double](name, value.toDouble)
     case "int" => channelFactory.createChannel[Int](name, value.toInt)
-    case _ => error("Unknown channel type")
+    case _ => sys.error("Unknown channel type")
   }
 }
 

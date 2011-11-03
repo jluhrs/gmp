@@ -29,14 +29,14 @@ object Main {
         case option :: tail if isSwitch(option) => {
           println("Unknown option: " + option);
           println(usage)
-          exit(1)
+          sys.exit(1)
         }
         case option :: tail if !isSwitch(option) => {
           println("Lone parameters not supported: " + option);
           println(usage)
-          exit(1)
+          sys.exit(1)
         }
-        case _ => error("Unexpected value")
+        case _ => sys.error("Unexpected value")
       }
     }
     val options = nextOption(Map(), arglist)

@@ -58,7 +58,7 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
         case RetrieveAll(dataLabel) => reply(retrieveAll(dataLabel))
         case Clean(dataLabel) => clean(dataLabel)
         case CleanAll() => cleanAll()
-        case _ => error("Argument not known ")
+        case _ => sys.error("Argument not known ")
       }
     }
   }
@@ -77,7 +77,7 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
 
   private def retrieveValue(dataLabel: DataLabel, keyword: FitsKeyword): Option[AnyRef] = {
     map.get(dataLabel) flatMap {
-        x => x.get(keyword)
+      x => x.get(keyword)
     }
   }
 
