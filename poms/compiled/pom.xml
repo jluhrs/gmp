@@ -5,11 +5,12 @@
     <parent>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>shared-plugin-settings</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.2.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>compiled-bundle-settings</artifactId>
+    <version>1.2.0-SNAPSHOT</version>
 
     <name>giapi-osgi - bundle instructions</name>
 
@@ -267,11 +268,6 @@
                 <groupId>edu.gemini.aspen.gds.web.ui</groupId>
                 <artifactId>gds-web-ui</artifactId>
                 <version>0.1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
-                <artifactId>time_2.9.1</artifactId>
-                <version>0.5</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen</groupId>
     <artifactId>giapi-osgi</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
 
     <name>giapi-osgi</name>
 
@@ -105,7 +105,6 @@
         <module>giapi-jms-util</module>
         <module>giapi-status-service</module>
         <module>giapi-status-dispatcher</module>
-        <module>giapi-obsevent-handler</module>
         <module>giapi-fileevents</module>
         <module>jms-activemq-broker</module>
         <module>jms-activemq-provider</module>

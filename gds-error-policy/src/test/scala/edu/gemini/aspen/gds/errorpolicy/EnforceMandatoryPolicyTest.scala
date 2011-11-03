@@ -1,13 +1,14 @@
 package edu.gemini.aspen.gds.errorpolicy
 
-import org.junit.Test
 import org.junit.Assert._
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.api._
 import configuration.GDSConfigurationService
 import org.mockito.Mockito.{when, mock}
+import org.junit.{Ignore, Test}
 
+@Ignore
 class EnforceMandatoryPolicyTest {
   val dataLabel = new DataLabel("some name")
 

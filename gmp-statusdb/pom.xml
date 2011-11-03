@@ -6,7 +6,7 @@
         <relativePath>../poms/compiled/</relativePath>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>compiled-bundle-settings</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.2.0-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -24,7 +24,7 @@
 
     <packaging>bundle</packaging>
 
-        <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
