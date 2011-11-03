@@ -50,12 +50,12 @@ object GDSConfigValidator {
         case option :: tail if isSwitch(option) => {
           println("Unknown option: " + option);
           println(usage)
-          exit(1)
+          sys.exit(1)
         }
         case option :: tail if !isSwitch(option) => {
           println("Lone parameters not supported: " + option);
           println(usage)
-          exit(1)
+          sys.exit(1)
         }
       }
     }

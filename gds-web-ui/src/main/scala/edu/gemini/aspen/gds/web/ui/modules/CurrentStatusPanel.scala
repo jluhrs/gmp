@@ -22,13 +22,13 @@ class CurrentStatusPanel(@Requires statusDB: StatusDatabaseService) extends Abst
 
   private def getStatus = {
     statusDB.getStatusItem("gpi:gds:health") match {
-      case x: StatusItem[_] => if (x.getValue == Health.GOOD) {
+      case x: StatusItem[_] => if (x.getValue.equals(Health.GOOD)) {
         "<span style=\"color: green\">" + x.getValue.toString + "</span>"
       } else
-      if (x.getValue == Health.WARNING) {
+      if (x.getValue.equals(Health.WARNING)) {
         "<span style=\"color: orange\">" + x.getValue.toString + "</span>"
       } else
-      if (x.getValue == Health.BAD) {
+      if (x.getValue.equals(Health.BAD)) {
         "<span style=\"color: red\">" + x.getValue.toString + "</span>"
       } else {
         x.getValue.toString
