@@ -39,12 +39,12 @@
         </dependency>
         <dependency>
             <groupId>org.specs2</groupId>
-            <artifactId>specs2_2.8.1</artifactId>
+            <artifactId>specs2_2.9.1</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
-            <artifactId>time_2.8.1</artifactId>
+            <artifactId>time_2.9.1</artifactId>
         </dependency>
     </dependencies>
 

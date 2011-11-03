@@ -270,8 +270,8 @@
             </dependency>
             <dependency>
                 <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
-                <artifactId>time_2.8.1</artifactId>
-                <version>0.3</version>
+                <artifactId>time_2.9.1</artifactId>
+                <version>0.5</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
