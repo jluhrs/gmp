@@ -3,6 +3,8 @@ package edu.gemini.aspen.gmp.commands.records;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.dbr.DBR;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -14,24 +16,24 @@ import java.util.concurrent.CountDownLatch;
  * @author Nicolas A. Barriga
  *         Date: 3/24/11
  */
-class UpdateListener extends CountDownLatch implements ChannelListener {
+class UpdateListener extends CountDownLatch implements ChannelListener<Integer> {
 
     public UpdateListener() {
         super(1);
     }
 
-    private DBR dbr = null;
+    private List<Integer> values = new ArrayList<Integer>();
 
     @Override
-    public void valueChange(DBR dbr) {
+    public void valueChange(String channelName, List<Integer> values) {
         if (getCount() == 1) {
-            this.dbr = dbr;
+            this.values = values;
             countDown();
         }
     }
 
-    public DBR getDBR() {
-        return dbr;
+    public List<Integer> getValues() {
+        return values;
     }
 
 }

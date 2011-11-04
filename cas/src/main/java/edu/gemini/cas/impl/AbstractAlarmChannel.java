@@ -33,12 +33,12 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     }
 
     @Override
-    public void registerListener(ChannelListener listener) {
+    public void registerListener(ChannelListener<T> listener) {
         ch.registerListener(listener);
     }
 
     @Override
-    public void unRegisterListener(ChannelListener listener) {
+    public void unRegisterListener(ChannelListener<T> listener) {
         ch.unRegisterListener(listener);
     }
 

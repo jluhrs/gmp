@@ -5,7 +5,6 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.ChannelListener;
-import gov.aps.jca.dbr.DBR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,18 +96,18 @@ public class CadRecordImpl implements CadRecord {
         return newState;
     }
 
-    private class AttributeListener implements ChannelListener {
+    private class AttributeListener implements ChannelListener<String> {
         @Override
-        public void valueChange(DBR dbr) {
-            LOG.fine("CAD Record: " + seqCom.getName() + " Attribute Received: " + ((String[]) dbr.getValue())[0]);
+        public void valueChange(String channelName, List<String> values) {
+            LOG.fine("CAD Record: " + seqCom.getName() + " Attribute Received: " + values.get(0));
             state = processDir(Dir.MARK);
         }
     }
 
-    private class DirListener implements ChannelListener {
+    private class DirListener implements ChannelListener<Dir> {
         @Override
-        public void valueChange(DBR dbr) {
-            state = processDir(Dir.values()[((short[]) dbr.getValue())[0]]);
+        public void valueChange(String channelName, List<Dir> values) {
+            state = processDir(values.get(0));
         }
     }
 

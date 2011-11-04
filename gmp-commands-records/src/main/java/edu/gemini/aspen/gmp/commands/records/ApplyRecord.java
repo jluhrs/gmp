@@ -231,7 +231,7 @@ public class ApplyRecord {
                 LOG.finer("latch released");
 
                 cad.getEpicsCad().unRegisterValListener(listener);
-                value = ((int[]) listener.getDBR().getValue())[0];
+                value = listener.getValues().get(0);
 
             } catch (InterruptedException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
@@ -294,12 +294,12 @@ public class ApplyRecord {
     /**
      * This listener will be called when a directive is written to the DIR field
      */
-    private class DirListener implements ChannelListener {
+    private class DirListener implements ChannelListener<Dir> {
         @Override
-        public void valueChange(DBR dbr) {
-            LOG.info("Received DIR write: " + Dir.values()[((short[]) dbr.getValue())[0]]);
+        public void valueChange(String channelName, List<Dir> values) {
+            LOG.info("Received DIR write: " + values.get(0));
             try {
-                processDir(Dir.values()[((short[]) dbr.getValue())[0]]);
+                processDir(values.get(0));
 
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);

@@ -4,9 +4,9 @@ import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
-import gov.aps.jca.dbr.DBR;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  *         Date: 3/16/11
  */
 public class ChannelListenerTest {
-    private class TestChannelListener extends CountDownLatch implements ChannelListener {
+    private class TestChannelListener extends CountDownLatch implements ChannelListener<Double> {
         final Logger LOG = Logger.getLogger(ChannelListenerTest.class.getName());
 
         public TestChannelListener(int latchCount) {
@@ -28,8 +28,8 @@ public class ChannelListenerTest {
         }
 
         @Override
-        public void valueChange(DBR dbr) {
-            LOG.info("Received: " + ((double[]) dbr.getValue())[0]);
+        public void valueChange(String channelName, List<Double> values) {
+            LOG.info("Received: " + values.get(0));
             countDown();
         }
     }

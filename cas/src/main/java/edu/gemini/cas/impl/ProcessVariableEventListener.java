@@ -11,15 +11,17 @@ import gov.aps.jca.dbr.DBR;
  *         Date: 3/16/11
  */
 public class ProcessVariableEventListener implements ProcessVariableEventCallback {
-    private final ChannelListener listener;
+    private final ChannelListener<?> listener;
+    private final AbstractChannel channel;
 
-    ProcessVariableEventListener(ChannelListener listener) {
+    ProcessVariableEventListener(AbstractChannel channel, ChannelListener<?> listener) {
         this.listener = listener;
+        this.channel = channel;
     }
 
     @Override
     public void postEvent(int i, DBR dbr) {
-        listener.valueChange(dbr);
+        listener.valueChange(channel.getName(), channel.extractValues(dbr));
     }
 
     @Override

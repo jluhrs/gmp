@@ -52,9 +52,9 @@ public interface ReadOnlyChannel<T> {
      *
      * @param listener
      */
-    void registerListener(ChannelListener listener);
+    void registerListener(ChannelListener<T> listener);
 
-    void unRegisterListener(ChannelListener listener);
+    void unRegisterListener(ChannelListener<T> listener);
 
     /**
      * Indicates whether the channel is valid/connected

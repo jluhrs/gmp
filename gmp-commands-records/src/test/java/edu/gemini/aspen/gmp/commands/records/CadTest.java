@@ -9,12 +9,12 @@ import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatusException;
-import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -58,23 +58,19 @@ public class CadTest {
         Channel<CarRecord.Val> carVal = cas.createChannel(epicsTop.buildChannelName(cadName + "C.VAL"), CarRecord.Val.IDLE);
 
 
-        class CarListener extends CountDownLatch implements ChannelListener {
+        class CarListener extends CountDownLatch implements ChannelListener<CarRecord.Val> {
 
             public CarListener() {
                 super(2);
             }
 
             @Override
-            public void valueChange(DBR dbr) {
-                try {
-                    if (getCount() == 2 && "BUSY".equals(((String[]) dbr.convert(DBRType.STRING).getValue())[0])) {
-                        countDown();
-                    }
-                    if (getCount() == 1 && "IDLE".equals(((String[]) dbr.convert(DBRType.STRING).getValue())[0])) {
-                        countDown();
-                    }
-                } catch (CAStatusException e) {
-                    LOG.severe(e.getMessage());
+            public void valueChange(String channelName, List<CarRecord.Val> values) {
+                if (getCount() == 2 && CarRecord.Val.BUSY.equals(values.get(0))) {
+                    countDown();
+                }
+                if (getCount() == 1 && CarRecord.Val.IDLE.equals(values.get(0))) {
+                    countDown();
                 }
 
             }

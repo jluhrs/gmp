@@ -47,7 +47,7 @@ public class EpicsCad {
      * @param dirListener       listener to be notified when the DIR field is written to
      * @param attributeNames    list of attribute names. Each will be an EPICS channel.
      */
-    public synchronized void start(EpicsTop epicsTop, String name, ChannelListener attributeListener, ChannelListener dirListener, List<String> attributeNames) {
+    public synchronized void start(EpicsTop epicsTop, String name, ChannelListener<String> attributeListener, ChannelListener<Dir> dirListener, List<String> attributeNames) {
         LOG.info("EpicsCad start: " + epicsTop.buildChannelName(name));
         try {
             val = cas.createChannel(epicsTop.buildChannelName(name + ".VAL"), 0);
@@ -175,7 +175,7 @@ public class EpicsCad {
      *
      * @param listener to be notified
      */
-    public void registerValListener(ChannelListener listener) {
+    public void registerValListener(ChannelListener<Integer> listener) {
         val.registerListener(listener);
     }
 
@@ -184,7 +184,7 @@ public class EpicsCad {
      *
      * @param listener to be unregistered
      */
-    public void unRegisterValListener(ChannelListener listener) {
+    public void unRegisterValListener(ChannelListener<Integer> listener) {
         val.unRegisterListener(listener);
     }
 
