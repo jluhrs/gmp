@@ -12,7 +12,10 @@ abstract class FitsType[T] {
 /**
  * Implicit conversions that limit what values can be passed as Fits Keywords */
 object FitsType {
-  val typeNames = immutable.List("STRING", "DOUBLE", "INT")
+
+  object TypeNames extends Enumeration {
+    val STRING, DOUBLE, INT = Value
+  }
 
   implicit object IntegerType extends FitsType[Int] {
 

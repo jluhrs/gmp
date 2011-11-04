@@ -13,7 +13,7 @@ case class HeaderIndex(index: Int) {
 }
 
 case class DataType(name: String) {
-  require(FitsType.typeNames.contains(name))
+  require(FitsType.TypeNames.values.contains(FitsType.TypeNames.withName(name)))
 }
 
 // A keyword marked as mandatory will be left empty and an error will be put in the log
