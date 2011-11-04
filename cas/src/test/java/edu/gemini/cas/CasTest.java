@@ -2,6 +2,7 @@ package edu.gemini.cas;
 
 import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.epics.api.Channel;
 import gov.aps.jca.dbr.*;
 import org.junit.After;
 import org.junit.Before;

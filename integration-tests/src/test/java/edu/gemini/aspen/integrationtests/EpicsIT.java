@@ -1,15 +1,11 @@
 package edu.gemini.aspen.integrationtests;
 
-import com.cosylab.epics.caj.CAJChannel;
 import com.cosylab.epics.caj.CAJContext;
-import edu.gemini.cas.Channel;
-import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
-import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.impl.EpicsReaderImpl;
 import gov.aps.jca.CAException;
-import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.event.ConnectionEvent;
 import gov.aps.jca.event.ConnectionListener;

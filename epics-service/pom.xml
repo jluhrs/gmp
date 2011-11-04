@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.epics</groupId>
     <artifactId>epics-service</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
 
     <name>EPICS Service</name>
     <description>Easy interface to watch EPICS values.</description>
@@ -44,17 +44,13 @@
     </build>
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency-->
         <dependency>
             <groupId>edu.gemini.external.osgi.jca-lib</groupId>
             <artifactId>jca-lib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-api</artifactId>
         </dependency>
     </dependencies>
 

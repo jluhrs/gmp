@@ -1,5 +1,6 @@
 package edu.gemini.cas;
 
+import edu.gemini.epics.api.Channel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
@@ -21,9 +22,9 @@ public interface AlarmChannel<T> extends Channel<T> {
     /**
      * Changes the alarm state on the given channel.
      *
-     * @param status the cause of the alarm
+     * @param status   the cause of the alarm
      * @param severity whether or not the alarm is catastrophic
-     * @param message used to describe the cause of the alarm
+     * @param message  used to describe the cause of the alarm
      * @throws CAException
      */
     void setAlarm(Status status, Severity severity, String message) throws CAException;

@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.status.*;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.cas.AlarmChannel;
-import edu.gemini.cas.Channel;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.Severity;

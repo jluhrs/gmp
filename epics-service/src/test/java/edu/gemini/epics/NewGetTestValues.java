@@ -1,6 +1,7 @@
 package edu.gemini.epics;
 
 import com.google.common.collect.Maps;
+import edu.gemini.epics.api.ReadOnlyChannel;
 import gov.aps.jca.CAException;
 
 import java.util.Map;
@@ -33,9 +34,9 @@ public class NewGetTestValues {
     public static void main(String[] args) throws CAException, EpicsException {
         NewEpicsReader reader = null;
 
-        EpicsChannel<Double> channel = reader.getChannel("tc1:sad:astCtx");
+        ReadOnlyChannel<Double> channel = reader.getChannel("tc1:sad:astCtx");
 
-       // System.out.println(channel.getArraySize());
+        // System.out.println(channel.getArraySize());
 
     }
 }

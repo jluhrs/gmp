@@ -3,7 +3,6 @@ package edu.gemini.cas.impl;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.*;
-import edu.gemini.cas.Channel;
 import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
 import org.apache.felix.ipojo.annotations.*;
@@ -32,7 +31,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     private ServerContext serverContext = null;
     private ExecutorService executor;
     private final JCALibrary jca = JCALibrary.getInstance();
-    private Map<String, Channel<?>> channels;
+    private Map<String, edu.gemini.epics.api.Channel<?>> channels;
 
     /**
      * Constructor.
@@ -49,7 +48,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     @Validate
     public void start() throws CAException {
         executor = Executors.newSingleThreadExecutor();
-        channels = new HashMap<String, Channel<?>>();
+        channels = new HashMap<String, edu.gemini.epics.api.Channel<?>>();
         server = new DefaultServerImpl();
         if (serverContext != null) {
             throw new IllegalStateException("Tried to start the ChannelAccessServerImpl more than once");
@@ -78,7 +77,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     @Invalidate
     public void stop() throws CAException {
         for (String name : channels.keySet()) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof AbstractChannel) {
                 ((AbstractChannel) ch).destroy(server);
             } else if (ch instanceof AbstractAlarmChannel) {
@@ -96,16 +95,16 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
     }
 
     @Override
-    public <T> Channel<T> createChannel(String name, T value) throws CAException {
+    public <T> edu.gemini.epics.api.Channel<T> createChannel(String name, T value) throws CAException {
         return createChannel(name, ImmutableList.of(value));
     }
 
     @Override
-    public <T> Channel<T> createChannel(String name, List<T> values) throws CAException {
+    public <T> edu.gemini.epics.api.Channel<T> createChannel(String name, List<T> values) throws CAException {
         if (values == null || values.isEmpty()) {
             throw new IllegalArgumentException("At least one value must be passed");
         }
-        Channel ch = null;
+        edu.gemini.epics.api.Channel ch = null;
         if (values.get(0) instanceof Integer) {
             ch = createIntegerChannel(name, values.size());
         } else if (values.get(0) instanceof Float) {
@@ -161,9 +160,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private Channel<Integer> createIntegerChannel(String name, int length) {
+    private edu.gemini.epics.api.Channel<Integer> createIntegerChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof IntegerChannel) {
                 return (IntegerChannel) ch;
             } else {
@@ -184,9 +183,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private Channel<Float> createFloatChannel(String name, int length) {
+    private edu.gemini.epics.api.Channel<Float> createFloatChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof FloatChannel) {
                 return (FloatChannel) ch;
             } else {
@@ -207,9 +206,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private Channel<Double> createDoubleChannel(String name, int length) {
+    private edu.gemini.epics.api.Channel<Double> createDoubleChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof DoubleChannel) {
                 return (DoubleChannel) ch;
             } else {
@@ -230,9 +229,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private Channel<String> createStringChannel(String name, int length) {
+    private edu.gemini.epics.api.Channel<String> createStringChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof StringChannel) {
                 return (StringChannel) ch;
             } else {
@@ -254,9 +253,9 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private <T extends Enum<T>> Channel<T> createEnumChannel(String name, int length, Class<T> clazz) {
+    private <T extends Enum<T>> edu.gemini.epics.api.Channel<T> createEnumChannel(String name, int length, Class<T> clazz) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof EnumChannel && ((EnumChannel) ch).getEnumClass().equals(clazz)) {
                 return (EnumChannel<T>) ch;
             } else {
@@ -280,7 +279,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      */
     private AlarmChannel<Integer> createIntegerAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof IntegerAlarmChannel) {
                 return (IntegerAlarmChannel) ch;
             } else {
@@ -304,7 +303,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      */
     private AlarmChannel<Float> createFloatAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof FloatAlarmChannel) {
                 return (FloatAlarmChannel) ch;
             } else {
@@ -328,7 +327,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      */
     private AlarmChannel<Double> createDoubleAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof DoubleAlarmChannel) {
                 return (DoubleAlarmChannel) ch;
 
@@ -353,7 +352,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      */
     private AlarmChannel<String> createStringAlarmChannel(String name, int length) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof StringAlarmChannel) {
                 return (StringAlarmChannel) ch;
 
@@ -379,7 +378,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      */
     private <T extends Enum<T>> AlarmChannel<T> createEnumAlarmChannel(String name, int length, Class<T> clazz) {
         if (channels.containsKey(name)) {
-            Channel ch = channels.get(name);
+            edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof EnumAlarmChannel && ((EnumAlarmChannel) ch).getEnumClass().equals(clazz)) {
                 return (EnumAlarmChannel<T>) ch;
             } else {
@@ -398,8 +397,8 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @param channel the Channel to remove
      */
     @Override
-    public void destroyChannel(Channel channel) {
-        Channel ch;
+    public void destroyChannel(edu.gemini.epics.api.Channel channel) {
+        edu.gemini.epics.api.Channel ch;
         try {
             ch = channels.get(channel.getName());
         } catch (NullPointerException ex) {//if channel was already destroyed

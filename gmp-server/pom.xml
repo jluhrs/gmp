@@ -403,17 +403,23 @@
             <artifactId>jca-lib</artifactId>
             <version>1.2.0</version>
         </dependency>
+        <!-- Epics API -->
+        <dependency>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-api</artifactId>
+            <version>0.1.0</version>
+        </dependency>
         <!-- Epics Service -->
         <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
-            <version>0.7.0</version>
+            <version>0.8.0</version>
         </dependency>
         <!-- CAS -->
         <dependency>
             <groupId>edu.gemini.cas</groupId>
             <artifactId>cas</artifactId>
-            <version>0.1.4</version>
+            <version>0.2.0</version>
         </dependency>
         <!-- GIAPI -->
         <dependency>

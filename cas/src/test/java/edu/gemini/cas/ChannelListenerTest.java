@@ -1,6 +1,8 @@
 package edu.gemini.cas;
 
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.epics.api.Channel;
+import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 import org.junit.Test;
@@ -19,7 +21,7 @@ import static org.junit.Assert.*;
  */
 public class ChannelListenerTest {
     private class TestChannelListener extends CountDownLatch implements ChannelListener {
-            final Logger LOG = Logger.getLogger(ChannelListenerTest.class.getName());
+        final Logger LOG = Logger.getLogger(ChannelListenerTest.class.getName());
 
         public TestChannelListener(int latchCount) {
             super(latchCount);
@@ -33,11 +35,11 @@ public class ChannelListenerTest {
     }
 
     @Test
-    public  void test() throws CAException, InterruptedException {
+    public void test() throws CAException, InterruptedException {
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
-        Channel<Double> ch=cas.createChannel("test", 1.0);
+        Channel<Double> ch = cas.createChannel("test", 1.0);
         TestChannelListener chListener = new TestChannelListener(1);
         ch.registerListener(chListener);
         ch.setValue(2.0);
@@ -48,11 +50,11 @@ public class ChannelListenerTest {
     }
 
     @Test
-    public  void test2listeners() throws CAException, InterruptedException {
+    public void test2listeners() throws CAException, InterruptedException {
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
-        Channel<Double> ch=cas.createChannel("test", 1.0);
+        Channel<Double> ch = cas.createChannel("test", 1.0);
         TestChannelListener chListener = new TestChannelListener(1);
         ch.registerListener(chListener);
         TestChannelListener chListener2 = new TestChannelListener(1);
@@ -66,11 +68,11 @@ public class ChannelListenerTest {
     }
 
     @Test
-    public  void testUnregisterListener() throws CAException, InterruptedException {
+    public void testUnregisterListener() throws CAException, InterruptedException {
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
-        Channel<Double> ch=cas.createChannel("test", 1.0);
+        Channel<Double> ch = cas.createChannel("test", 1.0);
 
         TestChannelListener chListener = new TestChannelListener(1);
         ch.registerListener(chListener);

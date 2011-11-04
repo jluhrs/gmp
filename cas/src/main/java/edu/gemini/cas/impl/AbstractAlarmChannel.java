@@ -2,11 +2,12 @@ package edu.gemini.cas.impl;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import edu.gemini.cas.AlarmChannel;
-import edu.gemini.cas.ChannelListener;
+import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
+import org.apache.commons.lang.NotImplementedException;
 
 import java.util.List;
 
@@ -17,12 +18,18 @@ import java.util.List;
  *         Date: 3/7/11
  */
 class AbstractAlarmChannel<T> implements AlarmChannel<T> {
-    private final String ALARM_MESSAGE_SUFFIX=".OMSS";
+    private final String ALARM_MESSAGE_SUFFIX = ".OMSS";
     protected final AbstractChannel<String> alarmCh;
     protected final AbstractChannel<T> ch;
+
     protected AbstractAlarmChannel(AbstractChannel<T> ch) {
-        this.ch=ch;
-        alarmCh = new StringChannel(ch.getName()+ALARM_MESSAGE_SUFFIX, 1);
+        this.ch = ch;
+        alarmCh = new StringChannel(ch.getName() + ALARM_MESSAGE_SUFFIX, 1);
+    }
+
+    @Override
+    public boolean isValid() {
+        throw new NotImplementedException();
     }
 
     @Override
@@ -65,7 +72,7 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
         return ch.getName();
     }
 
-    void register(DefaultServerImpl server){
+    void register(DefaultServerImpl server) {
         ch.register(server);
         alarmCh.register(server);
     }
@@ -76,16 +83,16 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     }
 
     @Override
-    public void clearAlarm() throws CAException{
+    public void clearAlarm() throws CAException {
         setAlarm(Status.NO_ALARM, Severity.NO_ALARM, "");
     }
 
     @Override
-    public void setAlarm(Status status, Severity severity, String message) throws CAException{
-        ch.setAlarmState(status,severity);
+    public void setAlarm(Status status, Severity severity, String message) throws CAException {
+        ch.setAlarmState(status, severity);
 
         ch.setValue(ch.extractValues(ch.getDBR()));
 
-        alarmCh.setValue(message!=null?message:"");
+        alarmCh.setValue(message != null ? message : "");
     }
 }

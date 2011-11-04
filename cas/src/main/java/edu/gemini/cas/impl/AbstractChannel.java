@@ -3,14 +3,15 @@ package edu.gemini.cas.impl;
 import com.cosylab.epics.caj.cas.ProcessVariableEventDispatcher;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
-import edu.gemini.cas.Channel;
-import edu.gemini.cas.ChannelListener;
+import edu.gemini.epics.api.Channel;
+import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
 import gov.aps.jca.cas.ProcessVariableEventCallback;
 import gov.aps.jca.dbr.*;
+import org.apache.commons.lang.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,11 @@ abstract class AbstractChannel<T> implements Channel<T> {
     private AlarmMemoryProcessVariable pv;
     private final Map<ChannelListener, ProcessVariableEventCallback> eventCallbacks = new HashMap<ChannelListener, ProcessVariableEventCallback>();
 
+    @Override
+    public boolean isValid() {
+        throw new NotImplementedException();
+    }
+
     protected AbstractChannel(AlarmMemoryProcessVariable pv) {
         this.pv = pv;
         ProcessVariableEventDispatcher ed = new ProcessVariableEventDispatcher(pv);
@@ -37,8 +43,8 @@ abstract class AbstractChannel<T> implements Channel<T> {
      *
      * @param server the server to register the pv
      */
-    void register(DefaultServerImpl server){
-        server.registerProcessVaribale(pv.getName(),pv);
+    void register(DefaultServerImpl server) {
+        server.registerProcessVaribale(pv.getName(), pv);
     }
 
     /**
@@ -46,13 +52,13 @@ abstract class AbstractChannel<T> implements Channel<T> {
      *
      * @param server the server to unregister the pv from
      */
-    void destroy(DefaultServerImpl server){
+    void destroy(DefaultServerImpl server) {
         server.unregisterProcessVaribale(getName());
         pv.destroy();
-        pv=null;
+        pv = null;
     }
 
-    void setAlarmState(Status status, Severity severity){
+    void setAlarmState(Status status, Severity severity) {
         pv.setStatus(status);
         pv.setSeverity(severity);
     }
@@ -93,7 +99,7 @@ abstract class AbstractChannel<T> implements Channel<T> {
      *
      * @return the size of the PV's data.
      */
-    protected int getSize(){
+    protected int getSize() {
         return pv.getDimensionSize(0);
     }
 
@@ -102,49 +108,49 @@ abstract class AbstractChannel<T> implements Channel<T> {
      *
      * @return true if Double, false otherwise
      */
-    public boolean isDouble(){
+    public boolean isDouble() {
         return pv.getType().isDOUBLE();
     }
 
     /**
-      * Checks if this channel represents a Float
-      *
-      * @return true if Float, false otherwise
-      */
-    public boolean isFloat(){
+     * Checks if this channel represents a Float
+     *
+     * @return true if Float, false otherwise
+     */
+    public boolean isFloat() {
         return pv.getType().isFLOAT();
     }
 
     /**
-      * Checks if this channel represents an Integer
-      *
-      * @return true if Integer, false otherwise
-      */
-    public boolean isInteger(){
+     * Checks if this channel represents an Integer
+     *
+     * @return true if Integer, false otherwise
+     */
+    public boolean isInteger() {
         return pv.getType().isINT();
     }
 
     /**
-      * Checks if this channel represents a String
-      *
-      * @return true if String, false otherwise
-      */
-    public boolean isString(){
+     * Checks if this channel represents a String
+     *
+     * @return true if String, false otherwise
+     */
+    public boolean isString() {
         return pv.getType().isSTRING();
     }
 
     /**
-      * Checks if this channel represents an Enum
-      *
-      * @return true if Enum, false otherwise
-      */
-    public boolean isEnum(){
+     * Checks if this channel represents an Enum
+     *
+     * @return true if Enum, false otherwise
+     */
+    public boolean isEnum() {
         return pv.getType().isENUM();
     }
 
 
     @Override
-    public String getName(){
+    public String getName() {
         return pv.getName();
     }
 
@@ -205,7 +211,7 @@ abstract class AbstractChannel<T> implements Channel<T> {
         return extractValues(getDBR()).get(0);
     }
 
-    protected void setEnumLabels(String[] labels){
+    protected void setEnumLabels(String[] labels) {
         pv.setEnumLabels(labels);
     }
 

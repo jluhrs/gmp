@@ -1,6 +1,6 @@
 package edu.gemini.cas.impl;
 
-import edu.gemini.cas.ChannelListener;
+import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.cas.ProcessVariableEventCallback;
 import gov.aps.jca.dbr.DBR;
 

@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.commands.records;
 
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.cas.Channel;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
-import edu.gemini.cas.ChannelListener;
+import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
 
 import java.util.ArrayList;

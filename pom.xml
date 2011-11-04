@@ -96,6 +96,7 @@
     <modules>
         <module>poms</module>
         <module>provision</module>
+        <module>epics-api</module>
         <module>epics-service</module>
         <module>giapi</module>
         <module>giapi-fileevent-handler</module>

@@ -4,7 +4,7 @@ import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.aspen.gmp.heartbeat.Heartbeat;
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatDistributor;
-import edu.gemini.cas.Channel;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;

@@ -1,4 +1,4 @@
-package edu.gemini.cas;
+package edu.gemini.epics.api;
 
 import gov.aps.jca.dbr.DBR;
 

@@ -2,7 +2,8 @@ package edu.gemini.aspen.gds.epics
 
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.api._
-import edu.gemini.epics.{EpicsChannelArray, EpicsChannel, NewEpicsReader}
+import edu.gemini.epics.NewEpicsReader
+import edu.gemini.epics.api.ReadOnlyChannel
 
 /**
  * Very simple actor that can produce as a reply of a Collect request a single value
@@ -13,17 +14,17 @@ class NewEpicsValuesActor(epicsReader: NewEpicsReader, configuration: GDSConfigu
     val readValue = if (arrayIndex > 0) {
       Option(epicsReader.getChannel(sourceChannel)) map (extractEpicsItem)
     } else {
-      Option(epicsReader.getArrayChannel(sourceChannel)) map (extractEpicsItemArray)
+      Option(epicsReader.getChannel(sourceChannel)) map (extractEpicsItemArray)
     }
     readValue map valueToCollectedValue toList
   }
 
-  def extractEpicsItem(epicsValue: EpicsChannel[_]) = {
-    epicsValue.getValue
+  def extractEpicsItem(epicsValue: ReadOnlyChannel[_]) = {
+    epicsValue.getFirst
   }
 
-  def extractEpicsItemArray(epicsValue: EpicsChannelArray[_]) = {
-    epicsValue.getValue()(arrayIndex)
+  def extractEpicsItemArray(epicsValue: ReadOnlyChannel[_]) = {
+    epicsValue.getAll().get(arrayIndex)
   }
 
 }

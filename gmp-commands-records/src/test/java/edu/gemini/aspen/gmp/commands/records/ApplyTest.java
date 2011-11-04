@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.commands.records;
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
-import edu.gemini.cas.Channel;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import gov.aps.jca.CAException;
 import org.junit.After;

@@ -4,7 +4,7 @@ import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.cas.ChannelAccessServer;
-import edu.gemini.cas.ChannelListener;
+import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.dbr.DBR;
 
 import java.util.ArrayList;

@@ -3,7 +3,7 @@ package edu.gemini.aspen.epicsheartbeat;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
 import edu.gemini.cas.ChannelAccessServer;
-import edu.gemini.cas.Channel;
+import edu.gemini.epics.api.Channel;
 import gov.aps.jca.CAException;
 import org.apache.felix.ipojo.annotations.*;
 

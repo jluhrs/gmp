@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.cas</groupId>
     <artifactId>cas</artifactId>
-    <version>0.1.4</version>
+    <version>0.2.0</version>
 
     <name>Channel Access Server</name>
     <description>Channel Access Server</description>
@@ -42,29 +42,13 @@
     </build>
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.external.osgi.jca-lib</groupId>
             <artifactId>jca-lib</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo</artifactId>
-            <version>1.6.8</version>
-            <scope>provided</scope>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-api</artifactId>
         </dependency>
     </dependencies>
 

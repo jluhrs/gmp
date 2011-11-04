@@ -23,8 +23,8 @@ public class TestStress {
     private static final Logger LOG = Logger.getLogger(TestStress.class.getName());
     private ChannelAccessServerImpl cas;
     private JCALibrary jca;
-    private String varname="nico:test1";
-    private Channel ch;
+    private String varname = "nico:test1";
+    private edu.gemini.epics.api.Channel ch;
 
     @Before
     public void setUp() {
@@ -32,7 +32,7 @@ public class TestStress {
         cas = new ChannelAccessServerImpl();
         try {
             cas.start();
-            ch=cas.createChannel(varname,1);
+            ch = cas.createChannel(varname, 1);
         } catch (CAException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
             fail();
@@ -96,8 +96,8 @@ public class TestStress {
 
             long after = System.currentTimeMillis();
             long elapsed = after - first;
-            double rate= (double)iters/elapsed*1000.0;
-            LOG.info("Time: "+elapsed+"[ms], rate: "+rate+"[updates/s]");
+            double rate = (double) iters / elapsed * 1000.0;
+            LOG.info("Time: " + elapsed + "[ms], rate: " + rate + "[updates/s]");
 
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);

@@ -11,7 +11,7 @@ import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.cas.Channel;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.cas.AlarmChannel;
 import gov.aps.jca.dbr.DBR_STS_Double;

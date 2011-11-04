@@ -1,5 +1,7 @@
 package edu.gemini.cas;
 
+import edu.gemini.epics.api.Channel;
+
 /**
  * Interface ChannelAccessServer
  *

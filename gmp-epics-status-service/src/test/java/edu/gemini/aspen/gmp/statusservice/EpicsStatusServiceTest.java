@@ -10,6 +10,7 @@ import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.cas.*;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.epics.api.Channel;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +44,7 @@ public class EpicsStatusServiceTest extends TestCase {
     private File xml = null;
     private File xsd = null;
     private EpicsTop epicsTop;
+
     @Before
     public void setUp() throws Exception {
         cas = mock(ChannelAccessServerImpl.class);
