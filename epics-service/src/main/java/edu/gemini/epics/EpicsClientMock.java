@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This class should live in the test section of the code but
  * due to limitation of the testing framework it needs to be
  * in the main code tree
- *
+ * <p/>
  * The client can receive updates and it record if it has been
  * called
  */
@@ -17,7 +17,7 @@ public class EpicsClientMock implements EpicsClient {
     private AtomicInteger updatesCount = new AtomicInteger(0);
 
     @Override
-    public void channelChanged(String channel, Object value) {
+    public void valueChanged(String channel, Object value) {
         updatesCount.incrementAndGet();
     }
 

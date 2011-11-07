@@ -98,7 +98,7 @@ public class CadRecordImpl implements CadRecord {
 
     private class AttributeListener implements ChannelListener<String> {
         @Override
-        public void valueChange(String channelName, List<String> values) {
+        public void valueChanged(String channelName, List<String> values) {
             LOG.fine("CAD Record: " + seqCom.getName() + " Attribute Received: " + values.get(0));
             state = processDir(Dir.MARK);
         }
@@ -106,7 +106,7 @@ public class CadRecordImpl implements CadRecord {
 
     private class DirListener implements ChannelListener<Dir> {
         @Override
-        public void valueChange(String channelName, List<Dir> values) {
+        public void valueChanged(String channelName, List<Dir> values) {
             state = processDir(values.get(0));
         }
     }

@@ -82,7 +82,7 @@ public class ChannelBindingSupport {
         private void updateClientUponClosing(Channel ch) {
             // The channel was _closed.
             // First, update the value to null.
-            _epicsClient.channelChanged(ch.getName(), null);
+            _epicsClient.valueChanged(ch.getName(), null);
             _epicsClient.disconnected();
         }
     };
@@ -125,7 +125,7 @@ public class ChannelBindingSupport {
             Object value = ge.getDBR().getValue();
 
             //send the value directly to the _epicsClient.
-            _epicsClient.channelChanged(ch.getName(), value);
+            _epicsClient.valueChanged(ch.getName(), value);
         }
     };
 

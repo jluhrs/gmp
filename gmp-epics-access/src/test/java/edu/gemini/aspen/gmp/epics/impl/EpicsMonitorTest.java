@@ -33,7 +33,7 @@ public class EpicsMonitorTest {
     public void testChannelChanged() {
         EpicsMonitor epicsMonitor = new EpicsMonitor(registrar, null, null);
 
-        epicsMonitor.channelChanged("X.val1", Integer.valueOf(1));
+        epicsMonitor.valueChanged("X.val1", Integer.valueOf(1));
         verify(registrar).processEpicsUpdate(new EpicsUpdateImpl("X.val1", Integer.valueOf(1)));
     }
 

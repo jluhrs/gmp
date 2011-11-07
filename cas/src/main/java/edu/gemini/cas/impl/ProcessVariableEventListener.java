@@ -21,7 +21,7 @@ public class ProcessVariableEventListener implements ProcessVariableEventCallbac
 
     @Override
     public void postEvent(int i, DBR dbr) {
-        listener.valueChange(channel.getName(), channel.extractValues(dbr));
+        listener.valueChanged(channel.getName(), channel.extractValues(dbr));
     }
 
     @Override

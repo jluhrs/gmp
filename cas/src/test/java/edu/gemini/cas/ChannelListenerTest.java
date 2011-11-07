@@ -28,7 +28,7 @@ public class ChannelListenerTest {
         }
 
         @Override
-        public void valueChange(String channelName, List<Double> values) {
+        public void valueChanged(String channelName, List<Double> values) {
             LOG.info("Received: " + values.get(0));
             countDown();
         }

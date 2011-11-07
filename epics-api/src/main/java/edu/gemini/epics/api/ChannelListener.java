@@ -11,5 +11,12 @@ import java.util.List;
  *         Date: 3/16/11
  */
 public interface ChannelListener<T> {
-    void valueChange(String channelName, List<T> values);
+
+    /**
+     * Called when the specified channel value changes.
+     *
+     * @param channelName name of the epics channel that changed.
+     * @param values      the new values for the epics channel
+     */
+    void valueChanged(String channelName, List<T> values);
 }

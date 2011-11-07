@@ -31,7 +31,7 @@ public class EpicsMonitor implements EpicsClient {
 
     private final EpicsRegistrar _registrar;
     private final JmsProvider _provider;
-    private final EpicsConfiguration _epicsConfig;  
+    private final EpicsConfiguration _epicsConfig;
 
     @ServiceProperty(name = "edu.gemini.epics.EpicsClient.EPICS_CHANNELS")
     private String[] props;
@@ -39,16 +39,16 @@ public class EpicsMonitor implements EpicsClient {
     private EpicsConfigRequestConsumer _epicsRequestConsumer;
     private EpicsStatusUpdater _epicsStatusUpdater;
 
-    public EpicsMonitor(@Requires(proxy=false) EpicsRegistrar registrar, @Requires JmsProvider provider, @Requires EpicsConfiguration epicsConfig) {
+    public EpicsMonitor(@Requires(proxy = false) EpicsRegistrar registrar, @Requires JmsProvider provider, @Requires EpicsConfiguration epicsConfig) {
         if (registrar == null) {
             throw new IllegalArgumentException("Cannot create an EpicsMonitor with a null registrar");
         }
         _registrar = registrar;
         _provider = provider;
-        _epicsConfig =  epicsConfig;
+        _epicsConfig = epicsConfig;
     }
 
-    public void channelChanged(String channel, Object value) {
+    public void valueChanged(String channel, Object value) {
         _registrar.processEpicsUpdate(new EpicsUpdateImpl(channel, value));
     }
 

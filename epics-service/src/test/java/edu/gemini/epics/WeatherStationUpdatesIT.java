@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  * Integration test that verifies that we get updates from the Weather Station
  */
 @Ignore
-public  class WeatherStationUpdatesIT {
+public class WeatherStationUpdatesIT {
     /**
      * Map the channel names to friendly text names.
      */
@@ -42,7 +42,7 @@ public  class WeatherStationUpdatesIT {
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "172.17.2.255");
         System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
 
-        context = (CAJContext)JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+        context = (CAJContext) JCALibrary.getInstance().createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
     }
 
     @After
@@ -70,7 +70,7 @@ public  class WeatherStationUpdatesIT {
     private class WeatherStationEpicsClient implements EpicsClient {
         private List<double[]> results = Lists.newArrayList();
 
-        public void channelChanged(String channel, Object value) {
+        public void valueChanged(String channel, Object value) {
             if (value instanceof double[]) {
                 double[] valuesAsArray = (double[]) value;
                 System.out.println(CHANNELS.get(channel) + ": " + Arrays.toString(valuesAsArray));

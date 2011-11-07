@@ -16,10 +16,11 @@ public interface EpicsClient {
 
     /**
      * Called when the specified channel value changes.
+     *
      * @param channel name of the epics channel that changed.
-     * @param value the new value for the epics channel
+     * @param value   the new value for the epics channel
      */
-    void channelChanged(String channel, Object value);
+    void valueChanged(String channel, Object value);
 
     /**
      * Called when the client is connected.

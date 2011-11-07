@@ -65,7 +65,7 @@ public class CadTest {
             }
 
             @Override
-            public void valueChange(String channelName, List<CarRecord.Val> values) {
+            public void valueChanged(String channelName, List<CarRecord.Val> values) {
                 if (getCount() == 2 && CarRecord.Val.BUSY.equals(values.get(0))) {
                     countDown();
                 }

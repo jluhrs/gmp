@@ -25,7 +25,7 @@ class UpdateListener extends CountDownLatch implements ChannelListener<Integer> 
     private List<Integer> values = new ArrayList<Integer>();
 
     @Override
-    public void valueChange(String channelName, List<Integer> values) {
+    public void valueChanged(String channelName, List<Integer> values) {
         if (getCount() == 1) {
             this.values = values;
             countDown();

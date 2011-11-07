@@ -100,7 +100,7 @@ public class ChannelBindingSupportTest {
         ConnectionListener listener = mockConnectionListener(channel);
         listener.connectionChanged(new ConnectionEvent(channel, false));
 
-        verify(epicsClient).channelChanged(CHANNEL_NAME, null);
+        verify(epicsClient).valueChanged(CHANNEL_NAME, null);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ChannelBindingSupportTest {
         listenerOfGets.getCompleted(getEvent);
 
         // assert that a channel changed event is sent
-        verify(epicsClient).channelChanged(eq(CHANNEL_NAME), eq(dbr.getValue()));
+        verify(epicsClient).valueChanged(eq(CHANNEL_NAME), eq(dbr.getValue()));
 
     }
 

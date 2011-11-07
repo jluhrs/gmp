@@ -296,7 +296,7 @@ public class ApplyRecord {
      */
     private class DirListener implements ChannelListener<Dir> {
         @Override
-        public void valueChange(String channelName, List<Dir> values) {
+        public void valueChanged(String channelName, List<Dir> values) {
             LOG.info("Received DIR write: " + values.get(0));
             try {
                 processDir(values.get(0));
