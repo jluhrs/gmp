@@ -2,6 +2,7 @@ package edu.gemini.epics;
 
 import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableMap;
+import edu.gemini.epics.api.EpicsClient;
 import gov.aps.jca.Context;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,5 +1,7 @@
 package edu.gemini.epics;
 
+import edu.gemini.epics.api.EpicsClient;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -1,7 +1,7 @@
 package edu.gemini.epics.impl;
 
 import com.google.common.collect.ImmutableList;
-import edu.gemini.epics.EpicsClient;
+import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.EpicsObserver;
 import org.apache.felix.ipojo.annotations.Bind;
 import org.apache.felix.ipojo.annotations.Component;
@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * The EpicsService is a simple component that tracks EpicsClient objects registered
  * as OSGi services and set them up as Listeners for channels
- *
+ * <p/>
  * Clients need to register an EpicsClient service and include the EpicsClient.EPICS_CHANNEL
  * service properties to indicate which channels it wants to listen to
  */

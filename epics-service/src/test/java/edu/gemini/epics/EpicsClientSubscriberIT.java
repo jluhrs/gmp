@@ -1,5 +1,6 @@
 package edu.gemini.epics;
 
+import edu.gemini.epics.api.EpicsClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;

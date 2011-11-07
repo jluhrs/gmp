@@ -3,6 +3,7 @@ package edu.gemini.epics;
 import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.impl.ChannelBindingSupport;
 import edu.gemini.epics.impl.EpicsObserverImpl;
 import gov.aps.jca.CAException;
@@ -12,7 +13,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;

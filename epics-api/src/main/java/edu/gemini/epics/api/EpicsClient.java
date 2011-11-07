@@ -1,4 +1,4 @@
-package edu.gemini.epics;
+package edu.gemini.epics.api;
 
 import java.util.List;
 

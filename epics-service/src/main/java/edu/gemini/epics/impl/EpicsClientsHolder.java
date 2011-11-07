@@ -2,7 +2,7 @@ package edu.gemini.epics.impl;
 
 import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.Maps;
-import edu.gemini.epics.EpicsClient;
+import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.EpicsException;
 
 import java.util.Collection;
