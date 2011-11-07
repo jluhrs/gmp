@@ -21,6 +21,7 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     private final String ALARM_MESSAGE_SUFFIX = ".OMSS";
     protected final AbstractChannel<String> alarmCh;
     protected final AbstractChannel<T> ch;
+    boolean registered = false;
 
     protected AbstractAlarmChannel(AbstractChannel<T> ch) {
         this.ch = ch;
@@ -29,7 +30,7 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
 
     @Override
     public boolean isValid() {
-        throw new NotImplementedException();
+        return registered;
     }
 
     @Override
@@ -75,11 +76,13 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     void register(DefaultServerImpl server) {
         ch.register(server);
         alarmCh.register(server);
+        registered = true;
     }
 
     void destroy(DefaultServerImpl server) {
         ch.destroy(server);
         alarmCh.destroy(server);
+        registered = false;
     }
 
     @Override

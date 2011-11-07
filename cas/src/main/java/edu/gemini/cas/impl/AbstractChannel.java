@@ -26,10 +26,11 @@ import java.util.Map;
 abstract class AbstractChannel<T> implements Channel<T> {
     private AlarmMemoryProcessVariable pv;
     private final Map<ChannelListener<T>, ProcessVariableEventCallback> eventCallbacks = new HashMap<ChannelListener<T>, ProcessVariableEventCallback>();
+    boolean registered = false;
 
     @Override
     public boolean isValid() {
-        throw new NotImplementedException();
+        return registered;
     }
 
     protected AbstractChannel(AlarmMemoryProcessVariable pv) {
@@ -45,6 +46,7 @@ abstract class AbstractChannel<T> implements Channel<T> {
      */
     void register(DefaultServerImpl server) {
         server.registerProcessVaribale(pv.getName(), pv);
+        registered = true;
     }
 
     /**
@@ -56,6 +58,7 @@ abstract class AbstractChannel<T> implements Channel<T> {
         server.unregisterProcessVaribale(getName());
         pv.destroy();
         pv = null;
+        registered = false;
     }
 
     void setAlarmState(Status status, Severity severity) {

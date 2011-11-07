@@ -401,4 +401,19 @@ public class CasTest {
         assertEquals(new Integer(3), values.get(0));
 
     }
+
+    @Test
+    public void testIsValid() throws Exception {
+        Channel<Integer> ch = giapicas.createChannel(varname, 1);
+        Channel<Integer> ach = giapicas.createAlarmChannel(varname + "alarm", 1);
+
+        assertTrue(ch.isValid());
+        assertTrue(ach.isValid());
+
+        giapicas.destroyChannel(ch);
+        giapicas.destroyChannel(ach);
+
+        assertFalse(ch.isValid());
+        assertFalse(ach.isValid());
+    }
 }
