@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.epics.impl;
 
+import com.google.common.collect.ImmutableList;
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
 import org.junit.Test;
@@ -33,8 +34,8 @@ public class EpicsMonitorTest {
     public void testChannelChanged() {
         EpicsMonitor epicsMonitor = new EpicsMonitor(registrar, null, null);
 
-        epicsMonitor.valueChanged("X.val1", Integer.valueOf(1));
-        verify(registrar).processEpicsUpdate(new EpicsUpdateImpl("X.val1", Integer.valueOf(1)));
+        epicsMonitor.valueChanged("X.val1", ImmutableList.of(1));
+        verify(registrar).processEpicsUpdate(new EpicsUpdateImpl<Integer>("X.val1", ImmutableList.of(1)));
     }
 
     @Test(expected = IllegalArgumentException.class)

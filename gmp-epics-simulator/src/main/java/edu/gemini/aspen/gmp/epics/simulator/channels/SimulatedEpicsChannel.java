@@ -85,9 +85,9 @@ public abstract class SimulatedEpicsChannel {
      * Builds a new EpicsUpdate for this channel with simulated data
      * Every time this method is invoked a different EpicsUpdate is created
      *
-     * @return a new simulated EpicsUpdate value 
+     * @return a new simulated EpicsUpdate value
      */
-    public abstract EpicsUpdate buildEpicsUpdate();
+    public abstract EpicsUpdate<?> buildEpicsUpdate();
 
     @Override
     public String toString() {

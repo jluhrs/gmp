@@ -25,7 +25,7 @@ public class EpicsSimulatorComponentTest {
         // Wait for one update
         TimeUnit.MILLISECONDS.sleep(1100L);
 
-        verify(registrar, atLeastOnce()).processEpicsUpdate(Matchers.<EpicsUpdate>anyObject());
+        verify(registrar, atLeastOnce()).processEpicsUpdate(Matchers.<EpicsUpdate<?>>anyObject());
     }
 
     @Test

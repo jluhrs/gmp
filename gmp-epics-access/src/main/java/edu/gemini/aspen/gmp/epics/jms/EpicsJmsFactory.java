@@ -6,6 +6,7 @@ import javax.jms.Session;
 import javax.jms.Message;
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -14,7 +15,6 @@ import java.util.logging.Logger;
  * <br>
  * The messages constructed by this factory will be de-serialized by the
  * client code that is interested on receiving EPICS status updates.
- *
  */
 public class EpicsJmsFactory {
 
@@ -48,18 +48,19 @@ public class EpicsJmsFactory {
     /**
      * Create a JMS Message for the specified session, with the information
      * contained in the EPICS update object.
+     *
      * @param session JMS Session to be used to construct the message
-     * @param update the EPICS data to be used to construct the message
+     * @param update  the EPICS data to be used to construct the message
      * @return a new JMS message containing an EPICS status update ready to
-     * be sent via JMS
+     *         be sent via JMS
      * @throws JMSException in case there is a problem encoding the EPICS
-     * update using JMS
+     *                      update using JMS
      */
-    public static Message createMessage(Session session, EpicsUpdate update) throws JMSException {
+    public static Message createMessage(Session session, EpicsUpdate<?> update) throws JMSException {
 
         BytesMessage bm = session.createBytesMessage();
         //Code the data into the message
-                Object data = update.getChannelData();
+        List<?> data = update.getChannelData();
         DataType type = getDataType(data);
 
         if (type == null) {
@@ -78,8 +79,8 @@ public class EpicsJmsFactory {
         switch (type) {
 
             case DOUBLE: {
-                double[] values = (double[]) data;
-                bm.writeInt(values.length);
+                List<Double> values = (List<Double>) data;
+                bm.writeInt(values.size());
                 for (double value : values) {
                     bm.writeDouble(value);
                 }
@@ -87,41 +88,41 @@ public class EpicsJmsFactory {
             break;
 
             case FLOAT: {
-                float[] values = (float[]) data;
-                bm.writeInt(values.length);
+                List<Float> values = (List<Float>) data;
+                bm.writeInt(values.size());
                 for (float value : values) {
                     bm.writeFloat(value);
                 }
             }
             break;
 
-            case INT:{
-                int[] values = (int[]) data;
-                bm.writeInt(values.length);
+            case INT: {
+                List<Integer> values = (List<Integer>) data;
+                bm.writeInt(values.size());
                 for (int value : values) {
                     bm.writeInt(value);
                 }
             }
-                break;
-            case SHORT:{
-                short[] values = (short[]) data;
-                bm.writeInt(values.length);
+            break;
+            case SHORT: {
+                List<Short> values = (List<Short>) data;
+                bm.writeInt(values.size());
                 for (short value : values) {
                     bm.writeShort(value);
                 }
             }
-                break;
-            case STRING:{
-                String[] values = (String[]) data;
-                bm.writeInt(values.length);
+            break;
+            case STRING: {
+                List<String> values = (List<String>) data;
+                bm.writeInt(values.size());
                 for (String value : values) {
                     bm.writeUTF(value);
                 }
             }
-                break;
-            case BYTE:{
-                byte[] values = (byte[]) data;
-                bm.writeInt(values.length);
+            break;
+            case BYTE: {
+                List<Byte> values = (List<Byte>) data;
+                bm.writeInt(values.size());
                 for (byte value : values) {
                     bm.writeByte(value);
                 }
@@ -132,32 +133,33 @@ public class EpicsJmsFactory {
                 LOG.warning("Invalid type for data " + data);
 
         }
-        
+
         return bm;
     }
 
     /**
      * Auxiliary method to get the data type of the data object
+     *
      * @param data the data object of an epics update
      * @return the data type contained in the data object or <code>null</code>
-     * if the data type is not supported.
+     *         if the data type is not supported.
      */
-    private static DataType getDataType(Object data) {
+    private static DataType getDataType(List<?> data) {
 
 
-        if (data instanceof short[]) return DataType.SHORT;
+        if (!data.isEmpty() && data.get(0) instanceof Short) return DataType.SHORT;
 
-        if (data instanceof int[]) return DataType.INT;
+        if (!data.isEmpty() && data.get(0) instanceof Integer) return DataType.INT;
 
-        if (data instanceof double[]) return DataType.DOUBLE;
+        if (!data.isEmpty() && data.get(0) instanceof Double) return DataType.DOUBLE;
 
-        if (data instanceof float[]) return DataType.FLOAT;
+        if (!data.isEmpty() && data.get(0) instanceof Float) return DataType.FLOAT;
 
-        if (data instanceof String[]) return DataType.STRING;
+        if (!data.isEmpty() && data.get(0) instanceof String) return DataType.STRING;
 
-        if (data instanceof byte[]) return DataType.BYTE;
+        if (!data.isEmpty() && data.get(0) instanceof Byte) return DataType.BYTE;
 
-        LOG.info("Unknown data type in data: " + data);
+        LOG.warning("Unknown data type in data: " + data);
         return null;
 
     }

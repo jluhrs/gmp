@@ -8,6 +8,7 @@ import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
@@ -23,8 +24,8 @@ import java.util.logging.Logger;
 public class EpicsUpdaterThread implements EpicsRegistrar {
     private final static Logger LOG = Logger.getLogger(EpicsUpdaterThread.class.getName());
 
-    private final BlockingQueue<EpicsUpdate> _updateQueue =
-            new LinkedBlockingQueue<EpicsUpdate>();
+    private final BlockingQueue<EpicsUpdate<?>> _updateQueue =
+            new LinkedBlockingQueue<EpicsUpdate<?>>();
 
     Map<String, EpicsUpdateListener> _updatersMap = new HashMap<String, EpicsUpdateListener>();
 
@@ -49,7 +50,7 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
         _updatersMap.put(channel, updater);
     }
 
-    public synchronized void processEpicsUpdate(EpicsUpdate update) {
+    public synchronized void processEpicsUpdate(EpicsUpdate<?> update) {
         //put the update on the queue, and keep waiting for more updates
         try {
             _updateQueue.put(update);
@@ -69,7 +70,7 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
             isRunning = true;
             while (isRunning()) {
                 try {
-                    EpicsUpdate update = _updateQueue.take();
+                    EpicsUpdate<?> update = _updateQueue.take();
 
                     if (update != null) {
                         //notify the updaters
@@ -77,8 +78,8 @@ public class EpicsUpdaterThread implements EpicsRegistrar {
                         //If there is any interested listeners, will notify them.
                         //will filter null updates. They can occur if the EPICS communication
                         //is lost for some reason.
-                        Object value = update.getChannelData();
-                        if (listener != null && value != null) {
+                        List<?> value = update.getChannelData();
+                        if (listener != null && value != null && !value.isEmpty()) {
                             listener.onEpicsUpdate(update);
                         }
                     }

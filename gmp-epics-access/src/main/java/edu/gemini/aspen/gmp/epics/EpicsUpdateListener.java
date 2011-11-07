@@ -10,8 +10,9 @@ public interface EpicsUpdateListener {
     /**
      * Invoked whenever an Epics Update is available for the
      * epics channel name this listener is registered to.
+     *
      * @param update the update information for the monitored epics channel.
      */
-    public void onEpicsUpdate(EpicsUpdate update);
+    public void onEpicsUpdate(EpicsUpdate<?> update);
 
 }

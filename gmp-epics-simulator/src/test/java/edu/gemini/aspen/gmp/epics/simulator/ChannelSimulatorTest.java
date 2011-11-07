@@ -27,13 +27,13 @@ public class ChannelSimulatorTest {
 
         SimulatedEpicsChannel channel = SimulatedEpicsChannel
                 .buildSimulatedEpicsChannel(channelName, size, DataType.INT, updateRate);
-        
+
         EpicsRegistrar registrar = mock(EpicsRegistrar.class);
         ChannelSimulator simulator = new ChannelSimulator(channel, registrar);
         executorService.scheduleAtFixedRate(simulator, 0, updateRate, TimeUnit.MILLISECONDS);
 
         TimeUnit.MILLISECONDS.sleep(PASSES * updateRate);
 
-        verify(registrar, atLeast(PASSES - 2)).processEpicsUpdate(Matchers.<EpicsUpdate>anyObject());
+        verify(registrar, atLeast(PASSES - 2)).processEpicsUpdate(Matchers.<EpicsUpdate<?>>anyObject());
     }
 }

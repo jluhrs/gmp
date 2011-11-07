@@ -68,13 +68,13 @@ public class WeatherStationUpdatesIT {
     }
 
     private class WeatherStationEpicsClient implements EpicsClient {
-        private List<double[]> results = Lists.newArrayList();
+        private List<Double> results = Lists.newArrayList();
 
-        public void valueChanged(String channel, Object value) {
-            if (value instanceof double[]) {
-                double[] valuesAsArray = (double[]) value;
-                System.out.println(CHANNELS.get(channel) + ": " + Arrays.toString(valuesAsArray));
-                results.add(valuesAsArray);
+        public <T> void valueChanged(String channel, List<T> values) {
+            if (!values.isEmpty() && values.get(0) instanceof Double) {
+                List<Double> doubleValues = (List<Double>) values;
+                System.out.println(CHANNELS.get(channel) + ": " + doubleValues);
+                results.addAll(doubleValues);
             }
         }
 

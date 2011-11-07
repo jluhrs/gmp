@@ -1,13 +1,15 @@
 package edu.gemini.aspen.gmp.epics;
 
+import java.util.List;
+
 /**
  * A simple implementation for an Epics Update.
  */
-public class EpicsUpdateImpl implements EpicsUpdate {
+public class EpicsUpdateImpl<T> implements EpicsUpdate<T> {
     private final String channelName;
-    private final Object channelData;
+    private final List<T> channelData;
 
-    public EpicsUpdateImpl(String channelName, Object channelData) {
+    public EpicsUpdateImpl(String channelName, List<T> channelData) {
         if (channelName == null) {
             throw new IllegalArgumentException("Channel name cannot be null");
         }
@@ -22,7 +24,7 @@ public class EpicsUpdateImpl implements EpicsUpdate {
         return channelName;
     }
 
-    public Object getChannelData() {
+    public List<T> getChannelData() {
         return channelData;
     }
 

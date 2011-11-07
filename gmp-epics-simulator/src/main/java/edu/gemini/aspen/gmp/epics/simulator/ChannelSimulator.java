@@ -40,7 +40,7 @@ public class ChannelSimulator implements Runnable {
      * Execution thread of this simulated channel.
      */
     public void run() {
-        EpicsUpdate newUpdate = _simulatedChannel.buildEpicsUpdate();
+        EpicsUpdate<?> newUpdate = _simulatedChannel.buildEpicsUpdate();
         LOG.fine("New simulated value for " + _simulatedChannel.getName() + " " + newUpdate);
         _registrar.processEpicsUpdate(newUpdate);
     }

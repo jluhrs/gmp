@@ -1,5 +1,7 @@
 package edu.gemini.epics;
 
+import java.util.List;
+
 /**
  * Interface for a client that wishes to be told when an Epics channel value is
  * updated. Clients should register instances as services, specifying the channels
@@ -18,9 +20,9 @@ public interface EpicsClient {
      * Called when the specified channel value changes.
      *
      * @param channel name of the epics channel that changed.
-     * @param value   the new value for the epics channel
+     * @param values
      */
-    void valueChanged(String channel, Object value);
+    <T> void valueChanged(String channel, List<T> values);
 
     /**
      * Called when the client is connected.

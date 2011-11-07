@@ -1,5 +1,6 @@
 package edu.gemini.epics;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -17,7 +18,7 @@ public class EpicsClientMock implements EpicsClient {
     private AtomicInteger updatesCount = new AtomicInteger(0);
 
     @Override
-    public void valueChanged(String channel, Object value) {
+    public <T> void valueChanged(String channel, List<T> values) {
         updatesCount.incrementAndGet();
     }
 

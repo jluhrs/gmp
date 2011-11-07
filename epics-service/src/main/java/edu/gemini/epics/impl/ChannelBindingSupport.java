@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsClient;
+import edu.gemini.epics.api.DbrUtil;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
@@ -21,6 +22,7 @@ import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,10 +124,10 @@ public class ChannelBindingSupport {
 
         private void sendUpdateToClient(GetEvent ge, Channel ch) {
             // Get the new value.
-            Object value = ge.getDBR().getValue();
+            List<?> values = DbrUtil.extractValues(ge.getDBR());
 
             //send the value directly to the _epicsClient.
-            _epicsClient.valueChanged(ch.getName(), value);
+            _epicsClient.valueChanged(ch.getName(), values);
         }
     };
 

@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.epics.impl;
 
+import com.google.common.collect.ImmutableList;
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateListener;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class EpicsUpdaterThreadTest {
     private String channel = "X.val1";
-    private EpicsUpdate epicsUpdate = new EpicsUpdateImpl(channel, Integer.valueOf(1));
+    private EpicsUpdate<Integer> epicsUpdate = new EpicsUpdateImpl<Integer>(channel, ImmutableList.of(1));
     private CountDownLatch latch = new CountDownLatch(1);
     private AtomicBoolean passed = new AtomicBoolean(false);
 
@@ -38,12 +39,12 @@ public class EpicsUpdaterThreadTest {
 
     private EpicsUpdateListener createListener() {
         return new EpicsUpdateListener() {
-                    @Override
-                    public void onEpicsUpdate(EpicsUpdate update) {
-                        passed.set(epicsUpdate.equals(update));
-                        latch.countDown();
-                    }
-                };
+            @Override
+            public void onEpicsUpdate(EpicsUpdate<?> update) {
+                passed.set(epicsUpdate.equals(update));
+                latch.countDown();
+            }
+        };
     }
 
     @Test

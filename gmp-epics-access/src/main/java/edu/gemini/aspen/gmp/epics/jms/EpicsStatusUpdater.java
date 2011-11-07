@@ -33,7 +33,7 @@ public class EpicsStatusUpdater implements EpicsUpdateListener {
             super(clientName, null);
         }
 
-        public void send(String topic, EpicsUpdate update) throws JMSException {
+        public void send(String topic, EpicsUpdate<?> update) throws JMSException {
             _producer.send(_session.createTopic(topic),
                     EpicsJmsFactory.createMessage(_session, update));
         }
@@ -63,7 +63,7 @@ public class EpicsStatusUpdater implements EpicsUpdateListener {
 
 
     @Override
-    public void onEpicsUpdate(EpicsUpdate update) {
+    public void onEpicsUpdate(EpicsUpdate<?> update) {
 
         try {
             //send the update via JMS

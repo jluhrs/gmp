@@ -11,6 +11,7 @@ import org.apache.felix.ipojo.Nullable;
 import org.apache.felix.ipojo.annotations.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -48,8 +49,8 @@ public class EpicsMonitor implements EpicsClient {
         _epicsConfig = epicsConfig;
     }
 
-    public void valueChanged(String channel, Object value) {
-        _registrar.processEpicsUpdate(new EpicsUpdateImpl(channel, value));
+    public <T> void valueChanged(String channel, List<T> values) {
+        _registrar.processEpicsUpdate(new EpicsUpdateImpl<T>(channel, values));
     }
 
     @Updated
