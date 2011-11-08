@@ -1,7 +1,5 @@
 package edu.gemini.epics;
 
-import edu.gemini.epics.api.EpicsClient;
-
 import java.util.Collection;
 
 /**

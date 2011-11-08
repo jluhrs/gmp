@@ -1,7 +1,7 @@
 package edu.gemini.epics.impl;
 
 import com.google.common.collect.ImmutableList;
-import edu.gemini.epics.api.EpicsClient;
+import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsObserver;
 import org.apache.felix.ipojo.annotations.Bind;
 import org.apache.felix.ipojo.annotations.Component;

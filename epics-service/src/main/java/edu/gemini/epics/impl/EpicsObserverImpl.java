@@ -1,7 +1,7 @@
 package edu.gemini.epics.impl;
 
 import com.google.common.base.Preconditions;
-import edu.gemini.epics.api.EpicsClient;
+import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsObserver;
 import edu.gemini.epics.JCAContextController;
 import org.apache.felix.ipojo.annotations.Component;

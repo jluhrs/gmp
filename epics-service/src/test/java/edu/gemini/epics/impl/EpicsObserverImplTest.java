@@ -3,7 +3,7 @@ package edu.gemini.epics.impl;
 import com.cosylab.epics.caj.CAJChannel;
 import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableList;
-import edu.gemini.epics.api.EpicsClient;
+import edu.gemini.epics.EpicsClient;
 import edu.gemini.epics.EpicsClientMock;
 import edu.gemini.epics.JCAContextController;
 import gov.aps.jca.CAException;
