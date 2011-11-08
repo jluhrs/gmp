@@ -1,18 +1,19 @@
 package edu.gemini.giapi.tool.obsevents;
 
-import edu.gemini.giapi.tool.parser.Operation;
-import edu.gemini.giapi.tool.parser.Argument;
+import edu.gemini.aspen.giapi.data.DataLabel;
+import edu.gemini.aspen.giapi.data.ObservationEvent;
+import edu.gemini.aspen.giapi.data.ObservationEventHandler;
+import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.MonitorObsEventArgument;
-import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
-import edu.gemini.aspen.giapi.data.ObservationEventHandler;
-import edu.gemini.aspen.giapi.data.ObservationEvent;
-import edu.gemini.aspen.giapi.data.DataLabel;
+import edu.gemini.giapi.tool.arguments.TimeoutArgument;
+import edu.gemini.giapi.tool.parser.Argument;
+import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
-import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
+import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
 import java.util.logging.Logger;
@@ -28,12 +29,15 @@ public class MonitorObsEventOperation implements Operation {
     private String _host = "localhost";
 
     private boolean _isReady = false;
+    private long _timeout = Long.MAX_VALUE;
 
     public void setArgument(Argument arg) {
         if (arg instanceof MonitorObsEventArgument) {
             _isReady = true;
         } else if (arg instanceof HostArgument) {
             _host = ((HostArgument) arg).getHost();
+        } else if (arg instanceof TimeoutArgument) {
+            _timeout = ((TimeoutArgument) arg).getTimeout();
         }
     }
 
@@ -56,7 +60,8 @@ public class MonitorObsEventOperation implements Operation {
 
         try {
             consumer.startJms(provider);
-            Thread.sleep(Long.MAX_VALUE);//wait for events until somebody quits the application
+            Thread.sleep(_timeout);//wait for events until somebody quits the application
+            consumer.stopJms();
         } catch (JMSException e) {
             LOG.warning("Problem on GIAPI tester: " + e.getMessage());
         }
