@@ -104,13 +104,14 @@ DESCRIPTION
      -obsEvents
         Starts listening for observation events coming through the GMP.
         Each observation event received is printed out to the screen.
+        A -timeout parameter can be used to limit the amount of time to wait
 
      -fileEvents
         Starts listening for file events coming through the GMP.
         Each file event received is printed out to the screen with its
         corresponding details.
 
-    -expected <expected-value>
+     -expected <expected-value>
         Compares the <expected-value> with the last monitored value returning
         0 if they match or 1 otherwise. This will only work if a -timeout argument
         is also passed. The <expected-value> is compared verbatim to the
