@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.epics.jms;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
+import gov.aps.jca.dbr.*;
 import org.junit.Test;
 
 import javax.jms.BytesMessage;
@@ -30,7 +31,7 @@ public class EpicsJmsFactoryTest {
 
         // TODO The fact that we need to verify low level protocol here indicates a wrong level of abstraction
         // for EpicsJMSFactory
-        verify(bm).writeByte((byte) 2);
+        verify(bm).writeByte((byte) DBR_Short.TYPE.getValue());
         verify(bm).writeUTF(channelName);
         verify(bm).writeInt(channelData.size());
         verify(bm).writeInt(channelData.get(0));
@@ -49,7 +50,7 @@ public class EpicsJmsFactoryTest {
         List<Double> channelData = ImmutableList.of(4.0, 5.0);
         createMessage(channelData);
 
-        verify(bm).writeByte((byte) 3);
+        verify(bm).writeByte((byte) DBR_Double.TYPE.getValue());
         verify(bm).writeUTF(channelName);
         verify(bm).writeInt(channelData.size());
         verify(bm).writeDouble(channelData.get(0));
@@ -62,7 +63,7 @@ public class EpicsJmsFactoryTest {
         List<Float> channelData = ImmutableList.of(4.0f, 5.0f);
         createMessage(channelData);
 
-        verify(bm).writeByte((byte) 4);
+        verify(bm).writeByte((byte) DBR_Float.TYPE.getValue());
         verify(bm).writeUTF(channelName);
         verify(bm).writeInt(channelData.size());
         verify(bm).writeFloat(channelData.get(0));
@@ -75,7 +76,7 @@ public class EpicsJmsFactoryTest {
         List<Short> channelData = ImmutableList.of((short) 4, (short) 5);
         createMessage(channelData);
 
-        verify(bm).writeByte((byte) 1);
+        verify(bm).writeByte((byte) DBR_Short.TYPE.getValue());
         verify(bm).writeUTF(channelName);
         verify(bm).writeInt(channelData.size());
         verify(bm).writeShort(channelData.get(0));
@@ -88,7 +89,7 @@ public class EpicsJmsFactoryTest {
         List<Byte> channelData = ImmutableList.of((byte) 4, (byte) 5);
         createMessage(channelData);
 
-        verify(bm).writeByte((byte) 6);
+        verify(bm).writeByte((byte) DBR_Byte.TYPE.getValue());
         verify(bm).writeUTF(channelName);
         verify(bm).writeInt(channelData.size());
         verify(bm).writeByte(channelData.get(0));
@@ -101,7 +102,7 @@ public class EpicsJmsFactoryTest {
         List<String> channelData = ImmutableList.of("a", "b");
         createMessage(channelData);
 
-        verify(bm).writeByte((byte) 5);
+        verify(bm).writeByte((byte) DBR_String.TYPE.getValue());
         verify(bm).writeUTF(channelName);
         verify(bm).writeInt(channelData.size());
         verify(bm).writeUTF(channelData.get(0));
