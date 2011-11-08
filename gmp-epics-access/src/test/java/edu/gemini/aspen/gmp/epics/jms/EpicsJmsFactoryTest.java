@@ -26,12 +26,12 @@ public class EpicsJmsFactoryTest {
     @Test
     public void createMessageWithIntArray() throws JMSException {
         when(session.createBytesMessage()).thenReturn(bm);
-        List<Integer> channelData = ImmutableList.of(4, 5);
+        List<Integer> channelData = ImmutableList.of(7, 8);
         createMessage(channelData);
 
         // TODO The fact that we need to verify low level protocol here indicates a wrong level of abstraction
         // for EpicsJMSFactory
-        verify(bm).writeByte((byte) DBR_Short.TYPE.getValue());
+        verify(bm).writeByte((byte) DBR_Int.TYPE.getValue());
         verify(bm).writeUTF(channelName);
         verify(bm).writeInt(channelData.size());
         verify(bm).writeInt(channelData.get(0));
@@ -86,7 +86,7 @@ public class EpicsJmsFactoryTest {
     @Test
     public void createMessageWithByteArray() throws JMSException {
         when(session.createBytesMessage()).thenReturn(bm);
-        List<Byte> channelData = ImmutableList.of((byte) 4, (byte) 5);
+        List<Byte> channelData = ImmutableList.of((byte) 7, (byte) 8);
         createMessage(channelData);
 
         verify(bm).writeByte((byte) DBR_Byte.TYPE.getValue());
