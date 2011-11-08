@@ -2,7 +2,6 @@ package edu.gemini.epics.api;
 
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
-import org.apache.commons.lang.NotImplementedException;
 
 import javax.transaction.NotSupportedException;
 import java.util.ArrayList;
@@ -55,9 +54,9 @@ public class DbrUtil {
             }
             return values;
         } else if (type.isENUM()) {
-            throw new NotImplementedException("Enum types are not supported by this class");
+            throw new UnsupportedOperationException("Enum types are not supported by this class");
         } else {
-            throw new NotImplementedException("Type " + dbr.getType() + " is not supported by this class");
+            throw new UnsupportedOperationException("Type " + dbr.getType() + " is not supported by this class");
         }
     }
 

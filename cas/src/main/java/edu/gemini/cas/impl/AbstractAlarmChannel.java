@@ -7,7 +7,6 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
-import org.apache.commons.lang.NotImplementedException;
 
 import java.util.List;
 

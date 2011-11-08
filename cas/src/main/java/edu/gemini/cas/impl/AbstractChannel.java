@@ -11,7 +11,6 @@ import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
 import gov.aps.jca.cas.ProcessVariableEventCallback;
 import gov.aps.jca.dbr.*;
-import org.apache.commons.lang.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.List;
