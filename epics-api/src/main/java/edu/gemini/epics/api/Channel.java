@@ -1,8 +1,6 @@
 package edu.gemini.epics.api;
 
-import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
-import gov.aps.jca.dbr.DBR;
 
 import java.util.List;
 

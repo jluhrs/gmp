@@ -1,10 +1,7 @@
 package edu.gemini.cas.impl;
 
 import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
-import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.dbr.DBR_Int;
-import gov.aps.jca.dbr.DBR_STS_Int;
-import gov.aps.jca.dbr.DBR_TIME_Int;
+import gov.aps.jca.dbr.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +15,14 @@ import java.util.List;
 class IntegerChannel extends AbstractChannel<Integer> {
 
     IntegerChannel(String name, int length) {
-        super(new AlarmMemoryProcessVariable(name,null, DBR_Int.TYPE,new int[length]));
+        super(new AlarmMemoryProcessVariable(name, null, DBR_Int.TYPE, new int[length]));
     }
 
     @Override
     protected boolean validateArgument(List<Integer> values) {
-        try{
-            Integer a= (Integer)values.get(0);
-        }catch(ClassCastException ex){
+        try {
+            Integer a = (Integer) values.get(0);
+        } catch (ClassCastException ex) {
             return false;
         }
         return isInteger() && (getSize() == values.size());
@@ -34,7 +31,7 @@ class IntegerChannel extends AbstractChannel<Integer> {
     @Override
     protected DBR buildDBR(List<Integer> values) {
         int[] newValues = new int[values.size()];
-        for(int i=0;i<values.size();i++){
+        for (int i = 0; i < values.size(); i++) {
             newValues[i] = values.get(i);
         }
         return new DBR_STS_Int(newValues);
@@ -47,12 +44,17 @@ class IntegerChannel extends AbstractChannel<Integer> {
 
     @Override
     protected List<Integer> extractValues(DBR dbr) {
-        List<Integer> values=new ArrayList<Integer>();
+        List<Integer> values = new ArrayList<Integer>();
         Object objVal = dbr.getValue();
-        int[] intVal = (int[])objVal;
-        for(int a:intVal){
+        int[] intVal = (int[]) objVal;
+        for (int a : intVal) {
             values.add(a);
         }
         return values;
+    }
+
+    @Override
+    public DBRType getType() {
+        return DBR_Int.TYPE;
     }
 }

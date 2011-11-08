@@ -15,14 +15,14 @@ import java.util.List;
 class StringChannel extends AbstractChannel<String> {
 
     StringChannel(String name, int length) {
-        super(new AlarmMemoryProcessVariable(name,null, DBR_String.TYPE,new double[length]));
+        super(new AlarmMemoryProcessVariable(name, null, DBR_String.TYPE, new double[length]));
     }
 
     @Override
     protected boolean validateArgument(List<String> values) {
-        try{
-            String a= (String)values.get(0);
-        }catch(ClassCastException ex){
+        try {
+            String a = (String) values.get(0);
+        } catch (ClassCastException ex) {
             return false;
         }
         return isString() && (getSize() == values.size());
@@ -41,7 +41,12 @@ class StringChannel extends AbstractChannel<String> {
     @Override
     protected List<String> extractValues(DBR dbr) {
         Object objVal = dbr.getValue();
-        String[] stringVal = (String[])objVal;
+        String[] stringVal = (String[]) objVal;
         return Arrays.asList(stringVal);
+    }
+
+    @Override
+    public DBRType getType() {
+        return DBR_String.TYPE;
     }
 }

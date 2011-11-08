@@ -2,6 +2,7 @@ package edu.gemini.epics.api;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.dbr.DBRType;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * Interface ReadOnlyChannel
  *
  * @author Nicolas A. Barriga
- *         Date: 11/4/11
+ *         Date: 11/8/11
  */
 public interface ReadOnlyChannel<T> {
     /**
@@ -60,4 +61,11 @@ public interface ReadOnlyChannel<T> {
      * Indicates whether the channel is valid/connected
      */
     boolean isValid();
+
+    /**
+     * Returns the type of the underlying EPICS channel.
+     *
+     * @return
+     */
+    DBRType getType();
 }

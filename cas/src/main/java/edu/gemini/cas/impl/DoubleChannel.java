@@ -15,14 +15,14 @@ import java.util.List;
 class DoubleChannel extends AbstractChannel<Double> {
 
     DoubleChannel(String name, int length) {
-        super(new AlarmMemoryProcessVariable(name,null, DBR_Double.TYPE,new double[length]));
+        super(new AlarmMemoryProcessVariable(name, null, DBR_Double.TYPE, new double[length]));
     }
 
     @Override
     protected boolean validateArgument(List<Double> values) {
-        try{
-            Double a= (Double)values.get(0);
-        }catch(ClassCastException ex){
+        try {
+            Double a = (Double) values.get(0);
+        } catch (ClassCastException ex) {
             return false;
         }
         return isDouble() && (getSize() == values.size());
@@ -31,7 +31,7 @@ class DoubleChannel extends AbstractChannel<Double> {
     @Override
     protected DBR buildDBR(List<Double> values) {
         double[] newValues = new double[values.size()];
-        for(Double value:values){
+        for (Double value : values) {
             newValues[0] = value;
         }
         return new DBR_STS_Double(newValues);
@@ -44,12 +44,17 @@ class DoubleChannel extends AbstractChannel<Double> {
 
     @Override
     protected List<Double> extractValues(DBR dbr) {
-        List<Double> values=new ArrayList<Double>();
+        List<Double> values = new ArrayList<Double>();
         Object objVal = dbr.getValue();
-        double[] doubleVal = (double[])objVal;
-        for(double a:doubleVal){
+        double[] doubleVal = (double[]) objVal;
+        for (double a : doubleVal) {
             values.add(a);
         }
         return values;
+    }
+
+    @Override
+    public DBRType getType() {
+        return DBR_Double.TYPE;
     }
 }

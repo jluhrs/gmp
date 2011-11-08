@@ -13,8 +13,17 @@ public interface NewEpicsReader {
      * EpicsChannel as channels can disappear anytime
      *
      * @param channelName The name of the channel
-     * @param <T>         Type of the underlying channel
      * @return An EpicsChannel representation of a channel or a NullEpicsChannel if the channel is not available
      */
-    <T> ReadOnlyChannel<T> getChannel(String channelName);
+    ReadOnlyChannel<Double> getDoubleChannel(String channelName);
+
+    ReadOnlyChannel<Integer> getIntegerChannel(String channelName);
+
+    ReadOnlyChannel<Float> getFloatChannel(String channelName);
+
+    ReadOnlyChannel<String> getStringChannel(String channelName);
+
+    ReadOnlyChannel<?> getChannelAsync(String channelName);
+
+    void destroyChannel(ClientEpicsChannel<?> channel);
 }

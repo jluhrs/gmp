@@ -15,14 +15,14 @@ import java.util.List;
 class FloatChannel extends AbstractChannel<Float> {
 
     FloatChannel(String name, int length) {
-        super(new AlarmMemoryProcessVariable(name,null, DBR_Float.TYPE,new float[length]));
+        super(new AlarmMemoryProcessVariable(name, null, DBR_Float.TYPE, new float[length]));
     }
 
     @Override
     protected boolean validateArgument(List<Float> values) {
-        try{
-            Float a= (Float)values.get(0);
-        }catch(ClassCastException ex){
+        try {
+            Float a = (Float) values.get(0);
+        } catch (ClassCastException ex) {
             return false;
         }
         return isFloat() && (getSize() == values.size());
@@ -31,7 +31,7 @@ class FloatChannel extends AbstractChannel<Float> {
     @Override
     protected DBR buildDBR(List<Float> values) {
         float[] newValues = new float[values.size()];
-        for(Float value:values){
+        for (Float value : values) {
             newValues[0] = value;
         }
         return new DBR_STS_Float(newValues);
@@ -44,12 +44,17 @@ class FloatChannel extends AbstractChannel<Float> {
 
     @Override
     protected List<Float> extractValues(DBR dbr) {
-        List<Float> values=new ArrayList<Float>();
+        List<Float> values = new ArrayList<Float>();
         Object objVal = dbr.getValue();
-        float[] floatVal = (float[])objVal;
-        for(float a:floatVal){
+        float[] floatVal = (float[]) objVal;
+        for (float a : floatVal) {
             values.add(a);
         }
         return values;
+    }
+
+    @Override
+    public DBRType getType() {
+        return DBR_Float.TYPE;
     }
 }

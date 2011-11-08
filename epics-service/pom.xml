@@ -52,6 +52,10 @@
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>shared-util</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

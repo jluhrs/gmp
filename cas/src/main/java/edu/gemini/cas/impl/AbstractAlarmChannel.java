@@ -5,6 +5,7 @@ import edu.gemini.cas.AlarmChannel;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 
@@ -30,6 +31,11 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     @Override
     public boolean isValid() {
         return registered;
+    }
+
+    @Override
+    public DBRType getType() {
+        return ch.getType();
     }
 
     @Override

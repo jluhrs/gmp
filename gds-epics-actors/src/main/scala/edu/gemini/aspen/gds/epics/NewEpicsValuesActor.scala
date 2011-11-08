@@ -1,8 +1,7 @@
 package edu.gemini.aspen.gds.epics
 
-import java.util.logging.Logger
 import edu.gemini.aspen.gds.api._
-import edu.gemini.epics.NewEpicsReader
+import edu.gemini.epics.{NewEpicsReader}
 import edu.gemini.epics.api.ReadOnlyChannel
 
 /**
@@ -12,9 +11,9 @@ import edu.gemini.epics.api.ReadOnlyChannel
 class NewEpicsValuesActor(epicsReader: NewEpicsReader, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
   override def collectValues(): List[CollectedValue[_]] = {
     val readValue = if (arrayIndex > 0) {
-      Option(epicsReader.getChannel(sourceChannel)) map (extractEpicsItem)
+      Option(epicsReader.getChannelAsync(sourceChannel)) map (extractEpicsItem)
     } else {
-      Option(epicsReader.getChannel(sourceChannel)) map (extractEpicsItemArray)
+      Option(epicsReader.getChannelAsync(sourceChannel)) map (extractEpicsItemArray)
     }
     readValue map valueToCollectedValue toList
   }
