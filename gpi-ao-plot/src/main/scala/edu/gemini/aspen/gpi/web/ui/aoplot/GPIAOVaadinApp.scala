@@ -17,7 +17,6 @@ import collection.mutable.LinkedHashSet
 import java.io.Serializable
 import com.vaadin.terminal.{Sizeable, ClassResource}
 import org.apache.felix.ipojo.annotations.{Invalidate, Requires, Bind, Unbind}
-import org.vaadin.artur.icepush.ICEPush
 import com.invient.vaadin.charts.{InvientCharts, InvientChartsConfig}
 import com.invient.vaadin.charts.InvientChartsConfig.{Tooltip, NumberYAxis, DateTimeAxis}
 import com.vaadin.data.util.{HierarchicalContainer, ObjectProperty}
@@ -61,7 +60,7 @@ class GPIAOVaadinApp extends Application {
     val aocStatStrehl = dataSource.addItem(STREHL)
 
   val chart = buildChart()
-  val strehlSimulator = new DataSimulatorActor(chart, strehlSeriesData, aocStatStrehl, (start:Long, last:Double) => {
+  /*val strehlSimulator = new DataSimulatorActor(chart, strehlSeriesData, aocStatStrehl, (start:Long, last:Double) => {
     val update = 1 / (1 + scala.math.exp(-(System.currentTimeMillis() - start) / 10e3)) + (scala.math.random - 0.5) / 100
     scala.math.floor(update * 100) / 100
   })
@@ -69,8 +68,7 @@ class GPIAOVaadinApp extends Application {
     val update = last + 0.001*scala.math.sqrt((System.currentTimeMillis() - start)*scala.math.random / 10)
     scala.math.floor(update* 100) / 100
     0.2
-  })
-  val pusher = new ICEPush()
+  })*/
 
   /**
    * Called by Vaadin when the application needs to start
@@ -139,11 +137,10 @@ class GPIAOVaadinApp extends Application {
     treetable.setContainerDataSource(dataSource)
 
     dataPanelLayout.addComponent(treetable)
-    dataPanelLayout.addComponent(pusher)
     treetable.setCollapsed(AOC_STATS, false)
 
     mainLayout.setFirstComponent(dataPanelLayout)
-    mainLayout.setSecondComponent(chart)
+    //mainLayout.setSecondComponent(chart)
 
     mainLayout.setSizeFull
 
@@ -243,7 +240,7 @@ class GPIAOVaadinApp extends Application {
 
   @Invalidate
   def stopListening() {
-    strehlSimulator.stop()
+   // strehlSimulator.stop()
   }
 
   def getUpdatedDate(dt: Date, milliseconds: Long): Date = {
@@ -284,7 +281,6 @@ class GPIAOVaadinApp extends Application {
             //chart.removeSeries(seriesData)
             //chart.addSeries(seriesData)
             //chart.refresh()
-            pusher.push()
           }
           case 'stop => exit
         }

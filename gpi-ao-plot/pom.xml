@@ -59,13 +59,13 @@
                     <!-- <force>true</force> -->
                     <compileReport>false</compileReport>
                 </configuration>
-                <executions>
-                    <!--execution>
+                <!--executions>
+                    <execution>
                         <goals>
                             <goal>compile</goal>
                         </goals>
-                    </execution-->
-                </executions>
+                    </execution>
+                </executions-->
                 <dependencies>
                     <dependency>
                         <groupId>com.google.gwt</groupId>
@@ -79,6 +79,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
 
             <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->
             <!-- directory is cleaned properly -->
@@ -128,8 +129,8 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
-        <artifactId>gmp-epics-access</artifactId>
-        <version>0.2.0</version>
+            <artifactId>gmp-epics-access</artifactId>
+            <version>0.2.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
@@ -137,20 +138,41 @@
             <version>0.8.5</version>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-            <artifactId>icepush</artifactId>
-            <version>0.2.1</version>
+            <groupId>edu.gemini.external.osgi.org.vaadin</groupId>
+            <artifactId>dontpush-addon-ozonelayer</artifactId>
+            <version>0.3.5</version>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.external.osgi.org.icepush</groupId>
-            <artifactId>icepush-basic</artifactId>
-            <version>2.0.0-3</version>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-client</artifactId>
+            <version>0.7.2</version>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.external.osgi.org.icepush</groupId>
-            <artifactId>icepush-gwt</artifactId>
-            <version>2.0.0-3</version>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-common</artifactId>
+            <version>0.7.2</version>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-runtime</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-weblogic</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-tomcat</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-jbossweb</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin</artifactId>

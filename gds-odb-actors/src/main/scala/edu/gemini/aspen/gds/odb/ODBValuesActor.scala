@@ -4,7 +4,8 @@ import edu.gemini.spModel.gemini.obscomp.SPProgram
 import edu.gemini.pot.sp.SPProgramID
 import edu.gemini.pot.spdb.IDBDatabaseService
 import edu.gemini.aspen.gds.api._
-import org.apache.log4j.Logger
+import java.util.logging.Logger
+import scala.AnyRef
 
 /**
  * Actor that can produce as a reply of a Collect request a set of CollectedValues obtained from a Query
@@ -12,6 +13,7 @@ import org.apache.log4j.Logger
  * for a given programID
  */
 class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configuration: List[GDSConfiguration]) extends KeywordValueActor {
+  val LOG = Logger.getLogger(this.getClass.getName)
   type ExtractorFunction = SPProgram => Option[AnyRef]
   type CollectorFunction = SPProgram => CollectedValue[_]
 
@@ -30,11 +32,12 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
       _.getDataObject
     }
     // Do a collect for each item or return a set of default values
-    dataObjOpt map {
-      _.asInstanceOf[SPProgram]
+    dataObjOpt collect {
+      case p: SPProgram => p
     } map {
       collectValuesFromProgram(_)
     } getOrElse {
+      LOG.severe("No program found with id: " + progId)
       Nil
     }
   }
@@ -46,10 +49,13 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
    */
   private def collectValuesFromProgram(program: SPProgram): List[CollectedValue[_]] = {
     configuration flatMap {
-      c => new ODBOneValueActor(program, c).collectValues
+        c => new ODBOneValueActor(program, c).collectValues
     }
   }
 
+  /**
+   * Internal class representing an actor that reads a given value form an ODB's program
+   */
   private class ODBOneValueActor(program: SPProgram, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
     override def collectValues(): List[CollectedValue[_]] = {
       val result = extractorFunctions.getOrElse(sourceChannel, unKnownChannelExtractor(_))(program)
@@ -58,9 +64,9 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
   }
 
   // ExtractorFunction that can read the PI's First Name
-  def extractPIFirstName(spProgram: SPProgram) = Option(spProgram.getPIFirstName)
+  def extractPIFirstName(spProgram: SPProgram): Option[AnyRef] = Option(spProgram.getPIFirstName)
 
-  def extractPILastName(spProgram: SPProgram) = Option(spProgram.getPILastName)
+  def extractPILastName(spProgram: SPProgram): Option[AnyRef] = Option(spProgram.getPILastName)
 
   // Placeholder for queries that cannot be answered, e.g. if the channel is unknown
   def unKnownChannelExtractor(spProgram: SPProgram): Option[AnyRef] = None

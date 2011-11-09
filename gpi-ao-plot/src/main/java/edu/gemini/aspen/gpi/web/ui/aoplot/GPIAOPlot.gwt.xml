@@ -19,7 +19,13 @@
 
     <inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet" />
 
-    <inherits name="org.vaadin.artur.icepush.IcepushaddonWidgetset" />
+    
 
     <inherits name="com.invient.vaadin.charts.widgetset.InvientChartsWidgetset" />
+
+    
+
+    
+
+    <inherits name="org.vaadin.dontpush.widgetset.DontPushOzoneWidgetset" />
 </module>

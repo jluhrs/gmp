@@ -52,7 +52,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
 
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
-        TimeUnit.MILLISECONDS.sleep(400);
+        TimeUnit.MILLISECONDS.sleep(2000);
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
@@ -66,7 +66,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         Set<String> originalKeywords = readOriginalKeywords();
 
         sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
-        TimeUnit.MILLISECONDS.sleep(1000);
+        TimeUnit.MILLISECONDS.sleep(2000);
 
         File finalFile = new File(FINAL_FITS_DIR + FINAL_FITS_FILE);
         assertTrue(finalFile.exists());

@@ -44,6 +44,7 @@
         <gmp.version>${project.version}</gmp.version>
         <vaadin.version>6.7.0</vaadin.version>
         <pax-runner.version>1.7.4</pax-runner.version>
+        <atmosphere.version>0.7.2</atmosphere.version>
     </properties>
 
     <build>
@@ -294,7 +295,9 @@
                     <preinstallScriptlet>
                         <script>
                             #check for user, or create it?
-                            id -u software &amp;&gt; /dev/null || useradd software -g gemini -m &amp;&gt; /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user software"
+                            id -u software &amp;&gt; /dev/null || useradd software -g gemini -m &amp;&gt; /dev/null ||
+                            (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt;
+                            /dev/null) || echo "Problem: could not create user software"
                         </script>
                     </preinstallScriptlet>
                     <postinstallScriptlet>
@@ -662,6 +665,82 @@
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-error-policy</artifactId>
             <version>0.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>invient-charts</artifactId>
+            <version>0.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>icepush</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.icepush</groupId>
+            <artifactId>icepush-basic</artifactId>
+            <version>2.0.0-3</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.icepush</groupId>
+            <artifactId>icepush-gwt</artifactId>
+            <version>2.0.0-3</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gpi.web.ui</groupId>
+            <artifactId>gpi-ao-plot</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-client</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-common</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-server</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-poll</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin</groupId>
+            <artifactId>dontpush-addon-ozonelayer</artifactId>
+            <version>0.3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-runtime</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-weblogic</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-tomcat</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-jbossweb</artifactId>
+            <version>${atmosphere.version}</version>
         </dependency>
     </dependencies>
 

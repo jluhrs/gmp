@@ -73,7 +73,7 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
 
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
-        TimeUnit.MILLISECONDS.sleep(400);
+        TimeUnit.MILLISECONDS.sleep(2000);
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
@@ -114,8 +114,8 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
 
         assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("AIRMASS"));
         assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("HUMIDITY"));
-        assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("TAMBIENT"));
-        assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("PRESSURE"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(2).contains("TAMBIENT"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(2).contains("PRESSURE"));
 
     }
 

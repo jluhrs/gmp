@@ -4,6 +4,6 @@
 -->
 
 <channels>
-    <channel>gpi:ws:cpWf</channel>
-    <channel>gpi:ws:wsFilter.VALL</channel>
+    <channel>ws:cpWf</channel>
+    <channel>ws:wsFilter.VALL</channel>
 </channels>

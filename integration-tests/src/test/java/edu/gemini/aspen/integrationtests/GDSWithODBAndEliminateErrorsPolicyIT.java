@@ -103,7 +103,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
         assertFalse(originalKeywords.contains("PIFSTNAM"));
 
         sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
-        TimeUnit.MILLISECONDS.sleep(1000);
+        TimeUnit.MILLISECONDS.sleep(2000);
 
         File finalFile = new File(FINAL_FITS_DIR + FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
