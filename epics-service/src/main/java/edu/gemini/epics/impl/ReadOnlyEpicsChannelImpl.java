@@ -1,7 +1,7 @@
 package edu.gemini.epics.impl;
 
 import com.cosylab.epics.caj.CAJChannel;
-import edu.gemini.epics.ClientEpicsChannel;
+import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.epics.api.DbrUtil;
 import edu.gemini.shared.util.immutable.Pair;
@@ -20,38 +20,34 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class EpicsChannel
+ * Class ReadOnlyEpicsChannelImpl
  *
  * @author Nicolas A. Barriga
  *         Date: 11/7/11
  */
-public class EpicsChannel<T> implements ClientEpicsChannel<T> {
-    private final CAJChannel channel;
+public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T> {
+    protected final CAJChannel channel;
     private final Map<ChannelListener<?>, Tuple2<Monitor, MonitorListener>> listeners = new HashMap<ChannelListener<?>, Tuple2<Monitor, MonitorListener>>();
 
-    public EpicsChannel(CAJChannel channel) {
+    public ReadOnlyEpicsChannelImpl(CAJChannel channel) {
         this.channel = channel;
     }
 
     @Override
-    public DBR getDBR() throws CAException {
+    public DBR getDBR() throws CAException, TimeoutException {
         DBR dbr = channel.get();
-        try {
-            channel.getContext().pendIO(1.0);
-        } catch (TimeoutException e) {
-            throw new CAException(e);
-        }
+        channel.getContext().pendIO(1.0);
         return dbr;
     }
 
     @Override
-    public List<T> getAll() throws CAException {
+    public List<T> getAll() throws CAException, TimeoutException {
         return (List<T>) DbrUtil.extractValues(getDBR());
     }
 
     @Override
-    public T getFirst() throws CAException {
-        return (T) (DbrUtil.extractValues(getDBR()).get(0));
+    public T getFirst() throws CAException, TimeoutException {
+        return getAll().get(0);
     }
 
     @Override
@@ -60,31 +56,23 @@ public class EpicsChannel<T> implements ClientEpicsChannel<T> {
     }
 
     @Override
-    public void registerListener(final ChannelListener<T> tChannelListener) {
-        try {
-            MonitorListener ml = new MonitorListener() {
-                @Override
-                public void monitorChanged(MonitorEvent ev) {
-                    tChannelListener.valueChanged(channel.getName(), (List<T>) DbrUtil.extractValues(ev.getDBR()));
-                }
-            };
-            listeners.put(tChannelListener, new Pair<Monitor, MonitorListener>(channel.addMonitor(Monitor.VALUE, ml), ml));
-        } catch (CAException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized void registerListener(final ChannelListener<T> tChannelListener) throws CAException {
+        MonitorListener ml = new MonitorListener() {
+            @Override
+            public void monitorChanged(MonitorEvent ev) {
+                tChannelListener.valueChanged(channel.getName(), (List<T>) DbrUtil.extractValues(ev.getDBR()));
+            }
+        };
+        listeners.put(tChannelListener, new Pair<Monitor, MonitorListener>(channel.addMonitor(Monitor.VALUE, ml), ml));
     }
 
     @Override
-    public void unRegisterListener(ChannelListener<T> tChannelListener) {
+    public synchronized void unRegisterListener(ChannelListener<T> tChannelListener) throws CAException {
         Monitor mon = listeners.get(tChannelListener)._1();
         MonitorListener ml = listeners.get(tChannelListener)._2();
         mon.removeMonitorListener(ml);
         if (mon.getMonitorListeners().length == 0) {
-            try {
-                mon.clear();
-            } catch (CAException e) {
-                throw new RuntimeException(e);
-            }
+            mon.clear();
         }
     }
 
@@ -99,11 +87,7 @@ public class EpicsChannel<T> implements ClientEpicsChannel<T> {
     }
 
     @Override
-    public void destroy() {
-        try {
-            channel.destroy();
-        } catch (CAException e) {
-            throw new RuntimeException(e);
-        }
+    public void destroy() throws CAException {
+        channel.destroy();
     }
 }

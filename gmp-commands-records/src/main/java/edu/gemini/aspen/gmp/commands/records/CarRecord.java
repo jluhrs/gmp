@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.commands.records;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -98,7 +99,7 @@ public class CarRecord {
      * @param clientId  client ID for the command we are providing feedback
      * @throws CAException if there is a problem accessing EPICS
      */
-    void changeState(Val state, String message, int errorCode, int clientId) throws CAException {
+    void changeState(Val state, String message, int errorCode, int clientId) throws CAException, TimeoutException {
         synchronized (this) {
             if (!val.getFirst().equals(state) || !clid.getFirst().equals(clientId)) {
                 val.setValue(state);
@@ -146,6 +147,8 @@ public class CarRecord {
             changeState(Val.BUSY, "", 0, id);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
+        } catch (TimeoutException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -158,6 +161,8 @@ public class CarRecord {
         try {
             changeState(Val.IDLE, "", 0, id);
         } catch (CAException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        } catch (TimeoutException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
 
@@ -175,6 +180,8 @@ public class CarRecord {
             changeState(Val.ERR, message, errorCode, id);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
+        } catch (TimeoutException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
@@ -190,6 +197,9 @@ public class CarRecord {
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
             return Val.UNKNOWN;
+        } catch (TimeoutException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return Val.UNKNOWN;
         }
     }
 
@@ -203,6 +213,9 @@ public class CarRecord {
             return clid.getFirst();
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+            return -1;
+        } catch (TimeoutException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
             return -1;
         }
     }

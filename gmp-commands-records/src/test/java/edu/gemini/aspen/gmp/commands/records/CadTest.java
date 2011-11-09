@@ -9,6 +9,7 @@ import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatusException;
+import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBRType;
 import org.junit.After;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class CadTest {
     }
 
     @Test
-    public void cadTest() throws CAException, InterruptedException {
+    public void cadTest() throws CAException, InterruptedException, TimeoutException {
         CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
 
@@ -98,14 +99,14 @@ public class CadTest {
 
     }
 
-    private void setDir(Dir d, Integer expectedState, Channel<Dir> dir, CadRecordImpl cad) throws BrokenBarrierException, InterruptedException, CAException {
+    private void setDir(Dir d, Integer expectedState, Channel<Dir> dir, CadRecordImpl cad) throws BrokenBarrierException, InterruptedException, CAException, TimeoutException {
         dir.setValue(d);
         assertEquals(CadState.values()[expectedState], cad.getState());
 
     }
 
     @Test
-    public void cadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException {
+    public void cadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException, TimeoutException {
         CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
 

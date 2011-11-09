@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.records;
 
 import edu.gemini.aspen.giapi.commands.*;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 
 import java.util.Map;
 import java.util.logging.Level;
@@ -20,6 +21,8 @@ enum CadState {
             try {
                 endProcessingNoCarUpdate(epicsCad);
             } catch (CAException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            } catch (TimeoutException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
             switch (dir) {
@@ -49,12 +52,16 @@ enum CadState {
                         endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return MARKED;
                 case CLEAR:
                     try {
                         endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
@@ -79,6 +86,8 @@ enum CadState {
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                         return CLEAR;
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                 case START:
                     try {
@@ -99,6 +108,8 @@ enum CadState {
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 case STOP:
@@ -118,6 +129,8 @@ enum CadState {
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 default://just so the compiler doesn't complain
@@ -136,12 +149,16 @@ enum CadState {
                         endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return MARKED;
                 case CLEAR:
                     try {
                         endProcessingNoCarUpdate(epicsCad);
                     } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
@@ -166,6 +183,8 @@ enum CadState {
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                         return CLEAR;
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                 case START:
                     try {
@@ -186,6 +205,8 @@ enum CadState {
                         }
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
                 case STOP:
@@ -204,6 +225,8 @@ enum CadState {
                             endInError(epicsCad, car, "Received unexpected " + resp.getResponse().toString() + " response.");
                         }
                     } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                     return CLEAR;
@@ -246,21 +269,21 @@ enum CadState {
         car.setBusy(epicsCad.getClid());
     }
 
-    private static void endProcessing(EpicsCad epicsCad, CarRecord car) throws CAException {
+    private static void endProcessing(EpicsCad epicsCad, CarRecord car) throws CAException, TimeoutException {
         epicsCad.setVal(0);
         epicsCad.post();
         car.setIdle(epicsCad.getClid());
     }
 
-    private static void endProcessingNoCarUpdate(EpicsCad epicsCad) throws CAException {
+    private static void endProcessingNoCarUpdate(EpicsCad epicsCad) throws CAException, TimeoutException {
         epicsCad.setVal(0);
         epicsCad.post();
     }
 
-    private static void endInError(EpicsCad epicsCad, CarRecord car, String errorMessage) throws CAException {
+    private static void endInError(EpicsCad epicsCad, CarRecord car, String errorMessage) throws CAException, TimeoutException {
         epicsCad.setVal(-1);
         epicsCad.setMess(errorMessage);
         epicsCad.post();
-        car.setError(epicsCad.getClid(),errorMessage,-1);
+        car.setError(epicsCad.getClid(), errorMessage, -1);
     }
 }

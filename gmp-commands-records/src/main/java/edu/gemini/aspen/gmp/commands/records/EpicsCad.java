@@ -5,6 +5,7 @@ import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,20 +113,20 @@ public class EpicsCad {
      *
      * @throws CAException
      */
-    public synchronized void post() throws CAException {
+    public synchronized void post() throws CAException, TimeoutException {
         setMessage(m);
         m = "";
         val.setValue(v);
     }
 
-    private void setMessage(String message) throws CAException {
+    private void setMessage(String message) throws CAException, TimeoutException {
         String oldMessage = mess.getFirst();
         if (setIfDifferent(mess, message)) {
             omss.setValue(oldMessage);
         }
     }
 
-    static private <T> boolean setIfDifferent(Channel<T> ch, T value) throws CAException {
+    static private <T> boolean setIfDifferent(Channel<T> ch, T value) throws CAException, TimeoutException {
         if (!value.equals(ch.getFirst())) {
             ch.setValue(value);
             return true;
@@ -145,6 +146,9 @@ public class EpicsCad {
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
             return -1;
+        } catch (TimeoutException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return -1;
         }
     }
 
@@ -155,7 +159,7 @@ public class EpicsCad {
      * @param id client ID
      * @throws CAException
      */
-    public synchronized void setDir(Dir d, Integer id) throws CAException {
+    public synchronized void setDir(Dir d, Integer id) throws CAException, TimeoutException {
         clid.setValue(id);
         dir.setValue(d);
     }
@@ -166,7 +170,7 @@ public class EpicsCad {
      * @return message
      * @throws CAException
      */
-    public String getMess() throws CAException {
+    public String getMess() throws CAException, TimeoutException {
         return mess.getFirst();
     }
 
@@ -175,7 +179,7 @@ public class EpicsCad {
      *
      * @param listener to be notified
      */
-    public void registerValListener(ChannelListener<Integer> listener) {
+    public void registerValListener(ChannelListener<Integer> listener) throws CAException {
         val.registerListener(listener);
     }
 
@@ -184,7 +188,7 @@ public class EpicsCad {
      *
      * @param listener to be unregistered
      */
-    public void unRegisterValListener(ChannelListener<Integer> listener) {
+    public void unRegisterValListener(ChannelListener<Integer> listener) throws CAException {
         val.unRegisterListener(listener);
     }
 
@@ -207,6 +211,8 @@ public class EpicsCad {
                 }
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+            } catch (TimeoutException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
         return map;

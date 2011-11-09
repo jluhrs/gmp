@@ -1,6 +1,7 @@
 package edu.gemini.epics.api;
 
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 
 import java.util.List;
 
@@ -18,8 +19,8 @@ public interface Channel<T> extends ReadOnlyChannel<T> {
      * @throws CAException              if write couldn't be completed
      * @throws IllegalArgumentException if wrong data type or incorrect amount of data is passed.
      */
-    void setValue(T value) throws CAException;
+    void setValue(T value) throws CAException, TimeoutException;
 
-    void setValue(List<T> values) throws CAException;
+    void setValue(List<T> values) throws CAException, TimeoutException;
 
 }

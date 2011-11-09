@@ -5,6 +5,7 @@ import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 import org.apache.felix.ipojo.annotations.*;
 
 import java.util.logging.Level;
@@ -68,6 +69,8 @@ public class EpicsHeartbeat implements HeartbeatConsumer {
         try {
             ch.setValue(beatNumber);
         } catch (CAException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        } catch (TimeoutException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }

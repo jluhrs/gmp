@@ -8,6 +8,7 @@ import edu.gemini.cas.AlarmChannel;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 import org.apache.felix.ipojo.annotations.*;
@@ -227,9 +228,10 @@ public class EpicsStatusService implements StatusHandler {
             }
         } catch (CAException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
-
         } catch (IllegalArgumentException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (TimeoutException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 

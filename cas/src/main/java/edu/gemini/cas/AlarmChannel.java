@@ -1,6 +1,5 @@
 package edu.gemini.cas;
 
-import edu.gemini.epics.api.Channel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
@@ -11,7 +10,7 @@ import gov.aps.jca.dbr.Status;
  * @author Nicolas A. Barriga
  *         Date: 1/17/11
  */
-public interface AlarmChannel<T> extends Channel<T> {
+public interface AlarmChannel<T> extends ServerChannel<T> {
     /**
      * Resets the alarm status and severity to NO_ALARM
      *

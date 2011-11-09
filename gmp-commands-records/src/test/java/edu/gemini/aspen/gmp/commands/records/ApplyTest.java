@@ -6,6 +6,7 @@ import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,7 +99,7 @@ public class ApplyTest {
 
 
     @Test
-    public void applyTest() throws CAException, InterruptedException, IOException {
+    public void applyTest() throws CAException, InterruptedException, IOException, TimeoutException {
         ApplyRecord apply = new ApplyRecord(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
         apply.start();
         Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName("apply.DIR"), Dir.CLEAR);

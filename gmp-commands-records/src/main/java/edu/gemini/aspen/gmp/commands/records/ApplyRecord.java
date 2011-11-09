@@ -10,6 +10,7 @@ import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -176,7 +177,7 @@ public class ApplyRecord {
 //    }
 
 
-    private boolean processDir(Dir dir) throws CAException {
+    private boolean processDir(Dir dir) throws CAException, TimeoutException {
         synchronized (car) {
             processing = true;
             if (dir == Dir.START) {
@@ -204,7 +205,7 @@ public class ApplyRecord {
     }
 
 
-    private boolean processInternal(Dir dir) throws CAException {
+    private boolean processInternal(Dir dir) throws CAException, TimeoutException {
         if (dir == Dir.MARK) {
             return false;
         }
@@ -253,11 +254,11 @@ public class ApplyRecord {
     }
 
 
-    private int getClientId() throws CAException {
+    private int getClientId() throws CAException, TimeoutException {
         return clid.getFirst();
     }
 
-    private void setMessage(String message) throws CAException {
+    private void setMessage(String message) throws CAException, TimeoutException {
         DBR dbr = mess.getDBR();
         String oldMessage = ((String[]) dbr.getValue())[0];
         if (setIfDifferent(mess, message)) {
@@ -274,7 +275,7 @@ public class ApplyRecord {
      * @return true if channel was written to, false otherwise
      * @throws CAException
      */
-    static private <T> boolean setIfDifferent(Channel<T> ch, T value) throws CAException {
+    static private <T> boolean setIfDifferent(Channel<T> ch, T value) throws CAException, TimeoutException {
         if (!value.equals(ch.getFirst())) {
             ch.setValue(value);
             return true;
@@ -284,7 +285,7 @@ public class ApplyRecord {
     }
 
 
-    private int incAndGetClientId() throws CAException {
+    private int incAndGetClientId() throws CAException, TimeoutException {
         int value = getClientId();
         clid.setValue(++value);
         return value;
@@ -302,6 +303,8 @@ public class ApplyRecord {
                 processDir(values.get(0));
 
             } catch (CAException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            } catch (TimeoutException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }

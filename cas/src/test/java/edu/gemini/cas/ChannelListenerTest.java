@@ -4,6 +4,7 @@ import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 import org.junit.Test;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class ChannelListenerTest {
     }
 
     @Test
-    public void test() throws CAException, InterruptedException {
+    public void test() throws CAException, InterruptedException, TimeoutException {
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
@@ -50,7 +51,7 @@ public class ChannelListenerTest {
     }
 
     @Test
-    public void test2listeners() throws CAException, InterruptedException {
+    public void test2listeners() throws CAException, InterruptedException, TimeoutException {
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
@@ -68,7 +69,7 @@ public class ChannelListenerTest {
     }
 
     @Test
-    public void testUnregisterListener() throws CAException, InterruptedException {
+    public void testUnregisterListener() throws CAException, InterruptedException, TimeoutException {
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();

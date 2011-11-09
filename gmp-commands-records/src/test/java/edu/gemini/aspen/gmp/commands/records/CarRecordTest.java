@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.commands.records;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class CarRecordTest {
     }
 
     @Test
-    public void carTest() throws CAException {
+    public void carTest() throws CAException, TimeoutException {
         CarRecord car = new CarRecord(cas, carPrefix);
         car.start();
 

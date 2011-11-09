@@ -3,7 +3,7 @@ package edu.gemini.cas.impl;
 import com.cosylab.epics.caj.cas.ProcessVariableEventDispatcher;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
-import edu.gemini.epics.api.Channel;
+import edu.gemini.cas.ServerChannel;
 import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
 import gov.aps.jca.CAException;
@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Nicolas A. Barriga
  *         Date: 3/7/11
  */
-abstract class AbstractChannel<T> implements Channel<T> {
+abstract class AbstractChannel<T> implements ServerChannel<T> {
     private AlarmMemoryProcessVariable pv;
     private final Map<ChannelListener<T>, ProcessVariableEventCallback> eventCallbacks = new HashMap<ChannelListener<T>, ProcessVariableEventCallback>();
     boolean registered = false;

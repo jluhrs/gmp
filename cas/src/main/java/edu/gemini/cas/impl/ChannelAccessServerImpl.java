@@ -104,7 +104,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
         if (values == null || values.isEmpty()) {
             throw new IllegalArgumentException("At least one value must be passed");
         }
-        edu.gemini.epics.api.Channel ch = null;
+        ServerChannel ch = null;
         if (values.get(0) instanceof Integer) {
             ch = createIntegerChannel(name, values.size());
         } else if (values.get(0) instanceof Float) {
@@ -160,7 +160,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private edu.gemini.epics.api.Channel<Integer> createIntegerChannel(String name, int length) {
+    private ServerChannel<Integer> createIntegerChannel(String name, int length) {
         if (channels.containsKey(name)) {
             edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof IntegerChannel) {
@@ -183,7 +183,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private edu.gemini.epics.api.Channel<Float> createFloatChannel(String name, int length) {
+    private ServerChannel<Float> createFloatChannel(String name, int length) {
         if (channels.containsKey(name)) {
             edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof FloatChannel) {
@@ -206,7 +206,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private edu.gemini.epics.api.Channel<Double> createDoubleChannel(String name, int length) {
+    private ServerChannel<Double> createDoubleChannel(String name, int length) {
         if (channels.containsKey(name)) {
             edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof DoubleChannel) {
@@ -229,7 +229,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private edu.gemini.epics.api.Channel<String> createStringChannel(String name, int length) {
+    private ServerChannel<String> createStringChannel(String name, int length) {
         if (channels.containsKey(name)) {
             edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof StringChannel) {
@@ -253,7 +253,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @return the new channel
      * @throws IllegalArgumentException if channel already exists but is of different type
      */
-    private <T extends Enum<T>> edu.gemini.epics.api.Channel<T> createEnumChannel(String name, int length, Class<T> clazz) {
+    private <T extends Enum<T>> ServerChannel<T> createEnumChannel(String name, int length, Class<T> clazz) {
         if (channels.containsKey(name)) {
             edu.gemini.epics.api.Channel ch = channels.get(name);
             if (ch instanceof EnumChannel && ((EnumChannel) ch).getEnumClass().equals(clazz)) {

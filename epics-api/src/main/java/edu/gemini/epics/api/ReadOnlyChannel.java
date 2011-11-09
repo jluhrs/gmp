@@ -1,6 +1,7 @@
 package edu.gemini.epics.api;
 
 import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
 
@@ -20,7 +21,7 @@ public interface ReadOnlyChannel<T> {
      * @throws gov.aps.jca.CAException if read couldn't be completed
      * @throws IllegalStateException   if Channel is not correctly initialized
      */
-    DBR getDBR() throws CAException;
+    DBR getDBR() throws CAException, TimeoutException;
 
     /**
      * Convenience method to retrieve a value from a PV in a List<T>
@@ -29,7 +30,7 @@ public interface ReadOnlyChannel<T> {
      * @throws gov.aps.jca.CAException if read couldn't be completed
      * @throws IllegalStateException   if Channel is not correctly initialized
      */
-    List<T> getAll() throws CAException;
+    List<T> getAll() throws CAException, TimeoutException;
 
     /**
      * Convenience method to retrieve a value from a PV. This method is provided because all of our PVs have only
@@ -39,7 +40,7 @@ public interface ReadOnlyChannel<T> {
      * @throws gov.aps.jca.CAException if read couldn't be completed
      * @throws IllegalStateException   if Channel is not correctly initialized
      */
-    T getFirst() throws CAException;
+    T getFirst() throws CAException, TimeoutException;
 
     /**
      * Returns the Channel name
@@ -53,9 +54,9 @@ public interface ReadOnlyChannel<T> {
      *
      * @param listener
      */
-    void registerListener(ChannelListener<T> listener);
+    void registerListener(ChannelListener<T> listener) throws CAException;
 
-    void unRegisterListener(ChannelListener<T> listener);
+    void unRegisterListener(ChannelListener<T> listener) throws CAException;
 
     /**
      * Indicates whether the channel is valid/connected
