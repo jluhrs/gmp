@@ -1,223 +1,736 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    <organization>
-        <name>Gemini 8m Observatories, Software Group</name>
-        <url>http://www.gemini.edu/</url>
-    </organization>
-
-    <!--
-     | put license details here
-    <licenses>
-      <license>
-        <name>...</name>
-        <url>http://...</url>
-        <comments>
-        </comments>
-      </license>
-    </licenses>
-    -->
-
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.gemini.aspen</groupId>
-    <artifactId>giapi-osgi</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
 
-    <name>giapi-osgi</name>
+    <parent>
+        <relativePath>../provision/</relativePath>
+        <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
+        <artifactId>provision</artifactId>
+        <version>1.0.0</version>
+    </parent>
 
-    <description>GIAPI - OSGi</description>
+    <groupId>edu.gemini.aspen.gmp</groupId>
+    <artifactId>gmp-server</artifactId>
+    <version>0.14.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
+    <name>GMP Server Application</name>
+    <description>The GMP Server</description>
+    <organization>
+        <url>http://www.gemini.edu</url>
+        <name>Gemini Observatory</name>
+    </organization>
     <properties>
-        <!--
-         | some example OSGi runtime properties
-        -->
-        <org.osgi.service.http.port>8080</org.osgi.service.http.port>
+        <bundle.symbolicName>edu.gemini.aspen.gmpserver</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.aspen.gmpserver</bundle.namespace>
+
+        <org.apache.felix.http.jettyEnabled>true</org.apache.felix.http.jettyEnabled>
         <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>
-        <!-- Component versions -->
-        <clover.version>3.1.0</clover.version>
-        <org.activemq.core.version>5.4.2</org.activemq.core.version>
-        <pax-exam.version>1.2.3</pax-exam.version>
+        <bundles.configuration.location>../src/main/etc/conf</bundles.configuration.location>
+        <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
+
+        <felix.cm.loglevel>4</felix.cm.loglevel>
+        <felix.log.level>0</felix.log.level>
+        <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
+        <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
+        <felix.fileinstall.poll>2000</felix.fileinstall.poll>
+        <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
+        <ipojo.log.level>error</ipojo.log.level>
+
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
-        <vaadin.version>6.7.1</vaadin.version>
-        <!-- Global encoding -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <atmosphere.version>0.7.2</atmosphere.version>
+        <vaadin.version>6.6.7</vaadin.version>
+        <gmp.version>${project.version}</gmp.version>
+        <vaadin.version>6.7.0</vaadin.version>
+        <pax-runner.version>1.7.4</pax-runner.version>
     </properties>
-
-    <packaging>pom</packaging>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <groupId>com.soebes.maven.plugins.dmg</groupId>
+                <artifactId>doxygen-maven-plugin</artifactId>
+                <version>1.0.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <filePatterns>*.doxygen *.doxy *.java *.xsd *.xml *.properties *.cfg</filePatterns>
+                    <recursive>true</recursive>
+                    <excludePatterns>*/test/*Test*.java */target/* *pom.xml</excludePatterns>
+                    <optimizeOutputJava>true</optimizeOutputJava>
+                    <haveDot>true</haveDot>
+                    <quiet>false</quiet>
+                    <input>../</input>
+                    <projectName>"GIAPI - GMP (Version: ${gmp.version})"</projectName>
+                    <generateLatex>false</generateLatex>
+                    <generateHtml>true</generateHtml>
+                    <htmlHeader>${basedir}/src/main/doc/header.html</htmlHeader>
+                    <htmlFooter>${basedir}/src/main/doc/footer.html</htmlFooter>
+                    <stripFromPath>${basedir}</stripFromPath>
+                    <extractAll>true</extractAll>
+                    <imagePath>src/main/doc/ src/main/doc/gemini_records/</imagePath>
+                    <examplePath>src/main/doc/gemini_records target/site/doxygen</examplePath>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-clover2-plugin</artifactId>
-                <version>${clover.version}</version>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <licenseLocation>${user.home}/.clover/clover.license</licenseLocation>
-                    <!--<targetPercentage>30%</targetPercentage>
-                    <methodContexts>
-                        <main>(.* )?public static void main\(String\[\] argv\).*</main>
-                    </methodContexts>
-                    <contextFilters>main</contextFilters>-->
-                    <historyThreshold>0.5%</historyThreshold>
-                    <generateHistorical>true</generateHistorical>
-                    <historyDir>${project.build.directory}/../history</historyDir>
+                    <encoding>UTF-8</encoding>
+                    <outputDirectory>target/site/doxygen</outputDirectory>
+                    <resources>
+                        <resource>
+                            <directory>src/main/doc</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>gpidoc.css</include>
+                                <include>gemini.jpg</include>
+                                <include>README</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>../giapi-tester/src/main/resources/edu/gemini/giapi/tool/help</directory>
+                            <includes>
+                                <include>usage.txt</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>src/main/doc/gemini_records</directory>
+                            <includes>
+                                <include>gem*.gif</include>
+                            </includes>
+                        </resource>
+                    </resources>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.ops4j</groupId>
-                <artifactId>maven-pax-plugin</artifactId>
-                <version>1.4</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2</version>
                 <configuration>
-                    <provision>
-                        <param>--platform=felix</param>
-                    </provision>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.7.1</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.1-alpha-1</version>
+                <executions>
+                    <execution>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <group>Gemini</group>
+                    <mappings>
+                        <!--jars-->
+                        <mapping>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/bundles</directory>
+                            <sources>
+                                <source>
+                                    <location>target/archive-tmp/bundles/</location>
+                                </source>
+                            </sources>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!-- gmp-server bundle-->
+                        <mapping>
+                            <directory>
+                                /gemsoft/opt/gpi/${project.artifactId}-${project.version}/bundles/edu/gemini/aspen/gmp/gmp-server/
+                            </directory>
+                            <sources>
+                                <source>
+                                    <location>${user.home}/.m2/repository/edu/gemini/aspen/gmp/gmp-server/</location>
+                                </source>
+                            </sources>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--felix bundles-->
+                        <mapping>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/felix</directory>
+                            <sources>
+                                <source>
+                                    <location>target/archive-tmp/felix/</location>
+                                </source>
+                            </sources>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--readme-->
+                        <mapping>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/</directory>
+                            <sources>
+                                <source>
+                                    <location>target/site/doxygen/README</location>
+                                </source>
+                            </sources>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--docs-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>target/site/doxygen</location>
+                                </source>
+                            </sources>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/docs</directory>
+                            <documentation>true</documentation>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+
+                        <!--config files-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>src/main/etc/conf</location>
+                                    <filter>true</filter>
+                                </source>
+                            </sources>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/conf</directory>
+                            <configuration>true</configuration>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--executables-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>src/main/etc/bin/start.sh</location>
+                                    <filter>true</filter>
+                                </source>
+                                <source>
+                                    <location>../giapi-tester/src/main/etc/bin/giapi-tester.sh</location>
+                                </source>
+                            </sources>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/bin</directory>
+                            <filemode>755</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--to bin/-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>src/main/etc/bin/runner.args</location>
+                                </source>
+                                <!--<source>-->
+                                <!--<location>../giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar-->
+                                <!--</location>-->
+                                <!--</source>-->
+                            </sources>
+                            <dependency>
+                                <includes>
+                                    <include>edu.gemini.aspen:giapi-tester</include>
+                                    <include>org.ops4j.pax.runner:pax-runner</include>
+                                </includes>
+                            </dependency>
+                            <directory>/gemsoft/opt/gpi/${project.artifactId}-${project.version}/bin</directory>
+                            <filemode>644</filemode>
+                            <username>software</username>
+                            <groupname>gemini</groupname>
+                        </mapping>
+                        <!--init script-->
+                        <mapping>
+                            <sources>
+                                <source>
+                                    <location>src/main/etc/bin/gmp-server</location>
+                                    <filter>true</filter>
+                                </source>
+                            </sources>
+                            <directory>/etc/init.d</directory>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>755</filemode>
+                            <username>root</username>
+                            <groupname>root</groupname>
+                        </mapping>
+                    </mappings>
+                    <needarch>noarch</needarch>
+                    <targetOS>linux</targetOS>
+                    <targetVendor>redhat</targetVendor>
+                    <requires>
+                        <require>java &gt;= 1.6.0</require>
+                    </requires>
+                    <release>1</release>
+                    <preinstallScriptlet>
+                        <script>
+                            #check for user, or create it?
+                            id -u software &amp;&gt; /dev/null || useradd software -g gemini -m &amp;&gt; /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user software"
+                        </script>
+                    </preinstallScriptlet>
+                    <postinstallScriptlet>
+                        <script>
+                            #create logs/ directory
+                            mkdir -p /gemsoft/opt/gpi/${project.artifactId}-${project.version}/logs
+
+                            #change user/group for all files(particularly directories)
+                            chown -R software.gemini /gemsoft/opt/gpi/${project.artifactId}-${project.version}/
+
+                            #copy/create appropriate module.properties
+
+                            #add pax runner jars
+
+                            #chkconfig
+                            if [ $1 -eq 1 ]; then
+                            chkconfig --add gmp-server
+                            chkconfig --level 345 gmp-server on
+                            fi
+
+                            #symlink /gemsoft/opt/gpi/gmp -> /gemsoft/opt/gpi/gmp-server-$VERSION
+                            if [ $1 -ne 1 ]; then
+                            rm -f /gemsoft/opt/gpi/gmp
+                            fi
+                            ln -s /gemsoft/opt/gpi/${project.artifactId}-${project.version}/ /gemsoft/opt/gpi/gmp
+                        </script>
+                    </postinstallScriptlet>
+                    <preremoveScriptlet>
+                        <script>
+                            #chkconfig
+                            if [ $1 -eq 0 ]; then
+                            chkconfig --del gmp-server
+                            fi
+                        </script>
+                    </preremoveScriptlet>
+                    <postremoveScriptlet>
+                        <script>
+                            #delete leftover directories
+                            if [ $1 -eq 0 ]; then
+                            rm -rf /gemsoft/opt/gpi/${project.artifactId}-${project.version}
+                            rm /gemsoft/opt/gpi/gmp
+                            fi
+                        </script>
+                    </postremoveScriptlet>
+                </configuration>
             </plugin>
         </plugins>
+        <!-- Do filtering of files in etc for different environments -->
+        <resources>
+            <resource>
+                <directory>src/main/etc</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
-    <modules>
-        <module>poms</module>
-        <module>provision</module>
-        <module>epics-api</module>
-        <module>epics-service</module>
-        <module>giapi</module>
-        <module>giapi-fileevent-handler</module>
-        <module>jms-api</module>
-        <module>giapi-test-support</module>
-        <module>giapi-obsevents</module>
-        <module>giapi-jms-util</module>
-        <module>giapi-status-service</module>
-        <module>giapi-status-dispatcher</module>
-        <module>giapi-fileevents</module>
-        <module>jms-activemq-broker</module>
-        <module>jms-activemq-provider</module>
-        <module>gmp-tcs-context</module>
-        <module>gmp-logging</module>
-        <module>gmp-commands</module>
-        <module>gmp-commands-jms-bridge</module>
-        <module>gmp-commands-jms-client</module>
-        <module>gmp-commands-records</module>
-        <module>gmp-services</module>
-        <module>gmp-pcs-updater</module>
-        <module>gmp-status-gateway</module>
-        <module>gmp-statusdb</module>
-        <module>cas</module>
-        <module>casdb</module>
-        <module>gmp-epics-access</module>
-        <module>gmp-epics-simulator</module>
-        <module>gmp-epics-status-service</module>
-        <module>gpi-bean</module>
-        <module>gmp-heartbeat</module>
-        <module>heartbeat-distributor-service</module>
-        <module>giapi-tester</module>
-        <module>gmp-webconsole-branding</module>
-        <module>gmp-webconsole-docs</module>
-        <module>gmp-handlers-state-service</module>
-        <module>epics-heartbeat</module>
-        <module>gmp-tui</module>
-        <module>gmp-epics-top</module>
-        <module>gds-api</module>
-        <module>gds-config-validator</module>
-        <module>gds-performance-monitoring</module>
-        <module>gds-keywords-database</module>
-        <module>gds-actors-composer</module>
-        <module>gds-epics-actors</module>
-        <module>gds-instrument-status-actors</module>
-        <module>gds-odb-actors</module>
-        <module>gds-constant-actors</module>
-        <module>gds-obsevent-handler</module>
-        <module>gds-fits-updater</module>
-        <module>gds-datalabel-provider</module>
-        <module>gds-static-header-receiver</module>
-        <module>gds-seqexec-actors</module>
-        <module>gds-error-policy</module>
-        <module>gds-health</module>
-        <module>gds-observation-state-publisher</module>
-        <module>gds-fits-checker</module>
-        <module>giapi-vaadin-common</module>
-        <module>gds-web-ui</module>
-        <module>gds-web-ui-keywords</module>
-        <module>gds-web-ui-configuration</module>
-        <module>gds-web-ui-status</module>
-        <module>gds-web-ui-logs</module>
-        <module>gmp-web-ui-properties</module>
-        <module>gmp-server</module>
-        <module>integration-tests</module>
-        <module>gpi-ao-plot</module>
-    </modules>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <version>2.4</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>jira-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+                <configuration>
+                    <jiraUser>reporter</jiraUser>
+                    <jiraPassword>geminireporter</jiraPassword>
+                    <statusIds>Closed</statusIds>
+                    <fixVersionIds>10545</fixVersionIds>
+                    <outputEncoding>UTF-8</outputEncoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
-    <distributionManagement>
-        <!-- releases repo -->
-        <repository>
-            <id>edu.gemini.releases</id>
-            <name>sbfosxdev01.cl.gemini.edu-releases</name>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>edu.gemini.releases</id>
-            <name>sbfosxdev01.cl.gemini.edu-snapshots</name>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://swgserv01.cl.gemini.edu:8080/ViewProject.jspa?pid=10120</url>
+    </issueManagement>
 
-    <repositories>
-        <repository>
-            <!-- Maven central mirror -->
-            <id>edu.gemini.mirror</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/repo1</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <!-- Repository of other local dependencies stored locally -->
-            <id>edu.gemini.ext-releases-local</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
-        </repository>
-        <repository>
-            <!-- Repository of other local dependencies stored locally -->
-            <id>edu.gemini.libs-releases-local</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
-        </repository>
-        <repository>
-            <!-- Scala-tools.org mirror -->
-            <id>edu.gemini.scala-org.mirror</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/scala-tools.org</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-api</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-broker</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- ActiveMQ Provider -->
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-provider</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- JCA Lib -->
+        <dependency>
+            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
+            <artifactId>jca-lib</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <!-- Epics API -->
+        <dependency>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-api</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- Epics Service -->
+        <dependency>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-service</artifactId>
+            <version>0.8.0</version>
+        </dependency>
+        <!-- CAS -->
+        <dependency>
+            <groupId>edu.gemini.cas</groupId>
+            <artifactId>cas</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- GIAPI -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi</artifactId>
+            <version>0.9.3</version>
+        </dependency>
+        <!-- GIAPI JMS-Util -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-jms-util</artifactId>
+            <version>0.10.1</version>
+        </dependency>
+        <!-- GIAPI Status Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-service</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP GIAPI Services -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-services</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <!-- GMP Commands Sequence -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands</artifactId>
+            <version>0.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands-jms-bridge</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- GMP PCS Updater -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-pcs-updater</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- GMP TCS Updater -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-tcs-context</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Logging Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-logging</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Status Database -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-statusdb</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Status Gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-status-gateway</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GIAPI Status dispatcher-->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-dispatcher</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Commands Records -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-commands-records</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!--- EPICS access gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-access</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- EPICS Simulator -->
+        <!--dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-simulator</artifactId>
+            <version>0.1.0</version>
+        </dependency-->
+        <!-- GMP EPICS Status Service -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-status-service</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <!-- GMP Web Console branding -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-webconsole-branding</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-webconsole-docs</artifactId>
+            <version>0.1.0</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-heartbeat</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>heartbeat-distributor-service</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-top</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>epics-heartbeat</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-tui</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-obsevents</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-api</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-performance-monitoring</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-actors-composer</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-obsevent-handler</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-keywords-database</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-epics-actors</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-fits-updater</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-fits-checker</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-instrument-status-actors</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-static-header-receiver</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-seqexec-actors</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-health</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-odb-actors</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-constant-actors</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-observation-state-publisher</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-keywords</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-configuration</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-status</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-logs</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-error-policy</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+    </dependencies>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <!-- Maven central mirror -->
-            <id>edu.gemini.plugins-releases-local</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/plugins-releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
-
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>environment.type</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <maven.app.root>$GPI_ROOT</maven.app.root>
+            </properties>
+            <dependencies>
+                <!-- Felix core -->
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.framework</artifactId>
+                    <version>3.2.1</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.main</artifactId>
+                    <version>3.2.1</version>
+                </dependency>
+                <!-- PAX Runner -->
+                <dependency>
+                    <groupId>org.ops4j.pax.runner</groupId>
+                    <artifactId>pax-runner</artifactId>
+                    <version>1.7.4</version>
+                </dependency>
+                <!-- GIAPI tester -->
+                <dependency>
+                    <groupId>edu.gemini.aspen</groupId>
+                    <artifactId>giapi-tester</artifactId>
+                    <version>0.1.0</version>
+                    <classifier>jar-with-dependencies</classifier>
+                </dependency>
+                <!-- Felix Shell and GOGO -->
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.command</artifactId>
+                    <version>0.8.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.runtime</artifactId>
+                    <version>0.8.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.shell</artifactId>
+                    <version>0.8.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
+                    <artifactId>provision</artifactId>
+                    <version>1.0.0</version>
+                    <type>pom</type>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>

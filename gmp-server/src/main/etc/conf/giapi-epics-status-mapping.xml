@@ -17,7 +17,7 @@
     </SimpleChannel>
     <!-- too much noise in logs
        <SimpleChannel>
-            <giapiname>ui:heartbeat</giapiname>
+            <giapiname>gpi:heartbeat</giapiname>
             <epicsname>heartbeat</epicsname>
             <type>INT</type>
             <initial>0</initial>
