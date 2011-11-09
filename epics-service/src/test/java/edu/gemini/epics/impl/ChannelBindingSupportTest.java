@@ -2,7 +2,7 @@ package edu.gemini.epics.impl;
 
 import com.cosylab.epics.caj.CAJChannel;
 import com.cosylab.epics.caj.CAJContext;
-import edu.gemini.epics.EpicsClient;
+import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.api.DbrUtil;
 import gov.aps.jca.CAException;

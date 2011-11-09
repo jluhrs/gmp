@@ -44,6 +44,8 @@ public class EpicsServiceBaseIntegration {
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("jca-lib").groupId("edu.gemini.external.osgi.jca-lib").versionAsInProject(),
+                mavenBundle().artifactId("shared-test").groupId("gemini-nocs").versionAsInProject(),
+                mavenBundle().artifactId("shared-util").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("epics-api").groupId("edu.gemini.epics").versionAsInProject(),
                 mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").versionAsInProject()
         );

@@ -5,7 +5,7 @@ import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
 import edu.gemini.aspen.gmp.epics.jms.EpicsConfigRequestConsumer;
 import edu.gemini.aspen.gmp.epics.jms.EpicsStatusUpdater;
-import edu.gemini.epics.EpicsClient;
+import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.Nullable;
 import org.apache.felix.ipojo.annotations.*;
@@ -34,7 +34,7 @@ public class EpicsMonitor implements EpicsClient {
     private final JmsProvider _provider;
     private final EpicsConfiguration _epicsConfig;
 
-    @ServiceProperty(name = "edu.gemini.epics.EpicsClient.EPICS_CHANNELS")
+    @ServiceProperty(name = "edu.gemini.epics.api.EpicsClient.EPICS_CHANNELS")
     private String[] props;
 
     private EpicsConfigRequestConsumer _epicsRequestConsumer;

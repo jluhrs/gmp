@@ -56,6 +56,10 @@
             <groupId>gemini-nocs</groupId>
             <artifactId>shared-util</artifactId>
         </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>shared-test</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
