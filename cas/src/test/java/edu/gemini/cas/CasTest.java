@@ -416,4 +416,24 @@ public class CasTest {
         assertFalse(ch.isValid());
         assertFalse(ach.isValid());
     }
+
+    @Test
+    public void testDestroy() throws Exception {
+        Channel<Integer> original = giapicas.createChannel(varname, 1);
+        Channel<Integer> extraReference = giapicas.createChannel(varname, 1);
+        assertTrue(original.isValid());
+        assertTrue(extraReference.isValid());
+        assertEquals(new Integer(1), original.getFirst());
+        giapicas.destroyChannel(original);
+        assertFalse(original.isValid());
+        assertFalse(extraReference.isValid());
+
+        Channel<Integer> newReference = giapicas.createChannel(varname, 2);
+        assertTrue(newReference.isValid());
+        assertEquals(new Integer(2), newReference.getFirst());
+        assertFalse(original.isValid());
+        assertFalse(extraReference.isValid());
+    }
+
+
 }

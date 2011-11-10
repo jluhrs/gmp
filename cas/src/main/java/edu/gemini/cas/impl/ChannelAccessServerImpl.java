@@ -3,6 +3,7 @@ package edu.gemini.cas.impl;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.*;
+import edu.gemini.epics.api.ReadOnlyChannel;
 import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
 import org.apache.felix.ipojo.annotations.*;
@@ -397,7 +398,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @param channel the Channel to remove
      */
     @Override
-    public void destroyChannel(edu.gemini.epics.api.Channel channel) {
+    public void destroyChannel(ReadOnlyChannel<?> channel) {
         edu.gemini.epics.api.Channel ch;
         try {
             ch = channels.get(channel.getName());

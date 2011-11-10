@@ -1,6 +1,6 @@
 package edu.gemini.cas;
 
-import edu.gemini.epics.api.Channel;
+import edu.gemini.epics.api.ReadOnlyChannel;
 
 /**
  * Interface ChannelAccessServer
@@ -9,5 +9,5 @@ import edu.gemini.epics.api.Channel;
  *         Date: Dec 3, 2010
  */
 public interface ChannelAccessServer extends ChannelFactory {
-    void destroyChannel(Channel channel);
+    void destroyChannel(ReadOnlyChannel<?> channel);
 }
