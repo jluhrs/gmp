@@ -60,7 +60,7 @@
             <filtered>true</filtered>
             <includes>
                 <include>start.sh</include>
-                <include>gmp-server</include>
+                <include>gmp-server-ctl.sh</include>
             </includes>
         </fileSet>
         <fileSet>

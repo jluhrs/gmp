@@ -238,6 +238,10 @@
                                     <location>src/main/etc/bin/start.sh</location>
                                     <filter>true</filter>
                                 </source>
+                                 <source>
+                                    <location>src/main/etc/bin/gmp-server-ctl.sh</location>
+                                    <filter>true</filter>
+                                </source>
                                 <source>
                                     <location>../giapi-tester/src/main/etc/bin/giapi-tester.sh</location>
                                 </source>

@@ -61,9 +61,13 @@ function startContainer() {
     if [ -z ${pid_isrunning} ]; then
         echo "Starting ${app_name} version $GMP_VERSION"
         # Will start pax-runner as a daemon reading the configuration from the file bin/runner.args
-        su - software -c "pushd ${app_root}/bin > /dev/null; exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd &> ${log_file}; wait $!; sleep 4; popd > /dev/null"
+        pushd ${app_root}/bin > /dev/null;
+        java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --startd &> ${log_file}
+        wait $!
+        sleep 4
+        popd > /dev/null
         # Get the pid with jps
-        su - software -c "jps -l | grep \"org.apache.felix.main.Main\" | sed \"s/[[:space:]]*\([\d]*\) .*/\1/\" > ${pid_file}"
+        jps -l | grep "org.apache.felix.main.Main" | sed "s/[[:space:]]*\([\d]*\) .*/\1/" > ${pid_file}
         retval=$?
         sleep 10
         echo "Started ${app_name}"
@@ -79,7 +83,8 @@ function startContainer() {
 function stopContainer() {
   if [ ! -z ${pid_isrunning} ]; then
     echo "Stopping ${app_name} with pid ${pid}"
-    su - software -c "exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop; wait $!"
+    exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop
+    wait $!
     retval=$?
     sleep 10
     return $retval
