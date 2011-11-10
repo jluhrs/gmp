@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.web.ui.modules
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import com.vaadin.Application
-import com.vaadin.ui.{Embedded, VerticalLayout, Panel}
+import com.vaadin.ui.Embedded
 import com.vaadin.terminal.ExternalResource
 
 /**

@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.web.ui.keywords
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.web.ui.api.Preamble._
+import edu.gemini.aspen.giapi.web.ui.vaadin.Preamble._
 import model.{GDSKeywordsDataSource, WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource}
 import scala.collection.JavaConversions._
 import com.vaadin.ui.Table.ColumnGenerator

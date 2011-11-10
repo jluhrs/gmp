@@ -3,7 +3,6 @@ package edu.gemini.aspen.gds.web.ui.keywords.model
 import com.vaadin.ui.TextField
 import com.vaadin.data.validator.AbstractStringValidator
 import edu.gemini.aspen.gds.api.{DefaultValue, GDSConfiguration}
-import edu.gemini.aspen.giapi.data.FitsKeyword
 
 /**
  * PropertyItemWrapperFactory for FitsKeyword that uses a TextField to make possible to edit

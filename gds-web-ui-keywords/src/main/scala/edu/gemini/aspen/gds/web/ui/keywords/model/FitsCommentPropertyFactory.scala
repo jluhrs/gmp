@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import com.vaadin.data.Item
 import com.vaadin.ui.TextField
 import com.vaadin.data.validator.AbstractStringValidator
 import edu.gemini.aspen.gds.api.{FitsComment, GDSConfiguration}

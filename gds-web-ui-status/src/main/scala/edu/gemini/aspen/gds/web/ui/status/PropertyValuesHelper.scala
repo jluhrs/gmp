@@ -47,9 +47,9 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
 
   def getTimes(label: DataLabel): String = {
     obsState.getTimes(label) filter {
-      case (x: AnyRef, y: Option[Duration]) => x == "FITS update"
+      case (x: AnyRef, y: Option[_]) => x == "FITS update"
     } map {
-      case (x: AnyRef, y: Option[Duration]) => y map {
+      case (x: AnyRef, y: Option[_]) => y map {
         case t: Duration => t.getMillis.toString + "[ms]"
       } getOrElse ""
     } head

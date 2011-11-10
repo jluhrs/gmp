@@ -1,11 +1,9 @@
-package edu.gemini.aspen.gds.web.ui.api
+package edu.gemini.aspen.giapi.web.ui.vaadin
 
-import com.vaadin.ui._
+//import com.vaadin.ui._
 import com.vaadin.event.ItemClickEvent
-import com.vaadin.data.Item.PropertySetChangeEvent
-import com.vaadin.data.{Property, Container}
-import com.vaadin.ui.Window._
-import com.vaadin.ui.LoginForm.LoginListener
+import com.vaadin.data.Property
+import com.vaadin.ui.{LoginForm, Button}
 
 /**
  * Utility methods to make vaadin easier to use with scala
@@ -40,7 +38,7 @@ object Preamble {
       }
     }
 
-  implicit def login(func: (LoginForm#LoginEvent) => Unit) = new LoginListener {
+  implicit def login(func: (LoginForm#LoginEvent) => Unit) = new LoginForm.LoginListener {
       def onLogin(event: LoginForm#LoginEvent) {
         func(event)
       }

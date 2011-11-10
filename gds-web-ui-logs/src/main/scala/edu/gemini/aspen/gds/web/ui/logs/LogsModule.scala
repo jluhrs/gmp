@@ -8,7 +8,7 @@ import org.vaadin.addons.lazyquerycontainer._
 import java.util.logging.Logger
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.ui.Table.{CellStyleGenerator}
-import edu.gemini.aspen.gds.web.ui.api.Preamble._
+import edu.gemini.aspen.giapi.web.ui.vaadin.Preamble._
 import com.vaadin.ui._
 
 class LogsModule(logSource: LogSource) extends GDSWebModule {

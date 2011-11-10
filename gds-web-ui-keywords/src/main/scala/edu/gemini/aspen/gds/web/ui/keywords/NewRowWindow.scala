@@ -1,12 +1,8 @@
 package edu.gemini.aspen.gds.web.ui.keywords
 
-import _root_.edu.gemini.aspen.gds.web.ui.api.Preamble._
-import edu.gemini.aspen.gds.web.ui.api.DefaultAuthenticationService
-import com.vaadin.ui.LoginForm.LoginListener
-import com.vaadin.ui.Window.Notification
+import edu.gemini.aspen.giapi.web.ui.vaadin.Preamble._
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
-import edu.gemini.aspen.giapi.data.FitsKeyword
 import model._
 import com.vaadin.ui._
 

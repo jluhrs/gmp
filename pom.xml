@@ -152,6 +152,7 @@
         <module>gds-health</module>
         <module>gds-observation-state-publisher</module>
         <module>gds-fits-checker</module>
+        <module>giapi-vaadin-common</module>
         <module>gds-web-ui</module>
         <module>gds-web-ui-keywords</module>
         <module>gds-web-ui-configuration</module>
