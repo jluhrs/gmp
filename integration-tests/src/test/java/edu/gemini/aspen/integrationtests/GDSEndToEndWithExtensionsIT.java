@@ -85,7 +85,6 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         copyInitialFile(INITIAL_FITS_FILE, "/tmp/" + INITIAL_FITS_FILE);
 
         List<Set<String>> originalKeywords = readAllExtensionsKeywords("/tmp/" + INITIAL_FITS_FILE);
-        System.out.println(originalKeywords);
         assertEquals(3, originalKeywords.size()); //primary + 2 extensions
 
         sendObservationEvents(eventHandler, new DataLabel("FITS_WITH_EXTENSIONS"));
@@ -102,8 +101,6 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         for (Header header : allHeaders) {
             afterProcessingAllExtensionsKeywords.add(header.getKeywords());
         }
-
-        System.out.println(afterProcessingAllExtensionsKeywords);
 
         for (int i = 0; i < originalKeywords.size(); i++) {
             assertTrue(afterProcessingAllExtensionsKeywords.get(i).containsAll(originalKeywords.get(i)));

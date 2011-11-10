@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
@@ -78,7 +77,6 @@ public class GDSWithODBIT extends GDSIntegrationBase {
         assertTrue(finalFile.exists());
 
         Set<String> afterProcessingKeywords = readFinalKeywords();
-        System.out.println(new TreeSet<String>(afterProcessingKeywords));
 
         assertTrue(afterProcessingKeywords.containsAll(originalKeywords));
         assertTrue(afterProcessingKeywords.contains("PIFSTNAM"));
