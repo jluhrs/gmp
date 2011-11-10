@@ -12,7 +12,6 @@
             <fileMode>0644</fileMode>
             <includes>
                 <include>org.ops4j.pax.runner:*</include>
-                <include>edu.gemini.aspen:giapi-tester</include>
             </includes>
         </dependencySet>
     </dependencySets>
@@ -69,7 +68,13 @@
             <outputDirectory>/bin</outputDirectory>
             <includes>
                 <include>giapi-tester.sh</include>
-                <include>gpi-all-commands-test.sh</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../giapi-tester/target/</directory>
+            <outputDirectory>/bin</outputDirectory>
+            <includes>
+                <include>giapi-tester.jar</include>
             </includes>
         </fileSet>
         <fileSet>
