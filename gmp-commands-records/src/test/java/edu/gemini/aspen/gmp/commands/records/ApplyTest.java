@@ -1,11 +1,18 @@
 package edu.gemini.aspen.gmp.commands.records;
 
+import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
+import edu.gemini.epics.EpicsService;
+import edu.gemini.epics.NewEpicsReader;
+import edu.gemini.epics.NewEpicsWriter;
+import edu.gemini.epics.ReadWriteClientEpicsChannel;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.epics.impl.NewEpicsWriterImpl;
 import gov.aps.jca.CAException;
+import gov.aps.jca.JCALibrary;
 import gov.aps.jca.TimeoutException;
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +22,7 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Class ApplyTest
@@ -32,10 +39,11 @@ public class ApplyTest {
     private static File xmlFile = null;
 
     private ChannelAccessServerImpl cas;
-    private final EpicsTop epicsTop = new EpicsTopImpl("gpi");
+    private final EpicsTop epicsTop = new EpicsTopImpl("gpitest");
     private final String cadName = "observe";
     private CommandSender cs = MockFactory.createCommandSenderMock(epicsTop, cadName);
-
+    private NewEpicsWriter epicsWriter;
+    private CAJContext context;
 
     static {
         BufferedReader in = new BufferedReader(new InputStreamReader(ApplyTest.class.getResourceAsStream("../../../../../../giapi-apply-config.xml")));
@@ -83,6 +91,8 @@ public class ApplyTest {
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
         }
+        System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
+        System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
     }
 
 
@@ -90,45 +100,71 @@ public class ApplyTest {
     public void setup() throws CAException {
         cas = new ChannelAccessServerImpl();
         cas.start();
+
+
+        JCALibrary jca = JCALibrary.getInstance();
+        context = (CAJContext) jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+        epicsWriter = new NewEpicsWriterImpl(new EpicsService(context));
+
     }
 
     @After
     public void tearDown() throws CAException {
         cas.stop();
+        context.destroy();
+
     }
 
-
     @Test
-    public void applyTest() throws CAException, InterruptedException, IOException, TimeoutException {
+    public void applyTestObserve() throws CAException, InterruptedException, IOException, TimeoutException {
         ApplyRecord apply = new ApplyRecord(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
         apply.start();
         Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName("apply.DIR"), Dir.CLEAR);
         Channel<Integer> val = cas.createChannel(epicsTop.buildChannelName("apply.VAL"), 0);
-        Channel<Integer> cadVal = cas.createChannel(epicsTop.buildChannelName(cadName + ".VAL"), 0);
         Channel<Integer> clid = cas.createChannel(epicsTop.buildChannelName("apply.CLID"), 0);
+
+        Channel<Integer> cadVal = cas.createChannel(epicsTop.buildChannelName(cadName + ".VAL"), 0);
         Channel<Integer> cadClid = cas.createChannel(epicsTop.buildChannelName(cadName + ".ICID"), 0);
-        Channel<String> data_label = cas.createChannel(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "");
+        Channel<Integer> carClid = cas.createChannel(epicsTop.buildChannelName(cadName + "C.CLID"), 0);
+        ReadWriteClientEpicsChannel<String> data_label = epicsWriter.getStringChannel(epicsTop.buildChannelName(cadName + ".DATA_LABEL"));
 
 
-        data_label.setValue("");
+        data_label.setValue("label");
+        Thread.sleep(200);
         dir.setValue(Dir.START);
         assertEquals(new Integer(1), clid.getFirst());
         assertEquals(new Integer(1), cadClid.getFirst());
+        assertEquals(new Integer(1), carClid.getFirst());
         assertEquals(new Integer(0), cadVal.getFirst());
         assertEquals(new Integer(1), val.getFirst());
 
-        //special record apply/config.
-        Channel<String> useAo = cas.createChannel(epicsTop.buildChannelName("configAo:useAo"), "");
-        cadClid = cas.createChannel(epicsTop.buildChannelName("config.ICID"), 0);
-        cadVal = cas.createChannel(epicsTop.buildChannelName("config.VAL"), 0);
-
-
-        useAo.setValue("1");
-        dir.setValue(Dir.START);
-        assertEquals(new Integer(2), cadClid.getFirst());
-        assertEquals(new Integer(0), cadVal.getFirst());
-        assertEquals(new Integer(2), val.getFirst());
-
+        data_label.destroy();
         apply.stop();
     }
+
+    @Test
+    public void testReset() throws CAException, TimeoutException, InterruptedException {
+        ApplyRecord apply = new ApplyRecord(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
+        apply.start();
+
+        Channel<Reset> reset = cas.createChannel(epicsTop.buildChannelName("gmp:resetRecords"), Reset.NO_RESET);
+
+        ReadWriteClientEpicsChannel<String> useAo = epicsWriter.getStringChannel(epicsTop.buildChannelName("configAo.useAo"));
+        assertEquals("", useAo.getFirst());
+        useAo.setValue("bla");
+        assertEquals("bla", useAo.getFirst());
+        useAo.destroy();
+        reset.setValue(Reset.RESET);
+
+        useAo = epicsWriter.getStringChannel(epicsTop.buildChannelName("configAo.useAo"));
+        assertTrue(useAo.isValid());
+        assertEquals("", useAo.getFirst());
+
+        useAo.destroy();
+        apply.stop();
+
+
+    }
+
+
 }

@@ -9,6 +9,7 @@ import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.ChannelListener;
+import edu.gemini.epics.api.ReadOnlyChannel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
@@ -35,14 +36,17 @@ public class ApplyRecord {
     private static final Logger LOG = Logger.getLogger(ApplyRecord.class.getName());
     private final String name = "apply";
     //private final String epicsTop = "gpi";//to be read from elsewhere(cas?);
+    private final String resetRecordsName = "gmp:resetRecords";
 
     private final EpicsTop epicsTop;
 
-    private Channel<Dir> dir;
+    private ReadOnlyChannel<Dir> dir;
     private Channel<Integer> val;
     private Channel<String> mess;
     private Channel<String> omss;
     private Channel<Integer> clid;
+
+    private Channel<Reset> reset;
 
     private final CarRecord car;
 
@@ -122,6 +126,9 @@ public class ApplyRecord {
                 omss = cas.createChannel(epicsTop.buildChannelName(name + ".OMSS"), "");
                 clid = cas.createChannel(epicsTop.buildChannelName(name + ".CLID"), 0);
 
+                reset = cas.createChannel(epicsTop.buildChannelName(resetRecordsName), Reset.NO_RESET);
+                reset.registerListener(new ResetListener());
+
                 car.start();
                 for (CadRecord cad : cads) {
                     cad.start();
@@ -146,36 +153,14 @@ public class ApplyRecord {
             cas.destroyChannel(omss);
             cas.destroyChannel(clid);
 
+            cas.destroyChannel(reset);
+
             car.stop();
             for (CadRecord cad : cads) {
                 cad.stop();
             }
         }
     }
-
-//    /**
-//     * Add a CAD to the list of CADs to be notified of new directives
-//     *
-//     * @param cad
-//     */
-//    @Bind(aggregate = true, optional = true)
-//    public synchronized void bindCad(CadRecord cad) {
-//        LOG.info("Bind");
-//
-//        cads.add(cad.getEpicsCad());
-//        cars.add(cad.getCar());
-//        LOG.info(cars.toString());
-//        cad.getCar().registerListener(new CarListener());
-//    }
-//
-//    @Unbind(aggregate = true, optional = true)
-//    public synchronized void unBindCad(CadRecord cad) {
-//        LOG.info("Unbind");
-//
-//        cads.remove(cad.getEpicsCad());
-//        cars.remove(cad.getCar());
-//    }
-
 
     private boolean processDir(Dir dir) throws CAException, TimeoutException {
         synchronized (car) {
@@ -306,6 +291,20 @@ public class ApplyRecord {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             } catch (TimeoutException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * This listener will be called when a directive is written to the DIR field
+     */
+    private class ResetListener implements ChannelListener<Reset> {
+        @Override
+        public void valueChanged(String channelName, List<Reset> values) {
+            LOG.warning("Received reset write: " + values.get(0));
+            if (values.get(0).equals(Reset.RESET)) {
+                stop();
+                start();
             }
         }
     }

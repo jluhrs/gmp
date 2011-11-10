@@ -22,16 +22,16 @@ public class MockFactory {
 
         cs = mock(CommandSender.class);
         Command start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.START, DefaultConfiguration.configurationBuilder().
-                withConfiguration("DATA_LABEL", "").
+                withConfiguration("DATA_LABEL", "label").
                 build());
         Command preset = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET, DefaultConfiguration.configurationBuilder().
-                withConfiguration("DATA_LABEL", "").
+                withConfiguration("DATA_LABEL", "label").
                 build());
         Command cancel = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.CANCEL, DefaultConfiguration.configurationBuilder().
-                withConfiguration("DATA_LABEL", "").
+                withConfiguration("DATA_LABEL", "label").
                 build());
         Command preset_start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET_START, DefaultConfiguration.configurationBuilder().
-                withConfiguration("DATA_LABEL", "").
+                withConfiguration("DATA_LABEL", "label").
                 build());
         when(cs.sendCommand(eq(preset), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);
         when(cs.sendCommand(eq(start), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.COMPLETED);

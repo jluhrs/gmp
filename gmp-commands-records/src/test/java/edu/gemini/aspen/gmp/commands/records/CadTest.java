@@ -81,7 +81,7 @@ public class CadTest {
         CarListener carListener = new CarListener();
         carVal.registerListener(carListener);
 
-        a.setValue("");
+        a.setValue("label");
 
         assertEquals(CadState.MARKED, cad.getState());
 
@@ -109,6 +109,8 @@ public class CadTest {
     public void cadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException, TimeoutException {
         CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
+        Channel<String> a = cas.createChannel(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "");
+        a.setValue("label");
 
         Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName(cadName + ".DIR"), Dir.CLEAR);
 
