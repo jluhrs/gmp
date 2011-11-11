@@ -27,6 +27,11 @@ public class NewEpicsTestBase {
     protected Channel<Float> floatChannel;
     protected Channel<String> stringChannel;
 
+    static {
+        System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
+        System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
+    }
+
     @Before
     public void setup() throws CAException {
         jca = JCALibrary.getInstance();

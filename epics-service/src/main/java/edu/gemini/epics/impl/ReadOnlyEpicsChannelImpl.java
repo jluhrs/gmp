@@ -68,11 +68,13 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
 
     @Override
     public synchronized void unRegisterListener(ChannelListener<T> tChannelListener) throws CAException {
-        Monitor mon = listeners.get(tChannelListener)._1();
-        MonitorListener ml = listeners.get(tChannelListener)._2();
-        mon.removeMonitorListener(ml);
-        if (mon.getMonitorListeners().length == 0) {
-            mon.clear();
+        if (listeners.containsKey(tChannelListener)) {
+            Monitor mon = listeners.get(tChannelListener)._1();
+            MonitorListener ml = listeners.get(tChannelListener)._2();
+            mon.removeMonitorListener(ml);
+            if (mon.getMonitorListeners().length == 0) {
+                mon.clear();
+            }
         }
     }
 
@@ -89,5 +91,6 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
     @Override
     public void destroy() throws CAException {
         channel.destroy();
+        listeners.clear();
     }
 }
