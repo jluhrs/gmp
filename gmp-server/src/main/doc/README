@@ -49,13 +49,13 @@ with the command:
 RUNNING AS DAEMON
 -----------------
 A script is provided to run the GMP in daemon mode, to do so invoke:
- ./gmp-server start
+ ./gmp-server-ctl.sh start
 
-This will launch the gmp-server in the background
+This will launch the gmp-server-ctl.sh in the background
 
-The gmp-server script  can be used as an init.d script, for which you need to copy it to /etc/init.d/
-and run $ chkconfig --add gmp-server, or you can run it directly
-from the original location.
+Additionally a gmp-server script is provided that can be used as an init.d script, for which
+you need to copy it to /etc/init.d/ and run $ chkconfig --add gmp-server, or you can run it directly
+from the original location. It needs to be run as root though.
 
 The script can take one of the following parameters:
 
