@@ -22,6 +22,11 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
  * To change this template use File | Settings | File Templates.
  */
 public class EpicsServiceBaseIntegration {
+    static {
+        System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
+        System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
+    }
+
     @Inject
     protected BundleContext context;
 

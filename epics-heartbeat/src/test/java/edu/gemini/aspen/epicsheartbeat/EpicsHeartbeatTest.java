@@ -29,6 +29,11 @@ public class EpicsHeartbeatTest {
     ChannelAccessServerImpl cas;
     EpicsTop top;
 
+    static {
+        System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
+        System.setProperty("com.cosylab.epics.caj.CAJContext.auto_addr_list", "false");
+    }
+
     @Before
     public void setUp() throws Exception {
 
