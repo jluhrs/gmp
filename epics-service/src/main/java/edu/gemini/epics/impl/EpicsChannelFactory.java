@@ -11,6 +11,11 @@ import gov.aps.jca.Channel;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.event.*;
 
+//import java.lang.ref.PhantomReference;
+//import java.lang.ref.Reference;
+//import java.lang.ref.ReferenceQueue;
+//import java.util.IdentityHashMap;
+//import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,8 +28,10 @@ import java.util.logging.Logger;
 class EpicsChannelFactory {
     private static final Logger LOG = Logger.getLogger(EpicsChannelFactory.class.getName());
     private final CAJContext _ctx;
+//    private final ReferenceQueue<ReadWriteEpicsChannelImpl<?>> refQueue = new ReferenceQueue<ReadWriteEpicsChannelImpl<?>>();
+//    private final IdentityHashMap<PhantomReference<ReadWriteEpicsChannelImpl<?>>, CAJChannel> ch2Ref = new IdentityHashMap<PhantomReference<ReadWriteEpicsChannelImpl<?>>, CAJChannel>();
 
-    public EpicsChannelFactory(JCAContextController epicsService) {
+    protected EpicsChannelFactory(JCAContextController epicsService) {
         Preconditions.checkArgument(epicsService != null, "Passed JCAContextController cannot be null");
         Preconditions.checkArgument(epicsService.getJCAContext() != null, "Passed JCA Context cannot be null");
         this._ctx = epicsService.getJCAContext();
@@ -34,6 +41,32 @@ class EpicsChannelFactory {
         } catch (CAException e) {
             throw new EpicsException("Caught exception while adding JCA Context listeners", e);
         }
+
+        //uncomment to enable autodestroy before garbage collecting the channel
+//        ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(1);
+//        executor.scheduleWithFixedDelay(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    LOG.info("Polling reference queue");
+//                    Reference<? extends ReadWriteEpicsChannelImpl<?>> ref = refQueue.remove(0);
+//                    if (ref != null) {
+//                        LOG.info("reference not null:" + ref.getClass());
+//                        if (ch2Ref.get(ref) != null) {
+//                            LOG.info("channel not null");
+//                            CAJChannel ch = ch2Ref.get(ref);
+//                            LOG.info("Destroying channel: " + ch.getName());
+//                            ch2Ref.remove(ref);
+//                            ch.destroy();
+//                        }
+//                    }
+//                } catch (CAException e) {
+//                    LOG.log(Level.SEVERE, e.getMessage(), e);
+//                } catch (InterruptedException e) {
+//                    LOG.log(Level.SEVERE, e.getMessage(), e);
+//                }
+//            }
+//        }, 1, 1, TimeUnit.MILLISECONDS);
     }
 
     private void addJCAContextListeners() throws CAException {
@@ -68,6 +101,7 @@ class EpicsChannelFactory {
             throw new IllegalArgumentException("Channel " + channelName + " can be connected to, but is of incorrect type.");
         } else {
             ch = new ReadWriteEpicsChannelImpl<Double>(cajChannel);
+//            ch2Ref.put(new PhantomReference<ReadWriteEpicsChannelImpl<?>>(ch, refQueue), cajChannel);
         }
 
         return ch;
@@ -86,6 +120,7 @@ class EpicsChannelFactory {
             throw new IllegalArgumentException("Channel " + channelName + " can be connected to, but is of incorrect type.");
         } else {
             ch = new ReadWriteEpicsChannelImpl<Integer>(cajChannel);
+//            ch2Ref.put(new PhantomReference<ReadWriteEpicsChannelImpl<?>>(ch, refQueue), cajChannel);
         }
 
         return ch;
@@ -104,6 +139,7 @@ class EpicsChannelFactory {
             throw new IllegalArgumentException("Channel " + channelName + " can be connected to, but is of incorrect type.");
         } else {
             ch = new ReadWriteEpicsChannelImpl<Float>(cajChannel);
+//            ch2Ref.put(new PhantomReference<ReadWriteEpicsChannelImpl<?>>(ch, refQueue), cajChannel);
         }
 
         return ch;
@@ -122,13 +158,18 @@ class EpicsChannelFactory {
             throw new IllegalArgumentException("Channel " + channelName + " can be connected to, but is of incorrect type.");
         } else {
             ch = new ReadWriteEpicsChannelImpl<String>(cajChannel);
+//            ch2Ref.put(new PhantomReference<ReadWriteEpicsChannelImpl<?>>(ch, refQueue), cajChannel);
         }
 
         return ch;
     }
 
     protected ReadWriteEpicsChannelImpl<?> _getChannelAsync(String channelName) {
-        return new ReadWriteEpicsChannelImpl(bindChannelAsync(channelName, null));
+        CAJChannel cajChannel = bindChannelAsync(channelName, null);
+        ReadWriteEpicsChannelImpl<?> ch = new ReadWriteEpicsChannelImpl(cajChannel);
+//        ch2Ref.put(new PhantomReference<ReadWriteEpicsChannelImpl<?>>(ch, refQueue), cajChannel);
+        return ch;
+
     }
 
     protected void _destroyChannel(ReadOnlyClientEpicsChannel<?> channel) throws CAException {

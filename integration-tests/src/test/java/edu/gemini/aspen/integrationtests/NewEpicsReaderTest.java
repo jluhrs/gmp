@@ -9,6 +9,9 @@ import gov.aps.jca.TimeoutException;
 import org.junit.Before;
 import org.junit.Test;
 
+//import java.lang.ref.Reference;
+//import java.lang.ref.WeakReference;
+
 import static org.junit.Assert.*;
 
 public class NewEpicsReaderTest extends NewEpicsTestBase {
@@ -87,4 +90,73 @@ public class NewEpicsReaderTest extends NewEpicsTestBase {
         assertEquals((Double) 1.0, dChannel.getFirst());
         dChannel.destroy();
     }
+
+
+//    @Test
+//    public void testAutoDestroy() throws CAException, TimeoutException, InterruptedException {
+//        ReadOnlyClientEpicsChannel<Double> dChannel = epicsReader.getDoubleChannel(doubleName);
+//
+//        assertTrue(dChannel.isValid());
+//        assertEquals((Double) 1.0, dChannel.getFirst());
+//
+//
+//        dChannel = null;
+//        System.gc();
+//        Thread.sleep(100);
+//        //todo:check if destroyed. how?
+//    }
+//
+//    @Test
+//    public void testReconnect() throws CAException, TimeoutException, InterruptedException {
+//        ReadOnlyClientEpicsChannel<Double> dChannel = epicsReader.getDoubleChannel(doubleName);
+//
+//        assertTrue(dChannel.isValid());
+//        assertEquals((Double) 1.0, dChannel.getFirst());
+//
+//        ReadOnlyClientEpicsChannel<Double> ddChannel = epicsReader.getDoubleChannel(doubleName);
+//
+//
+//        dChannel = null;
+//        System.gc();
+//        Thread.sleep(100);
+//        //todo:check if destroyed. how?
+//
+//        assertTrue(ddChannel.isValid());
+//        assertEquals((Double) 1.0, ddChannel.getFirst());
+//
+//        ddChannel = null;
+//        System.gc();
+//        Thread.sleep(100);
+//        //todo:check if destroyed. how?
+//
+//    }
+//
+//        @Test
+//    public void testDoubleDestroy() throws CAException, TimeoutException, InterruptedException {
+//        ReadOnlyClientEpicsChannel<Double> dChannel = epicsReader.getDoubleChannel(doubleName);
+//
+//        assertTrue(dChannel.isValid());
+//        assertEquals((Double) 1.0, dChannel.getFirst());
+//
+//        ReadOnlyClientEpicsChannel<Double> ddChannel = epicsReader.getDoubleChannel(doubleName);
+//
+//        dChannel.destroy();
+//
+//        assertTrue(ddChannel.isValid());
+//        assertEquals((Double) 1.0, ddChannel.getFirst());
+//
+//            dChannel = null;
+//        System.gc();
+//        Thread.sleep(100);
+//        //todo:check if destroyed. how?
+//
+//        assertTrue(ddChannel.isValid());
+//        assertEquals((Double) 1.0, ddChannel.getFirst());
+//
+//        ddChannel = null;
+//        System.gc();
+//        Thread.sleep(100);
+//        //todo:check if destroyed. how?
+//
+//    }
 }
