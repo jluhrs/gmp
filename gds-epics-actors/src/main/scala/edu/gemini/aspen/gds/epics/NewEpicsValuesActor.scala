@@ -8,22 +8,18 @@ import edu.gemini.epics.api.ReadOnlyChannel
  * Very simple actor that can produce as a reply of a Collect request a single value
  * linked to a single fitsKeyword
  */
-class NewEpicsValuesActor(epicsReader: NewEpicsReader, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
+class NewEpicsValuesActor(channel: ReadOnlyChannel[_], configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
   override def collectValues(): List[CollectedValue[_]] = {
-    val readValue = if (arrayIndex > 0) {
-      Option(epicsReader.getChannelAsync(sourceChannel)) map (extractEpicsItem)
+    val collected = if (arrayIndex > 0) {
+      val values = channel.getAll
+      if (arrayIndex < values.size()) {
+        Option(channel.getAll.get(arrayIndex)) map valueToCollectedValue
+      } else {
+        Option(ErrorCollectedValue(fitsKeyword, CollectionError.ArrayIndexOutOfBounds, fitsComment, headerIndex))
+      }
     } else {
-      Option(epicsReader.getChannelAsync(sourceChannel)) map (extractEpicsItemArray)
+      Option(channel.getFirst) map valueToCollectedValue
     }
-    readValue map valueToCollectedValue toList
+    collected toList
   }
-
-  def extractEpicsItem(epicsValue: ReadOnlyChannel[_]) = {
-    epicsValue.getFirst
-  }
-
-  def extractEpicsItemArray(epicsValue: ReadOnlyChannel[_]) = {
-    epicsValue.getAll().get(arrayIndex)
-  }
-
 }

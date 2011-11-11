@@ -2,23 +2,27 @@ package edu.gemini.aspen.gds.epics
 
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.epics.{EpicsException, EpicsReader}
 import edu.gemini.aspen.gds.api.{GDSConfiguration, AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
 import scala.collection._
+import edu.gemini.epics.{ReadOnlyClientEpicsChannel, NewEpicsReader, EpicsException}
+import mutable.HashMap
 
 @Component
-//@Instantiate
+@Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKeywordActorsFactory {
+class NewEpicsActorsFactory(@Requires epicsReader: NewEpicsReader) extends AbstractKeywordActorsFactory {
+  private val channels: mutable.Map[GDSConfiguration, ReadOnlyClientEpicsChannel[_]] = new HashMap[GDSConfiguration, ReadOnlyClientEpicsChannel[_]]
 
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
     actorsConfiguration filter {
       _.event.name == obsEvent.name
     } filter {
-      c => epicsReader.isChannelConnected(c.channel.name)
+      c => channels.get(c) exists {
+        _.isValid
+      }
     } map {
       c => {
-        new EpicsValuesActor(epicsReader, c)
+        new NewEpicsValuesActor(channels(c), c)
       }
     }
   }
@@ -28,7 +32,7 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
     actorsConfiguration foreach {
       c => {
         try {
-          epicsReader.bindChannelAsync(c.channel.name)
+          channels.put(c, epicsReader.getChannelAsync(c.channel.name))
         } catch {
           case ex: EpicsException => {
             LOG.severe(ex.getMessage)
@@ -42,9 +46,9 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
 
   @Invalidate
   def unbindAllChannels() {
-    // Unbind all required channels
-    actorsConfiguration map {
-      c => epicsReader.unbindChannel(c.channel.name)
+    channels.values foreach {
+      _.destroy()
     }
+    channels.clear()
   }
 }
