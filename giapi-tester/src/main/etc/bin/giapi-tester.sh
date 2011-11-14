@@ -30,4 +30,4 @@ if ! [ -e $GIAPI_TESTER_JAR ]; then
     exit 1
 fi
 
-java -jar $GIAPI_TESTER_JAR $@
+java -jar $GIAPI_TESTER_JAR "$@"
