@@ -94,6 +94,33 @@ public class DefaultConfigurationTest {
     }
 
     @Test
+    public void testBuilderWithConfigurationCopied() {
+        SortedMap<ConfigPath, String> baseConfig = ImmutableSortedMap.of(configPath("X"), "value1", configPath("Y"), "value2");
+        Configuration referenceConfig = new DefaultConfiguration(baseConfig);
+
+        Configuration config = configurationBuilder()
+                .withConfiguration(referenceConfig)
+                .build();
+
+        assertEquals(referenceConfig, config);
+    }
+
+    @Test
+    public void testBuilderWithBaseAndExtra() {
+        SortedMap<ConfigPath, String> baseConfigMap = ImmutableSortedMap.of(configPath("X"), "value1", configPath("Y"), "value2");
+        Configuration baseConfig = new DefaultConfiguration(baseConfigMap);
+        SortedMap<ConfigPath, String> resultConfigMap = ImmutableSortedMap.of(configPath("X"), "value1", configPath("Y"), "value2", configPath("W"), "value3");
+        Configuration resultConfig = new DefaultConfiguration(resultConfigMap);
+
+        Configuration config = configurationBuilder()
+                .withConfiguration(baseConfig)
+                .withConfiguration("W", "value3")
+                .build();
+
+        assertEquals(resultConfig, config);
+    }
+
+    @Test
     public void testEmptyConfiguration() {
         assertTrue(emptyConfiguration().getKeys().isEmpty());
         assertEquals(emptyConfiguration(), emptyConfiguration());

@@ -126,6 +126,13 @@ public final class DefaultConfiguration implements Configuration {
             return withPath(configPath(path), value);
         }
 
+        public Builder withConfiguration(Configuration config) {
+            for (ConfigPath path:config.getKeys()) {
+                withPath(path, config.getValue(path));
+            }
+            return this;
+        }
+
         public Configuration build() {
             return new DefaultConfiguration(_baseConfiguration);
         }
