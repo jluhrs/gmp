@@ -52,6 +52,7 @@ public class ConfigArgument extends AbstractArgument {
             builder.withConfiguration(arg[0], arg[1]);
         }
         _config = builder.build();
+
         return _config;
     }
 
