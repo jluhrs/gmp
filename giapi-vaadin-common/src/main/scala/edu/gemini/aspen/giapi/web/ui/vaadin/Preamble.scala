@@ -1,6 +1,5 @@
 package edu.gemini.aspen.giapi.web.ui.vaadin
 
-//import com.vaadin.ui._
 import com.vaadin.event.ItemClickEvent
 import com.vaadin.data.Property
 import com.vaadin.ui.{LoginForm, Button}
