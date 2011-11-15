@@ -11,6 +11,8 @@ import org.mockito.Mockito.verify
 import org.junit.runner.RunWith
 import org.mockito.stubbing.Answer
 import org.mockito.invocation.InvocationOnMock
+import java.io.ByteArrayOutputStream
+import javax.servlet.ServletOutputStream
 
 @RunWith(classOf[JUnitRunner])
 class StaticResourcesTest extends FunSuite with MockitoSugar {
@@ -37,5 +39,26 @@ class StaticResourcesTest extends FunSuite with MockitoSugar {
     staticResources.doGet(request, response)
 
     verify(response).sendError(HttpServletResponse.SC_NOT_FOUND)
+  }
+
+  test("known resource") {
+    val ctx = mock[BundleContext]
+    val vaadinBundle = mock[Bundle]
+    val request = mock[HttpServletRequest]
+    val response = mock[HttpServletResponse]
+    val sos = mock[ServletOutputStream]
+
+    when(ctx.getBundles) thenReturn Array(vaadinBundle)
+    when(vaadinBundle.getSymbolicName) thenReturn "com.vaadin"
+    val resource = "/file.css"
+    val url = classOf[StaticResourcesTest].getResource("VAADIN" + resource)
+    when(vaadinBundle.getResource("VAADIN" + resource)) thenReturn url
+
+    val staticResources = new StaticResources(ctx)
+    when(request.getPathInfo) thenReturn resource
+    when(response.getOutputStream) thenReturn sos
+    staticResources.doGet(request, response)
+
+    verify(response).getOutputStream
   }
 }
