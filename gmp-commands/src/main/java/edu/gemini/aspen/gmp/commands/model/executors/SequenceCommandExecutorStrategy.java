@@ -11,6 +11,8 @@ import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.reboot.LinuxRebootManager;
 import org.apache.felix.ipojo.annotations.*;
 
+import java.util.logging.Logger;
+
 /**
  * This is a high order Sequence Command Executor. It will delegate
  * the actual execution to a more specific executor.
@@ -20,6 +22,8 @@ import org.apache.felix.ipojo.annotations.*;
 @Component
 @Provides
 public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor {
+    private static final Logger LOG = Logger.getLogger(SequenceCommandExecutorStrategy.class.getName());
+
     private final SequenceCommandExecutor _defaultExecutor;
     private final SequenceCommandExecutor _applyExecutor;
     private SequenceCommandExecutor _rebootExecutor;
@@ -49,6 +53,7 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
         }
 
         Command command = action.getCommand();
+        LOG.info("About to execute command " + command);
         return findCommandExecutor(command.getSequenceCommand()).execute(action, sender);
     }
 
