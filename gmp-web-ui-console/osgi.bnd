@@ -4,3 +4,5 @@
 
 Bundle-Activator:
 Include-Resource: {maven-resources}
+Vaadin-Widgetsets: edu.gemini.aspen.gmp.web.ui.console.GMPConsole
+Vaadin-Package-Version: 1

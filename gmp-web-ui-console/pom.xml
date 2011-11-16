@@ -58,13 +58,13 @@
                     <!-- <force>true</force> -->
                     <compileReport>false</compileReport>
                 </configuration>
-                <executions>
+                <!--executions>
                     <execution>
                         <goals>
-                            <goal>compile</goal>
+                            <goal>gwt:compile</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions-->
                 <dependencies>
                     <dependency>
                         <groupId>com.google.gwt</groupId>
@@ -82,7 +82,7 @@
 
             <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->
             <!-- directory is cleaned properly -->
-            <plugin>
+            <!--plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.4.1</version>
                 <configuration>
@@ -92,7 +92,12 @@
                         </fileset>
                     </filesets>
                 </configuration>
-            </plugin>
+                <executions>
+                    <execution>
+                        <phase>gwt:compile</phase>
+                    </execution>
+                </executions>
+            </plugin-->
 
             <plugin>
                 <groupId>com.vaadin</groupId>
