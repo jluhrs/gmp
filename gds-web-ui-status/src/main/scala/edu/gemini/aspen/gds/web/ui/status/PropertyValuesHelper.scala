@@ -29,7 +29,7 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
     getLastDataLabels(1).headOption.getOrElse(StatusModule.defaultLastDataLabel)
   }
 
-  def getLastDataLabels(n: Int) = {
+  def getLastDataLabels(n: Int):Traversable[String] = {
     obsState.getLastDataLabel(n) map {
       _.getName
     }

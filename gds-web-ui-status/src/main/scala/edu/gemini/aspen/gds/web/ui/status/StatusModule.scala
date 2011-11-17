@@ -9,6 +9,8 @@ import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin._
+import collection.mutable.Stack
+import annotation.tailrec
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
   val title: String = "Status"
@@ -20,7 +22,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val propertySources = new PropertyValuesHelper(statusDB, obsState)
 
   //labels
-  val status = new Label(style="gds-green")
+  val status = new Label(style = "gds-green")
   val processing = new Label()
   val lastDataLabel = new Label()
 
@@ -35,41 +37,18 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val lastDataLabelProp = new ObjectProperty(defaultLastDataLabel)
   lastDataLabel.setPropertyDataSource(lastDataLabelProp)
 
-  class Entry {
-    var dataLabel = ""
-    var times: String = ""
-    var missing = ""
-    var errors = ""
-  }
+  case class Entry(dataLabel: String = "", times: String = "", missing: String = "", errors: String = "")
 
-  val lastDataLabels = new Array[Entry](nLast)
-  for (i <- 0 until nLast) {
-    lastDataLabels(i) = new Entry()
-  }
+  var lastDataLabels = List[Entry]()
 
-  private def updateLastObservations(entries: Traversable[Entry], dataLabels: Traversable[String]) {
-    if (entries.isEmpty) return
-    val entry = entries.head
-    if (dataLabels.isEmpty) {
-      entry.dataLabel = ""
-      entry.times = ""
-      entry.missing = ""
-      entry.errors = ""
-      updateLastObservations(entries.tail, dataLabels)
-      return
-    }
-
-    val dataLabel = dataLabels.head
-    entry.dataLabel = dataLabel
-    entry.times = propertySources.getTimes(dataLabel)
-    if (propertySources.isInError(dataLabel)) {
-      entry.missing = propertySources.getMissingKeywords(dataLabel)
-      entry.errors = propertySources.getKeywordsInError(dataLabel)
-    } else {
-      entry.missing = ""
-      entry.errors = ""
-    }
-    updateLastObservations(entries.tail, dataLabels.tail)
+  private def updateLastObservations(dataLabels: Traversable[String]) {
+    lastDataLabels = dataLabels map {
+      l => if (propertySources.isInError(l)) {
+        new Entry(l, propertySources.getTimes(l), propertySources.getMissingKeywords(l), propertySources.getKeywordsInError(l))
+      } else {
+        new Entry(l, propertySources.getTimes(l))
+      }
+    } take(nLast) toList
   }
 
   override def buildTabContent(app: Application): Component = {
@@ -90,7 +69,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     topGrid.addComponent(buildLabel("Last DataSet:"))
     topGrid.addComponent(lastDataLabel)
 
-    updateLastObservations(lastDataLabels, propertySources.getLastDataLabels(nLast))
+    updateLastObservations(propertySources.getLastDataLabels(nLast))
 
     accordion.setSizeFull()
     generateAccordion(app)
@@ -106,7 +85,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
 
   private def generateAccordion(app: Application) {
     for (entry: Entry <- lastDataLabels) {
-      if (!entry.dataLabel.equals("")) {
         val grid = new GridLayout(2, 3)
         grid.setMargin(true)
         grid.setSpacing(true)
@@ -129,7 +107,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
         else {
           accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/ok.png"))
         }
-      }
     }
     accordion.setVisible(accordion.getComponentCount != 0)
   }
@@ -140,7 +117,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     processingProp.setValue(propertySources.getProcessing)
     lastDataLabelProp.setValue(propertySources.getLastDataLabel)
 
-    updateLastObservations(lastDataLabels, propertySources.getLastDataLabels(nLast))
+    updateLastObservations(propertySources.getLastDataLabels(nLast))
 
     accordion.removeAllComponents()
     generateAccordion(app)
@@ -156,5 +133,5 @@ protected object StatusModule {
   val defaultMissing = ""
   val defaultErrors = ""
 
-  def buildLabel(label: String) = new Label(caption=label, style="gds-bold")
+  def buildLabel(label: String) = new Label(caption = label, style = "gds-bold")
 }
