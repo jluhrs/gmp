@@ -62,4 +62,16 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals(Set((ObservationEvent.OBS_PREP, new Duration(1, 2))).toString, module.getTimes)
   }
 
+  @Test
+  def testGetStatusStyle {
+    val statusDB = mock[StatusDatabaseService]
+    statusDB.getStatusItem(anyString) answers {
+      case x: String => new HealthStatus(x, Health.BAD)
+    }
+    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
+
+    val helper = new PropertyValuesHelper(statusDB, obsState)
+    assertEquals("gds-red", helper.getStatusStyle)
+
+  }
 }
