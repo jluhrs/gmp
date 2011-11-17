@@ -7,7 +7,7 @@ import edu.gemini.aspen.giapi.status.{StatusDatabaseService}
 import com.vaadin.data.util.ObjectProperty
 import edu.gemini.aspen.gds.api.Conversions._
 import com.vaadin.ui.{Accordion, Panel, GridLayout, Label, Component}
-import com.vaadin.terminal.ThemeResource
+import com.vaadin.terminal.{ClassResource, ThemeResource}
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
   val title: String = "Status"
@@ -83,11 +83,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     topGrid.setColumnExpandRatio(0, 1.0f)
     topGrid.setColumnExpandRatio(1, 3.0f)
 
-    def buildLabel(caption:String) = {
-      val l = new Label(caption, Label.CONTENT_XHTML)
-      l.setStyleName("gds-bold")
-      l
-    }
     topGrid.addComponent(buildLabel("Current Status:"))
     topGrid.addComponent(status)
     topGrid.addComponent(buildLabel("DataSets in Process:"))
@@ -98,7 +93,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     updateLastObservations(lastDataLabels, propertySources.getLastDataLabels(nLast))
 
     accordion.setSizeFull()
-    generateAccordion()
+    generateAccordion(app)
 
     bottomPanel.addComponent(accordion)
     bottomPanel.setSizeFull()
@@ -109,7 +104,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     panel
   }
 
-  private def generateAccordion() {
+  private def generateAccordion(app: Application) {
     for (entry: Entry <- lastDataLabels) {
       if (!entry.dataLabel.equals("")) {
         val grid = new GridLayout(2, 3)
@@ -118,18 +113,18 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
         grid.setSizeFull()
         grid.setColumnExpandRatio(0, 1.0f)
         grid.setColumnExpandRatio(1, 3.0f)
-        grid.addComponent(new Label("<b>Time to update FITS for last DataSet:</b>", Label.CONTENT_XHTML))
+        grid.addComponent(buildLabel("Time to update FITS for last DataSet"))
         grid.addComponent(new Label(entry.times))
         if (entry.missing.length() > 0) {
-          grid.addComponent(new Label("<b>Missing Keywords from last DataSet:</b>", Label.CONTENT_XHTML))
+          grid.addComponent(buildLabel("Missing Keywords from last DataSet"))
           grid.addComponent(new Label(entry.missing))
         }
         if (entry.errors.length() > 0) {
-          grid.addComponent(new Label("<b>Error Collecting Keywords from last DataSet:</b>", Label.CONTENT_XHTML))
+          grid.addComponent(buildLabel("Error Collecting Keywords from last DataSet:"))
           grid.addComponent(new Label(entry.errors))
         }
         if (propertySources.isInError(entry.dataLabel)) {
-          accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/cancel.png"))
+          accordion.addTab(grid, entry.dataLabel, new ThemeResource("../gds/cancel.png"))
         }
         else {
           accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/ok.png"))
@@ -147,11 +142,11 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     updateLastObservations(lastDataLabels, propertySources.getLastDataLabels(nLast))
 
     accordion.removeAllComponents()
-    generateAccordion()
+    generateAccordion(app)
   }
 }
 
-object StatusModule {
+protected object StatusModule {
   //default values
   val defaultStatus = "UNKNOWN"
   val defaultProcessing = ""
@@ -159,4 +154,10 @@ object StatusModule {
   val defaultTimes = ""
   val defaultMissing = ""
   val defaultErrors = ""
+
+  def buildLabel(caption: String) = {
+    val l = new Label(caption, Label.CONTENT_XHTML)
+    l.setStyleName("gds-bold")
+    l
+  }
 }

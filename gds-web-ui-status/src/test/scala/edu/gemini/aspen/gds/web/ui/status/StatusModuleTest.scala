@@ -1,26 +1,28 @@
 package edu.gemini.aspen.gds.web.ui.status
 
-import org.specs2.mock.Mockito
 import org.mockito.Matchers._
+import org.mockito.Mockito._
 import org.junit.Assert._
 import com.vaadin.Application
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.{Health, StatusDatabaseService}
 import edu.gemini.aspen.gds.observationstate.{ObservationStateProvider}
 import edu.gemini.aspen.gds.api.Conversions._
-import org.junit.{Ignore, Test}
+import org.scalatest.FunSuite
+import org.scalatest.mock.MockitoSugar
+import org.mockito.stubbing.Answer
+import org.mockito.invocation.InvocationOnMock
 
-class StatusModuleTest extends Mockito {
-  @Test
-  def testBuildPanel {
+class StatusModuleTest extends FunSuite with MockitoSugar {
+  test("build panel") {
     val statusDB = mock[StatusDatabaseService]
-    statusDB.getStatusItem(anyString) answers {
-      case x: String => new HealthStatus(x, Health.BAD)
-    }
+    when(statusDB.getStatusItem(anyString)) thenAnswer (new Answer[HealthStatus](){
+      def answer(in: InvocationOnMock) = new HealthStatus(in.getArguments.head.toString, Health.BAD)
+    })
     val obsState = mock[ObservationStateProvider]
-    obsState.getObservationsInProgress returns List()
-    obsState.getLastDataLabel returns None
-    obsState.getLastDataLabel(anyInt) returns None
+    when(obsState.getObservationsInProgress) thenReturn Nil
+    when(obsState.getLastDataLabel) thenReturn None
+    when(obsState.getLastDataLabel(anyInt)) thenReturn None
 
     // mock configuration service
     val module = new StatusModule(statusDB, obsState)
@@ -29,5 +31,8 @@ class StatusModuleTest extends Mockito {
     assertNotNull(module.buildTabContent(app))
   }
 
+  test("build label") {
+    assertEquals("Some label", StatusModule.buildLabel("Some label").getCaption)
+  }
 
 }
