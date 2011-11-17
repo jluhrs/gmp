@@ -15,6 +15,7 @@ import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
+import java.util.Collection;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -98,9 +99,17 @@ public class MonitorStatusOperation implements Operation {
 
             getter.startJms(provider);
 
-            StatusItem item = getter.getStatusItem(_statusName);
-
-            monitor.update(item);
+            if (_statusName.equals(">")) {
+                Collection<StatusItem> items = getter.getAllStatusItems();
+                for (StatusItem item : items) {
+                    monitor.update(item);
+                }
+            } else {
+                StatusItem item = getter.getStatusItem(_statusName);
+                if (item != null) {
+                    monitor.update(item);
+                }
+            }
 
             getter.stopJms();
 
