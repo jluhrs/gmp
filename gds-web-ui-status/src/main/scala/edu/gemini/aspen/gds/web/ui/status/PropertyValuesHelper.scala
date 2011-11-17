@@ -23,9 +23,7 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
     }
   }
 
-  def isInError(label: DataLabel) = {
-    obsState.isInError(label)
-  }
+  def isInError(label: DataLabel) = obsState.isInError(label)
 
   def getLastDataLabel = {
     getLastDataLabels(1).headOption.getOrElse(StatusModule.defaultLastDataLabel)
@@ -51,9 +49,7 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
     } head
   }
 
-  def getProcessing: String = {
-    obsState.getObservationsInProgress.mkString(", ")
-  }
+  def getProcessing: String = obsState.getObservationsInProgress.mkString(", ")
 
   def getMissingKeywords: String = {
     obsState.getLastDataLabel map {
@@ -64,8 +60,7 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
   def getMissingKeywords(label: DataLabel): String = {
     obsState.getMissingKeywords(label) map {
       case x: FitsKeyword => x.getName
-    } addString(new StringBuilder(), ", ") toString()
-
+    } mkString(", ")
   }
 
   def getKeywordsInError: String = {
