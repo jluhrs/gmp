@@ -1,5 +1,10 @@
 @import "../reindeer/styles.css";
 
+/* Generic css styles */
+.v-label-gds-bold {
+    font-weight:bold;
+}
+
 /* css for the keywords-table */
 /* Hide the caption of the table */
 .v-caption-keywords-table {
