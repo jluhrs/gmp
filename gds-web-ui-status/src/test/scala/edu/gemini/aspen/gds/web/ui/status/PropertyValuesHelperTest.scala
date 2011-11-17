@@ -15,9 +15,6 @@ import org.scala_tools.time.Imports._
 
 
 class PropertyValuesHelperTest extends Mockito {
-  //todo: fix these tests. Problem with iPojo injection in constructors.
-
-  @Ignore
   @Test
   def testValueFormattingDefaults {
     val statusDB = mock[StatusDatabaseService]

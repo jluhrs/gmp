@@ -1,13 +1,14 @@
 package edu.gemini.aspen.gds.web.ui.status
 
+import com.vaadin.Application
+import com.vaadin.data.util.ObjectProperty
+import com.vaadin.ui.{Accordion, Panel, GridLayout, Component}
+import com.vaadin.terminal.ThemeResource
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
-import com.vaadin.Application
-import edu.gemini.aspen.giapi.status.{StatusDatabaseService}
-import com.vaadin.data.util.ObjectProperty
+import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.api.Conversions._
-import com.vaadin.ui.{Accordion, Panel, GridLayout, Label, Component}
-import com.vaadin.terminal.{ClassResource, ThemeResource}
+import edu.gemini.aspen.giapi.web.ui.vaadin._
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
   val title: String = "Status"
@@ -19,8 +20,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val propertySources = new PropertyValuesHelper(statusDB, obsState)
 
   //labels
-  val status = new Label()
-  status.setContentMode(Label.CONTENT_XHTML)
+  val status = new Label(style="gds-green")
   val processing = new Label()
   val lastDataLabel = new Label()
 
@@ -124,7 +124,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
           grid.addComponent(new Label(entry.errors))
         }
         if (propertySources.isInError(entry.dataLabel)) {
-          accordion.addTab(grid, entry.dataLabel, new ThemeResource("../gds/cancel.png"))
+          accordion.addTab(grid, entry.dataLabel, new ThemeResource("../gds/failed.png"))
         }
         else {
           accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/ok.png"))
@@ -136,6 +136,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
 
   override def refresh(app: Application) {
     statusProp.setValue(propertySources.getStatus)
+    status.setStyleName(propertySources.getStatusStyle)
     processingProp.setValue(propertySources.getProcessing)
     lastDataLabelProp.setValue(propertySources.getLastDataLabel)
 
@@ -155,9 +156,5 @@ protected object StatusModule {
   val defaultMissing = ""
   val defaultErrors = ""
 
-  def buildLabel(caption: String) = {
-    val l = new Label(caption, Label.CONTENT_XHTML)
-    l.setStyleName("gds-bold")
-    l
-  }
+  def buildLabel(label: String) = new Label(caption=label, style="gds-bold")
 }

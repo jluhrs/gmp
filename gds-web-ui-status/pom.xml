@@ -42,9 +42,9 @@
             <artifactId>vaadin</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-            <artifactId>pagedtable</artifactId>
-            <version>0.6.2</version>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
