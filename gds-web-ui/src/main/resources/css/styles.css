@@ -1,8 +1,23 @@
 @import "../reindeer/styles.css";
 
 /* Generic css styles */
-.v-label-gds-bold {
-    font-weight:bold;
+.gds-bold {
+    font-weight: bold;
+}
+
+.gds-green {
+    font-weight: bold;
+    color: green;
+}
+
+.gds-orange {
+    font-weight: bold;
+    color: orange;
+}
+
+.gds-red {
+    font-weight: bold;
+    color: red;
 }
 
 /* css for the keywords-table */
