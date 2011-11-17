@@ -68,24 +68,38 @@ class PropertyValuesHelperTest extends Mockito {
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
     val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
-    obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD")))
-    assertEquals("KEYWORD", propertyValuesHelper.getMissingKeywords)
-    
-    obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD2")))
-    assertEquals("KEYWORD2, KEYWORD", propertyValuesHelper.getMissingKeywords)
-  }
-
-  @Test
-  def testMissingKeywords {
-    val statusDB = mock[StatusDatabaseService]
-    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
-
-    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
 
     obsState.startObservation("label1")
     assertEquals("label1", propertyValuesHelper.getProcessing)
     obsState.startObservation("label2")
     assertEquals("label2, label1", propertyValuesHelper.getProcessing)
+  }
+
+  @Test
+  def testGetMissingKeywords {
+    val statusDB = mock[StatusDatabaseService]
+    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
+
+    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
+    obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD")))
+    assertEquals("KEYWORD", propertyValuesHelper.getMissingKeywords)
+
+    obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD2")))
+    assertEquals("KEYWORD2, KEYWORD", propertyValuesHelper.getMissingKeywords)
+  }
+
+  @Test
+  def testGetKeywordsInError {
+    val statusDB = mock[StatusDatabaseService]
+    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
+
+    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
+
+    obsState.registerCollectionError("label", List((new FitsKeyword("KEYWORD"), CollectionError.GenericError)))
+    assertEquals("KEYWORD", propertyValuesHelper.getKeywordsInError)
+
+    obsState.registerCollectionError("label", List((new FitsKeyword("KEYWORD2"), CollectionError.GenericError)))
+    assertEquals("KEYWORD2, KEYWORD", propertyValuesHelper.getKeywordsInError)
   }
 
   @Test

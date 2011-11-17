@@ -72,7 +72,7 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
   def getKeywordsInError(label: DataLabel): String = {
     obsState.getKeywordsInError(label) map {
       case (x: FitsKeyword, y: CollectionError.CollectionError) => x.getName
-    } addString(new StringBuilder(), ",") toString()
+    } mkString(", ")
   }
 
 }
