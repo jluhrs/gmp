@@ -51,8 +51,8 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
     } head
   }
 
-  def getProcessing = {
-    obsState.getObservationsInProgress.addString(new StringBuilder(), ", ").toString()
+  def getProcessing: String = {
+    obsState.getObservationsInProgress.mkString(", ")
   }
 
   def getMissingKeywords: String = {

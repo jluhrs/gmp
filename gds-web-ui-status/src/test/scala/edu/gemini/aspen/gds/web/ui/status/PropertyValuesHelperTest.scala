@@ -40,26 +40,40 @@ class PropertyValuesHelperTest extends Mockito {
     }
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
-    val module = new PropertyValuesHelper(statusDB, obsState)
+    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
 
     obsState.startObservation("label")
     obsState.endObservation("label")
-    assertEquals("label", module.getLastDataLabel)
+    assertEquals("label", propertyValuesHelper.getLastDataLabel)
 
     obsState.registerCollectionError("label", List((new FitsKeyword("KEYWORD"), CollectionError.GenericError)))
-    assertEquals("KEYWORD", module.getKeywordsInError)
+    assertEquals("KEYWORD", propertyValuesHelper.getKeywordsInError)
 
     obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD")))
-    assertEquals("KEYWORD", module.getMissingKeywords)
+    assertEquals("KEYWORD", propertyValuesHelper.getMissingKeywords)
 
     obsState.startObservation("label2")
-    assertEquals("label2", module.getProcessing)
+    assertEquals("label2", propertyValuesHelper.getProcessing)
 
-    assertEquals("BAD", module.getStatus)
+    assertEquals("BAD", propertyValuesHelper.getStatus)
     obsState.endObservation("label2")
 
     obsState.registerTimes("label2", List((ObservationEvent.OBS_PREP, Some(new Duration(1, 2)))))
-    assertEquals("1[ms]", module.getTimes)
+    assertEquals("1[ms]", propertyValuesHelper.getTimes)
+  }
+
+  @Test
+  def testGetProcessing {
+    val statusDB = mock[StatusDatabaseService]
+    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
+
+    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
+
+    obsState.startObservation("label1")
+    assertEquals("label1", propertyValuesHelper.getProcessing)
+    obsState.startObservation("label2")
+    assertEquals("label2, label1", propertyValuesHelper.getProcessing)
+
   }
 
   @Test
