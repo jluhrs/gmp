@@ -15,7 +15,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val topGrid = new GridLayout(2, 3)
   val nLast = 10
   val accordion = new Accordion()
-  val bottomPanel = new Panel("<b>Last " + nLast + " Observations</b>")
+  val bottomPanel = new Panel("Last " + nLast + " Observations")
   val propertySources = new PropertyValuesHelper(statusDB, obsState)
 
   //labels
@@ -83,11 +83,16 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     topGrid.setColumnExpandRatio(0, 1.0f)
     topGrid.setColumnExpandRatio(1, 3.0f)
 
-    topGrid.addComponent(new Label("<b>Current Status:</b>", Label.CONTENT_XHTML))
+    def buildLabel(caption:String) = {
+      val l = new Label(caption, Label.CONTENT_XHTML)
+      l.setStyleName("gds-bold")
+      l
+    }
+    topGrid.addComponent(buildLabel("Current Status:"))
     topGrid.addComponent(status)
-    topGrid.addComponent(new Label("<b>DataSets in Process:</b>", Label.CONTENT_XHTML))
+    topGrid.addComponent(buildLabel("DataSets in Process:"))
     topGrid.addComponent(processing)
-    topGrid.addComponent(new Label("<b>Last DataSet:</b>", Label.CONTENT_XHTML))
+    topGrid.addComponent(buildLabel("Last DataSet:"))
     topGrid.addComponent(lastDataLabel)
 
     updateLastObservations(lastDataLabels, propertySources.getLastDataLabels(nLast))
@@ -131,6 +136,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
         }
       }
     }
+    accordion.setVisible(accordion.getComponentCount != 0)
   }
 
   override def refresh(app: Application) {
@@ -143,8 +149,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     accordion.removeAllComponents()
     generateAccordion()
   }
-
-
 }
 
 object StatusModule {
@@ -155,5 +159,4 @@ object StatusModule {
   val defaultTimes = ""
   val defaultMissing = ""
   val defaultErrors = ""
-
 }
