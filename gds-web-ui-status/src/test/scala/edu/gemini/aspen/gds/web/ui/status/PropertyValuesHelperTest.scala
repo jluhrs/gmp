@@ -32,7 +32,6 @@ class PropertyValuesHelperTest extends Mockito {
 
   }
 
-  @Ignore
   @Test
   def testValueFormatting {
     val statusDB = mock[StatusDatabaseService]
@@ -48,18 +47,19 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals("label", module.getLastDataLabel)
 
     obsState.registerCollectionError("label", List((new FitsKeyword("KEYWORD"), CollectionError.GenericError)))
-    assertEquals(Set((new FitsKeyword("KEYWORD"), CollectionError.GenericError)).toString, module.getKeywordsInError)
+    assertEquals("KEYWORD", module.getKeywordsInError)
 
     obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD")))
-    assertEquals(Set(new FitsKeyword("KEYWORD")).toString, module.getMissingKeywords)
+    assertEquals("KEYWORD", module.getMissingKeywords)
 
     obsState.startObservation("label2")
-    assertEquals(Set("label2").toString, module.getProcessing)
+    assertEquals("label2", module.getProcessing)
 
     assertEquals("BAD", module.getStatus)
+    obsState.endObservation("label2")
 
-    obsState.registerTimes("label", List((ObservationEvent.OBS_PREP, Some(new Duration(1, 2)))))
-    assertEquals(Set((ObservationEvent.OBS_PREP, new Duration(1, 2))).toString, module.getTimes)
+    obsState.registerTimes("label2", List((ObservationEvent.OBS_PREP, Some(new Duration(1, 2)))))
+    assertEquals("1[ms]", module.getTimes)
   }
 
   @Test
@@ -68,10 +68,20 @@ class PropertyValuesHelperTest extends Mockito {
     statusDB.getStatusItem(anyString) answers {
       case x: String => new HealthStatus(x, Health.BAD)
     }
+
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
     val helper = new PropertyValuesHelper(statusDB, obsState)
     assertEquals("gds-red", helper.getStatusStyle)
 
+    statusDB.getStatusItem(anyString) answers {
+      case x: String => new HealthStatus(x, Health.WARNING)
+    }
+
+    assertEquals("gds-orange", helper.getStatusStyle)
+    statusDB.getStatusItem(anyString) answers {
+      case x: String => new HealthStatus(x, Health.GOOD)
+    }
+    assertEquals("gds-green", helper.getStatusStyle)
   }
 }

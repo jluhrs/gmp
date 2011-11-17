@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
-import org.scala_tools.time.Imports._
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.api.CollectionError
@@ -45,12 +44,10 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
   }
 
   def getTimes(label: DataLabel): String = {
-    obsState.getTimes(label) filter {
-      case (x: AnyRef, y: Option[_]) => x == "FITS update"
-    } map {
+    obsState.getTimes(label) map {
       case (x: AnyRef, y: Option[_]) => y map {
         case t: Duration => t.getMillis.toString + "[ms]"
-      } getOrElse ""
+      } getOrElse("")
     } head
   }
 
