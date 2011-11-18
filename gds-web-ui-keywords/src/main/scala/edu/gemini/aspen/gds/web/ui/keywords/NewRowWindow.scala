@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.web.ui.keywords
 
-import edu.gemini.aspen.giapi.web.ui.vaadin.Preamble._
+import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
 import model._

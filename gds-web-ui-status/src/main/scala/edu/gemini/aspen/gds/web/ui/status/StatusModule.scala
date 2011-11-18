@@ -8,7 +8,7 @@ import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.api.Conversions._
-import edu.gemini.aspen.giapi.web.ui.vaadin._
+import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import StatusModule._
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {

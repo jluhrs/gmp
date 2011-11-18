@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.vaadin
 
 import com.vaadin.ui._
-import edu.gemini.aspen.giapi.web.ui.vaadin.Preamble._
+import edu.gemini.aspen.giapi.web.ui.vaadin._
 import com.vaadin.ui.Window.Notification
 import edu.gemini.aspen.gds.web.ui.api.AuthenticationService
 

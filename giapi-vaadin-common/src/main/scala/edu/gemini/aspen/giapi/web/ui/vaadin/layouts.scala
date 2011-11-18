@@ -4,6 +4,8 @@ import scala.collection.mutable.Map
 import com.vaadin.ui.{Alignment, Component}
 import com.vaadin.event.LayoutEvents.LayoutClickNotifier
 
+package layouts {
+
 trait LayoutClickListener extends LayoutClickNotifier {
   def addLayoutClickListener(action: com.vaadin.event.LayoutEvents.LayoutClickEvent => Unit) {
     addListener(new com.vaadin.event.LayoutEvents.LayoutClickListener {
@@ -117,4 +119,6 @@ class CustomLayout(width: String = 100 percent, height: String = null, template:
     addComponent(component, location)
     component
   }
+}
+
 }

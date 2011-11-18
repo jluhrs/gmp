@@ -7,7 +7,7 @@ import edu.gemini.aspen.gmp.services.PropertyHolder
 import org.osgi.service.cm.ConfigurationAdmin
 import java.util.{Hashtable, Dictionary}
 import org.osgi.service.cm.Configuration
-import edu.gemini.aspen.giapi.web.ui.vaadin.Preamble._
+import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.gmp.services.properties.GmpProperties
 import com.vaadin.ui.{GridLayout, TextField, Button, Label, Component}
 

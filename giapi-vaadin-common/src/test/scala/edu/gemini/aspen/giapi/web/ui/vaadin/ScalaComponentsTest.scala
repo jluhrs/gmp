@@ -5,6 +5,7 @@ import org.junit.Assert._
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import com.vaadin.data.util.ObjectProperty
+import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 
 @RunWith(classOf[JUnitRunner])
 class ScalaComponentsTest extends FunSuite {
