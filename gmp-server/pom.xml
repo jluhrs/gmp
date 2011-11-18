@@ -21,6 +21,7 @@
         <url>http://www.gemini.edu</url>
         <name>Gemini Observatory</name>
     </organization>
+
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmpserver</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmpserver</bundle.namespace>
@@ -40,9 +41,8 @@
 
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
-        <vaadin.version>6.6.7</vaadin.version>
-        <gmp.version>${project.version}</gmp.version>
         <vaadin.version>6.7.0</vaadin.version>
+        <gmp.version>0.14.0-SNAPSHOT</gmp.version>
         <pax-runner.version>1.7.4</pax-runner.version>
     </properties>
 
@@ -238,7 +238,7 @@
                                     <location>src/main/etc/bin/start.sh</location>
                                     <filter>true</filter>
                                 </source>
-                                 <source>
+                                <source>
                                     <location>src/main/etc/bin/gmp-server-ctl.sh</location>
                                     <filter>true</filter>
                                 </source>
@@ -673,6 +673,96 @@
             <version>0.1.0</version>
         </dependency>
 
+        <!--dependency>
+            <groupId>edu.gemini.aspen.gpi.web.ui</groupId>
+            <artifactId>gmp-web-ui-console</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>console</artifactId>
+            <version>1.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>widget-rpc</artifactId>
+            <version>1.1.3</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>invient-charts</artifactId>
+            <version>0.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>icepush</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.icepush</groupId>
+            <artifactId>icepush-basic</artifactId>
+            <version>2.0.0-3</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.icepush</groupId>
+            <artifactId>icepush-gwt</artifactId>
+            <version>2.0.0-3</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>edu.gemini.aspen.gpi.web.ui</groupId>
+            <artifactId>gpi-ao-plot</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-client</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-common</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-server</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-poll</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin</groupId>
+            <artifactId>dontpush-addon-ozonelayer</artifactId>
+            <version>0.3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-runtime</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-weblogic</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-tomcat</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-compat-jbossweb</artifactId>
+            <version>${atmosphere.version}</version>
+        </dependency-->
     </dependencies>
 
     <profiles>
