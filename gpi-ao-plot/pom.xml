@@ -52,20 +52,19 @@
                     <webappDirectory>${basedir}/src/main/resources/VAADIN/widgetsets</webappDirectory>
                     <hostedWebapp>${basedir}/src/main/resources/VAADIN/widgetsets</hostedWebapp>
                     <noServer>true</noServer>
-                    <runTarget>http://localhost:8080/mobilemail</runTarget>
                     <!-- Remove draftCompile when project is ready -->
                     <draftCompile>false</draftCompile>
                     <style>OBF</style>
                     <!-- <force>true</force> -->
                     <compileReport>false</compileReport>
                 </configuration>
-                <!--executions>
+                <executions>
                     <execution>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                     </execution>
-                </executions-->
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>com.google.gwt</groupId>
@@ -83,7 +82,7 @@
 
             <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->
             <!-- directory is cleaned properly -->
-            <!--plugin>
+            <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.4.1</version>
                 <configuration>
@@ -93,7 +92,7 @@
                         </fileset>
                     </filesets>
                 </configuration>
-            </plugin-->
+            </plugin>
 
             <plugin>
                 <groupId>com.vaadin</groupId>
@@ -154,6 +153,11 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
+            <artifactId>atmosphere-gwt-server</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
             <version>0.7.2</version>
         </dependency>
@@ -171,6 +175,11 @@
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-compat-jbossweb</artifactId>
             <version>0.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.3.0</version>
         </dependency>
 
         <dependency>
