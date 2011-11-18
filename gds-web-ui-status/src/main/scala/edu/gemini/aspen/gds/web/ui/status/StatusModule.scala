@@ -9,8 +9,7 @@ import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin._
-import collection.mutable.Stack
-import annotation.tailrec
+import StatusModule._
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
   val title: String = "Status"
@@ -21,35 +20,17 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val bottomPanel = new Panel("Last " + nLast + " Observations")
   val propertySources = new PropertyValuesHelper(statusDB, obsState)
 
-  //labels
-  val status = new Label(style = "gds-green")
-  val processing = new Label()
-  val lastDataLabel = new Label()
-
   //properties
-
-  import StatusModule._
-
   val statusProp = new ObjectProperty(defaultStatus)
-  status.setPropertyDataSource(statusProp)
   val processingProp = new ObjectProperty(defaultProcessing)
-  processing.setPropertyDataSource(processingProp)
   val lastDataLabelProp = new ObjectProperty(defaultLastDataLabel)
-  lastDataLabel.setPropertyDataSource(lastDataLabelProp)
+
+  //labels
+  val status = new Label(style = "gds-green", property = statusProp)
+  val processing = new Label(property = processingProp)
+  val lastDataLabel = new Label(property = lastDataLabelProp)
 
   case class Entry(dataLabel: String = "", times: String = "", missing: String = "", errors: String = "")
-
-  var lastDataLabels = List[Entry]()
-
-  private def updateLastObservations(dataLabels: Traversable[String]) {
-    lastDataLabels = dataLabels map {
-      l => if (propertySources.isInError(l)) {
-        new Entry(l, propertySources.getTimes(l), propertySources.getMissingKeywords(l), propertySources.getKeywordsInError(l))
-      } else {
-        new Entry(l, propertySources.getTimes(l))
-      }
-    } take(nLast) toList
-  }
 
   override def buildTabContent(app: Application): Component = {
     statusProp.setValue(propertySources.getStatus)
@@ -69,10 +50,8 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     topGrid.addComponent(buildLabel("Last DataSet:"))
     topGrid.addComponent(lastDataLabel)
 
-    updateLastObservations(propertySources.getLastDataLabels(nLast))
-
     accordion.setSizeFull()
-    generateAccordion(app)
+    generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
 
     bottomPanel.addComponent(accordion)
     bottomPanel.setSizeFull()
@@ -83,8 +62,8 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     panel
   }
 
-  private def generateAccordion(app: Application) {
-    for (entry: Entry <- lastDataLabels) {
+  private def generateAccordion(app: Application, lastEntries:List[Entry]) {
+    for (entry: Entry <- lastEntries) {
         val grid = new GridLayout(2, 3)
         grid.setMargin(true)
         grid.setSpacing(true)
@@ -117,10 +96,18 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     processingProp.setValue(propertySources.getProcessing)
     lastDataLabelProp.setValue(propertySources.getLastDataLabel)
 
-    updateLastObservations(propertySources.getLastDataLabels(nLast))
-
     accordion.removeAllComponents()
-    generateAccordion(app)
+    generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
+  }
+
+  private def getLastEntries(dataLabels: Traversable[String]):List[Entry] = {
+    dataLabels map {
+      l => if (propertySources.isInError(l)) {
+        new Entry(l, propertySources.getTimes(l), propertySources.getMissingKeywords(l), propertySources.getKeywordsInError(l))
+      } else {
+        new Entry(l, propertySources.getTimes(l))
+      }
+    } take(nLast) toList
   }
 }
 
