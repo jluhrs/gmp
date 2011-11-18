@@ -14,9 +14,12 @@ import edu.gemini.epics.{ReadOnlyClientEpicsChannel, NewEpicsReader}
 class NewEpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
   val epicsReader = mock[NewEpicsReader]
   val channel = mock[ReadOnlyClientEpicsChannel[Double]]
+  val channel2 = mock[ReadOnlyClientEpicsChannel[Double]]
   channel.isValid returns true
+  channel2.isValid returns true
   //seems like a Mockito bug, the cast works around it...
   epicsReader.getChannelAsync("gpi:value").asInstanceOf[ReadOnlyClientEpicsChannel[Double]] returns channel
+  epicsReader.getChannelAsync("gpi:value2").asInstanceOf[ReadOnlyClientEpicsChannel[Double]] returns channel2
 
   def createFixture = (
     new DataLabel("GS-2011"),
@@ -44,7 +47,17 @@ class NewEpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
       val actors = epicsActorsFactory.buildActors(ObservationEvent.OBS_START_ACQ, dataLabel)
       actors should have length (1)
     }
-    it("should be configurable with two item") {
+    it("should be configurable with two item for diferent channel") {
+      val (dataLabel, epicsActorsFactory) = createFixture
+      val configuration = List(
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation"),
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value2", 0, "Mean airmass for the observation"))
+      epicsActorsFactory.configure(configuration)
+
+      val actors = epicsActorsFactory.buildActors(ObservationEvent.OBS_START_ACQ, dataLabel)
+      actors should have length (2)
+    }
+    it("should be configurable with two item for same channel") {
       val (dataLabel, epicsActorsFactory) = createFixture
       val configuration = List(
         GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation"),
@@ -52,7 +65,7 @@ class NewEpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
       epicsActorsFactory.configure(configuration)
 
       val actors = epicsActorsFactory.buildActors(ObservationEvent.OBS_START_ACQ, dataLabel)
-      actors should have length (2)
+      actors should have length (1)
     }
     it("should be configurable with one item for start and one item for end") {
       val (dataLabel, epicsActorsFactory) = createFixture
