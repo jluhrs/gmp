@@ -2,7 +2,10 @@ package edu.gemini.aspen.giapi.web.ui.vaadin
 
 import com.vaadin.data.Property
 
-class Label(caption:String = null, contentMode:Int = com.vaadin.ui.Label.CONTENT_DEFAULT, style:String=null, property:Property = null) extends com.vaadin.ui.Label(caption, contentMode) {
+class Label(content:String = null, caption:String = null, contentMode:Int = com.vaadin.ui.Label.CONTENT_DEFAULT, style:String=null, property:Property = null) extends com.vaadin.ui.Label(content, contentMode) {
   setStyleName(style)
-  setPropertyDataSource(property)
+  setCaption(caption)
+  if (Option(property).isDefined) {
+    setPropertyDataSource(property)
+  }
 }

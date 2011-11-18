@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapi.web.ui.vaadin
+package edu.gemini.aspen.giapi.web.ui.vaadin.services
 
 import org.junit.Assert._
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}

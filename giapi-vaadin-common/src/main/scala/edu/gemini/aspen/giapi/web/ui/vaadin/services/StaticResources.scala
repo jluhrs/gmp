@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapi.web.ui.vaadin
+package edu.gemini.aspen.giapi.web.ui.vaadin.services
 
 import java.net.URL;
 import javax.servlet.http.HttpServlet;

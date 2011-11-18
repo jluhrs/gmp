@@ -93,6 +93,8 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   override def refresh(app: Application) {
     statusProp.setValue(propertySources.getStatus)
     status.setStyleName(propertySources.getStatusStyle)
+    println("STATUS " + statusProp + " " + propertySources.getStatus)
+    println("STATUS " + status.getCaption)
     processingProp.setValue(propertySources.getProcessing)
     lastDataLabelProp.setValue(propertySources.getLastDataLabel)
 
