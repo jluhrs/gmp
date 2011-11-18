@@ -12,12 +12,12 @@ class LoginWindow(parent: GDSCoreVaadinApp, authenticationService: Authenticatio
   setName("Login")
   setModal(true)
   setResizable(false)
-  setWidth("365px")
-  setHeight("210px")
+  setWidth(365 px)
+  setHeight(210 px)
 
   val layout = new VerticalLayout
-  layout.setWidth("348px")
-  layout.setHeight("168px")
+  layout.setWidth(348 px)
+  layout.setHeight(168 px)
   layout.setMargin(true)
 
   val loginForm = new LoginForm {
@@ -40,8 +40,8 @@ class LoginWindow(parent: GDSCoreVaadinApp, authenticationService: Authenticatio
       parent.getMainWindow.showNotification("Authentication Failed!", Notification.TYPE_ERROR_MESSAGE)
     }
   })
-  loginForm.setWidth("350px")
-  loginForm.setHeight("180px")
+  loginForm.setWidth(350 px)
+  loginForm.setHeight(180 px)
   layout.addComponent(loginForm)
 
   setContent(layout)

@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gds.web.ui.vaadin
 
-import org.apache.felix.ipojo.annotations.{Unbind, Bind, Provides, Instantiate}
 import java.util.logging.Logger
-import edu.gemini.aspen.gds.web.ui.api.{StatusPanelModule, StatusPanel}
 import com.vaadin.ui._
+import org.apache.felix.ipojo.annotations.{Unbind, Bind, Provides, Instantiate}
+import edu.gemini.aspen.gds.web.ui.api.{StatusPanelModule, StatusPanel}
+import edu.gemini.aspen.giapi.web.ui.vaadin._
 
 /**
  * Component that con display a status panel composing status panel modules
@@ -29,8 +30,8 @@ class StatusPanelImpl extends StatusPanel {
         layout.setComponentAlignment(statusItem, Alignment.MIDDLE_LEFT)
     }
 
-    layout.setHeight("30px")
-    layout.setWidth("100%")
+    layout.setHeight(30 px)
+    layout.setWidth(100 percent)
 
     new Panel(layout)
   }

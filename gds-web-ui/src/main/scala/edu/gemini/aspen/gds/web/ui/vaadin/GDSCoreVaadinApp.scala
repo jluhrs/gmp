@@ -46,7 +46,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
       }
     })
     setTheme("gds")
-    tabsSheet.setHeight("100%")
+    tabsSheet.setHeight(100 percent)
 
     val mainLayout = new VerticalLayout
     mainLayout.setMargin(true)
@@ -162,8 +162,8 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
 
     layout.addComponent(linkButton)
     layout.setComponentAlignment(linkButton, Alignment.MIDDLE_RIGHT)
-    layout.setWidth("100%")
-    layout.setHeight("20px")
+    layout.setWidth(100 percent)
+    layout.setHeight(20 px)
     layout
   }
 
@@ -192,8 +192,8 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     layout.addComponent(logoutButton)
     layout.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT)
 
-    layout.setWidth("100%")
-    layout.setHeight("20px")
+    layout.setWidth(100 percent)
+    layout.setHeight(20 px)
 
     layout
   }
@@ -204,19 +204,19 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
 
     // Add the GDS Label
     val gdsLabel = new Label("GIAPI Data Service")
-    layout.setHeight("95px")
+    layout.setHeight(95 px)
     gdsLabel.setStyleName("gds-title")
 
     layout.addComponent(gdsLabel)
     layout.setComponentAlignment(gdsLabel, Alignment.MIDDLE_LEFT)
     layout.setExpandRatio(gdsLabel, 1.0f)
 
-    layout.setWidth("100%")
+    layout.setWidth(100 percent)
 
     // Add the logo
     val image = new Embedded(null, new ClassResource("gemini-logo.jpg", this))
-    image.setHeight("95px")
-    image.setWidth("282px")
+    image.setHeight(95 px)
+    image.setWidth(282 px)
     image.setStyleName("gds-title")
     layout.addComponent(image)
     layout.setComponentAlignment(gdsLabel, Alignment.MIDDLE_RIGHT)
