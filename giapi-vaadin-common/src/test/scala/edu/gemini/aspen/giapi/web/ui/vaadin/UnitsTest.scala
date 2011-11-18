@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class SizeableTest extends FunSuite {
+class UnitsTest extends FunSuite {
   test("Percent conversions") {
     assertEquals("100%", 100 percent)
   }
