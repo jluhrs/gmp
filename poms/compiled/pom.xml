@@ -71,7 +71,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-jms-util</artifactId>
-                <version>0.10.1</version>
+                <version>0.11.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>

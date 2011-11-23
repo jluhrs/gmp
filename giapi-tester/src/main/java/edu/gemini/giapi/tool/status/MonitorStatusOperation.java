@@ -5,6 +5,7 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
+import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
 import edu.gemini.giapi.tool.arguments.ExpectedValueArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.MonitorStatusArgument;

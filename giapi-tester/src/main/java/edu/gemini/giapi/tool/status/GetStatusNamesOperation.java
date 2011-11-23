@@ -1,6 +1,6 @@
 package edu.gemini.giapi.tool.status;
 
-import edu.gemini.aspen.giapitestsupport.TesterException;
+import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
 import edu.gemini.giapi.tool.arguments.GetStatusNamesArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.parser.Argument;
@@ -21,20 +21,21 @@ public class GetStatusNamesOperation implements Operation {
 
     private String _host = "localhost";
 
-     private boolean ready = false;
+    private boolean ready = false;
 
     public void setArgument(Argument arg) {
         if (arg instanceof GetStatusNamesArgument) {
             ready = true;
-        }if (arg instanceof HostArgument) {
-            _host = ((HostArgument)arg).getHost();
+        }
+        if (arg instanceof HostArgument) {
+            _host = ((HostArgument) arg).getHost();
         }
     }
 
     public boolean isReady() {
         return ready;
     }
-    
+
     public int execute() throws Exception {
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
@@ -47,7 +48,7 @@ public class GetStatusNamesOperation implements Operation {
 
             if (names != null) {
                 System.out.println("Registered status names:");
-                for(String name: names){
+                for (String name : names) {
                     System.out.println(name);
                 }
             } else {
@@ -55,12 +56,9 @@ public class GetStatusNamesOperation implements Operation {
             }
 
 
-
-        }  catch (JMSException ex) {
+        } catch (JMSException ex) {
             LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-        }  catch( TesterException ex){
-            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-        }finally{
+        } finally {
             getter.stopJms();
         }
         return 0;

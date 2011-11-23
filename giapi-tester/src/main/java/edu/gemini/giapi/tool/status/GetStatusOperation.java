@@ -1,10 +1,11 @@
 package edu.gemini.giapi.tool.status;
 
-import edu.gemini.giapi.tool.parser.Operation;
-import edu.gemini.giapi.tool.parser.Argument;
-import edu.gemini.giapi.tool.arguments.HostArgument;
-import edu.gemini.giapi.tool.arguments.GetStatusArgument;
 import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
+import edu.gemini.giapi.tool.arguments.GetStatusArgument;
+import edu.gemini.giapi.tool.arguments.HostArgument;
+import edu.gemini.giapi.tool.parser.Argument;
+import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 
@@ -24,9 +25,10 @@ public class GetStatusOperation implements Operation {
 
     public void setArgument(Argument arg) {
         if (arg instanceof GetStatusArgument) {
-            _statusName = ((GetStatusArgument)arg).getStatusName();
-        } if (arg instanceof HostArgument) {
-            _host = ((HostArgument)arg).getHost();
+            _statusName = ((GetStatusArgument) arg).getStatusName();
+        }
+        if (arg instanceof HostArgument) {
+            _host = ((HostArgument) arg).getHost();
         }
     }
 
@@ -52,7 +54,7 @@ public class GetStatusOperation implements Operation {
 
             getter.stopJms();
 
-        }  catch (JMSException ex) {
+        } catch (JMSException ex) {
             LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
         }
         return 0;

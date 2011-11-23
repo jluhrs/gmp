@@ -1,9 +1,8 @@
 package edu.gemini.giapi.tool.status;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.giapitestsupport.TesterException;
+import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
 import edu.gemini.giapi.tool.arguments.GetAllStatusItemsArgument;
-import edu.gemini.giapi.tool.arguments.GetStatusNamesArgument;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.parser.Operation;
@@ -12,7 +11,6 @@ import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
 import java.util.Collection;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -60,8 +58,6 @@ public class GetAllStatusItemsOperation implements Operation {
 
 
         } catch (JMSException ex) {
-            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
-        } catch (TesterException ex) {
             LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
         } finally {
             getter.stopJms();
