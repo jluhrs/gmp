@@ -41,10 +41,7 @@ class ScalaComponentsTest extends FunSuite {
   }
 
   test("button component action") {
-    var b = new Button(action = _ => {
+    new Button(action = _ => {
     })
-    println(b.getListeners(classOf[Button#ButtonClickListener]))
-    println(b.getListeners(classOf[ClickEvent]))
-   // assertEquals(1, b.getListeners(classOf[Button#ButtonClickListener]).size)
   }
 }
