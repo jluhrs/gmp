@@ -46,7 +46,7 @@ public class StatusDispatcherIT {
                 mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").version("3.1.10"),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
-                mavenBundle().artifactId("guava").groupId("com.google.guava").version("8.0.0"),
+                mavenBundle().artifactId("guava-osgi").groupId("com.googlecode.guava-osgi").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").version("1.1.0"),
