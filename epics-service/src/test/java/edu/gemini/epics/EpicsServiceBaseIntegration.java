@@ -45,7 +45,7 @@ public class EpicsServiceBaseIntegration {
                 mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
-                mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject(),
+                mavenBundle().artifactId("guava-osgi").groupId("com.googlecode.guava-osgi").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("jca-lib").groupId("edu.gemini.external.osgi.jca-lib").versionAsInProject(),
