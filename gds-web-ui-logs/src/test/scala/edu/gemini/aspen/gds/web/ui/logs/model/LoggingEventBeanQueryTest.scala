@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.web.ui.logs.model
 import org.junit.Assert._
 import org.joda.time.{DateTimeZone, DateTime}
 import org.joda.time.format.ISODateTimeFormat
-import com.google.common.collect.Maps
+//import com.google.common.collect.Maps
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.web.ui.logs.LogSource
 import org.apache.log4j.Level
@@ -25,7 +25,7 @@ class LoggingEventBeanQueryTest extends Mockito {
   def loadBeansEmpty {
     logSource.logEvents returns Nil
 
-    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array(), Array())
+    val loader = new LoggingEventBeanQuery(definition, Map[String, java.lang.Object](), Array(), Array())
     assertTrue(loader.loadBeans(0, 0).isEmpty)
   }
 
@@ -34,7 +34,7 @@ class LoggingEventBeanQueryTest extends Mockito {
     val logEvents = List(buildEvent)
     logSource.logEvents returns logEvents
 
-    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array(), Array())
+    val loader = new LoggingEventBeanQuery(definition, Map[String, java.lang.Object](), Array(), Array())
     assertEquals(1, loader.loadBeans(0, 1).size)
   }
 
@@ -50,7 +50,7 @@ class LoggingEventBeanQueryTest extends Mockito {
     val logEvents = for (i <- 1 to 10) yield buildEvent
     logSource.logEvents returns logEvents
 
-    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array(), Array())
+    val loader = new LoggingEventBeanQuery(definition, Map[String, java.lang.Object](), Array(), Array())
     assertEquals(10, loader.loadBeans(0, 10).size)
   }
 
@@ -59,7 +59,7 @@ class LoggingEventBeanQueryTest extends Mockito {
     val logEvents = for (i <- 1 to 10) yield buildEvent(i)
     logSource.logEvents returns logEvents
 
-    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array(), Array())
+    val loader = new LoggingEventBeanQuery(definition, Map[String, java.lang.Object](), Array(), Array())
     assertEquals(8, loader.loadBeans(2, 8).size)
     assertEquals(9, loader.loadBeans(2, 20).size)
   }
@@ -69,7 +69,7 @@ class LoggingEventBeanQueryTest extends Mockito {
     val logEvents = for (i <- 0 to 10) yield buildEvent(i)
     logSource.logEvents returns logEvents.reverse
 
-    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array("timeStamp"), Array(true))
+    val loader = new LoggingEventBeanQuery(definition, Map[String, java.lang.Object](), Array("timeStamp"), Array(true))
     val logs = loader.loadBeans(0, 11)
 
     for (i <- 0 to 10) {
@@ -82,7 +82,7 @@ class LoggingEventBeanQueryTest extends Mockito {
     val logEvents = for (i <- 0 to 10) yield buildEvent(i)
     logSource.logEvents returns logEvents.reverse
 
-    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array("timeStamp"), Array(false))
+    val loader = new LoggingEventBeanQuery(definition, Map[String, java.lang.Object](), Array("timeStamp"), Array(false))
     val logs = loader.loadBeans(0, 11)
 
     for (i <- 10 to 0) {
@@ -98,7 +98,7 @@ class LoggingEventBeanQueryTest extends Mockito {
 
     // Add a filter
     definition.addContainerFilter(new And(new Compare.Equal("level", "DEBUG"), new Compare.Equal("logger", "unknown")))
-    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array("timeStamp"), Array(false))
+    val loader = new LoggingEventBeanQuery(definition, Map[String, java.lang.Object](), Array("timeStamp"), Array(false))
     val logs = loader.loadBeans(0, 20)
     assertTrue(logs.isEmpty)
   }
@@ -114,7 +114,7 @@ class LoggingEventBeanQueryTest extends Mockito {
 
     // Add a filter
     definition.addContainerFilter(new Compare.Equal("level", "DEBUG"))
-    val loader = new LoggingEventBeanQuery(definition, Maps.newHashMap(), Array("timeStamp"), Array(false))
+    val loader = new LoggingEventBeanQuery(definition, Map[String, java.lang.Object](), Array("timeStamp"), Array(false))
     val logs = loader.loadBeans(0, 20)
     assertEquals(11, logs.size)
   }

@@ -34,6 +34,10 @@
             <artifactId>vaadin</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.googlecode.guava-osgi</groupId>
+            <artifactId>guava-osgi</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
             <artifactId>pagedtable</artifactId>
             <version>0.6.2</version>
