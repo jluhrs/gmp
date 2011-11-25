@@ -110,4 +110,23 @@
 
     software ALL = NOPASSWD: ALL
    \endverbatim
+
+\section gmp-commands_reboot_sec Reboot Sequence
+The reboot sequence is handled by the class \ref edu.gemini.aspen.gmp.commands.model.reboot.LinuxRebootManager. The full sequence is as follows:
+- A reboot sequence command is sent to the GMP. This can be done either through the giapi-tester (giapi-tester.sh -sc REBOOT -config REBOOT_OPT=option -activity PRESET_START),
+or through EPICS, by writing option to inst:reboot.REBOOT_OPT and then write START to inst:apply.DIR.
+- The actions taken depend on the option sent. If REBOOT is sent, then chkconfig is used to turn \b off gmp-server and the instrument init.d script.
+Then the instrument startup script is called with the reboot option. Then gmp-server is called with the stop option. And finally, the machine is rebooted.
+- If GMP is sent, then chkconfig is used to turn \b on gmp-server and \b off the instrument init.d script.
+Then the instrument startup script is called with the reboot option. Then gmp-server is called with the stop option. And finally, the machine is rebooted.
+- If NONE is sent, or no configuration is sent, then chkconfig is used to turn \b on gmp-server and the instrument init.d script.
+Then the instrument startup script is called with the reboot option. Then gmp-server is called with the stop option. And finally, the machine is rebooted.
+- So, after the reboot, if REBOOT was sent, neither GMP nor instrument software should be running. If GMP was sent, only GMP should be running. And if
+NONE is sent, both GMP and the instrument software should be running.
+
+One thing to keep in mind, is that the configurations set by chkconfig are persistent, so if somebody reboots the machine manually, GMP and instrument software
+might or might not start depending on the option sent the last time somebody sent a reboot.
+
+
+
  */
