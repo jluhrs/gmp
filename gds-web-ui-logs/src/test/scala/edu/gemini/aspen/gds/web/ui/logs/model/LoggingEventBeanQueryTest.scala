@@ -1,16 +1,15 @@
 package edu.gemini.aspen.gds.web.ui.logs.model
 
+import com.vaadin.data.util.filter.{And, Compare}
 import org.junit.Assert._
 import org.joda.time.{DateTimeZone, DateTime}
 import org.joda.time.format.ISODateTimeFormat
-//import com.google.common.collect.Maps
 import org.specs2.mock.Mockito
-import edu.gemini.aspen.gds.web.ui.logs.LogSource
 import org.apache.log4j.Level
-import scala.collection.JavaConversions._
 import org.junit.{Ignore, Test}
 import org.ops4j.pax.logging.service.internal.PaxLevelImpl
-import com.vaadin.data.util.filter.{And, Compare}
+import scala.collection.JavaConversions._
+import edu.gemini.aspen.gds.web.ui.logs.LogSource
 
 class LoggingEventBeanQueryTest extends Mockito {
   val logSource = mock[LogSource]

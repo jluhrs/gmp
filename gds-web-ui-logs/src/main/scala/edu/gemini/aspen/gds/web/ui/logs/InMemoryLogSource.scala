@@ -7,6 +7,7 @@ import collection.mutable.ConcurrentMap
 import scala.collection.JavaConversions._
 import java.util.concurrent.TimeUnit._
 import java.util.concurrent.atomic.AtomicInteger
+import com.google.common.collect.MapMaker
 
 /**
  * A PaxAppender service that will get log events from pax-logging */
@@ -24,11 +25,10 @@ class InMemoryLogSource extends PaxAppender with LogSource {
 
   // We index with an artificial value to avoid collisions with timestamps
   val index = new AtomicInteger(0)
-  /*val logEventsMap: ConcurrentMap[Int, LogEventWrapper] = new MapMaker()
+  val logEventsMap: ConcurrentMap[Int, LogEventWrapper] = new MapMaker()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .maximumSize(MAXSIZE)
-    .makeMap[Int, LogEventWrapper]()*/
-  val logEventsMap = scala.collection.mutable.Map[Int, LogEventWrapper]()
+    .makeMap[Int, LogEventWrapper]()
 
   @Validate
   def initLogListener() {
