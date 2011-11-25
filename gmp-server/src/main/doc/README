@@ -39,6 +39,28 @@ The following details the files and directories included in the package
 When the application is launched a directory under /bin/runner is created that
 contains a cache of the binaries. The directory can be deleted freely
 
+RPM INSTALLATION
+----------------
+The GMP is also provided as an RPM. To install it do the command:
+
+    sudo rpm -ivh --ignoreos gmp-server-${gmp.version}-XX.i386.rpm
+
+The rpm is really meant for an installation in Gemini environment and makes some
+assumptions on the system where is installed:
+
+- GMP will be installed at $GEMINI_TOP/opt/gpi/gmp
+- A software user will be created if it doesn't exist (gmp will run under software user)
+- A init script for gmp is installed at /etc/init.d/gmp-server
+- gmp-server will be run at startup via chkconfig
+
+For proper reboot operation the software user needs sudo access with the following
+directives that need to be added to /etc/sudoers file
+
+Defaults:software    !requiretty
+
+software ALL=(root) NOPASSWD: /sbin/shutdown
+software ALL=(root) NOPASSWD: /sbin/chkconfig
+
 REQUIREMENTS
 ------------
 The only set requirement is a Java 1.6 or higher installation. You can verify it

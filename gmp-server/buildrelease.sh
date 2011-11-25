@@ -2,6 +2,7 @@
 #==========================
 # bash - find path to script
 #==========================
+set -e #stop on errors
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 
 # to get the path only - not the script name - add

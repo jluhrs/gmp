@@ -294,11 +294,11 @@
                     <requires>
                         <require>java &gt;= 1.6.0</require>
                     </requires>
-                    <release>1</release>
+                    <release>5</release>
                     <preinstallScriptlet>
                         <script>
                             #check for user, or create it?
-                            id -u software &amp;&gt; /dev/null || useradd software -g gemini -m &amp;&gt; /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user software"
+                            id -u software &amp;&gt; /dev/null || useradd software -u 3624 -g gemini -m &amp;&gt; /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user software"
                         </script>
                     </preinstallScriptlet>
                     <postinstallScriptlet>
@@ -509,11 +509,11 @@
             <version>0.2.0</version>
         </dependency>
         <!-- EPICS Simulator -->
-        <!--dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-epics-simulator</artifactId>
             <version>0.1.0</version>
-        </dependency-->
+        </dependency>
         <!-- GMP EPICS Status Service -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
