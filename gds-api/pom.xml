@@ -34,8 +34,8 @@
             <artifactId>fits-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>com.googlecode.guava-osgi</groupId>
+            <artifactId>guava-osgi</artifactId>
         </dependency>
     </dependencies>
 
