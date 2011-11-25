@@ -3,15 +3,17 @@ package edu.gemini.aspen.gds.web.ui.keywords
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.giapi.web.ui.vaadin._
+import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import model.{GDSKeywordsDataSource, WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource}
 import scala.collection.JavaConversions._
 import com.vaadin.ui.Table.ColumnGenerator
 import com.vaadin.terminal.ThemeResource
-import com.vaadin.ui._
-import themes.BaseTheme
 import com.vaadin.Application
 import org.vaadin.dialogs.ConfirmDialog
 import com.vaadin.ui.Window.Notification
+import com.vaadin.ui.{Button, Table, Alignment}
+import com.vaadin.ui.{VerticalLayout, HorizontalLayout}
+import com.vaadin.ui.themes.BaseTheme
 
 /**
  * Module for the table to edit the keywords */
