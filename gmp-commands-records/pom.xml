@@ -67,6 +67,11 @@
             <artifactId>epics-service</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.guava-osgi</groupId>
+            <artifactId>guava-osgi</artifactId>
+            <version>10.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
