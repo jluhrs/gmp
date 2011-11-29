@@ -14,4 +14,3 @@ class CSSResources extends DefaultResourceMapping {
   setAlias("/VAADIN/themes/gds")
   setPath("/css")
 }
-

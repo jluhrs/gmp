@@ -8,37 +8,37 @@ import com.vaadin.ui.{LoginForm, Button}
  * Utility methods to make vaadin easier to use with scala
  */
 package object vaadin {
-  implicit def buttonClickWrapper(func: (Button#ClickEvent) => Any) =
+  /*implicit def buttonClickWrapper(action: (Button#ClickEvent) => Any) =
     new Button.ClickListener {
       override def buttonClick(e: Button#ClickEvent) {
-        func(e)
+        action(e)
       }
     }
 
-  implicit def buttonClickWrapperToUnit(func: (Button#ClickEvent) => Unit) =
+  implicit def buttonClickWrapperToUnit(action: (Button#ClickEvent) => Unit) =
     new Button.ClickListener {
       override def buttonClick(e: Button#ClickEvent) {
-        func(e)
+        action(e)
       }
-    }
+    }*/
 
-  implicit def itemClickWrapper(func: (ItemClickEvent) => Unit) =
+  implicit def itemClickWrapper(action: (ItemClickEvent) => Unit) =
     new ItemClickEvent.ItemClickListener {
       override def itemClick(event: ItemClickEvent) {
-        func(event)
+        action(event)
       }
     }
 
-  implicit def propertyValueChangeWrapper(func: (Property.ValueChangeEvent) => Unit) =
+  /*implicit def propertyValueChangeWrapper(action: (Property.ValueChangeEvent) => Unit) =
     new Property.ValueChangeListener {
       override def valueChange(event: Property.ValueChangeEvent) {
-        func(event)
+        action(event)
       }
-    }
+    }*/
 
-  implicit def login(func: (LoginForm#LoginEvent) => Unit) = new LoginForm.LoginListener {
+  implicit def login(action: (LoginForm#LoginEvent) => Unit) = new LoginForm.LoginListener {
     def onLogin(event: LoginForm#LoginEvent) {
-      func(event)
+      action(event)
     }
   }
 

@@ -17,8 +17,3 @@ private class SHA1Encoder extends Encoder {
     } mkString
   }
 }
-
-
-
-
-

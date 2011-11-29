@@ -5,8 +5,3 @@ package edu.gemini.aspen.gds.web.ui.security
 private class DefaultEncoder extends Encoder {
   def encode(value: String) = value
 }
-
-
-
-
-

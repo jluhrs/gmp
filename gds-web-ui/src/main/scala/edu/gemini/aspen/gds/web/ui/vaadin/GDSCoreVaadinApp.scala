@@ -4,12 +4,15 @@ import com.vaadin.Application;
 import java.util.logging.Logger
 import com.vaadin.terminal.ClassResource
 import edu.gemini.aspen.giapi.web.ui.vaadin._
+import edu.gemini.aspen.giapi.web.ui.vaadin.components._
+import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
 import org.apache.felix.ipojo.annotations.{Requires, Bind, Unbind}
 import com.vaadin.ui.themes.BaseTheme
 import com.vaadin.data.util.ObjectProperty
-import com.vaadin.ui._
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener
 import edu.gemini.aspen.gds.web.ui.api.{AuthenticationService, GDSWebModuleFactory, StatusPanel, GDSWebModule}
+import com.vaadin.ui.{Panel, Window, TabSheet}
+import com.vaadin.ui.{Alignment, Embedded}
 
 /**
  * Main page of the GDS web UI
@@ -20,7 +23,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
   val tabsSheet = new TabSheet()
   val mainWindow = new Window("GDS Management Console")
   val userProperty = new ObjectProperty[String]("")
-  val userLabel = new Label(userProperty)
+  val userLabel = new Label(property=userProperty)
   val userPanel = buildUserPanel
   var loginPanel = buildLoginPanel
 
@@ -48,9 +51,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     setTheme("gds")
     tabsSheet.setHeight(100 percent)
 
-    val mainLayout = new VerticalLayout
-    mainLayout.setMargin(true)
-    mainLayout.setSizeFull
+    val mainLayout = new VerticalLayout(margin=true, sizeFull=true)
 
     mainLayout.addComponent(buildTopPanel)
 
@@ -154,11 +155,8 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
   def buildLoginPanel = {
     val layout = new HorizontalLayout
     layout.setDebugId("login-panel")
-    val linkButton = new Button("Login")
-    linkButton.setStyleName(BaseTheme.BUTTON_LINK)
+    val linkButton = new LinkButton("Login", action = _ => mainWindow.addWindow(new LoginWindow(this, authenticationService)))
     linkButton.addStyleName("gds-login-label")
-
-    linkButton.addListener((e: Button#ClickEvent) => mainWindow.addWindow(new LoginWindow(this, authenticationService)))
 
     layout.addComponent(linkButton)
     layout.setComponentAlignment(linkButton, Alignment.MIDDLE_RIGHT)
@@ -172,13 +170,11 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     layout.setDebugId("User-Panel")
     val subLayout = new HorizontalLayout
     subLayout.setDebugId("User-SubPanel")
-    val logoutButton = new Button("Logout")
-    logoutButton.setStyleName(BaseTheme.BUTTON_LINK)
-    logoutButton.addStyleName("gds-login-label")
-    logoutButton.addListener((e: Button#ClickEvent) => {
+    val logoutButton = new LinkButton("Logout", action = _ => {
       mainWindow.showNotification("Logging out...", Window.Notification.TYPE_WARNING_MESSAGE)
       authenticated(None)
     })
+    logoutButton.addStyleName("gds-login-label")
 
     userLabel.addStyleName("gds-user-label")
     userLabel.addStyleName("gds-username")

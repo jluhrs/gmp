@@ -2,26 +2,23 @@ package edu.gemini.aspen.gds.web.ui.keywords
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
+import edu.gemini.aspen.giapi.web.ui.vaadin._
 import model.{GDSKeywordsDataSource, WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource}
-import scala.collection.JavaConversions._
 import com.vaadin.ui.Table.ColumnGenerator
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.Application
 import org.vaadin.dialogs.ConfirmDialog
 import com.vaadin.ui.Window.Notification
-import com.vaadin.ui.{Button, Table, Alignment}
+import com.vaadin.ui.{Table, Alignment}
 import com.vaadin.ui.{VerticalLayout, HorizontalLayout}
-import com.vaadin.ui.themes.BaseTheme
-
 /**
  * Module for the table to edit the keywords */
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
   val title = "Keyword Configuration"
   val order = 2
   var dataSource: GDSKeywordsDataSource = buildDataSource(None)
-  
+
   val tabLayout = new VerticalLayout
   val table = new Table("Keywords")
 
@@ -29,12 +26,12 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   val deleteTooltip = "Delete row"
   val deleteProperty = "DEL"
 
-  val saveButton = new Button("Save..")
-  val newRowButton = new Button("New row...")
+  val saveButton = new Button(caption = "Save..")
+  val newRowButton = new Button(caption = "New row...")
 
   def visibleColumns(user: Option[String]): Array[AnyRef] = {
     val prop = user map {
-        _ => deleteProperty
+      _ => deleteProperty
     } toList
 
     val cols = dataSource.propertyIds
@@ -49,32 +46,29 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     }
   }
 
-
   private def updateTableColumns() = {
     dataSource.propertyIds foreach {
-        p => table.setColumnHeader(p, dataSource.propertyHeader(p))
-    }
-    dataSource.propertyIds foreach {
-        c => table.setColumnWidth(c, dataSource.propertyWidth(c))
+      p => table.setColumnHeader(p, dataSource.propertyHeader(p))
+           table.setColumnWidth(p, dataSource.propertyWidth(p))
     }
     table.setColumnWidth(deleteProperty, 20)
   }
 
   override def userChanged(user: Option[String]) = {
     dataSource = buildDataSource(user)
-    table.setContainerDataSource(dataSource)
     user match {
       case Some(u) => {
         setupDeleteColumn(table)
         updateTableColumns()
         // Update user dependant parts
-        updateSaveButton(user)
-        updateNewButton(user)
       }
       case _ => {
         table.removeGeneratedColumn(deleteProperty)
       }
     }
+    updateSaveButton(user)
+    updateNewButton(user)
+    table.setContainerDataSource(dataSource)
     table.setVisibleColumns(visibleColumns(user))
     table.requestRepaintAll()
     tabLayout.replaceComponent(table, table)
@@ -106,7 +100,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnCollapsingAllowed(true)
     table.setColumnReorderingAllowed(true)
 
-    setupNewButton(table)
+    configureNewButton(table)
 
     tabLayout.addComponent(table)
     tabLayout.setExpandRatio(table, 1.0f)
@@ -123,7 +117,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     val layout = new HorizontalLayout
     layout.addStyleName("keywords-control")
     layout.setMargin(false)
-    layout.setWidth("100%")
+    layout.setWidth(100 percent)
     layout.addStyleName("keywords-control")
     val label = new Label("Keywords count: " + table.getContainerDataSource.size)
 
@@ -131,7 +125,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     layout.setComponentAlignment(label, Alignment.MIDDLE_LEFT)
     layout.setExpandRatio(label, 1.0f)
 
-    val saveButton = buildSaveButton(app)
+    val saveButton = configureSaveButton(app)
     layout.addComponent(newRowButton)
     layout.addComponent(saveButton)
     layout.setComponentAlignment(newRowButton, Alignment.MIDDLE_RIGHT)
@@ -151,11 +145,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   def setupDeleteColumn(table: Table) {
     table.addGeneratedColumn(deleteProperty, new ColumnGenerator {
       def generateCell(source: Table, itemId: AnyRef, columnId: AnyRef) = {
-        val deleteButton = new Button("")
-        deleteButton.setStyleName(BaseTheme.BUTTON_LINK)
-        deleteButton.setIcon(deleteIcon)
-        deleteButton.setDescription(deleteTooltip)
-        deleteButton.addListener((e: Button#ClickEvent) => {
+        def confirmDelete() = {
           val message = "Do you want to delete the item " + itemId + "?\n" +
             "Keyword: %s".format(dataSource.getItem(itemId).getItemProperty("FitsKeyword"))
           ConfirmDialog.show(table.getApplication.getMainWindow, "Please Confirm:", message,
@@ -168,8 +158,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
                 }
               }
             })
-        })
-        deleteButton
+        }
+        new LinkButton(caption = "", icon = deleteIcon, action = _ => confirmDelete, description = deleteTooltip)
       }
     })
     table.setColumnIcon(deleteProperty, deleteIcon)
@@ -178,15 +168,15 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnWidth(deleteProperty, 20)
   }
 
-  private def setupNewButton(table: Table) {
-    newRowButton.addListener((e: Button#ClickEvent) => {
+  private def configureNewButton(table: Table) {
+    newRowButton.addListener(_ => {
       table.getApplication.getMainWindow.addWindow(new NewRowWindow(dataSource))
     })
     newRowButton
   }
 
-  private def buildSaveButton(app: Application): Button = {
-    saveButton.addListener((e: Button#ClickEvent) => {
+  private def configureSaveButton(app: Application): Button = {
+    saveButton.addListener(_ => {
       configService.updateConfiguration(dataSource.toGDSConfiguration)
       app.getMainWindow.showNotification("Saving...", Notification.TYPE_HUMANIZED_MESSAGE)
       //todo: check that file hasn't changed between the time it was read and now.

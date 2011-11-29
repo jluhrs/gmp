@@ -28,7 +28,7 @@ trait ParametrizedAddComponentForOrdered extends com.vaadin.ui.AbstractOrderedLa
   }
 }
 
-class HorizontalLayout(width: String = null, height: String = null, margin: Boolean = false, spacing: Boolean = false, caption: String = null, style: String = null)
+class HorizontalLayout(width: String = null, height: String = null, sizeFull:Boolean = false, margin: Boolean = false, spacing: Boolean = false, caption: String = null, style: String = null)
   extends com.vaadin.ui.HorizontalLayout with LayoutClickListener with ParametrizedAddComponentForOrdered {
   setWidth(width)
   setHeight(height)
@@ -38,7 +38,7 @@ class HorizontalLayout(width: String = null, height: String = null, margin: Bool
   setStyleName(style)
 }
 
-class VerticalLayout(width: String = 100 percent, height: String = null, margin: Boolean = false, spacing: Boolean = false, caption: String = null, style: String = null)
+class VerticalLayout(width: String = 100 percent, height: String = null, sizeFull:Boolean = false, margin: Boolean = false, spacing: Boolean = false, caption: String = null, style: String = null)
   extends com.vaadin.ui.VerticalLayout with LayoutClickListener with ParametrizedAddComponentForOrdered {
   setWidth(width)
   setHeight(height)
@@ -46,6 +46,7 @@ class VerticalLayout(width: String = 100 percent, height: String = null, margin:
   setSpacing(spacing)
   setCaption(caption)
   setStyleName(style)
+  if (sizeFull) setSizeFull()
 }
 
 // TODO com.vaadin.ui.FormLayout calls setMargin(true, false, true, false) in constructor

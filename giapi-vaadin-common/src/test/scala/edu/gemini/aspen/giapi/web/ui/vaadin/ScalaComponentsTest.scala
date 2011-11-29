@@ -8,6 +8,7 @@ import com.vaadin.data.util.ObjectProperty
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.event.MouseEvents.ClickEvent
+import com.vaadin.ui.themes.BaseTheme
 
 @RunWith(classOf[JUnitRunner])
 class ScalaComponentsTest extends FunSuite {
@@ -43,5 +44,10 @@ class ScalaComponentsTest extends FunSuite {
   test("button component action") {
     new Button(action = _ => {
     })
+  }
+
+  test("link button action") {
+    val lb = new LinkButton()
+    assertEquals(BaseTheme.BUTTON_LINK, lb.getStyleName)
   }
 }

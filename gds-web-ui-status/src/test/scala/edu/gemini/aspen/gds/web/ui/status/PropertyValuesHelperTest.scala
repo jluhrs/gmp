@@ -29,7 +29,6 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals(StatusModule.defaultProcessing, module.getProcessing)
     assertEquals(StatusModule.defaultStatus, module.getStatus)
     assertEquals(StatusModule.defaultTimes, module.getTimes)
-
   }
 
   @Test

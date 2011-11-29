@@ -5,7 +5,6 @@ import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Comp
 import org.osgi.service.cm.ConfigurationAdmin
 import edu.gemini.aspen.gmp.services.PropertyHolder
 
-
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[GDSWebModuleFactory]))

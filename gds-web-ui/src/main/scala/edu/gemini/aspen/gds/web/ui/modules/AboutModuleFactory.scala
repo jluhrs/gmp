@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.modules
 
-import org.apache.felix.ipojo.annotations.{Provides, Component}
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory
+import org.apache.felix.ipojo.annotations.{Instantiate, Provides, Component}
 
 /**
  * Factory for the AboutModule

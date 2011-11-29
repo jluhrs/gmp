@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gds.web.ui.vaadin
 
-import com.vaadin.ui._
 import edu.gemini.aspen.giapi.web.ui.vaadin._
 import com.vaadin.ui.Window.Notification
 import edu.gemini.aspen.gds.web.ui.api.AuthenticationService
+import edu.gemini.aspen.giapi.web.ui.vaadin.layouts.VerticalLayout
+import com.vaadin.ui.{Window, LoginForm}
 
 /**
  * Represents the LoginWindow
@@ -14,11 +15,6 @@ class LoginWindow(parent: GDSCoreVaadinApp, authenticationService: Authenticatio
   setResizable(false)
   setWidth(365 px)
   setHeight(210 px)
-
-  val layout = new VerticalLayout
-  layout.setWidth(348 px)
-  layout.setHeight(168 px)
-  layout.setMargin(true)
 
   val loginForm = new LoginForm {
     override def getLoginHTML() = {
@@ -42,7 +38,9 @@ class LoginWindow(parent: GDSCoreVaadinApp, authenticationService: Authenticatio
   })
   loginForm.setWidth(350 px)
   loginForm.setHeight(180 px)
-  layout.addComponent(loginForm)
+  val layout = new VerticalLayout(width = 348 px, height = 168 px, margin = true) {
+    add(loginForm)
+  }
 
   setContent(layout)
 

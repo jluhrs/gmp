@@ -8,8 +8,10 @@ import org.osgi.service.cm.ConfigurationAdmin
 import java.util.{Hashtable, Dictionary}
 import org.osgi.service.cm.Configuration
 import edu.gemini.aspen.giapi.web.ui.vaadin._
+import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.gmp.services.properties.GmpProperties
-import com.vaadin.ui.{GridLayout, TextField, Button, Label, Component}
+import com.vaadin.ui.{GridLayout, TextField, Component}
+import annotation.tailrec
 
 class ConfigurationModule(propHolder: PropertyHolder, configAdmin: ConfigurationAdmin) extends GDSWebModule {
   val title: String = "System Configuration"
@@ -17,6 +19,8 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
 
   val _properties = createProperties(GmpProperties.values().toList)
 
+  // TODO make tailrec
+  // @tailrec
   private def createProperties(props: List[GmpProperties]): List[Property] = {
     if (props.isEmpty) {
       Nil
@@ -25,11 +29,18 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
     }
   }
 
+  def getAppUser(app: Application): Option[String] = {
+    app.getUser match {
+      case Some(x: String) => Some[String](x)
+      case _ => None
+    }
+  }
+
   class Property(val prop: GmpProperties) {
     val textField = new TextField()
     val objectProperty = new ObjectProperty(prop.getDefault)
     textField.setPropertyDataSource(objectProperty)
-    val label = new Label("<b>" + prop.name() + "</b>", Label.CONTENT_XHTML)
+    val label = new Label(content=prop.name(), style="gds-bold")
   }
 
   override def buildTabContent(app: Application): Component = {
@@ -42,34 +53,42 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
       layout.addComponent(property.textField)
     }
 
+    setWritePermissions(app)
+
     val buttonLayout = new GridLayout(2, 1)
     buttonLayout.setSpacing(true)
 
-    val saveButton = new Button("Save")
-    saveButton.addListener((e: Button#ClickEvent) => {
+    val saveButton = new Button(caption="Save", action = _ => {
       save()
     })
-    buttonLayout.addComponent(saveButton)
 
-    val reloadButton = new Button("Reload")
-    reloadButton.addListener((e: Button#ClickEvent) => {
+    val reloadButton = new Button(caption="Reload", action = _ => {
       refresh(app)
     })
+
+    buttonLayout.addComponent(saveButton)
     buttonLayout.addComponent(reloadButton)
 
-    layout.addComponent(buttonLayout, 1, GmpProperties.values().size)
+    layout.addComponent(buttonLayout, 1, GmpProperties.values.size)
     layout
+  }
+
+  /**
+   * Depending on the user permissions this method will enable/disable the text fields */
+  private def setWritePermissions(app:Application) {
+    _properties foreach {
+      _.textField.setEnabled(getAppUser(app).isDefined)
+    }
   }
 
   override def refresh(app: Application) {
     for (property <- _properties) {
       property.objectProperty.setValue(getProperty(property.prop.name()))
     }
+    setWritePermissions(app)
   }
 
-  private def getProperty(propName: String) = {
-    propHolder.getProperty(propName)
-  }
+  private def getProperty(propName: String) = propHolder.getProperty(propName)
 
   private def save() {
     var config: Configuration = configAdmin.listConfigurations("(service.factorypid=edu.gemini.aspen.gmp.services.properties.SimplePropertyHolder)")(0)
@@ -83,7 +102,6 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
       props.put(property.prop.name(), property.textField.getValue.toString)
     }
     config.update(props)
-
   }
 
   private def setProperty(propName: String, propValue: String) {
@@ -98,9 +116,4 @@ class ConfigurationModule(propHolder: PropertyHolder, configAdmin: Configuration
     props.put(propName, propValue)
     config.update(props)
   }
-}
-
-
-object ConfigurationModule {
-
 }
