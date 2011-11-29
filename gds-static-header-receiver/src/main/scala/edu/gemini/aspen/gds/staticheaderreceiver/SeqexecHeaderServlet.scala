@@ -11,9 +11,9 @@ import org.apache.xmlrpc.XmlRpcRequest
 
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[HeaderReceiver]))
+@Provides(specifications = Array[Class[_]](classOf[HeaderReceiver]))
 class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase, @Requires programIdDB: ProgramIdDatabase, @Requires webContainer: WebContainer) extends XmlRpcServlet with HeaderReceiver {
-  val initParams = scala.collection.mutable.Map("enabledForExtensions" -> "true")
+  val initParams = Map("enabledForExtensions" -> "true")
   val requestHandler = new RequestHandler(keywordsDatabase, programIdDB)
   // Register XMLRPC Handler
   webContainer.registerServlet(this, Array("/xmlrpc/*"), initParams, null)
@@ -39,11 +39,11 @@ class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsD
   /**
    * XMLRPC Process factories */
   class XmlRpcReceiverProcessFactoryFactory extends RequestProcessorFactoryFactory {
-    def getRequestProcessorFactory(p1: Class[_]) = new XmlRpcReceiverProcessFactory
+    def getRequestProcessorFactory(c: Class[_]) = new XmlRpcReceiverProcessFactory
   }
 
   class XmlRpcReceiverProcessFactory extends RequestProcessorFactory {
-    def getRequestProcessor(p1: XmlRpcRequest) = new XmlRpcReceiver(requestHandler)
+    def getRequestProcessor(r: XmlRpcRequest) = new XmlRpcReceiver(requestHandler)
   }
 
 }

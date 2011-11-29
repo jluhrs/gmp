@@ -18,8 +18,7 @@ case class StoreKeyword(dataLabel: DataLabel, keyword: FitsKeyword, value: AnyRe
 case class ExitRequestHandler() extends RequestHandlerMessage
 
 /**
- * Singleton actor that forwards messages from the XMLRPC server to the appropriate DB
- */
+ * Singleton actor that forwards messages from the XMLRPC server to the appropriate DB */
 class RequestHandler(keywordsDatabase: TemporarySeqexecKeywordsDatabase, programIdDB: ProgramIdDatabase) extends Reactor[RequestHandlerMessage] {
   private val LOG = Logger.getLogger(this.getClass.getName)
 
@@ -29,7 +28,6 @@ class RequestHandler(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
         case InitObservation(programId, dataLabel) => initObservation(programId, dataLabel)
         case StoreKeyword(dataLabel, keyword, value) => storeKeyword(dataLabel, keyword, value)
         case ExitRequestHandler() => exit()
-        case _ => sys.error("Argument not known")
       }
     }
   }
