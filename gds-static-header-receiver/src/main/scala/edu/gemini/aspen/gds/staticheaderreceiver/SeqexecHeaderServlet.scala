@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
+import scala.collection._
 import scala.collection.JavaConversions._
 import org.apache.xmlrpc.webserver.XmlRpcServlet
 import org.ops4j.pax.web.service.WebContainer
@@ -13,7 +14,7 @@ import org.apache.xmlrpc.XmlRpcRequest
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[HeaderReceiver]))
 class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase, @Requires programIdDB: ProgramIdDatabase, @Requires webContainer: WebContainer) extends XmlRpcServlet with HeaderReceiver {
-  val initParams = Map("enabledForExtensions" -> "true")
+  val initParams = mutable.Map("enabledForExtensions" -> "true")
   val requestHandler = new RequestHandler(keywordsDatabase, programIdDB)
   // Register XMLRPC Handler
   webContainer.registerServlet(this, Array("/xmlrpc/*"), initParams, null)
