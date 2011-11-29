@@ -41,6 +41,11 @@
                     <version>2.3.4</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.ops4j.pax.exam</groupId>
+                    <artifactId>maven-paxexam-plugin</artifactId>
+                    <version>1.2.4</version>
+                </plugin>
+                <plugin>
                     <groupId>com.atlassian.maven.plugins</groupId>
                     <artifactId>maven-clover2-plugin</artifactId>
                     <version>${clover.version}</version>
