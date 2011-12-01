@@ -17,22 +17,15 @@ class StatusPanelImpl extends StatusPanel {
   var modules = List[StatusPanelModule]()
 
   override def buildStatusPanel = {
-    val layout = new HorizontalLayout
-    layout.setMargin(false)
-    layout.setStyleName("gds-status")
+    val layout = new HorizontalLayout(margin=false, style="gds-status", height=30 px, width=100 percent)
 
     modules sortBy {
       _.order
     } foreach {
       m =>
         val statusItem = m.buildModule
-        layout.addComponent(statusItem)
-        layout.setComponentAlignment(statusItem, Alignment.MIDDLE_LEFT)
+        layout.add(statusItem, alignment=Alignment.MIDDLE_LEFT)
     }
-
-    layout.setHeight(30 px)
-    layout.setWidth(100 percent)
-
     new Panel(layout)
   }
 
