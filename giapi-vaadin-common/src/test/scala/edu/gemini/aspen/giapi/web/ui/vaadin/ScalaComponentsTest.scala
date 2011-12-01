@@ -6,9 +6,8 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import com.vaadin.data.util.ObjectProperty
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
-import com.vaadin.terminal.ThemeResource
-import com.vaadin.event.MouseEvents.ClickEvent
 import com.vaadin.ui.themes.BaseTheme
+import com.vaadin.terminal.ThemeResource
 
 @RunWith(classOf[JUnitRunner])
 class ScalaComponentsTest extends FunSuite {
@@ -49,5 +48,14 @@ class ScalaComponentsTest extends FunSuite {
   test("link button action") {
     val lb = new LinkButton()
     assertEquals(BaseTheme.BUTTON_LINK, lb.getStyleName)
+  }
+
+  test("embedded component construction") {
+    var e = new Embedded("caption")
+    assertEquals("caption", e.getCaption)
+
+    e = new Embedded(width=10 px, height=20 px)
+    assertEquals(10.0, e.getWidth, 0)
+    assertEquals(20.0, e.getHeight, 0)
   }
 }

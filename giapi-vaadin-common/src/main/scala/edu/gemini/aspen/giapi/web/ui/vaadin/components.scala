@@ -9,20 +9,32 @@ import com.vaadin.ui.themes.BaseTheme
 
 /**
  * Scala wrapper for com.vaadin.ui.Label */
-class Label(content: String = null, caption: String = null, contentMode: Int = com.vaadin.ui.Label.CONTENT_DEFAULT, style: String = null, property: Property = null) extends com.vaadin.ui.Label(content, contentMode) {
+class Label(content: String = null,
+            caption: String = null,
+            contentMode: Int = com.vaadin.ui.Label.CONTENT_DEFAULT,
+            style: String = null,
+            property: Property = null)
+  extends com.vaadin.ui.Label(content, contentMode) {
   setStyleName(style)
   setCaption(caption)
-  Option(property) map setPropertyDataSource
+
+  Option(property) foreach setPropertyDataSource
 }
 
 /**
  * Scala wrapper for com.vaadin.ui.Button */
-class Button(caption: String = null, action: com.vaadin.ui.Button#ClickEvent => Unit = null, icon: Resource = null, style: String = null, enabled: Boolean = true, description:String = null) extends com.vaadin.ui.Button(caption) {
+class Button(caption: String = null,
+             action: com.vaadin.ui.Button#ClickEvent => Unit = null,
+             icon: Resource = null,
+             style: String = null,
+             enabled: Boolean = true,
+             description: String = null)
+  extends com.vaadin.ui.Button(caption) {
   setIcon(icon)
   setStyleName(style)
   setEnabled(enabled)
 
-  Option(action) map addListener
+  Option(action) foreach addListener
 
   protected[vaadin] class ButtonClickListener(action: com.vaadin.ui.Button#ClickEvent => Unit) extends com.vaadin.ui.Button.ClickListener {
     def buttonClick(event: com.vaadin.ui.Button#ClickEvent) = action(event)
@@ -33,8 +45,31 @@ class Button(caption: String = null, action: com.vaadin.ui.Button#ClickEvent => 
 
 /**
  * Scala wrapper for com.vaadin.ui.Button with style Link */
-class LinkButton(caption: String = null, action: com.vaadin.ui.Button#ClickEvent => Unit = null, icon: Resource = null, style: String = null, enabled: Boolean = true, description:String = null)
+class LinkButton(caption: String = null,
+                 action: com.vaadin.ui.Button#ClickEvent => Unit = null,
+                 icon: Resource = null,
+                 style: String = null,
+                 enabled: Boolean = true,
+                 description: String = null)
   extends Button(caption, action, icon, style, enabled, description) {
   setStyleName(BaseTheme.BUTTON_LINK)
 }
+
+/**
+ * Scala wrapper for com.vaadin.ui.Embedded */
+class Embedded(caption: String = null,
+               width: String = null,
+               height: String = null,
+               source: Resource = null,
+               objectType: Int = com.vaadin.ui.Embedded.TYPE_OBJECT,
+               style: String = null)
+  extends com.vaadin.ui.Embedded(caption) {
+  setWidth(width)
+  setHeight(height)
+  setType(objectType)
+  setStyleName(style)
+  
+  Option(source) foreach setSource
+}
+
 }
