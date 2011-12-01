@@ -14,6 +14,8 @@ trait LayoutClickListener extends LayoutClickNotifier {
   }
 }
 
+/**
+ * Trait defining a generic method to add components ta a layout */
 trait ParametrizedAddComponentForOrdered extends com.vaadin.ui.AbstractOrderedLayout {
   def add[C <: com.vaadin.ui.Component](component: C = null, ratio: Float = -1, alignment: Alignment = null, index: Int = -1): C = {
     if (index < 0)
@@ -28,6 +30,8 @@ trait ParametrizedAddComponentForOrdered extends com.vaadin.ui.AbstractOrderedLa
   }
 }
 
+/**
+ * Wrapper for the class com.vaadin.ui.HorizontalLayout */
 class HorizontalLayout(width: String = null, height: String = null, sizeFull:Boolean = false, margin: Boolean = false, spacing: Boolean = false, caption: String = null, style: String = null)
   extends com.vaadin.ui.HorizontalLayout with LayoutClickListener with ParametrizedAddComponentForOrdered {
   setWidth(width)
@@ -38,6 +42,8 @@ class HorizontalLayout(width: String = null, height: String = null, sizeFull:Boo
   setStyleName(style)
 }
 
+/**
+ * Wrapper for the class com.vaadin.ui.VerticalLayout */
 class VerticalLayout(width: String = 100 percent, height: String = null, sizeFull:Boolean = false, margin: Boolean = false, spacing: Boolean = false, caption: String = null, style: String = null)
   extends com.vaadin.ui.VerticalLayout with LayoutClickListener with ParametrizedAddComponentForOrdered {
   setWidth(width)
