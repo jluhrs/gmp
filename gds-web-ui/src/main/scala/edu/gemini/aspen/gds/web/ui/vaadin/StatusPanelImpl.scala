@@ -1,10 +1,11 @@
 package edu.gemini.aspen.gds.web.ui.vaadin
 
 import java.util.logging.Logger
-import com.vaadin.ui._
+import com.vaadin.ui.{Panel, Alignment}
 import org.apache.felix.ipojo.annotations.{Unbind, Bind, Provides, Instantiate}
 import edu.gemini.aspen.gds.web.ui.api.{StatusPanelModule, StatusPanel}
 import edu.gemini.aspen.giapi.web.ui.vaadin._
+import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
 
 /**
  * Component that con display a status panel composing status panel modules

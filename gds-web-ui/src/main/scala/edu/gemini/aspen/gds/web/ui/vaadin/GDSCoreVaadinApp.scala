@@ -23,8 +23,8 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
   val mainWindow = new Window("GDS Management Console")
   val userProperty = new ObjectProperty[String]("")
   val userLabel = new Label(property = userProperty)
-  val userPanel = buildUserPanel()
-  var loginPanel = buildLoginPanel()
+  val userPanel = buildUserPanel
+  var loginPanel = buildLoginPanel
 
   val gdsWebModules = scala.collection.mutable.Map[GDSWebModuleFactory, (GDSWebModule, TabSheet.Tab)]()
 
