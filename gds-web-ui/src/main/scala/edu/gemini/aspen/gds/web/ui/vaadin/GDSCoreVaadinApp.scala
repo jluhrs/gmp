@@ -11,7 +11,7 @@ import com.vaadin.data.util.ObjectProperty
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener
 import edu.gemini.aspen.gds.web.ui.api.{AuthenticationService, GDSWebModuleFactory, StatusPanel, GDSWebModule}
 import com.vaadin.ui.{Panel, Window, TabSheet}
-import com.vaadin.ui.{Alignment, Embedded}
+import com.vaadin.ui.Alignment
 
 /**
  * Main page of the GDS web UI
@@ -184,13 +184,9 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
 
   def buildBannerPanel = {
     // Add the GDS Label
-    val gdsLabel = new Label("GIAPI Data Service")
-    gdsLabel.setStyleName("gds-title")
+    val gdsLabel = new Label(content = "GIAPI Data Service", style = "gds-title")
     // Add the logo
-    val image = new Embedded(null, new ClassResource("gemini-logo.jpg", this))
-    image.setHeight(95 px)
-    image.setWidth(282 px)
-    image.setStyleName("gds-title")
+    val image = new Embedded(source = new ClassResource("gemini-logo.jpg", this), height = 95 px, width = 282 px, style = "gds-title")
 
     new HorizontalLayout(height = 95 px, width = 100 percent) {
       setDebugId("Banner-Layout")
