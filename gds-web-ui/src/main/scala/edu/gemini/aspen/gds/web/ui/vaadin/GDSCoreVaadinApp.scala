@@ -7,7 +7,6 @@ import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
 import org.apache.felix.ipojo.annotations.{Requires, Bind, Unbind}
-import com.vaadin.ui.themes.BaseTheme
 import com.vaadin.data.util.ObjectProperty
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener
 import edu.gemini.aspen.gds.web.ui.api.{AuthenticationService, GDSWebModuleFactory, StatusPanel, GDSWebModule}
@@ -23,7 +22,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
   val tabsSheet = new TabSheet()
   val mainWindow = new Window("GDS Management Console")
   val userProperty = new ObjectProperty[String]("")
-  val userLabel = new Label(property=userProperty)
+  val userLabel = new Label(property = userProperty)
   val userPanel = buildUserPanel
   var loginPanel = buildLoginPanel
 
@@ -51,14 +50,11 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     setTheme("gds")
     tabsSheet.setHeight(100 percent)
 
-    val mainLayout = new VerticalLayout(margin=true, sizeFull=true)
-
-    mainLayout.addComponent(buildTopPanel)
-
-    mainLayout.addComponent(tabsSheet)
-    mainLayout.setExpandRatio(tabsSheet, 1.0f)
-
-    mainLayout.addComponent(statusPanel.buildStatusPanel)
+    val mainLayout = new VerticalLayout(margin = true, sizeFull = true) {
+      add(buildTopPanel)
+      add(tabsSheet, ratio = 1.0f)
+      add(statusPanel.buildStatusPanel)
+    }
 
     mainWindow.setContent(mainLayout)
     setMainWindow(mainWindow)
@@ -121,12 +117,12 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
    * Builds the panel at the top of the application
    */
   private def buildTopPanel = {
-    val layout = new VerticalLayout
-    layout.setDebugId("top-panel")
-    layout.setMargin(false)
-    layout.addComponent(loginPanel)
-    layout.addComponent(userPanel)
-    layout.addComponent(buildBannerPanel)
+    val layout = new VerticalLayout(margin = false) {
+      setDebugId("top-panel")
+      add(loginPanel)
+      add(userPanel)
+      add(buildBannerPanel)
+    }
 
     toggleUserBasedVisibility
 
@@ -138,7 +134,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
    */
   private def toggleUserBasedVisibility {
     val user = getUser match {
-      case Some(x:String) => Some(x)
+      case Some(x: String) => Some(x)
       case _ => None
     }
 
@@ -153,71 +149,54 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
   }
 
   def buildLoginPanel = {
-    val layout = new HorizontalLayout
-    layout.setDebugId("login-panel")
     val linkButton = new LinkButton("Login", action = _ => mainWindow.addWindow(new LoginWindow(this, authenticationService)))
     linkButton.addStyleName("gds-login-label")
 
-    layout.addComponent(linkButton)
-    layout.setComponentAlignment(linkButton, Alignment.MIDDLE_RIGHT)
-    layout.setWidth(100 percent)
-    layout.setHeight(20 px)
-    layout
+    new HorizontalLayout(width = 100 percent, height = 20 px) {
+      setDebugId("login-panel")
+      add(linkButton, alignment = Alignment.MIDDLE_RIGHT)
+    }
   }
 
   def buildUserPanel = {
-    val layout = new HorizontalLayout
-    layout.setDebugId("User-Panel")
-    val subLayout = new HorizontalLayout
-    subLayout.setDebugId("User-SubPanel")
     val logoutButton = new LinkButton("Logout", action = _ => {
       mainWindow.showNotification("Logging out...", Window.Notification.TYPE_WARNING_MESSAGE)
       authenticated(None)
     })
     logoutButton.addStyleName("gds-login-label")
 
-    userLabel.addStyleName("gds-user-label")
-    userLabel.addStyleName("gds-username")
-    val userCaption = new Label("Username: ")
-    userCaption.setStyleName("gds-user-label")
-    subLayout.addComponent(userCaption)
-    subLayout.addComponent(userLabel)
-    layout.addComponent(subLayout)
-    layout.setComponentAlignment(subLayout, Alignment.MIDDLE_LEFT)
-    layout.setExpandRatio(subLayout, 1.0f)
-    layout.addComponent(logoutButton)
-    layout.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT)
+    val subLayout = new HorizontalLayout {
+      setDebugId("User-SubPanel")
+      val userCaption = new Label("Username: ", style = "gds-user-label")
+      userLabel.addStyleName("gds-user-label")
+      userLabel.addStyleName("gds-username")
+      addComponent(userCaption)
+      addComponent(userLabel)
+    }
 
-    layout.setWidth(100 percent)
-    layout.setHeight(20 px)
+    new HorizontalLayout(width = 100 percent, height = 20 px) {
+      setDebugId("User-Panel")
 
-    layout
+      add(subLayout, alignment = Alignment.MIDDLE_LEFT, ratio = 1.0f)
+      add(logoutButton, alignment = Alignment.MIDDLE_RIGHT)
+    }
   }
 
   def buildBannerPanel = {
-    val layout = new HorizontalLayout
-    layout.setDebugId("Banner-Layout")
-
     // Add the GDS Label
     val gdsLabel = new Label("GIAPI Data Service")
-    layout.setHeight(95 px)
     gdsLabel.setStyleName("gds-title")
-
-    layout.addComponent(gdsLabel)
-    layout.setComponentAlignment(gdsLabel, Alignment.MIDDLE_LEFT)
-    layout.setExpandRatio(gdsLabel, 1.0f)
-
-    layout.setWidth(100 percent)
-
     // Add the logo
     val image = new Embedded(null, new ClassResource("gemini-logo.jpg", this))
     image.setHeight(95 px)
     image.setWidth(282 px)
     image.setStyleName("gds-title")
-    layout.addComponent(image)
-    layout.setComponentAlignment(gdsLabel, Alignment.MIDDLE_RIGHT)
 
-    layout
+    new HorizontalLayout(height = 95 px, width = 100 percent) {
+      setDebugId("Banner-Layout")
+      add(gdsLabel, alignment = Alignment.MIDDLE_LEFT, ratio = 1.0f)
+      add(image, alignment = Alignment.MIDDLE_RIGHT)
+    }
   }
 
   /**
