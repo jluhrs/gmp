@@ -39,12 +39,12 @@ class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
   }
 
   override def loadBeans(startIndex: Int, count: Int) = {
-    val result = fl.drop(startIndex - 1).take(count)
+    val result = filteredLogs.drop(startIndex - 1).take(count)
 
     val sortableCol = if (!sortPropertyIds.isEmpty) sortPropertyIds(0).toString else "timeStamp"
     val ascending = if (!sortStates.isEmpty) sortStates(0) else true
 
-    val sortedLog = result sortBy sortingFunctions(sortableCol)
+    val sortedLog = result.toList sortBy sortingFunctions(sortableCol)
 
     if (ascending) {
       sortedLog
