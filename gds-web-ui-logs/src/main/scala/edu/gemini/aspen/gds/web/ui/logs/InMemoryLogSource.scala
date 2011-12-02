@@ -1,12 +1,12 @@
 package edu.gemini.aspen.gds.web.ui.logs
 
 import model.LogEventWrapper
-import org.apache.felix.ipojo.annotations._
-import org.ops4j.pax.logging.spi.{PaxLoggingEvent, PaxAppender}
-import collection.mutable.ConcurrentMap
+import scala.collection.mutable.ConcurrentMap
 import scala.collection.JavaConversions._
 import java.util.concurrent.TimeUnit._
 import java.util.concurrent.atomic.AtomicInteger
+import org.apache.felix.ipojo.annotations._
+import org.ops4j.pax.logging.spi.{PaxLoggingEvent, PaxAppender}
 import com.google.common.collect.MapMaker
 
 /**
@@ -31,13 +31,12 @@ class InMemoryLogSource extends PaxAppender with LogSource {
     .makeMap[Int, LogEventWrapper]()
 
   @Validate
-  def initLogListener() {
-  }
+  def initLogListener() {}
 
   override def doAppend(event: PaxLoggingEvent) {
     val i = index.incrementAndGet()
     logEventsMap += i -> new LogEventWrapper(event)
   }
 
-  override def logEvents = logEventsMap.values
+  override def logEvents = logEventsMap.values.toList
 }

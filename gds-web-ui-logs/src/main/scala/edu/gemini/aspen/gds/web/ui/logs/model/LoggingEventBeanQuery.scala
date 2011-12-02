@@ -2,11 +2,11 @@ package edu.gemini.aspen.gds.web.ui.logs.model
 
 import scala.collection.JavaConversions._
 import java.util.List
-import org.vaadin.addons.lazyquerycontainer._
+import java.util.logging.Logger
 import java.lang.UnsupportedOperationException
+import org.vaadin.addons.lazyquerycontainer._
 import org.joda.time.format.ISODateTimeFormat
 import org.joda.time.DateTimeZone
-import java.util.logging.Logger
 
 /**
  * This class is used by the LazyQueryContainer to read beans representing log values to display on the screen
@@ -34,12 +34,12 @@ class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
   }
   val logSource = queryDefinition.logSource
 
-  def saveBeans(p1: List[LogEventWrapper], p2: List[LogEventWrapper], p3: List[LogEventWrapper]) {
+  override def saveBeans(p1: List[LogEventWrapper], p2: List[LogEventWrapper], p3: List[LogEventWrapper]) {
     throw new UnsupportedOperationException()
   }
 
-  def loadBeans(startIndex: Int, count: Int) = {
-    val result = filteredLogs.drop(startIndex - 1).take(count) toList
+  override def loadBeans(startIndex: Int, count: Int) = {
+    val result = fl.drop(startIndex - 1).take(count)
 
     val sortableCol = if (!sortPropertyIds.isEmpty) sortPropertyIds(0).toString else "timeStamp"
     val ascending = if (!sortStates.isEmpty) sortStates(0) else true
@@ -53,9 +53,9 @@ class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
     }
   }
 
-  def size(): Int = Option(filteredLogs).getOrElse(Nil).size
+  override def size(): Int = Option(filteredLogs).getOrElse(Nil).size
 
-  def constructBean() = throw new UnsupportedOperationException()
+  override def constructBean() = throw new UnsupportedOperationException()
 
   private def filteredLogs = logSource.logEvents
 }
@@ -64,10 +64,12 @@ object LoggingEventBeanQuery {
   val timeStampFormatter = ISODateTimeFormat.dateTime().withZone(DateTimeZone.UTC)
   val MAX_MESSAGE_LENGTH = 150
 
+  /** Formats the timestamp output */
   def formatTimeStamp(timeStamp: Long) = timeStampFormatter.print(timeStamp)
 
+  /** Formats the output of the logger name */
   def formatLoggerName(loggerName: String) = if (loggerName.contains(".")) loggerName.substring(loggerName.lastIndexOf(".") + 1, loggerName.size) else loggerName
 
+  /** Formats the log message */
   def formatMessage(message: String) = if (message.size > MAX_MESSAGE_LENGTH) message.substring(0, MAX_MESSAGE_LENGTH) + "..." else message
-
 }

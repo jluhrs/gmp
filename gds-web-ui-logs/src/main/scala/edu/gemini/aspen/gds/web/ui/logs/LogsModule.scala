@@ -1,18 +1,19 @@
 package edu.gemini.aspen.gds.web.ui.logs
 
-import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
-import com.vaadin.Application
-import model.{LogsContainer, LogSourceQueryDefinition, LoggingEventBeanQuery}
 import scala.collection.JavaConversions._
-import org.vaadin.addons.lazyquerycontainer._
 import java.util.logging.Logger
-import com.vaadin.terminal.ThemeResource
-import com.vaadin.ui.Table.{CellStyleGenerator}
+import model.{LogsContainer, LogSourceQueryDefinition, LoggingEventBeanQuery}
+import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
+import com.vaadin.terminal.ThemeResource
+import com.vaadin.Application
 import com.vaadin.ui.{Component, Table}
 import com.vaadin.ui.Table.CellStyleGenerator
+import org.vaadin.addons.lazyquerycontainer._
 
+/**
+ * The LogsModule class shows the content of GDS related log files */
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
   val title: String = "Logs"
