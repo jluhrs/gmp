@@ -9,7 +9,9 @@ import java.util.logging.Logger
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.ui.Table.{CellStyleGenerator}
 import edu.gemini.aspen.giapi.web.ui.vaadin._
-import com.vaadin.ui._
+import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
+import com.vaadin.ui.{Component, Table}
+import com.vaadin.ui.Table.CellStyleGenerator
 
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
@@ -49,12 +51,9 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
 
     logTable.setCellStyleGenerator(styleGenerator)
 
-    val layout = new VerticalLayout
-    layout.setSizeFull()
-
-    layout.addComponent(logTable)
-    layout.setExpandRatio(logTable, 1.0f)
-    layout
+    new VerticalLayout(sizeFull=true) {
+      add(logTable, ratio=1.0f)
+    }
   }
 
   override def refresh(app: Application) {
