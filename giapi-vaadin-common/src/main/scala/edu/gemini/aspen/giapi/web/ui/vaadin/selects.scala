@@ -43,13 +43,29 @@ package object selects {
 
   /**
    * Scala wrapper for the com.vaadin.ui.Table class */
-  class Table(caption: String = null, width: String = null, height: String = null, dataSource: Container = null, property: com.vaadin.data.Property = null, value: Any = null, selectable: Boolean = false, immediate: Boolean = false, style: String = null)
+  class Table(caption: String = null,
+              width: String = null,
+              height: String = null,
+              dataSource: Container = null,
+              property: com.vaadin.data.Property = null,
+              value: Any = null,
+              selectable: Boolean = false,
+              immediate: Boolean = false,
+              sizeFull: Boolean = false,
+              columnReorderingAllowed: Boolean = true,
+              sortAscending:Boolean = true,
+              style: String = null)
     extends com.vaadin.ui.Table(caption) with ValueChangeFunction with ItemClickListener with TableColumnGenerator {
     setWidth(width)
     setHeight(height)
+    if (sizeFull) setSizeFull()
+
     if (dataSource != null) setContainerDataSource(dataSource)
     if (property != null) setPropertyDataSource(property)
     if (value != null) setValue(value)
+
+    setColumnReorderingAllowed(columnReorderingAllowed)
+    setSortAscending(sortAscending)
     setSelectable(selectable)
     setImmediate(immediate)
     setStyleName(style)
