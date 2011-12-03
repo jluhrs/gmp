@@ -6,9 +6,10 @@ import model.{LogsContainer, LogSourceQueryDefinition, LoggingEventBeanQuery}
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
+import edu.gemini.aspen.giapi.web.ui.vaadin.selects._
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.Application
-import com.vaadin.ui.{Component, Table}
+import com.vaadin.ui.{Component}
 import com.vaadin.ui.Table.CellStyleGenerator
 import org.vaadin.addons.lazyquerycontainer._
 
@@ -18,17 +19,16 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
   val title: String = "Logs"
   val order: Int = 1
-  val logTable = new Table()
   val styleGenerator = new CellStyleGenerator {
     val styles = Map("WARN" -> "warn", "ERROR" -> "error")
 
     def getStyle(itemId: AnyRef, propertyId: AnyRef) = {
-      styles.getOrElse(container.getItem(itemId).getItemProperty("level").toString, "")
+      styles.getOrElse(dataContainer.getItem(itemId).getItemProperty("level").toString, "")
     }
   }
   val expandIcon = new ThemeResource("../runo/icons/16/arrow-right.png")
   val expandTooltip = "Show stack trace"
-  val container = {
+  val dataContainer = {
     val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
     val definition = new LogSourceQueryDefinition(logSource, false, 300)
 
@@ -40,15 +40,10 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
 
     new LogsContainer(definition, queryFactory)
   }
+  val logTable = new Table(dataSource=dataContainer, selectable = true, style="logs", sizeFull=true, sortAscending = true)
 
   override def buildTabContent(app: Application): Component = {
-    logTable.setContainerDataSource(container)
-    logTable.setSelectable(true)
-    logTable.setSizeFull()
-    logTable.addStyleName("logs")
-    logTable.setColumnReorderingAllowed(true)
     logTable.setSortContainerPropertyId("timeStamp")
-    logTable.setSortAscending(false)
 
     logTable.setCellStyleGenerator(styleGenerator)
 
@@ -58,6 +53,6 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
   }
 
   override def refresh(app: Application) {
-    container.refresh()
+    dataContainer.refresh()
   }
 }
