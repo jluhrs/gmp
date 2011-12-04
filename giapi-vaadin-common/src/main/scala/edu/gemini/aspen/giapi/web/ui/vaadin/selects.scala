@@ -23,9 +23,20 @@ package object selects {
   trait TableColumnGenerator extends com.vaadin.ui.Table {
     def addGeneratedColumn(id: Any, generate: (com.vaadin.ui.Table, AnyRef, AnyRef) => AnyRef): Unit = {
       addGeneratedColumn(id, new ColumnGenerator {
-        def generateCell(table: com.vaadin.ui.Table, itemId: AnyRef,
+        def generateCell(table: com.vaadin.ui.Table,
+                         itemId: AnyRef,
                          columnId: AnyRef): AnyRef = {
           generate(table, itemId, columnId)
+        }
+      })
+    }
+
+    def addGeneratedColumn(id: Any, generate: (AnyRef, AnyRef) => AnyRef): Unit = {
+      addGeneratedColumn(id, new ColumnGenerator {
+        def generateCell(table: com.vaadin.ui.Table,
+                         itemId: AnyRef,
+                         columnId: AnyRef): AnyRef = {
+          generate(itemId, columnId)
         }
       })
     }
@@ -53,8 +64,10 @@ package object selects {
               immediate: Boolean = false,
               sizeFull: Boolean = false,
               columnReorderingAllowed: Boolean = true,
-              sortAscending:Boolean = true,
-              style: String = null)
+              sortAscending: Boolean = true,
+              sortPropertyId: String = null,
+              style: String = null,
+              cellStyleGenerator: (AnyRef, AnyRef) => String = null)
     extends com.vaadin.ui.Table(caption) with ValueChangeFunction with ItemClickListener with TableColumnGenerator {
     setWidth(width)
     setHeight(height)
@@ -64,6 +77,10 @@ package object selects {
     if (property != null) setPropertyDataSource(property)
     if (value != null) setValue(value)
 
+    if (sortPropertyId != null) setSortContainerPropertyId(sortPropertyId)
+    if (cellStyleGenerator != null) setCellStyleGenerator(new com.vaadin.ui.Table.CellStyleGenerator() {
+      override def getStyle(itemId: AnyRef, propertyId: AnyRef) = cellStyleGenerator(itemId, propertyId)
+    })
     setColumnReorderingAllowed(columnReorderingAllowed)
     setSortAscending(sortAscending)
     setSelectable(selectable)

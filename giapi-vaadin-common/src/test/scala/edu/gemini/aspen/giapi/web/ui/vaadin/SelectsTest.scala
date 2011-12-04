@@ -9,9 +9,29 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.selects._
 @RunWith(classOf[JUnitRunner])
 class SelectsTest extends FunSuite {
   test("Table construction") {
-    var table = new Table(caption="caption", width=90 px, height=100 px)
+    val table = new Table(caption="caption", width=90 px, height=100 px)
     assertEquals("caption", table.getCaption)
     assertEquals(90, table.getWidth, 0)
     assertEquals(100, table.getHeight, 0)
   }
+
+  test("Table generated column") {
+    val table = new Table()
+
+    table.addGeneratedColumn("column1", (t:com.vaadin.ui.Table, itemId:AnyRef, columnId:AnyRef) => {
+      "cell"
+    })
+    assertNotNull(table.getColumnGenerator("column1"))
+    table.addGeneratedColumn("column2", (itemId:AnyRef, columnId:AnyRef) => {
+      "cell"
+    })
+    assertNotNull(table.getColumnGenerator("column2"))
+  }
+
+  test("Test using a function for a Table'-cell style generator") {
+    def generator(itemId: AnyRef, propertyId: AnyRef):String = "style"
+    val table = new Table(cellStyleGenerator = generator)
+    assertNotNull(table.getCellStyleGenerator)
+  }
+
 }
