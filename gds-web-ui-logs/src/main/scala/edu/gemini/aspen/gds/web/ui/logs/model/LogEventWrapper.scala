@@ -19,6 +19,3 @@ case class LogEventWrapper(level0: PaxLevel, timeStamp0: Long, message0: String,
   @BeanProperty val loggerName = LoggingEventBeanQuery.formatLoggerName(loggerName0)
   @BeanProperty val stackTrace = throwableStrRep.mkString
 }
-
-
-

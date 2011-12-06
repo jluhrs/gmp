@@ -3,12 +3,12 @@ package edu.gemini.aspen.gds.web.ui.logs.model
 import edu.gemini.aspen.gds.web.ui.logs.LogSource
 import org.vaadin.addons.lazyquerycontainer.LazyQueryDefinition
 import com.vaadin.data.Container.Filter
-import com.vaadin.data.util.BeanItem
+import com.vaadin.data.util.{PropertysetItem, ObjectProperty, BeanItem}
 
 /**
  * Placeholder class needed to let LoggingEventBeanQuery access logSource */
 class LogSourceQueryDefinition(val logSource: LogSource, compositeItems: Boolean, batchSize: Int) extends LazyQueryDefinition(compositeItems, batchSize) {
-  val filterableProperties = List("level")
+  val filterableProperties = List[String]("level")
   var filters = List[Filter]()
 
   def addContainerFilter(f: Filter) {
@@ -36,7 +36,9 @@ class LogSourceQueryDefinition(val logSource: LogSource, compositeItems: Boolean
   private def filter(f: Filter, logs: Iterable[LogEventWrapper]) = {
     logs filter {
         x => filterableProperties.foldLeft(true) {
-          (l, p) => l && (f.appliesToProperty(p) && f.passesFilter(p, new BeanItem[LogEventWrapper](x)))
+          (l, p) => val i = new PropertysetItem();
+            i.addItemProperty (l, new ObjectProperty[AnyRef](p))
+            l &&  f.appliesToProperty(p) && f.passesFilter(p, i)
       }
     }
   }
