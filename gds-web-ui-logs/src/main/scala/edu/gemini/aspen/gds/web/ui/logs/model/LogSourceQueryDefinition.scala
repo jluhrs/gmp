@@ -9,7 +9,7 @@ import annotation.tailrec
 /**
  * Placeholder class needed to let LoggingEventBeanQuery access logSource */
 class LogSourceQueryDefinition(val logSource: LogSource, compositeItems: Boolean, batchSize: Int) extends LazyQueryDefinition(compositeItems, batchSize) {
-  val filterableProperties = List[String]("level")
+  val filterableProperties = List[String]("level", "logger")
   var filters = List[Filter]()
 
   def addContainerFilter(f: Filter) {
@@ -27,30 +27,31 @@ class LogSourceQueryDefinition(val logSource: LogSource, compositeItems: Boolean
   }
 
   def filterResults(logs: Iterable[LogEventWrapper]): Iterable[LogEventWrapper] = {
-    applyFilters(filters, logs)
+    applyFilters(filters, logs.toList)
   }
 
-  @tailrec
-  private def applyFilters(filters: List[Filter], logs: Iterable[LogEventWrapper]): Iterable[LogEventWrapper] = {
+  private def applyFilters(filters: List[Filter], logs: List[LogEventWrapper]): List[LogEventWrapper] = {
     filters match {
-      case f:Filter => filter(f, logs)
-      case f :: tail => applyFilters (tail, logs)
-      case Nil => Nil
+      case Nil => logs
+      case f :: tail => filter(f, logs) intersect applyFilters (tail, logs)
     }
   }
 
-  def filter(f: Filter, logs: Iterable[LogEventWrapper]) = {
-    def filterCondition(log:LogEventWrapper)(prop:String, acc:Boolean) = acc && f.appliesToProperty(prop) && f.passesFilter(Nil, referenceItem(prop, log))
+  def filter(f: Filter, logs: List[LogEventWrapper]) = {
+    def folder(log:LogEventWrapper)(prop:String, acc:Boolean) = {
+      // checks that the filter can process the property and that it accepts it
+      acc && (!f.appliesToProperty(prop) || f.passesFilter(Nil, referenceItem(prop, log)))
+    }
     logs filter {
         l => filterableProperties.foldRight(true) {
-          (prop, acc) => filterCondition(l)(prop, acc)
+          (prop, acc) => folder(l)(prop, acc)
         }
     }
   }
 
-
   private def referenceItem(property:String, log:LogEventWrapper) = property match {
     case "level" => Item(property -> log.level)
+    case "logger" => Item(property -> log.loggerName0)
     case _ => Item(property -> "")
   }
 

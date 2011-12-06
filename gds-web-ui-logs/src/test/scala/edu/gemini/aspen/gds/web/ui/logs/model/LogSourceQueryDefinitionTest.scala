@@ -13,7 +13,6 @@ import com.vaadin.data.util.filter.{Compare, And}
 @RunWith(classOf[JUnitRunner])
 class LogSourceQueryDefinitionTest extends FunSuite {
   test("test raw filters") {
-    // Add a filter that passes
     val f = new And(new Compare.Equal("level", "DEBUG"), new Compare.Equal("logger", "unknown"))
 
     val item = Item("level" -> "DEBUG", "logger" -> "unknown")
@@ -29,15 +28,32 @@ class LogSourceQueryDefinitionTest extends FunSuite {
     val logSource =  new InMemoryLogSource
     val queryDefinition = new LogSourceQueryDefinition(logSource, false, 10)
 
-    val logEvent = LogEventWrapper(new PaxLevelImpl(Level.DEBUG), System.currentTimeMillis, "unknown", "message", null)
+    val logEvent = LogEventWrapper(new PaxLevelImpl(Level.DEBUG), System.currentTimeMillis, "message", "logger", null)
     val logs = List(logEvent)
 
-    //assertEquals(logs, queryDefinition.filterResults(logs))
 
     // Add a filter that passes
     val f = new Compare.Equal("level", "DEBUG")
     assertEquals(logs, queryDefinition.filter(f, logs))
 
     queryDefinition.addContainerFilter(f)
+    assertEquals(logs, queryDefinition.filterResults(logs))
+  }
+
+  test("test with two filters") {
+    val logSource =  new InMemoryLogSource
+    val queryDefinition = new LogSourceQueryDefinition(logSource, false, 10)
+
+    val logEvent = LogEventWrapper(new PaxLevelImpl(Level.DEBUG), System.currentTimeMillis, "message", "logger", null)
+    val logs = List(logEvent)
+
+
+    // Add a filter that passes
+    val f1 = new Compare.Equal("level", "DEBUG")
+    val f2 = new Compare.Equal("logger", "logger")
+
+    queryDefinition.addContainerFilter(f1)
+    queryDefinition.addContainerFilter(f2)
+    assertEquals(logs, queryDefinition.filterResults(logs))
   }
 }
