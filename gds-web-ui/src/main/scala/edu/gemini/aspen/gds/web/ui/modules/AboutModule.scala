@@ -13,10 +13,9 @@ class AboutModule extends GDSWebModule {
   val title = "About"
   val order = 5
 
-  override def buildTabContent(app: Application): com.vaadin.ui.Component = {
+  override def buildTabContent(app: Application): com.vaadin.ui.Component =
     new VerticalLayout(sizeFull = true) {
-      val aboutLabel = new Label("About GDS", style="about")
-      add(aboutLabel, alignment= Alignment.TOP_CENTER)
+      val aboutLabel = new Label("About GDS", style = "about")
+      add(aboutLabel, alignment = Alignment.TOP_CENTER)
     }
-  }
 }
