@@ -27,7 +27,7 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     style = "logs",
     sizeFull = true,
     sortAscending = true,
-    sortPropertyId = "timestamp",
+    sortPropertyId = "timeStamp",
     cellStyleGenerator = styleGenerator)
 
   override def buildTabContent(app: Application): Component = new VerticalLayout(sizeFull = true) {
