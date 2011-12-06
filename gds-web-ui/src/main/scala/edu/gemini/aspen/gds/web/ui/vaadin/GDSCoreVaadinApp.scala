@@ -6,8 +6,8 @@ import com.vaadin.terminal.ClassResource
 import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
+import edu.gemini.aspen.giapi.web.ui.vaadin.data._
 import org.apache.felix.ipojo.annotations.{Requires, Bind, Unbind}
-import com.vaadin.data.util.ObjectProperty
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener
 import edu.gemini.aspen.gds.web.ui.api.{AuthenticationService, GDSWebModuleFactory, StatusPanel, GDSWebModule}
 import com.vaadin.ui.{Panel, Window, TabSheet}
@@ -21,7 +21,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
   private val LOG = Logger.getLogger(this.getClass.getName)
   val tabsSheet = new TabSheet()
   val mainWindow = new Window("GDS Management Console")
-  val userProperty = new ObjectProperty[String]("")
+  val userProperty = Property[String]("")
   val userLabel = new Label(property = userProperty)
   val userPanel = buildUserPanel
   var loginPanel = buildLoginPanel
