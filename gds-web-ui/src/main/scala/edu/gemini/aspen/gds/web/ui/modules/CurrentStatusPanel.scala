@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.modules
 
 import edu.gemini.aspen.gds.web.ui.api.StatusPanelModule
-import com.vaadin.data.util.ObjectProperty
+import edu.gemini.aspen.giapi.web.ui.vaadin.data._
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate}
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
 import com.vaadin.ui.Label
@@ -13,7 +13,7 @@ class CurrentStatusPanel(@Requires statusDB: StatusDatabaseService) extends Abst
   override val order = 0
   val label = "Status:"
   val item = "Running"
-  val property = new ObjectProperty[String](getStatus)
+  val property = Property[String](getStatus)
   itemValue.setContentMode(Label.CONTENT_XHTML)
 
   override def refresh {
