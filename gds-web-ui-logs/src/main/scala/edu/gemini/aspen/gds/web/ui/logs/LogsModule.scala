@@ -1,34 +1,44 @@
 package edu.gemini.aspen.gds.web.ui.logs
 
-import scala.collection.JavaConversions._
 import java.util.logging.Logger
 import model.{LogsContainer, LogSourceQueryDefinition, LoggingEventBeanQuery}
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
-import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
 import edu.gemini.aspen.giapi.web.ui.vaadin.selects._
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.Application
-import com.vaadin.ui.{Component}
-import com.vaadin.ui.Table.CellStyleGenerator
+import com.vaadin.ui.Component
 import org.vaadin.addons.lazyquerycontainer._
 
 /**
  * The LogsModule class shows the content of GDS related log files */
 class LogsModule(logSource: LogSource) extends GDSWebModule {
   val LOG = Logger.getLogger(this.getClass.getName)
+  val STYLES = Map("WARN" -> "warn", "ERROR" -> "error")
+
   val title: String = "Logs"
   val order: Int = 1
-  val styleGenerator = new CellStyleGenerator {
-    val styles = Map("WARN" -> "warn", "ERROR" -> "error")
 
-    def getStyle(itemId: AnyRef, propertyId: AnyRef) = {
-      styles.getOrElse(dataContainer.getItem(itemId).getItemProperty("level").toString, "")
-    }
+  //val expandIcon = new ThemeResource("../runo/icons/16/arrow-right.png")
+  //val expandTooltip = "Show stack trace"
+  val dataContainer = buildDataContainer()
+  val logTable = new Table(dataSource = dataContainer,
+    selectable = true,
+    style = "logs",
+    sizeFull = true,
+    sortAscending = true,
+    sortPropertyId = "timestamp",
+    cellStyleGenerator = styleGenerator)
+
+  override def buildTabContent(app: Application): Component = new VerticalLayout(sizeFull = true) {
+    add(logTable, ratio = 1.0f)
   }
-  val expandIcon = new ThemeResource("../runo/icons/16/arrow-right.png")
-  val expandTooltip = "Show stack trace"
-  val dataContainer = {
+
+  override def refresh(app: Application) {
+    dataContainer.refresh()
+  }
+
+  private def buildDataContainer() = {
     val queryFactory = new BeanQueryFactory[LoggingEventBeanQuery](classOf[LoggingEventBeanQuery])
     val definition = new LogSourceQueryDefinition(logSource, false, 300)
 
@@ -40,19 +50,9 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
 
     new LogsContainer(definition, queryFactory)
   }
-  val logTable = new Table(dataSource=dataContainer, selectable = true, style="logs", sizeFull=true, sortAscending = true)
-
-  override def buildTabContent(app: Application): Component = {
-    logTable.setSortContainerPropertyId("timeStamp")
-
-    logTable.setCellStyleGenerator(styleGenerator)
-
-    new VerticalLayout(sizeFull=true) {
-      add(logTable, ratio=1.0f)
-    }
-  }
-
-  override def refresh(app: Application) {
-    dataContainer.refresh()
+  /**
+   * Define a custom cell style based on the content of the cell */
+  private def styleGenerator(itemId: AnyRef, propertyId: AnyRef): String = {
+    STYLES.getOrElse(dataContainer.getItem(itemId).getItemProperty("level").toString, "")
   }
 }
