@@ -52,6 +52,10 @@
             <artifactId>giapi</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-jms-util</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
