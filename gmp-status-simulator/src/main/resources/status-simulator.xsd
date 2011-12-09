@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="simulatedstatus" type="simulatedstatusType"/>
+  <xs:complexType name="parametersType">
+    <xs:sequence>
+      <xs:element type="xs:byte" name="start" minOccurs="0"/>
+      <xs:element type="xs:byte" name="end" minOccurs="0"/>
+      <xs:element type="xs:byte" name="period" minOccurs="0"/>
+      <xs:element type="xs:string" name="repeat" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="statusType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="1"/>
+      <xs:element name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="double"/>
+            <xs:enumeration value="int"/>
+            <xs:enumeration value="byte"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="size" type="xs:byte" minOccurs="1"/>
+      <xs:element name="updateRate" type="xs:byte" minOccurs="1"/>
+      <xs:element name="mode">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="random"/>
+            <xs:enumeration value="slope"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="parametersType" name="parameters"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="simulatedstatusType">
+    <xs:sequence>
+      <xs:element type="statusType" name="status" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
