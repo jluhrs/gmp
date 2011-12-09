@@ -1,11 +1,13 @@
 package edu.gemini.aspen.gmp.status.simulator;
 
-import edu.gemini.aspen.gmp.status.simulator.generated.SimulatorConfiguration;
 import org.junit.Test;
+
+import javax.xml.bind.JAXBException;
 
 public class SimulatorConfigurationTest {
     @Test
-    public void testSimpleConfiguration() {
+    public void testSimpleConfiguration() throws JAXBException {
+        System.out.println(getClass().getResourceAsStream("status-simulator.xml"));
         SimulatorConfiguration configuration = new SimulatorConfiguration(getClass().getResourceAsStream("status-simulator.xml"));
         /*Set<? extends SimulatedEpicsChannel> simulatedChannels = configuration.getSimulatedChannels();
         assertNotNull(simulatedChannels);
