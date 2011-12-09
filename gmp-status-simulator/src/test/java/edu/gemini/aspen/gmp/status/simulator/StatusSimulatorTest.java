@@ -9,11 +9,7 @@ import javax.xml.bind.JAXBException;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 
 public class StatusSimulatorTest {
     private StatusSimulator component;
@@ -37,7 +33,18 @@ public class StatusSimulatorTest {
 
         component = new StatusSimulator(new SimulatorConfiguration(getClass().getResourceAsStream("status-simulator.xml")));
         component.startJms(provider);
-        verify(session.createProducer(any(Destination.class)), times(2));
+        verify(session, times(2)).createProducer(any(Destination.class));
+    }
+
+    @Test
+    public void testStopJMSProvider() throws InterruptedException, JAXBException, JMSException {
+        provider = mock(JmsProvider.class);
+        mockSessionProducerAndConsumer();
+
+        component = new StatusSimulator(new SimulatorConfiguration(getClass().getResourceAsStream("status-simulator.xml")));
+        component.startJms(provider);
+        component.stopJms();
+        verify(session, times(2)).close();
     }
 
     protected void mockSessionProducerAndConsumer() throws JMSException {
