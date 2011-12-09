@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="simulatedstatus" type="simulatedstatusType"/>
+  <xs:element name="simulatedStatuses" type="simulatedStatusesType"/>
   <xs:complexType name="parametersType">
     <xs:sequence>
       <xs:element type="xs:byte" name="start" minOccurs="0"/>
@@ -34,7 +34,7 @@
       <xs:element type="parametersType" name="parameters"/>
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="simulatedstatusType">
+  <xs:complexType name="simulatedStatusesType">
     <xs:sequence>
       <xs:element type="statusType" name="status" maxOccurs="unbounded" minOccurs="0"/>
     </xs:sequence>
