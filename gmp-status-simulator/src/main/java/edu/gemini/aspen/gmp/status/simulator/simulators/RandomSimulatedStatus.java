@@ -31,5 +31,10 @@ public abstract class RandomSimulatedStatus<T> implements SimulatedStatus<T> {
         return updateRate;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     abstract T generateValue();
 }

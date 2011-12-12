@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.status.simulator;
 
+import edu.gemini.aspen.gmp.status.simulator.generated.ObjectFactory;
 import edu.gemini.aspen.gmp.status.simulator.generated.SimulatedStatusesType;
 import edu.gemini.aspen.gmp.status.simulator.generated.StatusType;
 
@@ -17,8 +18,9 @@ public class SimulatorConfiguration {
     private final SimulatedStatusesType simulatedStatuses;
 
     public SimulatorConfiguration(InputStream resourceAsStream) throws JAXBException {
+        ClassLoader cl = ObjectFactory.class.getClassLoader();
         JAXBContext jaxbContext = JAXBContext.
-                newInstance("edu.gemini.aspen.gmp.status.simulator.generated");
+                newInstance(ObjectFactory.class.getPackage().getName(), cl);
         Unmarshaller u = jaxbContext.createUnmarshaller();
         simulatedStatuses = u.unmarshal(new StreamSource(resourceAsStream), SimulatedStatusesType.class).getValue();
     }

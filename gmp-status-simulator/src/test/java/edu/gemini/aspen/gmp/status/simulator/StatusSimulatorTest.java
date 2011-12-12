@@ -1,11 +1,13 @@
 package edu.gemini.aspen.gmp.status.simulator;
 
 import edu.gemini.jms.api.JmsProvider;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
 import javax.jms.*;
 import javax.xml.bind.JAXBException;
+import java.io.FileNotFoundException;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
@@ -19,29 +21,38 @@ public class StatusSimulatorTest {
     protected MessageProducer producer;
     protected MessageConsumer consumer;
     protected BytesMessage bytesMessage;
+    private String file;
+
+    @Before
+    public void loadFile() {
+        file = StatusSimulator.class.getResource("status-simulator.xml").getFile();
+    }
 
     @Test
-    public void testCreation() throws InterruptedException, JAXBException {
-        component = new StatusSimulator("edu/gemini/aspen/gmp/status/simulator/status-simulator.xml");
+    public void testCreation() throws InterruptedException, JAXBException, FileNotFoundException, JMSException {
+        provider = mock(JmsProvider.class);
+        mockSessionProducerAndConsumer();
+
+        component = new StatusSimulator(provider, file);
         assertNotNull(component);
     }
 
     @Test
-    public void testStartJMSProvider() throws InterruptedException, JAXBException, JMSException {
+    public void testStartJMSProvider() throws InterruptedException, JAXBException, JMSException, FileNotFoundException {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator("edu/gemini/aspen/gmp/status/simulator/status-simulator.xml");
+        component = new StatusSimulator(provider, file);
         component.startJms(provider);
         verify(session, times(2)).createProducer(any(Destination.class));
     }
 
     @Test
-    public void testStopJMSProvider() throws InterruptedException, JAXBException, JMSException {
+    public void testStopJMSProvider() throws InterruptedException, JAXBException, JMSException, FileNotFoundException {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator("edu/gemini/aspen/gmp/status/simulator/status-simulator.xml");
+        component = new StatusSimulator(provider, file);
         component.startJms(provider);
         component.stopJms();
         verify(session, times(2)).close();

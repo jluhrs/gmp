@@ -9,4 +9,6 @@ public interface SimulatedStatus<T> {
     StatusItem<T> simulateOnce();
 
     long getUpdateRate();
+
+    String getName();
 }
