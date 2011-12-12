@@ -9,12 +9,16 @@ import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Class StatusSimulator creates loops to simulate the value of status items
  */
 public class StatusSimulator implements JmsArtifact {
     private final List<StatusSetter> statusSetters;
+    private final ScheduledExecutorService executorService =
+            Executors.newScheduledThreadPool(10);
 
     public StatusSimulator(SimulatorConfiguration simulatorConfiguration) {
         List<StatusType> statuses = simulatorConfiguration.getStatuses();
@@ -38,4 +42,17 @@ public class StatusSimulator implements JmsArtifact {
             s.stopJms();
         }
     }
+
+    /*public void startSimulation(SimulatedStatus channel) {
+        ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
+                new SimulatedStatus(channel, _registrar), 0, channel.getUpdateRate(), TimeUnit.MILLISECONDS);
+        _tasks.add(scheduledFuture);
+    }
+
+    public void stopSimulation() {
+        for (ScheduledFuture<?> f : _tasks) {
+            f.cancel(true);
+        }
+    }*/
+
 }

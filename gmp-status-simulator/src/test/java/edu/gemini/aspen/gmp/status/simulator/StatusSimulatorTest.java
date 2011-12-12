@@ -26,6 +26,18 @@ public class StatusSimulatorTest {
         assertNotNull(component);
     }
 
+    /*@Test
+    public void testOneSimulation() throws InterruptedException, JAXBException, JMSException {
+        provider = mock(JmsProvider.class);
+        mockSessionProducerAndConsumer();
+
+        component = new StatusSimulator(new SimulatorConfiguration(getClass().getResourceAsStream("status-simulator.xml")));
+        component.startJms(provider);
+        component.simulateOnce();
+        component.stopJms();
+        verifyZeroInteractions(producer, times(2));
+    }*/
+
     @Test
     public void testStartJMSProvider() throws InterruptedException, JAXBException, JMSException {
         provider = mock(JmsProvider.class);
