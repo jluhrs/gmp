@@ -18,32 +18,20 @@ public class StatusSimulatorTest {
     protected JmsProvider provider;
     protected MessageProducer producer;
     protected MessageConsumer consumer;
-    protected MapMessage mapMessage;
+    protected BytesMessage bytesMessage;
 
     @Test
     public void testCreation() throws InterruptedException, JAXBException {
-        component = new StatusSimulator(new SimulatorConfiguration(getClass().getResourceAsStream("status-simulator.xml")));
+        component = new StatusSimulator("edu/gemini/aspen/gmp/status/simulator/status-simulator.xml");
         assertNotNull(component);
     }
-
-    /*@Test
-    public void testOneSimulation() throws InterruptedException, JAXBException, JMSException {
-        provider = mock(JmsProvider.class);
-        mockSessionProducerAndConsumer();
-
-        component = new StatusSimulator(new SimulatorConfiguration(getClass().getResourceAsStream("status-simulator.xml")));
-        component.startJms(provider);
-        component.simulateOnce();
-        component.stopJms();
-        verifyZeroInteractions(producer, times(2));
-    }*/
 
     @Test
     public void testStartJMSProvider() throws InterruptedException, JAXBException, JMSException {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator(new SimulatorConfiguration(getClass().getResourceAsStream("status-simulator.xml")));
+        component = new StatusSimulator("edu/gemini/aspen/gmp/status/simulator/status-simulator.xml");
         component.startJms(provider);
         verify(session, times(2)).createProducer(any(Destination.class));
     }
@@ -53,7 +41,7 @@ public class StatusSimulatorTest {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator(new SimulatorConfiguration(getClass().getResourceAsStream("status-simulator.xml")));
+        component = new StatusSimulator("edu/gemini/aspen/gmp/status/simulator/status-simulator.xml");
         component.startJms(provider);
         component.stopJms();
         verify(session, times(2)).close();
@@ -73,8 +61,8 @@ public class StatusSimulatorTest {
         Topic topic = mock(Topic.class);
         when(session.createTopic(anyString())).thenReturn(topic);
 
-        mapMessage = mock(MapMessage.class);
-        when(session.createMapMessage()).thenReturn(mapMessage);
+        bytesMessage = mock(BytesMessage.class);
+        when(session.createBytesMessage()).thenReturn(bytesMessage);
 
         when(provider.getConnectionFactory()).thenReturn(connectionFactory);
     }
