@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class StatusSimulator creates loops to simulate the value of status items
@@ -39,13 +41,13 @@ public class StatusSimulator implements JmsArtifact {
         String type = s.getType();
         if (type.equals("random")) {
             if (s.getType().equals("double")) {
-                simulator = new DoubleRandomSimulatedStatus(s.getName());
+                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate());
             } else {
                 // TODO, replace for other types
-                simulator = new DoubleRandomSimulatedStatus(s.getName());
+                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate());
             }
         } else {
-            simulator = new DoubleFixedSimulatedStatus(s.getName(), 0.0);
+            simulator = new DoubleFixedSimulatedStatus(s.getName(), s.getUpdateRate(),  0.0);
         }
         return simulator;
     }
@@ -55,25 +57,38 @@ public class StatusSimulator implements JmsArtifact {
         for (StatusSetter s:statusSetters.values()) {
             s.startJms(provider);
         }
+        startSimulation();
     }
 
     @Override
     public void stopJms() {
+        stopSimulation();
         for (StatusSetter s:statusSetters.values()) {
             s.stopJms();
         }
     }
 
-    /*public void startSimulation(SimulatedStatus channel) {
-        ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
-                new SimulatedStatus(channel, _registrar), 0, channel.getUpdateRate(), TimeUnit.MILLISECONDS);
-        _tasks.add(scheduledFuture);
+    public void startSimulation() {
+        for (Map.Entry<SimulatedStatus, StatusSetter> s:statusSetters.entrySet()) {
+            ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
+                    new SimulationTask(s.getKey(), s.getValue()), 0, s.getKey().getUpdateRate(), TimeUnit.MILLISECONDS);
+            //_tasks.add(scheduledFuture);
+        }
     }
 
     public void stopSimulation() {
-        for (ScheduledFuture<?> f : _tasks) {
+        /*for (ScheduledFuture<?> f : _tasks) {
             f.cancel(true);
-        }
-    }*/
+        }*/
+    }
 
+    private class SimulationTask implements Runnable {
+        public SimulationTask(SimulatedStatus key, StatusSetter value) {
+        }
+
+        @Override
+        public void run() {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+    }
 }

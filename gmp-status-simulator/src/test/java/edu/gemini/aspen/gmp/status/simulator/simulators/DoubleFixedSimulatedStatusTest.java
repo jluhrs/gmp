@@ -18,13 +18,14 @@ public class DoubleFixedSimulatedStatusTest {
 
     @Test
     public void testCreation() {
-        RandomSimulatedStatus<Double> status = new DoubleFixedSimulatedStatus(name, 1.0);
+        RandomSimulatedStatus<Double> status = new DoubleFixedSimulatedStatus(name, 100, 1.0);
         assertNotNull(status);
+        assertEquals(100, status.getUpdateRate());
     }
 
     @Test
     public void testSimulateOnceDouble() {
-        RandomSimulatedStatus<Double> status = new DoubleFixedSimulatedStatus(name, 1.0);
+        RandomSimulatedStatus<Double> status = new DoubleFixedSimulatedStatus(name, 100, 1.0);
         StatusItem<Double> statusItem = status.simulateOnce();
         assertNotNull(statusItem);
         assertEquals(name, statusItem.getName());

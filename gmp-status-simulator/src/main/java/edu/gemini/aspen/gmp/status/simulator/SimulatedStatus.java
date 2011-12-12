@@ -7,4 +7,6 @@ import edu.gemini.aspen.giapi.status.StatusItem;
  */
 public interface SimulatedStatus<T> {
     StatusItem<T> simulateOnce();
+
+    long getUpdateRate();
 }

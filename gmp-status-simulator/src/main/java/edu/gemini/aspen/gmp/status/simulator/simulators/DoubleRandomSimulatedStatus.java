@@ -4,8 +4,8 @@ package edu.gemini.aspen.gmp.status.simulator.simulators;
  * Simulates random double status items
  */
 public class DoubleRandomSimulatedStatus extends RandomSimulatedStatus<Double> {
-    public DoubleRandomSimulatedStatus(String name) {
-        super(name);
+    public DoubleRandomSimulatedStatus(String name, long updateRate) {
+        super(name, updateRate);
     }
 
     @Override

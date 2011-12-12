@@ -13,15 +13,22 @@ import java.util.Random;
  */
 public abstract class RandomSimulatedStatus<T> implements SimulatedStatus<T> {
     private final String name;
+    private final long updateRate;
     protected final Random rnd = new SecureRandom();
 
-    public RandomSimulatedStatus(String name) {
+    public RandomSimulatedStatus(String name, long updateRate) {
         this.name = name;
+        this.updateRate = updateRate;
     }
 
     @Override
     public StatusItem<T> simulateOnce() {
         return new BasicStatus<T>(name, generateValue(), new Date());
+    }
+
+    @Override
+    public long getUpdateRate() {
+        return updateRate;
     }
 
     abstract T generateValue();
