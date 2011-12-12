@@ -63,8 +63,9 @@ public class StatusSimulator implements JmsArtifact {
     private SimulatedStatus buildSimulatedStatus(StatusType s) {
         SimulatedStatus simulator;
         String type = s.getType();
-        if (type.equals("random")) {
-            if (s.getType().equals("double")) {
+        String mode = s.getMode();
+        if (mode.equals("random")) {
+            if (type.equals("double")) {
                 simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate());
             } else {
                 // TODO, replace for other types
