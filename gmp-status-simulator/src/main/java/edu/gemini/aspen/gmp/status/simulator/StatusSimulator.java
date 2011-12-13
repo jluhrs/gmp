@@ -66,13 +66,13 @@ public class StatusSimulator implements JmsArtifact {
         String mode = s.getMode();
         if (mode.equals("random")) {
             if (type.equals("double")) {
-                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate());
+                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
             } else {
                 // TODO, replace for other types
-                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate());
+                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
             }
         } else {
-            simulator = new DoubleFixedSimulatedStatus(s.getName(), s.getUpdateRate(),  0.0);
+            simulator = new DoubleFixedSimulatedStatus(s.getName(), s.getUpdateRate().intValue(),  0.0);
         }
         return simulator;
     }
@@ -96,9 +96,9 @@ public class StatusSimulator implements JmsArtifact {
     public synchronized void startSimulation() {
         LOG.info("Start status items simulation");
         for (Map.Entry<SimulatedStatus, StatusSetter> s:statusSetters.entrySet()) {
+            LOG.info("Simulate status item " + s.getKey().getName() + " at " + s.getKey().getUpdateRate());
             ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
                     new SimulationTask(s.getKey(), s.getValue()), 0, s.getKey().getUpdateRate(), TimeUnit.MILLISECONDS);
-            LOG.info("Simulate status item " + s.getKey().getName());
             _tasks.add(scheduledFuture);
         }
     }

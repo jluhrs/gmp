@@ -3,9 +3,9 @@
   <xs:element name="simulatedStatuses" type="simulatedStatusesType"/>
   <xs:complexType name="parametersType">
     <xs:sequence>
-      <xs:element type="xs:byte" name="start" minOccurs="0"/>
-      <xs:element type="xs:byte" name="end" minOccurs="0"/>
-      <xs:element type="xs:byte" name="period" minOccurs="0"/>
+      <xs:element type="xs:integer" name="start" minOccurs="0"/>
+      <xs:element type="xs:integer" name="end" minOccurs="0"/>
+      <xs:element type="xs:integer" name="period" minOccurs="0"/>
       <xs:element type="xs:string" name="repeat" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
@@ -17,12 +17,12 @@
           <xs:restriction base="xs:string">
             <xs:enumeration value="double"/>
             <xs:enumeration value="int"/>
-            <xs:enumeration value="byte"/>
+            <xs:enumeration value="integer"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element name="size" type="xs:byte" minOccurs="1"/>
-      <xs:element name="updateRate" type="xs:byte" minOccurs="1"/>
+      <xs:element name="size" type="xs:integer" minOccurs="1"/>
+      <xs:element name="updateRate" type="xs:integer" minOccurs="1"/>
       <xs:element name="mode">
         <xs:simpleType>
           <xs:restriction base="xs:string">
