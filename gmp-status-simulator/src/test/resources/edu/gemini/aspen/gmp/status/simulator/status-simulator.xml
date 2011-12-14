@@ -12,7 +12,7 @@
     </status>
     <status>
         <name>test:gpi:ao.r0</name>
-        <type>int</type>
+        <type>double</type>
         <size>20</size>
         <updateRate>200</updateRate>
         <mode>asymptotic-with-noise</mode>

@@ -18,7 +18,7 @@ public class IntRandomSimulatedStatusTest {
 
     @Test
     public void testCreation() {
-        RandomSimulatedStatus<Integer> status = new IntRandomSimulatedStatus(name, 100, 0, 10);
+        BaseSimulatedStatus<Integer> status = new IntRandomSimulatedStatus(name, 100, 0, 10);
         assertNotNull(status);
         assertEquals(100, status.getUpdateRate());
         assertEquals(name, status.getName());
@@ -26,7 +26,7 @@ public class IntRandomSimulatedStatusTest {
 
     @Test
     public void testSimulateOnceDouble() {
-        RandomSimulatedStatus<Integer> status = new IntRandomSimulatedStatus(name, 100, -30, 30);
+        BaseSimulatedStatus<Integer> status = new IntRandomSimulatedStatus(name, 100, -30, 30);
         for (int i = 0; i < 10000; i++) {
             StatusItem<Integer> statusItem = status.simulateOnce();
             assertNotNull(statusItem);

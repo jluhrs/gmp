@@ -19,7 +19,7 @@ public class NullSimulatedStatusTest {
     public void testCreation() {
         NullSimulatedStatus status = new NullSimulatedStatus(name);
         assertNotNull(status);
-        assertEquals(0, status.getUpdateRate());
+        assertEquals(1000, status.getUpdateRate());
         assertEquals(name, status.getName());
     }
 

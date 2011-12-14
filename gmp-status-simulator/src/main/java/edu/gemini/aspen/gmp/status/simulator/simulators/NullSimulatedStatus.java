@@ -23,7 +23,7 @@ public class NullSimulatedStatus implements SimulatedStatus<Integer> {
 
     @Override
     public long getUpdateRate() {
-        return 0;
+        return 1000;
     }
 
     @Override

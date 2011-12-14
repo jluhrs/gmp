@@ -5,12 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class DoubleRandomSimulatedStatusTest {
+public class AsymptoticWithNoiseSimulatedStatusTest {
     private String name;
 
     @Before
@@ -20,21 +19,22 @@ public class DoubleRandomSimulatedStatusTest {
 
     @Test
     public void testCreation() {
-        BaseSimulatedStatus<Double> status = new DoubleRandomSimulatedStatus(name, 100, 0.0, 1.0);
+        BaseSimulatedStatus<Double> status = new AsymptoticWithNoiseSimulatedStatus(name, 100, 0, 1.0, 1000, 0.1);
         assertNotNull(status);
         assertEquals(100, status.getUpdateRate());
+        assertEquals(name, status.getName());
     }
 
     @Test
-    public void testSimulateOnceDouble() {
-        BaseSimulatedStatus<Double> status = new DoubleRandomSimulatedStatus(name, 100, 0.0, 100);
-        for (int i = 0; i < 10000; i++) {
+    public void testSimulateOnceDouble() throws InterruptedException {
+        BaseSimulatedStatus<Double> status = new AsymptoticWithNoiseSimulatedStatus(name, 100, 0, 1.0, 1000, 0.1);
+        for (int i = 0; i < 1000; i++) {
             StatusItem<Double> statusItem = status.simulateOnce();
             assertNotNull(statusItem);
-            assertEquals(name, statusItem.getName());
             assertTrue(statusItem.getValue() >= 0);
-            assertTrue(statusItem.getValue() <= 100);
+            assertTrue(statusItem.getValue() <= 1+0.1);
             assertTrue((statusItem.getTimestamp().getTime() - new Date().getTime()) < 1000);
+            TimeUnit.MILLISECONDS.sleep(10);
         }
     }
 }
