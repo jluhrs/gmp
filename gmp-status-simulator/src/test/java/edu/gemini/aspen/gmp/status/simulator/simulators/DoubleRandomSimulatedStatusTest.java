@@ -20,19 +20,20 @@ public class DoubleRandomSimulatedStatusTest {
 
     @Test
     public void testCreation() {
-        RandomSimulatedStatus<Double> status = new DoubleRandomSimulatedStatus(name, 100);
+        RandomSimulatedStatus<Double> status = new DoubleRandomSimulatedStatus(name, 100, 0.0, 1.0);
         assertNotNull(status);
         assertEquals(100, status.getUpdateRate());
     }
 
     @Test
     public void testSimulateOnceDouble() {
-        RandomSimulatedStatus<Double> status = new DoubleRandomSimulatedStatus(name, 100);
+        RandomSimulatedStatus<Double> status = new DoubleRandomSimulatedStatus(name, 100, 0.0, 100);
         for (int i = 0; i < 10000; i++) {
             StatusItem<Double> statusItem = status.simulateOnce();
             assertNotNull(statusItem);
             assertEquals(name, statusItem.getName());
-            assertEquals(1.0, statusItem.getValue(), 1);
+            assertTrue(statusItem.getValue() >= 0);
+            assertTrue(statusItem.getValue() <= 100);
             assertTrue((statusItem.getTimestamp().getTime() - new Date().getTime()) < 1000);
         }
     }

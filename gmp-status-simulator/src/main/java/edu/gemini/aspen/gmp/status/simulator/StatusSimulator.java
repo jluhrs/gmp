@@ -71,7 +71,7 @@ public class StatusSimulator implements JmsArtifact {
         BigDecimal max = s.getParameters().getMax();
         if (mode.equals("random")) {
             if (type.equals("double")) {
-                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
+                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue(), min != null?min.doubleValue():0.0, max != null?max.doubleValue():1.0);
             } else if (type.equals("int")) {
                 simulator = new IntRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue(), min != null?min.intValue():0, max != null?max.intValue():Integer.MAX_VALUE);
             } else {
@@ -79,10 +79,10 @@ public class StatusSimulator implements JmsArtifact {
             }
         }if (mode.equals("random")) {
             if (type.equals("double")) {
-                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
+                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue(), min != null ? min.doubleValue() : 0.0, max != null ? max.doubleValue() : 1.0);
             } else {
                 // TODO, replace for other types
-                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
+                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue(), min != null ? min.doubleValue() : 0.0, max != null ? max.doubleValue() : 1.0);
             }
         } else {
             simulator = new DoubleFixedSimulatedStatus(s.getName(), s.getUpdateRate().intValue(),  0.0);
