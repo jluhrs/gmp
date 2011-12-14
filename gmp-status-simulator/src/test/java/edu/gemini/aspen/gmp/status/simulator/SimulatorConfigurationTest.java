@@ -23,7 +23,7 @@ public class SimulatorConfigurationTest {
         List<StatusType> statuses = configuration.getStatuses();
         boolean verified = false;
         for (StatusType s:statuses) {
-            if (s.getName().equals("test:cc.status1")) {
+            if (s.getName().equals("test:gpi:ao.strehl")) {
                 assertEquals("random", s.getMode());
                 assertEquals(0, s.getParameters().getStart().intValue());
                 verified = true;

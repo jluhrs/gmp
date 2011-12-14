@@ -7,6 +7,8 @@ import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.aspen.gmp.status.simulator.generated.StatusType;
 import edu.gemini.aspen.gmp.status.simulator.simulators.DoubleFixedSimulatedStatus;
 import edu.gemini.aspen.gmp.status.simulator.simulators.DoubleRandomSimulatedStatus;
+import edu.gemini.aspen.gmp.status.simulator.simulators.IntRandomSimulatedStatus;
+import edu.gemini.aspen.gmp.status.simulator.simulators.NullSimulatedStatus;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
@@ -65,6 +67,14 @@ public class StatusSimulator implements JmsArtifact {
         String type = s.getType();
         String mode = s.getMode();
         if (mode.equals("random")) {
+            if (type.equals("double")) {
+                simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
+            } else if (type.equals("int")) {
+                simulator = new IntRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
+            } else {
+                simulator = new NullSimulatedStatus(s.getName());
+            }
+        }if (mode.equals("random")) {
             if (type.equals("double")) {
                 simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
             } else {

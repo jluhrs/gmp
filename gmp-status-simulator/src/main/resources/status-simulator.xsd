@@ -17,17 +17,18 @@
           <xs:restriction base="xs:string">
             <xs:enumeration value="double"/>
             <xs:enumeration value="int"/>
-            <xs:enumeration value="integer"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element name="size" type="xs:integer" minOccurs="1"/>
+      <xs:element name="size" type="xs:integer" minOccurs="0"/>
       <xs:element name="updateRate" type="xs:integer" minOccurs="1"/>
       <xs:element name="mode">
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="random"/>
             <xs:enumeration value="slope"/>
+            <xs:enumeration value="asymptotic"/>
+            <xs:enumeration value="asymptotic-with-noise"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
