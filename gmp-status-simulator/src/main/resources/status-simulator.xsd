@@ -3,8 +3,8 @@
   <xs:element name="simulatedStatuses" type="simulatedStatusesType"/>
   <xs:complexType name="parametersType">
     <xs:sequence>
-      <xs:element type="xs:integer" name="start" minOccurs="0"/>
-      <xs:element type="xs:integer" name="end" minOccurs="0"/>
+      <xs:element type="xs:decimal" name="max" minOccurs="0"/>
+      <xs:element type="xs:decimal" name="min" minOccurs="0"/>
       <xs:element type="xs:integer" name="period" minOccurs="0"/>
       <xs:element type="xs:string" name="repeat" minOccurs="0"/>
     </xs:sequence>

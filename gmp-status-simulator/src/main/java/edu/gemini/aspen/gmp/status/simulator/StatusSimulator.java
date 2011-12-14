@@ -17,6 +17,7 @@ import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -66,11 +67,13 @@ public class StatusSimulator implements JmsArtifact {
         SimulatedStatus simulator;
         String type = s.getType();
         String mode = s.getMode();
+        BigDecimal min = s.getParameters().getMin();
+        BigDecimal max = s.getParameters().getMax();
         if (mode.equals("random")) {
             if (type.equals("double")) {
                 simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
             } else if (type.equals("int")) {
-                simulator = new IntRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue(), 0, 1);
+                simulator = new IntRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue(), min != null?min.intValue():0, max != null?max.intValue():Integer.MAX_VALUE);
             } else {
                 simulator = new NullSimulatedStatus(s.getName());
             }

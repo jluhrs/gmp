@@ -28,10 +28,12 @@ public class DoubleRandomSimulatedStatusTest {
     @Test
     public void testSimulateOnceDouble() {
         RandomSimulatedStatus<Double> status = new DoubleRandomSimulatedStatus(name, 100);
-        StatusItem<Double> statusItem = status.simulateOnce();
-        assertNotNull(statusItem);
-        assertEquals(name, statusItem.getName());
-        assertEquals(1.0, statusItem.getValue(), 1);
-        assertTrue((statusItem.getTimestamp().getTime() - new Date().getTime()) < 1000);
+        for (int i = 0; i < 10000; i++) {
+            StatusItem<Double> statusItem = status.simulateOnce();
+            assertNotNull(statusItem);
+            assertEquals(name, statusItem.getName());
+            assertEquals(1.0, statusItem.getValue(), 1);
+            assertTrue((statusItem.getTimestamp().getTime() - new Date().getTime()) < 1000);
+        }
     }
 }

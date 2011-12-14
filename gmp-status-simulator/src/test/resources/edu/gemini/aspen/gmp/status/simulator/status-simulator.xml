@@ -7,7 +7,7 @@
         <updateRate>100</updateRate>
         <mode>random</mode>
         <parameters>
-            <start>0</start>
+            <min>0</min>
         </parameters>
     </status>
     <status>
@@ -17,8 +17,8 @@
         <updateRate>200</updateRate>
         <mode>asymptotic-with-noise</mode>
         <parameters>
-            <start>0</start>
-            <end>10</end>
+            <min>0</min>
+            <max>10</max>
             <period>100</period>
             <repeat>false</repeat>
         </parameters>
