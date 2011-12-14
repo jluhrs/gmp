@@ -8,6 +8,7 @@
         <mode>random</mode>
         <parameters>
             <min>0</min>
+            <max>10</max>
         </parameters>
     </status>
     <status>

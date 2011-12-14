@@ -5,7 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.aspen.gmp.status.simulator.generated.StatusType;
-import edu.gemini.aspen.gmp.status.simulator.simulators.*;
+import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactory;
+import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactoryBuilder;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
@@ -14,7 +15,6 @@ import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -61,40 +61,14 @@ public class StatusSimulator implements JmsArtifact {
     }
 
     private SimulatedStatus buildSimulatedStatus(StatusType s) {
-        SimulatedStatus simulator;
         String type = s.getType();
         String mode = s.getMode();
-        BigDecimal min = s.getParameters().getMin();
-        BigDecimal max = s.getParameters().getMax();
-        if (mode.equals("random")) {
-            if (type.equals("double")) {
-                simulator = new DoubleRandomSimulatedStatus(s.getName(),
-                        s.getUpdateRate().intValue(),
-                        min != null?min.doubleValue():0.0,
-                        max != null?max.doubleValue():1.0);
-            } else if (type.equals("int")) {
-                simulator = new IntRandomSimulatedStatus(s.getName(),
-                        s.getUpdateRate().intValue(),
-                        min != null?min.intValue():0,
-                        max != null?max.intValue():Integer.MAX_VALUE);
-            } else {
-                simulator = new NullSimulatedStatus(s.getName());
-            }
-        } if (mode.equals("asymptotic-with-noise")) {
-            if (type.equals("double")) {
-                simulator = new AsymptoticWithNoiseSimulatedStatus(s.getName(),
-                        s.getUpdateRate().intValue(),
-                        min != null ? min.doubleValue() : 0.0,
-                        max != null ? max.doubleValue() : 1.0,
-                        1000, 1.0);
-            } else {
-                // TODO, replace for other types
-                simulator = new NullSimulatedStatus(s.getName());
-            }
-        } else {
-            simulator = new DoubleFixedSimulatedStatus(s.getName(), s.getUpdateRate().intValue(),  0.0);
-        }
-        return simulator;
+        StatusSimulatorFactory simulator = buildFactory(type, mode);
+        return simulator.buildStatusSimulator(s);
+    }
+
+    private StatusSimulatorFactory buildFactory(String type, String mode) {
+        return StatusSimulatorFactoryBuilder.buildSimulatorFactory(type, mode);
     }
 
     @Override
@@ -117,7 +91,7 @@ public class StatusSimulator implements JmsArtifact {
         LOG.info("Start status items simulation");
         for (Map.Entry<SimulatedStatus, StatusSetter> s:statusSetters.entrySet()) {
             SimulatedStatus simulatedStatus = s.getKey();
-            LOG.info("Simulate status item " + s.getKey().getName() + " at " + simulatedStatus.getUpdateRate());
+            LOG.info("Simulate status item " + simulatedStatus.getName() + " at " + simulatedStatus.getUpdateRate() + " with " + simulatedStatus.getClass().getSimpleName());
             ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
                     new SimulationTask(simulatedStatus, s.getValue()), 0, simulatedStatus.getUpdateRate(), TimeUnit.MILLISECONDS);
             _tasks.add(scheduledFuture);

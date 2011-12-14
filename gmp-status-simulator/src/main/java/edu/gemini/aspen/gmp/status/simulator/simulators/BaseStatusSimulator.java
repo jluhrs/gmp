@@ -11,12 +11,12 @@ import java.util.Random;
 /**
  * Simulates a status channel using random values
  */
-public abstract class BaseSimulatedStatus<T> implements SimulatedStatus<T> {
+public abstract class BaseStatusSimulator<T> implements SimulatedStatus<T> {
     private final String name;
     private final long updateRate;
     protected final Random rnd = new SecureRandom();
 
-    public BaseSimulatedStatus(String name, long updateRate) {
+    public BaseStatusSimulator(String name, long updateRate) {
         this.name = name;
         this.updateRate = updateRate;
     }

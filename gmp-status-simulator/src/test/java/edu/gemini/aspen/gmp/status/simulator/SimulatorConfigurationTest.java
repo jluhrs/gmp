@@ -7,7 +7,6 @@ import javax.xml.bind.JAXBException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class SimulatorConfigurationTest {
@@ -27,7 +26,7 @@ public class SimulatorConfigurationTest {
             if (s.getName().equals("test:gpi:ao.strehl")) {
                 assertEquals("random", s.getMode());
                 assertEquals(0, s.getParameters().getMin().intValue());
-                assertNull(s.getParameters().getMax());
+                assertEquals(10.0, s.getParameters().getMax().doubleValue(), 0);
                 verified = true;
             }
         }

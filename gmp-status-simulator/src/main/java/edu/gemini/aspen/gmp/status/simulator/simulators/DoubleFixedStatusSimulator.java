@@ -3,10 +3,10 @@ package edu.gemini.aspen.gmp.status.simulator.simulators;
 /**
  * Creates a status with a fixed double value
  */
-public class DoubleFixedSimulatedStatus extends BaseSimulatedStatus<Double> {
+public class DoubleFixedStatusSimulator extends BaseStatusSimulator<Double> {
     private final Double value;
 
-    public DoubleFixedSimulatedStatus(String name, long updateRate, Double value) {
+    public DoubleFixedStatusSimulator(String name, long updateRate, Double value) {
         super(name, updateRate);
         this.value = value;
     }

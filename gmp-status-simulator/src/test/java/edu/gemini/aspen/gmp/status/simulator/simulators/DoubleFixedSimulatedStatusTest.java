@@ -18,15 +18,15 @@ public class DoubleFixedSimulatedStatusTest {
 
     @Test
     public void testCreation() {
-        BaseSimulatedStatus<Double> status = new DoubleFixedSimulatedStatus(name, 100, 1.0);
-        assertNotNull(status);
-        assertEquals(100, status.getUpdateRate());
+        BaseStatusSimulator<Double> statusSimulator = new DoubleFixedStatusSimulator(name, 100, 1.0);
+        assertNotNull(statusSimulator);
+        assertEquals(100, statusSimulator.getUpdateRate());
     }
 
     @Test
     public void testSimulateOnceDouble() {
-        BaseSimulatedStatus<Double> status = new DoubleFixedSimulatedStatus(name, 100, 1.0);
-        StatusItem<Double> statusItem = status.simulateOnce();
+        BaseStatusSimulator<Double> statusSimulator = new DoubleFixedStatusSimulator(name, 100, 1.0);
+        StatusItem<Double> statusItem = statusSimulator.simulateOnce();
         assertNotNull(statusItem);
         assertEquals(name, statusItem.getName());
         assertEquals(1.0, statusItem.getValue(), 0);

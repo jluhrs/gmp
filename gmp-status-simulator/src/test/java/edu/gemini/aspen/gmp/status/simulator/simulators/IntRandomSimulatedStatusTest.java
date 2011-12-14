@@ -18,17 +18,17 @@ public class IntRandomSimulatedStatusTest {
 
     @Test
     public void testCreation() {
-        BaseSimulatedStatus<Integer> status = new IntRandomSimulatedStatus(name, 100, 0, 10);
-        assertNotNull(status);
-        assertEquals(100, status.getUpdateRate());
-        assertEquals(name, status.getName());
+        BaseStatusSimulator<Integer> statusSimulator = new IntRandomStatusSimulator(name, 100, 0, 10);
+        assertNotNull(statusSimulator);
+        assertEquals(100, statusSimulator.getUpdateRate());
+        assertEquals(name, statusSimulator.getName());
     }
 
     @Test
     public void testSimulateOnceDouble() {
-        BaseSimulatedStatus<Integer> status = new IntRandomSimulatedStatus(name, 100, -30, 30);
+        BaseStatusSimulator<Integer> statusSimulator = new IntRandomStatusSimulator(name, 100, -30, 30);
         for (int i = 0; i < 10000; i++) {
-            StatusItem<Integer> statusItem = status.simulateOnce();
+            StatusItem<Integer> statusItem = statusSimulator.simulateOnce();
             assertNotNull(statusItem);
             assertTrue(statusItem.getValue().intValue() >= -30);
             assertTrue(statusItem.getValue().intValue() <= 30);

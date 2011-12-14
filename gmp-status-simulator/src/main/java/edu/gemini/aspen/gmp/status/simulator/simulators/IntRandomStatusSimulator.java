@@ -3,11 +3,11 @@ package edu.gemini.aspen.gmp.status.simulator.simulators;
 /**
  * Simulates random double status items
  */
-public class IntRandomSimulatedStatus extends BaseSimulatedStatus<Integer> {
+public class IntRandomStatusSimulator extends BaseStatusSimulator<Integer> {
     private final int minValue;
     private final int maxValue;
 
-    public IntRandomSimulatedStatus(String name, long updateRate, int minValue, int maxValue) {
+    public IntRandomStatusSimulator(String name, long updateRate, int minValue, int maxValue) {
         super(name, updateRate);
         this.minValue = minValue;
         this.maxValue = maxValue;

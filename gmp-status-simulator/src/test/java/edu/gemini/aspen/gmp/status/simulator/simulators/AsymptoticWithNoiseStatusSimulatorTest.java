@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
-public class AsymptoticWithNoiseSimulatedStatusTest {
+public class AsymptoticWithNoiseStatusSimulatorTest {
     private String name;
 
     @Before
@@ -19,17 +19,17 @@ public class AsymptoticWithNoiseSimulatedStatusTest {
 
     @Test
     public void testCreation() {
-        BaseSimulatedStatus<Double> status = new AsymptoticWithNoiseSimulatedStatus(name, 100, 0, 1.0, 1000, 0.1);
-        assertNotNull(status);
-        assertEquals(100, status.getUpdateRate());
-        assertEquals(name, status.getName());
+        BaseStatusSimulator<Double> statusSimulator = new AsymptoticWithNoiseStatusSimulatorSimulator(name, 100, 0, 1.0, 1000, 0.1);
+        assertNotNull(statusSimulator);
+        assertEquals(100, statusSimulator.getUpdateRate());
+        assertEquals(name, statusSimulator.getName());
     }
 
     @Test
     public void testSimulateOnceDouble() throws InterruptedException {
-        BaseSimulatedStatus<Double> status = new AsymptoticWithNoiseSimulatedStatus(name, 100, 0, 1.0, 1000, 0.1);
+        BaseStatusSimulator<Double> statusSimulator = new AsymptoticWithNoiseStatusSimulatorSimulator(name, 100, 0, 1.0, 1000, 0.1);
         for (int i = 0; i < 1000; i++) {
-            StatusItem<Double> statusItem = status.simulateOnce();
+            StatusItem<Double> statusItem = statusSimulator.simulateOnce();
             assertNotNull(statusItem);
             assertTrue(statusItem.getValue() >= 0);
             assertTrue(statusItem.getValue() <= 1+0.1);
