@@ -70,7 +70,7 @@ public class StatusSimulator implements JmsArtifact {
             if (type.equals("double")) {
                 simulator = new DoubleRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
             } else if (type.equals("int")) {
-                simulator = new IntRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue());
+                simulator = new IntRandomSimulatedStatus(s.getName(), s.getUpdateRate().intValue(), 0, 1);
             } else {
                 simulator = new NullSimulatedStatus(s.getName());
             }
