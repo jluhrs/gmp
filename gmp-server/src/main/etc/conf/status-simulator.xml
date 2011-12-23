@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<simulatedstatus>
+    <status>
+        <name>test:gpi:ao.strehl</name>
+        <type>double</type>
+        <size>10</size>
+        <updateRate>500</updateRate>
+        <mode>random</mode>
+        <parameters>
+            <min>0</min>
+        </parameters>
+    </status>
+    <status>
+        <name>test:gpi:ao.r0</name>
+        <type>double</type>
+        <size>20</size>
+        <updateRate>400</updateRate>
+        <mode>asymptotic-with-noise</mode>
+        <parameters>
+            <min>0</min>
+            <max>10</max>
+            <period>100</period>
+            <repeat>false</repeat>
+        </parameters>
+    </status>
+</simulatedstatus>
