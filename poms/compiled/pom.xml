@@ -31,7 +31,7 @@
             <dependency>
                 <groupId>edu.gemini.jms</groupId>
                 <artifactId>jms-api</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
@@ -368,29 +368,29 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.3.6</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <supportedProjectTypes>
-                        <supportedProjectType>jar</supportedProjectType>
-                        <supportedProjectType>bundle</supportedProjectType>
-                        <supportedProjectType>war</supportedProjectType>
-                    </supportedProjectTypes>
-                    <instructions>
-                        <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
-                        <Bundle-Version>${project.version}</Bundle-Version>
-                        <Build-Date>${maven.build.timestamp}</Build-Date>
-                        <Build-Host>${maven.build.hostname}</Build-Host>
-                        <Bundle-Activator>${bundle.namespace}.osgi.Activator</Bundle-Activator>
-                        <Export-Package>${bundle.namespace}.*;version="${project.version}"</Export-Package>
-                        <_include>-osgi.bnd, ${basedir}/target/buildmeta.properties</_include>
-                        <_debug>true</_debug>
-                    </instructions>
-                </configuration>
-            </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>2.3.6</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <supportedProjectTypes>
+                            <supportedProjectType>jar</supportedProjectType>
+                            <supportedProjectType>bundle</supportedProjectType>
+                            <supportedProjectType>war</supportedProjectType>
+                        </supportedProjectTypes>
+                        <instructions>
+                            <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
+                            <Bundle-Version>${project.version}</Bundle-Version>
+                            <Build-Date>${maven.build.timestamp}</Build-Date>
+                            <Build-Host>${maven.build.hostname}</Build-Host>
+                            <Bundle-Activator>${bundle.namespace}.osgi.Activator</Bundle-Activator>
+                            <Export-Package>${bundle.namespace}.*;version="${project.version}"</Export-Package>
+                            <_include>-osgi.bnd, ${basedir}/target/buildmeta.properties</_include>
+                            <_debug>true</_debug>
+                        </instructions>
+                    </configuration>
+                </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

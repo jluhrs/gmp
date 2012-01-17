@@ -1,8 +1,13 @@
 package edu.gemini.jms.activemq.provider;
 
+import edu.gemini.jms.api.JmsProviderStatusListener;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
+import javax.jms.JMSException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.junit.Assert.*;
 
 public class ActiveMQJMSProviderTest {
     @Test
@@ -12,5 +17,32 @@ public class ActiveMQJMSProviderTest {
         provider.startConnection();
 
         assertNotNull(provider.getConnectionFactory());
+    }
+
+    @Test
+    public void addStatusListener() throws InterruptedException, JMSException {
+        String brokerUrl = "failover:(vm:testBroker)";
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl);
+
+        final AtomicBoolean resumed = new AtomicBoolean(false);
+
+        provider.bindJmsStatusListener(new JmsProviderStatusListener() {
+            @Override
+            public void transportResumed() {
+                resumed.set(true);
+            }
+
+            @Override
+            public void transportInterrupted() {
+            }
+        });
+
+        assertFalse(resumed.get());
+
+        provider.getConnectionFactory().createConnection();
+
+        TimeUnit.SECONDS.sleep(1);
+
+        assertTrue(resumed.get());
     }
 }
