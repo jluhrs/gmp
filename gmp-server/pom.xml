@@ -514,6 +514,12 @@
             <artifactId>gmp-epics-simulator</artifactId>
             <version>0.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-status-simulator</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- GMP EPICS Status Service -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>

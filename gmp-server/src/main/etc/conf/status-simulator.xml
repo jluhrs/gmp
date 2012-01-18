@@ -2,12 +2,13 @@
 <simulatedstatus>
     <status>
         <name>test:gpi:ao.strehl</name>
-        <type>double</type>
+        <type>int</type>
         <size>10</size>
         <updateRate>500</updateRate>
         <mode>random</mode>
         <parameters>
             <min>0</min>
+            <min>100</min>
         </parameters>
     </status>
     <status>
