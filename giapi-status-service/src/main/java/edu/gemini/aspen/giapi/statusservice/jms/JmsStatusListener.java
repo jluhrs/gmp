@@ -24,7 +24,6 @@ public class JmsStatusListener implements MessageListener {
     @Override
     public void onMessage(Message message) {
         try {
-            System.out.println("GOT A ONE ");
             //reconstruct the StatusItem from the JMS Message
             StatusItem item = MessageBuilder.buildStatusItem(message);
             if (item != null) {
