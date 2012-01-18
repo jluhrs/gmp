@@ -7,7 +7,6 @@ import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.aspen.gmp.status.simulator.generated.StatusType;
 import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactory;
 import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactoryBuilder;
-import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -21,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 @Component
 @Provides
-public class StatusSimulator implements JmsArtifact {
+public class StatusSimulator {
     private static final Logger LOG = Logger.getLogger(StatusSimulator.class.getName());
     private final Map<SimulatedStatus, StatusSetter> statusSetters;
     private final ScheduledExecutorService executorService =
@@ -52,7 +52,16 @@ public class StatusSimulator implements JmsArtifact {
 
     @Validate
     public void startComponent() throws JMSException {
-        startJms(jmsProvider);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    startJms();
+                } catch (JMSException e) {
+                    LOG.log(Level.SEVERE, "Exception starting the JMS client", e);
+                }
+            }
+        }).start();
     }
 
     @Invalidate
@@ -71,16 +80,14 @@ public class StatusSimulator implements JmsArtifact {
         return StatusSimulatorFactoryBuilder.buildSimulatorFactory(type, mode);
     }
 
-    @Override
-    public void startJms(JmsProvider provider) throws JMSException {
+    private void startJms() throws JMSException {
         for (StatusSetter s:statusSetters.values()) {
-            s.startJms(provider);
+            s.startJms(jmsProvider);
         }
         startSimulation();
     }
 
-    @Override
-    public void stopJms() {
+    private void stopJms() {
         stopSimulation();
         for (StatusSetter s:statusSetters.values()) {
             s.stopJms();

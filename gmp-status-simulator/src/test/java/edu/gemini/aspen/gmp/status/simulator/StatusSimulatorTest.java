@@ -8,6 +8,7 @@ import org.mockito.Matchers;
 import javax.jms.*;
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
@@ -43,7 +44,10 @@ public class StatusSimulatorTest {
         mockSessionProducerAndConsumer();
 
         component = new StatusSimulator(provider, file);
-        component.startJms(provider);
+        component.startComponent();
+
+        TimeUnit.MILLISECONDS.sleep(300);
+
         verify(session, times(2)).createProducer(any(Destination.class));
     }
 
@@ -53,8 +57,12 @@ public class StatusSimulatorTest {
         mockSessionProducerAndConsumer();
 
         component = new StatusSimulator(provider, file);
-        component.startJms(provider);
-        component.stopJms();
+        component.startComponent();
+        TimeUnit.MILLISECONDS.sleep(300);
+
+        component.stopComponent();
+        TimeUnit.MILLISECONDS.sleep(300);
+
         verify(session, times(2)).close();
     }
 
