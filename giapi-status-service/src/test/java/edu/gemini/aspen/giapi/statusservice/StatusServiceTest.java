@@ -2,13 +2,13 @@ package edu.gemini.aspen.giapi.statusservice;
 
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Session;
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -31,12 +31,13 @@ public class StatusServiceTest {
         String serviceName = "Service Name";
         String serviceStatus = ">";
         provider = buildJMSProviderMock();
-        service = new StatusService(aggregate, serviceName, serviceStatus, provider);
+        service = new StatusService(aggregate, provider, serviceName, serviceStatus);
     }
 
     @Test
-    public void testBinding() throws JMSException {
+    public void testStartJms() throws JMSException, InterruptedException {
         service.initialize();
+        TimeUnit.MILLISECONDS.sleep(300);
         verify(provider).getConnectionFactory();
     }
 
@@ -55,10 +56,13 @@ public class StatusServiceTest {
     }
 
     @Test
-    public void testUnbinding() throws JMSException {
+    public void testUnbinding() throws JMSException, InterruptedException {
         service.initialize();
+        TimeUnit.MILLISECONDS.sleep(300);
+
         verify(provider).getConnectionFactory();
-        service.stopJms();
+        service.stopComponent();
+
         verify(provider).getConnectionFactory();
         verifyZeroInteractions(provider);
     }

@@ -1,8 +1,8 @@
 package edu.gemini.aspen.giapi.statusservice;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.statusservice.jms.JmsStatusListener;
 import edu.gemini.aspen.giapi.statusservice.jms.StatusConsumer;
-import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -15,30 +15,29 @@ import java.util.logging.Logger;
  * container and the actual implementation residing in the StatusService
  */
 @Component
-public class StatusService implements JmsArtifact{
+public class StatusService {
     private static final Logger LOG = Logger.getLogger(StatusService.class.getName());
     private static final String DEFAULT_STATUS = ">"; //defaults to listen for all the status items.
     private static final String DEFAULT_NAME = "Status Service";
 
-    @Requires(id = "statusHandlerManager")
     private StatusHandlerAggregate _aggregate;
 
-    @Requires
-    private JmsProvider _provider;
+    private final JmsProvider _provider;
+
+    private final String statusName;
+    private final String serviceName;
 
     private StatusConsumer _consumer;
 
-    @Property(name = "statusName", value = DEFAULT_STATUS, mandatory = true)
-    private String statusName;
+    public StatusService(@Requires StatusHandlerAggregate aggregate,
+                         @Requires JmsProvider provider,
+                         @Property(name = "serviceName", value = DEFAULT_NAME, mandatory = true) String serviceName,
+                         @Property(name = "statusName", value = DEFAULT_STATUS, mandatory = true) String statusName) {
+        Preconditions.checkArgument(aggregate != null);
+        Preconditions.checkArgument(provider != null);
+        Preconditions.checkArgument(serviceName != null);
+        Preconditions.checkArgument(statusName != null);
 
-    @Property(name = "serviceName", value = DEFAULT_NAME, mandatory = true)
-    private String serviceName;
-
-    // Mark as private so is not exposed for API but iPOJO can see it anyway
-    private StatusService() {
-    }
-
-    public StatusService(StatusHandlerAggregate aggregate, String serviceName, String statusName, JmsProvider provider) {
         this.serviceName = serviceName;
         this.statusName = statusName;
         this._aggregate = aggregate;
@@ -47,38 +46,32 @@ public class StatusService implements JmsArtifact{
 
     @Validate
     public void initialize() {
-        LOG.info("StatusService validated, build consumer and begin listening...");
-        buildConsumer(serviceName, statusName);
+        LOG.info("StatusService initialized");
+        buildConsumer();
     }
 
-    private void buildConsumer(String serviceName, String statusName) {
-        _consumer = new StatusConsumer(serviceName, statusName);
-        _consumer.setMessageListener(new JmsStatusListener(_aggregate));
-        LOG.info("StatusService has built consumer for serviceName=" + serviceName + ", statusName=" + statusName);
-        try{
-            //if(!_consumer.isConnected()){
-                _consumer.startJms(_provider);
-           // }
-        }catch(JMSException ex){
-            LOG.log(Level.SEVERE,ex.getMessage(),ex);
-        }
+    private void buildConsumer() {
+        // Start consumer in a separate thread to avoid blocking if the connection is not working
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                _consumer = new StatusConsumer(serviceName, statusName);
+                _consumer.setMessageListener(new JmsStatusListener(_aggregate));
+                LOG.info("StatusService has built consumer for serviceName=" + serviceName + ", statusName=" + statusName);
+                try {
+                    _consumer.startJms(_provider);
+                } catch (JMSException ex) {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        }).start();
+
     }
 
-    @Updated
-    public void updated() {
-        LOG.info("Updated service properties to serviceName=" + serviceName + ", statusName=" + statusName);
-        // TODO: Decide how to restart the service if the configuration changes
-    }
-
-    @Override
-    public void startJms(JmsProvider provider) throws JMSException {
-        _provider=provider;
-        initialize();
-    }
-
-    @Override
-    public void stopJms() {
-       if (_consumer != null) {
+    @Invalidate
+    public void stopComponent() {
+        // TODO Cancel the thread in build consumer if still runnig
+        if (_consumer != null) {
             _consumer.stopJms();
         } else {
             LOG.severe("Attempt to stop the the consumer before is ready");
