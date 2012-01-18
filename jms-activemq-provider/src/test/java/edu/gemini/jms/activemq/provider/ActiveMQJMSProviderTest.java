@@ -41,7 +41,7 @@ public class ActiveMQJMSProviderTest {
 
         provider.getConnectionFactory().createConnection();
 
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(2);
 
         assertTrue(resumed.get());
     }

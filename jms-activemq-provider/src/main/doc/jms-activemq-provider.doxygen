@@ -1,12 +1,17 @@
 /*!
- * \page jms_activemq_provider JMS ActiveMQ Provider
- *
- * \section jms_activemq_provider_provides_sec Provided Services
- *
- * \section jms_activemq_provider_requires_sec Required Services
- * This bundle requires no other OSGI services.
- *
- * \section jms_activemq_provider_configuration_sec Configuration
- * TBD
- *
+ \page jms_activemq_provider JMS ActiveMQ Provider
+ 
+ \section jms_activemq_provider_provides_sec Provided Services
+ The bundle provides the \ref edu.gemini.jms.api.JmsProvider service
+ that is used by many bundrles to connect to the local or remote
+ ActiveMQ service
+
+ \section jms_activemq_provider_requires_sec Required Services
+ This bundle can use services of the type \ref edu.gemini.jms.api.JmsProviderStatusListener JmsProviderListener.
+ Services of tha type will get callbacks when the connection to the ActiveMQ broker is active and when
+ it is interrupted.
+
+ \section jms_activemq_provider_configuration_sec Configuration
+ TBD
+
  */
