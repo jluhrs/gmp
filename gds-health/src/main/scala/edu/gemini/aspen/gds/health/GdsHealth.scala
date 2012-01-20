@@ -14,7 +14,9 @@ import scala.actors.Actor._
 import actors.Actor
 
 case object UpdateHealth
+
 case object StartJms
+
 case object StopJms
 
 /**
@@ -66,18 +68,20 @@ class GdsHealth(@Requires provider: JmsProvider) {
   @Bind(aggregate = true, specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler", optional = true)
   def bindGDSObseventHandler(evtHndlr: ObservationEventHandler) {
     LOG.info("Binding GDSObseventHandler")
-    if (evtHndlr.isInstanceOf[GDSObseventHandler]) {
-      healthState.registerGDSObseventHandler()
-      updateHealth()
+    evtHndlr match {
+      case e: GDSObseventHandler =>
+        healthState.registerGDSObseventHandler()
+        updateHealth()
     }
   }
 
   @Unbind(aggregate = true, specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler", optional = true)
   def unbindGDSObseventHandler(evtHndlr: ObservationEventHandler) {
     LOG.info("Unbinding GDSObseventHandler")
-    if (evtHndlr.isInstanceOf[GDSObseventHandler]) {
-      healthState.unregisterGDSObseventHandler()
-      updateHealth()
+    evtHndlr match {
+      case e: GDSObseventHandler =>
+        healthState.unregisterGDSObseventHandler()
+        updateHealth()
     }
   }
 
