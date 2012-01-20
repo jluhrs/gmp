@@ -22,6 +22,7 @@
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
         <vaadin.version>6.7.0</vaadin.version>
+        <pax-logging.version>1.6.4</pax-logging.version>
     </properties>
 
     <!--
@@ -46,12 +47,12 @@
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-api</artifactId>
-            <version>1.6.3</version>
+            <version>${pax-logging.version}</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
-            <version>1.6.3</version>
+            <version>${pax-logging.version}</version>
         </dependency>
         <!-- Configuration admin felix service -->
         <dependency>
