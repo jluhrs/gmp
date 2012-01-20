@@ -35,7 +35,7 @@ class GdsHealthTest {
     }
 
     def waitForCompletion() {
-      latch.await(5, TimeUnit.SECONDS)
+      latch.await(10, TimeUnit.SECONDS)
     }
 
   }
@@ -44,7 +44,7 @@ class GdsHealthTest {
     val provider: JmsProvider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false")
     statusservice = new StatusService(agg, provider, "Status Service " + testCounter.incrementAndGet(), ">")
     statusservice.initialize()
-    TimeUnit.MILLISECONDS.sleep(300)
+    TimeUnit.MILLISECONDS.sleep(1000)
     gdsHealth = new GdsHealth(provider)
   }
 
