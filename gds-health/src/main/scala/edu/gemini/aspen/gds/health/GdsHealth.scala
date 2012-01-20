@@ -10,6 +10,13 @@ import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 import edu.gemini.aspen.giapi.data.ObservationEventHandler
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 
+import scala.actors.Actor._
+import actors.Actor
+
+case object UpdateHealth
+case object StartJms
+case object StopJms
+
 /**
  * OSGi component providing health information for the GDS
  */
@@ -22,28 +29,24 @@ class GdsHealth(@Requires provider: JmsProvider) {
   private val LOG = Logger.getLogger(this.getClass.getName)
 
   private val healthState = new HealthState
-  private var validated = false
+  private val stateActor = new StateActor()
+  stateActor.start()
 
   private def updateHealth() {
-    LOG.info("Updating Health to " + healthState.getHealth)
-    if (validated) {
-      healthSetter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
-    }
+    LOG.info("Updating Health to " + healthState.getHealth + " " + healthSetter)
+    stateActor ! UpdateHealth
   }
 
   @Validate
   def validate() {
     LOG.info("Validating GDS Health")
-    validated = true
-    healthSetter.startJms(provider)
-    updateHealth()
+    stateActor ! StartJms
   }
 
   @Invalidate
   def invalidate() {
     LOG.info("Invalidating GDS Health")
-    validated = false
-    healthSetter.stopJms()
+    stateActor ! StopJms
   }
 
   @Bind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
@@ -92,6 +95,27 @@ class GdsHealth(@Requires provider: JmsProvider) {
     updateHealth()
   }
 
+  class StateActor extends Actor {
+    private var validated = false
+
+    override def act() {
+      loop {
+        react {
+          case UpdateHealth =>
+            if (validated) {
+              healthSetter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
+            }
+          case StartJms =>
+            healthSetter.startJms(provider)
+            validated = true
+            self ! UpdateHealth
+          case StopJms =>
+            validated = false
+            healthSetter.stopJms()
+        }
+      }
+    }
+  }
 
   private class HealthState {
     private val LOG = Logger.getLogger(this.getClass.getName)
