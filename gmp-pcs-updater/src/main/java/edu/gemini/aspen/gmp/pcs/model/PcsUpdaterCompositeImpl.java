@@ -16,17 +16,18 @@ import java.util.logging.Logger;
 
 @Component
 @Instantiate
-@Provides(specifications = PcsUpdaterComposite.class)
+@Provides
 public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComposite.class.getName());
 
     private final List<PcsUpdater> _pcsUpdaters = new CopyOnWriteArrayList<PcsUpdater>();
     private BaseMessageConsumer _messageConsumer;
 
-    @Requires(id="provider")
-    private JmsProvider _provider;
+    @Requires
+    private final JmsProvider _provider;
 
-    public PcsUpdaterCompositeImpl() {
+    public PcsUpdaterCompositeImpl(@Requires JmsProvider provider) {
+        this._provider = provider;
         registerUpdater(new LogPcsUpdater());
     }
 
@@ -62,20 +63,26 @@ public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite {
 
     @Validate
     public void initialize() throws JMSException {
-        LOG.info("Start listening for JMS Messages on " + PcsUpdateListener.DESTINATION_NAME);
-        //Creates the PCS Updates Consumer
-        _messageConsumer = new BaseMessageConsumer(
-                "JMS PCS Updates Consumer",
-                new DestinationData(PcsUpdateListener.DESTINATION_NAME,
-                        DestinationType.TOPIC),
-                new PcsUpdateListener(this)
-        );
+        new Thread(new Runnable() {
 
-        try {
-            _messageConsumer.startJms(_provider);
-        } catch (JMSException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
+            @Override
+            public void run() {
+                LOG.info("Start listening for JMS Messages on " + PcsUpdateListener.DESTINATION_NAME);
+                //Creates the PCS Updates Consumer
+                _messageConsumer = new BaseMessageConsumer(
+                        "JMS PCS Updates Consumer",
+                        new DestinationData(PcsUpdateListener.DESTINATION_NAME,
+                                DestinationType.TOPIC),
+                        new PcsUpdateListener(PcsUpdaterCompositeImpl.this)
+                );
+
+                try {
+                    _messageConsumer.startJms(_provider);
+                } catch (JMSException ex) {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        }).start();
     }
 
     @Invalidate

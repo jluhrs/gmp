@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
+import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -21,7 +22,8 @@ public class PcsUpdaterCompositeImplTest {
         u1 = mock(PcsUpdater.class);
         u2 = mock(PcsUpdater.class);
         u3 = mock(PcsUpdater.class);
-        _composite = new PcsUpdaterCompositeImpl();
+        JmsProvider provider = mock(JmsProvider.class);
+        _composite = new PcsUpdaterCompositeImpl(provider);
     }
 
     @Test
