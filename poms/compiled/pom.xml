@@ -124,6 +124,11 @@
                 <version>0.2.1</version>
             </dependency>
             <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-epics-to-status</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-actors-composer</artifactId>
                 <version>0.1.0</version>

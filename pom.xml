@@ -143,6 +143,7 @@
         <module>epics-heartbeat</module>
         <module>gmp-tui</module>
         <module>gmp-epics-top</module>
+        <module>gmp-epics-to-status</module>
         <module>gds-api</module>
         <module>gds-config-validator</module>
         <module>gds-performance-monitoring</module>
