@@ -94,7 +94,7 @@ public class MonitorStatusOperation implements Operation {
         StatusHandlerAggregate aggregate = new StatusHandlerAggregateImpl();
         aggregate.bindStatusHandler(monitor);
 
-        StatusService service = new StatusService(aggregate, "Status Monitor Service Client", _statusName, provider);
+        StatusService service = new StatusService(aggregate, provider, "Status Monitor Service Client", _statusName);
 
         try {
 
@@ -137,7 +137,7 @@ public class MonitorStatusOperation implements Operation {
     private void waitForTimeout(StatusService service, ScheduledFuture<Void> futureValue) throws InterruptedException, ExecutionException, TimeoutException {
         if (_timeout > 0) {
             futureValue.get(_timeout, TimeUnit.MILLISECONDS);
-            service.stopJms();
+            service.stopComponent();
             if (_expectedValue != null) {
                 System.out.println("After " + _timeout + " ms monitor has timed out not reaching the value expected=" + _expectedValue);
                 System.exit(1);
