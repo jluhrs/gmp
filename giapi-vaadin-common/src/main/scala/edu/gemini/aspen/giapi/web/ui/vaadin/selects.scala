@@ -3,7 +3,7 @@ package edu.gemini.aspen.giapi.web.ui.vaadin
 import com.vaadin.data.Container
 import com.vaadin.ui.Table.ColumnGenerator
 
-package object selects {
+object selects {
 
   /**
    * Traits that implements adding a function as property value change event listener */
