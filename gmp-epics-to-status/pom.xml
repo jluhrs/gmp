@@ -41,16 +41,27 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen.gmp</groupId>
-            <artifactId>gmp-epics-top</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.cas</groupId>
+            <artifactId>cas</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-provider</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-service</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

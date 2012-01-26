@@ -6,8 +6,11 @@ import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.aspen.gmp.epicstostatus.generated.*;
+import edu.gemini.aspen.gmp.epicstostatus.generated.AlarmChannelType;
+import edu.gemini.aspen.gmp.epicstostatus.generated.Channels;
+import edu.gemini.aspen.gmp.epicstostatus.generated.HealthChannelType;
+import edu.gemini.aspen.gmp.epicstostatus.generated.SimpleChannelType;
+import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.NewEpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.ChannelListener;
@@ -45,20 +48,17 @@ public class EpicsToStatusComponent {
     private final String xmlFileName;
     private final String xsdFileName;
     private final JmsProvider provider;
-    private final EpicsTop epicsTop;
 
     private static final String NAME = "GMP_EPICS_TO_STATUS";
 
     public EpicsToStatusComponent(@Requires NewEpicsReader reader,
-                                  @Requires EpicsTop epicsTop,
                                   @Requires JmsProvider provider,
                                   @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
                                   @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
         _reader = reader;
         this.xmlFileName = xmlFileName;
         this.xsdFileName = xsdFileName;
-        this.epicsTop = epicsTop;
-        this.provider=provider;
+        this.provider = provider;
     }
 
     @Validate
@@ -73,76 +73,71 @@ public class EpicsToStatusComponent {
      * @param items channels to create and listen to.
      */
     public void initialize(Channels items) {
-        for (final BaseChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
+        for (final SimpleChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             try {
-                if (item instanceof HealthChannelType) {
-                    ReadOnlyClientEpicsChannel<String> ch = _reader.getStringChannel(item.getEpicschannel());
-                    StatusSetter ss=new StatusSetter(NAME, item.getStatusitem());
-                    try {
-                        ss.startJms(provider);
-                    } catch (JMSException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);
-                        continue;
-                    }
-                    channelMap.put(item.getEpicschannel(), new Pair<StatusSetter, ReadOnlyClientEpicsChannel<?>>(ss, ch));
-                    ch.registerListener(new ChannelListener<String>() {
-                        @Override
-                        public void valueChanged(String channelName, List<String> values) {
-                            try {
-                                channelMap.get(channelName)._1().setStatusItem(new HealthStatus(item.getStatusitem(), Health.valueOf(values.get(0))));
-                            } catch (JMSException e) {
-                                LOG.log(Level.SEVERE, e.getMessage(), e);
-                            } catch (IllegalArgumentException e) {
-                                LOG.log(Level.SEVERE, e.getMessage(), e);
+                ReadOnlyClientEpicsChannel ch = _reader.getChannelAsync(item.getEpicschannel());
+                StatusSetter ss = new StatusSetter(NAME + item.getStatusitem(), item.getStatusitem());
+                try {
+                    ss.startJms(provider);
+                } catch (JMSException e) {
+                    LOG.log(Level.SEVERE, "Won't be able to publish status updates for channel: " + item.getEpicschannel() + ", " + e.getMessage(), e);
+                    ch.destroy();
+                    continue;
+                }
+                channelMap.put(item.getEpicschannel(), new Pair<StatusSetter, ReadOnlyClientEpicsChannel<?>>(ss, ch));
+                try {
+                    ChannelListener<?> chL;
+                    if (item instanceof HealthChannelType) {
+                        chL = new ChannelListener<String>() {
+                            @Override
+                            public void valueChanged(String channelName, List<String> values) {
+                                try {
+                                    channelMap.get(channelName)._1().setStatusItem(new HealthStatus(item.getStatusitem(), Health.valueOf(values.get(item.getIndex() != null ? item.getIndex() : 0))));
+                                } catch (JMSException e) {
+                                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                                } catch (IllegalArgumentException e) {
+                                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                                }
                             }
-                        }
-                    });
-                } else if (item instanceof AlarmChannelType) {
-                    ReadOnlyClientEpicsChannel ch = _reader.getChannelAsync(item.getEpicschannel());
-                    StatusSetter ss=new StatusSetter(NAME, item.getStatusitem());
-                    try {
-                        ss.startJms(provider);
-                    } catch (JMSException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);
-                        continue;
-                    }
-                    channelMap.put(item.getEpicschannel(), new Pair<StatusSetter, ReadOnlyClientEpicsChannel<?>>(ss, ch));
-                    ch.registerListener(new ChannelListener() {
-                        @Override
-                        public void valueChanged(String channelName, List values) {
-                            try {
-                                channelMap.get(channelName)._1().setStatusItem(new AlarmStatus(item.getStatusitem(), values.get(0), AlarmState.DEFAULT));
-                            } catch (JMSException e) {
-                                LOG.log(Level.SEVERE, e.getMessage(), e);
+                        };
+                        //TODO: implement proper alarm handling, currently an AlarmStatusItem is created, but the alarm is always OFF
+                    } else if (item instanceof AlarmChannelType) {
+                        chL = new ChannelListener() {
+                            @Override
+                            public void valueChanged(String channelName, List values) {
+                                try {
+                                    channelMap.get(channelName)._1().setStatusItem(new AlarmStatus(item.getStatusitem(), values.get(item.getIndex() != null ? item.getIndex() : 0), AlarmState.DEFAULT));
+                                } catch (JMSException e) {
+                                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                                }
                             }
-                        }
-                    });
-                } else if (item instanceof SimpleChannelType) {
-                    ReadOnlyClientEpicsChannel ch = _reader.getChannelAsync(item.getEpicschannel());
-                    StatusSetter ss=new StatusSetter(NAME, item.getStatusitem());
-                    try {
-                        ss.startJms(provider);
-                    } catch (JMSException e) {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);
-                        continue;
-                    }
-                    channelMap.put(item.getEpicschannel(), new Pair<StatusSetter, ReadOnlyClientEpicsChannel<?>>(ss, ch));
-                    ch.registerListener(new ChannelListener() {
-                        @Override
-                        public void valueChanged(String channelName, List values) {
-                            try {
-                                channelMap.get(channelName)._1().setStatusItem(new BasicStatus(item.getStatusitem(), values.get(0)));
-                            } catch (JMSException e) {
-                                LOG.log(Level.SEVERE, e.getMessage(), e);
+                        };
+                    } else/* (item instanceof SimpleChannelType)*/ {
+                        chL = new ChannelListener() {
+                            @Override
+                            public void valueChanged(String channelName, List values) {
+                                try {
+                                    channelMap.get(channelName)._1().setStatusItem(new BasicStatus(item.getStatusitem(), values.get(item.getIndex() != null ? item.getIndex() : 0)));
+                                } catch (JMSException e) {
+                                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                                }
                             }
-                        }
-                    });
+                        };
+                    }
+                    ch.registerListener(chL);
+                    LOG.info("Successfully created status item publisher for EPICS channel: " + item.getEpicschannel());
+                } catch (IllegalStateException ex) {
+                    LOG.log(Level.SEVERE, "Couldn't register listener for channel: " + item.getEpicschannel() + ", " + ex.getMessage(), ex);
+                    ch.destroy();
                 }
             } catch (CAException ex) {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                LOG.log(Level.SEVERE, "Couldn't connect to channel: " + item.getEpicschannel() + ", " + ex.getMessage(), ex);
+            } catch (EpicsException ex) {
+                LOG.log(Level.SEVERE, "Couldn't connect to channel: " + item.getEpicschannel() + ", " + ex.getMessage(), ex);
             }
         }
     }
+
 
     @Invalidate
     public void shutdown() {

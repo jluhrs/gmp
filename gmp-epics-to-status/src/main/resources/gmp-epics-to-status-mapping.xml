@@ -1,56 +1,18 @@
 <?xml version="1.0"?>
 <Channels xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="gmp-epics-to-status-mapping.xsd">
-	<SimpleChannel>
-		<statusitem>statusitemint</statusitem>
-		<epicschannel>epicschannelint</epicschannel>
-		<type>INT</type>
-	</SimpleChannel>
-	<SimpleChannel>
-		<statusitem>statusitemfloat</statusitem>
-		<epicschannel>epicschannelfloat</epicschannel>
-		<type>FLOAT</type>
-	</SimpleChannel>
+          xsi:noNamespaceSchemaLocation="gmp-epics-to-status-mapping.xsd">
     <SimpleChannel>
-		<statusitem>statusitemdouble</statusitem>
-		<epicschannel>epicschanneldouble</epicschannel>
-		<type>DOUBLE</type>
-	</SimpleChannel>
-	<SimpleChannel>
-		<statusitem>statusitemstring</statusitem>
-		<epicschannel>epicschannelstring</epicschannel>
-		<type>STRING</type>
-	</SimpleChannel>
-	<AlarmChannel>
-		<statusitem>giapialarmint</statusitem>
-		<epicschannel>epicsalarmint</epicschannel>
-		<type>INT</type>
-	</AlarmChannel>
-	<AlarmChannel>
-		<statusitem>giapialarmfloat</statusitem>
-		<epicschannel>epicsalarmfloat</epicschannel>
-		<type>FLOAT</type>
-	</AlarmChannel>
+        <statusitem>giapitest:statusitemint</statusitem>
+        <epicschannel>giapitest:epicschannelint</epicschannel>
+        <index>0</index>
+    </SimpleChannel>
     <AlarmChannel>
-		<statusitem>giapialarmdouble</statusitem>
-		<epicschannel>epicsalarmdouble</epicschannel>
-		<type>DOUBLE</type>
-	</AlarmChannel>
-	<AlarmChannel>
-		<statusitem>giapialarmstring</statusitem>
-		<epicschannel>epicsalarmstring</epicschannel>
-		<type>STRING</type>
-	</AlarmChannel>
+        <statusitem>giapitest:giapialarmfloat</statusitem>
+        <epicschannel>giapitest:epicsalarmfloat</epicschannel>
+    </AlarmChannel>
     <HealthChannel>
-        <statusitem>giapihealth1</statusitem>
-        <epicschannel>epicshealth1</epicschannel>
+        <statusitem>giapitest:giapihealth1</statusitem>
+        <epicschannel>giapitest:epicshealth1</epicschannel>
     </HealthChannel>
-    <HealthChannel>
-        <statusitem>giapihealth2</statusitem>
-        <epicschannel>epicshealth2</epicschannel>
-    </HealthChannel>
-    <HealthChannel>
-        <statusitem>giapihealth3</statusitem>
-        <epicschannel>epicshealth3</epicschannel>
-    </HealthChannel>
+
 </Channels>

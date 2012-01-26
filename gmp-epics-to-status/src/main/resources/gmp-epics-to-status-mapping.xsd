@@ -22,29 +22,11 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:simpleType name="dataType">
-        <xs:annotation>
-            <xs:documentation>
-                These are the 4 supported data types. The mapping is as follows:
-                Type      Java         Epics
-                INT       Integer      DBR_Int
-                FLOAT     Float        DBR_Float
-                DOUBLE    Double       DBR_Double
-                STRING    String       DBR_String
-            </xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="INT"/>
-            <xs:enumeration value="FLOAT"/>
-            <xs:enumeration value="DOUBLE"/>
-            <xs:enumeration value="STRING"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:complexType name="BaseChannelType">
+    <xs:complexType name="SimpleChannelType">
         <xs:sequence>
             <xs:element name="statusitem" type="xs:string"/>
             <xs:element name="epicschannel" type="xs:string"/>
+            <xs:element name="index" type="xs:unsignedShort" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -56,24 +38,10 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="BaseChannelType"/>
+            <xs:extension base="SimpleChannelType"/>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="SimpleChannelType">
-        <xs:annotation>
-            <xs:documentation>
-                Type for 'normal' channels.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:complexContent>
-            <xs:extension base="BaseChannelType">
-                <xs:sequence>
-                    <xs:element name="type" type="dataType"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
 
     <xs:complexType name="AlarmChannelType">
         <xs:annotation>
