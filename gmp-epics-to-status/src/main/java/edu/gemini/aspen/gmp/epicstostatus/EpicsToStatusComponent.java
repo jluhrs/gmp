@@ -124,6 +124,12 @@ public class EpicsToStatusComponent {
                             }
                         };
                     }
+                    try {
+                        //To give time for the channel to connect before registering the listener
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
                     ch.registerListener(chL);
                     LOG.info("Successfully created status item publisher for EPICS channel: " + item.getEpicschannel());
                 } catch (IllegalStateException ex) {
@@ -146,6 +152,8 @@ public class EpicsToStatusComponent {
             try {
                 pair._2().destroy();
             } catch (CAException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            } catch(IllegalStateException e){
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
