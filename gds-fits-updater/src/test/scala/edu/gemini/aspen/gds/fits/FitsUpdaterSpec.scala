@@ -4,7 +4,6 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import java.io.File
 import edu.gemini.aspen.giapi.data.DataLabel
-import collection.JavaConversions._
 import edu.gemini.fits.{Header, DefaultHeaderItem, DefaultHeader, Hedit}
 
 @RunWith(classOf[JUnitRunner])
@@ -85,13 +84,13 @@ class FitsUpdaterSpec extends FitsBaseSpec {
 
       updatedPrimaryHeader.getKeywords.containsAll(originalPrimaryHeader.getKeywords) should be(true)
     }
-    it("should update a file in less than 0.005 secs") {
+    it("should update a file in less than 0.01 secs") {
       val start = System.nanoTime
       val headers = createHeadersWithAirMass(0)
       updateFitsFile(headers)
 
       val spentTime = ((System.nanoTime - start) / 10e9)
-      spentTime should be <= (0.005)
+      spentTime should be <= (0.01)
     }
   }
 

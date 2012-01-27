@@ -85,6 +85,7 @@ public class EpicsToStatusComponentTest {
         Channel<Integer> casCh = cas.createChannel("giapitest:epicschannelint", 1);
         cas.createAlarmChannel("giapitest:epicsalarmfloat", 1.0f);
         cas.createChannel("giapitest:epicshealth1", "BAD");
+        Thread.sleep(100);
 
 
         //Create EPICS reader and writer
