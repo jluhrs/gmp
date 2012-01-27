@@ -135,6 +135,8 @@ public class EpicsToStatusComponent {
                 } catch (IllegalStateException ex) {
                     LOG.log(Level.SEVERE, "Couldn't register listener for channel: " + item.getEpicschannel() + ", " + ex.getMessage(), ex);
                     ch.destroy();
+                    ss.stopJms();
+                    channelMap.remove(item.getEpicschannel());
                 }
             } catch (CAException ex) {
                 LOG.log(Level.SEVERE, "Couldn't connect to channel: " + item.getEpicschannel() + ", " + ex.getMessage(), ex);

@@ -2,7 +2,6 @@ package edu.gemini.aspen.gmp.epicstostatus;
 
 import edu.gemini.aspen.gmp.epicstostatus.generated.Channels;
 import edu.gemini.aspen.gmp.epicstostatus.generated.SimpleChannelType;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -88,8 +87,8 @@ public class EpicsToStatusConfigurationTest {
             fail();
         }
     }
+
     @Test
-    @Ignore
     public void testNoIndex() {
         try {
             File xml = null;
