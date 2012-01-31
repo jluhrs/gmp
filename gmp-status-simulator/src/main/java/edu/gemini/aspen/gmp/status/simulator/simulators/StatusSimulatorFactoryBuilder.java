@@ -87,4 +87,12 @@ public class StatusSimulatorFactoryBuilder {
             return new DoubleFixedStatusSimulator(s.getName(), s.getUpdateRate().intValue(),  0.0);
         }
     }
+
+    private static class StringFixedStatusSimulatorFactory implements StatusSimulatorFactory {
+
+        @Override
+        public SimulatedStatus buildStatusSimulator(StatusType s) {
+            return new DoubleFixedStatusSimulator(s.getName(), s.getUpdateRate().intValue(),  0.0);
+        }
+    }
 }
