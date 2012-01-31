@@ -24,4 +24,16 @@
             <repeat>false</repeat>
         </parameters>
     </status>
+    <status>
+        <name>test:gpi:aoWfsFilter</name>
+        <type>string</type>
+        <updateRate>1000</updateRate>
+        <mode>enumeration</mode>
+        <enumeration>
+            <value>Y</value>
+            <value>F</value>
+            <value>K</value>
+            <value>L</value>
+        </enumeration>
+    </status>
 </simulatedstatus>

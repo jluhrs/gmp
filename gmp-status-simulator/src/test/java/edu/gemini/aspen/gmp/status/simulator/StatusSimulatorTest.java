@@ -48,7 +48,7 @@ public class StatusSimulatorTest {
 
         TimeUnit.MILLISECONDS.sleep(300);
 
-        verify(session, times(2)).createProducer(any(Destination.class));
+        verify(session, times(3)).createProducer(any(Destination.class));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class StatusSimulatorTest {
         component.stopComponent();
         TimeUnit.MILLISECONDS.sleep(300);
 
-        verify(session, times(2)).close();
+        verify(session, times(3)).close();
     }
 
     protected void mockSessionProducerAndConsumer() throws JMSException {
