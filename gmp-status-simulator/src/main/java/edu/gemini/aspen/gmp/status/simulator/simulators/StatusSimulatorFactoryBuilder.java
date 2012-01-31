@@ -26,6 +26,13 @@ public class StatusSimulatorFactoryBuilder {
                 // TODO, replace for other types
                 statusSimulatorFactory = new NullStatusSimulatorFactory();
             }
+        } else if (mode.equals("enumeration")) {
+            if (type.equals("string")) {
+                statusSimulatorFactory = new StringEnumerationStatusSimulatorFactory();
+            } else {
+                // TODO, replace for other types
+                statusSimulatorFactory = new NullStatusSimulatorFactory();
+            }
         } else {
             statusSimulatorFactory = new DoubleFixedStatusSimulatorFactory();
         }
@@ -88,11 +95,11 @@ public class StatusSimulatorFactoryBuilder {
         }
     }
 
-    private static class StringFixedStatusSimulatorFactory implements StatusSimulatorFactory {
+    private static class StringEnumerationStatusSimulatorFactory implements StatusSimulatorFactory {
 
         @Override
         public SimulatedStatus buildStatusSimulator(StatusType s) {
-            return new DoubleFixedStatusSimulator(s.getName(), s.getUpdateRate().intValue(),  0.0);
+            return new StringEnumerationStatusSimulator(s.getName(), s.getUpdateRate().intValue(),  s.getEnumeration().getValue());
         }
     }
 }
