@@ -20,6 +20,8 @@ import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 
 import javax.jms.JMSException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This is the implementation of an ActionSender that uses JMS to send the
@@ -31,6 +33,8 @@ import javax.jms.JMSException;
 @Instantiate
 @Provides(specifications = {ActionSender.class})
 class ActionMessageActionSender implements ActionSender {
+    private static final Logger LOG = Logger.getLogger(
+            ActionSender.class.getName());
     private final HandlerResponseSenderReply _messageSender = new HandlerResponseSenderReply(JmsKeys.GW_COMMAND_TOPIC);
     private final JmsProvider _provider;
 
@@ -70,8 +74,17 @@ class ActionMessageActionSender implements ActionSender {
     }
 
     @Validate
-    public void startJmsClient() throws JMSException {
-        _messageSender.startJms(_provider);
+    public void startJmsClient() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    _messageSender.startJms(_provider);
+                } catch (JMSException e) {
+                    LOG.log(Level.SEVERE, "Error starting JMS Provider", e);
+                }
+            }
+        }).start();
     }
 
     @Invalidate

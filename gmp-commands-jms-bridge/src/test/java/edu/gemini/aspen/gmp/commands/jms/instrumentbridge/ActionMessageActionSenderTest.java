@@ -12,6 +12,7 @@ import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import org.junit.Test;
 
 import javax.jms.JMSException;
+import java.util.concurrent.TimeUnit;
 
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
@@ -43,12 +44,14 @@ public class ActionMessageActionSenderTest extends MockedJmsArtifactsTestBase {
     }
 
     @Test(expected = SequenceCommandException.class)
-    public void testErrorWhileSending() throws JMSException {
+    public void testErrorWhileSending() throws JMSException, InterruptedException {
         super.createMockedObjects();
         when(session.createMapMessage()).thenThrow(new JMSException(""));
 
         ActionMessageActionSender actionSender = new ActionMessageActionSender(provider);
         actionSender.startJmsClient();
+
+        TimeUnit.MILLISECONDS.sleep(500);
 
         ActionMessage actionMessage = createActionToSend();
         actionSender.send(actionMessage);

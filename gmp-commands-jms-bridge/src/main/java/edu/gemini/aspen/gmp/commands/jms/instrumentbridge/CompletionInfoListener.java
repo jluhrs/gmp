@@ -7,21 +7,14 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.util.jms.HandlerResponseMessageParser;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
-import edu.gemini.jms.api.BaseMessageConsumer;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.FormatException;
-import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Invalidate;
-import org.apache.felix.ipojo.annotations.Requires;
-import org.apache.felix.ipojo.annotations.Validate;
+import edu.gemini.jms.api.*;
+import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -100,8 +93,17 @@ class CompletionInfoListener implements MessageListener {
     }
 
     @Validate
-    public void startListening() throws JMSException {
-        _messageConsumer.startJms(_provider);
+    public void startListening() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    _messageConsumer.startJms(_provider);
+                } catch (JMSException e) {
+                    LOG.log(Level.SEVERE, "Error starting JMS Provider", e);
+                }
+            }
+        }).start();
     }
 
     @Invalidate

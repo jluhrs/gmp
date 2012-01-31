@@ -12,6 +12,8 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -71,9 +73,11 @@ public class CompletionInfoListenerTest extends MockedJmsArtifactsTestBase {
     }
 
     @Test
-    public void testLifeCycle() throws JMSException {
+    public void testLifeCycle() throws JMSException, InterruptedException {
         CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, provider);
         listener.startListening();
+
+        TimeUnit.MILLISECONDS.sleep(500);
 
         verify(provider).getConnectionFactory();
 
