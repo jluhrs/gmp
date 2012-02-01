@@ -4,17 +4,17 @@ import edu.gemini.cas.db.ChannelBuilder
 import org.junit.Assert.{assertEquals, assertNotNull}
 import gov.aps.jca.JCALibrary
 import com.cosylab.epics.caj.CAJContext
-import edu.gemini.epics.impl.EpicsReaderImpl
-import edu.gemini.epics.EpicsService
 import org.junit.Assert._
 import scala.actors.Actor._
 import java.util.concurrent._
 import org.junit.{Before, Test}
+import edu.gemini.epics.impl.NewEpicsReaderImpl
+import edu.gemini.epics.{ReadOnlyClientEpicsChannel, NewEpicsReader, EpicsService}
 
 class EpicsStressIT {
   var jca: JCALibrary = _
   var context: CAJContext = _
-  var reader: EpicsReaderImpl = _
+  var reader: NewEpicsReader = _
 
   @Before
   def setup() {
@@ -23,7 +23,7 @@ class EpicsStressIT {
 
     jca = JCALibrary.getInstance
     context = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA).asInstanceOf[CAJContext]
-    reader = new EpicsReaderImpl(new EpicsService(context))
+    reader = new NewEpicsReaderImpl(new EpicsService(context))
   }
 
   @Test
@@ -69,14 +69,13 @@ class EpicsStressIT {
     for (j <- 1 to Nactors) {
       actor {
         val context = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA).asInstanceOf[CAJContext]
-        val reader = new EpicsReaderImpl(new EpicsService(context))
+        val reader = new NewEpicsReaderImpl(new EpicsService(context))
+        var epicsChannels:List[(Int,ReadOnlyClientEpicsChannel[Double])] = Nil
         for (i <- 0 to 500) {
-          reader.bindChannel(channels(i).getName)
+          epicsChannels :+ (i,reader.getDoubleChannel(channels(i).getName))
         }
         for (k <- 1 to Niter) {
-          for (i <- 0 to 500) {
-            assertEquals(Double.box(i), (reader.getValue("gpi:E" + i).asInstanceOf[Array[Double]])(0))
-          }
+          epicsChannels foreach { case (i:Int,ch:ReadOnlyClientEpicsChannel[Double]) => assertEquals(Double.box(i),ch.getFirst)}
         }
         latch.countDown()
       }
