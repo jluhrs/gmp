@@ -9,7 +9,7 @@ import edu.gemini.aspen.gds.api._
 import edu.gemini.epics.api.ReadOnlyChannel
 import scala.collection.JavaConversions._
 
-class NewEpicsArrayValuesActorTest extends Mockito {
+class EpicsArrayValuesActorTest extends Mockito {
   val dataLabel = new DataLabel("GS-2011")
 
   val channelName = "ws:massAirmass"
@@ -24,7 +24,7 @@ class NewEpicsArrayValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getAll returns referenceValue
 
-    val epicsValueActor = new NewEpicsArrayValuesActor(ch,
+    val epicsValueActor = new EpicsArrayValuesActor(ch,
       GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
         GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 1, "Mean airmass for the observation") :: Nil)
 
@@ -52,7 +52,7 @@ class NewEpicsArrayValuesActorTest extends Mockito {
     // mock return value
     val ch = mock[ReadOnlyChannel[String]]
 
-    val epicsValueActor = new NewEpicsArrayValuesActor(ch,
+    val epicsValueActor = new EpicsArrayValuesActor(ch,
       GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
         GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "DOUBLE", true, "NONE", "EPICS", channelName, 1, "Mean airmass for the observation") :: Nil)
 
@@ -64,7 +64,7 @@ class NewEpicsArrayValuesActorTest extends Mockito {
     // mock return value
     val ch = mock[ReadOnlyChannel[String]]
 
-    val epicsValueActor = new NewEpicsArrayValuesActor(ch,
+    val epicsValueActor = new EpicsArrayValuesActor(ch,
       GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
         GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName + "bla", 1, "Mean airmass for the observation") :: Nil)
 
@@ -77,7 +77,7 @@ class NewEpicsArrayValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getAll throws new RuntimeException
 
-    val epicsValueActor = new NewEpicsArrayValuesActor(ch,
+    val epicsValueActor = new EpicsArrayValuesActor(ch,
       GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
         GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 2, "Mean airmass for the observation") :: Nil)
 
@@ -108,7 +108,7 @@ class NewEpicsArrayValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getAll returns referenceValue
 
-    val epicsValueActor = new NewEpicsArrayValuesActor(ch,
+    val epicsValueActor = new EpicsArrayValuesActor(ch,
       GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
         GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 2, "Mean airmass for the observation") :: Nil)
 

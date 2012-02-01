@@ -1,15 +1,16 @@
 package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.epics.EpicsService;
-import edu.gemini.epics.NewEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import edu.gemini.epics.ReadWriteClientEpicsChannel;
-import edu.gemini.epics.impl.NewEpicsWriterImpl;
+import edu.gemini.epics.impl.EpicsWriterImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Class NewEpicsWriterTest
@@ -18,12 +19,12 @@ import static org.junit.Assert.*;
  *         Date: 11/9/11
  */
 public class NewEpicsWriterTest extends NewEpicsTestBase {
-    private NewEpicsWriter epicsWriter;
+    private EpicsWriter epicsWriter;
 
     @Before
     public void setup() throws CAException {
         super.setup();
-        epicsWriter = new NewEpicsWriterImpl(new EpicsService(context));
+        epicsWriter = new EpicsWriterImpl(new EpicsService(context));
     }
 
     @Test

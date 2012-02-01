@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.pcs.model.updaters;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.NewEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import edu.gemini.epics.ReadWriteClientEpicsChannel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
  * @author cquiroz
  */
 public class EpicsPcsUpdaterTest {
-    private NewEpicsWriter writer = mock(NewEpicsWriter.class);
+    private EpicsWriter writer = mock(EpicsWriter.class);
     private ReadWriteClientEpicsChannel ch=mock(ReadWriteClientEpicsChannel.class);
     @Before
     public void setUp(){

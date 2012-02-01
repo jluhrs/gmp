@@ -3,14 +3,14 @@ package edu.gemini.aspen.gds.epics
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import scala.collection._
-import edu.gemini.epics.{ReadOnlyClientEpicsChannel, NewEpicsReader, EpicsException}
+import edu.gemini.epics.{ReadOnlyClientEpicsChannel, EpicsReader, EpicsException}
 import mutable.HashMap
 import edu.gemini.aspen.gds.api.{Channel, GDSConfiguration, AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
 
 @Component
 @Instantiate
 @Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class NewEpicsActorsFactory(@Requires epicsReader: NewEpicsReader) extends AbstractKeywordActorsFactory {
+class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKeywordActorsFactory {
   private val channels: mutable.Map[Channel, ReadOnlyClientEpicsChannel[_]] = new HashMap[Channel, ReadOnlyClientEpicsChannel[_]]
 
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
@@ -27,11 +27,11 @@ class NewEpicsActorsFactory(@Requires epicsReader: NewEpicsReader) extends Abstr
     }
 
     val singleActors = single.values.map {
-      c => new NewEpicsValuesActor(channels(c.head.channel), c.head)
+      c => new EpicsValuesActor(channels(c.head.channel), c.head)
     }
 
     val arrayActors = multiple.values.map {
-      c => new NewEpicsArrayValuesActor(channels(c.head.channel), c)
+      c => new EpicsArrayValuesActor(channels(c.head.channel), c)
     }
 
     singleActors ++ arrayActors toList

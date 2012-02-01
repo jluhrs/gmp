@@ -7,7 +7,7 @@ import java.util.logging.{Level, Logger}
 /**
  * Actor that collects several items from the same EPICS array
  */
-class NewEpicsArrayValuesActor(channel: ReadOnlyChannel[_], configurations: Traversable[GDSConfiguration]) extends KeywordValueActor {
+class EpicsArrayValuesActor(channel: ReadOnlyChannel[_], configurations: Traversable[GDSConfiguration]) extends KeywordValueActor {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
   if (!(configurations forall {

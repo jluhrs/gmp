@@ -1,23 +1,23 @@
 package edu.gemini.epics.impl;
 
-import edu.gemini.epics.ReadOnlyClientEpicsChannel;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.JCAContextController;
-import edu.gemini.epics.NewEpicsReader;
+import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import gov.aps.jca.CAException;
 import org.apache.felix.ipojo.annotations.*;
 
 /**
- * Class NewEpicsReaderImpl
+ * Class EpicsReaderImpl
  *
  * @author Nicolas A. Barriga
  *         Date: 11/7/11
  */
 @Component
 @Instantiate
-@Provides(specifications = NewEpicsReader.class)
-public class NewEpicsReaderImpl extends EpicsChannelFactory implements NewEpicsReader {
+@Provides(specifications = EpicsReader.class)
+public class EpicsReaderImpl extends EpicsChannelFactory implements EpicsReader {
 
-    public NewEpicsReaderImpl(@Requires JCAContextController epicsService) {
+    public EpicsReaderImpl(@Requires JCAContextController epicsService) {
         super(epicsService);
     }
 

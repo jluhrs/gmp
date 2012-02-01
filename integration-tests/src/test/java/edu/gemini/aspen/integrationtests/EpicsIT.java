@@ -2,11 +2,11 @@ package edu.gemini.aspen.integrationtests;
 
 import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsService;
-import edu.gemini.epics.NewEpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.Channel;
-import edu.gemini.epics.impl.NewEpicsReaderImpl;
+import edu.gemini.epics.impl.EpicsReaderImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.TimeoutException;
@@ -26,7 +26,7 @@ public class EpicsIT {
     JCALibrary jca;
     CAJContext context;
     ChannelAccessServerImpl cas;
-    NewEpicsReader reader;
+    EpicsReader reader;
 
     @Before
     public void setup() throws CAException {
@@ -34,7 +34,7 @@ public class EpicsIT {
         context = (CAJContext) jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
         cas = new ChannelAccessServerImpl();
         cas.start();
-        reader = new NewEpicsReaderImpl(new EpicsService(context));
+        reader = new EpicsReaderImpl(new EpicsService(context));
     }
 
     @Test

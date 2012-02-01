@@ -7,13 +7,13 @@ import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsService;
-import edu.gemini.epics.NewEpicsReader;
-import edu.gemini.epics.NewEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import edu.gemini.epics.ReadWriteClientEpicsChannel;
 import edu.gemini.epics.api.Channel;
-import edu.gemini.epics.impl.NewEpicsReaderImpl;
-import edu.gemini.epics.impl.NewEpicsWriterImpl;
+import edu.gemini.epics.impl.EpicsReaderImpl;
+import edu.gemini.epics.impl.EpicsWriterImpl;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Test;
@@ -92,8 +92,8 @@ public class EpicsToStatusComponentTest {
         JmsProvider provider = new ActiveMQJmsProvider("vm://EpicsToStatusComponentTestBroker");
         EpicsService epicsServ = new EpicsService("127.0.0.1");
         epicsServ.startService();
-        NewEpicsReader reader = new NewEpicsReaderImpl(epicsServ);
-        NewEpicsWriter writer = new NewEpicsWriterImpl(epicsServ);
+        EpicsReader reader = new EpicsReaderImpl(epicsServ);
+        EpicsWriter writer = new EpicsWriterImpl(epicsServ);
 
 
         //setup a status service and a status handler to check updates are getting published

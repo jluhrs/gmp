@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.NewEpicsReader;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
@@ -21,7 +21,7 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
     /**
      * EPICS Reader instance
      */
-    private final NewEpicsReader _reader;
+    private final EpicsReader _reader;
 
     /**
      * Actual channel name to obtain the TCS Context from Gemini
@@ -44,7 +44,7 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
      * @throws TcsContextException in case there is a problem obtaining
      *                             the TCS Context
      */
-    protected EpicsTcsContextFetcher(NewEpicsReader reader, String tcsCtxChannel)
+    protected EpicsTcsContextFetcher(EpicsReader reader, String tcsCtxChannel)
             throws TcsContextException {
         _reader = reader;
 
@@ -74,7 +74,7 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
      * @param reader EPICS reader
      * @throws TcsContextException in case of problems obtaininig the TCS
      */
-    protected EpicsTcsContextFetcher(NewEpicsReader reader) throws TcsContextException {
+    protected EpicsTcsContextFetcher(EpicsReader reader) throws TcsContextException {
         this(reader, TCS_CONTEXT_CHANNEL);
     }
 

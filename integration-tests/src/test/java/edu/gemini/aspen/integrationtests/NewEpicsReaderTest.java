@@ -1,26 +1,26 @@
 package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsService;
-import edu.gemini.epics.NewEpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
-import edu.gemini.epics.impl.NewEpicsReaderImpl;
+import edu.gemini.epics.impl.EpicsReaderImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 //import java.lang.ref.Reference;
 //import java.lang.ref.WeakReference;
 
-import static org.junit.Assert.*;
-
 public class NewEpicsReaderTest extends NewEpicsTestBase {
-    private NewEpicsReader epicsReader;
+    private EpicsReader epicsReader;
 
     @Before
     public void setup() throws CAException {
         super.setup();
-        epicsReader = new NewEpicsReaderImpl(new EpicsService(context));
+        epicsReader = new EpicsReaderImpl(new EpicsService(context));
     }
 
     @Test

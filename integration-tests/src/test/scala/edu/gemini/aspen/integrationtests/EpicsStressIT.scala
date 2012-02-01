@@ -8,13 +8,13 @@ import org.junit.Assert._
 import scala.actors.Actor._
 import java.util.concurrent._
 import org.junit.{Before, Test}
-import edu.gemini.epics.impl.NewEpicsReaderImpl
-import edu.gemini.epics.{ReadOnlyClientEpicsChannel, NewEpicsReader, EpicsService}
+import edu.gemini.epics.impl.EpicsReaderImpl
+import edu.gemini.epics.{ReadOnlyClientEpicsChannel, EpicsReader, EpicsService}
 
 class EpicsStressIT {
   var jca: JCALibrary = _
   var context: CAJContext = _
-  var reader: NewEpicsReader = _
+  var reader: EpicsReader = _
 
   @Before
   def setup() {
@@ -23,7 +23,7 @@ class EpicsStressIT {
 
     jca = JCALibrary.getInstance
     context = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA).asInstanceOf[CAJContext]
-    reader = new NewEpicsReaderImpl(new EpicsService(context))
+    reader = new EpicsReaderImpl(new EpicsService(context))
   }
 
   @Test
@@ -69,7 +69,7 @@ class EpicsStressIT {
     for (j <- 1 to Nactors) {
       actor {
         val context = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA).asInstanceOf[CAJContext]
-        val reader = new NewEpicsReaderImpl(new EpicsService(context))
+        val reader = new EpicsReaderImpl(new EpicsService(context))
         var epicsChannels:List[(Int,ReadOnlyClientEpicsChannel[Double])] = Nil
         for (i <- 0 to 500) {
           epicsChannels :+ (i,reader.getDoubleChannel(channels(i).getName))

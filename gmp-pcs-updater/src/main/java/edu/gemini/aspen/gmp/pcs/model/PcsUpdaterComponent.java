@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
-import edu.gemini.epics.NewEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import org.apache.felix.ipojo.annotations.*;
 
 import java.util.logging.Level;
@@ -21,7 +21,7 @@ public class PcsUpdaterComponent {
     private String pcsChannel;
 
     @Requires(id = "epicsWriter")
-    private NewEpicsWriter _epicsWriter;
+    private EpicsWriter _epicsWriter;
     @Requires
     private PcsUpdaterComposite pcsUpdaterAggregate;
 
@@ -30,13 +30,13 @@ public class PcsUpdaterComponent {
     private PcsUpdaterComponent() {
     }
 
-    protected PcsUpdaterComponent(NewEpicsWriter epicsWriter, PcsUpdaterComposite updater, Boolean simulation, String pcsChannel) {
+    protected PcsUpdaterComponent(EpicsWriter epicsWriter, PcsUpdaterComposite updater, Boolean simulation, String pcsChannel) {
         this(epicsWriter, updater);
         this.simulation = simulation;
         this.pcsChannel = pcsChannel;
     }
 
-    protected PcsUpdaterComponent(NewEpicsWriter epicsWriter, PcsUpdaterComposite updater) {
+    protected PcsUpdaterComponent(EpicsWriter epicsWriter, PcsUpdaterComposite updater) {
         this._epicsWriter = epicsWriter;
         this.pcsUpdaterAggregate = updater;
     }

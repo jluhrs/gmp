@@ -9,7 +9,7 @@ import edu.gemini.aspen.gds.api._
 import edu.gemini.epics.api.ReadOnlyChannel
 import scala.collection.JavaConversions._
 
-class NewEpicsValuesActorTest extends Mockito {
+class EpicsValuesActorTest extends Mockito {
   val dataLabel = new DataLabel("GS-2011")
 
   val channelName = "ws:massAirmass"
@@ -27,7 +27,7 @@ class NewEpicsValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getFirst returns referenceValue.head
 
-    val epicsValueActor = new NewEpicsValuesActor(ch, configuration)
+    val epicsValueActor = new EpicsValuesActor(ch, configuration)
 
     // Send an init message
     val result = epicsValueActor !! Collect
@@ -52,7 +52,7 @@ class NewEpicsValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getAll returns referenceValue
 
-    val epicsValueActor = new NewEpicsValuesActor(ch, configuration)
+    val epicsValueActor = new EpicsValuesActor(ch, configuration)
 
     // Send an init message
     val result = epicsValueActor !! Collect
@@ -80,7 +80,7 @@ class NewEpicsValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getFirst returns null
 
-    val epicsValueActor = new NewEpicsValuesActor(ch, configuration)
+    val epicsValueActor = new EpicsValuesActor(ch, configuration)
 
     // Send an init message
     val result = epicsValueActor !! Collect
@@ -105,7 +105,7 @@ class NewEpicsValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getFirst returns null
 
-    val epicsValueActor = new NewEpicsValuesActor(ch, configuration)
+    val epicsValueActor = new EpicsValuesActor(ch, configuration)
 
 
     // Send an init message
@@ -128,7 +128,7 @@ class NewEpicsValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getFirst throws new RuntimeException
 
-    val epicsValueActor = new NewEpicsValuesActor(ch, configuration)
+    val epicsValueActor = new EpicsValuesActor(ch, configuration)
 
     // Send an init message
     val result = epicsValueActor !! Collect
@@ -153,7 +153,7 @@ class NewEpicsValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getFirst returns "a string"
 
-    val epicsValueActor = new NewEpicsValuesActor(ch, configuration)
+    val epicsValueActor = new EpicsValuesActor(ch, configuration)
 
 
     // Send an init message
@@ -181,7 +181,7 @@ class NewEpicsValuesActorTest extends Mockito {
     // mock return value cannot be read
     ch.getFirst returns new java.lang.Double(1.1)
 
-    val epicsValueActor = new NewEpicsValuesActor(ch, configuration)
+    val epicsValueActor = new EpicsValuesActor(ch, configuration)
 
 
 
@@ -209,7 +209,7 @@ class NewEpicsValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
     ch.getAll returns referenceValue
 
-    val epicsValueActor = new NewEpicsValuesActor(ch, configuration)
+    val epicsValueActor = new EpicsValuesActor(ch, configuration)
 
 
     // Send an init message

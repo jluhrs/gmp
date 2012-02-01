@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.NewEpicsReader;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * A mockup Epics Reader for testing
  */
-public class EpicsReaderMock implements NewEpicsReader {
+public class EpicsReaderMock implements EpicsReader {
     class ReadOnlyClientEpicsChannelMock implements ReadOnlyClientEpicsChannel {
         private String name;
         private Object value;

@@ -1,6 +1,9 @@
 package edu.gemini.epics.impl;
 
-import edu.gemini.epics.*;
+import edu.gemini.epics.EpicsWriter;
+import edu.gemini.epics.JCAContextController;
+import edu.gemini.epics.ReadOnlyClientEpicsChannel;
+import edu.gemini.epics.ReadWriteClientEpicsChannel;
 import gov.aps.jca.CAException;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
@@ -8,17 +11,17 @@ import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
 
 /**
- * Class NewEpicsWriterImpl
+ * Class EpicsWriterImpl
  *
  * @author Nicolas A. Barriga
  *         Date: 11/9/11
  */
 @Component
 @Instantiate
-@Provides(specifications = NewEpicsWriter.class)
-public class NewEpicsWriterImpl extends EpicsChannelFactory implements NewEpicsWriter {
+@Provides(specifications = EpicsWriter.class)
+public class EpicsWriterImpl extends EpicsChannelFactory implements EpicsWriter {
 
-    public NewEpicsWriterImpl(@Requires JCAContextController epicsService) {
+    public EpicsWriterImpl(@Requires JCAContextController epicsService) {
         super(epicsService);
     }
 

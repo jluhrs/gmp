@@ -1,15 +1,12 @@
 package edu.gemini.epics;
 
-import edu.gemini.epics.api.Channel;
-import edu.gemini.epics.api.ReadOnlyChannel;
-
 /**
- * Interface NewEpicsWriter
+ * Interface EpicsWriter
  *
  * @author Nicolas A. Barriga
  *         Date: 11/9/11
  */
-public interface NewEpicsWriter extends NewEpicsReader {
+public interface EpicsWriter extends EpicsReader {
     @Override
     ReadWriteClientEpicsChannel<Double> getDoubleChannel(String channelName);
 

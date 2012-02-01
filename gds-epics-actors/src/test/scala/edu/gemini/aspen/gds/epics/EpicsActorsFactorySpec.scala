@@ -8,11 +8,11 @@ import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.epics.{ReadOnlyClientEpicsChannel, NewEpicsReader}
+import edu.gemini.epics.{ReadOnlyClientEpicsChannel, EpicsReader}
 
 @RunWith(classOf[JUnitRunner])
-class NewEpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
-  val epicsReader = mock[NewEpicsReader]
+class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
+  val epicsReader = mock[EpicsReader]
   val channel = mock[ReadOnlyClientEpicsChannel[Double]]
   val channel2 = mock[ReadOnlyClientEpicsChannel[Double]]
   channel.isValid returns true
@@ -23,7 +23,7 @@ class NewEpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
 
   def createFixture = (
     new DataLabel("GS-2011"),
-    new NewEpicsActorsFactory(epicsReader)
+    new EpicsActorsFactory(epicsReader)
     )
 
   def buildOneConfiguration: GDSConfiguration = {

@@ -7,7 +7,7 @@ import gov.aps.jca.CAException;
  * <p/>
  * The implementation takes care of bind/unbind of the channel
  */
-public interface NewEpicsReader {
+public interface EpicsReader {
     /**
      * Returns a representation of a channel. It is recommended not to hold instances of
      * ReadOnlyEpicsChannelImpl as channels can disappear anytime

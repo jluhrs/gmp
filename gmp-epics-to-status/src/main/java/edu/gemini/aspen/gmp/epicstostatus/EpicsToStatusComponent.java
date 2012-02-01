@@ -11,7 +11,7 @@ import edu.gemini.aspen.gmp.epicstostatus.generated.Channels;
 import edu.gemini.aspen.gmp.epicstostatus.generated.HealthChannelType;
 import edu.gemini.aspen.gmp.epicstostatus.generated.SimpleChannelType;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.NewEpicsReader;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.epics.api.ReadOnlyChannel;
@@ -44,14 +44,14 @@ public class EpicsToStatusComponent {
     private final Map<String, ReadOnlyChannel<?>> alarmChannelMap = new HashMap<String, ReadOnlyChannel<?>>();
     private final Map<String, ReadOnlyChannel<String>> healthChannelMap = new HashMap<String, ReadOnlyChannel<String>>();
 
-    private final NewEpicsReader _reader;
+    private final EpicsReader _reader;
     private final String xmlFileName;
     private final String xsdFileName;
     private final JmsProvider provider;
 
     private static final String NAME = "GMP_EPICS_TO_STATUS";
 
-    public EpicsToStatusComponent(@Requires NewEpicsReader reader,
+    public EpicsToStatusComponent(@Requires EpicsReader reader,
                                   @Requires JmsProvider provider,
                                   @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
                                   @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {

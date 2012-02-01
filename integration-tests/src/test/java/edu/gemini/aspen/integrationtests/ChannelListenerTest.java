@@ -2,8 +2,8 @@ package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.epics.*;
 import edu.gemini.epics.api.ChannelListener;
-import edu.gemini.epics.impl.NewEpicsReaderImpl;
-import edu.gemini.epics.impl.NewEpicsWriterImpl;
+import edu.gemini.epics.impl.EpicsReaderImpl;
+import edu.gemini.epics.impl.EpicsWriterImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import org.junit.Before;
@@ -18,14 +18,14 @@ import static org.junit.Assert.assertTrue;
 //import java.lang.ref.WeakReference;
 
 public class ChannelListenerTest extends NewEpicsTestBase {
-    private NewEpicsReader epicsReader;
-    private NewEpicsWriter epicsWriter;
+    private EpicsReader epicsReader;
+    private EpicsWriter epicsWriter;
 
     @Before
     public void setup() throws CAException {
         super.setup();
-        epicsReader = new NewEpicsReaderImpl(new EpicsService(context));
-        epicsWriter = new NewEpicsWriterImpl(new EpicsService(context));
+        epicsReader = new EpicsReaderImpl(new EpicsService(context));
+        epicsWriter = new EpicsWriterImpl(new EpicsService(context));
     }
 
 

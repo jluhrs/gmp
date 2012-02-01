@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.tcs.model;
 
 import edu.gemini.aspen.gmp.tcs.jms.JmsTcsContextDispatcher;
 import edu.gemini.aspen.gmp.tcs.jms.TcsContextRequestListener;
-import edu.gemini.epics.NewEpicsReader;
+import edu.gemini.epics.EpicsReader;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
@@ -52,7 +52,7 @@ public class TcsContextComponent {
     private JmsProvider _provider;
 
     @Requires(id = "epicsReader")
-    private NewEpicsReader _epicsReader;
+    private EpicsReader _epicsReader;
 
     private TcsContextFetcher fetcher;
 
@@ -69,7 +69,7 @@ public class TcsContextComponent {
         );
     }
 
-    protected TcsContextComponent(JmsProvider provider, NewEpicsReader reader, String tcsChannel) {
+    protected TcsContextComponent(JmsProvider provider, EpicsReader reader, String tcsChannel) {
         this();
         this._provider = provider;
         this._epicsReader = reader;

@@ -2,14 +2,14 @@ package edu.gemini.aspen.gmp.pcs.model;
 
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.NewEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
 public class PcsUpdaterComponentTest {
-    private NewEpicsWriter epicsWriter = mock(NewEpicsWriter.class);
+    private EpicsWriter epicsWriter = mock(EpicsWriter.class);
     private JmsProvider provider = mock(JmsProvider.class);
     private PcsUpdaterComposite pcsComposite = new PcsUpdaterCompositeImpl(provider);
     private String channel = "tst";

@@ -1,16 +1,15 @@
 package edu.gemini.aspen.gmp.commands.records;
 
 import com.cosylab.epics.caj.CAJContext;
-import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
 import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
+import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.EpicsService;
-import edu.gemini.epics.NewEpicsReader;
-import edu.gemini.epics.NewEpicsWriter;
+import edu.gemini.epics.EpicsWriter;
 import edu.gemini.epics.ReadWriteClientEpicsChannel;
 import edu.gemini.epics.api.Channel;
-import edu.gemini.cas.impl.ChannelAccessServerImpl;
-import edu.gemini.epics.impl.NewEpicsWriterImpl;
+import edu.gemini.epics.impl.EpicsWriterImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.TimeoutException;
@@ -22,7 +21,8 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Class ApplyTest
@@ -42,7 +42,7 @@ public class ApplyTest {
     private final EpicsTop epicsTop = new EpicsTopImpl("gpitest");
     private final String cadName = "observe";
     private CommandSender cs = MockFactory.createCommandSenderMock(epicsTop, cadName);
-    private NewEpicsWriter epicsWriter;
+    private EpicsWriter epicsWriter;
     private CAJContext context;
 
     static {
@@ -104,7 +104,7 @@ public class ApplyTest {
 
         JCALibrary jca = JCALibrary.getInstance();
         context = (CAJContext) jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        epicsWriter = new NewEpicsWriterImpl(new EpicsService(context));
+        epicsWriter = new EpicsWriterImpl(new EpicsService(context));
 
     }
 
