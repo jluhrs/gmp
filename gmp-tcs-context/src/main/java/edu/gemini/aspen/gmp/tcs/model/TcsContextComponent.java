@@ -2,19 +2,12 @@ package edu.gemini.aspen.gmp.tcs.model;
 
 import edu.gemini.aspen.gmp.tcs.jms.JmsTcsContextDispatcher;
 import edu.gemini.aspen.gmp.tcs.jms.TcsContextRequestListener;
-import edu.gemini.epics.EpicsReader;
+import edu.gemini.epics.NewEpicsReader;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.Bind;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Invalidate;
-import org.apache.felix.ipojo.annotations.Modified;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Requires;
-import org.apache.felix.ipojo.annotations.Unbind;
-import org.apache.felix.ipojo.annotations.Validate;
+import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import java.io.FileInputStream;
@@ -59,7 +52,7 @@ public class TcsContextComponent {
     private JmsProvider _provider;
 
     @Requires(id = "epicsReader")
-    private EpicsReader _epicsReader;
+    private NewEpicsReader _epicsReader;
 
     private TcsContextFetcher fetcher;
 
@@ -76,7 +69,7 @@ public class TcsContextComponent {
         );
     }
 
-    protected TcsContextComponent(JmsProvider provider, EpicsReader reader, String tcsChannel) {
+    protected TcsContextComponent(JmsProvider provider, NewEpicsReader reader, String tcsChannel) {
         this();
         this._provider = provider;
         this._epicsReader = reader;

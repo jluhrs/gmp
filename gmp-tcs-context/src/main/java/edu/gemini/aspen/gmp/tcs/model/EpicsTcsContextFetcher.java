@@ -1,7 +1,11 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
-import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsException;
+import edu.gemini.epics.NewEpicsReader;
+import edu.gemini.epics.ReadOnlyClientEpicsChannel;
+import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
 
 /**
  * The Epics Tcs Context Fetcher provides a mechanism to obtain the
@@ -17,12 +21,17 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
     /**
      * EPICS Reader instance
      */
-    private final EpicsReader _reader;
+    private final NewEpicsReader _reader;
 
     /**
      * Actual channel name to obtain the TCS Context from Gemini
      */
     private final String _tcsCtxChannel;
+
+    /**
+     * The reference to the EPICS channel
+     */
+    private final ReadOnlyClientEpicsChannel<Double> tcsChannel;
 
     /**
      * Constructor. Takes as an argument the EPICS reader to get access
@@ -35,7 +44,7 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
      * @throws TcsContextException in case there is a problem obtaining
      *                             the TCS Context
      */
-    protected EpicsTcsContextFetcher(EpicsReader reader, String tcsCtxChannel)
+    protected EpicsTcsContextFetcher(NewEpicsReader reader, String tcsCtxChannel)
             throws TcsContextException {
         _reader = reader;
 
@@ -49,7 +58,7 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
         }
 
         try {
-            _reader.bindChannel(_tcsCtxChannel);
+            tcsChannel = _reader.getDoubleChannel(_tcsCtxChannel);
         } catch (EpicsException e) {
             throw new TcsContextException("Problem binding " +
                     _tcsCtxChannel +
@@ -65,7 +74,7 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
      * @param reader EPICS reader
      * @throws TcsContextException in case of problems obtaininig the TCS
      */
-    protected EpicsTcsContextFetcher(EpicsReader reader) throws TcsContextException {
+    protected EpicsTcsContextFetcher(NewEpicsReader reader) throws TcsContextException {
         this(reader, TCS_CONTEXT_CHANNEL);
     }
 
@@ -80,7 +89,13 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
      */
     public double[] getTcsContext() throws TcsContextException {
         try {
-            Object readValue = _reader.getValue(_tcsCtxChannel);
+            DBR dbr = tcsChannel.getDBR();
+
+            if (dbr == null) {
+                return new double[0];
+            }
+
+            Object readValue = dbr.getValue();
 
             if (readValue == null) {
                 return new double[0];
@@ -91,6 +106,10 @@ class EpicsTcsContextFetcher implements TcsContextFetcher {
             }
             return (double[]) readValue;
         } catch (EpicsException e) {
+            throw new TcsContextException("Problem getting the TCS Context from EPICS channel " + _tcsCtxChannel, e);
+        } catch (TimeoutException e) {
+            throw new TcsContextException("Problem getting the TCS Context from EPICS channel " + _tcsCtxChannel, e);
+        } catch (CAException e) {
             throw new TcsContextException("Problem getting the TCS Context from EPICS channel " + _tcsCtxChannel, e);
         }
     }

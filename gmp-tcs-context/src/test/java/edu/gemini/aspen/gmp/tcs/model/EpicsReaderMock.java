@@ -1,54 +1,126 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
-import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.EpicsException;
-import gov.aps.jca.event.ConnectionListener;
+import edu.gemini.epics.NewEpicsReader;
+import edu.gemini.epics.ReadOnlyClientEpicsChannel;
+import edu.gemini.epics.api.ChannelListener;
+import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.dbr.DBRType;
+import gov.aps.jca.dbr.DBR_Double;
+import gov.aps.jca.dbr.DBR_String;
 import org.apache.commons.lang.NotImplementedException;
+
+import java.util.List;
 
 /**
  * A mockup Epics Reader for testing
  */
-public class EpicsReaderMock implements EpicsReader {
-    private String _channel;
+public class EpicsReaderMock implements NewEpicsReader {
+    class ReadOnlyClientEpicsChannelMock implements ReadOnlyClientEpicsChannel {
+        private String name;
+        private Object value;
+
+        public ReadOnlyClientEpicsChannelMock(String name, Object value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        @Override
+        public void destroy() throws CAException {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public DBR getDBR() throws CAException, TimeoutException {
+            if (value == null) {
+                return null;
+            } else if (value instanceof String) {
+                return new DBR_String((String) value);
+            } else {
+                return new DBR_Double((double[]) value);
+            }
+        }
+
+        @Override
+        public List getAll() throws CAException, TimeoutException {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Object getFirst() throws CAException, TimeoutException {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public String getName() {
+            return name;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void registerListener(ChannelListener channelListener) throws CAException {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public void unRegisterListener(ChannelListener channelListener) throws CAException {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public boolean isValid() {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public DBRType getType() {
+            throw new NotImplementedException();
+        }
+    }
+
+    private ReadOnlyClientEpicsChannel _channel;
+    private Object _value;
 
     @Override
-    public void bindChannelAsync(String channel) throws EpicsException {
+    public ReadOnlyClientEpicsChannel<Double> getDoubleChannel(String channelName) {
+        this._channel = new ReadOnlyClientEpicsChannelMock(channelName, _value);
+        return _channel;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public ReadOnlyClientEpicsChannel<Integer> getIntegerChannel(String channelName) {
         throw new NotImplementedException();
     }
 
     @Override
-    public void bindChannelAsync(String channel, ConnectionListener listener) throws EpicsException {
+    public ReadOnlyClientEpicsChannel<Float> getFloatChannel(String channelName) {
         throw new NotImplementedException();
     }
 
     @Override
-    public boolean isChannelConnected(String channel) {
+    public ReadOnlyClientEpicsChannel<String> getStringChannel(String channelName) {
         throw new NotImplementedException();
     }
 
-    private final Object _context;
-
-    public EpicsReaderMock(String _channel, Object _context) {
-        this._channel = _channel;
-        this._context = _context;
+    @Override
+    public ReadOnlyClientEpicsChannel<?> getChannelAsync(String channel) throws EpicsException {
+        throw new NotImplementedException();
     }
 
-    public Object getValue(String channelName) throws EpicsException {
-        return _context;
+    @Override
+    public void destroyChannel(ReadOnlyClientEpicsChannel<?> channel) throws CAException {
+        channel.destroy();
+    }
+
+
+    public EpicsReaderMock(String name, Object _value) {
+        this._channel = new ReadOnlyClientEpicsChannelMock(name, _value);
+        this._value = _value;
     }
 
     public String getBoundChannel() {
-        return _channel;
-    }
-
-    @Override
-    public void bindChannel(String channel) throws EpicsException {
-        this._channel = channel;
-    }
-
-    @Override
-    public void unbindChannel(String channel) throws EpicsException {
-        this._channel = null;
+        return _channel.getName();
     }
 
     @Override
