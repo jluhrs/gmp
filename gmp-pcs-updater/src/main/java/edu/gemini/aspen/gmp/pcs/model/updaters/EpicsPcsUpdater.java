@@ -4,7 +4,10 @@ import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdater;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.EpicsWriter;
+import edu.gemini.epics.NewEpicsWriter;
+import edu.gemini.epics.ReadWriteClientEpicsChannel;
+import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +26,12 @@ public class EpicsPcsUpdater implements PcsUpdater {
     static final String TCS_ZERNIKES_BASE_CHANNEL = "tst:array";
     public static final String[] INPUTS = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"};
 
-    private final EpicsWriter _writer;
+    private final NewEpicsWriter _writer;
     private final String[] _channels;
+    private List<ReadWriteClientEpicsChannel<Double>> epicsChannels = new ArrayList<ReadWriteClientEpicsChannel<Double>>();
+    ;
 
-    public EpicsPcsUpdater(EpicsWriter writer, String baseChannel) throws PcsUpdaterException {
+    public EpicsPcsUpdater(NewEpicsWriter writer, String baseChannel) throws PcsUpdaterException {
         _writer = writer;
         _channels = new String[INPUTS.length];
         /**
@@ -45,7 +50,7 @@ public class EpicsPcsUpdater implements PcsUpdater {
 
         for (String channel : _channels) {
             try {
-                _writer.bindChannel(channel);
+                epicsChannels.add(_writer.getDoubleChannel(channel));
             } catch (EpicsException e) {
                 throw new PcsUpdaterException("Problem binding " +
                         channel +
@@ -71,10 +76,14 @@ public class EpicsPcsUpdater implements PcsUpdater {
 
             for (int i = 0; i < zernikes.length && i < INPUTS.length; i++) {
                 LOG.fine("Zernike update (" + zernikes[i] + ") to channel " + _channels[i]);
-                _writer.write(_channels[i], zernikes[i]);
+                epicsChannels.get(i).setValue(zernikes[i]);
             }
 
         } catch (EpicsException e) {
+            throw new PcsUpdaterException("Trouble writing zernikes coefficients", e);
+        } catch (TimeoutException e) {
+            throw new PcsUpdaterException("Trouble writing zernikes coefficients", e);
+        } catch (CAException e) {
             throw new PcsUpdaterException("Trouble writing zernikes coefficients", e);
         }
     }

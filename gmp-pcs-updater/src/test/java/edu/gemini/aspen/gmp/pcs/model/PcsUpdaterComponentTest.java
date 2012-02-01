@@ -2,14 +2,14 @@ package edu.gemini.aspen.gmp.pcs.model;
 
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.EpicsWriter;
+import edu.gemini.epics.NewEpicsWriter;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
 public class PcsUpdaterComponentTest {
-    private EpicsWriter epicsWriter = mock(EpicsWriter.class);
+    private NewEpicsWriter epicsWriter = mock(NewEpicsWriter.class);
     private JmsProvider provider = mock(JmsProvider.class);
     private PcsUpdaterComposite pcsComposite = new PcsUpdaterCompositeImpl(provider);
     private String channel = "tst";
@@ -29,7 +29,7 @@ public class PcsUpdaterComponentTest {
 
     private void verifyBindings(String baseChannel, int times) {
         for (String s : EpicsPcsUpdater.INPUTS) {
-            verify(epicsWriter, times(times)).bindChannel(eq(baseChannel + "." + s));
+            verify(epicsWriter, times(times)).getDoubleChannel(eq(baseChannel + "." + s));
         }
     }
 
@@ -52,7 +52,7 @@ public class PcsUpdaterComponentTest {
     @Test
     public void exceptionOnRegistrationCaught() throws EpicsException {
         PcsUpdaterComponent component = buildComponentInSimulation();
-        doThrow(new EpicsException("Test exception", new RuntimeException())).when(epicsWriter).bindChannel(anyString());
+        doThrow(new EpicsException("Test exception", new RuntimeException())).when(epicsWriter).getDoubleChannel(anyString());
 
         component.registerEpicsWriter();
         verifyZeroInteractions(epicsWriter);
