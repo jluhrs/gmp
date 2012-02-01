@@ -90,4 +90,17 @@
             <max>100</max>
         </parameters>
     </status>
+    <status>
+        <name>gpisim:aoWfsFilter</name>
+        <type>string</type>
+        <updateRate>2000</updateRate>
+        <mode>enumeration</mode>
+        <enumeration>
+            <value>Y</value>
+            <value>H</value>
+            <value>K1</value>
+            <value>K2</value>
+            <value>I</value>
+        </enumeration>
+    </status>
 </simulatedstatus>
