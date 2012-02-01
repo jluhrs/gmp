@@ -21,7 +21,8 @@ public enum SequenceCommand {
     PAUSE("PAUSE"),
     CONTINUE("CONTINUE"),
     STOP("STOP"),
-    ABORT("ABORT");
+    ABORT("ABORT"),
+    ENGINEERING("ENGINEERING");
 
     private final String _name;
 
@@ -37,7 +38,7 @@ public enum SequenceCommand {
      * Returns a set of SequenceCommands that don't require configuration
      */
     public static EnumSet<SequenceCommand> commandWithNoConfig() {
-        return EnumSet.complementOf(EnumSet.of(APPLY, OBSERVE, REBOOT));
+        return EnumSet.complementOf(EnumSet.of(APPLY, OBSERVE, REBOOT, ENGINEERING));
     }
 
 }

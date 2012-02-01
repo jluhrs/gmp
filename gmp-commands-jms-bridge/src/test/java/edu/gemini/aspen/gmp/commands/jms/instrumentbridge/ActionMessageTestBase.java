@@ -1,11 +1,6 @@
 package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
-import edu.gemini.aspen.giapi.commands.Activity;
-import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.ConfigPath;
-import edu.gemini.aspen.giapi.commands.Configuration;
-import edu.gemini.aspen.giapi.commands.DefaultConfiguration;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.model.Action;
@@ -19,14 +14,16 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
 import static org.junit.Assert.assertEquals;
 
 /**
- *  Base test class for the ActionMessage interface
+ * Base test class for the ActionMessage interface
  */
 public abstract class ActionMessageTestBase {
     /**
      * Get the action message that will be tested
+     *
      * @param a Action to be converted into a message
      * @return action message concrete implementation
      */
@@ -40,16 +37,38 @@ public abstract class ActionMessageTestBase {
 
         Configuration dummyConfig = DefaultConfiguration.emptyConfiguration();
 
-        for (SequenceCommand sc: SequenceCommand.values()) {
-            for (Activity activity: Activity.values()) {
-                _action.add(new Action(new Command(sc, activity, dummyConfig), new CompletionListenerMock()));
+        for (SequenceCommand sc : SequenceCommand.values()) {
+            if (sc.equals(SequenceCommand.REBOOT)) {
+                for (Activity activity : Activity.values()) {
+                    _action.add(new Action(new Command(sc, activity, configurationBuilder()
+                            .withConfiguration("REBOOT_OPT", "anything")
+                            .build()), new CompletionListenerMock()));
+                }
+            } else if (sc.equals(SequenceCommand.OBSERVE)) {
+                for (Activity activity : Activity.values()) {
+                    _action.add(new Action(new Command(sc, activity, configurationBuilder()
+                            .withConfiguration("DATA_LABEL", "anything")
+                            .build()), new CompletionListenerMock()));
+                }
+            } else if (sc.equals(SequenceCommand.ENGINEERING)) {
+                for (Activity activity : Activity.values()) {
+                    _action.add(new Action(new Command(sc, activity, configurationBuilder()
+                            .withConfiguration("COMMAND_NAME", "anything")
+                            .build()), new CompletionListenerMock()));
+                }
+            } else{
+                for (Activity activity : Activity.values()) {
+                    _action.add(new Action(new Command(sc, activity, configurationBuilder()
+                            .withConfiguration("DATA_LABEL", "anything")
+                            .build()), new CompletionListenerMock()));
+                }
             }
         }
     }
 
     @Test
     public void testDestinationData() {
-        for (Action a: _action) {
+        for (Action a : _action) {
             ActionMessage am = getActionMessage(a);
             String dd = am.getDestinationName();
 
@@ -63,7 +82,7 @@ public abstract class ActionMessageTestBase {
     @Test
     public void testActionMessageProperties() {
 
-        for (Action a: _action) {
+        for (Action a : _action) {
             ActionMessage am = getActionMessage(a);
             //action id is a property
             int id = a.getId();
@@ -105,12 +124,12 @@ public abstract class ActionMessageTestBase {
 
         Map<String, Object> dataMap = am.getDataElements();
 
-        for(ConfigPath path : map.keySet()) {
+        for (ConfigPath path : map.keySet()) {
 
             String value = map.get(path);
-            String valueInMap = (String)dataMap.get(path.getName());
+            String valueInMap = (String) dataMap.get(path.getName());
 
-            assertEquals(value,  valueInMap);
+            assertEquals(value, valueInMap);
         }
     }
 }

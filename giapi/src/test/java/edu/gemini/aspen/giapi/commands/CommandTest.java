@@ -4,13 +4,8 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 import org.junit.Test;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configuration;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.*;
+import static org.junit.Assert.*;
 
 public class CommandTest {
     @Test
@@ -24,6 +19,22 @@ public class CommandTest {
     @Test(expected = IllegalArgumentException.class)
     public void testBuildApplyWithoutConfiguration() {
         new Command(SequenceCommand.APPLY, Activity.START);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuildEngineeringWithWrongConfiguration() {
+        new Command(SequenceCommand.ENGINEERING, Activity.START, configurationBuilder().withPath(configPath("REBOOT_OPT"), "REBOOT").build());
+    }
+
+    @Test
+    public void testBuildEngineeringWithGoodConfiguration() {
+        Configuration engConfiguration = configurationBuilder().withPath(configPath("COMMAND_NAME"), "anything").build();
+        Command engCommand = new Command(SequenceCommand.ENGINEERING, Activity.START, engConfiguration);
+        assertNotNull(engCommand);
+
+        assertEquals(SequenceCommand.ENGINEERING, engCommand.getSequenceCommand());
+        assertEquals(Activity.START, engCommand.getActivity());
+        assertEquals(engConfiguration, engCommand.getConfiguration());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -64,18 +75,19 @@ public class CommandTest {
     @Test(expected = IllegalArgumentException.class)
     public void testBuildRebootWithoutConfiguration() {
         new Command(SequenceCommand.REBOOT, Activity.START);
-    } 
+    }
 
     @Test
     public void testEquals() {
         Command a = new Command(SequenceCommand.APPLY, Activity.START, emptyConfiguration());
         Command b = new Command(SequenceCommand.APPLY, Activity.START, emptyConfiguration());
         Command c = new Command(SequenceCommand.PARK, Activity.START, emptyConfiguration());
-        Command d = new Command(SequenceCommand.APPLY, Activity.START, emptyConfiguration()) {};
-        new EqualsTester(a,b,c,d);
+        Command d = new Command(SequenceCommand.APPLY, Activity.START, emptyConfiguration()) {
+        };
+        new EqualsTester(a, b, c, d);
 
         Configuration simpleConfig = configurationBuilder().withPath(configPath("x:A.v"), "1").build();
         c = new Command(SequenceCommand.APPLY, Activity.START, simpleConfig);
-        new EqualsTester(a,b,c,d);
+        new EqualsTester(a, b, c, d);
     }
 }

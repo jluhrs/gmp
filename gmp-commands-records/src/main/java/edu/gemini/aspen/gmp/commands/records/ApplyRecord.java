@@ -6,8 +6,8 @@ import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.records.generated.ConfigSetType;
 import edu.gemini.aspen.gmp.commands.records.generated.ConfigSets;
 import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.epics.api.ReadOnlyChannel;
 import gov.aps.jca.CAException;
@@ -104,6 +104,8 @@ public class ApplyRecord {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase() + ".DATA_LABEL")));
             } else if (seq.equals(SequenceCommand.REBOOT)) {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase() + ".REBOOT_OPT")));
+            } else if (seq.equals(SequenceCommand.ENGINEERING)) {
+                //We do not want to expose engineering command to EPICS at this moment
             } else {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), new ArrayList<String>()));
             }

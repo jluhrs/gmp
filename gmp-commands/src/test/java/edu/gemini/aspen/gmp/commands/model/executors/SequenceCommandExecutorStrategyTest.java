@@ -1,18 +1,13 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
-import edu.gemini.aspen.giapi.commands.Activity;
-import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.CommandSender;
-import edu.gemini.aspen.giapi.commands.Configuration;
-import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
+import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
-import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,7 +32,7 @@ public class SequenceCommandExecutorStrategyTest {
     @Test
     public void testExecuteDefault() {
         Configuration configuration = emptyConfiguration();
-        Action action = new Action(new Command(SequenceCommand.OBSERVE, Activity.PRESET_START, configuration), listener);
+        Action action = new Action(new Command(SequenceCommand.TEST, Activity.PRESET_START, configuration), listener);
         HandlerResponse response = strategy.execute(action, new ActionSenderMock(HandlerResponse.COMPLETED) {
         });
         assertEquals(HandlerResponse.COMPLETED, response);

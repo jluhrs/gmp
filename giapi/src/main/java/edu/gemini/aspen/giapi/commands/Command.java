@@ -41,7 +41,7 @@ public class Command {
     public Command(SequenceCommand sequenceCommand, Activity activity) {
         checkArgument(sequenceCommand != null, "Command cannot be null");
         checkArgument(activity != null, "Activity cannot be null");
-        checkArgument(!(sequenceCommand.equals(SequenceCommand.APPLY) || sequenceCommand.equals(SequenceCommand.REBOOT) || sequenceCommand.equals(SequenceCommand.OBSERVE)), "Activity with no configuration cannot be APPLY, OBSERVE or REBOOT");
+        checkArgument(!(sequenceCommand.equals(SequenceCommand.APPLY) || sequenceCommand.equals(SequenceCommand.REBOOT) || sequenceCommand.equals(SequenceCommand.OBSERVE) || sequenceCommand.equals(SequenceCommand.ENGINEERING)), "Activity with no configuration cannot be APPLY, OBSERVE, ENGINEERING or REBOOT");
 
         this._sequenceCommand = sequenceCommand;
         this._activity = activity;
@@ -63,10 +63,26 @@ public class Command {
         checkArgument(sequenceCommand != null, "Command cannot be null");
         checkArgument(activity != null, "Activity cannot be null");
         checkArgument(config != null, "Configuration cannot be null, use emptyConfiguration instead");
+        String param=getParam(sequenceCommand);
+        if(param!=null){
+            checkArgument(config.getValue(ConfigPath.configPath(param))!=null, "'"+sequenceCommand+"' command requires a mandatory '"+param+"' parameter");
+        }
 
         this._sequenceCommand = sequenceCommand;
         this._activity = activity;
         this._config = config;
+    }
+
+    private String getParam(SequenceCommand sc) {
+        if (sc.equals(SequenceCommand.ENGINEERING)) {
+            return "COMMAND_NAME";
+        } else if (sc.equals(SequenceCommand.REBOOT)) {
+            return "REBOOT_OPT";
+        } else if (sc.equals(SequenceCommand.OBSERVE)) {
+            return "DATA_LABEL";
+        } else{
+            return null;
+        }
     }
 
     public boolean isApply() {

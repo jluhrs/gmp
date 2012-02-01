@@ -1,17 +1,13 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
-import edu.gemini.aspen.giapi.commands.Activity;
-import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.Configuration;
-import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.RebootArgument;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import edu.gemini.aspen.gmp.commands.test.RebootManagerMock;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
@@ -74,6 +70,7 @@ public class RebootSenderExecutorTest {
         assertEquals(HandlerResponse.createError("Can't cancel a REBOOT sequence command"), response);
     }
 
+    @Ignore//Reboot commands can no longer be created without a config
     @Test
     public void testRebootWithoutConfig() {
         Action action = new Action(new Command(SequenceCommand.REBOOT,
@@ -110,6 +107,7 @@ public class RebootSenderExecutorTest {
         }
     }
 
+    @Ignore//Reboot commands can no longer be created with invalid config
     @Test
     public void testRebootWithInvalidConfigs() {
         Configuration c = configuration(configPath("REBOOT_OPT"), "Invalid");

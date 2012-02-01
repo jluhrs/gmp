@@ -1,11 +1,6 @@
 package edu.gemini.aspen.giapi.util.jms;
 
-import edu.gemini.aspen.giapi.commands.Activity;
-import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.CompletionInformation;
-import edu.gemini.aspen.giapi.commands.Configuration;
-import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapi.util.jms.test.MapMessageMock;
 import edu.gemini.jms.api.MapMessageBuilder;
 import org.junit.Before;
@@ -28,7 +23,7 @@ public class MessageBuilderFactoryTest {
     public void setUp() throws Exception {
         dataLabelValue = "2011-03-21-210290239.dat";
         config = configurationBuilder()
-                .withConfiguration("dataLabel", dataLabelValue)
+                .withConfiguration("DATA_LABEL", dataLabelValue)
                 .build();
         errorMessage = "Error Message";
         correlationID = "1";
@@ -94,7 +89,7 @@ public class MessageBuilderFactoryTest {
     private void validateObserveCommand(MapMessage mapMessage) throws JMSException {
         assertEquals("OBSERVE", mapMessage.getStringProperty(JmsKeys.GMP_SEQUENCE_COMMAND_KEY));
         assertEquals("START", mapMessage.getStringProperty(JmsKeys.GMP_ACTIVITY_KEY));
-        assertEquals(dataLabelValue, mapMessage.getString("dataLabel"));
+        assertEquals(dataLabelValue, mapMessage.getString("DATA_LABEL"));
     }
 
     @Test
