@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-tcs-context</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 
     <name>GMP TCS Context Service</name>
     <description>TCS Context service</description>
