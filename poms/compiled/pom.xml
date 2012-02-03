@@ -26,7 +26,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi</artifactId>
-                <version>0.9.4-SNAPSHOT</version>
+                <version>0.9.5-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.jms</groupId>
@@ -36,7 +36,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-commands-jms-bridge</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
@@ -66,12 +66,12 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-commands</artifactId>
-                <version>0.9.2</version>
+                <version>0.9.3</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-jms-util</artifactId>
-                <version>0.11.0</version>
+                <version>0.11.1</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>

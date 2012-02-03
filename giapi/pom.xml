@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen</groupId>
     <artifactId>giapi</artifactId>
-    <version>0.9.4-SNAPSHOT</version>
+    <version>0.9.5-SNAPSHOT</version>
     <description>The GIAPI core interfaces</description>
 
     <name>GIAPI</name>
