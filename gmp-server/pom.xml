@@ -429,7 +429,7 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
-            <version>0.9.5-SNAPSHOT</version>
+            <version>0.9.5</version>
         </dependency>
         <!-- GIAPI JMS-Util -->
         <dependency>
