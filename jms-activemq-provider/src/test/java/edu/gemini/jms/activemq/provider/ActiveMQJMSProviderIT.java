@@ -54,7 +54,8 @@ public class ActiveMQJMSProviderIT {
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
                 mavenBundle().artifactId("guava-osgi").groupId("com.googlecode.guava-osgi").versionAsInProject(),
-                mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").version("1.1.0").update()
+                mavenBundle().artifactId("eproperties").groupId("edu.gemini.external.osgi.net.jmatrix.eproperties").versionAsInProject(),
+                mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").versionAsInProject()
         );
     }
 
