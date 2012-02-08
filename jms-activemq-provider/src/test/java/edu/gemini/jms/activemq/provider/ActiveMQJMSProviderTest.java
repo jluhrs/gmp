@@ -20,6 +20,16 @@ public class ActiveMQJMSProviderTest {
     }
 
     @Test
+    public void testConstructionWithPropertySubstitution() {
+        String brokerUrl = "${address}?persistent=false";
+        System.setProperty("address", "vm:testBroker");
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl);
+        provider.startConnection();
+
+        assertNotNull(provider.getConnectionFactory());
+    }
+
+    @Test
     public void addStatusListener() throws InterruptedException, JMSException {
         String brokerUrl = "failover:(vm:testBroker)";
         ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl);

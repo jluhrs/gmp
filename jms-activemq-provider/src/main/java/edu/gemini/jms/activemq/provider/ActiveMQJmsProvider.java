@@ -2,6 +2,7 @@ package edu.gemini.jms.activemq.provider;
 
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.JmsProviderStatusListener;
+import net.jmatrix.eproperties.EProperties;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.felix.ipojo.annotations.*;
@@ -25,17 +26,25 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     private ActiveMQConnectionFactory _factory;
     private static final String DEFAULT_BROKER_URL = "failover:(tcp://localhost:61616)";
+    private static final String BROKER_URL_PROPERTY = "brokerUrl";
     private final List<JmsProviderStatusListener> _statusListenerHandlers = new CopyOnWriteArrayList<JmsProviderStatusListener>();
 
     private final String brokerUrl;
     private final TransportListener transportListener = new JmsTransportListener();
 
-    public ActiveMQJmsProvider(@Property(name = "brokerUrl", value = DEFAULT_BROKER_URL, mandatory = true) String url) {
-        this.brokerUrl = url;
+    public ActiveMQJmsProvider(@Property(name = BROKER_URL_PROPERTY, value = DEFAULT_BROKER_URL, mandatory = true) String url) {
+        this.brokerUrl = substituteProperties(url);
         // Setup the connection factory
         LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
         _factory = new ActiveMQConnectionFactory(brokerUrl);
         _factory.setTransportListener(transportListener);
+    }
+
+    private String substituteProperties(String url) {
+        EProperties props = new EProperties();
+        props.addAll(System.getProperties());
+        props.put(BROKER_URL_PROPERTY, url);
+        return props.get(BROKER_URL_PROPERTY, DEFAULT_BROKER_URL).toString();
     }
 
     @Validate
