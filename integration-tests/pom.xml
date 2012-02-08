@@ -57,6 +57,11 @@
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-activemq-provider</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>edu.gemini.external.osgi.net.jmatrix.eproperties</groupId>
+            <artifactId>eproperties</artifactId>
+        </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
