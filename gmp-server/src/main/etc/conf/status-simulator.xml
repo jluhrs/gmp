@@ -93,7 +93,7 @@
     <status>
         <name>gpisim:aoWfsFilter</name>
         <type>string</type>
-        <updateRate>2000</updateRate>
+        <updateRate>3000</updateRate>
         <mode>enumeration</mode>
         <enumeration>
             <value>Y</value>
@@ -101,6 +101,36 @@
             <value>K1</value>
             <value>K2</value>
             <value>I</value>
+        </enumeration>
+    </status>
+    <status>
+        <name>gpisim:aoWfsFilter_moving</name>
+        <type>string</type>
+        <updateRate>1500</updateRate>
+        <mode>enumeration</mode>
+        <enumeration>
+            <value>Y</value>
+            <value>F</value>
+        </enumeration>
+    </status>
+    <status>
+        <name>gpisim:omssEntranceShutter</name>
+        <type>string</type>
+        <updateRate>5000</updateRate>
+        <mode>enumeration</mode>
+        <enumeration>
+            <value>1</value>
+            <value>0</value>
+        </enumeration>
+    </status>
+    <status>
+        <name>gpisim:artificialSourceDeploy</name>
+        <type>string</type>
+        <updateRate>15000</updateRate>
+        <mode>enumeration</mode>
+        <enumeration>
+            <value>1</value>
+            <value>0</value>
         </enumeration>
     </status>
 </simulatedstatus>
