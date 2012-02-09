@@ -72,6 +72,7 @@ class GdsHealth(@Requires provider: JmsProvider) {
       case e: GDSObseventHandler =>
         healthState.registerGDSObseventHandler()
         updateHealth()
+      case _ => LOG.info("Ignoring observation event handler: " + evtHndlr)
     }
   }
 
