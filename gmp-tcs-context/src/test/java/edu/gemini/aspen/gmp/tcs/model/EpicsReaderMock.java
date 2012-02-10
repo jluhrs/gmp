@@ -10,7 +10,6 @@ import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_Double;
 import gov.aps.jca.dbr.DBR_String;
-import org.apache.commons.lang.NotImplementedException;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class EpicsReaderMock implements EpicsReader {
 
         @Override
         public void destroy() throws CAException {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
         @Override
@@ -45,12 +44,12 @@ public class EpicsReaderMock implements EpicsReader {
 
         @Override
         public List getAll() throws CAException, TimeoutException {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public Object getFirst() throws CAException, TimeoutException {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
         @Override
@@ -60,22 +59,22 @@ public class EpicsReaderMock implements EpicsReader {
 
         @Override
         public void registerListener(ChannelListener channelListener) throws CAException {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public void unRegisterListener(ChannelListener channelListener) throws CAException {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public boolean isValid() {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public DBRType getType() {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -90,22 +89,22 @@ public class EpicsReaderMock implements EpicsReader {
 
     @Override
     public ReadOnlyClientEpicsChannel<Integer> getIntegerChannel(String channelName) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public ReadOnlyClientEpicsChannel<Float> getFloatChannel(String channelName) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public ReadOnlyClientEpicsChannel<String> getStringChannel(String channelName) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public ReadOnlyClientEpicsChannel<?> getChannelAsync(String channel) throws EpicsException {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
