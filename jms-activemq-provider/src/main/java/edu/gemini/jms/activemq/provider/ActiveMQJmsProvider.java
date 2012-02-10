@@ -1,5 +1,6 @@
 package edu.gemini.jms.activemq.provider;
 
+import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.JmsProviderStatusListener;
 import net.jmatrix.eproperties.EProperties;
@@ -7,10 +8,14 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.felix.ipojo.annotations.*;
 
+import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -28,9 +33,12 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     private static final String DEFAULT_BROKER_URL = "failover:(tcp://localhost:61616)";
     private static final String BROKER_URL_PROPERTY = "brokerUrl";
     private final List<JmsProviderStatusListener> _statusListenerHandlers = new CopyOnWriteArrayList<JmsProviderStatusListener>();
+    private final List<JmsArtifact> _jmsArtifact = new CopyOnWriteArrayList<JmsArtifact>();
 
     private final String brokerUrl;
     private final TransportListener transportListener = new JmsTransportListener();
+
+    private final AtomicReference<Connection> baseConnection = new AtomicReference<Connection>();
 
     public ActiveMQJmsProvider(@Property(name = BROKER_URL_PROPERTY, value = DEFAULT_BROKER_URL, mandatory = true) String url) {
         this.brokerUrl = substituteProperties(url);
@@ -49,7 +57,24 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     @Validate
     public void startConnection() {
-        // Required for iPojo
+        // Start the connection in the background
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Connection connection = _factory.createConnection();
+                    connection.start();
+                    LOG.info("Base connection established to " + brokerUrl);
+                    Connection previousConnection = baseConnection.getAndSet(connection);
+                    if (previousConnection != null) {
+                        previousConnection.close();
+                    }
+                } catch (JMSException e) {
+                    LOG.log(Level.SEVERE, "Failure while creating the connection to " + brokerUrl, e);
+                }
+            }
+        }).start();
     }
 
     /**
@@ -73,6 +98,19 @@ public final class ActiveMQJmsProvider implements JmsProvider {
         LOG.info("Removed JMS Status Listener: " + providerStatusListenerListener);
     }
 
+    @Bind(aggregate = true, optional = true)
+    public void bindJmsArtifact(JmsArtifact jmsArtifact) {
+        _jmsArtifact.add(jmsArtifact);
+        LOG.info("JMS Artifact Registered: " + jmsArtifact);
+    }
+
+    @Unbind(aggregate = true)
+    public void unbindJmsArtifact(JmsArtifact jmsArtifact) {
+        _jmsArtifact.remove(jmsArtifact);
+        LOG.info("JMS Artifact Removed: " + jmsArtifact);
+    }
+
+
     class JmsTransportListener implements TransportListener {
         @Override
         public void onCommand(Object o) {
@@ -89,12 +127,27 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             for (JmsProviderStatusListener l: _statusListenerHandlers) {
                 l.transportInterrupted();
             }
+            for (JmsArtifact a: _jmsArtifact) {
+                try {
+                    a.startJms(ActiveMQJmsProvider.this);
+                } catch (JMSException e) {
+                    LOG.severe("Exception starting JMSArtifact " + e);
+                }
+            }
         }
 
         @Override
         public void transportResumed() {
+            LOG.fine("Connection resumed");
             for (JmsProviderStatusListener l: _statusListenerHandlers) {
                 l.transportResumed();
+            }
+            for (JmsArtifact a: _jmsArtifact) {
+                try {
+                    a.startJms(ActiveMQJmsProvider.this);
+                } catch (JMSException e) {
+                    LOG.severe("Exception starting JMSArtifact " + e);
+                }
             }
         }
     }
