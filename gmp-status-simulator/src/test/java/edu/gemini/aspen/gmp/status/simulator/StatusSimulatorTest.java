@@ -34,7 +34,7 @@ public class StatusSimulatorTest {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator(provider, file);
+        component = new StatusSimulator(file);
         assertNotNull(component);
     }
 
@@ -43,8 +43,8 @@ public class StatusSimulatorTest {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator(provider, file);
-        component.startComponent();
+        component = new StatusSimulator(file);
+        component.startJms(provider);
 
         TimeUnit.MILLISECONDS.sleep(300);
 
@@ -56,11 +56,11 @@ public class StatusSimulatorTest {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator(provider, file);
-        component.startComponent();
+        component = new StatusSimulator(file);
+        component.startJms(provider);
         TimeUnit.MILLISECONDS.sleep(300);
 
-        component.stopComponent();
+        component.stopJms();
         TimeUnit.MILLISECONDS.sleep(300);
 
         verify(session, times(3)).close();

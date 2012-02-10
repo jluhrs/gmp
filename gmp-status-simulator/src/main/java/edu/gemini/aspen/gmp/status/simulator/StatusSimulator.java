@@ -7,6 +7,7 @@ import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.aspen.gmp.status.simulator.generated.StatusType;
 import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactory;
 import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactoryBuilder;
+import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -28,16 +29,14 @@ import java.util.logging.Logger;
  */
 @Component
 @Provides
-public class StatusSimulator {
+public class StatusSimulator implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(StatusSimulator.class.getName());
     private final Map<SimulatedStatus, StatusSetter> statusSetters;
     private final ScheduledExecutorService executorService =
             Executors.newScheduledThreadPool(10);
     private final List<ScheduledFuture<?>> _tasks = Lists.newArrayList();
-    private final JmsProvider jmsProvider;
 
-    public StatusSimulator(@Requires JmsProvider jmsProvider, @Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true) String configFile) throws JAXBException, FileNotFoundException {
-        this.jmsProvider = jmsProvider;
+    public StatusSimulator(@Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true) String configFile) throws JAXBException, FileNotFoundException {
         LOG.info("Simulating using configuration at " + configFile);
         SimulatorConfiguration simulatorConfiguration =  new SimulatorConfiguration(new FileInputStream(configFile));
         List<StatusType> statuses = simulatorConfiguration.getStatuses();
@@ -52,21 +51,6 @@ public class StatusSimulator {
 
     @Validate
     public void startComponent() throws JMSException {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    startJms();
-                } catch (JMSException e) {
-                    LOG.log(Level.SEVERE, "Exception starting the JMS client", e);
-                }
-            }
-        }).start();
-    }
-
-    @Invalidate
-    public void stopComponent() throws JMSException {
-        stopJms();
     }
 
     private SimulatedStatus buildSimulatedStatus(StatusType s) {
@@ -80,14 +64,16 @@ public class StatusSimulator {
         return StatusSimulatorFactoryBuilder.buildSimulatorFactory(type, mode);
     }
 
-    private void startJms() throws JMSException {
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
         for (StatusSetter s:statusSetters.values()) {
-            s.startJms(jmsProvider);
+            s.startJms(provider);
         }
         startSimulation();
     }
 
-    private void stopJms() {
+    @Override
+    public void stopJms() {
         stopSimulation();
         for (StatusSetter s:statusSetters.values()) {
             s.stopJms();
