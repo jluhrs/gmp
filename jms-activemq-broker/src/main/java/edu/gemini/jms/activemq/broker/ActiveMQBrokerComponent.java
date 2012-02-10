@@ -3,6 +3,7 @@ package edu.gemini.jms.activemq.broker;
 import edu.gemini.jms.api.Broker;
 import org.apache.felix.ipojo.annotations.*;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 import static edu.gemini.jms.activemq.broker.ActiveMQBroker.activemq;
@@ -15,7 +16,7 @@ import static edu.gemini.jms.activemq.broker.ConfigDefaults.*;
  */
 @Component
 @Provides
-public class ActiveMQBrokerComponent {
+public class ActiveMQBrokerComponent implements Serializable {
     private static final Logger LOG = Logger.getLogger(ActiveMQBrokerComponent.class.getName());
 
     private final Broker _broker;
@@ -67,8 +68,16 @@ public class ActiveMQBrokerComponent {
 
     @Validate
     public synchronized void startBroker() {
-        LOG.info("Starting ActiveMQ broker with URL:" + url);
-        _broker.start();
+        LOG.info("Starting ActiveMQBroker broker with URL:" + url);
+        // Start in a separate thread, otherwise there is a risk of a race condition
+        // with other iPojo components
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                _broker.start();
+            }
+        }).start();
+
     }
 
     @Invalidate
