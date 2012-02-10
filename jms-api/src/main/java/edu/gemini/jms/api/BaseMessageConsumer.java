@@ -45,6 +45,15 @@ public class BaseMessageConsumer extends BaseJmsArtifact {
         _selector = messageSelector;
     }
 
+    @Override
+    public String toString() {
+        return "BaseMessageConsumer{" +
+                "_consumer=" + _consumer +
+                ", _listener=" + _listener +
+                ", _selector=" + _selector +
+                '}';
+    }
+
     /**
      * Set the listener this consumer will invoke. This method must be called
      * before the invocation of startJms();
