@@ -14,6 +14,7 @@ import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,12 +34,13 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     private static final String DEFAULT_BROKER_URL = "failover:(tcp://localhost:61616)";
     private static final String BROKER_URL_PROPERTY = "brokerUrl";
     private final List<JmsProviderStatusListener> _statusListenerHandlers = new CopyOnWriteArrayList<JmsProviderStatusListener>();
-    private final List<JmsArtifact> _jmsArtifact = new CopyOnWriteArrayList<JmsArtifact>();
+    private final List<JmsArtifact> _jmsArtifacts = new CopyOnWriteArrayList<JmsArtifact>();
 
     private final String brokerUrl;
     private final TransportListener transportListener = new JmsTransportListener();
 
     private final AtomicReference<Connection> baseConnection = new AtomicReference<Connection>();
+    private final AtomicBoolean connected = new AtomicBoolean(false);
 
     public ActiveMQJmsProvider(@Property(name = BROKER_URL_PROPERTY, value = DEFAULT_BROKER_URL, mandatory = true) String url) {
         this.brokerUrl = substituteProperties(url);
@@ -100,13 +102,13 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     @Bind(aggregate = true, optional = true)
     public void bindJmsArtifact(JmsArtifact jmsArtifact) {
-        _jmsArtifact.add(jmsArtifact);
+        _jmsArtifacts.add(jmsArtifact);
         LOG.info("JMS Artifact Registered: " + jmsArtifact);
     }
 
     @Unbind(aggregate = true)
     public void unbindJmsArtifact(JmsArtifact jmsArtifact) {
-        _jmsArtifact.remove(jmsArtifact);
+        _jmsArtifacts.remove(jmsArtifact);
         LOG.info("JMS Artifact Removed: " + jmsArtifact);
     }
 
@@ -124,14 +126,12 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
         @Override
         public void transportInterupted() {
-            for (JmsProviderStatusListener l: _statusListenerHandlers) {
+            for (JmsProviderStatusListener l : _statusListenerHandlers) {
                 l.transportInterrupted();
             }
-            for (JmsArtifact a: _jmsArtifact) {
-                try {
-                    a.startJms(ActiveMQJmsProvider.this);
-                } catch (JMSException e) {
-                    LOG.severe("Exception starting JMSArtifact " + e);
+            if (connected.getAndSet(false)) {
+                for (JmsArtifact a : _jmsArtifacts) {
+                    a.stopJms();
                 }
             }
         }
@@ -139,14 +139,19 @@ public final class ActiveMQJmsProvider implements JmsProvider {
         @Override
         public void transportResumed() {
             LOG.fine("Connection resumed");
-            for (JmsProviderStatusListener l: _statusListenerHandlers) {
+            for (JmsProviderStatusListener l : _statusListenerHandlers) {
                 l.transportResumed();
             }
-            for (JmsArtifact a: _jmsArtifact) {
-                try {
-                    a.startJms(ActiveMQJmsProvider.this);
-                } catch (JMSException e) {
-                    LOG.severe("Exception starting JMSArtifact " + e);
+            // First time connection
+            if (!connected.getAndSet(true)) {
+                System.out.println("Starting artifacts");
+                for (JmsArtifact a : _jmsArtifacts) {
+                    try {
+                        System.out.println("Start " + a);
+                        a.startJms(ActiveMQJmsProvider.this);
+                    } catch (JMSException e) {
+                        LOG.severe("Exception starting JMSArtifact " + e);
+                    }
                 }
             }
         }
