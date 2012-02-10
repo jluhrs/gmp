@@ -31,13 +31,12 @@ public class StatusServiceTest {
         String serviceName = "Service Name";
         String serviceStatus = ">";
         provider = buildJMSProviderMock();
-        service = new StatusService(aggregate, provider, serviceName, serviceStatus);
+        service = new StatusService(aggregate, serviceName, serviceStatus);
     }
 
     @Test
     public void testStartJms() throws JMSException, InterruptedException {
-        service.initialize();
-        TimeUnit.MILLISECONDS.sleep(300);
+        service.startJms(provider);
         verify(provider).getConnectionFactory();
     }
 
@@ -57,11 +56,11 @@ public class StatusServiceTest {
 
     @Test
     public void testUnbinding() throws JMSException, InterruptedException {
-        service.initialize();
+        service.startJms(provider);
         TimeUnit.MILLISECONDS.sleep(300);
 
         verify(provider).getConnectionFactory();
-        service.stopComponent();
+        service.stopJms();
 
         verify(provider).getConnectionFactory();
         verifyZeroInteractions(provider);

@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * and disappear.
  */
 @Component
-@Instantiate(name = "statusHandlerManager")
+@Instantiate
 @Provides(specifications = StatusHandlerAggregate.class)
 public class StatusHandlerAggregateImpl implements StatusHandlerAggregate {
     private static final Logger LOG = Logger.getLogger(StatusHandlerAggregate.class.getName());
@@ -42,7 +42,7 @@ public class StatusHandlerAggregateImpl implements StatusHandlerAggregate {
     }
 
     @Override
-    @Bind(aggregate = true)
+    @Bind(aggregate = true, optional = true)
     public void bindStatusHandler(StatusHandler handler) {
         _statusHandlers.add(handler);
         LOG.info("Status Handler Registered: " + handler);
