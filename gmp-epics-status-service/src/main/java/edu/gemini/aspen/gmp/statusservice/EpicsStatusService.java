@@ -63,9 +63,9 @@ public class EpicsStatusService implements StatusHandler {
 
 
     public EpicsStatusService(@Requires ChannelAccessServer cas,
-                              @Requires EpicsTop epicsTop,
-                              @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
-                              @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
+            @Requires EpicsTop epicsTop,
+            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
+            @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
         _channelAccessServer = cas;
         this.xmlFileName = xmlFileName;
         this.xsdFileName = xsdFileName;
@@ -106,14 +106,18 @@ public class EpicsStatusService implements StatusHandler {
      */
     @Invalidate
     public void shutdown() {
-        for (String name : channelMap.keySet().toArray(new String[0])) {
-            removeVariable(name);
-        }
-        for (String name : alarmChannelMap.keySet().toArray(new String[0])) {
-            removeVariable(name);
-        }
-        for (String name : healthChannelMap.keySet().toArray(new String[0])) {
-            removeVariable(name);
+        try {
+            for (String name : channelMap.keySet().toArray(new String[0])) {
+                removeVariable(name);
+            }
+            for (String name : alarmChannelMap.keySet().toArray(new String[0])) {
+                removeVariable(name);
+            }
+            for (String name : healthChannelMap.keySet().toArray(new String[0])) {
+                removeVariable(name);
+            }
+        } catch (Exception e) {
+            LOG.warning("Exception shutting down EpicsStatusService " + e);
         }
     }
 
