@@ -21,12 +21,9 @@ public class ServiceProcessorImpl implements ServiceProcessor {
     }
 
     public void process(ServiceType type, ServiceRequest request) throws ServiceException {
-        System.out.println("Request for  " + type + " " + request);
         if (type == null) return;
         if (_services.containsKey(type)) {
-            Service service = _services.get(type);
-            System.out.println(_services);
-            service.process(request);
+            service.process(_services.get(type));
         } else {
             LOG.warning("No registered service to handle request (" + type.getName() + ")");
         }

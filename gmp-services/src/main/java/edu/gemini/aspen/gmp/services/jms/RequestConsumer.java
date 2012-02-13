@@ -69,7 +69,6 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
 
                 switch (requestType) {
                     case JmsKeys.GMP_UTIL_REQUEST_PROPERTY:
-                        System.out.println("PASS TO PROCESSOR");
                         _serviceProcessor.process(ServiceType.PROPERTY_SERVICE, new JmsServiceRequest(mm));
                         break;
 
