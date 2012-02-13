@@ -9,12 +9,12 @@ import edu.gemini.jms.api.JmsProvider;
 import org.apache.activemq.broker.BrokerService;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Class HeartbeatDistributorTest
@@ -53,14 +53,15 @@ public class HeartbeatDistributorTest {
         BrokerService broker = new BrokerService();
         broker.addConnector("vm://HeartbeatTestBroker");
         broker.setUseJmx(false);
+        broker.setPersistent(false);
         broker.start();
         JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
 
         HeartbeatMessageProducer hbmp = new HeartbeatMessageProducer();
         hbmp.startJms(provider);
 
-        HeartbeatDistributor hbDist = new HeartbeatDistributor(provider);
-        hbDist.start();
+        HeartbeatDistributor hbDist = new HeartbeatDistributor();
+        hbDist.startJms(provider);
 
         TestConsumerComponent comp = new TestConsumerComponent(1);
         hbDist.bindHeartbeatConsumer(comp);

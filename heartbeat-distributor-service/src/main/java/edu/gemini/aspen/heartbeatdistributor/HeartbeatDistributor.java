@@ -1,6 +1,7 @@
 package edu.gemini.aspen.heartbeatdistributor;
 
 import edu.gemini.aspen.gmp.heartbeat.jms.JmsHeartbeatConsumer;
+import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -21,7 +22,8 @@ import java.util.logging.Logger;
  */
 @Component
 @Instantiate
-public class HeartbeatDistributor {
+@Provides
+public class HeartbeatDistributor implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(HeartbeatDistributor.class.getName());
     private final List<HeartbeatConsumer> consumers = new CopyOnWriteArrayList<HeartbeatConsumer>();
 
@@ -47,9 +49,6 @@ public class HeartbeatDistributor {
     }
     private JmsHeartbeatConsumer hbConsumer;
 
-    @Requires
-    private JmsProvider provider;
-
     /**
      * Notify all registered consumers. Sends the beat number.
      *
@@ -62,41 +61,27 @@ public class HeartbeatDistributor {
     }
 
     /**
-     * Private constructor. Used by iPOJO.
-     */
-    private HeartbeatDistributor(){
-        LOG.fine("HeartbeatDistributor Constructor");
-        hbConsumer = new JmsHeartbeatConsumer("HeartbeatDistributor",new HeartbeatListener());
-    }
-
-    /**
      * Public constructor. To manually create a distributor.
-     *
-     * @param provider the JmsProvider to get JMS messages from.
      */
-    public HeartbeatDistributor(JmsProvider provider){
+    public HeartbeatDistributor(){
         LOG.fine("HeartbeatDistributor Constructor");
-        this.provider=provider;
         hbConsumer = new JmsHeartbeatConsumer("HeartbeatDistributor",new HeartbeatListener());
     }
 
-    /**
-     * Starts listening for JMS messages
-     */
-    @Validate
-    public void start(){
+
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
         hbConsumer.start(provider);
         LOG.info("HeartbeatDistributor started.");
+
     }
 
-    /**
-     * Stops listening for JMS messages
-     */
-    @Invalidate
-    public void stop(){
+    @Override
+    public void stopJms() {
         hbConsumer.stop();
         LOG.info("HeartbeatDistributor stopped.");
     }
+
 
     /**
      * Registers Heartbeat consumers. Automatically called by iPOJO when components implementing HeartbeatConsumer
@@ -104,7 +89,7 @@ public class HeartbeatDistributor {
      *
      * @param consumer the consumer to register
      */
-    @Bind(aggregate = true)
+    @Bind(aggregate = true, optional = true)
     public void bindHeartbeatConsumer(HeartbeatConsumer consumer) {
         consumers.add(consumer);
         LOG.info("Heartbeat Consumer registered at Distributor: " + consumer);
