@@ -68,7 +68,6 @@ public class StatusGetter extends BaseMessageProducer {
         Message m = _session.createMessage();
         m.setStringProperty(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY, JmsKeys.GW_STATUS_REQUEST_TYPE_NAMES);
 
-
         //create a consumer to receive the answer
         Destination tempQueue = _session.createTemporaryQueue();
         m.setJMSReplyTo(tempQueue);
@@ -81,9 +80,6 @@ public class StatusGetter extends BaseMessageProducer {
 
         tempConsumer.close();
         Set<String> names = MessageBuilder.buildStatusNames(reply);
-        if (names.isEmpty()) {
-            throw new JMSException("Message received was invalid.");
-        }
         return names;
     }
 }
