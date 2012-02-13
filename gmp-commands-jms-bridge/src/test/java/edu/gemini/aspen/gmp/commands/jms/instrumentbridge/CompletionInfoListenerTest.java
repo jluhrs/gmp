@@ -33,7 +33,8 @@ public class CompletionInfoListenerTest extends MockedJmsArtifactsTestBase {
 
     @Test
     public void testOCSUpdate() throws JMSException {
-        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, provider);
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater);
+        listener.startJms(provider);
         when(message.propertyExists(JmsKeys.GMP_ACTIONID_PROP)).thenReturn(true);
         when(message.getIntProperty(JmsKeys.GMP_ACTIONID_PROP)).thenReturn(1);
         when(message.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenReturn(HandlerResponse.Response.COMPLETED.toString());
@@ -45,7 +46,8 @@ public class CompletionInfoListenerTest extends MockedJmsArtifactsTestBase {
 
     @Test(expected = SequenceCommandException.class)
     public void testExceptionOnMessageQuerying() throws JMSException {
-        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, provider);
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater);
+        listener.startJms(provider);
         when(message.propertyExists(JmsKeys.GMP_ACTIONID_PROP)).thenReturn(true);
         when(message.getString(JmsKeys.GMP_HANDLER_RESPONSE_KEY)).thenThrow(new JMSException("exception"));
 
@@ -54,7 +56,8 @@ public class CompletionInfoListenerTest extends MockedJmsArtifactsTestBase {
 
     @Test
     public void testNoMapMessage() throws JMSException {
-        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, provider);
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater);
+        listener.startJms(provider);
         Message message = mock(Message.class);
 
         listener.onMessage(message);
@@ -64,7 +67,8 @@ public class CompletionInfoListenerTest extends MockedJmsArtifactsTestBase {
 
     @Test
     public void testMessageMissingActionId() throws JMSException {
-        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, provider);
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater);
+        listener.startJms(provider);
         MapMessage message = mock(MapMessage.class);
 
         listener.onMessage(message);
@@ -74,13 +78,13 @@ public class CompletionInfoListenerTest extends MockedJmsArtifactsTestBase {
 
     @Test
     public void testLifeCycle() throws JMSException, InterruptedException {
-        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater, provider);
-        listener.startListening();
+        CompletionInfoListener listener = new CompletionInfoListener(commandUpdater);
+        listener.startJms(provider);
 
         TimeUnit.MILLISECONDS.sleep(500);
 
         verify(provider).getConnectionFactory();
 
-        listener.stopListening();
+        listener.stopJms();
     }
 }

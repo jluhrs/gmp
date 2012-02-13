@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.commands.jms.instrumentbridge;
 
-
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.commands.CommandUpdater;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
@@ -14,7 +13,6 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +24,8 @@ import java.util.logging.Logger;
  */
 @Component
 @Instantiate
-class CompletionInfoListener implements MessageListener {
+@Provides(specifications = JmsArtifact.class)
+class CompletionInfoListener implements MessageListener, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(
             CompletionInfoListener.class.getName());
 
@@ -36,13 +35,10 @@ class CompletionInfoListener implements MessageListener {
     private final CommandUpdater _commandUpdater;
     private final BaseMessageConsumer _messageConsumer;
 
-    private JmsProvider _provider;
 
-    public CompletionInfoListener(@Requires CommandUpdater updater, @Requires JmsProvider jmsProvider) {
+    public CompletionInfoListener(@Requires CommandUpdater updater) {
         Preconditions.checkArgument(updater != null, "CommandUpdater cannot be null");
-        Preconditions.checkArgument(jmsProvider != null, "JmsProvider cannot be null");
         _commandUpdater = updater;
-        _provider = jmsProvider;
 
         _messageConsumer = new BaseMessageConsumer(
                 CONSUMER_NAME,
@@ -94,20 +90,16 @@ class CompletionInfoListener implements MessageListener {
 
     @Validate
     public void startListening() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    _messageConsumer.startJms(_provider);
-                } catch (JMSException e) {
-                    LOG.log(Level.SEVERE, "Error starting JMS Provider", e);
-                }
-            }
-        }).start();
+        // Required by iPojo
     }
 
-    @Invalidate
-    public void stopListening() {
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
+        _messageConsumer.startJms(provider);
+    }
+
+    @Override
+    public void stopJms() {
         _messageConsumer.stopJms();
     }
 }
