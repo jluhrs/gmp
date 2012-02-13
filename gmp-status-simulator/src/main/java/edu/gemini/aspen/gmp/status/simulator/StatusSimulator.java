@@ -21,6 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,15 +36,16 @@ public class StatusSimulator implements JmsArtifact {
     private final ScheduledExecutorService executorService =
             Executors.newScheduledThreadPool(10);
     private final List<ScheduledFuture<?>> _tasks = Lists.newArrayList();
+    private final AtomicBoolean simulating = new AtomicBoolean(false);
 
     public StatusSimulator(@Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true) String configFile) throws JAXBException, FileNotFoundException {
         LOG.info("Simulating using configuration at " + configFile);
-        SimulatorConfiguration simulatorConfiguration =  new SimulatorConfiguration(new FileInputStream(configFile));
+        SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration(new FileInputStream(configFile));
         List<StatusType> statuses = simulatorConfiguration.getStatuses();
-        Map<SimulatedStatus, StatusSetter> simulatorsMap =  Maps.newHashMap();
-        for (StatusType s:statuses) {
+        Map<SimulatedStatus, StatusSetter> simulatorsMap = Maps.newHashMap();
+        for (StatusType s : statuses) {
             StatusSetter statusSetter = new StatusSetter("StatusSimulator-" + s.getName(), s.getName());
-            SimulatedStatus simulatedStatus =  buildSimulatedStatus(s);
+            SimulatedStatus simulatedStatus = buildSimulatedStatus(s);
             simulatorsMap.put(simulatedStatus, statusSetter);
         }
         statusSetters = ImmutableMap.copyOf(simulatorsMap);
@@ -66,7 +68,7 @@ public class StatusSimulator implements JmsArtifact {
 
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
-        for (StatusSetter s:statusSetters.values()) {
+        for (StatusSetter s : statusSetters.values()) {
             s.startJms(provider);
         }
         startSimulation();
@@ -75,23 +77,25 @@ public class StatusSimulator implements JmsArtifact {
     @Override
     public void stopJms() {
         stopSimulation();
-        for (StatusSetter s:statusSetters.values()) {
+        for (StatusSetter s : statusSetters.values()) {
             s.stopJms();
         }
     }
 
     public synchronized void startSimulation() {
         LOG.info("Start status items simulation");
-        for (Map.Entry<SimulatedStatus, StatusSetter> s:statusSetters.entrySet()) {
+        for (Map.Entry<SimulatedStatus, StatusSetter> s : statusSetters.entrySet()) {
             SimulatedStatus simulatedStatus = s.getKey();
             LOG.info("Simulate status item " + simulatedStatus.getName() + " at " + simulatedStatus.getUpdateRate() + " with " + simulatedStatus.getClass().getSimpleName());
             ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
                     new SimulationTask(simulatedStatus, s.getValue()), 0, simulatedStatus.getUpdateRate(), TimeUnit.MILLISECONDS);
             _tasks.add(scheduledFuture);
         }
+        simulating.set(true);
     }
 
     public synchronized void stopSimulation() {
+        simulating.set(false);
         for (ScheduledFuture<?> f : _tasks) {
             f.cancel(true);
         }
@@ -108,10 +112,14 @@ public class StatusSimulator implements JmsArtifact {
 
         @Override
         public void run() {
-            try {
-                setter.setStatusItem(status.simulateOnce());
-            } catch (JMSException e) {
-                LOG.warning("Exception when setting a status item: " + status);
+            if (simulating.get()) {
+                try {
+                    setter.setStatusItem(status.simulateOnce());
+                } catch (JMSException e) {
+                    LOG.warning("Exception when setting a status item: " + status);
+                } catch (Throwable e) {
+                    LOG.warning("Exception when setting a status item: " + status);
+                }
             }
         }
     }
