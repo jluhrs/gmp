@@ -56,7 +56,6 @@ public class Heartbeat implements JmsArtifact {
 
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         try {
             producer.startJms(provider);
         } catch (JMSException ex) {
