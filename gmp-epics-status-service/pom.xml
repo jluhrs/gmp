@@ -12,7 +12,6 @@
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp.epics-status-service</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.statusservice</bundle.namespace>
-        <gmp.epics.statusservice.conf>../src/main/etc/conf/giapi-epics-status-mapping.xml</gmp.epics.statusservice.conf>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -27,15 +26,6 @@
 
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
@@ -47,22 +37,6 @@
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-epics-top</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
-            <artifactId>jca-lib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo</artifactId>
-            <version>1.6.8</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
