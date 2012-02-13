@@ -24,15 +24,15 @@ public class ActionMessageActionSenderTest extends MockedJmsArtifactsTestBase {
     public void testSend() throws JMSException {
         super.createMockedObjects();
 
-        ActionMessageActionSender actionSender = new ActionMessageActionSender(provider);
-        actionSender.startJmsClient();
+        ActionMessageActionSender actionSender = new ActionMessageActionSender();
+        actionSender.startJms(provider);
 
         ActionMessage actionMessage = createActionToSend();
         HandlerResponse response = actionSender.send(actionMessage);
 
         assertEquals(HandlerResponse.Response.NOANSWER, response.getResponse());
 
-        actionSender.stopJmsClient();
+        actionSender.stopJms();
     }
 
     private ActionMessage createActionToSend() {
@@ -48,12 +48,14 @@ public class ActionMessageActionSenderTest extends MockedJmsArtifactsTestBase {
         super.createMockedObjects();
         when(session.createMapMessage()).thenThrow(new JMSException(""));
 
-        ActionMessageActionSender actionSender = new ActionMessageActionSender(provider);
-        actionSender.startJmsClient();
+        ActionMessageActionSender actionSender = new ActionMessageActionSender();
+        actionSender.startJms(provider);
 
         TimeUnit.MILLISECONDS.sleep(500);
 
         ActionMessage actionMessage = createActionToSend();
         actionSender.send(actionMessage);
+
+        actionSender.stopJms();
     }
 }

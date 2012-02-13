@@ -8,10 +8,7 @@ import edu.gemini.aspen.giapi.util.jms.messagebuilders.ObjectBasedMessageBuilder
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.jms.api.MessagingException;
+import edu.gemini.jms.api.*;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Invalidate;
@@ -31,17 +28,9 @@ import java.util.logging.Logger;
  */
 @Component
 @Instantiate
-@Provides(specifications = {ActionSender.class})
-class ActionMessageActionSender implements ActionSender {
-    private static final Logger LOG = Logger.getLogger(
-            ActionSender.class.getName());
+@Provides(specifications = {ActionSender.class, JmsArtifact.class})
+class ActionMessageActionSender implements ActionSender, JmsArtifact {
     private final HandlerResponseSenderReply _messageSender = new HandlerResponseSenderReply(JmsKeys.GW_COMMAND_TOPIC);
-    private final JmsProvider _provider;
-
-    public ActionMessageActionSender(@Requires JmsProvider jmsProvider) {
-        Preconditions.checkArgument(jmsProvider != null, "JmsProvider cannot be null");
-        this._provider = jmsProvider;
-    }
 
     @Override
     public HandlerResponse send(ActionMessage actionMessage) throws SequenceCommandException {
@@ -75,20 +64,16 @@ class ActionMessageActionSender implements ActionSender {
 
     @Validate
     public void startJmsClient() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    _messageSender.startJms(_provider);
-                } catch (JMSException e) {
-                    LOG.log(Level.SEVERE, "Error starting JMS Provider", e);
-                }
-            }
-        }).start();
+        // Required by IPojo
     }
 
-    @Invalidate
-    public void stopJmsClient() {
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
+        _messageSender.startJms(provider);
+    }
+
+    @Override
+    public void stopJms() {
         _messageSender.stopJms();
     }
 }
