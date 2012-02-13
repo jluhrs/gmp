@@ -1,13 +1,11 @@
 package edu.gemini.aspen.gmp.services.jms;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.services.core.*;
-import org.apache.felix.ipojo.annotations.Bind;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
+import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -27,9 +25,10 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
     private Session _session;
     private MessageConsumer _consumer;
 
-    private ServiceProcessor _serviceProcessor;
+    private final ServiceProcessor _serviceProcessor;
 
     public RequestConsumer() {
+        _serviceProcessor = new ServiceProcessorImpl();
     }
 
     /**
@@ -38,11 +37,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
      * @param service A service to register
      */
     @Bind
-    public void registerService(Service service) {
-        if (service instanceof JmsService) {
-            JmsService jmsService = (JmsService) service;
-            jmsService.setJmsSession(_session);
-        }
+    public void bindService(Service service) {
         _serviceProcessor.registerService(service);
     }
 
@@ -65,6 +60,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
     }
 
     public void onMessage(Message message) {
+        Preconditions.checkState(_session != null, "Session should have been initialized");
         try {
             if (message instanceof MapMessage) {
                 MapMessage mm = (MapMessage) message;
@@ -73,6 +69,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
 
                 switch (requestType) {
                     case JmsKeys.GMP_UTIL_REQUEST_PROPERTY:
+                        System.out.println("PASS TO PROCESSOR");
                         _serviceProcessor.process(ServiceType.PROPERTY_SERVICE, new JmsServiceRequest(mm));
                         break;
 
@@ -93,8 +90,6 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
     public void startJms(JmsProvider provider) throws JMSException {
         ConnectionFactory factory = provider.getConnectionFactory();
         try {
-            _serviceProcessor = new ServiceProcessorImpl();
-
             _connection = factory.createConnection();
             _connection.setClientID("Service Request Consumer");
             _connection.start();
@@ -116,5 +111,15 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
     @Override
     public void stopJms() {
         close();
+    }
+
+    @Validate
+    public void startComponent() {
+        // Required by iPojo
+    }
+
+    @Override
+    public String toString() {
+        return "RequestConsumer";
     }
 }

@@ -1,32 +1,34 @@
 package edu.gemini.aspen.gmp.services.properties;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.services.PropertyHolder;
+import edu.gemini.aspen.gmp.services.core.Service;
 import edu.gemini.aspen.gmp.services.core.ServiceException;
 import edu.gemini.aspen.gmp.services.core.ServiceType;
 import edu.gemini.aspen.gmp.services.jms.JmsService;
 import edu.gemini.aspen.gmp.services.jms.JmsServiceRequest;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
+import edu.gemini.jms.api.JmsArtifact;
+import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.*;
 import java.util.logging.Logger;
 
 @Component
 @Instantiate
-@Provides
+@Provides(specifications = {Service.class, JmsArtifact.class})
 public class PropertyService extends JmsService {
     private static final Logger LOG = Logger.getLogger(PropertyService.class.getName());
 
     private PropertyHolder _properties;
 
-    public PropertyService(PropertyHolder holder) {
+    public PropertyService(@Requires PropertyHolder holder) {
         _properties = holder;
         LOG.info("Properties service started with properties: " + _properties);
     }
 
     public void process(JmsServiceRequest jmsRequest) throws ServiceException {
+        Preconditions.checkState(_session != null, "Session should have been initialized");
         MapMessage msg = jmsRequest.getMessage();
         if (msg == null) return;
 
@@ -40,9 +42,9 @@ public class PropertyService extends JmsService {
                 return;
             }
 
-            MessageProducer replyProducer = session.createProducer(destination);
+            MessageProducer replyProducer = _session.createProducer(destination);
 
-            Message replyMessage = session.createTextMessage(reply);
+            Message replyMessage = _session.createTextMessage(reply);
             replyProducer.send(replyMessage);
             replyProducer.close();
         } catch (JMSException e) {
@@ -52,5 +54,10 @@ public class PropertyService extends JmsService {
 
     public ServiceType getType() {
         return ServiceType.PROPERTY_SERVICE;
+    }
+
+    @Validate
+    public void startComponent() {
+        // Required by iPojo
     }
 }
