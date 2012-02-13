@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
-import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+
+import javax.jms.JMSException;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -18,12 +19,11 @@ public class PcsUpdaterCompositeImplTest {
     private Double[] values = new Double [] {1.5, 6.7};
 
     @Before
-    public void setUp() {
+    public void setUp() throws JMSException {
         u1 = mock(PcsUpdater.class);
         u2 = mock(PcsUpdater.class);
         u3 = mock(PcsUpdater.class);
-        JmsProvider provider = mock(JmsProvider.class);
-        _composite = new PcsUpdaterCompositeImpl(provider);
+        _composite = new PcsUpdaterCompositeImpl();
     }
 
     @Test

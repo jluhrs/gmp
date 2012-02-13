@@ -11,7 +11,7 @@ import static org.mockito.Mockito.*;
 public class PcsUpdaterComponentTest {
     private EpicsWriter epicsWriter = mock(EpicsWriter.class);
     private JmsProvider provider = mock(JmsProvider.class);
-    private PcsUpdaterComposite pcsComposite = new PcsUpdaterCompositeImpl(provider);
+    private PcsUpdaterComposite pcsComposite = new PcsUpdaterCompositeImpl();
     private String channel = "tst";
 
     @Test

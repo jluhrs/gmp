@@ -12,14 +12,12 @@
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp.pcs.updater</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.pcs</bundle.namespace>
-        <edu.gemini.aspen.gmp.pcs.epicsChannel>tst:array.VALJ</edu.gemini.aspen.gmp.pcs.epicsChannel>
-        <edu.gemini.aspen.gmp.pcs.simulation>yes</edu.gemini.aspen.gmp.pcs.simulation>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-pcs-updater</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
 
     <name>GMP PCS Updater Service</name>
     <description>PCS Updater service</description>
@@ -27,15 +25,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
@@ -47,50 +36,6 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>kahadb</artifactId>
-            <version>${org.activemq.core.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
-            <version>1.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>com.springsource.org.apache.commons.logging</artifactId>
-            <version>1.1.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.jms</groupId>
-            <artifactId>com.springsource.javax.jms</artifactId>
-            <version>1.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-annotation_1.0_spec</artifactId>
-            <version>1.1.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
-            <artifactId>jca-lib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen</groupId>
-            <artifactId>giapi</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

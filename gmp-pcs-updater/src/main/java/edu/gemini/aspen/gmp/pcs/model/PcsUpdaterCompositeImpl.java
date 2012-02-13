@@ -2,32 +2,24 @@ package edu.gemini.aspen.gmp.pcs.model;
 
 import edu.gemini.aspen.gmp.pcs.jms.PcsUpdateListener;
 import edu.gemini.aspen.gmp.pcs.model.updaters.LogPcsUpdater;
-import edu.gemini.jms.api.BaseMessageConsumer;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.JmsProvider;
+import edu.gemini.jms.api.*;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
 @Instantiate
 @Provides
-public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite {
+public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComposite.class.getName());
 
     private final List<PcsUpdater> _pcsUpdaters = new CopyOnWriteArrayList<PcsUpdater>();
     private BaseMessageConsumer _messageConsumer;
 
-    @Requires
-    private final JmsProvider _provider;
-
-    public PcsUpdaterCompositeImpl(@Requires JmsProvider provider) {
-        this._provider = provider;
+    public PcsUpdaterCompositeImpl() {
         registerUpdater(new LogPcsUpdater());
     }
 
@@ -63,30 +55,25 @@ public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite {
 
     @Validate
     public void initialize() throws JMSException {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                LOG.info("Start listening for JMS Messages on " + PcsUpdateListener.DESTINATION_NAME);
-                //Creates the PCS Updates Consumer
-                _messageConsumer = new BaseMessageConsumer(
-                        "JMS PCS Updates Consumer",
-                        new DestinationData(PcsUpdateListener.DESTINATION_NAME,
-                                DestinationType.TOPIC),
-                        new PcsUpdateListener(PcsUpdaterCompositeImpl.this)
-                );
-
-                try {
-                    _messageConsumer.startJms(_provider);
-                } catch (JMSException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                }
-            }
-        }).start();
+        // Required for iPojo
     }
 
-    @Invalidate
-    public void invalidate() {
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
+        LOG.info("Start listening for JMS Messages on " + PcsUpdateListener.DESTINATION_NAME);
+        //Creates the PCS Updates Consumer
+        _messageConsumer = new BaseMessageConsumer(
+                "JMS PCS Updates Consumer",
+                new DestinationData(PcsUpdateListener.DESTINATION_NAME,
+                        DestinationType.TOPIC),
+                new PcsUpdateListener(PcsUpdaterCompositeImpl.this)
+        );
+
+        _messageConsumer.startJms(provider);
+    }
+
+    @Override
+    public void stopJms() {
         _messageConsumer.stopJms();
     }
 }

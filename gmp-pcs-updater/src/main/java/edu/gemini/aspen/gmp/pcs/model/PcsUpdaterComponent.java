@@ -14,34 +14,26 @@ import java.util.logging.Logger;
 public class PcsUpdaterComponent {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComposite.class.getName());
 
-    @Property(name = "simulation", value = "yes", mandatory = true)
     private Boolean simulation;
 
-    @Property(name = "epicsChannel", value = "NOVALID", mandatory = true)
     private String pcsChannel;
 
-    @Requires(id = "epicsWriter")
-    private EpicsWriter _epicsWriter;
-    @Requires
-    private PcsUpdaterComposite pcsUpdaterAggregate;
+    private final EpicsWriter _epicsWriter;
+    private final PcsUpdaterComposite pcsUpdaterAggregate;
 
     private PcsUpdater updater;
 
-    private PcsUpdaterComponent() {
-    }
-
-    protected PcsUpdaterComponent(EpicsWriter epicsWriter, PcsUpdaterComposite updater, Boolean simulation, String pcsChannel) {
-        this(epicsWriter, updater);
+    public PcsUpdaterComponent(@Requires EpicsWriter epicsWriter,
+                                  @Requires PcsUpdaterComposite updater,
+                                  @Property(name = "simulation", value = "yes", mandatory = true) Boolean simulation,
+                                  @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel) {
+        this._epicsWriter = epicsWriter;
+        this.pcsUpdaterAggregate = updater;
         this.simulation = simulation;
         this.pcsChannel = pcsChannel;
     }
 
-    protected PcsUpdaterComponent(EpicsWriter epicsWriter, PcsUpdaterComposite updater) {
-        this._epicsWriter = epicsWriter;
-        this.pcsUpdaterAggregate = updater;
-    }
-
-    @Bind(id = "epicsWriter")
+    @Validate
     public void registerEpicsWriter() {
         if (!simulation) {
             try {
@@ -54,7 +46,7 @@ public class PcsUpdaterComponent {
         }
     }
 
-    @Unbind(id = "epicsWriter")
+    @Invalidate
     public void unRegisterEpicsWriter() {
         if (!simulation && updater != null) {
             pcsUpdaterAggregate.unregisterUpdater(updater);
@@ -63,7 +55,7 @@ public class PcsUpdaterComponent {
         }
     }
 
-    @Modified(id = "epicsWriter")
+    @Updated
     public void modifiedEpicsWriter() {
         if (!simulation) {
             if (updater != null) {

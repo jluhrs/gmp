@@ -29,7 +29,6 @@ public class EpicsPcsUpdater implements PcsUpdater {
     private final EpicsWriter _writer;
     private final String[] _channels;
     private List<ReadWriteClientEpicsChannel<Double>> epicsChannels = new ArrayList<ReadWriteClientEpicsChannel<Double>>();
-    ;
 
     public EpicsPcsUpdater(EpicsWriter writer, String baseChannel) throws PcsUpdaterException {
         _writer = writer;
@@ -65,6 +64,7 @@ public class EpicsPcsUpdater implements PcsUpdater {
             return;
         }
         //attempt to write the values to EPICS
+        LOG.info("Updating PCS on channels " + epicsChannels);
         try {
 
             Double[] zernikes = update.getZernikes();
