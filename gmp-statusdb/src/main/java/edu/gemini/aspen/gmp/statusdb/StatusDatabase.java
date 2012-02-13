@@ -1,5 +1,7 @@
 package edu.gemini.aspen.gmp.statusdb;
 
+import org.apache.felix.ipojo.annotations.Instantiate;
+
 import edu.gemini.aspen.giapi.status.StatusDatabaseService;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
@@ -11,6 +13,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * The Status Database contains the most up to date information related to
