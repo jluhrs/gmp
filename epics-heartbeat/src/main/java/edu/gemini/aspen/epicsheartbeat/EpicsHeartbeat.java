@@ -43,7 +43,11 @@ public class EpicsHeartbeat implements HeartbeatConsumer {
 
     @Invalidate
     public void shutdown() {
-        cas.destroyChannel(ch);
+        try {
+            cas.destroyChannel(ch);
+        } catch (Exception e) {
+            LOG.warning("Exception while shutting down Epics Heartbeat " + e.getMessage());
+        }
     }
 
     @Updated
