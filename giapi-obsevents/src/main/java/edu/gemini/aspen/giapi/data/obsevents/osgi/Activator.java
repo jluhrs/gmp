@@ -7,7 +7,7 @@ import edu.gemini.aspen.giapi.data.obsevents.jms.JmsObservationEventListener;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.osgi.JmsProviderTracker;
+import edu.gemini.jms.api.JmsArtifact;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -23,8 +23,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     private static final Logger LOG = Logger.getLogger(
             Activator.class.getName());
-
-    private JmsProviderTracker _jmsTracker;
 
     private ServiceTracker _tracker = null;
 
@@ -44,8 +42,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
                 new JmsObservationEventListener(handlerComposite)
         );
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, consumer);
-        _jmsTracker.open();
+        bundleContext.registerService(JmsArtifact.class.getName(), consumer, null);
 
         //and start tracking for observation event handlers as well...
         _tracker = new ServiceTracker(bundleContext, ObservationEventHandler.class.getName(), this);
@@ -54,8 +51,6 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
 
     public void stop(BundleContext bundleContext) throws Exception {
         LOG.info("Stop tracking for JMS Provider");
-        _jmsTracker.close();
-        _jmsTracker = null;
 
         _tracker.close();
         _tracker = null;
