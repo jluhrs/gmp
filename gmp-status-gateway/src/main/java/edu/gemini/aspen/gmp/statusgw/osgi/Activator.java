@@ -3,10 +3,7 @@ package edu.gemini.aspen.gmp.statusgw.osgi;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.statusgw.StatusDatabaseServiceDecorator;
 import edu.gemini.aspen.gmp.statusgw.jms.*;
-import edu.gemini.jms.api.BaseMessageConsumer;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.JmsSimpleMessageSelector;
+import edu.gemini.jms.api.*;
 import edu.gemini.jms.api.osgi.JmsProviderTracker;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -15,8 +12,6 @@ import org.osgi.framework.BundleContext;
  * Activator class for the Status Gateway bundle
  */
 public class Activator implements BundleActivator {
-
-//    private Supervisor _supervisor;
 
     private StatusDatabaseTracker _dbTracker;
     private JmsProviderTracker _jmsStatusTracker;
@@ -55,9 +50,13 @@ public class Activator implements BundleActivator {
                 new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY + " = '" + JmsKeys.GW_STATUS_REQUEST_TYPE_ALL + "'")
         );
 
-        _jmsStatusTracker = new JmsProviderTracker(bundleContext,
+        /*_jmsStatusTracker = new JmsProviderTracker(bundleContext,
                 consumer, namesConsumer, multipleStatusItemsConsumer, dispatcher);
-        _jmsStatusTracker.open();
+        _jmsStatusTracker.open();*/
+        bundleContext.registerService(JmsArtifact.class.getName(), dispatcher, null);
+        bundleContext.registerService(JmsArtifact.class.getName(), consumer, null);
+        bundleContext.registerService(JmsArtifact.class.getName(), namesConsumer, null);
+        bundleContext.registerService(JmsArtifact.class.getName(), multipleStatusItemsConsumer, null);
 
 
         _dbTracker = new StatusDatabaseTracker(bundleContext, decorator);
