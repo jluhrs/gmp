@@ -29,7 +29,8 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
 
     private ServiceProcessor _serviceProcessor;
 
-    public RequestConsumer() {    }
+    public RequestConsumer() {
+    }
 
     /**
      * Register services to handle specific requests
