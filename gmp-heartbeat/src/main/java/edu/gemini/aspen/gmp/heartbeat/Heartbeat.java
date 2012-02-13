@@ -1,10 +1,7 @@
 package edu.gemini.aspen.gmp.heartbeat;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.jms.api.BaseMessageProducer;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.JmsProvider;
+import edu.gemini.jms.api.*;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.*;
@@ -23,48 +20,43 @@ import java.util.logging.Logger;
  */
 @Component
 @Instantiate
-public class Heartbeat{
+@Provides
+public class Heartbeat implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Heartbeat.class.getName());
 
-    private class HeartbeatMessageProducer extends BaseMessageProducer implements Runnable{
-        public HeartbeatMessageProducer(){
-             super("Heartbeat", new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC));
+
+    private class HeartbeatMessageProducer extends BaseMessageProducer implements Runnable {
+        public HeartbeatMessageProducer() {
+            super("Heartbeat", new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC));
         }
+
         private int counter = 0;
 
-            @Override
-            public synchronized void run() {
-                try {
-                    BytesMessage m = _session.createBytesMessage();
-                    m.writeInt(counter++);
-                    if(counter>=Integer.MAX_VALUE)counter=0;
-                    _producer.send(m);
-                } catch (JMSException e) {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
-                }
+        @Override
+        public synchronized void run() {
+            try {
+                BytesMessage m = _session.createBytesMessage();
+                m.writeInt(counter++);
+                if (counter >= Integer.MAX_VALUE) counter = 0;
+                _producer.send(m);
+            } catch (JMSException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
+        }
     }
+
     private final HeartbeatMessageProducer producer;
     private ScheduledThreadPoolExecutor executor;
     private ScheduledFuture future;
 
-    @Requires
-    private JmsProvider provider;
-
-    private Heartbeat() {
+    public Heartbeat() {
         LOG.info("Heartbeat Constructor");
-        producer=new HeartbeatMessageProducer();
+        producer = new HeartbeatMessageProducer();
     }
 
-    public Heartbeat(JmsProvider provider) {
-        LOG.info("Heartbeat Constructor");
-        producer=new HeartbeatMessageProducer();
-        this.provider=provider;
-    }
-
-    @Validate
-    public void start() {
-        LOG.info("Heartbeat Validate");
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         try {
             producer.startJms(provider);
         } catch (JMSException ex) {
@@ -75,17 +67,16 @@ public class Heartbeat{
         future = executor.scheduleAtFixedRate(producer, 0, 1000, TimeUnit.MILLISECONDS);
     }
 
-    @Invalidate
-    public void stop() {
+    @Override
+    public void stopJms() {
         LOG.info("Heartbeat InValidate");
         future.cancel(false);
         executor.shutdown();
         try {
             executor.awaitTermination(1, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
-            LOG.log(Level.SEVERE,ex.getMessage(),ex);
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         producer.stopJms();
     }
-
 }

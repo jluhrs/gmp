@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.heartbeat;
 
-
 import edu.gemini.aspen.gmp.heartbeat.jms.JmsHeartbeatConsumer;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
@@ -55,13 +54,13 @@ public class HeartbeatTest{
         broker.setUseJmx(false);
         broker.start();
         JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
-        Heartbeat hb = new Heartbeat(provider);
+        Heartbeat hb = new Heartbeat();
         JmsHeartbeatConsumer hbc = new JmsHeartbeatConsumer("Test HeartBeat Consumer", hbl);
         hbc.start(provider);
-        hb.start();
+        hb.startJms(provider);
 
         Thread.sleep(secs * 1000);
-        hb.stop();
+        hb.stopJms();
         hbc.stop();
         broker.stop();
         assertEquals(true, last >= (secs - 1));

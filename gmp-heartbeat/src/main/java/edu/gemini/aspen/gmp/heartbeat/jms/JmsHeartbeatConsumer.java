@@ -21,6 +21,7 @@ public class JmsHeartbeatConsumer {
     private static final Logger LOG = Logger.getLogger(JmsHeartbeatConsumer.class.getName());
     private BaseMessageConsumer consumer;
     private MessageListener hbl;
+
     public JmsHeartbeatConsumer(String name, MessageListener listener) {
         hbl = listener;
         consumer = new BaseMessageConsumer(name, new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC), hbl);
@@ -35,7 +36,7 @@ public class JmsHeartbeatConsumer {
         }
     }
 
-    public void stop(){
+    public void stop() {
         consumer.stopJms();
     }
 
