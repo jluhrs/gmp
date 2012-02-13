@@ -9,7 +9,6 @@ import edu.gemini.aspen.gmp.epics.jms.EpicsStatusUpdater;
 import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.Nullable;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
@@ -42,7 +41,7 @@ public class EpicsMonitor implements EpicsClient, JmsArtifact {
     private EpicsConfigRequestConsumer _epicsRequestConsumer;
     private EpicsStatusUpdater _epicsStatusUpdater;
 
-    public EpicsMonitor(@Requires(proxy = false) EpicsRegistrar registrar, @Requires EpicsConfiguration epicsConfig) {
+    public EpicsMonitor(@Requires(proxy = false) EpicsRegistrar registrar, @Requires(proxy = false) EpicsConfiguration epicsConfig) {
         Preconditions.checkArgument(registrar != null, "Cannot create an EpicsMonitor with a null registrar");
         _registrar = registrar;
         _epicsConfig = epicsConfig;
@@ -74,10 +73,12 @@ public class EpicsMonitor implements EpicsClient, JmsArtifact {
     }
 
     private void removeInterestingChannels() {
-        if (_epicsConfig != null && _registrar != null && !(_registrar instanceof Nullable)) {
+        try {
             for (String channel : _epicsConfig.getValidChannelsNames()) {
                 _registrar.unregisterInterest(channel);
             }
+        } catch (Exception e) {
+            LOG.warning("Exception while shutting down, probably not important");
         }
     }
 
