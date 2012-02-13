@@ -109,7 +109,7 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
-            <artifactId>heartbeat-distributor-service</artifactId>
+            <artifactId>gmp-heartbeat-distributor-service</artifactId>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
