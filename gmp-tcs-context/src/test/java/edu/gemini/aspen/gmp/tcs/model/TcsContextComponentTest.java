@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.tcs.model;
 
-import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsReader;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
@@ -37,7 +36,7 @@ public class TcsContextComponentTest {
 
     @Test
     public void testValidation() throws JMSException {
-        TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
+        TcsContextComponent component = new TcsContextComponent(reader, TCS_CONTEXT_CHANNEL, false, "");
         component.startJms(provider);
 
         verify(provider, times(2)).getConnectionFactory();
@@ -46,42 +45,10 @@ public class TcsContextComponentTest {
 
     @Test
     public void testInvalidation() throws JMSException {
-        TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
+        TcsContextComponent component = new TcsContextComponent(reader, TCS_CONTEXT_CHANNEL, false, "");
         component.startJms(provider);
         component.stopJms();
         verify(session, times(2)).close();
     }
 
-    @Test
-    public void testReaderAvailableAndValidation() throws JMSException, EpicsException {
-        TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
-
-        component.registerEpicsReader();
-        component.startJms(provider);
-
-        verify(reader).getDoubleChannel(TCS_CONTEXT_CHANNEL);
-    }
-
-    @Test
-    public void testReaderModified() throws JMSException, EpicsException {
-        TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
-
-        component.registerEpicsReader();
-        component.startJms(provider);
-        component.modifiedEpicsReader();
-
-        verify(reader, times(2)).getDoubleChannel(TCS_CONTEXT_CHANNEL);
-    }
-
-    @Test
-    public void testReaderAvailableAndRemoved() throws JMSException, EpicsException {
-        TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
-
-        component.registerEpicsReader();
-        component.startJms(provider);
-        component.unRegisterEpicsReader();
-
-        //FIXME: This should unbind the epics channel
-        verify(reader).getDoubleChannel(TCS_CONTEXT_CHANNEL);
-    }
 }

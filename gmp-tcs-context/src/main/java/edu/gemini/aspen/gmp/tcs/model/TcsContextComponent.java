@@ -20,14 +20,11 @@ import java.util.logging.Logger;
 public class TcsContextComponent implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(TcsContextComponent.class.getName());
 
-    @Property(name = "simulation", value = "true", mandatory = true)
-    private Boolean simulation;
+    private final Boolean simulation;
 
-    @Property(name = "tcsChannel", value = "NOVALID", mandatory = true)
-    private String tcsChannel;
+    private final String tcsChannel;
 
-    @Property(name = "simulationData", value = "NOVALID", mandatory = true)
-    private String simulationData;
+    private final String simulationData;
 
     /**
      * The JMS Context Dispatcher is a JMS Producer message
@@ -45,15 +42,19 @@ public class TcsContextComponent implements JmsArtifact {
      */
     private BaseMessageConsumer _messageConsumer;
 
-    @Requires
-    private JmsProvider _provider;
-
-    @Requires(id = "epicsReader")
-    private EpicsReader _epicsReader;
+    private final EpicsReader _epicsReader;
 
     private TcsContextFetcher fetcher;
 
-    private TcsContextComponent() {
+    protected TcsContextComponent(@Requires EpicsReader reader,
+            @Property(name = "tcsChannel", value = "NOVALID", mandatory = true) String tcsChannel,
+            @Property(name = "simulation", value = "true", mandatory = true) Boolean simulation,
+            @Property(name = "simulationData", value = "NOVALID", mandatory = true) String simulationData) {
+        this._epicsReader = reader;
+        this.tcsChannel = tcsChannel;
+        this.simulation = simulation;
+        this.simulationData = simulationData;
+
         _dispatcher = new JmsTcsContextDispatcher("TCS Context Replier");
 
         _listener = new TcsContextRequestListener(_dispatcher);
@@ -66,26 +67,11 @@ public class TcsContextComponent implements JmsArtifact {
         );
     }
 
-    protected TcsContextComponent(JmsProvider provider, EpicsReader reader, String tcsChannel) {
-        this();
-        this._provider = provider;
-        this._epicsReader = reader;
-        this.tcsChannel = tcsChannel;
-        this.simulation = false;
-        this.simulationData = null;
-    }
-
     @Validate
     public void validated() throws JMSException {
-        // Required for iPojo
-    }
-
-    private void startJMSConsumers() {
-        try {
-            _dispatcher.startJms(_provider);
-            _messageConsumer.startJms(_provider);
-        } catch (JMSException e) {
-            LOG.log(Level.SEVERE, "Exception starting jms consumers", e);
+        LOG.info("Got instance of epics reader " + _epicsReader);
+        if (!simulation) {
+            addNewTcsContextFetcher();
         }
     }
 
@@ -98,13 +84,6 @@ public class TcsContextComponent implements JmsArtifact {
         }
     }
 
-    @Bind(id = "epicsReader")
-    public void registerEpicsReader() {
-        LOG.info("Got instance of epics reader " + _epicsReader);
-        if (!simulation) {
-            addNewTcsContextFetcher();
-        }
-    }
 
     private void addNewTcsContextFetcher() {
         try {
@@ -116,7 +95,7 @@ public class TcsContextComponent implements JmsArtifact {
         }
     }
 
-    @Unbind(id = "epicsReader")
+    @Invalidate
     public void unRegisterEpicsReader() {
         if (!simulation) {
             removeOldTcsContextFetcher();
@@ -130,18 +109,11 @@ public class TcsContextComponent implements JmsArtifact {
         }
     }
 
-    @Modified(id = "epicsReader")
-    public void modifiedEpicsReader() {
-        if (!simulation) {
-            removeOldTcsContextFetcher();
-            addNewTcsContextFetcher();
-        }
-    }
-
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
         LOG.fine("TCS Context validated, starting... ");
-        startJMSConsumers();
+        _dispatcher.startJms(provider);
+        _messageConsumer.startJms(provider);
         if (simulation) {
             addSimulatedTcsContextFetcher();
         }
