@@ -25,9 +25,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
+public class CommandMessagesBridgeImplTest extends MockedJmsArtifactsTestBase {
     protected CommandSender commandsSender;
-    protected CommandMessagesBridge messagesBridge;
+    protected CommandMessagesBridgeImpl messagesBridge;
     protected ArgumentCaptor<Command> commandCaptor;
     protected ArgumentCaptor<CompletionListener> listenerCaptor;
 
@@ -36,7 +36,7 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
         super.createMockedObjects();
 
         commandsSender = mock(CommandSender.class);
-        messagesBridge = new CommandMessagesBridge(provider, commandsSender);
+        messagesBridge = new CommandMessagesBridgeImpl(provider, commandsSender);
 
         commandCaptor = ArgumentCaptor.forClass(Command.class);
         listenerCaptor = ArgumentCaptor.forClass(CompletionListener.class);
@@ -108,12 +108,4 @@ public class CommandMessagesBridgeTest extends MockedJmsArtifactsTestBase {
         return message;
     }
 
-    @Test
-    public void testComponentLifeCycle() throws JMSException {
-        messagesBridge.startListeningForMessages();
-        verify(session).createConsumer(Mockito.<Destination>any());
-
-        messagesBridge.stopListeningForMessages();
-        verifyListenerClosedItself();
-    }
 }
