@@ -12,14 +12,12 @@
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.gmp.epics-simulator</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmp.epics.simulator</bundle.namespace>
-        <gmp.epics.simulation.conf>../src/main/etc/conf/simulated-epics-channels.xml</gmp.epics.simulation.conf>
-        <gmp.epics.conf>../src/main/etc/conf/epics-channels.xml</gmp.epics.conf>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-epics-simulator</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0-SNAPSHOT</version>
 
     <name>GMP Epics Simulator</name>
     <description>Simple simulator of EPICS channels for testing</description>
@@ -27,49 +25,9 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-epics-access</artifactId>
-            <version>0.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.epics</groupId>
-            <artifactId>epics-service</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
-            <artifactId>jca-lib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen</groupId>
-            <artifactId>giapi</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen</groupId>
-            <artifactId>giapi-jms-util</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.jms</groupId>
-            <artifactId>jms-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.jms</groupId>
-            <artifactId>com.springsource.javax.jms</artifactId>
-            <version>1.1.0</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

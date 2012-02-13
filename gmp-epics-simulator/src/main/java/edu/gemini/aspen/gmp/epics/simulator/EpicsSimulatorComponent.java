@@ -12,18 +12,15 @@ import java.util.logging.Logger;
 @Component
 public class EpicsSimulatorComponent {
     private static final Logger LOG = Logger.getLogger(EpicsSimulatorComponent.class.getName());
-    @Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true)
-    private String _simulationConfigFile;
+    private final String _simulationConfigFile;
 
-    @Requires
-    private EpicsRegistrar _registrar;
+    private final EpicsRegistrar _registrar;
 
     private Simulator _simulator;
     private SimulatedEpicsConfiguration conf;
 
-    private EpicsSimulatorComponent() {}
-
-    public EpicsSimulatorComponent(EpicsRegistrar registrar, String simulationConfigFile) {
+    public EpicsSimulatorComponent(@Requires EpicsRegistrar registrar,
+            @Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true) String simulationConfigFile) {
         this._registrar = registrar;
         this._simulationConfigFile = simulationConfigFile;
     }
