@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * the status items. All the status items received by the GMP are recorded here
  */
 @Component
-@Instantiate(name = "statusDB")
+@Instantiate
 @Provides
 public class StatusDatabase implements StatusHandler, StatusDatabaseService {
 
