@@ -69,10 +69,10 @@ public class ApplyRecord {
      * @param xsdFileName Schema of the configuration file
      */
     protected ApplyRecord(@Requires ChannelAccessServer cas,
-                          @Requires CommandSender cs,
-                          @Requires EpicsTop epicsTop,
-                          @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
-                          @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
+            @Requires CommandSender cs,
+            @Requires EpicsTop epicsTop,
+            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
+            @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
         LOG.info("Constructor");
         this.cas = cas;
         this.cs = cs;
@@ -148,18 +148,22 @@ public class ApplyRecord {
     @Invalidate
     public void stop() {
         synchronized (car) {
-            LOG.info("InValidate");
-            cas.destroyChannel(dir);
-            cas.destroyChannel(val);
-            cas.destroyChannel(mess);
-            cas.destroyChannel(omss);
-            cas.destroyChannel(clid);
+            LOG.info("Invalidate");
+            try {
+                cas.destroyChannel(dir);
+                cas.destroyChannel(val);
+                cas.destroyChannel(mess);
+                cas.destroyChannel(omss);
+                cas.destroyChannel(clid);
 
-            cas.destroyChannel(reset);
+                cas.destroyChannel(reset);
 
-            car.stop();
-            for (CadRecord cad : cads) {
-                cad.stop();
+                car.stop();
+                for (CadRecord cad : cads) {
+                    cad.stop();
+                }
+            } catch (Exception e) {
+                LOG.warning("Exception while shutting down apply record " + e.getMessage());
             }
         }
     }
