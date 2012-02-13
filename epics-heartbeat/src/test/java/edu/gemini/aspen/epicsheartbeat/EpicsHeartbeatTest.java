@@ -40,25 +40,26 @@ public class EpicsHeartbeatTest {
         broker = new BrokerService();
         broker.addConnector("vm://HeartbeatTestBroker");
         broker.setUseJmx(false);
+        broker.setPersistent(false);
         broker.start();
         JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
 
         cas = new ChannelAccessServerImpl();
         cas.start();
 
-        hb = new Heartbeat(provider);
-        hb.start();
+        hb = new Heartbeat();
+        hb.startJms(provider);
 
-        hbDist = new HeartbeatDistributor(provider);
-        hbDist.start();
+        hbDist = new HeartbeatDistributor();
+        hbDist.startJms(provider);
 
         top = new EpicsTopImpl("gpitest");
     }
 
     @After
     public void tearDown() throws Exception {
-        hbDist.stop();
-        hb.stop();
+        hbDist.stopJms();
+        hb.stopJms();
         cas.stop();
         broker.stop();
 

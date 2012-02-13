@@ -22,22 +22,15 @@ import java.util.logging.Logger;
 public class EpicsHeartbeat implements HeartbeatConsumer {
     private static final Logger LOG = Logger.getLogger(EpicsHeartbeat.class.getName());
 
-    @Requires
-    private ChannelAccessServer cas;
+    private final ChannelAccessServer cas;
 
-    @Requires
-    private EpicsTop epicsTop;
+    private final EpicsTop epicsTop;
 
-    @Property(name = "channelName", value = "INVALID", mandatory = true)
-    private String channelName;
+    private final String channelName;
 
     private Channel<Integer> ch = null;
 
-    private EpicsHeartbeat() {
-
-    }
-
-    public EpicsHeartbeat(ChannelAccessServer cas, EpicsTop epicsTop, String channelName) {
+    public EpicsHeartbeat(@Requires ChannelAccessServer cas, @Requires EpicsTop epicsTop, @Property(name = "channelName", value = "INVALID", mandatory = true) String channelName) {
         this.channelName = channelName;
         this.cas = cas;
         this.epicsTop = epicsTop;
