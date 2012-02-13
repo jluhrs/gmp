@@ -202,7 +202,7 @@
         <module>gmp-epics-status-service</module>
         <module>gpi-bean</module>
         <module>gmp-heartbeat</module>
-        <module>heartbeat-distributor-service</module>
+        <module>gmp-heartbeat-distributor-service</module>
         <module>giapi-tester</module>
         <module>gmp-webconsole-branding</module>
         <module>gmp-webconsole-docs</module>

@@ -1,0 +1,20 @@
+/*!
+  \page heartbeat_distributor_service Heartbeat Distributor Service
+
+  This bundle listens for a JMS heartbeat, and distributes it to its registered clients.
+
+  \section heartbeat_distributor_service_provides_sec Provided Services
+  The \ref edu.gemini.aspen.heartbeatdistributor.HeartbeatDistributor "HeartbeatDistributor" class provides binding
+  methods for clients implementing the \ref edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer "HeartbeatConsumer"
+  interface. Every time a heartbeat arrives, every registered client will be notified. This bundle could be used by a
+  separate application that wants to list for heartbeats coming from the GMP.
+
+  \section heartbeat_distributor_service_requires_sec Required Services
+  This bundle requires the service \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service, provided by, for
+  example, the \ref jms_activemq_provider bundle. A heartbeat coming from \ref gmp_heartbeat is not required, but it doesn't
+  make much sense to have this bundle if no heartbeat will ever be received.
+
+  \section cas_configuration_sec Configuration
+  This bundle has no configuration options.
+
+ */
