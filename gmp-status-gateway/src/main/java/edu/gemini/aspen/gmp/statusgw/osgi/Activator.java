@@ -14,7 +14,6 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
 
     private StatusDatabaseTracker _dbTracker;
-    private JmsProviderTracker _jmsStatusTracker;
 
     public void start(BundleContext bundleContext) throws Exception {
 
@@ -25,7 +24,7 @@ public class Activator implements BundleActivator {
         //Create the message consumer for status items requests
         BaseMessageConsumer consumer = new BaseMessageConsumer(
                 "Gateway Status Consumer",
-                new DestinationData(StatusTopics.TOPIC_NAME,
+                new DestinationData(JmsKeys.GW_STATUS_REQUEST_DESTINATION,
                         DestinationType.TOPIC),
                 new StatusItemRequestListener(decorator, dispatcher),
                 new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY + " = '" + JmsKeys.GW_STATUS_REQUEST_TYPE_ITEM + "'")
@@ -35,7 +34,7 @@ public class Activator implements BundleActivator {
         //Create the message consumer for status names requests
         BaseMessageConsumer namesConsumer = new BaseMessageConsumer(
                 "Gateway Status Names Consumer",
-                new DestinationData(StatusTopics.TOPIC_NAME,
+                new DestinationData(JmsKeys.GW_STATUS_REQUEST_DESTINATION,
                         DestinationType.TOPIC),
                 new StatusNamesRequestListener(decorator, dispatcher),
                 new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY + " = '" + JmsKeys.GW_STATUS_REQUEST_TYPE_NAMES + "'")
@@ -44,15 +43,12 @@ public class Activator implements BundleActivator {
         //Create the message consumer for multiple status items requests
         BaseMessageConsumer multipleStatusItemsConsumer = new BaseMessageConsumer(
                 "Gateway Multiple StatusItems Consumer",
-                new DestinationData(StatusTopics.TOPIC_NAME,
+                new DestinationData(JmsKeys.GW_STATUS_REQUEST_DESTINATION,
                         DestinationType.TOPIC),
                 new MultipleStatusItemsRequestListener(decorator, dispatcher),
                 new JmsSimpleMessageSelector(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY + " = '" + JmsKeys.GW_STATUS_REQUEST_TYPE_ALL + "'")
         );
 
-        /*_jmsStatusTracker = new JmsProviderTracker(bundleContext,
-                consumer, namesConsumer, multipleStatusItemsConsumer, dispatcher);
-        _jmsStatusTracker.open();*/
         bundleContext.registerService(JmsArtifact.class.getName(), dispatcher, null);
         bundleContext.registerService(JmsArtifact.class.getName(), consumer, null);
         bundleContext.registerService(JmsArtifact.class.getName(), namesConsumer, null);
@@ -64,12 +60,7 @@ public class Activator implements BundleActivator {
     }
 
     public void stop(BundleContext bundleContext) throws Exception {
-
-
         _dbTracker.close();
         _dbTracker = null;
-
-        _jmsStatusTracker.close();
-        _jmsStatusTracker = null;
     }
 }
