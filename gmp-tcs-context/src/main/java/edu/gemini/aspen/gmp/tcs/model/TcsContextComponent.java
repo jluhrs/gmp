@@ -3,10 +3,7 @@ package edu.gemini.aspen.gmp.tcs.model;
 import edu.gemini.aspen.gmp.tcs.jms.JmsTcsContextDispatcher;
 import edu.gemini.aspen.gmp.tcs.jms.TcsContextRequestListener;
 import edu.gemini.epics.EpicsReader;
-import edu.gemini.jms.api.BaseMessageConsumer;
-import edu.gemini.jms.api.DestinationData;
-import edu.gemini.jms.api.DestinationType;
-import edu.gemini.jms.api.JmsProvider;
+import edu.gemini.jms.api.*;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
@@ -19,8 +16,8 @@ import java.util.logging.Logger;
  * Interface to define a composite of several TCS Context objects
  */
 @Component
-//@Instantiate(name = "tcsContext")
-public class TcsContextComponent {
+@Provides
+public class TcsContextComponent implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(TcsContextComponent.class.getName());
 
     @Property(name = "simulation", value = "true", mandatory = true)
@@ -80,22 +77,8 @@ public class TcsContextComponent {
 
     @Validate
     public void validated() throws JMSException {
-        LOG.fine("TCS Context validated, starting... ");
-        startJMSConsumers();
-        if (simulation) {
-            addSimulatedTcsContextFetcher();
-        }
-        LOG.fine("TCS Context Service started");
+        // Required for iPojo
     }
-
-    @Invalidate
-    public void stopComponent() throws JMSException {
-        LOG.fine("TCS Context stopped, disconnecting jms... ");
-        _dispatcher.stopJms();
-        _messageConsumer.stopJms();
-        LOG.fine("TCS Context Service Stopped");
-    }
-
 
     private void startJMSConsumers() {
         try {
@@ -153,5 +136,23 @@ public class TcsContextComponent {
             removeOldTcsContextFetcher();
             addNewTcsContextFetcher();
         }
+    }
+
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
+        LOG.fine("TCS Context validated, starting... ");
+        startJMSConsumers();
+        if (simulation) {
+            addSimulatedTcsContextFetcher();
+        }
+        LOG.fine("TCS Context Service started");
+    }
+
+    @Override
+    public void stopJms() {
+        LOG.fine("TCS Context stopped, disconnecting jms... ");
+        _dispatcher.stopJms();
+        _messageConsumer.stopJms();
+        LOG.fine("TCS Context Service Stopped");
     }
 }

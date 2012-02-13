@@ -38,7 +38,7 @@ public class TcsContextComponentTest {
     @Test
     public void testValidation() throws JMSException {
         TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
-        component.validated();
+        component.startJms(provider);
 
         verify(provider, times(2)).getConnectionFactory();
         verifyZeroInteractions(reader);
@@ -47,8 +47,8 @@ public class TcsContextComponentTest {
     @Test
     public void testInvalidation() throws JMSException {
         TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
-        component.validated();
-        component.stopComponent();
+        component.startJms(provider);
+        component.stopJms();
         verify(session, times(2)).close();
     }
 
@@ -57,7 +57,7 @@ public class TcsContextComponentTest {
         TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
 
         component.registerEpicsReader();
-        component.validated();
+        component.startJms(provider);
 
         verify(reader).getDoubleChannel(TCS_CONTEXT_CHANNEL);
     }
@@ -67,7 +67,7 @@ public class TcsContextComponentTest {
         TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
 
         component.registerEpicsReader();
-        component.validated();
+        component.startJms(provider);
         component.modifiedEpicsReader();
 
         verify(reader, times(2)).getDoubleChannel(TCS_CONTEXT_CHANNEL);
@@ -78,7 +78,7 @@ public class TcsContextComponentTest {
         TcsContextComponent component = new TcsContextComponent(provider, reader, TCS_CONTEXT_CHANNEL);
 
         component.registerEpicsReader();
-        component.validated();
+        component.startJms(provider);
         component.unRegisterEpicsReader();
 
         //FIXME: This should unbind the epics channel
