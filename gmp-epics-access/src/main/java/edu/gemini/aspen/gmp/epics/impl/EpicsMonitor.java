@@ -1,15 +1,18 @@
 package edu.gemini.aspen.gmp.epics.impl;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
 import edu.gemini.aspen.gmp.epics.jms.EpicsConfigRequestConsumer;
 import edu.gemini.aspen.gmp.epics.jms.EpicsStatusUpdater;
 import edu.gemini.epics.api.EpicsClient;
+import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.Nullable;
 import org.apache.felix.ipojo.annotations.*;
 
+import javax.jms.JMSException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -23,15 +26,14 @@ import java.util.logging.Logger;
  * will be invoked whenever an update to the monitored EPICS channel is
  * received.
  */
-@Component(name = "epicsMonitor", managedservice = "edu.gemini.aspen.gmp.epics.EpicsMonitor")
-@Instantiate(name = "epicsMonitor")
+@Component
+@Instantiate
 @Provides
-public class EpicsMonitor implements EpicsClient {
+public class EpicsMonitor implements EpicsClient, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(EpicsMonitor.class.getName());
     private volatile boolean connected = false;
 
     private final EpicsRegistrar _registrar;
-    private final JmsProvider _provider;
     private final EpicsConfiguration _epicsConfig;
 
     @ServiceProperty(name = "edu.gemini.epics.api.EpicsClient.EPICS_CHANNELS")
@@ -40,12 +42,9 @@ public class EpicsMonitor implements EpicsClient {
     private EpicsConfigRequestConsumer _epicsRequestConsumer;
     private EpicsStatusUpdater _epicsStatusUpdater;
 
-    public EpicsMonitor(@Requires(proxy = false) EpicsRegistrar registrar, @Requires JmsProvider provider, @Requires EpicsConfiguration epicsConfig) {
-        if (registrar == null) {
-            throw new IllegalArgumentException("Cannot create an EpicsMonitor with a null registrar");
-        }
+    public EpicsMonitor(@Requires(proxy = false) EpicsRegistrar registrar, @Requires EpicsConfiguration epicsConfig) {
+        Preconditions.checkArgument(registrar != null, "Cannot create an EpicsMonitor with a null registrar");
         _registrar = registrar;
-        _provider = provider;
         _epicsConfig = epicsConfig;
     }
 
@@ -61,15 +60,6 @@ public class EpicsMonitor implements EpicsClient {
         LOG.info("Services properties set as: " + Arrays.asList(props));
     }
 
-    @Validate
-    public void validated() {
-        LOG.info("JMS Provider found. Starting Epics Access bundle");
-        _epicsRequestConsumer = new EpicsConfigRequestConsumer(_provider, _epicsConfig);
-        _epicsStatusUpdater = new EpicsStatusUpdater(_provider, _epicsConfig);
-
-        setupRegistrar();
-    }
-
     private void setupRegistrar() {
         for (String channel : _epicsConfig.getValidChannelsNames()) {
             _registrar.registerInterest(channel, _epicsStatusUpdater);
@@ -81,9 +71,6 @@ public class EpicsMonitor implements EpicsClient {
     public void invalidate() {
         LOG.info("Stopping Epics Access bundle");
         removeInterestingChannels();
-
-        _epicsRequestConsumer.close();
-        _epicsStatusUpdater.close();
     }
 
     private void removeInterestingChannels() {
@@ -114,5 +101,20 @@ public class EpicsMonitor implements EpicsClient {
                 "connected=" + connected +
                 ", props=" + (props == null ? null : Arrays.asList(props)) +
                 '}';
+    }
+
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
+        LOG.info("JMS Provider found. Starting Epics Access bundle");
+        _epicsRequestConsumer = new EpicsConfigRequestConsumer(provider, _epicsConfig);
+        _epicsStatusUpdater = new EpicsStatusUpdater(provider, _epicsConfig);
+
+        setupRegistrar();
+    }
+
+    @Override
+    public void stopJms() {
+        _epicsRequestConsumer.close();
+        _epicsStatusUpdater.close();
     }
 }

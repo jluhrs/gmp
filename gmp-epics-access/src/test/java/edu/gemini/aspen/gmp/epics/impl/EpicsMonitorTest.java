@@ -15,7 +15,7 @@ public class EpicsMonitorTest {
 
     @Test
     public void testConnected() {
-        EpicsMonitor epicsMonitor = new EpicsMonitor(registrar, null, null);
+        EpicsMonitor epicsMonitor = new EpicsMonitor(registrar, null);
         assertFalse(epicsMonitor.isConnected());
         epicsMonitor.connected();
         assertTrue(epicsMonitor.isConnected());
@@ -23,7 +23,7 @@ public class EpicsMonitorTest {
 
     @Test
     public void testDisconnected() {
-        EpicsMonitor epicsMonitor = new EpicsMonitor(registrar, null, null);
+        EpicsMonitor epicsMonitor = new EpicsMonitor(registrar, null);
         assertFalse(epicsMonitor.isConnected());
         epicsMonitor.connected();
         epicsMonitor.disconnected();
@@ -32,7 +32,7 @@ public class EpicsMonitorTest {
 
     @Test
     public void testChannelChanged() {
-        EpicsMonitor epicsMonitor = new EpicsMonitor(registrar, null, null);
+        EpicsMonitor epicsMonitor = new EpicsMonitor(registrar, null);
 
         epicsMonitor.valueChanged("X.val1", ImmutableList.of(1));
         verify(registrar).processEpicsUpdate(new EpicsUpdateImpl<Integer>("X.val1", ImmutableList.of(1)));
@@ -40,6 +40,6 @@ public class EpicsMonitorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructionWithNullRegistrar() {
-        new EpicsMonitor(null, null, null);
+        new EpicsMonitor(null, null);
     }
 }
