@@ -52,8 +52,6 @@ public class JmsStatusDispatcher extends BaseMessageProducer {
             replyMessage.writeUTF(name);
         }
         _producer.send(destination, replyMessage);
-
-
     }
 
     /**
@@ -64,7 +62,6 @@ public class JmsStatusDispatcher extends BaseMessageProducer {
      * @throws JMSException
      */
     public void sendMultipleStatusItems(Collection<StatusItem> items, Destination destination) throws JMSException {
-
         //just create an empty set so the client doesn't timeout
         if (items == null) {
             items = new ArrayList<StatusItem>();
@@ -74,7 +71,5 @@ public class JmsStatusDispatcher extends BaseMessageProducer {
         Message replyMessage = MessageBuilder.buildMultipleStatusItemsMessage(_session, items);
 
         _producer.send(destination, replyMessage);
-
-
     }
 }
