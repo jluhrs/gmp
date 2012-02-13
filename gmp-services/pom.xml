@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-services</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0-SNAPSHOT</version>
 
     <name>GMP GIAPI Services</name>
     <description>Services provided by the GMP</description>
@@ -32,12 +32,6 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.dom4j</groupId>
-            <artifactId>com.springsource.org.dom4j</artifactId>
-            <version>1.5.2</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>

@@ -1,8 +1,13 @@
 package edu.gemini.aspen.gmp.services.jms;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
+import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.services.core.*;
+import org.apache.felix.ipojo.annotations.Bind;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -11,7 +16,10 @@ import java.util.logging.Level;
 /**
  * A JMS consumer of service requests.
  */
-public class RequestConsumer implements MessageListener, ExceptionListener {
+@Component
+@Instantiate
+@Provides(specifications = JmsArtifact.class)
+public class RequestConsumer implements MessageListener, ExceptionListener, JmsArtifact {
 
     private static final Logger LOG = Logger.getLogger(RequestConsumer.class.getName());
 
@@ -21,35 +29,14 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
 
     private ServiceProcessor _serviceProcessor;
 
-    public RequestConsumer(JmsProvider provider) {
-
-        ConnectionFactory factory = provider.getConnectionFactory();
-        try {
-            _serviceProcessor = new ServiceProcessorImpl();
-
-            _connection = factory.createConnection();
-            _connection.setClientID("Service Request Consumer");
-            _connection.start();
-            _connection.setExceptionListener(this);
-            _session = _connection.createSession(false,
-                    Session.AUTO_ACKNOWLEDGE);
-            //Completion info comes from a queue
-            Destination destination = _session.createQueue(
-                    JmsKeys.GMP_UTIL_REQUEST_DESTINATION);
-            _consumer = _session.createConsumer(destination);
-            _consumer.setMessageListener(this);
-
-            LOG.info("Message Consumer started to receive service requests");
-        } catch (JMSException e) {
-            LOG.log(Level.WARNING, "Exception starting up Service Request Consumer", e);
-        }
-    }
+    public RequestConsumer() {    }
 
     /**
      * Register services to handle specific requests
      *
      * @param service A service to register
      */
+    @Bind
     public void registerService(Service service) {
         if (service instanceof JmsService) {
             JmsService jmsService = (JmsService) service;
@@ -101,4 +88,32 @@ public class RequestConsumer implements MessageListener, ExceptionListener {
         }
     }
 
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
+        ConnectionFactory factory = provider.getConnectionFactory();
+        try {
+            _serviceProcessor = new ServiceProcessorImpl();
+
+            _connection = factory.createConnection();
+            _connection.setClientID("Service Request Consumer");
+            _connection.start();
+            _connection.setExceptionListener(this);
+            _session = _connection.createSession(false,
+                    Session.AUTO_ACKNOWLEDGE);
+            //Completion info comes from a queue
+            Destination destination = _session.createQueue(
+                    JmsKeys.GMP_UTIL_REQUEST_DESTINATION);
+            _consumer = _session.createConsumer(destination);
+            _consumer.setMessageListener(this);
+
+            LOG.info("Message Consumer started to receive service requests");
+        } catch (JMSException e) {
+            LOG.log(Level.WARNING, "Exception starting up Service Request Consumer", e);
+        }
+    }
+
+    @Override
+    public void stopJms() {
+        close();
+    }
 }

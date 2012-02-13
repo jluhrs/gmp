@@ -15,12 +15,15 @@
   provided by, for example, the \ref jms_activemq_provider bundle.
  
   \section gmp-services_configuration_sec Configuration
-  This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.services.properties.XMLFileBasedPropertyHolder-default.cfg
+  This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.services.properties.SimplePropertyHolder-default.cfg
  
-  There, you can set only one property:
+  There, you can set each of the service properties (with sample values):
  
-  - propertiesFile: This property points to a XML file containing a list of properties and its values
- 
-  The XML file mentioned in the propertiesFiles should list the available properties.
-  As a reference you can see the example \ref gmp-properties.xml
+  GMP_HOST_NAME = localhost
+  DHS_ANCILLARY_DATA_PATH = /tmp
+  DHS_SCIENCE_DATA_PATH = /tmp
+  DHS_PERMANENT_SCIENCE_DATA_PATH = /tmp/perm
+  DHS_INTERMEDIATE_DATA_PATH = /tmp
+  DEFAULT =
+
  */

@@ -6,10 +6,16 @@ import edu.gemini.aspen.gmp.services.core.ServiceException;
 import edu.gemini.aspen.gmp.services.core.ServiceType;
 import edu.gemini.aspen.gmp.services.jms.JmsService;
 import edu.gemini.aspen.gmp.services.jms.JmsServiceRequest;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
 
 import javax.jms.*;
 import java.util.logging.Logger;
 
+@Component
+@Instantiate
+@Provides
 public class PropertyService extends JmsService {
     private static final Logger LOG = Logger.getLogger(PropertyService.class.getName());
 
