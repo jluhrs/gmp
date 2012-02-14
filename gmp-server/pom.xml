@@ -385,6 +385,13 @@
     </issueManagement>
 
     <dependencies>
+        <!-- GIAPI -->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi</artifactId>
+            <version>0.9.5</version>
+        </dependency>
+        <!-- JMS API -->
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
@@ -393,13 +400,13 @@
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-activemq-broker</artifactId>
-            <version>1.1.0</version>
+            <version>1.2.0-SNAPSHOT</version>
         </dependency>
         <!-- ActiveMQ Provider -->
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-activemq-provider</artifactId>
-            <version>1.3.0</version>
+            <version>1.4.0-SNAPSHOT</version>
         </dependency>
         <!-- JCA Lib -->
         <dependency>
@@ -419,17 +426,17 @@
             <artifactId>epics-service</artifactId>
             <version>0.9.0</version>
         </dependency>
+        <!--- EPICS access gateway -->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-access</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
         <!-- CAS -->
         <dependency>
             <groupId>edu.gemini.cas</groupId>
             <artifactId>cas</artifactId>
             <version>0.2.0</version>
-        </dependency>
-        <!-- GIAPI -->
-        <dependency>
-            <groupId>edu.gemini.aspen</groupId>
-            <artifactId>giapi</artifactId>
-            <version>0.9.5</version>
         </dependency>
         <!-- GIAPI JMS-Util -->
         <dependency>
@@ -441,13 +448,13 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-service</artifactId>
-            <version>0.2.0</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <!-- GMP GIAPI Services -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-services</artifactId>
-            <version>0.2.1</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <!-- GMP Commands Sequence -->
         <dependency>
@@ -458,25 +465,25 @@
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-commands-jms-bridge</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <version>0.4.0-SNAPSHOT</version>
         </dependency>
         <!-- GMP PCS Updater -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-pcs-updater</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <version>0.4.0-SNAPSHOT</version>
         </dependency>
         <!-- GMP TCS Updater -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-tcs-context</artifactId>
-            <version>0.1.1</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <!-- GMP Logging Service -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-logging</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <!-- GMP Status Database -->
         <dependency>
@@ -488,7 +495,7 @@
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-status-gateway</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <!-- GIAPI Status dispatcher-->
         <dependency>
@@ -502,24 +509,17 @@
             <artifactId>gmp-commands-records</artifactId>
             <version>0.1.1</version>
         </dependency>
-        <!--- EPICS access gateway -->
-        <dependency>
-            <groupId>edu.gemini.aspen.gmp</groupId>
-            <artifactId>gmp-epics-access</artifactId>
-            <version>0.2.0</version>
-        </dependency>
         <!-- EPICS Simulator -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-epics-simulator</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-status-simulator</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
-
         <!-- GMP EPICS Status Service -->
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -541,12 +541,12 @@
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-heartbeat</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
-            <artifactId>heartbeat-distributor-service</artifactId>
-            <version>0.1.0</version>
+            <artifactId>gmp-heartbeat-distributor-service</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -556,7 +556,7 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>epics-heartbeat</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -566,7 +566,7 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-obsevents</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
