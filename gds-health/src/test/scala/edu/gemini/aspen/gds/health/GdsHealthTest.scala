@@ -42,8 +42,8 @@ class GdsHealthTest {
   }
   @Before
   def init() {
-    statusservice = new StatusService(agg, provider, "Status Service " + testCounter.incrementAndGet(), ">")
-    statusservice.initialize()
+    statusservice = new StatusService(agg, "Status Service " + testCounter.incrementAndGet(), ">")
+    statusservice.startJms(provider)
     TimeUnit.MILLISECONDS.sleep(1000)
     gdsHealth = new GdsHealth()
     gdsHealth.startJms(provider)
@@ -52,7 +52,7 @@ class GdsHealthTest {
   @After
   def shutdown() {
     gdsHealth.stopJms()
-    statusservice.stopComponent()
+    statusservice.stopJms()
   }
 
   @Test
