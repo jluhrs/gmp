@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 /**
  * This provides a tracker of a JMS Provider.
  */
+@Deprecated //Use JmsArtifact instead
 public class JmsProviderTracker extends ServiceTracker {
 
     private static final Logger LOG = Logger.getLogger(JmsProviderTracker.class.getName());
