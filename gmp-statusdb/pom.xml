@@ -24,47 +24,11 @@
 
     <packaging>bundle</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-ipojo-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>ipojo-bundle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo</artifactId>
-            <version>1.6.8</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
