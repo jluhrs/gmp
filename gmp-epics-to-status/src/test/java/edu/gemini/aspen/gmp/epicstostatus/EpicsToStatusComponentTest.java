@@ -100,8 +100,8 @@ public class EpicsToStatusComponentTest {
         StatusMonitor monitor = new StatusMonitor();
         StatusHandlerAggregate aggregate = new StatusHandlerAggregateImpl();
         aggregate.bindStatusHandler(monitor);
-        StatusService service = new StatusService(aggregate, provider, "Status Monitor Service Client", "giapitest:statusitemint");
-        service.initialize();
+        StatusService service = new StatusService(aggregate, "Status Monitor Service Client", "giapitest:statusitemint");
+        service.startJms(provider);
 
         //initialize client EPICS channels, channel listeners and StatusSetters
         EpicsToStatusComponent esc = new EpicsToStatusComponent(reader, provider, xml.getPath(), xsd.getPath());
@@ -121,7 +121,7 @@ public class EpicsToStatusComponentTest {
         //shutdown everything
         esc.shutdown();
         epicsServ.stopService();
-        service.stopComponent();
+        service.stopJms();
         cas.stop();
     }
 }
