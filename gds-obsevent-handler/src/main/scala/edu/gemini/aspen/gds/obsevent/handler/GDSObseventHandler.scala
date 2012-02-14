@@ -22,7 +22,7 @@ import edu.gemini.aspen.gmp.services.PropertyHolder
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
  * keyword values acquisition process
  */
-@Component(name = "GDSObseventHandler")
+@Component
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationEventHandler]))
 // todo: reduce amount of dependencies
