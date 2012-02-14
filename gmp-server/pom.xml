@@ -37,7 +37,7 @@
         <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
         <felix.fileinstall.poll>2000</felix.fileinstall.poll>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
-        <ipojo.log.level>error</ipojo.log.level>
+        <ipojo.log.level>trace</ipojo.log.level>
 
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
@@ -769,6 +769,18 @@
             <artifactId>atmosphere-compat-jbossweb</artifactId>
             <version>${atmosphere.version}</version>
         </dependency-->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
+            <version>1.0.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.arch</artifactId>
+            <version>1.6.0</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
