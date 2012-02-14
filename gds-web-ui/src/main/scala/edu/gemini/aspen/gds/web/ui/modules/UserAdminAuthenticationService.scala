@@ -5,7 +5,6 @@ import org.osgi.service.useradmin.UserAdmin
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 
 @Component
-@Instantiate
 @Provides
 class UserAdminAuthenticationService(@Requires userAdmin: UserAdmin) extends AuthenticationService {
   def authenticate(username: String, password: String) = {
