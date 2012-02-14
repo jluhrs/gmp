@@ -25,12 +25,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo</artifactId>
-            <version>${org.apache.felix.ipojo}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
 </project>
