@@ -19,6 +19,7 @@ class GdsHealthTest {
 
   var gdsHealth: GdsHealth = _
   val agg = new StatusHandlerAggregateImpl
+  val provider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false&broker.persistent=false")
 
   var statusservice: StatusService = _
 
@@ -41,16 +42,16 @@ class GdsHealthTest {
   }
   @Before
   def init() {
-    val provider: JmsProvider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false")
     statusservice = new StatusService(agg, provider, "Status Service " + testCounter.incrementAndGet(), ">")
     statusservice.initialize()
     TimeUnit.MILLISECONDS.sleep(1000)
-    gdsHealth = new GdsHealth(provider)
+    gdsHealth = new GdsHealth()
+    gdsHealth.startJms(provider)
   }
 
   @After
   def shutdown() {
-    gdsHealth.invalidate()
+    gdsHealth.stopJms()
     statusservice.stopComponent()
   }
 
@@ -59,7 +60,6 @@ class GdsHealthTest {
     val handler = new TestHandler(1)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.validate()
     handler.waitForCompletion()
     assertEquals(1, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)
@@ -71,7 +71,6 @@ class GdsHealthTest {
     val handler = new TestHandler(2)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.validate()
     gdsHealth.bindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
     handler.waitForCompletion()
     assertEquals(2, handler.counter.get())
@@ -84,7 +83,6 @@ class GdsHealthTest {
     val handler = new TestHandler(KeywordSource.maxId + 2)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.validate()
     gdsHealth.bindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
     val fact = mock(classOf[KeywordActorsFactory])
     for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS)) {

@@ -2,7 +2,6 @@ package edu.gemini.aspen.gds.health
 
 import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
-import edu.gemini.jms.api.JmsProvider
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.Health
 import edu.gemini.aspen.giapi.util.jms.status.StatusSetter
@@ -12,10 +11,11 @@ import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 
 import scala.actors.Actor._
 import actors.Actor
+import edu.gemini.jms.api.{JmsArtifact, JmsProvider}
 
 case object UpdateHealth
 
-case object StartJms
+case class StartJms(provider: JmsProvider)
 
 case object StopJms
 
@@ -24,7 +24,7 @@ case object StopJms
  */
 @Component
 @Instantiate
-class GdsHealth(@Requires provider: JmsProvider) {
+class GdsHealth extends JmsArtifact {
 
   private val healthName = "gpi:gds:health"
   private val healthSetter: StatusSetter = new StatusSetter("GDS Health", healthName)
@@ -39,14 +39,12 @@ class GdsHealth(@Requires provider: JmsProvider) {
     stateActor ! UpdateHealth
   }
 
-  @Validate
-  def validate() {
+  override def startJms(provider: JmsProvider) {
     LOG.info("Validating GDS Health")
-    stateActor ! StartJms
+    stateActor ! StartJms(provider)
   }
 
-  @Invalidate
-  def invalidate() {
+  override def stopJms() {
     LOG.info("Invalidating GDS Health")
     stateActor ! StopJms
   }
@@ -83,6 +81,7 @@ class GdsHealth(@Requires provider: JmsProvider) {
       case e: GDSObseventHandler =>
         healthState.unregisterGDSObseventHandler()
         updateHealth()
+      case _ => LOG.info("Ignoring observation event handler: " + evtHndlr)
     }
   }
 
@@ -110,7 +109,7 @@ class GdsHealth(@Requires provider: JmsProvider) {
             if (validated) {
               healthSetter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
             }
-          case StartJms =>
+          case StartJms(provider) =>
             healthSetter.startJms(provider)
             validated = true
             self ! UpdateHealth
