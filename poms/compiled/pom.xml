@@ -176,7 +176,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-status-service</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -283,11 +283,6 @@
                 <groupId>gemini-nocs</groupId>
                 <artifactId>shared-test</artifactId>
                 <version>1.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin</artifactId>
-                <version>${vaadin.version}</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds.web.ui</groupId>
