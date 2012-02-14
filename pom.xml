@@ -265,7 +265,6 @@
         <module>giapi-tester</module>
         <module>gmp-webconsole-branding</module>
         <module>gmp-webconsole-docs</module>
-        <module>gmp-handlers-state-service</module>
         <module>epics-heartbeat</module>
         <module>gmp-tui</module>
         <module>gmp-epics-top</module>
