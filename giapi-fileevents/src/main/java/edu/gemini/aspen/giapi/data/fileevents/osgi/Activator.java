@@ -1,18 +1,18 @@
 package edu.gemini.aspen.giapi.data.fileevents.osgi;
 
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
-import org.osgi.util.tracker.ServiceTracker;
-import edu.gemini.jms.api.osgi.JmsProviderTracker;
+import edu.gemini.aspen.giapi.data.AncillaryFileEventHandler;
+import edu.gemini.aspen.giapi.data.IntermediateFileEventHandler;
+import edu.gemini.aspen.giapi.data.fileevents.FileEventActionRunner;
+import edu.gemini.aspen.giapi.data.fileevents.jms.JmsFileEventsListener;
 import edu.gemini.jms.api.BaseMessageConsumer;
 import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
-import edu.gemini.aspen.giapi.data.fileevents.jms.JmsFileEventsListener;
-import edu.gemini.aspen.giapi.data.fileevents.FileEventActionRunner;
-import edu.gemini.aspen.giapi.data.IntermediateFileEventHandler;
-import edu.gemini.aspen.giapi.data.AncillaryFileEventHandler;
+import edu.gemini.jms.api.JmsArtifact;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 import java.util.logging.Logger;
 
@@ -22,8 +22,6 @@ import java.util.logging.Logger;
 public class Activator implements BundleActivator {
 
     private static final Logger LOG = Logger.getLogger(Activator.class.getName());
-
-    private JmsProviderTracker _jmsTracker;
 
     private BundleContext context = null;
 
@@ -42,8 +40,8 @@ public class Activator implements BundleActivator {
                 new JmsFileEventsListener(_action)
         );
 
-        _jmsTracker = new JmsProviderTracker(bundleContext, consumer);
-        _jmsTracker.open();
+        bundleContext.registerService(JmsArtifact.class.getName(), consumer, null);
+
         //and start tracking for intermediate file event handlers as well...
         _intermediateFileHandlerTracker = new ServiceTracker(bundleContext,
                 IntermediateFileEventHandler.class.getName(),
@@ -61,9 +59,6 @@ public class Activator implements BundleActivator {
 
     public void stop(BundleContext bundleContext) throws Exception {
         LOG.info("Stopping File Event Monitor Bundle ");
-        _jmsTracker.close();
-        _jmsTracker = null;
-
         _intermediateFileHandlerTracker.close();
         _intermediateFileHandlerTracker = null;
 
