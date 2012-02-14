@@ -69,6 +69,8 @@ public class EpicsHeartbeat implements HeartbeatConsumer {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         } catch (TimeoutException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }
