@@ -144,10 +144,8 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             }
             // First time connection
             if (!connected.getAndSet(true)) {
-                System.out.println("Starting artifacts");
                 for (JmsArtifact a : _jmsArtifacts) {
                     try {
-                        System.out.println("Start " + a);
                         a.startJms(ActiveMQJmsProvider.this);
                     } catch (JMSException e) {
                         LOG.severe("Exception starting JMSArtifact " + e);
