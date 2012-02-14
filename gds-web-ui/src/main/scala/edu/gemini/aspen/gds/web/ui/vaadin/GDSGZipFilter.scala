@@ -13,8 +13,10 @@ import org.apache.felix.ipojo.annotations.{ServiceProperty, Provides, Instantiat
 class GDSGZipFilter extends GzipFilter {
   @ServiceProperty(name = "filter-name", value = "gzipfilter")
   val label: String = "gzipfilter"
-  @ServiceProperty(name = "urlPatterns")
+  @ServiceProperty(name = "urlPatterns", value = "/gds")
   val urlPatterns: Array[String] = Array("/gds", "/VAADIN")
-  @ServiceProperty(name = "servletNames")
+  @ServiceProperty(name = "servletNames", value="VaadinResourcesServlet")
   val servletName: Array[String] = Array("GDSVaadinServlet", "VaadinResourcesServlet")
+
+  override def toString = "GDSGZip Filter"
 }
