@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.web.ui.properties
 
 import _root_.edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import com.vaadin.Application
-import edu.gemini.aspen.gmp.services.{GMPServices, PropertyHolder}
+import edu.gemini.aspen.gmp.services.PropertyHolder
 import com.vaadin.ui._
 import edu.gemini.aspen.gmp.services.properties.GmpProperties
 
