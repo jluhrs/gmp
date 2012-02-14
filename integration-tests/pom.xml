@@ -56,7 +56,6 @@
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-activemq-broker</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.jms</groupId>
@@ -123,16 +122,10 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-service</artifactId>
-            <version>0.1.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-services</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.dom4j</groupId>
-            <artifactId>com.springsource.org.dom4j</artifactId>
-            <version>1.5.2</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.guava-osgi</groupId>
