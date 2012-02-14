@@ -165,6 +165,26 @@
                 <version>1.1.1</version>
                 <scope>runtime</scope>
             </dependency>
+
+            <!-- IPojo dependencies -->
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+                <version>${org.apache.felix.ipojo}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.ipojo</artifactId>
+                <version>${org.apache.felix.ipojo}</version>
+            </dependency>
+
+            <!-- SPModel -->
+            <dependency>
+                <groupId>gemini-nocs</groupId>
+                <artifactId>spModel-type</artifactId>
+                <version>1.0.0</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

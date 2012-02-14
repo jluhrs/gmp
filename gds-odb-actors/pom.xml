@@ -68,7 +68,6 @@
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>spModel-type</artifactId>
-            <version>1.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
