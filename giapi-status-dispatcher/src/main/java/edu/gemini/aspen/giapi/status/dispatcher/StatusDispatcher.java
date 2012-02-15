@@ -35,6 +35,11 @@ public class StatusDispatcher implements StatusHandler {
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 
+    @Validate
+    public void start() {
+        // Required by IPojo
+    }
+
     @Override
     public String getName() {
         return StatusDispatcher.class.getName();
@@ -51,7 +56,7 @@ public class StatusDispatcher implements StatusHandler {
         }
     }
 
-    @Bind(aggregate = true)
+    @Bind(aggregate = true, optional = true)
     public void bindStatusHandler(FilteredStatusHandler handler) {
         lock.writeLock().lock();
         _handlers.put(handler.getFilter(), handler);
