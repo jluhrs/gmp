@@ -501,7 +501,7 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-dispatcher</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <!-- GMP Commands Records -->
         <dependency>
@@ -626,7 +626,7 @@
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-health</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
