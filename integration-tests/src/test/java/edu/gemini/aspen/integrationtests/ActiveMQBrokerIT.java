@@ -31,19 +31,6 @@ public class ActiveMQBrokerIT extends FelixContainerConfigurationBase {
     @Configuration
     public static Option[] baseConfig() {
         return options(
-                /*felix(),
-                waitForFrameworkStartup(),
-                cleanCaches(),
-                systemProperty("felix.fileinstall.dir").value(System.getProperty("basedir") + "/src/test/resources/conf/services"),
-                systemProperty("felix.fileinstall.noInitialDelay").value("true"),
-                mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
-                mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").version("4.2.0"),
-                mavenBundle().artifactId("org.apache.felix.configadmin").groupId("org.apache.felix").version("1.2.8"),
-                mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").version("3.1.10"),
-                mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").version("1.6.0"),
-                mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").version("1.6.0"),
-                mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").version("1.1.1"),
-                mavenBundle().artifactId("guava-osgi").groupId("com.googlecode.guava-osgi").versionAsInProject(),*/
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
                 mavenBundle().artifactId("com.springsource.javax.jms").groupId("javax.jms").versionAsInProject(),
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").versionAsInProject(),
@@ -78,6 +65,7 @@ public class ActiveMQBrokerIT extends FelixContainerConfigurationBase {
         return null;
     }
 
+    @Override
     protected String confDir() {
         return "/src/test/resources/conf/jms-activemq-broker";
     }

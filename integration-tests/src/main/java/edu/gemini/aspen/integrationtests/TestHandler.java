@@ -29,6 +29,7 @@ public class TestHandler implements FilteredStatusHandler {
     }
     @Override
     public StatusItemFilter getFilter() {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + this + " ");
         return new StatusItemFilter("gpi:status1");
     }
 
@@ -39,6 +40,9 @@ public class TestHandler implements FilteredStatusHandler {
 
     @Override
     public <T> void update(StatusItem<T> item) {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + this + " " + item);
+
+
         LOG.info(item.toString());
         counter++;
         latch.countDown();

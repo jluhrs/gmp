@@ -39,7 +39,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         );
     }
 
-    @Test
+    //@Test
     public void bundleExistence() throws InterruptedException {
         assertNotNull(getBundle("edu.gemini.aspen.gds.api"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.keywords.database"));
@@ -52,7 +52,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
 
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
-        TimeUnit.MILLISECONDS.sleep(2000);
+        TimeUnit.MILLISECONDS.sleep(4000);
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));

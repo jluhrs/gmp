@@ -44,21 +44,6 @@
                 <version>1.4.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>edu.gemini.aspen.gmp</groupId>
-                <artifactId>gmp-commands-jms-bridge</artifactId>
-                <version>0.4.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.gmp</groupId>
-                <artifactId>gmp-commands-jms-client</artifactId>
-                <version>0.1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.googlecode.guava-osgi</groupId>
-                <artifactId>guava-osgi</artifactId>
-                <version>10.0.0</version>
-            </dependency>
-            <dependency>
                 <groupId>edu.gemini.external.osgi.jca-lib</groupId>
                 <artifactId>jca-lib</artifactId>
                 <version>1.2.0</version>
@@ -79,9 +64,14 @@
                 <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>edu.gemini.aspen.gmp</groupId>
-                <artifactId>gmp-commands</artifactId>
-                <version>0.9.3</version>
+                <groupId>edu.gemini.cas</groupId>
+                <artifactId>cas</artifactId>
+                <version>0.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.cas</groupId>
+                <artifactId>casdb</artifactId>
+                <version>0.1.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
@@ -90,18 +80,56 @@
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
-                <artifactId>giapi-test-support</artifactId>
+                <artifactId>giapi-status-service</artifactId>
+                <version>0.3.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-statusdb</artifactId>
                 <version>0.1.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
-                <artifactId>gmp-epics-top</artifactId>
-                <version>0.0.1</version>
+                <artifactId>gmp-status-gateway</artifactId>
+                <version>0.2.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>edu.gemini.cas</groupId>
-                <artifactId>cas</artifactId>
-                <version>0.2.0</version>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-services</artifactId>
+                <version>0.3.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-commands</artifactId>
+                <version>0.9.3</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-commands-jms-bridge</artifactId>
+                <version>0.4.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-commands-jms-client</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.guava-osgi</groupId>
+                <artifactId>guava-osgi</artifactId>
+                <version>10.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen</groupId>
+                <artifactId>giapi-test-support</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+
+
+
+            <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-epics-top</artifactId>
+                <version>0.0.1</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
@@ -120,23 +148,13 @@
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
-                <artifactId>giapi-status-service</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-status-dispatcher</artifactId>
-                <version>0.1.0</version>
+                <version>0.2.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-obsevents</artifactId>
                 <version>0.2.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.gmp</groupId>
-                <artifactId>gmp-services</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>

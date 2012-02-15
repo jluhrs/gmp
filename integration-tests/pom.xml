@@ -124,7 +124,15 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-statusdb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-status-gateway</artifactId>
         </dependency>
         <dependency>
             <groupId>com.googlecode.guava-osgi</groupId>
@@ -161,7 +169,6 @@
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-error-policy</artifactId>
-            <version>0.1.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
@@ -270,7 +277,6 @@
         <dependency>
             <groupId>edu.gemini.cas</groupId>
             <artifactId>casdb</artifactId>
-            <version>0.1.0</version>
         </dependency>
     </dependencies>
 </project>

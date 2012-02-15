@@ -50,8 +50,6 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("scala-library").groupId("com.weiglewilczek.scala-lang-osgi").versionAsInProject(),
                 mavenBundle().artifactId("gds-api").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
-                mavenBundle().artifactId("com.springsource.javax.xml.stream").groupId("javax.xml.stream").versionAsInProject(),
-                mavenBundle().artifactId("com.springsource.org.dom4j").groupId("org.dom4j").versionAsInProject(),
                 mavenBundle().artifactId("gmp-services").groupId("edu.gemini.aspen.gmp").versionAsInProject(),
                 mavenBundle().artifactId("gds-keywords-database").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-performance-monitoring").groupId("edu.gemini.aspen.gds").versionAsInProject(),
