@@ -19,7 +19,7 @@
     <artifactId>gmp-status-gateway</artifactId>
     <version>0.2.0-SNAPSHOT</version>
 
-    <name>GMP Status Gateway</name>
+    <name>GMP Status Gateway over JMS</name>
     <description>Allows clients to get status information received by the GMP</description>
 
     <packaging>bundle</packaging>
