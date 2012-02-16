@@ -10,6 +10,15 @@ import java.util.logging.LogRecord;
 public class GiapiTesterFormatter extends Formatter {
     @Override
     public String format(LogRecord logRecord) {
-        return logRecord.getMessage() + System.getProperty("line.separator");
+        if (logRecord.getThrown() != null) {
+            StringBuffer buf = new StringBuffer(logRecord.getMessage() + ": " + logRecord.getThrown().getMessage() + System.getProperty("line.separator"));
+            for (StackTraceElement el : logRecord.getThrown().getStackTrace()) {
+                buf.append("\t" + el + System.getProperty("line.separator"));
+            }
+            return buf.toString();
+        } else {
+            return logRecord.getMessage() + System.getProperty("line.separator");
+
+        }
     }
 }

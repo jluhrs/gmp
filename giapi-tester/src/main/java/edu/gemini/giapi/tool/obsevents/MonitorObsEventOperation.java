@@ -16,6 +16,7 @@ import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -63,7 +64,7 @@ public class MonitorObsEventOperation implements Operation {
             Thread.sleep(_timeout);//wait for events until somebody quits the application
             consumer.stopJms();
         } catch (JMSException e) {
-            LOG.warning("Problem on GIAPI tester: " + e.getMessage());
+            LOG.log(Level.WARNING,"Problem on GIAPI tester",e);
         }
         return 0;
     }

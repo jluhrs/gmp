@@ -1,8 +1,8 @@
 package edu.gemini.giapi.tool.fileevents;
 
+import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.fileevents.FileEventAction;
 import edu.gemini.aspen.giapi.data.fileevents.jms.JmsFileEventsListener;
-import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.giapi.tool.arguments.HostArgument;
 import edu.gemini.giapi.tool.arguments.MonitorFileEventsArgument;
 import edu.gemini.giapi.tool.parser.Argument;
@@ -14,6 +14,7 @@ import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -57,7 +58,7 @@ public class MonitorFileEventsOperation implements Operation {
             Thread.sleep(Long.MAX_VALUE);//wait for events until somebody quits the application
         } catch (JMSException e) {
             e.printStackTrace();
-            LOG.warning("Problem on GIAPI tester: " + e.getMessage());
+            LOG.log(Level.WARNING, "Problem on GIAPI tester", e);
         }
         return 0;
     }

@@ -10,6 +10,7 @@ import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -57,7 +58,7 @@ public class GetStatusNamesOperation implements Operation {
 
 
         } catch (JMSException ex) {
-            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
+            LOG.log(Level.WARNING,"Problem on GIAPI tester",ex);
         } finally {
             getter.stopJms();
         }

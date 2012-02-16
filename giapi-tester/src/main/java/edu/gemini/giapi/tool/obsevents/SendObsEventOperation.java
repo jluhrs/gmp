@@ -1,24 +1,19 @@
 package edu.gemini.giapi.tool.obsevents;
 
-import edu.gemini.aspen.giapi.commands.Command;
-import edu.gemini.aspen.giapi.commands.CompletionInformation;
-import edu.gemini.aspen.giapi.commands.Configuration;
-import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.data.DataLabel;
-import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.util.jms.ObsEventSender;
-import edu.gemini.aspen.gmp.commands.jms.client.CommandSenderClient;
-import edu.gemini.giapi.tool.arguments.*;
-import edu.gemini.giapi.tool.commands.WaitingCompletionListener;
+import edu.gemini.giapi.tool.arguments.DataLabelArgument;
+import edu.gemini.giapi.tool.arguments.HostArgument;
+import edu.gemini.giapi.tool.arguments.RepetitionArgument;
+import edu.gemini.giapi.tool.arguments.SendObsEventArgument;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 
 /**
  * Provides the operation to send sequence commands to the GMP
@@ -54,7 +49,7 @@ public class SendObsEventOperation implements Operation {
             }
 
         } catch (JMSException ex) {
-            LOG.severe("Problem on GIAPI tester: " + ex.getMessage());
+            LOG.log(Level.SEVERE, "Problem on GIAPI tester", ex);
         } finally {
             senderClient.stopJms();
         }

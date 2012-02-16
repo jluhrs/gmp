@@ -10,6 +10,7 @@ import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -55,7 +56,7 @@ public class GetStatusOperation implements Operation {
             getter.stopJms();
 
         } catch (JMSException ex) {
-            LOG.warning("Problem on GIAPI tester: " + ex.getMessage());
+            LOG.log(Level.WARNING,"Problem on GIAPI tester",ex);
         }
         return 0;
     }

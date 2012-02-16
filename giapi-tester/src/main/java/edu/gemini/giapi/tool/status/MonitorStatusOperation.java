@@ -18,6 +18,7 @@ import edu.gemini.jms.api.JmsProvider;
 import javax.jms.JMSException;
 import java.util.Collection;
 import java.util.concurrent.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -127,7 +128,7 @@ public class MonitorStatusOperation implements Operation {
                 Thread.sleep(Long.MAX_VALUE);
             }
         } catch (JMSException e) {
-            LOG.warning("Problem on GIAPI tester: " + e.getMessage());
+            LOG.log(Level.WARNING,"Problem on GIAPI tester",e);
         }
 
         return 0;

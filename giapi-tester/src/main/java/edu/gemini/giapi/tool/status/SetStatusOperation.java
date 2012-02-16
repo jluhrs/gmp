@@ -11,6 +11,7 @@ import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 
 import javax.jms.JMSException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -79,7 +80,7 @@ public class SetStatusOperation implements Operation {
 
 
         } catch (JMSException ex) {
-            LOG.severe("Problem on GIAPI tester: " + ex.getMessage());
+            LOG.log(Level.SEVERE, "Problem on GIAPI tester", ex);
         } finally {
             setter.stopJms();
         }
