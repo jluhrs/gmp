@@ -24,6 +24,7 @@ case object StopJms
  */
 @Component
 @Instantiate
+@Provides(specifications = Array[Class[_]](classOf[JmsArtifact]))
 class GdsHealth extends JmsArtifact {
 
   private val healthName = "gpi:gds:health"
