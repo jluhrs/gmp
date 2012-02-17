@@ -103,11 +103,19 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     @Bind(aggregate = true, optional = true)
     public void bindJmsArtifact(JmsArtifact jmsArtifact) {
         _jmsArtifacts.add(jmsArtifact);
+        if (connected.get()) {
+            try {
+                jmsArtifact.startJms(this);
+            } catch (JMSException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
         LOG.info("JMS Artifact Registered: " + jmsArtifact);
     }
 
     @Unbind(aggregate = true)
     public void unbindJmsArtifact(JmsArtifact jmsArtifact) {
+        jmsArtifact.stopJms();
         _jmsArtifacts.remove(jmsArtifact);
         LOG.info("JMS Artifact Removed: " + jmsArtifact);
     }
