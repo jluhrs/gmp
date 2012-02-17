@@ -36,7 +36,7 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
-            <artifactId>gmp-epics-top</artifactId>
+            <artifactId>gmp-top</artifactId>
         </dependency>
     </dependencies>
 

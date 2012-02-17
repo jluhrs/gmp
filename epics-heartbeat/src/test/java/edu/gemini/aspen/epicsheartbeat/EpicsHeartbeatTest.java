@@ -1,11 +1,11 @@
 package edu.gemini.aspen.epicsheartbeat;
 
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.aspen.gmp.heartbeat.Heartbeat;
+import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.aspen.gmp.top.TopImpl;
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatDistributor;
-import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.activemq.broker.BrokerService;
@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotSame;
 
 
 /**
@@ -27,7 +27,7 @@ public class EpicsHeartbeatTest {
     HeartbeatDistributor hbDist;
     Heartbeat hb;
     ChannelAccessServerImpl cas;
-    EpicsTop top;
+    Top top;
 
     static {
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
@@ -47,13 +47,14 @@ public class EpicsHeartbeatTest {
         cas = new ChannelAccessServerImpl();
         cas.start();
 
-        hb = new Heartbeat();
+        top = new TopImpl("gpitest","gpitest");
+
+        hb = new Heartbeat(top);
         hb.startJms(provider);
 
         hbDist = new HeartbeatDistributor();
         hbDist.startJms(provider);
 
-        top = new EpicsTopImpl("gpitest");
     }
 
     @After

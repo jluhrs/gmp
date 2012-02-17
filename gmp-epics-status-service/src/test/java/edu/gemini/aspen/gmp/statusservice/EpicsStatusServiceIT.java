@@ -8,12 +8,15 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
-import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.epics.api.Channel;
-import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.aspen.gmp.statusservice.generated.AlarmChannelType;
+import edu.gemini.aspen.gmp.statusservice.generated.BaseChannelType;
+import edu.gemini.aspen.gmp.statusservice.generated.HealthChannelType;
+import edu.gemini.aspen.gmp.statusservice.generated.SimpleChannelType;
+import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.aspen.gmp.top.TopImpl;
 import edu.gemini.cas.AlarmChannel;
+import edu.gemini.cas.impl.ChannelAccessServerImpl;
+import edu.gemini.epics.api.Channel;
 import gov.aps.jca.dbr.DBR_STS_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
@@ -53,7 +56,7 @@ public class EpicsStatusServiceIT extends TestCase {
         xmlWrt.close();
         xsdWrt.close();
 
-        EpicsTop epicsTop = new EpicsTopImpl("gpi");
+        Top epicsTop = new TopImpl("gpi","gpi");
 
         //initialize and check channels are created
         EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());

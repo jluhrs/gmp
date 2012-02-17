@@ -267,7 +267,7 @@
         <module>gmp-webconsole-docs</module>
         <module>epics-heartbeat</module>
         <module>gmp-tui</module>
-        <module>gmp-epics-top</module>
+        <module>gmp-top</module>
         <module>gmp-epics-to-status</module>
         <module>gds-api</module>
         <module>gds-config-validator</module>

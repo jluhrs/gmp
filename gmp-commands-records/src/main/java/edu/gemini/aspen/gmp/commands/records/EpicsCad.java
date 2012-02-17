@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.commands.records;
 
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.epics.api.Channel;
+import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
@@ -48,19 +48,19 @@ public class EpicsCad {
      * @param dirListener       listener to be notified when the DIR field is written to
      * @param attributeNames    list of attribute names. Each will be an EPICS channel.
      */
-    public synchronized void start(EpicsTop epicsTop, String name, ChannelListener<String> attributeListener, ChannelListener<Dir> dirListener, List<String> attributeNames) {
-        LOG.info("EpicsCad start: " + epicsTop.buildChannelName(name));
+    public synchronized void start(Top epicsTop, String name, ChannelListener<String> attributeListener, ChannelListener<Dir> dirListener, List<String> attributeNames) {
+        LOG.info("EpicsCad start: " + epicsTop.buildEpicsChannelName(name));
         try {
-            val = cas.createChannel(epicsTop.buildChannelName(name + ".VAL"), 0);
-            clid = cas.createChannel(epicsTop.buildChannelName(name + ".ICID"), 0);
-            dir = cas.createChannel(epicsTop.buildChannelName(name + ".DIR"), Dir.CLEAR);
+            val = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".VAL"), 0);
+            clid = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".ICID"), 0);
+            dir = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".DIR"), Dir.CLEAR);
             dir.registerListener(dirListener);
-            mess = cas.createChannel(epicsTop.buildChannelName(name + ".MESS"), "");
-            omss = cas.createChannel(epicsTop.buildChannelName(name + ".OMSS"), "");
+            mess = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".MESS"), "");
+            omss = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".OMSS"), "");
             //ocid = cas.createChannel(top +":"+ name + ".OCID", 0);
             //mark = cas.createChannel(top +":"+ name + ".MARK", 0);
             for (String attribute : attributeNames) {
-                Channel<String> ch = cas.createChannel(epicsTop.buildChannelName(attribute), "");
+                Channel<String> ch = cas.createChannel(epicsTop.buildEpicsChannelName(attribute), "");
                 ch.registerListener(attributeListener);
                 attributes.add(ch);
             }

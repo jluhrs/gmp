@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
 import edu.gemini.aspen.gmp.commands.records.generated.ConfigSetType;
 import edu.gemini.aspen.gmp.commands.records.generated.ConfigSets;
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
+import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
@@ -38,7 +38,7 @@ public class ApplyRecord {
     //private final String epicsTop = "gpi";//to be read from elsewhere(cas?);
     private final String resetRecordsName = "gmp:resetRecords";
 
-    private final EpicsTop epicsTop;
+    private final Top epicsTop;
 
     private ReadOnlyChannel<Dir> dir;
     private Channel<Integer> val;
@@ -70,14 +70,14 @@ public class ApplyRecord {
      */
     protected ApplyRecord(@Requires ChannelAccessServer cas,
             @Requires CommandSender cs,
-            @Requires EpicsTop epicsTop,
+            @Requires Top epicsTop,
             @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
             @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
         LOG.info("Constructor");
         this.cas = cas;
         this.cs = cs;
         this.epicsTop = epicsTop;
-        car = new CarRecord(cas, epicsTop.buildChannelName(name + "C"));
+        car = new CarRecord(cas, epicsTop.buildEpicsChannelName(name + "C"));
         ConfigSets configSets;
         try {
             JAXBContext jc = JAXBContext.newInstance(ConfigSets.class);
@@ -121,14 +121,14 @@ public class ApplyRecord {
         synchronized (car) {
             LOG.info("Validate");
             try {
-                dir = cas.createChannel(epicsTop.buildChannelName(name + ".DIR"), Dir.CLEAR);
+                dir = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".DIR"), Dir.CLEAR);
                 dir.registerListener(new DirListener());
-                val = cas.createChannel(epicsTop.buildChannelName(name + ".VAL"), 0);
-                mess = cas.createChannel(epicsTop.buildChannelName(name + ".MESS"), "");
-                omss = cas.createChannel(epicsTop.buildChannelName(name + ".OMSS"), "");
-                clid = cas.createChannel(epicsTop.buildChannelName(name + ".CLID"), 0);
+                val = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".VAL"), 0);
+                mess = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".MESS"), "");
+                omss = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".OMSS"), "");
+                clid = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".CLID"), 0);
 
-                reset = cas.createChannel(epicsTop.buildChannelName(resetRecordsName), Reset.NO_RESET);
+                reset = cas.createChannel(epicsTop.buildEpicsChannelName(resetRecordsName), Reset.NO_RESET);
                 reset.registerListener(new ResetListener());
 
                 car.start();

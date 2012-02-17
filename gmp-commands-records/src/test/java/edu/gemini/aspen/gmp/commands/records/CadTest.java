@@ -1,16 +1,14 @@
 package edu.gemini.aspen.gmp.commands.records;
 
 import com.google.common.collect.Lists;
-import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
+import edu.gemini.aspen.giapi.commands.CommandSender;
+import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
-import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import gov.aps.jca.CAException;
-import gov.aps.jca.CAStatusException;
 import gov.aps.jca.TimeoutException;
-import gov.aps.jca.dbr.DBRType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +32,7 @@ public class CadTest {
     private static final Logger LOG = Logger.getLogger(CadTest.class.getName());
 
     private ChannelAccessServerImpl cas;
-    private final EpicsTop epicsTop = new EpicsTopImpl("gpi");
+    private final Top epicsTop = new TopImpl("gpi","gpi");
     private final String cadName = "observe";
     private CommandSender cs = MockFactory.createCommandSenderMock(epicsTop, cadName);
 
@@ -55,8 +53,8 @@ public class CadTest {
         cad.start();
 
         //test mark
-        Channel<String> a = cas.createChannel(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "");
-        Channel<CarRecord.Val> carVal = cas.createChannel(epicsTop.buildChannelName(cadName + "C.VAL"), CarRecord.Val.IDLE);
+        Channel<String> a = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DATA_LABEL"), "");
+        Channel<CarRecord.Val> carVal = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + "C.VAL"), CarRecord.Val.IDLE);
 
 
         class CarListener extends CountDownLatch implements ChannelListener<CarRecord.Val> {
@@ -87,7 +85,7 @@ public class CadTest {
 
 
         //test CAR
-        Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName(cadName + ".DIR"), Dir.CLEAR);
+        Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DIR"), Dir.CLEAR);
         dir.setValue(Dir.MARK);
         dir.setValue(Dir.PRESET);
         if (!carListener.await(1, TimeUnit.SECONDS)) {
@@ -109,10 +107,10 @@ public class CadTest {
     public void cadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException, TimeoutException {
         CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
         cad.start();
-        Channel<String> a = cas.createChannel(epicsTop.buildChannelName(cadName + ".DATA_LABEL"), "");
+        Channel<String> a = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DATA_LABEL"), "");
         a.setValue("label");
 
-        Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName(cadName + ".DIR"), Dir.CLEAR);
+        Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DIR"), Dir.CLEAR);
 
 
         //0 -> clear -> 0

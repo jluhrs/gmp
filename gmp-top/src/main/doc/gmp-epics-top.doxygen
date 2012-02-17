@@ -4,7 +4,7 @@
   This bundle provides a component to handle the EPICS Top.
 
   \section gmp_epics_top_provides_sec Provided Services
-  The \ref edu.gemini.aspen.gmp.epics.top.EpicsTopImpl "EpicsTop" component provides a method for adding the EPICS top
+  The \ref edu.gemini.aspen.gmp.epics.top.TopImpl "EpicsTop" component provides a method for adding the EPICS top
   to a channel name
 
 
@@ -12,7 +12,7 @@
   This bundle doesn't require other bundles.
 
   \section cas_configuration_sec Configuration
-  This bundle has one configuration file: \ref edu.gemini.aspen.gmp.epics.top.EpicsTopImpl-default.cfg. This file has
+  This bundle has one configuration file: \ref edu.gemini.aspen.gmp.epics.top.TopImpl-default.cfg. This file has
   only the \c epicsTop configuration parameter, that must be set to the appropriate Top. For instance "epicsTop=gpi".
 
  */

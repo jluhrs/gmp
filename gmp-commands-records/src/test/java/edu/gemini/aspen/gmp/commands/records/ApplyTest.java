@@ -2,8 +2,8 @@ package edu.gemini.aspen.gmp.commands.records;
 
 import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.aspen.giapi.commands.CommandSender;
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
+import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.aspen.gmp.top.TopImpl;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.EpicsWriter;
@@ -39,7 +39,7 @@ public class ApplyTest {
     private static File xmlFile = null;
 
     private ChannelAccessServerImpl cas;
-    private final EpicsTop epicsTop = new EpicsTopImpl("gpitest");
+    private final Top epicsTop = new TopImpl("gpitest","gpitest");
     private final String cadName = "observe";
     private CommandSender cs = MockFactory.createCommandSenderMock(epicsTop, cadName);
     private EpicsWriter epicsWriter;
@@ -119,14 +119,14 @@ public class ApplyTest {
     public void applyTestObserve() throws CAException, InterruptedException, IOException, TimeoutException {
         ApplyRecord apply = new ApplyRecord(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
         apply.start();
-        Channel<Dir> dir = cas.createChannel(epicsTop.buildChannelName("apply.DIR"), Dir.CLEAR);
-        Channel<Integer> val = cas.createChannel(epicsTop.buildChannelName("apply.VAL"), 0);
-        Channel<Integer> clid = cas.createChannel(epicsTop.buildChannelName("apply.CLID"), 0);
+        Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName("apply.DIR"), Dir.CLEAR);
+        Channel<Integer> val = cas.createChannel(epicsTop.buildEpicsChannelName("apply.VAL"), 0);
+        Channel<Integer> clid = cas.createChannel(epicsTop.buildEpicsChannelName("apply.CLID"), 0);
 
-        Channel<Integer> cadVal = cas.createChannel(epicsTop.buildChannelName(cadName + ".VAL"), 0);
-        Channel<Integer> cadClid = cas.createChannel(epicsTop.buildChannelName(cadName + ".ICID"), 0);
-        Channel<Integer> carClid = cas.createChannel(epicsTop.buildChannelName(cadName + "C.CLID"), 0);
-        ReadWriteClientEpicsChannel<String> data_label = epicsWriter.getStringChannel(epicsTop.buildChannelName(cadName + ".DATA_LABEL"));
+        Channel<Integer> cadVal = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".VAL"), 0);
+        Channel<Integer> cadClid = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".ICID"), 0);
+        Channel<Integer> carClid = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + "C.CLID"), 0);
+        ReadWriteClientEpicsChannel<String> data_label = epicsWriter.getStringChannel(epicsTop.buildEpicsChannelName(cadName + ".DATA_LABEL"));
 
 
         data_label.setValue("label");
@@ -147,16 +147,16 @@ public class ApplyTest {
         ApplyRecord apply = new ApplyRecord(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
         apply.start();
 
-        Channel<Reset> reset = cas.createChannel(epicsTop.buildChannelName("gmp:resetRecords"), Reset.NO_RESET);
+        Channel<Reset> reset = cas.createChannel(epicsTop.buildEpicsChannelName("gmp:resetRecords"), Reset.NO_RESET);
 
-        ReadWriteClientEpicsChannel<String> useAo = epicsWriter.getStringChannel(epicsTop.buildChannelName("configAo.useAo"));
+        ReadWriteClientEpicsChannel<String> useAo = epicsWriter.getStringChannel(epicsTop.buildEpicsChannelName("configAo.useAo"));
         assertEquals("", useAo.getFirst());
         useAo.setValue("bla");
         assertEquals("bla", useAo.getFirst());
         useAo.destroy();
         reset.setValue(Reset.RESET);
 
-        useAo = epicsWriter.getStringChannel(epicsTop.buildChannelName("configAo.useAo"));
+        useAo = epicsWriter.getStringChannel(epicsTop.buildEpicsChannelName("configAo.useAo"));
         assertTrue(useAo.isValid());
         assertEquals("", useAo.getFirst());
 

@@ -128,8 +128,8 @@
 
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
-                <artifactId>gmp-epics-top</artifactId>
-                <version>0.0.1</version>
+                <artifactId>gmp-top</artifactId>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
@@ -139,12 +139,12 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-heartbeat</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>gmp-heartbeat-distributor-service</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>

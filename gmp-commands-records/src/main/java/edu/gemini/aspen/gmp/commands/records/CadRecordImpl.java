@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.commands.records;
 
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
+import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.ChannelListener;
 
@@ -27,7 +27,7 @@ public class CadRecordImpl implements CadRecord {
     final private SequenceCommand seqCom;
     final private EpicsCad epicsCad;
 
-    final private EpicsTop epicsTop;
+    final private Top epicsTop;
     final private String name;
     final private List<String> attributeNames = new ArrayList<String>();
     final private CarRecord car;
@@ -43,7 +43,7 @@ public class CadRecordImpl implements CadRecord {
      */
     protected CadRecordImpl(ChannelAccessServer cas,
                             CommandSender cs,
-                            EpicsTop epicsTop,
+                            Top epicsTop,
                             String name,
                             Iterable<String> attributes) {
         this.cs = cs;
@@ -58,7 +58,7 @@ public class CadRecordImpl implements CadRecord {
             attributeNames.add(att);
         }
         epicsCad = new EpicsCad(cas);
-        car = new CarRecord(cas, epicsTop.buildChannelName(name.toLowerCase() + "C"));
+        car = new CarRecord(cas, epicsTop.buildEpicsChannelName(name.toLowerCase() + "C"));
         LOG.fine("Finished constructing CAD record " + name);
     }
 

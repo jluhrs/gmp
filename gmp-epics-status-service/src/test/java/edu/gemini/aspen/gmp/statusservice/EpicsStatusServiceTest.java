@@ -1,14 +1,18 @@
 package edu.gemini.aspen.gmp.statusservice;
 
 
-import edu.gemini.aspen.giapi.status.*;
+import edu.gemini.aspen.giapi.status.AlarmCause;
+import edu.gemini.aspen.giapi.status.AlarmSeverity;
+import edu.gemini.aspen.giapi.status.Health;
+import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
-import edu.gemini.aspen.gmp.epics.top.EpicsTop;
-import edu.gemini.aspen.gmp.epics.top.EpicsTopImpl;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.cas.*;
+import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.cas.AlarmChannel;
+import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
 import junit.framework.TestCase;
@@ -17,7 +21,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static org.mockito.Mockito.*;
@@ -43,7 +49,7 @@ public class EpicsStatusServiceTest extends TestCase {
     private ChannelAccessServer cas;
     private File xml = null;
     private File xsd = null;
-    private EpicsTop epicsTop;
+    private Top epicsTop;
 
     @Before
     public void setUp() throws Exception {
@@ -72,7 +78,7 @@ public class EpicsStatusServiceTest extends TestCase {
         xmlWrt.close();
         xsdWrt.close();
 
-        epicsTop = new EpicsTopImpl("gpi");
+        epicsTop = new TopImpl("gpi","gpi");
     }
 
     @Test
