@@ -7,8 +7,8 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.fits.{Header, DefaultHeaderItem, DefaultHeader, Hedit}
 
 @RunWith(classOf[JUnitRunner])
-class FitsUpdaterSpec extends FitsBaseSpec {
-  val originalFile = new File(classOf[FitsUpdaterSpec].getResource("S20110427-01.fits").toURI)
+class FitsUpdaterTest extends FitsBaseTest {
+  val originalFile = new File(classOf[FitsUpdaterTest].getResource("S20110427-01.fits").toURI)
   val destinationFile = new File(originalFile.getParentFile, "N-S20110427-01.fits")
   val dataLabel = new DataLabel("S20110427-01")
 
@@ -16,15 +16,14 @@ class FitsUpdaterSpec extends FitsBaseSpec {
     new Hedit(fitsFile).readAllHeaders.get(0)
   }
 
-  describe("A FitsUpdater") {
-    it("should copy a fits file before modifying it") {
+    test("should copy a fits file before modifying it") {
       val headers = List(new DefaultHeader())
 
       updateFitsFile(headers)
 
       destinationFile.exists should be(true)
     }
-    it("should also work when used as an actor") {
+    test("should also work when used as an actor") {
       val primaryHeader = readPrimaryHeader(originalFile)
 
       // Verify that AIRMASS is not in the original file
@@ -42,7 +41,7 @@ class FitsUpdaterSpec extends FitsBaseSpec {
       // Verify AIRMASS was added
       verifyKeywordInHeader(updatedPrimaryHeader, "AIRMASS")
     }
-    it("should update the primary headers with one new keywords") {
+    test("should update the primary headers with one new keywords") {
       val primaryHeader = readPrimaryHeader(originalFile)
 
       // Verify that AIRMASS is not in the original file
@@ -57,7 +56,7 @@ class FitsUpdaterSpec extends FitsBaseSpec {
       // Verify AIRMASS was added
       verifyKeywordInHeader(updatedPrimaryHeader, "AIRMASS")
     }
-    it("should update the primary headers with several new keywords") {
+    test("should update the primary headers with several new keywords") {
       val primaryHeader = new DefaultHeader()
       primaryHeader.add(DefaultHeaderItem.create("AIRMASS", 1.0, "Mass of airmass"))
       primaryHeader.add(DefaultHeaderItem.create("AIREND", 2.0, "Mass of airmass at the end"))
@@ -73,7 +72,7 @@ class FitsUpdaterSpec extends FitsBaseSpec {
         verifyKeywordInHeader(updatedPrimaryHeader, _)
       }
     }
-    it("should preseve all the original primary headers of a file") {
+    test("should preseve all the original primary headers of a file") {
       val originalPrimaryHeader = readPrimaryHeader(originalFile)
 
       val headers = createHeadersWithAirMass(0)
@@ -84,7 +83,7 @@ class FitsUpdaterSpec extends FitsBaseSpec {
 
       updatedPrimaryHeader.getKeywords.containsAll(originalPrimaryHeader.getKeywords) should be(true)
     }
-    it("should update a file in less than 0.01 secs") {
+    test("should update a file in less than 0.01 secs") {
       val start = System.nanoTime
       val headers = createHeadersWithAirMass(0)
       updateFitsFile(headers)
@@ -92,6 +91,5 @@ class FitsUpdaterSpec extends FitsBaseSpec {
       val spentTime = ((System.nanoTime - start) / 10e9)
       spentTime should be <= (0.01)
     }
-  }
 
 }

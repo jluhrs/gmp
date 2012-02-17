@@ -2,11 +2,12 @@ package edu.gemini.aspen.gds.fits
 
 import org.scalatest.matchers.ShouldMatchers
 import java.io.File
+import org.junit.Assert._
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.fits.{Header, DefaultHeaderItem, DefaultHeader}
-import org.scalatest.{BeforeAndAfterEach, Spec}
+import org.scalatest.{BeforeAndAfterEach, FunSuite}
 
-abstract class FitsBaseSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
+abstract class FitsBaseTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
   val originalFile: File
   val destinationFile: File
   val dataLabel: DataLabel
@@ -25,12 +26,12 @@ abstract class FitsBaseSpec extends Spec with ShouldMatchers with BeforeAndAfter
     })
   }
 
-  def verifyKeywordInHeader(header: Header, keyword: String): Unit = {
-    header.get(keyword) should not be (null)
+  def verifyKeywordInHeader(header: Header, keyword: String) {
+    assertNotNull(header.get(keyword))
   }
 
-  def verifyKeywordNotInHeader(header: Header, keyword: String): Unit = {
-    header.get(keyword) should be(null)
+  def verifyKeywordNotInHeader(header: Header, keyword: String) {
+    assertNull(header.get(keyword))
   }
 
   override def afterEach() = if (destinationFile.exists) {
