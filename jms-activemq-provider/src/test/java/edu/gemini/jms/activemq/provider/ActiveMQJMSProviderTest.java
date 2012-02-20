@@ -59,7 +59,7 @@ public class ActiveMQJMSProviderTest {
     }
 
     @Test
-    public void addJmsArtifact() throws InterruptedException, JMSException {
+    public void startJmsArtifact() throws InterruptedException, JMSException {
         String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
         ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
 
@@ -73,7 +73,6 @@ public class ActiveMQJMSProviderTest {
 
             @Override
             public void stopJms() {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
         };
         provider.bindJmsArtifact(jmsArtifact);
@@ -81,6 +80,33 @@ public class ActiveMQJMSProviderTest {
         assertFalse(started.get());
 
         provider.startConnection();
+
+        TimeUnit.SECONDS.sleep(2);
+
+        assertTrue(started.get());
+    }
+
+    @Test
+    public void addJmsArtifactAfterStart() throws InterruptedException, JMSException {
+        String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+
+        final AtomicBoolean started = new AtomicBoolean(false);
+
+        JmsArtifact jmsArtifact = new JmsArtifact() {
+            @Override
+            public void startJms(JmsProvider provider) throws JMSException {
+                started.set(true);
+            }
+
+            @Override
+            public void stopJms() {
+            }
+        };
+        assertFalse(started.get());
+        provider.startConnection();
+
+        provider.bindJmsArtifact(jmsArtifact);
 
         TimeUnit.SECONDS.sleep(2);
 
