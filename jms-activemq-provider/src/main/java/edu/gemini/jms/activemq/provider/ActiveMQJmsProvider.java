@@ -56,6 +56,10 @@ public final class ActiveMQJmsProvider implements JmsProvider {
         _factory.setTransportListener(transportListener);
     }
 
+    public ActiveMQJmsProvider(String url) {
+        this(url, "1000");
+    }
+
     private String substituteProperties(String url) {
         EProperties props = new EProperties();
         props.addAll(System.getProperties());

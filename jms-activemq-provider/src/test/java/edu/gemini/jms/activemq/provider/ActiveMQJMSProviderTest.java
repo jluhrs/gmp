@@ -1,5 +1,7 @@
 package edu.gemini.jms.activemq.provider;
 
+import edu.gemini.jms.api.JmsArtifact;
+import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.JmsProviderStatusListener;
 import org.junit.Test;
 
@@ -49,10 +51,39 @@ public class ActiveMQJMSProviderTest {
 
         assertFalse(resumed.get());
 
-        provider.getConnectionFactory().createConnection();
+        provider.startConnection();
 
         TimeUnit.SECONDS.sleep(2);
 
         assertTrue(resumed.get());
+    }
+
+    @Test
+    public void addJmsArtifact() throws InterruptedException, JMSException {
+        String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+
+        final AtomicBoolean started = new AtomicBoolean(false);
+
+        JmsArtifact jmsArtifact = new JmsArtifact() {
+            @Override
+            public void startJms(JmsProvider provider) throws JMSException {
+                started.set(true);
+            }
+
+            @Override
+            public void stopJms() {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        };
+        provider.bindJmsArtifact(jmsArtifact);
+
+        assertFalse(started.get());
+
+        provider.startConnection();
+
+        TimeUnit.SECONDS.sleep(2);
+
+        assertTrue(started.get());
     }
 }
