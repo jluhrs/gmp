@@ -12,8 +12,8 @@ import static org.junit.Assert.*;
 public class ActiveMQJMSProviderTest {
     @Test
     public void testConstruction() {
-        String brokerUrl = "vm:testBroker?persistent=false";
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl);
+        String brokerUrl = "vm:testBroker?broker.persistent=false";
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
         provider.startConnection();
 
         assertNotNull(provider.getConnectionFactory());
@@ -21,9 +21,9 @@ public class ActiveMQJMSProviderTest {
 
     @Test
     public void testConstructionWithPropertySubstitution() {
-        String brokerUrl = "${address}?persistent=false";
+        String brokerUrl = "${address}?broker.persistent=false";
         System.setProperty("address", "vm:testBroker");
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl);
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
         provider.startConnection();
 
         assertNotNull(provider.getConnectionFactory());
@@ -31,8 +31,8 @@ public class ActiveMQJMSProviderTest {
 
     @Test
     public void addStatusListener() throws InterruptedException, JMSException {
-        String brokerUrl = "failover:(vm:testBroker)";
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl);
+        String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
 
         final AtomicBoolean resumed = new AtomicBoolean(false);
 

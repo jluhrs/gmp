@@ -13,7 +13,10 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -33,6 +36,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     private ActiveMQConnectionFactory _factory;
     private static final String DEFAULT_BROKER_URL = "failover:(tcp://localhost:61616)";
     private static final String BROKER_URL_PROPERTY = "brokerUrl";
+    private static final String CLOSE_TIMEOUT_PROPERTY = "closeTimeout";
     private final List<JmsProviderStatusListener> _statusListenerHandlers = new CopyOnWriteArrayList<JmsProviderStatusListener>();
     private final List<JmsArtifact> _jmsArtifacts = new CopyOnWriteArrayList<JmsArtifact>();
 
@@ -42,11 +46,13 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     private final AtomicReference<Connection> baseConnection = new AtomicReference<Connection>();
     private final AtomicBoolean connected = new AtomicBoolean(false);
 
-    public ActiveMQJmsProvider(@Property(name = BROKER_URL_PROPERTY, value = DEFAULT_BROKER_URL, mandatory = true) String url) {
+    public ActiveMQJmsProvider(@Property(name = BROKER_URL_PROPERTY, value = DEFAULT_BROKER_URL, mandatory = true) String url,
+            @Property(name = CLOSE_TIMEOUT_PROPERTY, value = "1000", mandatory = false) String closeTimeout) {
         this.brokerUrl = substituteProperties(url);
         // Setup the connection factory
         LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
         _factory = new ActiveMQConnectionFactory(brokerUrl);
+        _factory.setCloseTimeout(Integer.parseInt(closeTimeout));
         _factory.setTransportListener(transportListener);
     }
 
@@ -73,6 +79,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
                         previousConnection.close();
                     }
                 } catch (JMSException e) {
+                    e.printStackTrace();
                     LOG.log(Level.SEVERE, "Failure while creating the connection to " + brokerUrl, e);
                 }
             }
@@ -107,7 +114,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             try {
                 jmsArtifact.startJms(this);
             } catch (JMSException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                LOG.severe("Exception starting JMSArtifact " + e);
             }
         }
         LOG.info("JMS Artifact Registered: " + jmsArtifact);
@@ -115,11 +122,12 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     @Unbind(aggregate = true)
     public void unbindJmsArtifact(JmsArtifact jmsArtifact) {
-        jmsArtifact.stopJms();
+        if (connected.get()) {
+            jmsArtifact.stopJms();
+        }
         _jmsArtifacts.remove(jmsArtifact);
         LOG.info("JMS Artifact Removed: " + jmsArtifact);
     }
-
 
     class JmsTransportListener implements TransportListener {
         @Override
@@ -139,7 +147,11 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             }
             if (connected.getAndSet(false)) {
                 for (JmsArtifact a : _jmsArtifacts) {
-                    a.stopJms();
+                    try {
+                        a.stopJms();
+                    } catch (Exception e) {
+                        LOG.log(Level.SEVERE, "Exception while shutting down jms artifact "+ a, e);
+                    }
                 }
             }
         }
@@ -153,6 +165,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             // First time connection
             if (!connected.getAndSet(true)) {
                 for (JmsArtifact a : _jmsArtifacts) {
+                    LOG.fine("Starting JMS Artifact" + a);
                     try {
                         a.startJms(ActiveMQJmsProvider.this);
                     } catch (JMSException e) {
@@ -160,6 +173,23 @@ public final class ActiveMQJmsProvider implements JmsProvider {
                     }
                 }
             }
+        }
+    }
+
+    class StartJmsUpdater implements Callable<Void> {
+
+        private final BlockingQueue<JmsArtifact> _updateQueue =
+                new LinkedBlockingQueue<JmsArtifact>();
+
+        public void addArtifact(JmsArtifact artifact) {
+            _updateQueue.add(artifact);
+        }
+
+        @Override
+        public Void call() throws Exception {
+
+            //connected.
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
     }
 
