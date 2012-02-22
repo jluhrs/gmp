@@ -1,5 +1,21 @@
 /*! \page release_notes Release Notes
 
+<h1>        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 13.1</h1>
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-867'>GIAPI-867</a>] -         IFS checker overwrites FITS keyword
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-868'>GIAPI-868</a>] -         GDS GUI shows button on anonymous mode
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-871'>GIAPI-871</a>] -         GDS Configuration should accept decimal default values
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-878'>GIAPI-878</a>] -         GDS Configuration should support a &quot;.&quot; on the status names
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-879'>GIAPI-879</a>] -         GDS Should not attempt to write to an extension if none is available
+</li>
+</ul>
+
 <h1>        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 13</h1>
 
 <h2>        Bug

@@ -52,9 +52,8 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
           try {
             updateFitsHeaders(namingFunction)
           } catch {
-            case ex => {
+            case ex =>
               LOG.log(Level.WARNING, ex.getMessage, ex)
-            }
           }
         }
       }
@@ -67,9 +66,7 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
    *
    * @param namingFunction, it is a an optional method to name the new file. It is a relative name, not absolute. For example: {label => "N-" + label.getName + ".fits"}
    */
-  def updateFitsHeaders(namingFunction: DataLabel => String = {
-    label => FitsUpdater.toFitsFileName(label)
-  }) {
+  def updateFitsHeaders(namingFunction: DataLabel => String = FitsUpdater.toFitsFileName) {
     val originalFile = new File(fromDirectory, FitsUpdater.toFitsFileName(dataLabel))
     val destinationFile = new File(toDirectory, namingFunction(dataLabel))
     copy(originalFile, destinationFile)
@@ -79,7 +76,10 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
       _.getIndex
     }
 
-    updatedHeaders map {
+    updatedHeaders filter {
+      // Skip headers not found in the file
+      _.getIndex < hEdit.readAllHeaders().size()
+    } map {
       h => hEdit.updateHeader(getUpdatedKeywords(h), h.getIndex)
     }
 
@@ -91,11 +91,8 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
       header.getAll
     }
   }
-
-
 }
 
 object FitsUpdater {
   def toFitsFileName(dataLabel: DataLabel) = dataLabel.toString + ".fits"
-
 }

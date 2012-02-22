@@ -74,9 +74,9 @@ class GDSConfigurationParser extends RegexParsers {
     case "t" => Mandatory(true)
   }
 
-  //todo:change to defaultValue
-  def defaultValue = """\w+""".r ^^ {
-    x => DefaultValue(x)
+  // Default value can be anything that does not contain a space
+  def defaultValue = """\S+""".r ^^ {
+    x:String => DefaultValue(x)
   }
 
   def subsystem = (KeywordSource.values map {
@@ -87,8 +87,9 @@ class GDSConfigurationParser extends RegexParsers {
     x => Subsystem(KeywordSource.withName(x))
   }
 
-  def channelName = """[:\w]+""".r ^^ {
-    x => Channel(x)
+  // Default value can be anything that does not contain a space
+  def channelName = """[:\w\.]+""".r ^^ {
+    x:String => Channel(x)
   }
 
   def arrayIndex = """\d+""".r ^^ {

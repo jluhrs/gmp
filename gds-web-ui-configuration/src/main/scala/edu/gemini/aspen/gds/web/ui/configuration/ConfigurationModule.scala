@@ -10,8 +10,8 @@ import org.osgi.service.cm.Configuration
 import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.gmp.services.properties.GmpProperties
-import com.vaadin.ui.{GridLayout, TextField, Component}
 import annotation.tailrec
+import com.vaadin.ui.{GridLayout, TextField, Component}
 
 class ConfigurationModule(propHolder: PropertyHolder, configAdmin: ConfigurationAdmin) extends GDSWebModule {
   val title: String = "System Configuration"

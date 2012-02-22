@@ -64,6 +64,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
       }
       case _ => {
         table.removeGeneratedColumn(deleteProperty)
+        updateSaveButton(user)
+        updateNewButton(user)
       }
     }
     updateSaveButton(user)
@@ -128,6 +130,12 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     val saveButton = configureSaveButton(app)
     layout.addComponent(newRowButton)
     layout.addComponent(saveButton)
+    val visible = getAppUser(app) match {
+      case Some(x:String) => true
+      case _ => false
+    }
+    newRowButton.setVisible(visible)
+    saveButton.setVisible(visible)
     layout.setComponentAlignment(newRowButton, Alignment.MIDDLE_RIGHT)
     layout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT)
 
@@ -172,6 +180,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     newRowButton.addListener(_ => {
       table.getApplication.getMainWindow.addWindow(new NewRowWindow(dataSource))
     })
+    newRowButton.setDebugId(KeywordsTableModule.NEW_ROW_BUTTON_DEBUG_ID)
     newRowButton
   }
 
@@ -181,7 +190,13 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
       app.getMainWindow.showNotification("Saving...", Notification.TYPE_HUMANIZED_MESSAGE)
       //todo: check that file hasn't changed between the time it was read and now.
     })
+    saveButton.setDebugId(KeywordsTableModule.SAVE_BUTTON_DEBUG_ID)
     saveButton
   }
 
+}
+
+object KeywordsTableModule {
+  val SAVE_BUTTON_DEBUG_ID = "gds-web-ui-keywords.status.save"
+  val NEW_ROW_BUTTON_DEBUG_ID = "gds-web-ui-keywords.status.newrow"
 }

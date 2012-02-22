@@ -5,6 +5,7 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.gds.api.{KeywordSource, ErrorCollectedValue, CollectedValue, ErrorPolicy}
+import java.util.logging.Logger
 
 /**
  * This policy checks for errors and missing values and adds them to the ObservationStateRegistrar.
@@ -14,9 +15,12 @@ import edu.gemini.aspen.gds.api.{KeywordSource, ErrorCollectedValue, CollectedVa
 @Instantiate
 @Provides(specifications = Array(classOf[ErrorPolicy]))
 class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires obsState: ObservationStateRegistrar) extends ErrorPolicy {
+  protected val LOG = Logger.getLogger(this.getClass.getName)
   override val priority = 0
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
+    LOG.fine("Inspect headers looking for missing value")
+
     checkErrors(dataLabel, headers)
     checkMissing(dataLabel, headers)
     headers

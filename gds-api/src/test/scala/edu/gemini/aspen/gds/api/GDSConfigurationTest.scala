@@ -1,19 +1,27 @@
 package scala.edu.gemini.aspen.gds.api
 
-import org.scalatest.junit.AssertionsForJUnit
-import org.junit.Test
-import org.junit.Assert.{assertTrue, assertFalse}
+import org.junit.Assert._
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
+import org.scalatest.FunSuite
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
 
-class GDSConfigurationTest extends AssertionsForJUnit {
+@RunWith(classOf[JUnitRunner])
+class GDSConfigurationTest extends FunSuite {
 
-  @Test
-  def testIsMandatory() {
+  test("mandatory attribute") {
     val mandatoryConfig = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
     assertTrue(mandatoryConfig.isMandatory)
     val nonMandatoryConfig = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", false, "NONE", "EPICS", "gpiSvalue", 0, "Mean airmass for the observation")
     assertFalse(nonMandatoryConfig.isMandatory)
+  }
+
+  test("default value") {
+    val defaultWithDecimals = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "0.0", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
+    assertEquals("0.0", defaultWithDecimals.nullValue.value)
+    val defaultNoDecimals = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", false, "0", "EPICS", "gpiSvalue", 0, "Mean airmass for the observation")
+    assertEquals("0", defaultNoDecimals.nullValue.value)
   }
 
 }

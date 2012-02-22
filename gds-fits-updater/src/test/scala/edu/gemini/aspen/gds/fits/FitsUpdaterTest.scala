@@ -91,5 +91,18 @@ class FitsUpdaterTest extends FitsBaseTest {
       val spentTime = ((System.nanoTime - start) / 10e9)
       spentTime should be <= (0.01)
     }
+    test("should skip updating an extension if not present, bug GIAPI-879") {
+      val originalPrimaryHeader = readPrimaryHeader(originalFile)
+
+      // The update goes to the header 1 that doesn't exist
+      val headers = createHeadersWithAirMass(1)
+
+      updateFitsFile(headers)
+
+      val updatedPrimaryHeader = readPrimaryHeader(destinationFile)
+
+      updatedPrimaryHeader.getKeywords.containsAll(originalPrimaryHeader.getKeywords) should be(true)
+      updatedPrimaryHeader.getKeywords.contains("AIRMASS") should be(false)
+    }
 
 }

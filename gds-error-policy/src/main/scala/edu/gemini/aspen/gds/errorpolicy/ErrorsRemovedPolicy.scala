@@ -9,11 +9,13 @@ import org.apache.felix.ipojo.annotations.{Instantiate, Provides, Component}
  */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[ErrorPolicy]))
+@Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
 class ErrorsRemovedPolicy extends DefaultErrorPolicy {
   override val priority = 10
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = headers filter {
+    LOG.fine("Remove errors form " + dataLabel)
+
     _ match {
       case c: ErrorCollectedValue => false
       case c => true

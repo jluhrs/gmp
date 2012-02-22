@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.errorpolicy
 import edu.gemini.aspen.giapi.data.DataLabel
 import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{GDSConfiguration, DefaultCollectedValue, ErrorPolicy, CollectionError, ErrorCollectedValue, CollectedValue, DefaultErrorPolicy}
+import edu.gemini.aspen.gds.api.{Subsystem, KeywordSource, GDSConfiguration, DefaultCollectedValue, ErrorPolicy, CollectionError, ErrorCollectedValue, CollectedValue, DefaultErrorPolicy}
 
 /**
  * This policy adds missing items(i.e. that are in the configuration but not among the CollectedValues) and then
@@ -17,6 +17,8 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
   override val priority = 2
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
+    LOG.fine("Enforce mandatory keywords for " + dataLabel)
+
     headers ++ constructValuesForMissing(getMissing(headers)) map {
       case ErrorCollectedValue(keyword, CollectionError.MandatoryRequired, comment, index) => CollectedValue(keyword, "", comment, index)
       case c => c
@@ -28,6 +30,8 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
       config => headers exists {
         collected => collected.keyword == config.keyword
       }
+    } filter {
+      config => config.subsystem != Subsystem(KeywordSource.IFS)
     }
   }
 

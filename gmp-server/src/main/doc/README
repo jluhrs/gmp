@@ -48,8 +48,8 @@ The GMP is also provided as an RPM. To install it do the command:
 The rpm is really meant for an installation in Gemini environment and makes some
 assumptions on the system where is installed:
 
-- GMP will be installed at /gemsoft/opt/gpi/gmp
-- A software user, and gemini group, will be created if they don't exist (gmp will run under software user)
+- GMP will be installed at $GEMINI_TOP/opt/gpi/gmp
+- A software user will be created if it doesn't exist (gmp will run under software user)
 - A init script for gmp is installed at /etc/init.d/gmp-server
 - gmp-server will be run at startup via chkconfig
 

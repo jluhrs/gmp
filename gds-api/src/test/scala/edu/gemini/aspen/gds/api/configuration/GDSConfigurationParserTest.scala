@@ -6,11 +6,15 @@ import org.junit.Assert._
 import org.junit.Test
 import java.io.File
 import edu.gemini.aspen.gds.api.Predef.copy
+import org.scalatest.FunSuite
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
 
 /**
  * Specify how the GDSConfiguration parser should behave
  */
-class GDSConfigurationParserTest {
+@RunWith(classOf[JUnitRunner])
+class GDSConfigurationParserTest extends FunSuite {
   val text = """GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "Mean airmass for the observation""""
 
   val good = Array("GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"Mean airmass for the observation\"",
@@ -32,16 +36,14 @@ class GDSConfigurationParserTest {
   val blank = Array("", " ", "  ", "\t")
 
 
-  @Test
-  def testWrong() {
+  test("catch bad values") {
     for (line <- wrong) {
       val result = new GDSConfigurationParser().parseText(line)
       assertFalse("Error parsing line with following contents: ->|" + line + "|<-", result.successful)
     }
   }
 
-  @Test
-  def testBlank() {
+  test("parse blank lines") {
     for (line <- blank) {
       val result = new GDSConfigurationParser().parseText(line)
       assertTrue("Error parsing line with following contents: ->|" + line + "|<-", result.successful)
@@ -50,8 +52,7 @@ class GDSConfigurationParserTest {
     }
   }
 
-  @Test
-  def testComments() {
+  test("parse comments") {
     for (line <- comments) {
       val result = new GDSConfigurationParser().parseText(line)
       assertTrue("Error parsing line with following contents: ->|" + line + "|<-", result.successful)
@@ -61,8 +62,7 @@ class GDSConfigurationParserTest {
     }
   }
 
-  @Test
-  def testParseConfigurationLine() {
+  test("parse configuration line") {
     for (line <- good) {
       val result = new GDSConfigurationParser().parseText(text)
       assertTrue("Error parsing line with following contents: ->|" + line + "|<-", result.successful)
@@ -73,8 +73,7 @@ class GDSConfigurationParserTest {
 
   }
 
-  @Test
-  def testParseCommentLines() {
+  test("parse comment lines") {
     val text = "#comment"
     val result = new GDSConfigurationParser().parseText(text)
 
@@ -84,13 +83,38 @@ class GDSConfigurationParserTest {
     assertEquals(Some(Comment("#comment")), result.get(0))
   }
 
-  @Test
-  def parseFile() {
+  test("parse bad files") {
     copy(new File(this.getClass.getResource("gds-keywords.conf").toURI), new File("/tmp/gds-keywords.conf.test"))
     val result = new GDSConfigurationParser().parseFileRawResult("/tmp/gds-keywords.conf.test")
     assertTrue(result.successful)
 
     assertFalse(result.isEmpty)
     assertEquals(16, result.get.size)
+  }
+
+  test("parse default with non supported values. Bug GIAPI-871") {
+    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 EPICS ws:massAirmass 0 "Mean airmass for the observation"""")
+    assertTrue(result.successful)
+
+    assertEquals(DefaultValue("0.0"), result.get(0).get.asInstanceOf[GDSConfiguration].nullValue)
+
+    // Test with negative
+    val result2 = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F -0.1 EPICS ws:massAirmass 0 "Mean airmass for the observation"""")
+    assertTrue(result2.successful)
+
+    assertEquals(DefaultValue("-0.1"), result2.get(0).get.asInstanceOf[GDSConfiguration].nullValue)
+
+    // Test with a dash
+    val result3 = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F HAWAII-R2 EPICS ws:massAirmass 0 "Mean airmass for the observation"""")
+    assertTrue(result3.successful)
+
+    assertEquals(DefaultValue("HAWAII-R2"), result3.get(0).get.asInstanceOf[GDSConfiguration].nullValue)
+  }
+
+  test("parse channel with a dot. Bug GIAPI-878") {
+    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 STATUS gpi:cc.value1 0 "Mean airmass for the observation"""")
+    assertTrue(result.successful)
+
+    assertEquals(Channel("gpi:cc.value1"), result.get(0).get.asInstanceOf[GDSConfiguration].channel)
   }
 }
