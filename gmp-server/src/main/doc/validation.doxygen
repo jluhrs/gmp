@@ -584,7 +584,7 @@ example code should be something like:
     gpi:status1                    2011-03-01 11:28:02.318000 999
     gpi:status2                    2011-03-01 11:28:02.318000 1
 \endverbatim
-\li Now run <tt>$ camonitor gpi:status1 gpi:alarm1 gpi:health1</tt>.
+\li Now run <tt>$ camonitor gpi:status1 gpi:alarm1 gpi:alarm1.OMSS gpi:health1</tt>.
 \li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:status1 -value 100 -type INTEGER</tt>.
 \li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:health1 -value WARNING -type HEALTH</tt>.
 \li Run <tt>java -jar giapi-tester/target/giapi-tester-0.1.0-jar-with-dependencies.jar -set gpi:alarm1 -value 100 -type ALARM_INTEGER -severity ALARM_WARNING -cause ALARM_CAUSE_HI -message "Error message"</tt>.
