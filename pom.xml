@@ -396,6 +396,16 @@
                 <artifactId>gds-web-ui-logs</artifactId>
                 <version>0.1.0</version>
             </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.giapi.web.ui.vaadin</groupId>
+                <artifactId>giapi-vaadin-common</artifactId>
+                <version>0.1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+                <artifactId>gds-web-ui</artifactId>
+                <version>0.1.0</version>
+            </dependency>
 
             <!-- JAXB -->
             <dependency>
@@ -517,8 +527,36 @@
                 <artifactId>confirmdialog</artifactId>
                 <version>1.1.0</version>
             </dependency>
+
+            <!-- Testing dependencies -->
+            <dependency>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest_2.9.1</artifactId>
+                <version>1.6.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.7</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Scala -->
+            <dependency>
+                <groupId>com.weiglewilczek.scala-lang-osgi</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala-lang.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 
     <modules>
         <module>poms</module>
