@@ -104,6 +104,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Internal modules -->
+            <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-top</artifactId>
+                <version>0.0.2</version>
+            </dependency>
+
             <!-- JAXB -->
             <dependency>
                 <groupId>javax.xml.bind</groupId>

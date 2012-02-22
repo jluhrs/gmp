@@ -123,14 +123,6 @@
                 <artifactId>giapi-test-support</artifactId>
                 <version>0.1.0</version>
             </dependency>
-
-
-
-            <dependency>
-                <groupId>edu.gemini.aspen.gmp</groupId>
-                <artifactId>gmp-top</artifactId>
-                <version>0.0.2</version>
-            </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-fileevents</artifactId>
