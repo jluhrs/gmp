@@ -46,6 +46,11 @@ if ! [ -d ~software/.pax/runner ]; then
     touch ~software/.pax/runner/org.ops4j.pax.runner.daemon.password.file
 fi
 
+if ! [ -e $HOME/.pax/runner/org.ops4j.pax.runner.daemon.lock ]; then
+    echo "Seems GMP is still running, Lock file still in place"
+    echo "If you are sure GMP is not running delete $HOME/.pax/runner/org.ops4j.pax.runner.daemon.lock"
+fi
+
 
 #
 # - get PID from .pid file if it exists and check if it is running
