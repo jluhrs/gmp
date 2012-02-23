@@ -26,7 +26,7 @@ class VaadinServlet(@Requires(from = "VaadinAppFactory") val vaadinAppFactory: F
   private val LOG = Logger.getLogger(this.getClass.getName)
   @ServiceProperty(name = "alias", value = "/gds")
   val label: String = "/gds"
-  @ServiceProperty(name = "servlet-name", value = "GDSVaadinServlet")
+  @ServiceProperty(name = "servlet-key", value = "GDSVaadinServlet")
   val servletName: String = "GDSVaadinServlet"
   var sessions = List[VaadinSession]()
 

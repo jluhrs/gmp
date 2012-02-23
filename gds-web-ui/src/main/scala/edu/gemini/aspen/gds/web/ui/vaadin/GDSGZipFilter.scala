@@ -11,7 +11,7 @@ import org.apache.felix.ipojo.annotations.{ServiceProperty, Provides, Instantiat
 @Instantiate
 @Provides(specifications = Array(classOf[Filter]))
 class GDSGZipFilter extends GzipFilter {
-  @ServiceProperty(name = "filter-name", value = "gzipfilter")
+  @ServiceProperty(name = "filter-key", value = "gzipfilter")
   val label: String = "gzipfilter"
   @ServiceProperty(name = "urlPatterns", value = "/gds")
   val urlPatterns: Array[String] = Array("/gds", "/VAADIN")
