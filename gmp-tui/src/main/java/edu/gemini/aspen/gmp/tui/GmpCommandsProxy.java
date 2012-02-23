@@ -17,7 +17,7 @@ import org.apache.felix.service.command.Descriptor;
 @Component
 @Instantiate
 @Provides
-public class GmpCommandsProxy {
+public class GmpCommandsProxy implements GmpCommands {
     private static final String ACTIVITY_DESCRIPTION = "activity: START, PRESET, START_PRESET, CANCEL";
     
     @ServiceProperty(name = "osgi.command.scope", value = "gmp")

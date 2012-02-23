@@ -11,7 +11,7 @@ import org.apache.felix.service.command.Descriptor;
 @Component
 @Instantiate
 @Provides
-public class PropertiesCommandProxy {
+public class PropertiesCommandProxy implements GmpCommands {
     @ServiceProperty(name = "osgi.command.scope", value = "gmp")
     private final String SCOPE = "gmp";
     @ServiceProperty(name = "osgi.command.function")
