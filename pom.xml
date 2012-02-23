@@ -506,23 +506,6 @@
                 <version>${pax-web.version}</version>
             </dependency>
 
-            <!-- Vaadin components -->
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin</artifactId>
-                <version>${vaadin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-                <artifactId>pagedtable</artifactId>
-                <version>0.6.2</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-                <artifactId>confirmdialog</artifactId>
-                <version>1.1.0</version>
-            </dependency>
-
             <!-- Testing dependencies -->
             <dependency>
                 <groupId>org.scalatest</groupId>
@@ -561,6 +544,23 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>1.6</version>
+            </dependency>
+
+            <!-- Vaadin dependencies -->
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                <artifactId>confirmdialog</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
+                <artifactId>vaadin-lazyquerycontainer</artifactId>
+                <version>1.2.9</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
