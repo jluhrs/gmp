@@ -40,7 +40,6 @@
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
             <artifactId>pagedtable</artifactId>
-            <version>0.6.2</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
