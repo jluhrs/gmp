@@ -550,6 +550,18 @@
                 <artifactId>guava-osgi</artifactId>
                 <version>10.0.0</version>
             </dependency>
+
+            <!-- Joda time dependencies -->
+            <dependency>
+                <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
+                <artifactId>time_2.9.1</artifactId>
+                <version>0.5</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>1.6</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
