@@ -45,7 +45,6 @@
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
             <artifactId>vaadin-lazyquerycontainer</artifactId>
-            <version>1.2.9</version>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
@@ -55,6 +54,10 @@
         <dependency>
             <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
             <artifactId>time_2.9.1</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
         </dependency>
     </dependencies>
 
