@@ -41,6 +41,10 @@
             <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
             <artifactId>time_2.9.1</artifactId>
         </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
