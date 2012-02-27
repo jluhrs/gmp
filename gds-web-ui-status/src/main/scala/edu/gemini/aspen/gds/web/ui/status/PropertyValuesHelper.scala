@@ -5,17 +5,18 @@ import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.api.CollectionError
 import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
+import edu.gemini.aspen.gmp.top.Top
 
-class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) {
+class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: ObservationStateProvider, top: Top) {
   def getStatus = {
-    statusDB.getStatusItem("gpi:gds:health") match {
+    statusDB.getStatusItem(top.buildStatusItemName("gds:health")) match {
       case x: StatusItem[_] => x.getValue.toString
       case _ => StatusModule.defaultStatus
     }
   }
 
   def getStatusStyle:String = {
-    statusDB.getStatusItem("gpi:gds:health") match {
+    statusDB.getStatusItem(top.buildStatusItemName("gds:health")) match {
       case x: StatusItem[_] if (x.getValue.equals(Health.GOOD)) => "gds-green"
       case x: StatusItem[_] if (x.getValue.equals(Health.WARNING)) => "gds-orange"
       case x: StatusItem[_] if (x.getValue.equals(Health.BAD)) => "gds-red"

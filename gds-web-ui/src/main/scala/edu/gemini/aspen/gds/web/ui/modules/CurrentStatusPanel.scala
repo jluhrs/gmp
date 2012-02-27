@@ -5,11 +5,12 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.data._
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate}
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
 import com.vaadin.ui.Label
+import edu.gemini.aspen.gmp.top.Top
 
 @org.apache.felix.ipojo.annotations.Component
 @Instantiate
 @Provides(specifications = Array(classOf[StatusPanelModule]))
-class CurrentStatusPanel(@Requires statusDB: StatusDatabaseService) extends AbstractStatusPanelModule {
+class CurrentStatusPanel(@Requires statusDB: StatusDatabaseService, @Requires top:Top) extends AbstractStatusPanelModule {
   override val order = 0
   val label = "Status:"
   val item = "Running"
@@ -21,7 +22,7 @@ class CurrentStatusPanel(@Requires statusDB: StatusDatabaseService) extends Abst
   }
 
   private def getStatus = {
-    statusDB.getStatusItem("gpi:gds:health") match {
+    statusDB.getStatusItem(top.buildStatusItemName("gds:health")) match {
       case x: StatusItem[_] => if (x.getValue.equals(Health.GOOD)) {
         "<span style=\"color: green\">" + x.getValue.toString + "</span>"
       } else

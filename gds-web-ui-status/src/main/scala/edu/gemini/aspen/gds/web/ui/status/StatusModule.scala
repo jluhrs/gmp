@@ -10,15 +10,16 @@ import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import StatusModule._
+import edu.gemini.aspen.gmp.top.Top
 
-class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider) extends GDSWebModule {
+class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider, top: Top) extends GDSWebModule {
   val title: String = "Status"
   val order: Int = 0
   val topGrid = new GridLayout(2, 3)
   val nLast = 10
   val accordion = new Accordion()
   val bottomPanel = new Panel("Last " + nLast + " Observations")
-  val propertySources = new PropertyValuesHelper(statusDB, obsState)
+  val propertySources = new PropertyValuesHelper(statusDB, obsState, top)
 
   //properties
   val statusProp = new ObjectProperty(defaultStatus)
@@ -62,30 +63,30 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     panel
   }
 
-  private def generateAccordion(app: Application, lastEntries:List[Entry]) {
+  private def generateAccordion(app: Application, lastEntries: List[Entry]) {
     for (entry: Entry <- lastEntries) {
-        val grid = new GridLayout(2, 3)
-        grid.setMargin(true)
-        grid.setSpacing(true)
-        grid.setSizeFull()
-        grid.setColumnExpandRatio(0, 1.0f)
-        grid.setColumnExpandRatio(1, 3.0f)
-        grid.addComponent(buildLabel("Time to update FITS for last DataSet"))
-        grid.addComponent(new Label(entry.times))
-        if (entry.missing.length() > 0) {
-          grid.addComponent(buildLabel("Missing Keywords from last DataSet"))
-          grid.addComponent(new Label(entry.missing))
-        }
-        if (entry.errors.length() > 0) {
-          grid.addComponent(buildLabel("Error Collecting Keywords from last DataSet:"))
-          grid.addComponent(new Label(entry.errors))
-        }
-        if (propertySources.isInError(entry.dataLabel)) {
-          accordion.addTab(grid, entry.dataLabel, new ThemeResource("../gds/failed.png"))
-        }
-        else {
-          accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/ok.png"))
-        }
+      val grid = new GridLayout(2, 3)
+      grid.setMargin(true)
+      grid.setSpacing(true)
+      grid.setSizeFull()
+      grid.setColumnExpandRatio(0, 1.0f)
+      grid.setColumnExpandRatio(1, 3.0f)
+      grid.addComponent(buildLabel("Time to update FITS for last DataSet"))
+      grid.addComponent(new Label(entry.times))
+      if (entry.missing.length() > 0) {
+        grid.addComponent(buildLabel("Missing Keywords from last DataSet"))
+        grid.addComponent(new Label(entry.missing))
+      }
+      if (entry.errors.length() > 0) {
+        grid.addComponent(buildLabel("Error Collecting Keywords from last DataSet:"))
+        grid.addComponent(new Label(entry.errors))
+      }
+      if (propertySources.isInError(entry.dataLabel)) {
+        accordion.addTab(grid, entry.dataLabel, new ThemeResource("../gds/failed.png"))
+      }
+      else {
+        accordion.addTab(grid, entry.dataLabel, new ThemeResource("../runo/icons/16/ok.png"))
+      }
     }
     accordion.setVisible(accordion.getComponentCount != 0)
   }
@@ -100,14 +101,14 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
   }
 
-  private def getLastEntries(dataLabels: Traversable[String]):List[Entry] = {
+  private def getLastEntries(dataLabels: Traversable[String]): List[Entry] = {
     dataLabels map {
       l => if (propertySources.isInError(l)) {
         new Entry(l, propertySources.getTimes(l), propertySources.getMissingKeywords(l), propertySources.getKeywordsInError(l))
       } else {
         new Entry(l, propertySources.getTimes(l))
       }
-    } take(nLast) toList
+    } take (nLast) toList
   }
 }
 

@@ -1,27 +1,31 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import org.specs2.mock.Mockito
-import org.junit.{Test, Ignore}
+import org.mockito.Mockito._
+import org.junit.Test
 import edu.gemini.aspen.gds.observationstate.impl.ObservationStateImpl
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher
 import org.junit.Assert.assertEquals
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.{Health, StatusDatabaseService}
 import edu.gemini.aspen.gds.api.CollectionError
-import collection.immutable.Set
 import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
 import edu.gemini.aspen.gds.api.Conversions._
 import org.scala_tools.time.Imports._
+import edu.gemini.aspen.gmp.top.Top
 
 
 class PropertyValuesHelperTest extends Mockito {
+  val top = mock[Top]
+  when(top.buildStatusItemName(anyString)).thenReturn("gpitest:gds:health")
+
   @Test
   def testValueFormattingDefaults {
     val statusDB = mock[StatusDatabaseService]
     statusDB.getStatusItem(anyString) returns null
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
-    val module = new PropertyValuesHelper(statusDB, obsState)
+    val module = new PropertyValuesHelper(statusDB, obsState, top)
 
     assertEquals(StatusModule.defaultLastDataLabel, module.getLastDataLabel)
     assertEquals(StatusModule.defaultErrors, module.getKeywordsInError)
@@ -39,7 +43,7 @@ class PropertyValuesHelperTest extends Mockito {
     }
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
-    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
+    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState, top)
 
     obsState.startObservation("label")
     obsState.endObservation("label")
@@ -66,7 +70,7 @@ class PropertyValuesHelperTest extends Mockito {
     val statusDB = mock[StatusDatabaseService]
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
-    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
+    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState, top)
 
     obsState.startObservation("label1")
     assertEquals("label1", propertyValuesHelper.getProcessing)
@@ -79,7 +83,7 @@ class PropertyValuesHelperTest extends Mockito {
     val statusDB = mock[StatusDatabaseService]
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
-    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
+    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState, top)
     obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD")))
     assertEquals("KEYWORD", propertyValuesHelper.getMissingKeywords)
 
@@ -92,7 +96,7 @@ class PropertyValuesHelperTest extends Mockito {
     val statusDB = mock[StatusDatabaseService]
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
-    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState)
+    val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState, top)
 
     obsState.registerCollectionError("label", List((new FitsKeyword("KEYWORD"), CollectionError.GenericError)))
     assertEquals("KEYWORD", propertyValuesHelper.getKeywordsInError)
@@ -110,7 +114,7 @@ class PropertyValuesHelperTest extends Mockito {
 
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
-    val helper = new PropertyValuesHelper(statusDB, obsState)
+    val helper = new PropertyValuesHelper(statusDB, obsState, top)
     assertEquals("gds-red", helper.getStatusStyle)
 
     statusDB.getStatusItem(anyString) answers {
