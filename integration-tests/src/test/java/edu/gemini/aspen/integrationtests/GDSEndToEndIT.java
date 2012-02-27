@@ -7,7 +7,6 @@ import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
-import edu.gemini.fits.FitsParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -26,6 +25,8 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
+//import edu.gemini.fits.FitsParseException;
+
 @RunWith(JUnit4TestRunner.class)
 public class GDSEndToEndIT extends GDSIntegrationBase {
     @Configuration
@@ -39,7 +40,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         );
     }
 
-    //@Test
+    @Test
     public void bundleExistence() throws InterruptedException {
         assertNotNull(getBundle("edu.gemini.aspen.gds.api"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.keywords.database"));
@@ -51,7 +52,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
     }
 
     @Test
-    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
+    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException {
         TimeUnit.MILLISECONDS.sleep(4000);
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
@@ -65,9 +66,10 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
 
         Set<String> originalKeywords = readOriginalKeywords();
 
-        sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
+        sendObservationEvents(eventHandler, new DataLabel("sample1"));
         TimeUnit.MILLISECONDS.sleep(2000);
 
+        System.out.println(new File(FINAL_FITS_DIR + FINAL_FITS_FILE));
         File finalFile = new File(FINAL_FITS_DIR + FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 

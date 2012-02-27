@@ -1,28 +1,34 @@
 package edu.gemini.aspen.gds.web.ui.status
 
-import org.specs2.mock.Mockito
 import org.mockito.Mockito._
-import org.junit.Test
 import edu.gemini.aspen.gds.observationstate.impl.ObservationStateImpl
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher
 import org.junit.Assert.assertEquals
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
-import edu.gemini.aspen.giapi.status.{Health, StatusDatabaseService}
 import edu.gemini.aspen.gds.api.CollectionError
-import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
+import edu.gemini.aspen.giapi.data.ObservationEvent
 import edu.gemini.aspen.gds.api.Conversions._
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gmp.top.Top
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import org.scalatest.FunSuite
+import org.scalatest.mock.MockitoSugar
+import org.mockito.Mockito._
+import org.mockito.Matchers._
+import org.mockito.stubbing.Answer
+import org.mockito.invocation.InvocationOnMock
+import edu.gemini.aspen.giapi.status.{StatusItem, Health, StatusDatabaseService}
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
 
-
-class PropertyValuesHelperTest extends Mockito {
+@RunWith(classOf[JUnitRunner])
+class PropertyValuesHelperTest extends FunSuite with MockitoSugar {
   val top = mock[Top]
   when(top.buildStatusItemName(anyString)).thenReturn("gpitest:gds:health")
 
-  @Test
-  def testValueFormattingDefaults {
+  test("Value formatting defaults") {
     val statusDB = mock[StatusDatabaseService]
-    statusDB.getStatusItem(anyString) returns null
+    when(statusDB.getStatusItem(anyString)).thenReturn(null)
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
     val module = new PropertyValuesHelper(statusDB, obsState, top)
@@ -35,13 +41,12 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals(StatusModule.defaultTimes, module.getTimes)
   }
 
-  @Test
-  def testValueFormatting {
+  test("Value Formatting") {
     val statusDB = mock[StatusDatabaseService]
-    statusDB.getStatusItem(anyString) answers {
-      case x: String => new HealthStatus(x, Health.BAD)
-    }
-    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
+    when(statusDB.getStatusItem(anyString)).thenAnswer(new Answer[StatusItem[_]]() {
+      def answer(p1: InvocationOnMock) = new HealthStatus(p1.getArguments.apply(0).toString, Health.BAD)
+    })
+    val obsState = new ObservationStateImpl(mock[ObservationStatePublisher])
 
     val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState, top)
 
@@ -65,10 +70,9 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals("1[ms]", propertyValuesHelper.getTimes)
   }
 
-  @Test
-  def testGetProcessing {
+  test("Get Processing") {
     val statusDB = mock[StatusDatabaseService]
-    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
+    val obsState = new ObservationStateImpl(mock[ObservationStatePublisher])
 
     val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState, top)
 
@@ -78,10 +82,9 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals("label2, label1", propertyValuesHelper.getProcessing)
   }
 
-  @Test
-  def testGetMissingKeywords {
+  test("GetMissingKeywords") {
     val statusDB = mock[StatusDatabaseService]
-    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
+    val obsState = new ObservationStateImpl(mock[ObservationStatePublisher])
 
     val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState, top)
     obsState.registerMissingKeyword("label", List(new FitsKeyword("KEYWORD")))
@@ -91,10 +94,9 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals("KEYWORD2, KEYWORD", propertyValuesHelper.getMissingKeywords)
   }
 
-  @Test
-  def testGetKeywordsInError {
+  test("GetKeywordsInError") {
     val statusDB = mock[StatusDatabaseService]
-    val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
+    val obsState = new ObservationStateImpl(mock[ObservationStatePublisher])
 
     val propertyValuesHelper = new PropertyValuesHelper(statusDB, obsState, top)
 
@@ -105,26 +107,25 @@ class PropertyValuesHelperTest extends Mockito {
     assertEquals("KEYWORD2, KEYWORD", propertyValuesHelper.getKeywordsInError)
   }
 
-  @Test
-  def testGetStatusStyle {
+  test("GetStatusStyle") {
     val statusDB = mock[StatusDatabaseService]
-    statusDB.getStatusItem(anyString) answers {
-      case x: String => new HealthStatus(x, Health.BAD)
-    }
+    when(statusDB.getStatusItem(anyString)).thenAnswer(new Answer[StatusItem[_]]() {
+      def answer(p1: InvocationOnMock) = new HealthStatus(p1.getArguments.apply(0).toString, Health.BAD)
+    })
 
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock[ObservationStatePublisher])
 
     val helper = new PropertyValuesHelper(statusDB, obsState, top)
     assertEquals("gds-red", helper.getStatusStyle)
 
-    statusDB.getStatusItem(anyString) answers {
-      case x: String => new HealthStatus(x, Health.WARNING)
-    }
+    when(statusDB.getStatusItem(anyString)).thenAnswer(new Answer[StatusItem[_]]() {
+      def answer(p1: InvocationOnMock) = new HealthStatus(p1.getArguments.apply(0).toString, Health.WARNING)
+    })
 
     assertEquals("gds-orange", helper.getStatusStyle)
-    statusDB.getStatusItem(anyString) answers {
-      case x: String => new HealthStatus(x, Health.GOOD)
-    }
+    when(statusDB.getStatusItem(anyString)).thenAnswer(new Answer[StatusItem[_]]() {
+      def answer(p1: InvocationOnMock) = new HealthStatus(p1.getArguments.apply(0).toString, Health.GOOD)
+    })
     assertEquals("gds-green", helper.getStatusStyle)
   }
 }

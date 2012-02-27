@@ -3,13 +3,14 @@ package edu.gemini.aspen.gds.odb
 import org.junit.Assert._
 import org.junit.Test
 import org.scalatest.Spec
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.spModel.gemini.obscomp.SPProgram
 import edu.gemini.pot.spdb.IDBDatabaseService
 import edu.gemini.pot.sp.{ISPProgram, SPProgramID}
 import edu.gemini.aspen.gds.api._
+import fits.FitsKeyword
 
 class ODBValuesActorTest extends Spec with Mockito {
   val dataLabel = new DataLabel("GS-2011")

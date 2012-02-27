@@ -7,9 +7,6 @@ import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
-import edu.gemini.fits.FitsParseException;
-import edu.gemini.fits.Header;
-import edu.gemini.fits.Hedit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,17 +22,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
-    protected static final String FINAL_FITS_FILE = "/tmp/perm/FITS_WITH_EXTENSIONS.fits";
-    protected static final String INITIAL_FITS_FILE = "FITS_WITH_EXTENSIONS.fits";
+    protected static final String FINAL_FITS_FILE = "/tmp/perm/sampleWithExt.fits";
+    protected static final String INITIAL_FITS_FILE = "sampleWithExt.fits";
 
     @Before
     @Override
@@ -72,7 +67,7 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
     }
 
     @Test
-    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
+    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException {
         TimeUnit.MILLISECONDS.sleep(2000);
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
@@ -84,24 +79,19 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
 
         copyInitialFile(INITIAL_FITS_FILE, "/tmp/" + INITIAL_FITS_FILE);
 
-        List<Set<String>> originalKeywords = readAllExtensionsKeywords("/tmp/" + INITIAL_FITS_FILE);
+        List<Set<String>> originalKeywords = readAllExtensionsKeywords("/tmp/" + INITIAL_FITS_FILE, 3);
         assertEquals(3, originalKeywords.size()); //primary + 2 extensions
 
-        sendObservationEvents(eventHandler, new DataLabel("FITS_WITH_EXTENSIONS"));
+        sendObservationEvents(eventHandler, new DataLabel("sampleWithExt"));
         TimeUnit.MILLISECONDS.sleep(2000);
 
         File finalFile = new File(FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
-        Hedit hEdit = new Hedit(finalFile);
-        List<Header> allHeaders = hEdit.readAllHeaders();
-        assertEquals(3, allHeaders.size()); //primary + 2 extensions
-
         List<Set<String>> afterProcessingAllExtensionsKeywords = new ArrayList<Set<String>>();
-        for (Header header : allHeaders) {
-            afterProcessingAllExtensionsKeywords.add(header.getKeywords());
+        for (int i=0;i<3;i++) {
+            afterProcessingAllExtensionsKeywords.add(readKeywords(FINAL_FITS_FILE, i));
         }
-
         for (int i = 0; i < originalKeywords.size(); i++) {
             assertTrue(afterProcessingAllExtensionsKeywords.get(i).containsAll(originalKeywords.get(i)));
         }

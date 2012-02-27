@@ -4,7 +4,8 @@ import org.junit.Test
 import org.junit.Assert._
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{RetrieveAll, Retrieve, Store}
 import java.util.concurrent.TimeUnit
-import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
+import edu.gemini.aspen.giapi.data.DataLabel
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 class TemporarySeqexecKeywordsDatabaseImplTest {
   val dataLabel = new DataLabel("GS2010-1")

@@ -15,7 +15,7 @@ import scala.actors.Actor._
  * Component to store CollectedValue as HeaderItem, associated to DataLabel */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[KeywordsDatabase]))
+@Provides(specifications = Array[Class[_]](classOf[KeywordsDatabase]))
 class KeywordsDatabaseImpl extends KeywordsDatabase {
   private val LOG = Logger.getLogger(this.getClass.getName)
   // expiration of 1 day by default but tests can override it
@@ -53,7 +53,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   }
 
   private val map: ConcurrentMap[DataLabel, List[CollectedValue[_]]] = new MapMaker().
-    expireAfterWrite(expirationMillis, MILLISECONDS)
+    expiration(expirationMillis, MILLISECONDS)
     .makeMap[DataLabel, List[CollectedValue[_]]]()
 
   /**

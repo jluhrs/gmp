@@ -2,15 +2,13 @@ package edu.gemini.aspen.gds.fits
 
 import edu.gemini.aspen.giapi.data.DataLabel
 import java.io.File
-import edu.gemini.fits.{Hedit, Header}
 import collection.JavaConversions._
-import edu.gemini.aspen.gds.api.Predef._
 import actors.Reactor
 import java.util.logging.{Level, Logger}
+import edu.gemini.aspen.gds.api.fits.Header
+import com.google.common.io.Files
 
-case class Update(namingFunction: DataLabel => String = {
-  label => FitsUpdater.toFitsFileName(label)
-})
+case class Update(namingFunction: DataLabel => String = label => FitsUpdater.toFitsFileName(label))
 
 /**
  * Class that can take an existing file and add the headers passed in the constructor
@@ -64,35 +62,23 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
    * Updates the headers in the destination file, adding to the current set of
    * headers the ones passed in the constructor
    *
-   * @param namingFunction, it is a an optional method to name the new file. It is a relative name, not absolute. For example: {label => "N-" + label.getName + ".fits"}
+   * @param namingFunction, it is a an optional method to key the new file. It is a relative key, not absolute. For example: {label => "N-" + label.getName + ".fits"}
    */
   def updateFitsHeaders(namingFunction: DataLabel => String = FitsUpdater.toFitsFileName) {
     val originalFile = new File(fromDirectory, FitsUpdater.toFitsFileName(dataLabel))
     val destinationFile = new File(toDirectory, namingFunction(dataLabel))
-    copy(originalFile, destinationFile)
 
-    val hEdit = new Hedit(destinationFile)
     val updatedHeaders = headers sortBy {
-      _.getIndex
+      _.index
     }
 
-    updatedHeaders filter {
-      // Skip headers not found in the file
-      _.getIndex < hEdit.readAllHeaders().size()
-    } map {
-      h => hEdit.updateHeader(getUpdatedKeywords(h), h.getIndex)
-    }
-
+    val writer = new FitsWriter(originalFile)
+    writer.updateHeaders(updatedHeaders, destinationFile)
   }
 
-  private def getUpdatedKeywords(header: Header) = {
-    val keywords = header.getKeywords.toList
-    keywords.flatMap {
-      header.getAll
-    }
-  }
 }
 
 object FitsUpdater {
   def toFitsFileName(dataLabel: DataLabel) = dataLabel.toString + ".fits"
 }
+

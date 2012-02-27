@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.api.configuration
 
-import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api._
+import fits.FitsKeyword
 import org.junit.Assert._
 import org.junit.Test
 import java.io.File

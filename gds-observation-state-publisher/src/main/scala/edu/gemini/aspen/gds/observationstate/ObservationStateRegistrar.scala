@@ -1,8 +1,9 @@
 package edu.gemini.aspen.gds.observationstate
 
 import org.scala_tools.time.Imports._
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectionError
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 /**
  * Interface to be required by GDSObsEventHandler, to register data for the Observation state

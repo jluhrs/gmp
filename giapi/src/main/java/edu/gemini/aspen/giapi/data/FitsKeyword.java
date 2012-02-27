@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
  * Class representing a FitsKeyword
  * Non conforming keywords are not allowed
  */
+@Deprecated
 public class FitsKeyword {
     public final static Pattern FITS_KEYWORD_PATTERN = Pattern.compile("[\\p{Upper}\\d-_]{1,8}");
     private final String name;

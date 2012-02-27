@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.api
 
-import edu.gemini.aspen.giapi.data.FitsKeyword
+import fits.FitsKeyword
 
 /**
  * Enumeration of possible errors */

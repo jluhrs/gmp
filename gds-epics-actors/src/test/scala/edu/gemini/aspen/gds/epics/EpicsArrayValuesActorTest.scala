@@ -2,11 +2,12 @@ package edu.gemini.aspen.gds.epics
 
 import org.junit.Assert._
 import org.junit.Test
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.api._
 import edu.gemini.epics.api.ReadOnlyChannel
+import fits.FitsKeyword
 import scala.collection.JavaConversions._
 
 class EpicsArrayValuesActorTest extends Mockito {

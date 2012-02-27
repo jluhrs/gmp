@@ -1,19 +1,20 @@
 package edu.gemini.aspen.gds.observationstate.impl
 
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.observationstate.{ObservationStatePublisher, ObservationStateProvider, ObservationStateRegistrar}
 import java.util.concurrent.TimeUnit._
 import scala.collection.JavaConversions._
 import com.google.common.collect.MapMaker
 import edu.gemini.aspen.gds.api.CollectionError
-import collection.mutable.{SynchronizedStack, SynchronizedSet, HashSet, Set, ConcurrentMap}
+import collection.mutable.{SynchronizedSet, HashSet, Set, ConcurrentMap}
 import java.util.Date
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[ObservationStateRegistrar], classOf[ObservationStateProvider]))
+@Provides(specifications = Array[Class[_]](classOf[ObservationStateRegistrar], classOf[ObservationStateProvider]))
 class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) extends ObservationStateRegistrar with ObservationStateProvider {
   // expiration of 1 day by default but tests can override it
   def expirationMillis = 24 * 60 * 60 * 1000
@@ -29,7 +30,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
   }
 
   val obsInfoMap: ConcurrentMap[DataLabel, ObservationInfo] = new MapMaker().
-    expireAfterWrite(expirationMillis, MILLISECONDS)
+    expiration(expirationMillis, MILLISECONDS)
     .makeMap[DataLabel, ObservationInfo]()
 
   override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {

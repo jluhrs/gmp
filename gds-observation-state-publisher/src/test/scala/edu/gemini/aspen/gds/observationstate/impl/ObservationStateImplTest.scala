@@ -5,10 +5,11 @@ import org.mockito.Mockito._
 import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.Test
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectionError
 import collection.immutable.Set
 import java.util.concurrent.TimeUnit
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 class ObservationStateImplTest {
 
@@ -59,18 +60,18 @@ class ObservationStateImplTest {
   def testMissing() {
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
     obsState.startObservation("label1")
-    obsState.registerMissingKeyword("label1", new FitsKeyword("a") :: Nil)
-    obsState.registerMissingKeyword("label1", new FitsKeyword("b") :: Nil)
-    assertEquals((new FitsKeyword("b") :: new FitsKeyword("a") :: Nil).toSet, obsState.getMissingKeywords("label1").toSet)
+    obsState.registerMissingKeyword("label1", FitsKeyword("A") :: Nil)
+    obsState.registerMissingKeyword("label1", FitsKeyword("B") :: Nil)
+    assertEquals((FitsKeyword("B") :: FitsKeyword("A") :: Nil).toSet, obsState.getMissingKeywords("label1").toSet)
   }
 
   @Test
   def testError() {
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
     obsState.startObservation("label1")
-    obsState.registerCollectionError("label1", List((new FitsKeyword("a"), CollectionError.GenericError)))
-    obsState.registerCollectionError("label1", List((new FitsKeyword("b"), CollectionError.GenericError)))
-    assertEquals(Set((new FitsKeyword("b"), CollectionError.GenericError), (new FitsKeyword("a"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
+    obsState.registerCollectionError("label1", List((FitsKeyword("A"), CollectionError.GenericError)))
+    obsState.registerCollectionError("label1", List((FitsKeyword("B"), CollectionError.GenericError)))
+    assertEquals(Set((FitsKeyword("B"), CollectionError.GenericError), (FitsKeyword("A"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
   }
 
   @Test
@@ -79,7 +80,7 @@ class ObservationStateImplTest {
     assertFalse(obsState.isInError("label1"))
     obsState.startObservation("label1")
     assertFalse(obsState.isInError("label1"))
-    obsState.registerCollectionError("label1", List((new FitsKeyword("a"), CollectionError.GenericError)))
+    obsState.registerCollectionError("label1", List((FitsKeyword("A"), CollectionError.GenericError)))
     assertTrue(obsState.isInError("label1"))
   }
 
@@ -89,11 +90,11 @@ class ObservationStateImplTest {
       override def expirationMillis = 5
     }
     obsState.startObservation("label1")
-    obsState.registerCollectionError("label1", List((new FitsKeyword("a"), CollectionError.GenericError)))
-    obsState.registerCollectionError("label1", List((new FitsKeyword("b"), CollectionError.GenericError)))
+    obsState.registerCollectionError("label1", List((FitsKeyword("A"), CollectionError.GenericError)))
+    obsState.registerCollectionError("label1", List((FitsKeyword("B"), CollectionError.GenericError)))
 
     // Verify it is there
-    assertEquals(Set((new FitsKeyword("b"), CollectionError.GenericError), (new FitsKeyword("a"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
+    assertEquals(Set((FitsKeyword("B"), CollectionError.GenericError), (FitsKeyword("A"), CollectionError.GenericError)), obsState.getKeywordsInError("label1").toSet)
 
     TimeUnit.MILLISECONDS.sleep(5)
 

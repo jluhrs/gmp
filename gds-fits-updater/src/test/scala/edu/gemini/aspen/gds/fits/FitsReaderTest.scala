@@ -2,27 +2,144 @@ package edu.gemini.aspen.gds.fits
 
 import org.junit.Assert._
 import java.io.File
-import edu.gemini.aspen.giapi.data.FitsKeyword
-import org.scalatest.FunSuite
+import org.scalatest.{BeforeAndAfter, FunSuite}
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
+import edu.gemini.aspen.gds.api.fits.{FitsKeyword, Header}
 
-class FitsReaderTest extends FunSuite {
-  val names = Set("PODPSFF", "NAXIS", "FILTER1", "FILTNAM1", "DARKFILE", "CD2_1", "UCH2CJTM", "GAL_LONG", "STDCFFP", "STDCFFF", "FLATCORR", "ECL_LAT", "EXPFLAG", "MTFLAG", "DATALOST", "DATE-OBS", "STAC_I", "SKYSUB2", "SKYSUB1", "NAXIS2", "CD1_2", "PSTPTIME", "DARKTIME", "SHADFILE", "DARKDFIL", "SURFLONG", "OPUS_VER", "BIASFILE", "DETECTOR", "HISTWIDE", "SATURATE", "MEDIAN", "ATODGAIN", "MEANC100", "ERRCNT", "IRAF-TLM", "MEANC25", "EQRADTRG", "BLEVDFIL", "ECL_LONG", "EXTEND", "FGSLOCK", "OUTDTYPE", "SIMPLE", "CD2_2", "UEXPODUR", "GAL_LAT", "CRVAL1", "PSTRTIME", "MASKCORR", "NAXIS1", "COMMENT", "CD1_1", "MEANC10", "MODE", "FILTNAM2", "SOFTERRS", "NPRATRG", "DOHISTOS", "USCALE", "UZERO", "SKYSUB3", "EQNX_SUN", "DOSATMAP", "PYS_ITER", "NPDECTRG", "UCH1CJTM", "CRPIX2", "SURFLATD", "BACKGRND", "FILETYPE", "OBJECT", "READTIME", "LONGPMER", "PYS_VERS", "PEP_EXPO", "GRAPHTAB", "PHOTMODE", "BIASEVEN", "MASKFILE", "ATODSAT", "SKYSUB4", "PKTFMT", "LPKTTIME", "EXPTIME", "MEANC50", "STATICD", "TARGNAME", "ORIENTAT", "SUNANGLE", "DEZERO", "CALIBDEF", "UEXPOTIM", "RA_TARG", "LINENUM", "EPLONGPM", "PHOTTAB", "CRVAL2", "SEQNAME", "PA_V3", "CRPIX1", "SEQLINE", "SHADCORR", "DARKCORR", "INSTRUME", "PHOTBW", "ROOTNAME", "GOODMAX", "LRFWAVE", "NSHUTA17", "DOPHOTOM", "UCH4CJTM", "MEDSHADO", "IRAF_I", "BIASDFIL", "KSPOTS", "TELESCOP", "DEC_TARG", "MOONANGL", "EXPEND", "FILLCNT", "GPIXELS", "SURFALTD", "SERIALS", "UBAY3TMP", "RA_SUN", "GOODMIN", "FILTER2", "SKEWNESS", "FILTROT", "EQUINOX", "BIASCORR", "IMAGETYP", "SHUTTER", "PHOTZPT", "PHOTPLAM", "BIASODD", "SUN_ALT", "NCOMBINE", "TIME-OBS", "UCH3CJTM", "ORIGIN", "ATODFILE", "EXPSTART", "PHOTFLAM", "CTYPE1", "CAL_VER", "PROCTIME", "FLATDFIL", "BITPIX", "DATAMEAN", "RSDPFILL", "FPKTTIME", "PYS_HEXP", "MIR_REVR", "DEC_SUN", "BLEVCORR", "COMPTAB", "FLATFILE", "ROTRTTRG", "DATE", "BADPIXEL", "HISTORY", "FLATNTRG", "ATODCORR", "MEANC200", "BLEVFILE", "MEANC300", "CDBSFILE", "PROPOSID", "CTYPE2", "OVERLAP")
-  val namesExt = Set("LINE", "TBCOL23", "TTYPE18", "NAXIS", "TBCOL25", "SAMPLE", "TFORM9", "TFORM24", "TBCOL10", "TTYPE24", "CARPOS", "TFORM16", "TBCOL5", "TTYPE21", "TBCOL15", "TBCOL24", "NAXIS2", "ZSCOEF3", "TBCOL16", "TTYPE11", "ERRCNT", "XTENSION", "GCOUNT", "TFORM11", "CRVAL1", "TTYPE6", "TTYPE19", "NAXIS1", "TBCOL14", "TFORM25", "TFIELDS", "TFORM1", "CD1_1", "TTYPE25", "TTYPE22", "TTYPE5", "TFORM7", "TBCOL19", "TFORM15", "TFORM21", "DELTAS", "ZSCOEF4", "DATAMAX", "EXTNAME", "TFORM12", "TBCOL22", "TTYPE16", "TBCOL2", "TBCOL6", "TTYPE15", "TBCOL18", "TFORM2", "TBCOL21", "TFORM6", "OBSRPT", "CRPIX1", "TTYPE23", "TBCOL12", "TBCOL8", "TFORM3", "EXPOSURE", "TBCOL13", "TTYPE7", "TTYPE4", "PCOUNT", "YDEF", "XDEF", "FILLCNT", "TFORM19", "TTYPE2", "PKTTIME", "TBCOL7", "TBCOL9", "TTYPE1", "TBCOL3", "BINID", "TFORM13", "TTYPE14", "TFORM23", "TTYPE20", "TFORM5", "OBSINT", "TBCOL11", "TTYPE9", "CTYPE1", "TBCOL17", "TBCOL20", "TBCOL1", "TTYPE17", "TFORM20", "DEC_APER", "TFORM17", "BITPIX", "TBCOL4", "TTYPE3", "ZSCOEF1", "ZSCOEF2", "TFORM22", "TTYPE13", "TFORM18", "TTYPE12", "RA_APER", "DATAMIN", "TFORM10", "TTYPE10", "TFORM4", "TTYPE8", "TFORM14", "TFORM8")
-
-  test("keywords") {
-    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("S20110427-01.fits").toURI))
-
-    assertEquals(names map {
-      new FitsKeyword(_)
-    }, fr.getKeywords())
-
+@RunWith(classOf[JUnitRunner])
+class FitsReaderTest extends FunSuite with FitsSamplesDownloader with FitsSamplesVerificationData with BeforeAndAfter {
+  before {
+    downloadFile("FITS_WITH_2_EXTENSIONS.fits", "d0702f110e0888c002d958438bfe747e")
+    downloadFile("test0029.fits", "091ab82301e6017f735602c1af598ba4")
+    downloadFile("test1546.fits", "527b8899b9eb65fec92350626d2232ee")
   }
 
-  test("keywords extension") {
-    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("FITS_WITH_EXTENSIONS.fits").toURI))
-    assertEquals(namesExt map {
-      new FitsKeyword(_)
-    }, fr.getKeywords(1))
-
+  def verifyKeysInHeader(header: Header, names: List[String]) {
+    val keyNames = header.keywords map {
+      _.keywordName.key
+    }
+    assertEquals(names.size, keyNames.size)
+    // Verify all expected keys are there
+    names foreach {
+      k => assertTrue(keyNames.contains(k))
+    }
   }
+
+  test("keywords in sample without extensions") {
+    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("sample1.fits").toURI))
+    val pdu = fr.header(0).get
+    assertEquals(0, pdu.index)
+    verifyKeysInHeader(pdu, keysSample1PDU)
+
+    // Request an unknown header
+    assertEquals(None, fr.header(1))
+  }
+
+  test("keywords in extension") {
+    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("sampleWithExt.fits").toURI))
+
+    // Check reading the primary
+    val pdu = fr.header(0).get
+    assertEquals(0, pdu.index)
+    verifyKeysInHeader(pdu, keysSampleWithExtensionPDU)
+
+    // Check reading the extension 1
+    val extension1 = fr.header(1).get
+    assertEquals(1, extension1.index)
+    verifyKeysInHeader(extension1, keysSampleWithExtensionExt1)
+  }
+
+  test("keywords in 2nd extension") {
+    val fr = new FitsReader(new File("FITS_WITH_2_EXTENSIONS.fits"))
+
+    // Check reading the primary
+    val pdu = fr.header(0).get
+    assertEquals(0, pdu.index)
+    verifyKeysInHeader(pdu, keysSampleWith2ExtPDU)
+
+    // Check reading the extension 1
+    val extension1 = fr.header(1).get
+    assertEquals(1, extension1.index)
+    verifyKeysInHeader(extension1, keysSampleWith2ExtExt1)
+
+    // Check reading the extension 2
+    val extension2 = fr.header(2).get
+    assertEquals(2, extension2.index)
+    verifyKeysInHeader(extension2, keysSampleWith2ExtExt2)
+  }
+
+  test("keywords in GPI sample without extensions") {
+    val fr = new FitsReader(new File("test0029.fits"))
+
+    // Check reading the primary
+    val pdu = fr.header(0).get
+    assertEquals(0, pdu.index)
+    verifyKeysInHeader(pdu, keysGPISample1PDU)
+  }
+
+  test("keywords in GPI sample with extensions") {
+    val fr = new FitsReader(new File("test1546.fits"))
+
+    // Check reading the primary
+    val pdu = fr.header(0).get
+    assertEquals(0, pdu.index)
+    verifyKeysInHeader(pdu, keysGPISample2PDU)
+
+    // Check reading the extension 1
+    val extension1 = fr.header(1).get
+    assertEquals(1, extension1.index)
+    verifyKeysInHeader(extension1, keysGPISample2Ext1)
+  }
+
+  test("sample1 checksum") {
+    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("sample1.fits").toURI))
+    assertEquals(sample1PDUHash, fr.checksumData(0))
+    assertEquals("", fr.checksumData(1))
+  }
+
+  test("sample1 dimensions") {
+    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("sample1.fits").toURI))
+    val pdu = fr.header(0).get
+    assertEquals(0, pdu.fileOffset)
+    assertEquals(23040, pdu.size)
+    assertEquals(40320, pdu.dataSize)
+  }
+
+  test("sampleWithExt checksum") {
+    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("sampleWithExt.fits").toURI))
+    assertEquals(sampleExtPDUHash, fr.checksumData(0))
+    assertEquals(sampleExtExt1Hash, fr.checksumData(1))
+  }
+
+  test("samplWithExt dimensions") {
+    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("sampleWithExt.fits").toURI))
+    val pdu = fr.header(0).get
+    assertEquals(0, pdu.fileOffset)
+    assertEquals(20160, pdu.size)
+    assertEquals(34560, pdu.dataSize)
+
+    val ext1 = fr.header(1).get
+    assertEquals(34560+20160, ext1.fileOffset)
+    assertEquals(11520, ext1.size)
+    assertEquals(2880, ext1.dataSize)
+  }
+
+  test("GPI sample1 checksum") {
+    val fr = new FitsReader(new File("test0029.fits"))
+    assertEquals(gpiNoExtSamplePDUHash, fr.checksumData(0))
+  }
+
+  test("GPI sample2 checksum") {
+    val fr = new FitsReader(new File("test1546.fits"))
+    assertEquals(gpiExtSamplePDUHash, fr.checksumData(0))
+    assertEquals(gpiExtSampleExt1, fr.checksumData(1))
+  }
+
+  test("read keys only") {
+    val fr = new FitsReader(new File(classOf[FitsReaderTest].getResource("sampleWithExt.fits").toURI))
+    assertEquals(keysSampleWithExtensionPDU map FitsKeyword.apply, fr.keys(0))
+    assertEquals(keysSampleWithExtensionExt1 map FitsKeyword.apply, fr.keys(1))
+  }
+
 }

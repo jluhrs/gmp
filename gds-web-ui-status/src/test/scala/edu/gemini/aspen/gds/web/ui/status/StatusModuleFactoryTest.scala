@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.web.ui.status
 
-import org.specs2.mock.Mockito
 import org.mockito.Mockito._
 import org.junit.Test
 import org.junit.Assert.assertNotNull
@@ -9,18 +8,27 @@ import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.{Health, StatusDatabaseService}
 import edu.gemini.aspen.gmp.top.Top
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
+import org.scalatest.FunSuite
+import org.scalatest.mock.MockitoSugar
+import org.mockito.Mockito._
+import org.mockito.Matchers._
+import org.mockito.stubbing.Answer
+import edu.gemini.aspen.giapi.status.{StatusItem, Health, StatusDatabaseService}
+import org.mockito.invocation.InvocationOnMock
 
-class StatusModuleFactoryTest extends Mockito {
-  @Test
-  def testBuildPanel {
+@RunWith(classOf[JUnitRunner])
+class StatusModuleFactoryTest extends FunSuite with MockitoSugar {
+  test("BuildPanel") {
     val statusDB = mock[StatusDatabaseService]
-    statusDB.getStatusItem(anyString) answers {
-      case x: String => new HealthStatus(x, Health.BAD)
-    }
+    when(statusDB.getStatusItem(anyString)).thenAnswer(new Answer[StatusItem[_]]() {
+      def answer(p1: InvocationOnMock) = new HealthStatus(p1.getArguments.apply(0).toString, Health.BAD)
+    })
     val obsState = mock[ObservationStateProvider]
-    obsState.getObservationsInProgress returns List()
-    obsState.getLastDataLabel returns None
-    obsState.getLastDataLabel(anyInt) returns None
+    when(obsState.getObservationsInProgress).thenReturn(Nil)
+    when(obsState.getLastDataLabel).thenReturn(None)
+    when(obsState.getLastDataLabel(anyInt)).thenReturn(None)
 
     val top=mock[Top]
     when(top.buildStatusItemName(anyString)).thenReturn("gpitest:gds:health")

@@ -4,8 +4,9 @@ package edu.gemini.aspen.gds.seqexec
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabase
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.RetrieveAll
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.Conversions._
+import fits.FitsKeyword
 import java.util.logging.Logger
 
 /**

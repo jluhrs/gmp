@@ -8,7 +8,7 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 
 class ErrorPolicyTest {
-  val dataLabel = new DataLabel("some name")
+  val dataLabel = new DataLabel("some key")
 
   @Test
   def testDefault() {

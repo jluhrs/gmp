@@ -11,15 +11,15 @@ class ConstantActorTest {
 
   @Test
   def testActor() {
-    val constActor = new ConstantActor(buildConfiguration("key1", "val1") :: buildConfiguration("key2", "val2") :: Nil)
-    assertEquals(CollectedValue("key1", "val1", "COMMENT", 0) :: CollectedValue("key2", "val2", "COMMENT", 0) :: Nil, constActor.collectValues())
+    val constActor = new ConstantActor(buildConfiguration("KEY1", "val1") :: buildConfiguration("KEY2", "val2") :: Nil)
+    assertEquals(CollectedValue("KEY1", "val1", "COMMENT", 0) :: CollectedValue("KEY2", "val2", "COMMENT", 0) :: Nil, constActor.collectValues())
   }
 
   @Test
   def testActorWrongType() {
     val constActor = new ConstantActor(GDSConfiguration("GPI",
       "OBS_START_ACQ",
-      "key1",
+      "KEY1",
       0,
       "INT",
       false,
@@ -28,7 +28,7 @@ class ConstantActorTest {
       "NONE",
       0,
       "COMMENT") :: Nil)
-    assertEquals(ErrorCollectedValue("key1", CollectionError.TypeMismatch, "COMMENT", 0) :: Nil, constActor.collectValues())
+    assertEquals(ErrorCollectedValue("KEY1", CollectionError.TypeMismatch, "COMMENT", 0) :: Nil, constActor.collectValues())
   }
 
   @Test

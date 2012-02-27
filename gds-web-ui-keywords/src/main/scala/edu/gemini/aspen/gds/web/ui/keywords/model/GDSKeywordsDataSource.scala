@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import com.vaadin.data.util.IndexedContainer
-import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api._
 import configuration.ConfigItem
+import fits.FitsKeyword
 import scala.collection.JavaConversions._
 
 /**

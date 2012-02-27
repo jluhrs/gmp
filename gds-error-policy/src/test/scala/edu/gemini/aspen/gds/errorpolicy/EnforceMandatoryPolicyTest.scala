@@ -10,11 +10,10 @@ import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.junit.Test
 
 @RunWith(classOf[JUnitRunner])
 class EnforceMandatoryPolicyTest extends FunSuite with MockitoSugar {
-  val dataLabel = new DataLabel("some name")
+  val dataLabel = new DataLabel("some key")
 
   test("no errors") {
     val config = mock[GDSConfigurationService]

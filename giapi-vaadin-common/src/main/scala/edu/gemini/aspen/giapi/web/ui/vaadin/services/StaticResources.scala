@@ -20,7 +20,7 @@ import scala.collection.JavaConversions._
 class StaticResources(ctx: BundleContext) extends HttpServlet {
   @ServiceProperty(name = "alias", value = "/VAADIN")
   val label: String = "/VAADIN"
-  @ServiceProperty(name = "servlet-name", value = "VaadinResourcesServlet")
+  @ServiceProperty(name = "servlet-key", value = "VaadinResourcesServlet")
   val servletName: String = "VaadinResourcesServlet"
   val vaadinBundle = findVaadinBundle(ctx)
   val widgetBundles = vaadinBundle :: findWidgetBundles(ctx)

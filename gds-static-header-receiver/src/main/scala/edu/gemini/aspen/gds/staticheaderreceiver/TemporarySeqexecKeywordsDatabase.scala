@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
-import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
+import edu.gemini.aspen.giapi.data.DataLabel
 import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
 import actors.Actor
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{RetrieveAll, Retrieve, Store, CleanAll, Clean}
@@ -8,6 +8,7 @@ import collection.mutable.ConcurrentMap
 import com.google.common.collect.MapMaker
 import java.util.concurrent.TimeUnit._
 import scala.collection.JavaConversions._
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 /**
  * Companion object used to logically group message classes.
@@ -64,7 +65,7 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
   }
 
   private val map: ConcurrentMap[DataLabel, ValuesCollection] = new MapMaker().
-    expireAfterWrite(expirationMillis, MILLISECONDS)
+    expiration(expirationMillis, MILLISECONDS)
     .makeMap[DataLabel, ValuesCollection]()
 
   private def cleanAll() {

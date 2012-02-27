@@ -7,7 +7,6 @@ import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
-import edu.gemini.fits.FitsParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -20,7 +19,9 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
@@ -52,7 +53,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
     }
 
     @Test
-    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
+    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException {
         TimeUnit.MILLISECONDS.sleep(800);
 
         assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));
@@ -70,7 +71,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
 
         assertFalse(originalKeywords.contains("PIFSTNAM"));
 
-        sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
+        sendObservationEvents(eventHandler, new DataLabel("sample1"));
         TimeUnit.MILLISECONDS.sleep(2000);
 
         File finalFile = new File(FINAL_FITS_DIR + FINAL_FITS_FILE);

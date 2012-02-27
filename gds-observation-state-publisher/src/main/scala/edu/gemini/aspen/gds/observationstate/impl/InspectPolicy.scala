@@ -13,7 +13,7 @@ import java.util.logging.Logger
  */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[ErrorPolicy]))
+@Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
 class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires obsState: ObservationStateRegistrar) extends ErrorPolicy {
   protected val LOG = Logger.getLogger(this.getClass.getName)
   override val priority = 0

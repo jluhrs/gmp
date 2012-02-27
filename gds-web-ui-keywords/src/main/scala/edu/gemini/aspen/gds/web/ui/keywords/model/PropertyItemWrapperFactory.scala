@@ -14,7 +14,7 @@ import com.vaadin.ui.Component
  */
 abstract class PropertyItemWrapperFactory(val fieldClass: Class[_], val columnType: Class[_]) {
   /**
-   * Name of the column, by default the field class name
+   * Name of the column, by default the field class key
    */
   val title = fieldClass.getSimpleName
 

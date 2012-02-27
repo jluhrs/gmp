@@ -1,10 +1,11 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
-import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
+import edu.gemini.aspen.giapi.data.DataLabel
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabase}
 import actors.Reactor
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Store
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 sealed abstract class RequestHandlerMessage
 

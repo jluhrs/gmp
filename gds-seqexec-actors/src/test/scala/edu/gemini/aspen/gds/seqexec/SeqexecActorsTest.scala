@@ -16,9 +16,9 @@ class SeqexecActorsTest {
    */
   @Test
   def testActor() {
-    db ! Store("labelint", "key", 1.asInstanceOf[AnyRef])
-    db ! Store("labelstring", "key", "1".asInstanceOf[AnyRef])
-    db ! Store("labeldouble", "key", 1.0.asInstanceOf[AnyRef])
+    db ! Store("labelint", "KEY", 1.asInstanceOf[AnyRef])
+    db ! Store("labelstring", "KEY", "1".asInstanceOf[AnyRef])
+    db ! Store("labeldouble", "KEY", 1.0.asInstanceOf[AnyRef])
 
     val seqActorInt = new SeqexecActor(db, "labelint",
       GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment") ::
@@ -33,7 +33,7 @@ class SeqexecActorsTest {
   @Test
   def testWrongType() {
     val db = new TemporarySeqexecKeywordsDatabaseImpl
-    db ! Store("label", "key", "1.1")
+    db ! Store("label", "KEY", "1.1")
 
     val seqActor = new SeqexecActor(db, "label", List(GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "DOUBLE", true, "null", "SEQEXEC", "KEY", 0, "my comment")))
     assertEquals(List(ErrorCollectedValue("KEY", CollectionError.TypeMismatch, "my comment", 0)), seqActor.collectValues)
@@ -41,7 +41,7 @@ class SeqexecActorsTest {
 
   @Test
   def testActorInt() {
-    db ! Store("label", "key", 1.asInstanceOf[AnyRef])
+    db ! Store("label", "KEY", 1.asInstanceOf[AnyRef])
 
     val seqActor = new SeqexecActor(db, "label", GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment") :: Nil)
 

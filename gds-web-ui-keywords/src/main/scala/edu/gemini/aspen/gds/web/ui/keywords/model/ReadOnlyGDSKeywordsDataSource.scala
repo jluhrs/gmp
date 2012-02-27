@@ -46,7 +46,7 @@ class ReadOnlyGDSKeywordsDataSource(config: List[ConfigItem[_]]) extends GDSKeyw
   private def configToItem(config: GDSConfiguration) = {
     List[String](config.instrument.name.toString,
       config.event.name.toString,
-      config.keyword.getName.toString,
+      config.keyword.key,
       config.index.index.toString,
       config.dataType.name.toString,
       config.mandatory.mandatory.toString,

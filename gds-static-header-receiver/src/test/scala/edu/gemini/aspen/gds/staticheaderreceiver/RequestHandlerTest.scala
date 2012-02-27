@@ -5,11 +5,11 @@ import org.scalatest.junit.AssertionsForJUnit
 import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.{Before, Test}
 import edu.gemini.aspen.gds.keywords.database.impl.ProgramIdDatabaseImpl
-import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, ProgramIdDatabase}
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{Store, Retrieve, Clean}
 import scala.Some
+import edu.gemini.aspen.gds.keywords.database.RetrieveProgramId
 
-class RequestHanderTest extends AssertionsForJUnit {
+class RequestHandlerTest extends AssertionsForJUnit {
   val db = new TemporarySeqexecKeywordsDatabaseImpl
   val pdb = new ProgramIdDatabaseImpl
   val requestHandler = new RequestHandler(db, pdb)
@@ -21,21 +21,21 @@ class RequestHanderTest extends AssertionsForJUnit {
 
   @Test
   def testDB() {
-    db ! Store("label", "key", 1.asInstanceOf[AnyRef])
-    (db !? (1000, Retrieve("label", "key"))) match {
+    db ! Store("label", "KEY", 1.asInstanceOf[AnyRef])
+    (db !? (1000, Retrieve("label", "KEY"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("wronglabel", "key"))) match {
+    (db !? (1000, Retrieve("wronglabel", "KEY"))) match {
       case Some(None) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label", "wrongkey"))) match {
+    (db !? (1000, Retrieve("label", "WRONGKEY"))) match {
       case Some(None) =>
       case _ => fail()
     }
     db ! Clean("label")
-    (db !? (1000, Retrieve("label", "key"))) match {
+    (db !? (1000, Retrieve("label", "KEY"))) match {
       case Some(None) =>
       case _ => fail()
     }
@@ -44,9 +44,9 @@ class RequestHanderTest extends AssertionsForJUnit {
 
   @Test
   def testRequestHandler() {
-    requestHandler ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
+    requestHandler ! StoreKeyword("label", "KEY", 1.asInstanceOf[AnyRef])
     Thread.sleep(100) //allow for messages to arrive
-    (db !? (1000, Retrieve("label", "key"))) match {
+    (db !? (1000, Retrieve("label", "KEY"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
@@ -62,10 +62,10 @@ class RequestHanderTest extends AssertionsForJUnit {
   @Test
   def testRequestHandlerStop() {
     requestHandler ! ExitRequestHandler()
-    requestHandler ! StoreKeyword("label", "key", 1.asInstanceOf[AnyRef])
+    requestHandler ! StoreKeyword("label", "KEY", 1.asInstanceOf[AnyRef])
     Thread.sleep(100) //allow for messages to arrive
-    // There should be no keys in the db
-    (db !? (1000, Retrieve("label", "key"))) match {
+    // There should be no KEYs in the db
+    (db !? (1000, Retrieve("label", "KEY"))) match {
       case Some(Some(1)) => fail()
       case _ =>
     }
@@ -75,23 +75,23 @@ class RequestHanderTest extends AssertionsForJUnit {
   @Test
   def testXmlRpcReceiver() {
     val xml = new XmlRpcReceiver(requestHandler)
-    xml.storeKeyword("label", "key", 1)
-    xml.storeKeywords("label2", ("key,INT,1" :: "key2,DOUBLE,1.0" :: "key3,STRING,uno" :: Nil).toArray)
+    xml.storeKeyword("label", "KEY", 1)
+    xml.storeKeywords("label2", ("KEY,INT,1" :: "KEY2,DOUBLE,1.0" :: "KEY3,STRING,uno" :: Nil).toArray)
     xml.initObservation("id", "label")
     Thread.sleep(100) //allow for messages to arrive
-    (db !? (1000, Retrieve("label", "key"))) match {
+    (db !? (1000, Retrieve("label", "KEY"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label2", "key"))) match {
+    (db !? (1000, Retrieve("label2", "KEY"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label2", "key2"))) match {
+    (db !? (1000, Retrieve("label2", "KEY2"))) match {
       case Some(Some(1.0)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label2", "key3"))) match {
+    (db !? (1000, Retrieve("label2", "KEY3"))) match {
       case Some(Some("uno")) =>
       case _ => fail()
     }

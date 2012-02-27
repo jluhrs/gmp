@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gds.api
 
-import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
+import edu.gemini.aspen.giapi.data.ObservationEvent
+import fits.FitsKeyword
 
 case class Instrument(name: String)
 
@@ -63,7 +64,7 @@ case class GDSConfiguration(instrument: Instrument,
   def formatForConfigFile: String = {
     instrument.name + "\t" +
       addTabs(event.name, 3) +
-      addTabs(keyword.getName, 2) +
+      addTabs(keyword.key, 2) +
       addTabs(index.index.toString, 1) +
       addTabs(dataType.name, 1) +
       addTabs((if (mandatory.mandatory) "T" else "F"), 1) +

@@ -197,17 +197,6 @@
             <artifactId>rr</artifactId>
             <version>0.1.0</version>
         </dependency>
-        <!-- FITS dependencies -->
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>fits-util</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>file-util</artifactId>
-            <version>1.0.0</version>
-        </dependency>
         <!-- EProperties -->
         <dependency>
             <groupId>edu.gemini.external.osgi.net.jmatrix.eproperties</groupId>

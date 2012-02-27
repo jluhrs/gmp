@@ -1,12 +1,13 @@
 package edu.gemini.aspen.gds.api
 
-import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
+import edu.gemini.aspen.giapi.data.DataLabel
+import fits.FitsKeyword
 
 /**
  * Place to put implicit conversions for Java classes.
  */
 object Conversions {
-    implicit def fitsKeywordToString(fits: FitsKeyword) = fits.getName
+    implicit def fitsKeywordToString(fits: FitsKeyword) = fits.key
 
     implicit def stringToFitsKeyword(s: String) = new FitsKeyword(s)
 

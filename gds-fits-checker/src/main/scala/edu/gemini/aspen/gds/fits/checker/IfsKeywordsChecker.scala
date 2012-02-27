@@ -10,10 +10,11 @@ import org.apache.felix.ipojo.annotations.{Instantiate, Requires, Provides, Comp
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import scala.actors.Actor._
 import edu.gemini.aspen.gmp.services.PropertyHolder
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[ObservationEventHandler]))
+@Provides(specifications = Array[Class[_]](classOf[ObservationEventHandler]))
 class IfsKeywordsChecker(@Requires configService: GDSConfigurationService,
                          @Requires obsState: ObservationStateRegistrar,
                          @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
@@ -30,22 +31,24 @@ class IfsKeywordsChecker(@Requires configService: GDSConfigurationService,
   private[checker] def checkMissing(label: DataLabel, file: File, config: List[GDSConfiguration]) {
     val readerOpt: Option[FitsReader] = try {
       Some(new FitsReader(file))
-    }
-    catch {
+    } catch {
       case _ => None
     }
 
-    val configKeywords: Map[Int, Set[GDSConfiguration]] = config.filter({
+    val configKeywords: Map[Int, Set[GDSConfiguration]] = config.filter{
       _.subsystem.name == KeywordSource.IFS
-    }).toSet.groupBy(_.index.index)
+    }.toSet.groupBy(_.index.index)
 
     configKeywords foreach {
-      case (key: Int, value: Set[GDSConfiguration]) => {
-        val missingKeywords = (value map {
-          _.keyword
-        }) &~ readerOpt.collect({
-          case x: FitsReader => x.getKeywords(key)
-        }).getOrElse(Set.empty)
+      case (index: Int, value: Set[_]) => {
+        val keysInFile = readerOpt flatten {
+          r => r.keys(index)
+        }
+        val keysInConfig = value map {
+          case c:GDSConfiguration => c.keyword
+        }
+        val missingKeywords:Traversable[FitsKeyword] = keysInConfig &~ keysInFile.toSet
+
         if (missingKeywords.nonEmpty) {
           obsState.registerMissingKeyword(label, missingKeywords)
         }

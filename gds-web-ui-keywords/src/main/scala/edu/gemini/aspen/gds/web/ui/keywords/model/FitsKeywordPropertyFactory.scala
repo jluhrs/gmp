@@ -1,19 +1,20 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
 import edu.gemini.aspen.gds.api.GDSConfiguration
-import edu.gemini.aspen.giapi.data.FitsKeyword
 import com.vaadin.ui.TextField
 import com.vaadin.data.validator.AbstractStringValidator
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import java.util.regex.Pattern
 
 /**
  * PropertyItemWrapperFactory for FitsKeyword that uses a TextField to make possible to edit
- * the name of a FITS Keyword
+ * the key of a FITS Keyword
  */
 class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[FitsKeyword], classOf[TextField]) {
   override val width = 150
 
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
-    val textField = new TextField("", config.keyword.getName)
+    val textField = new TextField("", config.keyword.key)
     textField.addValidator(FitsKeywordPropertyFactory.validator(textField))
     textField.setCaption("FITS Keyword")
     textField.setImmediate(true)
@@ -32,7 +33,7 @@ class FitsKeywordPropertyFactory extends PropertyItemWrapperFactory(classOf[Fits
 
 object FitsKeywordPropertyFactory {
   def validator(textField: TextField) = new AbstractStringValidator("Value {0} must be a valid FITS Keyword, more than 0 and up to 8 characters") {
-    def isValidString(value: String) = FitsKeyword.FITS_KEYWORD_PATTERN.matcher(value.toUpperCase).matches
+    def isValidString(value: String) = Pattern.compile(FitsKeyword.KEY_FORMAT).matcher(value.toUpperCase).matches
 
     override def validate(value: AnyRef) {
       if (!isValid(value)) {

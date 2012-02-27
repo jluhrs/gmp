@@ -7,7 +7,7 @@ import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.api._
 
 class ErrorsRemovedPolicyTest {
-    val dataLabel = new DataLabel("some name")
+    val dataLabel = new DataLabel("some key")
 
     @Test
     def testNonErrors() {

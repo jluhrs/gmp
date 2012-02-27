@@ -12,7 +12,10 @@ import org.scalatest.mock.MockitoSugar
 import org.mockito.stubbing.Answer
 import org.mockito.invocation.InvocationOnMock
 import edu.gemini.aspen.gmp.top.Top
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
 
+@RunWith(classOf[JUnitRunner])
 class StatusModuleTest extends FunSuite with MockitoSugar {
   test("build panel") {
     val statusDB = mock[StatusDatabaseService]

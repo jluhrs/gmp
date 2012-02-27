@@ -3,7 +3,8 @@ package edu.gemini.aspen.gds.api.configuration
 import util.parsing.combinator.RegexParsers
 import io.Source
 import edu.gemini.aspen.gds.api._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword}
+import edu.gemini.aspen.giapi.data.ObservationEvent
+import fits.FitsKeyword
 
 case class Space(length: Int)
 
@@ -55,7 +56,7 @@ class GDSConfigurationParser extends RegexParsers {
     x => GDSEvent(x)
   }
 
-  def keyword = """[\p{Upper}\d]{1,8}""".r ^^ {
+  def keyword = FitsKeyword.KEY_FORMAT.r ^^ {
     x => new FitsKeyword(x)
   }
 

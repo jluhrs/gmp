@@ -7,7 +7,8 @@ import org.scalatest.Spec
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
-import edu.gemini.aspen.giapi.data.{ObservationEvent, FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import fits.FitsKeyword
 
 @RunWith(classOf[JUnitRunner])
 class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
@@ -59,7 +60,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
     GDSConfiguration(
       Instrument("GPI"),
       GDSEvent(event),
-      new FitsKeyword(keyword),
+      FitsKeyword(keyword),
       HeaderIndex(0),
       DataType("DOUBLE"),
       Mandatory(false),
@@ -74,7 +75,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
     GDSConfiguration(
       Instrument("GPI"),
       GDSEvent(event),
-      new FitsKeyword(keyword),
+      FitsKeyword(keyword),
       HeaderIndex(0),
       DataType("DOUBLE"),
       Mandatory(false),

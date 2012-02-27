@@ -12,7 +12,8 @@ import actors.Actor
 import actors.Actor.actor
 import java.io.{FileNotFoundException, File}
 import java.util.logging.{Level, Logger}
-import edu.gemini.fits.{DefaultHeader, Header}
+
+import edu.gemini.aspen.gds.api.fits.Header
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import org.scala_tools.time.Imports._
@@ -24,7 +25,7 @@ import edu.gemini.aspen.gmp.services.PropertyHolder
  */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[ObservationEventHandler]))
+@Provides(specifications = Array[Class[_]](classOf[ObservationEventHandler]))
 // todo: reduce amount of dependencies
 class GDSObseventHandler(
                           @Requires actorsFactory: CompositeActorsFactory,
@@ -203,17 +204,17 @@ class ReplyHandler(
 
     val headers: List[Header] = List.range(0, maxHeader + 1) map {
       headerIndex => {
-        val header = new DefaultHeader(headerIndex)
-        processedList filter {
+        val headerItems = processedList filter {
           _.index == headerIndex
-        } foreach {
+        } map {
           _ match {
             // Implicit conversion
-            case c => header.add(c._type.collectedValueToHeaderItem(c))
+            case c => c._type.collectedValueToHeaderItem(c)
           }
         }
-        header
+        new Header(headerIndex, headerItems)
       }
+
     }
 
     actor {

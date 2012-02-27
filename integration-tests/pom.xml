@@ -193,14 +193,6 @@
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
-            <artifactId>fits-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>file-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
             <artifactId>spdb-activator</artifactId>
             <version>2012A-test.3.1.1</version>
         </dependency>
@@ -276,6 +268,10 @@
         <dependency>
             <groupId>edu.gemini.cas</groupId>
             <artifactId>casdb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.nom.tam</groupId>
+            <artifactId>fits</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -1,27 +1,28 @@
 package edu.gemini.aspen.gds.fits
 
 import org.junit.runner.RunWith
+import org.junit.Assert._
 import org.scalatest.junit.JUnitRunner
 import java.io.File
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.fits.{Header, DefaultHeaderItem, DefaultHeader, Hedit}
+import edu.gemini.aspen.gds.api.Conversions._
+import edu.gemini.aspen.gds.api.fits.{HeaderItem, Header}
+import com.google.common.base.Stopwatch
 
 @RunWith(classOf[JUnitRunner])
 class FitsWithExtensionsUpdaterTest extends FitsBaseTest {
-  val originalFile = new File(classOf[FitsWithExtensionsUpdaterTest].getResource("FITS_WITH_EXTENSIONS.fits").toURI)
-  val destinationFile = new File(originalFile.getParentFile, "N-FITS_WITH_EXTENSIONS.fits")
-  val dataLabel = new DataLabel("FITS_WITH_EXTENSIONS")
+  val originalFile = new File(classOf[FitsWithExtensionsUpdaterTest].getResource("sampleWithExt.fits").toURI)
+  val destinationFile = new File(originalFile.getParentFile, "N-sampleWithExt.fits")
+  val dataLabel = new DataLabel("sampleWithExt")
 
-  def readExtensionHeader(fitsFile: File = originalFile): Header = {
-    new Hedit(fitsFile).readAllHeaders.get(1)
-  }
+  def readExtensionHeader(fitsFile: File = originalFile): Header = new FitsReader(fitsFile).header(1).get
 
   test("should copy a fits file with extensions before modifying it") {
-    val headers = List(new DefaultHeader(1))
+    val headers = Nil//List(new DefaultHeader(1))
 
     updateFitsFile(headers)
 
-    destinationFile.exists should be(true)
+    assertTrue(destinationFile.exists)
   }
   test("should add to an extension header a new keywords") {
     val originalExtensionHeader = readExtensionHeader(originalFile)
@@ -35,10 +36,7 @@ class FitsWithExtensionsUpdaterTest extends FitsBaseTest {
     verifyKeywordInHeader(updatedExtensionHeader, "AIRMASS")
   }
   test("should update the extension header with several new keywords") {
-    val extensionHeader = new DefaultHeader(1)
-    extensionHeader.add(DefaultHeaderItem.create("AIRMASS", 1.0, "Mass of airmass"))
-    extensionHeader.add(DefaultHeaderItem.create("AIREND", 2.0, "Mass of airmass at the end"))
-    extensionHeader.add(DefaultHeaderItem.create("AIRSTART", 3.0, "Mass of airmass at the beggining"))
+    val extensionHeader = Header(1, List(HeaderItem("AIRMASS", 1.0, "Mass of airmass"), HeaderItem("AIREND", 2.0, "Mass of airmass at the end"), HeaderItem("AIRSTART", 3.0, "Mass of airmass at the beggining")))
 
     updateFitsFile(List(extensionHeader))
 
@@ -56,15 +54,16 @@ class FitsWithExtensionsUpdaterTest extends FitsBaseTest {
 
     val updatedExtensionHeader = readExtensionHeader(destinationFile)
 
-    updatedExtensionHeader.getKeywords.containsAll(originalExtensionHeader.getKeywords) should be(true)
+    originalExtensionHeader.keywords foreach {
+      k => assertTrue(updatedExtensionHeader.containsKey(k.keywordName))
+    }
   }
-  test("should update a file in less than 0.005 secs") {
-    val start = System.nanoTime
+  test("should update a file in less than 300 ms") {
+    val stopwatch = new Stopwatch().start
     val headers = createHeadersWithAirMass(1)
     updateFitsFile(headers)
 
-    val spentTime = ((System.nanoTime - start) / 10e9)
-    spentTime should be <= (0.005)
+    assertTrue(stopwatch.stop().elapsedMillis() <= 300)
   }
 
 }

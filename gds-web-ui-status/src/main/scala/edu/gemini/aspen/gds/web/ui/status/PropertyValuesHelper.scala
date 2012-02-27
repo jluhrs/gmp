@@ -4,7 +4,8 @@ import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.api.CollectionError
-import edu.gemini.aspen.giapi.data.{DataLabel, FitsKeyword}
+import edu.gemini.aspen.giapi.data.DataLabel
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 import edu.gemini.aspen.gmp.top.Top
 
 class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: ObservationStateProvider, top: Top) {
@@ -60,7 +61,7 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
 
   def getMissingKeywords(label: DataLabel): String = {
     obsState.getMissingKeywords(label) map {
-      case x: FitsKeyword => x.getName
+      case x: FitsKeyword => x.key
     } mkString(", ")
   }
 
@@ -72,7 +73,7 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
 
   def getKeywordsInError(label: DataLabel): String = {
     obsState.getKeywordsInError(label) map {
-      case (x: FitsKeyword, y: CollectionError.CollectionError) => x.getName
+      case (x: FitsKeyword, y: CollectionError.CollectionError) => x.key
     } mkString(", ")
   }
 

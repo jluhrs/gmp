@@ -1,9 +1,12 @@
 package edu.gemini.aspen.integrationtests;
 
+import com.google.common.collect.Sets;
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
 import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
 import edu.gemini.aspen.gds.api.ErrorPolicy;
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
+import edu.gemini.aspen.gds.api.fits.HeaderItem;
+import edu.gemini.aspen.gds.fits.FitsReader;
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider;
@@ -11,8 +14,6 @@ import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
-import edu.gemini.fits.FitsParseException;
-import edu.gemini.fits.Header;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -24,12 +25,13 @@ import org.osgi.framework.ServiceReference;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
+import static scala.collection.JavaConversions.seqAsJavaList;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
@@ -66,7 +68,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
     }
 
     @Test
-    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException, FitsParseException {
+    public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException{
         TimeUnit.MILLISECONDS.sleep(600);
         assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
@@ -79,7 +81,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
         TimeUnit.MILLISECONDS.sleep(400);
 
         //verify that the error policies are loaded
-        Set<String> errorPolicies = new HashSet<String>();
+        Set<String> errorPolicies = Sets.newHashSet();
         try {
             for (ServiceReference ref : context.getServiceReferences(ErrorPolicy.class.getName(), null)) {
                 errorPolicies.add(context.getService(ref).getClass().getName());
@@ -102,7 +104,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
 
         assertFalse(originalKeywords.contains("PIFSTNAM"));
 
-        sendObservationEvents(eventHandler, new DataLabel("S20110427-01"));
+        sendObservationEvents(eventHandler, new DataLabel("sample1"));
         TimeUnit.MILLISECONDS.sleep(2000);
 
         File finalFile = new File(FINAL_FITS_DIR + FINAL_FITS_FILE);
@@ -114,9 +116,17 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
         assertTrue(afterProcessingKeywords.contains("PIFSTNAM"));
         assertTrue(afterProcessingKeywords.contains("EPIC"));
         assertTrue(afterProcessingKeywords.contains("EPIC2"));
-        Header primary = readFinalPrimary();
-        assertEquals("default", primary.get("EPIC").getValue());//non mandatory item should have default value if not found
-        assertEquals("", primary.get("EPIC2").getValue()); //mandatory item should be present but empty if not found
+
+        FitsReader reader = new FitsReader(finalFile);
+        List<HeaderItem<?>> headerItems = (List<HeaderItem<?>>)seqAsJavaList(reader.header(0).get().keywords());
+        for (HeaderItem<?> h:headerItems) {
+            if (h.keywordName().equals("EPIC")) {
+                assertEquals("default", h.value().toString());//non mandatory item should have default value if not found
+            }
+            if (h.keywordName().equals("EPIC2")) {
+                assertEquals("", h.value().toString()); //mandatory item should be present but empty if not found
+            }
+        }
     }
 
     private void postProgramIDToDataLabelLink() {

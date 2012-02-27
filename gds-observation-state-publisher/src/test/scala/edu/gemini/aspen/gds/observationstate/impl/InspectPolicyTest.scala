@@ -6,8 +6,8 @@ import org.junit.Test
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher
 import edu.gemini.aspen.gds.api.Conversions._
-import edu.gemini.aspen.giapi.data.FitsKeyword
 import edu.gemini.aspen.gds.api._
+import fits.FitsKeyword
 
 class InspectPolicyTest {
     @Test

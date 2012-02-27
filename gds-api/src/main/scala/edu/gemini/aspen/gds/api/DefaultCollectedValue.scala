@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.api
 
-import edu.gemini.aspen.giapi.data.FitsKeyword
+import fits.FitsKeyword
 
 /**
  * Message indicating the value collected by GDS was the default */

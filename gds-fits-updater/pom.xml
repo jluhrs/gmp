@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gds</groupId>
     <artifactId>gds-fits-updater</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0-SNAPSHOT</version>
 
     <name>GDS Fits Updater</name>
     <description>API to add FITS keywords to files</description>
@@ -34,12 +34,8 @@
             <artifactId>gds-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>fits-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>file-util</artifactId>
+            <groupId>edu.gemini.external.osgi.nom.tam</groupId>
+            <artifactId>fits</artifactId>
         </dependency>
     </dependencies>
 

@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.status
 
 import org.junit.Assert._
 import org.junit.Test
-import edu.gemini.aspen.giapi.data.{FitsKeyword, DataLabel}
+import edu.gemini.aspen.giapi.data.{DataLabel}
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
@@ -10,6 +10,7 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus
 import org.junit.Assert._
 import edu.gemini.aspen.gds.api._
 import edu.gemin.aspen.gds.status.InstrumentStatusActor
+import fits.FitsKeyword
 
 class InstrumentStatusActorTest extends Mockito {
   val defaultValue = "DEFAULT"

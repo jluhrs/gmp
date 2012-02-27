@@ -1,19 +1,19 @@
 package edu.gemini.aspen.gds.keywords.database.impl
 
 import org.scalatest.junit.AssertionsForJUnit
-import _root_.edu.gemini.aspen.gds.api.CollectedValue
+import edu.gemini.aspen.gds.api.CollectedValue
 import org.junit.{Before, Test}
 import org.junit.Assert._
-import _root_.edu.gemini.aspen.gds.api.Conversions._
-import _root_.edu.gemini.aspen.giapi.data.DataLabel
-import _root_.edu.gemini.aspen.gds.keywords.database._
+import edu.gemini.aspen.gds.api.Conversions._
+import edu.gemini.aspen.giapi.data.DataLabel
+import edu.gemini.aspen.gds.keywords.database._
 import scala._
 import java.util.concurrent.TimeUnit
 
 class KeywordsDatabaseTest extends AssertionsForJUnit {
   var db: KeywordsDatabaseImpl = null
-  val key = "keyword"
-  val key2 = "keyword2"
+  val key = "KEYWORD"
+  val key2 = "KEYWORD2"
   val value = 0.1
   val colVal = CollectedValue(key, value, "my comment", 0)
   val colVal2 = CollectedValue(key2, value, "my comment", 1)
@@ -112,7 +112,7 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
     val ret = db !?(1000, Retrieve(dataLabel))
     assertFalse(ret.isEmpty) //we didn't get a timeout
     ret match {
-      case Some(List()) => // we are ok
+      case Some(x:List[_]) => // we are ok
       case x: Any => println(x); fail()
     }
   }

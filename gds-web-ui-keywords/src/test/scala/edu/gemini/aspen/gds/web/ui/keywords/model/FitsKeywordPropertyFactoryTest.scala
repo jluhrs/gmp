@@ -4,11 +4,9 @@ import org.junit.Assert._
 import com.vaadin.ui.TextField
 import edu.gemini.aspen.gds.api.GDSConfiguration
 import edu.gemini.aspen.gds.api.Conversions._
-import org.junit.{Ignore, Test}
+import org.junit.Test
 import com.vaadin.data.util.{ObjectProperty, PropertysetItem}
-import edu.gemini.aspen.giapi.data.FitsKeyword
-import com.vaadin.data.Item
-import com.vaadin.data.Validator.InvalidValueException
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 /**
  * Test of the property wrapper

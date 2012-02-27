@@ -5,7 +5,7 @@ import com.vaadin.data.validator.AbstractStringValidator
 import edu.gemini.aspen.gds.api.{Channel, GDSConfiguration}
 
 /**
- * PropertyItemWrapperFactory for Channel that uses a TextField to enter the channel name
+ * PropertyItemWrapperFactory for Channel that uses a TextField to enter the channel key
  */
 class ChannelPropertyFactory extends PropertyItemWrapperFactory(classOf[Channel], classOf[TextField]) {
   override val width = 150

@@ -570,7 +570,7 @@
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-api</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
@@ -585,7 +585,7 @@
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-obsevent-handler</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
@@ -600,12 +600,12 @@
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-fits-updater</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-fits-checker</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
@@ -682,7 +682,7 @@
         <dependency>
             <groupId>com.googlecode.guava-osgi</groupId>
             <artifactId>guava-osgi</artifactId>
-            <version>10.0.0</version>
+            <version>11.0.0</version>
         </dependency>
 
         <!-- Joda time dependencies -->
@@ -735,6 +735,12 @@
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
             <artifactId>pagedtable</artifactId>
             <version>0.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.gemini.external.osgi.nom.tam</groupId>
+            <artifactId>fits</artifactId>
+            <version>1.0.8</version>
         </dependency>
 
         <!--dependency>

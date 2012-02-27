@@ -7,7 +7,7 @@ import com.vaadin.ui.NativeSelect
 
 /**
  * PropertyItemWrapperFactory for HeaderIndex using a TextField to make possible to edit
- * the name of a FITS Keyword
+ * the key of a FITS Keyword
  */
 class HeaderIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[HeaderIndex], classOf[NativeSelect]) {
   override val width = 60

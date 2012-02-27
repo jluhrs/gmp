@@ -4,22 +4,23 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
-import org.specs2.mock.Mockito
+import org.mockito.Mockito._
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.epics.{ReadOnlyClientEpicsChannel, EpicsReader}
+import org.scalatest.mock.MockitoSugar
 
 @RunWith(classOf[JUnitRunner])
-class EpicsActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
+class EpicsActorsFactorySpec extends Spec with ShouldMatchers with MockitoSugar {
   val epicsReader = mock[EpicsReader]
   val channel = mock[ReadOnlyClientEpicsChannel[Double]]
   val channel2 = mock[ReadOnlyClientEpicsChannel[Double]]
-  channel.isValid returns true
-  channel2.isValid returns true
+  when(channel.isValid).thenReturn(true)
+  when(channel2.isValid).thenReturn(true)
   //seems like a Mockito bug, the cast works around it...
-  epicsReader.getChannelAsync("gpi:value").asInstanceOf[ReadOnlyClientEpicsChannel[Double]] returns channel
-  epicsReader.getChannelAsync("gpi:value2").asInstanceOf[ReadOnlyClientEpicsChannel[Double]] returns channel2
+  when(epicsReader.getChannelAsync("gpi:value").asInstanceOf[ReadOnlyClientEpicsChannel[Double]]).thenReturn(channel)
+  when(epicsReader.getChannelAsync("gpi:value2").asInstanceOf[ReadOnlyClientEpicsChannel[Double]]).thenReturn(channel2)
 
   def createFixture = (
     new DataLabel("GS-2011"),

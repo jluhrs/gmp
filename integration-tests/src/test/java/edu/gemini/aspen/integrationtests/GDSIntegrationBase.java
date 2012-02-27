@@ -1,11 +1,13 @@
 package edu.gemini.aspen.integrationtests;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.io.ByteStreams;
+import edu.gemini.aspen.gds.api.fits.HeaderItem;
+import edu.gemini.aspen.gds.fits.FitsReader;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
-import edu.gemini.fits.FitsParseException;
-import edu.gemini.fits.Header;
-import edu.gemini.fits.Hedit;
 import org.junit.Before;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -13,24 +15,22 @@ import org.ops4j.pax.exam.junit.Configuration;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+import static scala.collection.JavaConversions.seqAsJavaList;
 
 /**
  * Base class for the integration tests related to the GDS
  */
 public class GDSIntegrationBase extends FelixContainerConfigurationBase {
-    protected static final String FINAL_FITS_FILE = "S20110427-01.fits";
-    protected static final String INITIAL_FITS_FILE = "S20110427-01.fits";
+    protected static final String FINAL_FITS_FILE = "sample1.fits";
+    protected static final String INITIAL_FITS_FILE = "sample1.fits";
     protected static final String INITIAL_FITS_DIR = "/tmp/";
     protected static final String FINAL_FITS_DIR = "/tmp/perm/";
 
@@ -45,8 +45,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         return options(
                 vmOption("-Xverify:none "),
                 mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
-                mavenBundle().artifactId("file-util").groupId("gemini-nocs").versionAsInProject(),
-                mavenBundle().artifactId("fits-util").groupId("gemini-nocs").versionAsInProject(),
+                mavenBundle().artifactId("fits").groupId("edu.gemini.external.osgi.nom.tam").versionAsInProject(),
                 mavenBundle().artifactId("scala-library").groupId("com.weiglewilczek.scala-lang-osgi").versionAsInProject(),
                 mavenBundle().artifactId("gds-api").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
@@ -81,16 +80,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     }
 
     protected void copyInitialFile(String src, String dest) throws IOException, URISyntaxException {
-        InputStream in = GDSWithODBIT.class.getResourceAsStream(src);
-        assertTrue(in.available() > 0);
-
-        FileOutputStream fos = new FileOutputStream(dest);
-        byte readBlock[] = new byte[1024];
-        while (in.available() > 0) {
-            int readCount = in.read(readBlock);
-            fos.write(readBlock, 0, readCount);
-        }
-        fos.close();
+        ByteStreams.copy(GDSWithODBIT.class.getResourceAsStream(src), new FileOutputStream(dest));
     }
 
     protected void sendObservationEvents(ObservationEventHandler eventHandler, DataLabel dataLabel) throws InterruptedException {
@@ -117,37 +107,39 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         TimeUnit.MILLISECONDS.sleep(300);
     }
 
-    protected Set<String> readFinalKeywords() throws IOException, FitsParseException, InterruptedException {
-        return readKeywords(FINAL_FITS_DIR + FINAL_FITS_FILE);
+    protected Set<String> readFinalKeywords() throws IOException, InterruptedException {
+        return readKeywords(FINAL_FITS_DIR + FINAL_FITS_FILE, 0);
     }
 
-    protected Set<String> readKeywords(String fileName) throws IOException, FitsParseException, InterruptedException {
-        Hedit hEdit = new Hedit(new File(fileName));
-        Header primaryHeader = hEdit.readPrimary();
-        return primaryHeader.getKeywords();
-    }
-
-    protected List<Set<String>> readAllExtensionsKeywords(String fileName) throws IOException, FitsParseException, InterruptedException {
-        Hedit hEdit = new Hedit(new File(fileName));
-        List<Header> allHeaders = hEdit.readAllHeaders();
-        List<Set<String>> allKeywords = new ArrayList<Set<String>>();
-        for (Header header : allHeaders) {
-            allKeywords.add(header.getKeywords());
+    protected Set<String> readKeywords(String fileName, int header) throws IOException, InterruptedException {
+        FitsReader reader = new FitsReader(new File(fileName));
+        List<HeaderItem<?>> keyList = (List<HeaderItem<?>>)seqAsJavaList(reader.header(header).get().keywords());
+        Set<String> set = Sets.newTreeSet();
+        for (HeaderItem<?> h:keyList) {
+            set.add(h.keywordName().key());
         }
-        return allKeywords;
+        return set;
     }
 
-    protected Header readFinalPrimary() throws IOException, FitsParseException, InterruptedException {
+    protected List<Set<String>> readAllExtensionsKeywords(String fileName, int headersCount) throws IOException, InterruptedException {
+        List<Set<String>> extensions = Lists.newArrayList();
+        for (int i=0;i<headersCount;i++) {
+            extensions.add(readKeywords(fileName, i));
+        }
+        return extensions;
+    }
+
+    /*protected Header readFinalPrimary() throws IOException, InterruptedException {
         return readPrimary(FINAL_FITS_DIR + FINAL_FITS_FILE);
 
     }
 
-    protected Header readPrimary(String fileName) throws IOException, FitsParseException, InterruptedException {
+    protected Header readPrimary(String fileName) throws IOException, InterruptedException {
         Hedit hEdit = new Hedit(new File(fileName));
         return hEdit.readPrimary();
-    }
+    }*/
 
-    protected Set<String> readOriginalKeywords() throws IOException, FitsParseException, InterruptedException {
-        return readKeywords(INITIAL_FITS_DIR + INITIAL_FITS_FILE);
+    protected Set<String> readOriginalKeywords() throws IOException, InterruptedException {
+        return readKeywords(INITIAL_FITS_DIR + INITIAL_FITS_FILE, 0);
     }
 }

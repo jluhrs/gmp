@@ -26,8 +26,7 @@ class InMemoryLogSource extends PaxAppender with LogSource {
   // We index with an artificial value to avoid collisions with timestamps
   val index = new AtomicInteger(0)
   val logEventsMap: ConcurrentMap[Int, LogEventWrapper] = new MapMaker()
-    .expireAfterWrite(expirationMillis, MILLISECONDS)
-    .maximumSize(MAXSIZE)
+    .expiration(expirationMillis, MILLISECONDS)
     .makeMap[Int, LogEventWrapper]()
 
   @Validate
