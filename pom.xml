@@ -255,7 +255,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-keywords-database</artifactId>
-                <version>0.1.0</version>
+                <version>0.2.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -527,6 +527,11 @@
                 <groupId>com.googlecode.guava-osgi</groupId>
                 <artifactId>guava-osgi</artifactId>
                 <version>11.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>1.3.9</version>
             </dependency>
 
             <!-- Joda time dependencies -->

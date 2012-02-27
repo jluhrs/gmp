@@ -6,11 +6,11 @@ import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.observationstate.{ObservationStatePublisher, ObservationStateProvider, ObservationStateRegistrar}
 import java.util.concurrent.TimeUnit._
 import scala.collection.JavaConversions._
-import com.google.common.collect.MapMaker
 import edu.gemini.aspen.gds.api.CollectionError
 import collection.mutable.{SynchronizedSet, HashSet, Set, ConcurrentMap}
 import java.util.Date
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import com.google.common.cache.CacheBuilder
 
 @Component
 @Instantiate
@@ -29,9 +29,9 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     var timestamp = new Date()
   }
 
-  val obsInfoMap: ConcurrentMap[DataLabel, ObservationInfo] = new MapMaker().
-    expiration(expirationMillis, MILLISECONDS)
-    .makeMap[DataLabel, ObservationInfo]()
+  val obsInfoMap: ConcurrentMap[DataLabel, ObservationInfo] = CacheBuilder.newBuilder()
+    .expireAfterWrite(expirationMillis, MILLISECONDS)
+    .build[DataLabel, ObservationInfo]().asMap()
 
   override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).missingKeywords ++= keywords
