@@ -7,13 +7,13 @@ import java.util.concurrent.TimeUnit._
 import java.util.concurrent.atomic.AtomicInteger
 import org.apache.felix.ipojo.annotations._
 import org.ops4j.pax.logging.spi.{PaxLoggingEvent, PaxAppender}
-import com.google.common.collect.MapMaker
+import com.google.common.cache.CacheBuilder
 
 /**
  * A PaxAppender service that will get log events from pax-logging */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[PaxAppender], classOf[LogSource]))
+@Provides(specifications = Array[Class[_]](classOf[PaxAppender], classOf[LogSource]))
 class InMemoryLogSource extends PaxAppender with LogSource {
   val MAXSIZE = 1000
   /** Service property that matches the configuration on the org.ops4j.pax.logging.cfg file */
@@ -25,16 +25,16 @@ class InMemoryLogSource extends PaxAppender with LogSource {
 
   // We index with an artificial value to avoid collisions with timestamps
   val index = new AtomicInteger(0)
-  val logEventsMap: ConcurrentMap[Int, LogEventWrapper] = new MapMaker()
-    .expiration(expirationMillis, MILLISECONDS)
-    .makeMap[Int, LogEventWrapper]()
+  val logEventsMap: ConcurrentMap[java.lang.Integer, LogEventWrapper] = CacheBuilder.newBuilder()
+    .expireAfterWrite(expirationMillis, MILLISECONDS)
+    .build[java.lang.Integer, LogEventWrapper]().asMap
 
   @Validate
   def initLogListener() {}
 
   override def doAppend(event: PaxLoggingEvent) {
     val i = index.incrementAndGet()
-    logEventsMap += i -> new LogEventWrapper(event)
+    logEventsMap += java.lang.Integer.valueOf(i) -> new LogEventWrapper(event)
   }
 
   override def logEvents = logEventsMap.values.toList
