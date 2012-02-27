@@ -5,11 +5,10 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectedValue
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.keywords.database._
-import com.google.common.collect.MapMaker
 import java.util.concurrent.TimeUnit._
 import collection.mutable.ConcurrentMap
 import scala.collection.JavaConversions._
-import scala.actors.Actor._
+import com.google.common.cache.CacheBuilder
 
 /**
  * Component to store CollectedValue as HeaderItem, associated to DataLabel */
@@ -52,9 +51,9 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     this ! Clean(dataLabel)
   }
 
-  private val map: ConcurrentMap[DataLabel, List[CollectedValue[_]]] = new MapMaker().
-    expiration(expirationMillis, MILLISECONDS)
-    .makeMap[DataLabel, List[CollectedValue[_]]]()
+  private val map: ConcurrentMap[DataLabel, List[CollectedValue[_]]] = CacheBuilder.newBuilder()
+    .expireAfterWrite(expirationMillis, MILLISECONDS)
+    .build[DataLabel, List[CollectedValue[_]]]().asMap()
 
   /**
    * Store the keyword

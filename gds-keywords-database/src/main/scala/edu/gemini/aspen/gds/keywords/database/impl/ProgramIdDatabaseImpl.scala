@@ -3,10 +3,10 @@ package edu.gemini.aspen.gds.keywords.database.impl
 import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, StoreProgramId, ProgramIdDatabase}
-import com.google.common.collect.MapMaker
 import scala.collection.JavaConversions._
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import collection.mutable.ConcurrentMap
+import com.google.common.cache.CacheBuilder
 
 /**
  * Implementation of ProgramIdDatabase */
@@ -29,7 +29,9 @@ class ProgramIdDatabaseImpl extends ProgramIdDatabase {
     }
   }
 
-  private val map: ConcurrentMap[DataLabel, String] = new MapMaker().expiration(expirationMillis, MILLISECONDS).makeMap[DataLabel, String]()
+  private val map: ConcurrentMap[DataLabel, String] = CacheBuilder.newBuilder()
+    .expireAfterWrite(expirationMillis, MILLISECONDS)
+    .build[DataLabel, String]().asMap()
 
   override def store(dataLabel: DataLabel, programId: String) {
     this ! StoreProgramId(dataLabel, programId)
