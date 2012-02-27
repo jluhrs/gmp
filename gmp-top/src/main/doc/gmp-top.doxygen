@@ -1,0 +1,18 @@
+/*!
+  \page gmp_epics_top GMP Top
+
+  This bundle provides a component to handle the Top.
+
+  \section gmp_epics_top_provides_sec Provided Services
+  The \ref edu.gemini.aspen.gmp.top.TopImpl "Top" component provides methods for adding the EPICS top, or a GIAPI top,
+  to a channel or status item name
+
+
+  \section gmp_epics_top_requires_sec Required Services
+  This bundle doesn't require other bundles.
+
+  \section cas_configuration_sec Configuration
+  This bundle has one configuration file: \ref edu.gemini.aspen.gmp.top.TopImpl-default.cfg. This file has
+  the \c epicsTop and \c giapiTop configuration parameters, that must be set to the appropriate Top. For instance "epicsTop=gpi".
+
+ */
