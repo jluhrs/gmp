@@ -39,6 +39,7 @@
         <org.activemq.core.version>5.5.0</org.activemq.core.version>
         <pax-exam.version>1.2.3</pax-exam.version>
         <pax-web.version>1.0.7</pax-web.version>
+        <pax-logging.version>1.6.5</pax-logging.version>
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
         <vaadin.version>6.7.0</vaadin.version>
@@ -583,6 +584,18 @@
                 <groupId>edu.gemini.external.osgi.nom.tam</groupId>
                 <artifactId>fits</artifactId>
                 <version>1.0.8</version>
+            </dependency>
+
+            <!-- PAX-Logging -->
+            <dependency>
+                <groupId>org.ops4j.pax.logging</groupId>
+                <artifactId>pax-logging-api</artifactId>
+                <version>${pax-logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ops4j.pax.logging</groupId>
+                <artifactId>pax-logging-service</artifactId>
+                <version>${pax-logging.version}</version>
             </dependency>
 
         </dependencies>

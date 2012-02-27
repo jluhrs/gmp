@@ -43,6 +43,7 @@
         <scala-lang.version>2.9.1</scala-lang.version>
         <gmp.version>0.14.0-SNAPSHOT</gmp.version>
         <pax-runner.version>1.7.4</pax-runner.version>
+        <pax-logging.version>1.6.5</pax-logging.version>
     </properties>
 
     <build>
@@ -741,6 +742,18 @@
             <groupId>edu.gemini.external.osgi.nom.tam</groupId>
             <artifactId>fits</artifactId>
             <version>1.0.8</version>
+        </dependency>
+
+        <!-- OSGi Logging -->
+        <dependency>
+            <groupId>org.ops4j.pax.logging</groupId>
+            <artifactId>pax-logging-api</artifactId>
+            <version>${pax-logging.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.logging</groupId>
+            <artifactId>pax-logging-service</artifactId>
+            <version>${pax-logging.version}</version>
         </dependency>
 
         <!--dependency>

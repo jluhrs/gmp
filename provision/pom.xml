@@ -21,7 +21,6 @@
         <org.activemq.core.version>5.5.0</org.activemq.core.version>
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
-        <pax-logging.version>1.6.4</pax-logging.version>
     </properties>
 
     <!--
@@ -41,17 +40,6 @@
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.shell.remote</artifactId>
             <version>1.1.2</version>
-        </dependency>
-        <!-- PAX-Logging -->
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-            <version>${pax-logging.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-service</artifactId>
-            <version>${pax-logging.version}</version>
         </dependency>
         <!-- Configuration admin felix service -->
         <dependency>
