@@ -9,6 +9,7 @@ import com.google.common.collect.MapMaker
 import java.util.concurrent.TimeUnit._
 import scala.collection.JavaConversions._
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import com.google.common.cache.CacheBuilder
 
 /**
  * Companion object used to logically group message classes.
@@ -43,7 +44,7 @@ trait TemporarySeqexecKeywordsDatabase extends Actor
  */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[TemporarySeqexecKeywordsDatabase]))
+@Provides(specifications = Array[Class[_]](classOf[TemporarySeqexecKeywordsDatabase]))
 class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatabase {
   type ValuesCollection = collection.mutable.Map[FitsKeyword, AnyRef]
   // expiration of 1 day by default but tests can override it
@@ -64,9 +65,9 @@ class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatab
     }
   }
 
-  private val map: ConcurrentMap[DataLabel, ValuesCollection] = new MapMaker().
-    expiration(expirationMillis, MILLISECONDS)
-    .makeMap[DataLabel, ValuesCollection]()
+  private val map: ConcurrentMap[DataLabel, ValuesCollection] = CacheBuilder.newBuilder()
+    .expireAfterWrite(expirationMillis, MILLISECONDS)
+    .build[DataLabel, ValuesCollection]().asMap()
 
   private def cleanAll() {
     map.clear()
