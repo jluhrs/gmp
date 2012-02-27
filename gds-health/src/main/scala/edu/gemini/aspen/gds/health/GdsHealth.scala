@@ -12,6 +12,7 @@ import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import scala.actors.Actor._
 import actors.Actor
 import edu.gemini.jms.api.{JmsArtifact, JmsProvider}
+import edu.gemini.aspen.gmp.top.Top
 
 case object UpdateHealth
 
@@ -25,15 +26,20 @@ case object StopJms
 @Component
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[JmsArtifact]))
-class GdsHealth extends JmsArtifact {
+class GdsHealth(@Requires top: Top) extends JmsArtifact {
 
-  private val healthName = "gpi:gds:health"
+  private var healthName: String = _
   private val healthSetter: StatusSetter = new StatusSetter("GDS Health", healthName)
   private val LOG = Logger.getLogger(this.getClass.getName)
 
   private val healthState = new HealthState
   private val stateActor = new StateActor()
   stateActor.start()
+
+  @Validate
+  def validate() {
+    healthName = top.buildStatusItemName("gds:health")
+  }
 
   private def updateHealth() {
     LOG.info("Updating Health to " + healthState.getHealth + " " + healthSetter)

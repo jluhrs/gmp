@@ -2,19 +2,19 @@ package edu.gemini.aspen.gds.health
 
 import org.junit.Assert._
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider
-import edu.gemini.aspen.giapi.statusservice.{StatusHandlerAggregate, StatusHandlerAggregateImpl, StatusService}
-import edu.gemini.aspen.giapi.status.impl.HealthStatus
+import edu.gemini.aspen.giapi.statusservice.{StatusHandlerAggregateImpl, StatusService}
 import org.mockito.Mockito._
+import org.mockito.Matchers._
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
 import org.junit.{After, Before, Test}
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
-import edu.gemini.jms.api.JmsProvider
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import actors.threadpool.AtomicInteger
+import edu.gemini.aspen.gmp.top.Top
 
 class GdsHealthTest {
-  val healthName = "gpi:gds:health"
+  val healthName = "gpitest:gds:health"
   val testCounter = new AtomicInteger(0)
 
   var gdsHealth: GdsHealth = _
@@ -45,7 +45,10 @@ class GdsHealthTest {
     statusservice = new StatusService(agg, "Status Service " + testCounter.incrementAndGet(), ">")
     statusservice.startJms(provider)
     TimeUnit.MILLISECONDS.sleep(1000)
-    gdsHealth = new GdsHealth()
+    val top=mock(classOf[Top])
+    when(top.buildStatusItemName(anyString)).thenReturn(healthName)
+    gdsHealth = new GdsHealth(top)
+    gdsHealth.validate()
     gdsHealth.startJms(provider)
   }
 

@@ -74,6 +74,10 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-top</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
