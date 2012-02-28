@@ -496,6 +496,13 @@
                 <scope>provided</scope>
             </dependency>
 
+            <!-- Scala dependencies -->
+            <dependency>
+                <groupId>com.weiglewilczek.scala-lang-osgi</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala-lang.version}</version>
+            </dependency>
+
             <!-- IPojo dependencies -->
             <dependency>
                 <groupId>org.apache.felix</groupId>
@@ -542,13 +549,6 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
-            </dependency>
-
-            <!-- Scala -->
-            <dependency>
-                <groupId>com.weiglewilczek.scala-lang-osgi</groupId>
-                <artifactId>scala-library</artifactId>
-                <version>${scala-lang.version}</version>
             </dependency>
 
             <!-- Guava -->

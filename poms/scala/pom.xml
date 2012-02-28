@@ -25,11 +25,6 @@
                 <version>1.6.1</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
-                <artifactId>time_2.9.1</artifactId>
-                <version>0.5</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
