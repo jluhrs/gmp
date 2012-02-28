@@ -54,6 +54,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>edu.gemini.epics</groupId>
