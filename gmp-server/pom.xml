@@ -25,19 +25,6 @@
         <bundle.symbolicName>edu.gemini.aspen.gmpserver</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.gmpserver</bundle.namespace>
 
-        <org.apache.felix.http.jettyEnabled>true</org.apache.felix.http.jettyEnabled>
-        <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>
-        <bundles.configuration.location>../src/main/etc/conf</bundles.configuration.location>
-        <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
-
-        <felix.cm.loglevel>4</felix.cm.loglevel>
-        <felix.log.level>0</felix.log.level>
-        <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
-        <felix.fileinstall.noInitialDelay>false</felix.fileinstall.noInitialDelay>
-        <felix.fileinstall.poll>2000</felix.fileinstall.poll>
-        <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
-        <ipojo.log.level>trace</ipojo.log.level>
-
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
         <gmp.version>0.14.0-SNAPSHOT</gmp.version>
@@ -651,7 +638,6 @@
         <dependency>
             <groupId>edu.gemini.aspen.gds.web.ui</groupId>
             <artifactId>gds-web-ui</artifactId>
-            <version>0.1.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.giapi.web.ui.vaadin</groupId>
