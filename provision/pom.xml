@@ -40,11 +40,6 @@
             <artifactId>org.apache.felix.ipojo.annotations</artifactId>
             <version>${org.apache.felix.ipojo}</version>
         </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.compendium</artifactId>
-            <version>4.2.0</version>
-        </dependency>
         <!-- Scala dependencies -->
         <dependency>
             <groupId>com.weiglewilczek.scala-lang-osgi</groupId>

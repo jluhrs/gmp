@@ -923,6 +923,12 @@
             <version>${pax-logging.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
         <!--dependency>
             <groupId>edu.gemini.aspen.gpi.web.ui</groupId>
             <artifactId>gmp-web-ui-console</artifactId>
