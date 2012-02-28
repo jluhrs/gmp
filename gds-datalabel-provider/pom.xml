@@ -22,7 +22,7 @@
     <name>GDS DataLabel Provider</name>
     <description>The module provides a service to get data labels</description>
 
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
