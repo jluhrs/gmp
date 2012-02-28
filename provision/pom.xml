@@ -169,22 +169,6 @@
             <artifactId>scala-library</artifactId>
             <version>${scala-lang.version}</version>
         </dependency>
-        <!-- ODB Dependencies -->
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>jini-driver</artifactId>
-            <version>1.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>spdb-activator</artifactId>
-            <version>2012A-test.3.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>rr</artifactId>
-            <version>0.1.0</version>
-        </dependency>
     </dependencies>
 
 </project>
