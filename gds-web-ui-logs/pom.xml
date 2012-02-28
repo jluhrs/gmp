@@ -52,7 +52,6 @@
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
-            <version>1.6.2</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
