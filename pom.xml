@@ -712,6 +712,19 @@
                 <artifactId>rr</artifactId>
                 <version>0.1.0</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.metatype</artifactId>
+                <version>1.0.4</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>org.osgi.core</artifactId>
+                        <groupId>org.apache.felix</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -748,6 +761,7 @@
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
