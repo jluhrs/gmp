@@ -203,7 +203,6 @@
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.compendium</artifactId>
-            <version>4.2.0</version>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
@@ -216,7 +215,6 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>1.6</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -303,6 +301,17 @@
             <artifactId>pax-exam-container-default</artifactId>
             <version>${pax-exam.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>shared-util</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>shared-test</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>
