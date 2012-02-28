@@ -8,7 +8,6 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.cm.ManagedService;
 
@@ -16,7 +15,8 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
@@ -35,8 +35,6 @@ public class SimplePropertyHolderIT extends FelixContainerConfigurationBase {
                 vmOption("-Xverify:none "),
                 mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
-                mavenBundle().artifactId("com.springsource.org.dom4j").groupId("org.dom4j").versionAsInProject(),
-                mavenBundle().artifactId("com.springsource.javax.xml.stream").groupId("javax.xml.stream").versionAsInProject(),
                 mavenBundle().artifactId("gmp-services").groupId("edu.gemini.aspen.gmp").update().versionAsInProject()
         );
     }

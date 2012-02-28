@@ -1,4 +1,4 @@
-package edu.gemini.epics;
+package edu.gemini.aspen.integrationtests;
 
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -40,14 +40,12 @@ public class EpicsServiceBaseIntegration {
                 systemProperty("felix.fileinstall.noInitialDelay").value("true"),
                 systemProperty("ipojo.log.level").value("debug"),
                 mavenBundle().artifactId("org.apache.felix.ipojo").groupId("org.apache.felix").versionAsInProject(),
-                mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").version("4.2.0"),
+                mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").versionAsInProject(),
                 mavenBundle().artifactId("org.apache.felix.configadmin").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("guava-osgi").groupId("com.googlecode.guava-osgi").versionAsInProject(),
-                mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
-                mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("jca-lib").groupId("edu.gemini.external.osgi.jca-lib").versionAsInProject(),
                 mavenBundle().artifactId("shared-test").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("shared-util").groupId("gemini-nocs").versionAsInProject(),

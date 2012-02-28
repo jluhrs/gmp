@@ -43,7 +43,6 @@ public class StatusDispatcherIT extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("geronimo-j2ee-management_1.1_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").versionAsInProject(),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
-                mavenBundle().artifactId("com.springsource.org.apache.commons.logging").groupId("org.apache.commons").versionAsInProject(),
                 mavenBundle().artifactId("giapi-test-support").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject(),

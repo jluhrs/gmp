@@ -1,4 +1,4 @@
-package edu.gemini.epics;
+package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.epics.api.EpicsClient;
 import org.junit.Test;

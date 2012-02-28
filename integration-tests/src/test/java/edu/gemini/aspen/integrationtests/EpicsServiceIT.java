@@ -1,5 +1,6 @@
-package edu.gemini.epics;
+package edu.gemini.aspen.integrationtests;
 
+import edu.gemini.epics.JCAContextController;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
