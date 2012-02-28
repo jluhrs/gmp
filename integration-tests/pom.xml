@@ -14,6 +14,7 @@
     <properties>
         <bundle.symbolicName>edu.gemini.aspen.integration-tests</bundle.symbolicName>
         <bundle.namespace>edu.gemini.aspen.integrationtests</bundle.namespace>
+        <pax-exam.version>1.2.3</pax-exam.version>
     </properties>
 
     <groupId>edu.gemini.aspen</groupId>
@@ -23,7 +24,7 @@
     <name>Integration Tests</name>
     <description>Integration Tests</description>
 
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
     <build>
         <plugins>
             <!-- use pax exam maven plugin -->
@@ -269,6 +270,36 @@
         <dependency>
             <groupId>edu.gemini.external.osgi.nom.tam</groupId>
             <artifactId>fits</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam</artifactId>
+            <version>${pax-exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-junit</artifactId>
+            <version>${pax-exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-junit-extender</artifactId>
+            <version>${pax-exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-junit-extender-impl</artifactId>
+            <version>${pax-exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-container-default</artifactId>
+            <version>${pax-exam.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
