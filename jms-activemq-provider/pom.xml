@@ -33,11 +33,9 @@
             <groupId>edu.gemini.external.osgi.net.jmatrix.eproperties</groupId>
             <artifactId>eproperties</artifactId>
         </dependency>
-        <!-- OSGi Logging -->
         <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
         </dependency>
     </dependencies>
 
