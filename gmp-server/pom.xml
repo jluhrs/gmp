@@ -562,7 +562,6 @@
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-tui</artifactId>
-            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
@@ -684,7 +683,6 @@
         <dependency>
             <groupId>com.googlecode.guava-osgi</groupId>
             <artifactId>guava-osgi</artifactId>
-            <version>11.0.0</version>
         </dependency>
 
         <!-- Joda time dependencies -->
