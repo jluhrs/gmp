@@ -411,6 +411,7 @@
                 <version>2.1</version>
             </dependency>
 
+            <!-- EProperties -->
             <dependency>
                 <groupId>edu.gemini.external.osgi.net.jmatrix.eproperties</groupId>
                 <artifactId>eproperties</artifactId>
