@@ -409,18 +409,6 @@
                 <version>0.3.0</version>
             </dependency>
 
-            <!-- Felix iPOJO -->
-            <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.ipojo</artifactId>
-                <version>${org.apache.felix.ipojo}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-                <version>${org.apache.felix.ipojo}</version>
-            </dependency>
-
             <!-- JAXB -->
             <dependency>
                 <groupId>javax.xml.bind</groupId>
