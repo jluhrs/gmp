@@ -44,6 +44,7 @@
         <gmp.version>0.14.0-SNAPSHOT</gmp.version>
         <pax-runner.version>1.7.4</pax-runner.version>
         <pax-logging.version>1.6.5</pax-logging.version>
+        <pax-web.version>1.0.7</pax-web.version>
         <org.activemq.core.version>5.5.0</org.activemq.core.version>
     </properties>
 
@@ -443,7 +444,7 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
-            <version>0.11.1</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <!-- GIAPI Status Service -->
         <dependency>
@@ -832,6 +833,29 @@
             <version>1.1.1</version>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- PAX-WEB -->
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-jetty-bundle</artifactId>
+            <version>${pax-web.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-extender-war</artifactId>
+            <version>${pax-web.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-extender-whiteboard</artifactId>
+            <version>${pax-web.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-spi</artifactId>
+            <version>${pax-web.version}</version>
+        </dependency>
+
 
         <!--dependency>
             <groupId>edu.gemini.aspen.gpi.web.ui</groupId>

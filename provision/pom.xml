@@ -72,27 +72,6 @@
             <artifactId>org.apache.felix.metatype</artifactId>
             <version>1.0.4</version>
         </dependency>
-        <!-- PAX-WEB -->
-        <dependency>
-            <groupId>org.ops4j.pax.web</groupId>
-            <artifactId>pax-web-jetty-bundle</artifactId>
-            <version>1.0.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ops4j.pax.web</groupId>
-            <artifactId>pax-web-extender-war</artifactId>
-            <version>1.0.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ops4j.pax.web</groupId>
-            <artifactId>pax-web-extender-whiteboard</artifactId>
-            <version>1.0.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ops4j.pax.web</groupId>
-            <artifactId>pax-web-spi</artifactId>
-            <version>1.0.7</version>
-        </dependency>
         <!-- Felix iPOJO -->
         <dependency>
             <groupId>org.apache.felix</groupId>
