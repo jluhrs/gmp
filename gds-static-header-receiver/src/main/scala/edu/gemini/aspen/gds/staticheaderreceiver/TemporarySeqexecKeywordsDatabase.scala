@@ -5,7 +5,6 @@ import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
 import actors.Actor
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{RetrieveAll, Retrieve, Store, CleanAll, Clean}
 import collection.mutable.ConcurrentMap
-import com.google.common.collect.MapMaker
 import java.util.concurrent.TimeUnit._
 import scala.collection.JavaConversions._
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
