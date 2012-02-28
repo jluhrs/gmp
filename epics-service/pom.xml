@@ -36,10 +36,12 @@
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>shared-util</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>shared-test</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.googlecode.guava-osgi</groupId>
