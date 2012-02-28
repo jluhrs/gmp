@@ -73,13 +73,6 @@
 
     <dependencies>
         <dependency>
-            <type>pom</type>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>provision</artifactId>
-            <version>1.0.0</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>gsbase</groupId>
             <artifactId>gsbase</artifactId>
             <version>2.0.1</version>

@@ -40,6 +40,7 @@
         <pax-exam.version>1.2.3</pax-exam.version>
         <pax-web.version>1.0.7</pax-web.version>
         <pax-logging.version>1.6.5</pax-logging.version>
+        <pax-runner.version>1.7.6</pax-runner.version>
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
         <vaadin.version>6.7.0</vaadin.version>
@@ -78,14 +79,24 @@
                     <historyDir>${project.build.directory}/../history</historyDir>
                 </configuration>
             </plugin>
+            <!-- Can support launching in felix -->
             <plugin>
                 <groupId>org.ops4j</groupId>
                 <artifactId>maven-pax-plugin</artifactId>
                 <version>1.4</version>
                 <configuration>
                     <provision>
-                        <param>--platform=felix</param>
+                        <param>--keepOriginalUrls</param>
+                        <param>--debug=warn</param>
+                        <param>--vmo=-Xverify:none</param>
+                        <param>--sp=javax.xml.parsers,com.sun.javadoc,sun.io,sun.swing,sun.misc,com.sun,edu.gemini.rmi.server,sun.rmi.runtime</param>
+                        <param>--bd=java.rmi.server</param>
                     </provision>
+                    <framework>felix</framework>
+                    <runner>${pax-runner.version}</runner>
+                    <snapshots>true</snapshots>
+                    <!-- Deploying scala this way doesn't interfere with IDEA scala plugin -->
+                    <deployURLs>mvn:com.weiglewilczek.scala-lang-osgi/scala-library/${scala-lang.version}</deployURLs>
                 </configuration>
             </plugin>
             <plugin>
@@ -686,7 +697,6 @@
 
     <modules>
         <module>poms</module>
-        <module>provision</module>
         <module>epics-api</module>
         <module>epics-service</module>
         <module>giapi</module>
