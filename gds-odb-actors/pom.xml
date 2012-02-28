@@ -41,29 +41,42 @@
             <groupId>gemini-nocs</groupId>
             <artifactId>jini-driver</artifactId>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>net.jini</groupId>
             <artifactId>jini-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>pot-client</artifactId>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>shared-jini</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>spModel</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>spModel-pio</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>shared-util</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>spModel</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>net.jini</groupId>
+            <artifactId>jini-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>pot-client</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
