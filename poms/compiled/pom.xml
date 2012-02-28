@@ -21,58 +21,8 @@
         <maven.build.timestamp.format>E MMM dd k:mm:ss z yyyy</maven.build.timestamp.format>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.activemq</groupId>
-                <artifactId>activemq-core</artifactId>
-                <version>${org.activemq.core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>jini-driver</artifactId>
-                <version>1.0.5</version>
-            </dependency>
-            <dependency>
-                <groupId>net.jini</groupId>
-                <artifactId>jini-core</artifactId>
-                <version>2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>pot-client</artifactId>
-                <version>1.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>shared-jini</artifactId>
-                <version>1.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>spModel</artifactId>
-                <version>1.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>spModel-pio</artifactId>
-                <version>1.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>shared-util</artifactId>
-                <version>1.0.4</version>
-            </dependency>
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>shared-test</artifactId>
-                <version>1.0.1</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
-        <dependency>
+        <!--dependency>
             <groupId>gsbase</groupId>
             <artifactId>gsbase</artifactId>
             <version>2.0.1</version>
@@ -113,7 +63,7 @@
             <artifactId>pax-exam-container-default</artifactId>
             <version>${pax-exam.version}</version>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
     </dependencies>
 
     <build>
