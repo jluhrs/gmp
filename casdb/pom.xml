@@ -22,7 +22,7 @@
     <name>Channel Access Server Database</name>
     <description>Channel Access Server Database Standalone</description>
 
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <build>
         <plugins>
