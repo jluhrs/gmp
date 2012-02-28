@@ -567,6 +567,12 @@
                 <version>1.8.5</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>gsbase</groupId>
+                <artifactId>gsbase</artifactId>
+                <version>2.0.1</version>
+                <scope>test</scope>
+            </dependency>
 
             <!-- Guava -->
             <dependency>
@@ -725,6 +731,10 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>gsbase</groupId>
+            <artifactId>gsbase</artifactId>
         </dependency>
 
         <dependency>
