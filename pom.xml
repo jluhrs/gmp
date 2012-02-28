@@ -403,6 +403,11 @@
                 <artifactId>gds-web-ui</artifactId>
                 <version>0.1.0</version>
             </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.gmp</groupId>
+                <artifactId>gmp-tui</artifactId>
+                <version>0.3.0</version>
+            </dependency>
 
             <!-- JAXB -->
             <dependency>
