@@ -3,7 +3,6 @@ package edu.gemini.epics.api;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
 
-import javax.transaction.NotSupportedException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
