@@ -250,6 +250,7 @@
             <groupId>org.ops4j.pax.runner</groupId>
             <artifactId>pax-runner</artifactId>
             <version>1.7.4</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>edu.gemini.epics</groupId>
