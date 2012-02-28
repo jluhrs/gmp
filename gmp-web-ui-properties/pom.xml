@@ -22,7 +22,7 @@
     <name>GMP Web UI - Properties</name>
     <description>GDS Web UI - Properties</description>
 
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
