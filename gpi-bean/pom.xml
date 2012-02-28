@@ -22,7 +22,7 @@
     <name>GPI Bean</name>
     <description>GPI Bean Demo</description>
 
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!--
