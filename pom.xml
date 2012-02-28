@@ -409,6 +409,18 @@
                 <version>0.3.0</version>
             </dependency>
 
+            <!-- Felix iPOJO -->
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.ipojo</artifactId>
+                <version>${org.apache.felix.ipojo}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+                <version>${org.apache.felix.ipojo}</version>
+            </dependency>
+
             <!-- JAXB -->
             <dependency>
                 <groupId>javax.xml.bind</groupId>
@@ -482,16 +494,32 @@
                 <scope>runtime</scope>
             </dependency>
 
+            <!-- OSGI -->
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.compendium</artifactId>
+                <version>4.2.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>4.2.0</version>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- IPojo dependencies -->
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo.annotations</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- SPModel -->
@@ -646,11 +674,26 @@
             <artifactId>scalatest_2.9.1</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-api</artifactId>
             <scope>runtime</scope>
         </dependency>
-
     </dependencies>
 
     <modules>

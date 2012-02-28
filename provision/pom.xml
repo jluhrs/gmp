@@ -29,17 +29,6 @@
     -->
 
     <dependencies>
-        <!-- Felix iPOJO -->
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo</artifactId>
-            <version>${org.apache.felix.ipojo}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-            <version>${org.apache.felix.ipojo}</version>
-        </dependency>
         <!-- Scala dependencies -->
         <dependency>
             <groupId>com.weiglewilczek.scala-lang-osgi</groupId>

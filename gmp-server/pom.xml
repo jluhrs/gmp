@@ -929,6 +929,17 @@
             <version>4.2.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo</artifactId>
+            <version>${org.apache.felix.ipojo}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+            <version>${org.apache.felix.ipojo}</version>
+        </dependency>
+
         <!--dependency>
             <groupId>edu.gemini.aspen.gpi.web.ui</groupId>
             <artifactId>gmp-web-ui-console</artifactId>
