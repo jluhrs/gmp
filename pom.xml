@@ -29,11 +29,27 @@
     <description>GIAPI - OSGi</description>
 
     <properties>
-        <!--
-         | some example OSGi runtime properties
-        -->
-        <org.osgi.service.http.port>8080</org.osgi.service.http.port>
+        <!-- OSGi service properties -->
+        <org.apache.felix.http.jettyEnabled>true</org.apache.felix.http.jettyEnabled>
         <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>
+        <org.osgi.service.http.port>8888</org.osgi.service.http.port>
+        <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
+        <jini.lus.import.hosts>sbfswgdev01.cl.gemini.edu</jini.lus.import.hosts>
+        <jini.lus.import.groups>swg-test</jini.lus.import.groups>
+        <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
+        <felix.fileinstall.dir>../src/main/config/services</felix.fileinstall.dir>
+
+        <!-- Logging properties -->
+        <logs.dir>logs</logs.dir>
+        <felix.cm.loglevel>1</felix.cm.loglevel>
+        <felix.log.level>0</felix.log.level>
+        <felix.fileinstall.log.level>1</felix.fileinstall.log.level>
+        <ipojo.log.level>warn</ipojo.log.level>
+        <org.ops4j.pax.logging.DefaultServiceLog.level>WARN</org.ops4j.pax.logging.DefaultServiceLog.level>
+
+        <!-- Configuration dir -->
+        <conf.base>../src/main/config</conf.base>
+
         <!-- Component versions -->
         <clover.version>3.1.0</clover.version>
         <org.activemq.core.version>5.5.0</org.activemq.core.version>
@@ -411,7 +427,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds.web.ui</groupId>
                 <artifactId>gds-web-ui</artifactId>
-                <version>0.1.0</version>
+                <version>0.2.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
