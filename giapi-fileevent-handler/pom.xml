@@ -22,7 +22,7 @@
 
     <name>GIAPI File Event Handler Demo</name>
 
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
