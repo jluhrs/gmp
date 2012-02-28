@@ -37,7 +37,6 @@
         <!-- Component versions -->
         <clover.version>3.1.0</clover.version>
         <org.activemq.core.version>5.5.0</org.activemq.core.version>
-        <pax-exam.version>1.2.3</pax-exam.version>
         <pax-web.version>1.0.7</pax-web.version>
         <pax-logging.version>1.6.5</pax-logging.version>
         <pax-runner.version>1.7.6</pax-runner.version>
@@ -89,7 +88,7 @@
                         <param>--keepOriginalUrls</param>
                         <param>--debug=warn</param>
                         <param>--vmo=-Xverify:none</param>
-                        <param>--sp=javax.xml.parsers,com.sun.javadoc,sun.io,sun.swing,sun.misc,com.sun,edu.gemini.rmi.server,sun.rmi.runtime</param>
+                        <param>--sp=javax.xml.parsers,com.sun.jini,com.sun.javadoc,sun.io,sun.swing,sun.misc,com.sun,edu.gemini.rmi.server,sun.rmi.runtime</param>
                         <param>--bd=java.rmi.server</param>
                     </provision>
                     <framework>felix</framework>
@@ -519,13 +518,13 @@
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo.annotations</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
-                <scope>provided</scope>
+                <!--scope>provided</scope-->
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
-                <scope>provided</scope>
+                <!--<scope>provided</scope>-->
             </dependency>
 
             <!-- SPModel -->
@@ -611,11 +610,6 @@
             </dependency>
 
             <!-- ODB/Jini dependencies -->
-            <!--dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>jini-driver</artifactId>
-                <version>1.0.5</version>
-            </dependency-->
             <dependency>
                 <groupId>net.jini</groupId>
                 <artifactId>jini-core</artifactId>
