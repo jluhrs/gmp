@@ -54,6 +54,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>shared-util</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>gemini-nocs</groupId>
+            <artifactId>shared-test</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-service</artifactId>
             <scope>test</scope>
