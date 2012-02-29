@@ -17,10 +17,10 @@ import net.jini.core.lookup.ServiceTemplate
 @Component
 @Instantiate
 class ODBServiceTracker(@Requires jiniDriver: JiniDriver) {
-    @Validate
-    def validate() {
-        val st = new ServiceTemplate(null, Array[Class[_]](classOf[IDBDatabaseService]), null)
-        val templates = Array[ServiceTemplate](st)
-        jiniDriver.setServiceTemplates(templates)
-    }
+  @Validate
+  def validate() {
+    val st = new ServiceTemplate(null, Array[Class[_]](classOf[IDBDatabaseService]), null)
+    val templates = Array[ServiceTemplate](st)
+    jiniDriver.setServiceTemplates(templates)
+  }
 }

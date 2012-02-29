@@ -15,7 +15,7 @@ import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, Ke
  */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[KeywordActorsFactory]))
+@Provides(specifications = Array[Class[_]](classOf[KeywordActorsFactory]))
 class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires programIdDatabase: ProgramIdDatabase) extends AbstractKeywordActorsFactory {
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
     val programID = (programIdDatabase !? RetrieveProgramId(dataLabel)).asInstanceOf[Option[String]]
