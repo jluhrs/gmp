@@ -306,7 +306,7 @@
             <id>production</id>
             <dependencies>
                 <!-- Felix core -->
-                <!--dependency>
+                <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.framework</artifactId>
                     <version>${felix.framework.version}</version>
@@ -315,7 +315,7 @@
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.main</artifactId>
                     <version>${felix.framework.version}</version>
-                </dependency-->
+                </dependency>
                 <!-- PAX Runner -->
                 <dependency>
                     <groupId>org.ops4j.pax.runner</groupId>
