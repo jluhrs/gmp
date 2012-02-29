@@ -60,6 +60,8 @@
         <scala-lang.version>2.9.1</scala-lang.version>
         <vaadin.version>6.7.0</vaadin.version>
         <junit.version>4.10</junit.version>
+
+        <gmp.version>$(project.version}</gmp.version>
         <!-- Global encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -127,6 +129,70 @@
                     <argLine>-Xverify:none</argLine>
                 </configuration>
             </plugin>
+            <!--plugin>
+                <groupId>com.soebes.maven.plugins.dmg</groupId>
+                <artifactId>doxygen-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <configuration>
+                    <filePatterns>*.doxygen *.doxy *.java *.xsd *.xml *.properties *.cfg</filePatterns>
+                    <recursive>true</recursive>
+                    <excludePatterns>*/test/*Test*.java */target/* *pom.xml</excludePatterns>
+                    <optimizeOutputJava>true</optimizeOutputJava>
+                    <haveDot>true</haveDot>
+                    <quiet>false</quiet>
+                    <projectName>"GIAPI - GMP (Version: ${gmp.version})"</projectName>
+                    <generateLatex>false</generateLatex>
+                    <generateHtml>true</generateHtml>
+                    <htmlHeader>${basedir}/src/main/doc/header.html</htmlHeader>
+                    <htmlFooter>${basedir}/src/main/doc/footer.html</htmlFooter>
+                    <stripFromPath>${basedir}</stripFromPath>
+                    <extractAll>true</extractAll>
+                    <imagePath>src/main/doc/ src/main/doc/gemini_records/</imagePath>
+                    <examplePath>src/main/doc/gemini_records target/site/doxygen</examplePath>
+                    <exclude>poms</exclude>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!- here the phase you need ->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <outputDirectory>target/site/doxygen</outputDirectory>
+                    <resources>
+                        <resource>
+                            <directory>src/main/doc</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>gpidoc.css</include>
+                                <include>gemini.jpg</include>
+                                <include>README</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>giapi-tester/src/main/resources/edu/gemini/giapi/tool/help</directory>
+                            <includes>
+                                <include>usage.txt</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>src/main/doc/gemini_records</directory>
+                            <includes>
+                                <include>gem*.gif</include>
+                            </includes>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin-->
         </plugins>
     </build>
 
@@ -854,8 +920,9 @@
         <module>gmp-web-ui-properties</module>
         <!--module>gpi-ao-plot</module>
         <module>gmp-web-ui-console</module-->
-        <module>gmp-server</module>
         <module>integration-tests</module>
+        <!--<module>gmp-server</module>-->
+        <!--module>distribution</module-->
     </modules>
 
     <distributionManagement>
@@ -911,6 +978,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 
 </project>
