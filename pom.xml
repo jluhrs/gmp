@@ -131,6 +131,16 @@
                     <argLine>-Xverify:none</argLine>
                 </configuration>
             </plugin>
+            <!-- Create an assembly -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>distribution/src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
             <!--plugin>
                 <groupId>com.soebes.maven.plugins.dmg</groupId>
                 <artifactId>doxygen-maven-plugin</artifactId>
@@ -937,7 +947,7 @@
         <module>gmp-web-ui-console</module-->
         <module>integration-tests</module>
         <!--<module>gmp-server</module>-->
-        <!--module>distribution</module-->
+        <module>distribution</module>
     </modules>
 
     <distributionManagement>
