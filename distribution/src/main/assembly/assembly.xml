@@ -24,6 +24,10 @@
                 <include>org.apache.felix:org.apache.felix.main</include>
                 <include>org.apache.felix:org.apache.felix.gogo.*</include>
             </includes>
+            <excludes>
+                <exclude>org.easymock:*</exclude>
+                <exclude>edu.gemini.aspen.giapi-osgi:*</exclude>
+            </excludes>
         </repository>
         <repository>
             <outputDirectory>bundles</outputDirectory>

@@ -321,6 +321,12 @@
                     <groupId>org.ops4j.pax.runner</groupId>
                     <artifactId>pax-runner</artifactId>
                     <version>${pax-runner.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.easymock</groupId>
+                            <artifactId>easymock</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <!-- GIAPI tester -->
                 <!--dependency>
@@ -330,21 +336,21 @@
                     <classifier>jar-with-dependencies</classifier>
                 </dependency-->
                 <!-- Felix Shell and GOGO -->
-                <!--dependency>
+                <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.command</artifactId>
-                    <version>0.8.0</version>
+                    <version>0.12.0</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.runtime</artifactId>
-                    <version>0.8.0</version>
+                    <version>0.10.0</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.shell</artifactId>
-                    <version>0.8.0</version>
-                </dependency-->
+                    <version>0.10.0</version>
+                </dependency>
             </dependencies>
         </profile>
     </profiles>
