@@ -47,8 +47,6 @@ public class SimplePropertyHolderIT extends FelixContainerConfigurationBase {
     @Test
     public void bundleExistence() {
         assertNotNull(getBundle("edu.gemini.aspen.giapi"));
-        assertNotNull(getBundle("com.springsource.org.dom4j"));
-        assertNotNull(getBundle("com.springsource.javax.xml.stream"));
         assertNotNull(getBundle("com.springsource.javax.jms"));
         assertNotNull(getBundle("edu.gemini.jms-api"));
         assertNotNull(getBundle("edu.gemini.aspen.gmp.services"));
