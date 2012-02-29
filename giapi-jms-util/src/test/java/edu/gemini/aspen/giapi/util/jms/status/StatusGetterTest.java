@@ -11,7 +11,7 @@ import static org.mockito.Mockito.*;
 public class StatusGetterTest {
     @Test
     public void testGetStatusNames() throws JMSException {
-        StatusGetter statusGetter = new StatusGetter();
+        StatusGetter statusGetter = new StatusGetter("Test getter");
         JmsProvider provider = mock(JmsProvider.class);
         ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
         when(provider.getConnectionFactory()).thenReturn(connectionFactory);

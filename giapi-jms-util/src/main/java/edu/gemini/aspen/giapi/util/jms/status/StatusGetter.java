@@ -16,8 +16,8 @@ import java.util.Set;
  */
 public class StatusGetter extends BaseMessageProducer {
 
-    public StatusGetter() {
-        super("Status Getter", new DestinationData(JmsKeys.GW_STATUS_REQUEST_DESTINATION, DestinationType.TOPIC));
+    public StatusGetter(String clientName) {
+        super(clientName, new DestinationData(JmsKeys.GW_STATUS_REQUEST_DESTINATION, DestinationType.TOPIC));
     }
 
     public StatusItem getStatusItem(String statusName) throws JMSException {

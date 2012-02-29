@@ -40,7 +40,7 @@ public class GetStatusOperation implements Operation {
     public int execute() throws Exception {
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
-        StatusGetter getter = new StatusGetter();
+        StatusGetter getter = new StatusGetter("GIAPI Tester");
 
         try {
             getter.startJms(provider);

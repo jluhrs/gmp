@@ -1,6 +1,7 @@
 package edu.gemini.jms.api;
 
 import javax.jms.*;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +42,7 @@ public abstract class BaseJmsArtifact implements JmsArtifact, ExceptionListener 
         ConnectionFactory factory = provider.getConnectionFactory();
 
         _connection = factory.createConnection();
-        _connection.setClientID(_clientName);
+        _connection.setClientID(_clientName+ UUID.randomUUID().toString());
         _connection.start();
         _connection.setExceptionListener(this);
         _session = _connection.createSession(false,

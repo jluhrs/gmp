@@ -88,7 +88,7 @@ public class MonitorStatusOperation implements Operation {
 
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
-        StatusGetter getter = new StatusGetter();
+        StatusGetter getter = new StatusGetter("GIAPI Tester");
 
         StatusMonitor monitor = new StatusMonitor(_expectedValue);
 
