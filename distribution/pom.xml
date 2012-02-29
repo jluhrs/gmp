@@ -300,4 +300,52 @@
             </extension>
         </extensions>
     </build>
+
+    <profiles>
+        <profile>
+            <id>production</id>
+            <dependencies>
+                <!-- Felix core -->
+                <!--dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.framework</artifactId>
+                    <version>${felix.framework.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.main</artifactId>
+                    <version>${felix.framework.version}</version>
+                </dependency-->
+                <!-- PAX Runner -->
+                <dependency>
+                    <groupId>org.ops4j.pax.runner</groupId>
+                    <artifactId>pax-runner</artifactId>
+                    <version>${pax-runner.version}</version>
+                </dependency>
+                <!-- GIAPI tester -->
+                <!--dependency>
+                    <groupId>edu.gemini.aspen</groupId>
+                    <artifactId>giapi-tester</artifactId>
+                    <version>0.1.0</version>
+                    <classifier>jar-with-dependencies</classifier>
+                </dependency-->
+                <!-- Felix Shell and GOGO -->
+                <!--dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.command</artifactId>
+                    <version>0.8.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.runtime</artifactId>
+                    <version>0.8.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.shell</artifactId>
+                    <version>0.8.0</version>
+                </dependency-->
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
