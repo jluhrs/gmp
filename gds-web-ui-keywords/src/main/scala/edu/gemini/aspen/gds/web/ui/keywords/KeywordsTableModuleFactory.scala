@@ -9,7 +9,7 @@ import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
  */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[GDSWebModuleFactory]))
+@Provides(specifications = Array[Class[_]](classOf[GDSWebModuleFactory]))
 class KeywordsTableModuleFactory(@Requires configService: GDSConfigurationService) extends GDSWebModuleFactory {
   override def buildWebModule = new KeywordsTableModule(configService)
 

@@ -7,9 +7,9 @@ import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Comp
  * Factory component of LogsModule */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[GDSWebModuleFactory]))
-class LogsModuleFactory(@Requires logSource:LogSource) extends GDSWebModuleFactory {
-    override def buildWebModule = new LogsModule(logSource)
+@Provides(specifications = Array[Class[_]](classOf[GDSWebModuleFactory]))
+class LogsModuleFactory(@Requires logSource: LogSource) extends GDSWebModuleFactory {
+  override def buildWebModule = new LogsModule(logSource)
 
-    override protected def canEqual(other: Any): Boolean = other.isInstanceOf[LogsModuleFactory]
+  override protected def canEqual(other: Any): Boolean = other.isInstanceOf[LogsModuleFactory]
 }
