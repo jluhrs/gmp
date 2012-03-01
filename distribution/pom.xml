@@ -108,6 +108,10 @@
             <groupId>edu.gemini.cas</groupId>
             <artifactId>cas</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-simulator</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
