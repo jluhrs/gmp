@@ -37,7 +37,6 @@
         <jini.lus.import.hosts>sbfswgdev01.cl.gemini.edu</jini.lus.import.hosts>
         <jini.lus.import.groups>swg-test</jini.lus.import.groups>
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
-        <felix.fileinstall.dir>../src/main/config/services</felix.fileinstall.dir>
 
         <!-- Logging properties -->
         <logs.dir>logs</logs.dir>
@@ -49,6 +48,7 @@
 
         <!-- Configuration dir -->
         <conf.base>../src/main/config</conf.base>
+        <felix.fileinstall.dir>${conf.base}/services</felix.fileinstall.dir>
 
         <!-- Component versions -->
         <clover.version>3.1.0</clover.version>
@@ -545,7 +545,7 @@
                 <groupId>org.apache.activemq</groupId>
                 <artifactId>activemq-core</artifactId>
                 <version>${org.activemq.core.version}</version>
-                <scope>provided</scope>
+                <scope>runtime</scope>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
@@ -624,13 +624,17 @@
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
+                <!--<scope>provided</scope>-->
                 <exclusions>
                     <exclusion>
-                        <groupId>asm</groupId>
                         <artifactId>asm-all</artifactId>
+                        <groupId>asm</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>org.apache.felix</artifactId>
+                        <groupId>org.apache.felix.ipojo.metadata</groupId>
                     </exclusion>
                 </exclusions>
-                <scope>provided</scope>
             </dependency>
 
             <!-- SPModel -->
@@ -888,6 +892,8 @@
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo</artifactId>
+            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
@@ -908,6 +914,12 @@
             <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
             <version>1.0.1</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
