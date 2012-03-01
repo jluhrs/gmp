@@ -60,10 +60,10 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-obsevents</artifactId>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-commands-jms-bridge</artifactId>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-activemq-broker</artifactId>
@@ -100,6 +100,15 @@
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-status-simulator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.cas</groupId>
+            <artifactId>cas</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
