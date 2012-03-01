@@ -18,6 +18,14 @@
     <properties>
         <noUpload>false</noUpload>
         <installationroot>/gemsoft/opt/gpi</installationroot>
+
+        <felix.cm.loglevel>4</felix.cm.loglevel>
+        <felix.log.level>4</felix.log.level>
+        <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
+
+        <!-- Configuration dir -->
+        <conf.base>../../conf</conf.base>
+
     </properties>
 
     <dependencies>
@@ -44,8 +52,18 @@
             <artifactId>gmp-tui</artifactId>
         </dependency-->
         <dependency>
-        <groupId>edu.gemini.epics</groupId>
-        <artifactId>epics-api</artifactId>
+            <groupId>edu.gemini.epics</groupId>
+            <artifactId>epics-service</artifactId>
+        </dependency>
+
+        <!-- Configuration admin felix service -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.fileinstall</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.configadmin</artifactId>
         </dependency>
     </dependencies>
 

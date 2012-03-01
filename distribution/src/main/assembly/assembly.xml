@@ -119,12 +119,20 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>src/main/etc/conf</directory>
+            <directory>../src/main/config</directory>
             <excludes>
                 <exclude>gsaoi.xml</exclude>
+                <exclude>config.properties</exclude>
             </excludes>
             <outputDirectory>/conf</outputDirectory>
             <filtered>true</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.outputDirectory}/</directory>
+            <includes>
+                <include>config.properties</include>
+            </includes>
+            <outputDirectory>/conf</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>src/main/etc/logs</directory>
