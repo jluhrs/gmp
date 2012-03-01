@@ -47,6 +47,11 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
