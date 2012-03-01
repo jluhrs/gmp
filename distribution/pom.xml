@@ -112,6 +112,14 @@
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-epics-simulator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-status-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>gmp-heartbeat-distributor-service</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
