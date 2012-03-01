@@ -118,7 +118,11 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
-            <artifactId>gmp-heartbeat-distributor-service</artifactId>
+            <artifactId>epics-heartbeat</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-epics-to-status</artifactId>
         </dependency>
 
         <dependency>
