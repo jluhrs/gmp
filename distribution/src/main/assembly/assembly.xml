@@ -18,6 +18,9 @@
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
             <outputDirectory>/bundle</outputDirectory>
+            <!--useTransitiveFiltering>true</useTransitiveFiltering-->
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
             <includes>
                 <include>*:*</include>
             </includes>
@@ -27,6 +30,23 @@
                 <exclude>org.apache.felix:org.apache.felix.main</exclude>
                 <exclude>org.apache.felix:org.apache.felix.gogo.*</exclude>
             </excludes>
+        </dependencySet>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <scope>provided</scope>
+            <outputDirectory>/provided</outputDirectory>
+            <!--useTransitiveFiltering>true</useTransitiveFiltering-->
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <includes>
+                <include>org.ops4j.pax.logging:*</include>
+            </includes>
+            <!--excludes>
+                <exclude>org.ops4j.pax.runner:pax-runner</exclude>
+                <exclude>org.apache.felix:org.apache.felix.framework</exclude>
+                <exclude>org.apache.felix:org.apache.felix.main</exclude>
+                <exclude>org.apache.felix:org.apache.felix.gogo.*</exclude>
+            </excludes-->
         </dependencySet>
     </dependencySets>
 
