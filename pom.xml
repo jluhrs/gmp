@@ -37,6 +37,7 @@
         <jini.lus.import.hosts>sbfswgdev01.cl.gemini.edu</jini.lus.import.hosts>
         <jini.lus.import.groups>swg-test</jini.lus.import.groups>
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
+        <org.osgi.framework.system.packages.extra>javax.xml.parsers,com.sun.jini,com.sun.javadoc,sun.io,sun.swing,sun.misc,com.sun,sun.security.action,edu.gemini.rmi.server,sun.rmi.runtime</org.osgi.framework.system.packages.extra>
 
         <!-- Logging properties -->
         <logs.dir>logs</logs.dir>
@@ -214,7 +215,6 @@
                         <param>--debug=warn</param>
                         <param>--vmo=-Xverify:none -XX:+UnlockDiagnosticVMOptions -XX:+UnsyncloadClass</param>
                         <!--param>-vmo=-Xverify:none -XX:+UnlockDiagnosticVMOptions -XX:+UnsyncloadClass -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC</param-->
-                        <param>--sp=javax.xml.parsers,com.sun.jini,com.sun.javadoc,sun.io,sun.swing,sun.misc,com.sun,sun.security.action,edu.gemini.rmi.server,sun.rmi.runtime</param>
                         <param>--bd=java.rmi.server</param>
                         <!--param>-version=${felix.framework.version}</param-->
                     </provision>
