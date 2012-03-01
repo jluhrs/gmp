@@ -52,7 +52,7 @@
 
         <!-- Component versions -->
         <clover.version>3.1.0</clover.version>
-        <org.activemq.core.version>5.5.0</org.activemq.core.version>
+        <org.activemq.core.version>5.5.1</org.activemq.core.version>
         <pax-web.version>1.0.7</pax-web.version>
         <pax-logging.version>1.6.5</pax-logging.version>
         <pax-runner.version>1.7.6</pax-runner.version>
@@ -97,6 +97,112 @@
                     <historyDir>${project.build.directory}/../history</historyDir>
                 </configuration>
             </plugin>
+
+
+            <!--plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.3.6</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <supportedProjectTypes>
+                        <supportedProjectType>jar</supportedProjectType>
+                        <supportedProjectType>bundle</supportedProjectType>
+                        <supportedProjectType>war</supportedProjectType>
+                    </supportedProjectTypes>
+                    <instructions>
+                        <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Build-Date>${maven.build.timestamp}</Build-Date>
+                        <Build-Host>${maven.build.hostname}</Build-Host>
+                        <Bundle-Activator>${bundle.namespace}.osgi.Activator</Bundle-Activator>
+                        <Export-Package>${bundle.namespace}.*;version="${project.version}"</Export-Package>
+                        <_include>-osgi.bnd, ${basedir}/target/buildmeta.properties</_include>
+                        <_debug>true</_debug>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-ipojo-plugin</artifactId>
+                <version>${org.apache.felix.ipojo}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>ipojo-bundle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-build-metadata</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+                                         classpathref="maven.plugin.classpath"/>
+                                <mkdir dir="${project.build.directory}"/>
+                                <exec executable="hostname" osfamily="unix" failifexecutionfails="false"
+                                      outputproperty="env.COMPUTERNAME"/>
+                                <exec executable="uuidgen" osfamily="unix" failifexecutionfails="false"
+                                      outputproperty="build.uuid"/>
+                                <property name="hostname" value="${env.COMPUTERNAME}"/>
+                                <echo file="${basedir}/target/buildmeta.properties"
+                                      message="Build-Host=${hostname}${line.separator}"/>
+                                <echo file="${basedir}/target/buildmeta.properties"
+                                      message="Build-UUID=${build.uuid}${line.separator}" append="true"/>
+                                <condition property="calculateChecksum">
+                                    <available file="${basedir}/target/${project.build.finalName}-sources.jar"/>
+                                </condition>
+                                <if>
+                                    <isset property="calculateChecksum"/>
+                                    <then>
+                                        <checksum file="${basedir}/target/${project.build.finalName}-sources.jar"
+                                                  property="src.md5"/>
+                                        <echo file="${basedir}/target/buildmeta.properties"
+                                              message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}"
+                                              append="true"/>
+                                    </then>
+                                </if>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>ant-contrib</groupId>
+                        <artifactId>ant-contrib</artifactId>
+                        <version>20020829</version>
+                    </dependency>
+                </dependencies>
+            </plugin-->
+
+
+
             <!-- Can support launching in felix -->
             <plugin>
                 <groupId>org.ops4j</groupId>
@@ -513,11 +619,11 @@
                 <artifactId>gmp-tui</artifactId>
                 <version>0.4.0-SNAPSHOT</version>
             </dependency>
-            <dependency>
+            <!--dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-tester</artifactId>
                 <version>0.1.2-SNAPSHOT</version>
-            </dependency>
+            </dependency-->
 
             <!-- JAXB -->
             <dependency>
@@ -545,7 +651,6 @@
                 <groupId>org.apache.activemq</groupId>
                 <artifactId>activemq-core</artifactId>
                 <version>${org.activemq.core.version}</version>
-                <scope>runtime</scope>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
@@ -893,7 +998,6 @@
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo</artifactId>
             <optional>true</optional>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
@@ -916,11 +1020,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
     </dependencies>
 
     <modules>
@@ -928,11 +1032,11 @@
         <module>epics-api</module>
         <module>epics-service</module>
         <module>giapi</module>
-        <module>giapi-fileevent-handler</module>
         <module>jms-api</module>
+        <module>giapi-jms-util</module>
+        <module>giapi-fileevent-handler</module>
         <module>giapi-test-support</module>
         <module>giapi-obsevents</module>
-        <module>giapi-jms-util</module>
         <module>giapi-status-service</module>
         <module>giapi-status-dispatcher</module>
         <module>giapi-fileevents</module>
