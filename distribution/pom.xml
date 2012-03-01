@@ -21,15 +21,31 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>edu.gemini.aspen</groupId>
-            <artifactId>giapi-osgi</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
-            <type>pom</type>
+        <!--dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-annotation_1.0_spec</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>edu.gemini.aspen.gds.web.ui</groupId>
             <artifactId>gds-web-ui-logs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-status</artifactId>
+        </dependency-->
+        <!--dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-tui</artifactId>
+        </dependency-->
+        <dependency>
+        <groupId>edu.gemini.epics</groupId>
+        <artifactId>epics-api</artifactId>
         </dependency>
     </dependencies>
 
@@ -321,18 +337,23 @@
                     <groupId>org.ops4j.pax.runner</groupId>
                     <artifactId>pax-runner</artifactId>
                     <version>${pax-runner.version}</version>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.easymock</groupId>
-                            <artifactId>easymock</artifactId>
-                        </exclusion>
-                    </exclusions>
                 </dependency>
                 <!-- Felix Shell and GOGO -->
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.command</artifactId>
                     <version>0.12.0</version>
+                    <scope>provided</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.easymock</groupId>
+                            <artifactId>easymock</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <artifactId>org.apache.felix</artifactId>
+                            <groupId>org.apache.felix.bundlerepository</groupId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.felix</groupId>
@@ -343,6 +364,11 @@
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.shell</artifactId>
                     <version>0.10.0</version>
+                </dependency>
+                <!-- Scala OSGi needs to be set explicitly for deployment packages -->
+                <dependency>
+                    <groupId>com.weiglewilczek.scala-lang-osgi</groupId>
+                    <artifactId>scala-library</artifactId>
                 </dependency>
             </dependencies>
         </profile>

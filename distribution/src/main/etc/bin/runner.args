@@ -1,0 +1,17 @@
+# This file contains the arguments passed to pax-runner
+
+# Set felix as the platform
+--platform=felix
+
+# Minimal debug from pax-runner
+--log=info
+
+# Use the repositories set in felix and bundles
+#--repositories=file:../felix@id=felix,file:../bundles@snapshots@id=bundles
+#--localRepository=file:../felix@id=felix,file:../bundles@snapshots@id=bundles
+
+# Pass System properties for configuration and logs
+--vmOptions=-Dfelix.system.properties=file:../../conf/config.properties -Xverify:none
+
+# Instructions on what bundles to load
+scan-dir:../bundle
