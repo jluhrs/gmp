@@ -126,6 +126,11 @@
         </dependency>
 
         <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-obsevent-handler</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
             <scope>provided</scope>
