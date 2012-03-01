@@ -40,6 +40,7 @@
             <useTransitiveFiltering>false</useTransitiveFiltering>
             <includes>
                 <include>org.ops4j.pax.logging:*</include>
+                <include>org.apache.felix:*</include>
             </includes>
             <!--excludes>
                 <exclude>org.ops4j.pax.runner:pax-runner</exclude>

@@ -7,8 +7,8 @@
 --log=info
 
 # Use the repositories set in felix and bundles
-#--repositories=file:../felix@id=felix,file:../bundles@snapshots@id=bundles
-#--localRepository=file:../felix@id=felix,file:../bundles@snapshots@id=bundles
+--repositories=file:../felix@id=felix
+--localRepository=file:../felix@id=felix
 
 # Pass System properties for configuration and logs
 --vmOptions=-Dfelix.system.properties=file:../../conf/config.properties -Xverify:none

@@ -64,6 +64,10 @@
             <artifactId>jms-activemq-broker</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-activemq-provider</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-annotation_1.0_spec</artifactId>
         </dependency>
@@ -86,13 +90,13 @@
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.fileinstall</artifactId>
             <optional>true</optional>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.configadmin</artifactId>
-            <scope>runtime</scope>
             <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -398,7 +402,6 @@
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.gogo.command</artifactId>
                     <version>0.12.0</version>
-                    <scope>provided</scope>
                     <exclusions>
                         <exclusion>
                             <groupId>org.easymock</groupId>
