@@ -646,6 +646,13 @@
                 <version>1.1.0</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.5.11</version>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- ActiveMQ -->
             <dependency>
                 <groupId>org.apache.activemq</groupId>
@@ -655,6 +662,10 @@
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>commons-net</artifactId>
+                        <groupId>commons-net</groupId>
                     </exclusion>
                     <exclusion>
                         <artifactId>org.slf4j</artifactId>
