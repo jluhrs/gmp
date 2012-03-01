@@ -149,10 +149,19 @@
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-error-policy</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-seqexec-actors</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-jetty-bundle</artifactId>
             <scope>provided</scope>
         </dependency>
 
