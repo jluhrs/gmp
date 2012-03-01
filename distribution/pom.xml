@@ -19,12 +19,13 @@
         <noUpload>false</noUpload>
         <installationroot>/gemsoft/opt/gpi</installationroot>
 
-        <felix.cm.loglevel>4</felix.cm.loglevel>
-        <felix.log.level>4</felix.log.level>
+        <felix.cm.loglevel>0</felix.cm.loglevel>
+        <felix.log.level>0</felix.log.level>
         <felix.fileinstall.log.level>4</felix.fileinstall.log.level>
 
         <!-- Configuration dir -->
         <conf.base>../../conf</conf.base>
+        <logs.dir>../../logs</logs.dir>
 
     </properties>
 
