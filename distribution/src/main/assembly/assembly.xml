@@ -42,6 +42,7 @@
                 <include>org.ops4j.pax.logging:*</include>
                 <include>org.apache.felix:*</include>
                 <include>org.ops4j.pax.web:*</include>
+                <include>org.osgi:org.osgi.compendium</include>
             </includes>
             <!--excludes>
                 <exclude>org.ops4j.pax.runner:pax-runner</exclude>
