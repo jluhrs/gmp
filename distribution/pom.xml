@@ -84,13 +84,21 @@
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-pcs-updater</artifactId>
         </dependency>
-        <!--dependency>
-            <groupId>edu.gemini.aspen</groupId>
-            <artifactId>giapi-status-service</artifactId>
-        </dependency-->
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-status-gateway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-statusdb</artifactId>
+        </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-dispatcher</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-status-simulator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
