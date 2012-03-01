@@ -48,10 +48,10 @@
             <groupId>edu.gemini.aspen.gds.web.ui</groupId>
             <artifactId>gds-web-ui-status</artifactId>
         </dependency-->
-        <!--dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-tui</artifactId>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
@@ -72,6 +72,10 @@
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-annotation_1.0_spec</artifactId>
         </dependency>
+        <!--dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-service</artifactId>
+        </dependency-->
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
