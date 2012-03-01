@@ -241,11 +241,11 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.3</version>
-                <configuration>
+                <!--configuration>
                     <descriptors>
                         <descriptor>distribution/src/main/assembly/assembly.xml</descriptor>
                     </descriptors>
-                </configuration>
+                </configuration-->
             </plugin>
             <!--plugin>
                 <groupId>com.soebes.maven.plugins.dmg</groupId>

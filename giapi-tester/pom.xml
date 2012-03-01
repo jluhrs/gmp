@@ -38,6 +38,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <descriptors/>
                     <finalName>giapi-tester</finalName>
                     <attach>false</attach>
                     <appendAssemblyId>false</appendAssemblyId>
