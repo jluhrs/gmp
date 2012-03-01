@@ -203,7 +203,6 @@
             </plugin-->
 
 
-
             <!-- Can support launching in felix -->
             <plugin>
                 <groupId>org.ops4j</groupId>
@@ -624,6 +623,7 @@
                 <artifactId>gmp-tui</artifactId>
                 <version>0.4.0-SNAPSHOT</version>
             </dependency>
+
             <!--dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-tester</artifactId>
@@ -667,6 +667,10 @@
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>org.apache.geronimo.specs</artifactId>
+                        <groupId>geronimo-jms_1.1_spec</groupId>
                     </exclusion>
                     <exclusion>
                         <artifactId>commons-net</artifactId>
