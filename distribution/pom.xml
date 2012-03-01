@@ -56,6 +56,14 @@
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-fileevents</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-obsevents</artifactId>
+        </dependency>
         <!--dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-commands-jms-bridge</artifactId>
@@ -76,6 +84,10 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-service</artifactId>
         </dependency-->
+        <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-dispatcher</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
