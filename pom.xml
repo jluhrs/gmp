@@ -62,7 +62,7 @@
         <junit.version>4.10</junit.version>
         <felix.framework.version>4.0.2</felix.framework.version>
 
-        <gmp.version>$(project.version}</gmp.version>
+        <gmp.version>${project.version}</gmp.version>
         <!-- Global encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -513,6 +513,11 @@
                 <artifactId>gmp-tui</artifactId>
                 <version>0.4.0-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen</groupId>
+                <artifactId>giapi-tester</artifactId>
+                <version>0.1.2-SNAPSHOT</version>
+            </dependency>
 
             <!-- JAXB -->
             <dependency>
@@ -540,7 +545,7 @@
                 <groupId>org.apache.activemq</groupId>
                 <artifactId>activemq-core</artifactId>
                 <version>${org.activemq.core.version}</version>
-                <!--scope>runtime</scope-->
+                <scope>provided</scope>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
@@ -613,13 +618,19 @@
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo.annotations</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
-                <!--scope>provided</scope-->
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.ipojo</artifactId>
                 <version>${org.apache.felix.ipojo}</version>
-                <!--<scope>provided</scope>-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>asm</groupId>
+                        <artifactId>asm-all</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>provided</scope>
             </dependency>
 
             <!-- SPModel -->
@@ -640,6 +651,20 @@
                 <groupId>org.ops4j.pax.web</groupId>
                 <artifactId>pax-web-extender-whiteboard</artifactId>
                 <version>${pax-web.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.ops4j.pax.swissbox</groupId>
+                        <artifactId>pax-swissbox-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.ops4j.pax.swissbox</groupId>
+                        <artifactId>pax-swissbox-optional-jc</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Testing dependencies -->
@@ -784,6 +809,7 @@
                 <groupId>org.ops4j.pax.logging</groupId>
                 <artifactId>pax-logging-api</artifactId>
                 <version>${pax-logging.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.ops4j.pax.logging</groupId>
@@ -818,6 +844,20 @@
                         <groupId>org.apache.felix</groupId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!-- Configuration admin felix service -->
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.fileinstall</artifactId>
+                <version>3.1.10</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.configadmin</artifactId>
+                <version>1.2.8</version>
+                <optional>true</optional>
             </dependency>
 
         </dependencies>
@@ -861,14 +901,13 @@
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-api</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
             <version>1.0.1</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
