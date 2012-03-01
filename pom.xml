@@ -60,7 +60,7 @@
         <scala-lang.version>2.9.1</scala-lang.version>
         <vaadin.version>6.7.0</vaadin.version>
         <junit.version>4.10</junit.version>
-        <felix.framework.version>4.0.1</felix.framework.version>
+        <felix.framework.version>4.0.2</felix.framework.version>
 
         <gmp.version>$(project.version}</gmp.version>
         <!-- Global encoding -->
@@ -106,10 +106,11 @@
                     <provision>
                         <param>--keepOriginalUrls</param>
                         <param>--debug=warn</param>
-                        <param>--vmo=-Xverify:none</param>
+                        <param>--vmo=-Xverify:none -XX:+UnlockDiagnosticVMOptions -XX:+UnsyncloadClass</param>
+                        <!--param>-vmo=-Xverify:none -XX:+UnlockDiagnosticVMOptions -XX:+UnsyncloadClass -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC</param-->
                         <param>--sp=javax.xml.parsers,com.sun.jini,com.sun.javadoc,sun.io,sun.swing,sun.misc,com.sun,sun.security.action,edu.gemini.rmi.server,sun.rmi.runtime</param>
                         <param>--bd=java.rmi.server</param>
-                        <param>--version=${felix.framework.version}</param>
+                        <!--param>-version=${felix.framework.version}</param-->
                     </provision>
                     <framework>felix</framework>
                     <runner>${pax-runner.version}</runner>
