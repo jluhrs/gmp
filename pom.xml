@@ -1171,6 +1171,13 @@
         </repository>
     </repositories>
 
+    <scm>
+        <connection>scm:svn:http://source.gemini.edu/software/giapi/giapi-osgi/trunk</connection>
+        <developerConnection>scm:svn:http://source.gemini.edu/software/giapi/gpi-osgi/trunk</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://source.gemini.edu:8060/Software/giapi/giapi-osgi/trunk</url>
+    </scm>
+
     <pluginRepositories>
         <pluginRepository>
             <!-- Maven central mirror -->
