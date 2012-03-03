@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
     <id>gmp-server</id>
     <formats>
         <format>tar.gz</format>
+        <format>dir</format>
     </formats>
 
     <dependencySets>
@@ -17,7 +19,7 @@
         </dependencySet>
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
-            <outputDirectory>/bundle</outputDirectory>
+            <outputDirectory>/bundles/level4</outputDirectory>
             <!--useTransitiveFiltering>true</useTransitiveFiltering-->
             <useTransitiveDependencies>false</useTransitiveDependencies>
             <useTransitiveFiltering>false</useTransitiveFiltering>
@@ -34,7 +36,7 @@
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
             <scope>provided</scope>
-            <outputDirectory>/provided</outputDirectory>
+            <outputDirectory>/bundles/level2</outputDirectory>
             <!--useTransitiveFiltering>true</useTransitiveFiltering-->
             <useTransitiveDependencies>true</useTransitiveDependencies>
             <useTransitiveFiltering>false</useTransitiveFiltering>
@@ -141,6 +143,7 @@
                 <include>giapi-tester.jar</include>
             </includes>
         </fileSet>
+        <!-- Copy configurations out of the top level config directory -->
         <fileSet>
             <directory>../src/main/config</directory>
             <excludes>
@@ -150,6 +153,7 @@
             <outputDirectory>/conf</outputDirectory>
             <filtered>true</filtered>
         </fileSet>
+        <!-- System properties are in the generated config.properties file -->
         <fileSet>
             <directory>${project.build.outputDirectory}/</directory>
             <includes>
@@ -158,7 +162,7 @@
             <outputDirectory>/conf</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>src/main/etc/logs</directory>
+            <directory>src/main/logs</directory>
             <outputDirectory>/logs</outputDirectory>
         </fileSet>
         <fileSet>
@@ -171,7 +175,7 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>target</directory>
+            <directory>src/main/doc</directory>
             <outputDirectory>/</outputDirectory>
             <fileMode>0644</fileMode>
             <filtered>true</filtered>

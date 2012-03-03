@@ -14,5 +14,5 @@
 --vmOptions=-Dfelix.system.properties=file:../../conf/config.properties -Xverify:none
 
 # Instructions on what bundles to load
-scan-dir:../provided@2
-scan-dir:../bundle@4
+scan-dir:../bundles/level2@2
+scan-dir:../bundles/level4@4

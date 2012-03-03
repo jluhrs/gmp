@@ -4,7 +4,7 @@ GMP Version: ${gmp.version}
 
 PACKAGE
 -------
-The GMP is delivered as tar.gz or .zip package containing all the binaries and
+The GMP is delivered as tar.gz or rpm package containing all the binaries and
 configuration required to run the server
 
 The following details the files and directories included in the package
@@ -15,10 +15,14 @@ The following details the files and directories included in the package
 /bin
     Scripts and binaries to launch the GMP server
 /bin/start.sh
-    Bash script used to control the GMP
+    Bash script used to launch the GMP at the console
+/bin/start.sh
+    Bash script used to launch the GMP at the console
+/bin/gmp-server-ctl.sh
+    Bash script used to control the GMP running as a daemon
 /bin/gmp-server
-    Bash script used to control the GMP
-/bin/pax-runner-1.7.4.jar
+    init.d style script used to launch GMP on Linux
+/bin/pax-runner-${pax-runner.version}.jar
     Pax runner binary is a launcher for OSGi applications
 /bin/runner.args
     Arguments passed to pax-runner
@@ -43,7 +47,7 @@ RPM INSTALLATION
 ----------------
 The GMP is also provided as an RPM. To install it do the command:
 
-    sudo rpm -ivh --ignoreos gmp-server-${gmp.version}-R.i386.rpm
+    sudo rpm -ivh --ignoreos gmp-server-${project.rpmversion}-${buildNumber}.i386.rpm
 
 The rpm is really meant for an installation in Gemini environment and makes some
 assumptions on the system where is installed:

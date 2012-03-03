@@ -18,14 +18,11 @@ set -e
 # Check that java is available
 which java > /dev/null || { echo "Need java in PATH to run"; exit 1; }
 
-# Confirm that jps is available
-which jps > /dev/null || { echo "Need jps in PATH to run"; exit 1; }
-
 # Check no other instance is running
 #===================================
 
 # Check if gmp is already running
-RUNNING=`jps -l | grep "org.apache.felix.main.Main" | wc -l`
+RUNNING=`ps ax | grep "org.apache.felix.main.Main" | grep -v "grep" | wc -l`
 
 if ! [ $RUNNING = "0" ]; then
     echo "GMP is already running"

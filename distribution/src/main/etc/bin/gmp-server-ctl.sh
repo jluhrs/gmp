@@ -1,18 +1,12 @@
 #!/bin/bash
 #
-# init.d script to manage a container based on an OSGi framework
+# gmp-server control script
+#
+# usage gmp-server-ctl.sh {start|stop|status|kill}
 #
 set -e # stop on errors
-#set -u # Don't allow using non defined variables
-#
-#              <startlevels> <startprio> <stopprio>
-# chkconfig:   345 75 15
-# description: The gmp-server application
-#
-# NOTE: the 2 comments above and the following 4 variable values will probably
-#       need customization when packaging the distribution. The generated values
-#       are meant for local testing
-#
+set -u # Don't allow using non defined variables
+
 # Vars that are set at build time
 
 PAX_RUNNER_VERSION=${pax-runner.version}
@@ -31,9 +25,6 @@ if ! [ -d $GPI_ROOT ]; then
     exit -1
 fi
 
-# Confirm that jps is available
-which jps > /dev/null || { echo "Need jps in PATH to run"; exit 1; }
-
 # App variables
 app_name=gmp-server
 app_root=${GPI_ROOT}/gmp-server-$GMP_VERSION
@@ -41,16 +32,10 @@ pid_file=${app_root}/bin/${app_name}.pid
 log_file=${app_root}/logs/${app_name}.out
 
 # pax-runner needs this dir to run
-if ! [ -d ~software/.pax/runner ]; then
-    mkdir -p ~software/.pax/runner
-    touch ~software/.pax/runner/org.ops4j.pax.runner.daemon.password.file
+if ! [ -d $HOME/.pax/runner ]; then
+    mkdir -p $HOME/.pax/runner
+    touch $HOME/.pax/runner/org.ops4j.pax.runner.daemon.password.file
 fi
-
-if ! [ -e $HOME/.pax/runner/org.ops4j.pax.runner.daemon.lock ]; then
-    echo "Seems GMP is still running, Lock file still in place"
-    echo "If you are sure GMP is not running delete $HOME/.pax/runner/org.ops4j.pax.runner.daemon.lock"
-fi
-
 
 #
 # - get PID from .pid file if it exists and check if it is running
@@ -58,7 +43,14 @@ fi
 pid=`[[ -e ${pid_file} ]] && cat ${pid_file} || echo "NO_PID_FILE"`
 set +e # disable because egrep will return 1 on mismatch
 pid_isrunning=`ps -eo pid | egrep ^[[:space:]]*${pid}$`
+# Check pax-runner lock is not there
+if [ -z ${pid_isrunning} ] && [ -e $HOME/.pax/runner/org.ops4j.pax.runner.daemon.lock ]; then
+    echo "Seems GMP is no running but the lock file is still in place"
+    echo "If you are sure GMP is not running delete $HOME/.pax/runner/org.ops4j.pax.runner.daemon.lock"
+fi
+
 set -e # reenable
+
 #
 # Start the GMP server if not already running
 #
@@ -71,8 +63,8 @@ function startContainer() {
         wait $!
         sleep 4
         popd > /dev/null
-        # Get the pid with jps
-        jps -l | grep "org.apache.felix.main.Main" | sed "s/[[:space:]]*\([\d]*\) .*/\1/" > ${pid_file}
+        # Get the pid with ps
+        ps ax | grep "org.apache.felix.main.Main" | grep -v "grep" | sed "s/[[:space:]]*\([\d]*\) .*/\1/" > ${pid_file}
         retval=$?
         sleep 10
         echo "Started ${app_name}"
