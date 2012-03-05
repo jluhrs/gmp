@@ -120,6 +120,10 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-constant-actors</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-fits-checker</artifactId>
         </dependency>
         <dependency>
