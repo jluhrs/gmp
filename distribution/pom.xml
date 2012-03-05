@@ -317,7 +317,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <useLastCommittedRevision>true</useLastCommittedRevision>
+                            <useLastCommittedRevision>false</useLastCommittedRevision>
                             <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
                         </configuration>
                     </plugin>
@@ -525,6 +525,11 @@
                                     ln -s ${installationroot}/${project.artifactId}-${gmp.version}/ ${installationroot}/${project.artifactId}
 
                                     #symlink /gemsoft/opt/bin -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION/bin/gmp-server
+
+                                    # rm
+                                    [ -L /gemsoft/bin/${project.artifactId}-ctl.sh ] &amp;&amp; rm /gemsoft/bin/${project.artifactId}-ctl.sh
+                                    [ -L /gemsoft/bin/giapi-tester.sh ] &amp;&amp; rm /gemsoft/bin/giapi-tester.sh
+                                    [ -L /gemsoft/bin/giapi-tester ] &amp;&amp; rm /gemsoft/bin/giapi-tester
                                     ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/${project.artifactId}-ctl.sh /gemsoft/bin/${project.artifactId}-ctl.sh
                                     ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester.sh
                                     ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester
