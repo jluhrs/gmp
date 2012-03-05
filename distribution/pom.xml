@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -364,6 +365,39 @@
                             </resources>
                         </configuration>
                     </plugin>
+                    <!-- Do doxygen documentation -->
+                    <plugin>
+                        <groupId>com.soebes.maven.plugins.dmg</groupId>
+                        <artifactId>doxygen-maven-plugin</artifactId>
+                        <version>1.0.1</version>
+                        <configuration>
+                            <filePatterns>*.doxygen *.doxy *.java *.xsd *.xml *.properties *.cfg</filePatterns>
+                            <recursive>true</recursive>
+                            <excludePatterns>*/test/*Test*.java */target/* *pom.xml</excludePatterns>
+                            <optimizeOutputJava>true</optimizeOutputJava>
+                            <haveDot>true</haveDot>
+                            <quiet>false</quiet>
+                            <input>../</input>
+                            <projectName>"GIAPI - GMP (Version: ${gmp.version})"</projectName>
+                            <generateLatex>false</generateLatex>
+                            <generateHtml>true</generateHtml>
+                            <htmlHeader>${basedir}/src/main/doc/header.html</htmlHeader>
+                            <htmlFooter>${basedir}/src/main/doc/footer.html</htmlFooter>
+                            <stripFromPath>${basedir}</stripFromPath>
+                            <extractAll>true</extractAll>
+                            <imagePath>src/main/doc/ src/main/doc/gemini_records/</imagePath>
+                            <examplePath>src/main/doc/gemini_records target/site/doxygen</examplePath>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>doxygen-documentation</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <!-- Create an assembly -->
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>
@@ -412,10 +446,13 @@
                             <mappings>
                                 <!--jars-->
                                 <mapping>
-                                    <directory>${installationroot}/${project.artifactId}-${gmp.version}/bundles</directory>
+                                    <directory>${installationroot}/${project.artifactId}-${gmp.version}/bundles
+                                    </directory>
                                     <sources>
                                         <source>
-                                            <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bundles/</location>
+                                            <location>
+                                                ${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bundles/
+                                            </location>
                                             <targetArchitecture>noarch</targetArchitecture>
                                         </source>
                                     </sources>
@@ -426,10 +463,13 @@
                                 </mapping>
                                 <!-- felix repo bundle-->
                                 <mapping>
-                                    <directory>${installationroot}/${project.artifactId}-${gmp.version}/felix</directory>
+                                    <directory>${installationroot}/${project.artifactId}-${gmp.version}/felix
+                                    </directory>
                                     <sources>
                                         <source>
-                                            <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/felix/</location>
+                                            <location>
+                                                ${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/felix/
+                                            </location>
                                             <targetArchitecture>noarch</targetArchitecture>
                                         </source>
                                     </sources>
@@ -458,7 +498,9 @@
                                     <directory>${installationroot}/${project.artifactId}-${gmp.version}/conf</directory>
                                     <sources>
                                         <source>
-                                            <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/conf</location>
+                                            <location>
+                                                ${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/conf
+                                            </location>
                                         </source>
                                     </sources>
                                     <configuration>true</configuration>
@@ -469,10 +511,13 @@
                                 </mapping>
                                 <!--executables-->
                                 <mapping>
-                                    <directory>${installationroot}/${project.artifactId}-${project.version}/bin</directory>
+                                    <directory>${installationroot}/${project.artifactId}-${project.version}/bin
+                                    </directory>
                                     <sources>
                                         <source>
-                                            <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/</location>
+                                            <location>
+                                                ${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/
+                                            </location>
                                             <includes>
                                                 <include>gmp-server</include>
                                                 <include>start.sh</include>
@@ -490,7 +535,9 @@
                                 <mapping>
                                     <sources>
                                         <source>
-                                            <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/</location>
+                                            <location>
+                                                ${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/
+                                            </location>
                                             <includes>
                                                 <include>runner.args</include>
                                                 <include>giapi-tester.jar</include>
@@ -498,7 +545,8 @@
                                             </includes>
                                         </source>
                                     </sources>
-                                    <directory>${installationroot}/${project.artifactId}-${project.version}/bin</directory>
+                                    <directory>${installationroot}/${project.artifactId}-${project.version}/bin
+                                    </directory>
                                     <directoryIncluded>false</directoryIncluded>
                                     <filemode>644</filemode>
                                     <username>software</username>
@@ -508,7 +556,10 @@
                             <preinstallScriptlet>
                                 <script>
                                     #check for user, or create it?
-                                    id -u software &amp;&gt; /dev/null || useradd software -u 3624 -g gemini -m &amp;&gt; /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user software"
+                                    id -u software &amp;&gt; /dev/null || useradd software -u 3624 -g gemini -m &amp;&gt;
+                                    /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd
+                                    software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user
+                                    software"
                                 </script>
                             </preinstallScriptlet>
                             <postinstallScriptlet>
@@ -523,17 +574,23 @@
                                     if [ $1 -ne 1 ]; then
                                     rm -f ${installationroot}/${project.artifactId}
                                     fi
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/ ${installationroot}/${project.artifactId}
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/
+                                    ${installationroot}/${project.artifactId}
 
                                     #symlink /gemsoft/opt/bin -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION/bin/gmp-server
 
                                     # Install the symlinks to the utilities
-                                    [ -L /gemsoft/bin/${project.artifactId}-ctl.sh ] &amp;&amp; rm /gemsoft/bin/${project.artifactId}-ctl.sh
+                                    [ -L /gemsoft/bin/${project.artifactId}-ctl.sh ] &amp;&amp; rm
+                                    /gemsoft/bin/${project.artifactId}-ctl.sh
                                     [ -L /gemsoft/bin/giapi-tester.sh ] &amp;&amp; rm /gemsoft/bin/giapi-tester.sh
                                     [ -L /gemsoft/bin/giapi-tester ] &amp;&amp; rm /gemsoft/bin/giapi-tester
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/${project.artifactId}-ctl.sh /gemsoft/bin/${project.artifactId}-ctl.sh
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester.sh
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester
+                                    ln -s
+                                    ${installationroot}/${project.artifactId}-${gmp.version}/bin/${project.artifactId}-ctl.sh
+                                    /gemsoft/bin/${project.artifactId}-ctl.sh
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh
+                                    /gemsoft/bin/giapi-tester.sh
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh
+                                    /gemsoft/bin/giapi-tester
 
                                     #
 
@@ -568,8 +625,12 @@
                                 </goals>
                                 <configuration>
                                     <serverId>sbfgpidev</serverId>
-                                    <fromFile>${project.build.directory}/${project.parent.name}-${project.parent.version}.tar.gz</fromFile>
-                                    <url>scp://sbfgpidev1.cl.gemini.edu/export/home/software/gpi/webcontent/gpi/${project.parent.name}</url>
+                                    <fromFile>
+                                        ${project.build.directory}/${project.parent.name}-${project.parent.version}.tar.gz
+                                    </fromFile>
+                                    <url>
+                                        scp://sbfgpidev1.cl.gemini.edu/export/home/software/gpi/webcontent/gpi/${project.parent.name}
+                                    </url>
                                     <skip>${noUpload}</skip>
                                 </configuration>
                             </execution>
@@ -581,8 +642,12 @@
                                 </goals>
                                 <configuration>
                                     <serverId>sbfgpidev</serverId>
-                                    <fromFile>${project.build.directory}/rpm/${project.parent.name}/RPMS/i386/${project.parent.name}-${rpmversion}-${buildNumber}.i386.rpm</fromFile>
-                                    <url>scp://sbfgpidev1.cl.gemini.edu/export/home/software/gpi/webcontent/gpi/${project.parent.name}</url>
+                                    <fromFile>
+                                        ${project.build.directory}/rpm/${project.parent.name}/RPMS/i386/${project.parent.name}-${rpmversion}-${buildNumber}.i386.rpm
+                                    </fromFile>
+                                    <url>
+                                        scp://sbfgpidev1.cl.gemini.edu/export/home/software/gpi/webcontent/gpi/${project.parent.name}
+                                    </url>
                                     <skip>${noUpload}</skip>
                                 </configuration>
                             </execution>
