@@ -552,6 +552,19 @@
                                     <username>software</username>
                                     <groupname>gemini</groupname>
                                 </mapping>
+                                <mapping>
+                                    <directory>${installationroot}/${project.artifactId}-${project.version}/docs</directory>
+                                    <sources>
+                                        <source>
+                                            <location>target/site/doxygen</location>
+                                        </source>
+                                    </sources>
+                                    <documentation>true</documentation>
+                                    <directoryIncluded>false</directoryIncluded>
+                                    <filemode>644</filemode>
+                                    <username>software</username>
+                                    <groupname>gemini</groupname>
+                                </mapping>
                             </mappings>
                             <preinstallScriptlet>
                                 <script>
