@@ -4,7 +4,7 @@
 To build the project you need to install the following:
 
 - Java JDK 1.6 or higher
-- Maven 2, version 2.2.0 or higher.
+- Maven 3, version 3.0.3 or higher.
 
 2. Build and deploy locally
 ---------------------------
@@ -27,12 +27,31 @@ You can build and deploy locally a single module by issuing a
 
 in a single module
 
-TIP: How to skip the tests
+4. How to skip the tests
+------------------------
+
 During development we often don't want to run the tests all the time 
 You can skip them by issuing:
    mvn -Dmaven.test.skip=true install
 
-4. Integration tests
+This can be done at the top level or module level
+
+5. Launching gmp-server
+-----------------------
+To launch gmp-server you can use the maven pax plugin issuing:
+   mvn pax:provision
+
+This will launch felix with all the required modules
+The configuration is stored at src/main/config
+
+The felix launcher will create a local cache of the feilx framework and
+installed files in the runner directory
+
+This directory can be freely deleted
+
+The logs are locate under runner/logs/gmp.log
+
+6. Integration tests
 ------------------------
 Most tests in the project are unit test but there are some integration tests are
 identified by classes ending with IT unlike unit tests that end in Test.
@@ -51,7 +70,7 @@ mvn -Dit.test=edu.gemini.aspen.integrationtests.GDSEndToEndIT install failsafe:i
 For more options check
 http://maven.apache.org/plugins/maven-failsafe-plugin/examples/single-test.html
 
-5. Use with IntelliJ idea
+7. Use with IntelliJ idea
 ------------------------------
 Idea works best by just importing the pom.xml as a project file definition
 
