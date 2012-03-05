@@ -53,6 +53,69 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.4</version>
+                <!--executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions-->
+                <configuration>
+                    <obfuscate>false</obfuscate>
+                    <options>
+                        <option>-allowaccessmodification</option>
+                        <option>-dontskipnonpubliclibraryclasses</option>
+                        <option>-keep public class edu.gemini.giapi.tool.GiapiTester { public *; public static *; }</option>
+                    </options>
+                    <includeDependency>false</includeDependency>
+                    <injar>giapi-tester.jar</injar>
+                    <outjar>${project.build.finalName}-small.jar</outjar>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <libs>
+                        <lib>${java.home}/../Classes/classes.jar</lib>
+                    </libs>
+                    <addMavenDescriptor>false</addMavenDescriptor>
+                    <assembly>
+                        <inclusions>
+                            <inclusion>
+                                <groupId>org.osgi</groupId>
+                                <artifactId>org.osgi.core</artifactId>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.osgi</groupId>
+                                <artifactId>org.osgi.compendium</artifactId>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.apache.felix</groupId>
+                                <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.apache.felix</groupId>
+                                <artifactId>org.apache.felix.ipojo</artifactId>
+                                <optional>true</optional>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.osgi</groupId>
+                                <artifactId>org.osgi.compendium</artifactId>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.osgi</groupId>
+                                <artifactId>org.osgi.core</artifactId>
+                                <optional>true</optional>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.ops4j.pax.logging</groupId>
+                                <artifactId>pax-logging-api</artifactId>
+                            </inclusion>
+                        </inclusions>
+                    </assembly>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
