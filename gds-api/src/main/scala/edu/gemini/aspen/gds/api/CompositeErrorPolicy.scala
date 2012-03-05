@@ -14,7 +14,7 @@ trait CompositeErrorPolicy extends ErrorPolicy
  */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[CompositeErrorPolicy]))
+@Provides(specifications = Array[Class[_]](classOf[CompositeErrorPolicy]))
 class CompositeErrorPolicyImpl extends DefaultErrorPolicy with CompositeErrorPolicy {
   @volatile var policies = immutable.List[ErrorPolicy]()
 
