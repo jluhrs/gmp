@@ -12,7 +12,7 @@ import edu.gemini.aspen.gds.api.{Subsystem, KeywordSource, GDSConfiguration, Def
  */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[ErrorPolicy]))
+@Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
 class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) extends DefaultErrorPolicy {
   override val priority = 2
 
@@ -45,4 +45,6 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
     }
     list.asInstanceOf[List[CollectedValue[_]]]
   }
+
+  override def toString = this.getClass.getSimpleName
 }

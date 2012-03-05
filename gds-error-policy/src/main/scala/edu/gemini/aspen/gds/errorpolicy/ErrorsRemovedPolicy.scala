@@ -21,4 +21,6 @@ class ErrorsRemovedPolicy extends DefaultErrorPolicy {
       case c => true
     }
   }
+
+  override def toString = this.getClass.getSimpleName
 }

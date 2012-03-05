@@ -46,4 +46,6 @@ class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires 
       case config => config.keyword
     })
   }
+
+  override def toString = this.getClass.getSimpleName
 }
