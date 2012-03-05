@@ -486,10 +486,10 @@ Default:
    Now, you have to configure the Epics Service to be able to find the
    TCS. For this, edit the file
 
-   <tt>$GMP_HOME/conf/services/edu.gemini.epics.EpicsService.cfg</tt>
+   <tt>$GMP_HOME/conf/services/edu.gemini.epics.EpicsService-default.cfg</tt>
    \verbatim
        # Address of the EPICS database to connect to
-       addressList=172.17.2.36
+       addressList=172.17.X.X
    \endverbatim
 
    Adjust the IP to the one used by the TCS. For full details about the
