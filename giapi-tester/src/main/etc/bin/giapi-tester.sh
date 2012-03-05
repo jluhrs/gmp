@@ -18,10 +18,12 @@ which java > /dev/null || { echo "Need java in PATH to run"; exit 1; }
 
 # Find path to script
 #==========================
-ABSPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+#Find the dir the scrip is located, no matter if there are symlinks
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
+SCRIPT_PATH="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-# to get the path only - not the script name - add
-SCRIPT_PATH=`dirname "$ABSPATH"`
+pushd $SCRIPT_PATH > /dev/null
 
 GIAPI_TESTER_JAR=$SCRIPT_PATH/giapi-tester.jar
 
@@ -30,4 +32,6 @@ if ! [ -e $GIAPI_TESTER_JAR ]; then
     exit 1
 fi
 
-java -jar $GIAPI_TESTER_JAR "$@"
+exec java -jar $GIAPI_TESTER_JAR "$@"
+
+popd > /dev/null
