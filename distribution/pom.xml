@@ -321,7 +321,7 @@
                             <execution>
                                 <id>copy-resources</id>
                                 <!-- here the phase you need -->
-                                <phase>validate</phase>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
@@ -415,7 +415,21 @@
                                     <username>software</username>
                                     <groupname>gemini</groupname>
                                 </mapping>
-                                <!-- gmp-server bundle-->
+                                <!-- felix repo bundle-->
+                                <mapping>
+                                    <directory>${installationroot}/${project.artifactId}-${gmp.version}/felix</directory>
+                                    <sources>
+                                        <source>
+                                            <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/felix/</location>
+                                            <targetArchitecture>noarch</targetArchitecture>
+                                        </source>
+                                    </sources>
+                                    <directoryIncluded>false</directoryIncluded>
+                                    <filemode>644</filemode>
+                                    <username>software</username>
+                                    <groupname>gemini</groupname>
+                                </mapping>
+
                                 <!--readme-->
                                 <mapping>
                                     <directory>${installationroot}/${project.artifactId}-${gmp.version}/</directory>
