@@ -363,21 +363,17 @@ channels below
 
         Check the content of the services configuration %file:
 
-        <tt>$ cat $GMP_HOME/conf/gmp-properties.xml</tt>
+        <tt>$ cat $GMP_HOME/conf/services/edu.gemini.aspen.gmp.services.properties.SimplePropertyHolder-default.cfg</tt>
 \verbatim
-    <!--
-    Contains the description of the properties that can be obtained through the
-    GIAPI. Each property has a string value associated.
-    -->
+#    Contains the description of the properties that can be obtained through the
+#    GIAPI. Each property has a string value associated.
 
-
-    <properties>
-    <property key="GMP_HOST_NAME">localhost</property>
-    <property key="DHS_ANCILLARY_DATA_PATH">/home/anunez/tmp</property>
-    <property key="DHS_SCIENCE_DATA_PATH">/home/anunez/tmp</property>
-    <property key="DHS_INTERMEDIATE_DATA_PATH">/home/anunez/tmp</property>
-    <property key="DEFAULT"> </property>
-    </properties>
+GMP_HOST_NAME = localhost
+DHS_ANCILLARY_DATA_PATH = /tmp
+DHS_SCIENCE_DATA_PATH = /tmp
+DHS_PERMANENT_SCIENCE_DATA_PATH = /tmp/perm
+DHS_INTERMEDIATE_DATA_PATH = /tmp
+DEFAULT =
 \endverbatim
 
        The services application will try to get the GMP_HOST NAME
@@ -386,17 +382,19 @@ channels below
 
        <tt>$ ./runExample.sh services</tt>
 \verbatim
-    Starting Services Util Example
-    2011-10-14 10:18:28,981 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: GMP_HOST_NAME
-    Hostname: localhost
-    2011-10-14 10:18:29,000 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_ANCILLARY_DATA_PATH
-    Ancilliary Data Path: /tmp
-    2011-10-14 10:18:29,085 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_SCIENCE_DATA_PATH
-    Science Path: /tmp
-    2011-10-14 10:18:29,120 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_INTERMEDIATE_DATA_PATH
-    Intermediate Data Path: /tmp
-    2011-10-14 10:18:29,160 [0x2aab29839150] INFO  giapi.ServicesUtilImpl - Property requested for key: DEFAULT
-    Default: 
+Starting Services Util Example
+2012-03-05 12:40:46,362 [0x2b37220d9150] INFO  giapi.ServicesUtilImpl - Property requested for key: GMP_HOST_NAME
+Hostname: localhost
+2012-03-05 12:40:46,379 [0x2b37220d9150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_ANCILLARY_DATA_PATH
+Ancilliary Data Path: /tmp
+2012-03-05 12:40:46,395 [0x2b37220d9150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_SCIENCE_DATA_PATH
+Science Path: /tmp
+2012-03-05 12:40:46,547 [0x2b37220d9150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_PERMANENT_SCIENCE_DATA_PATH
+Permanent Science Path: /tmp/perm
+2012-03-05 12:40:46,586 [0x2b37220d9150] INFO  giapi.ServicesUtilImpl - Property requested for key: DHS_INTERMEDIATE_DATA_PATH
+Intermediate Data Path: /tmp
+2012-03-05 12:40:46,600 [0x2b37220d9150] INFO  giapi.ServicesUtilImpl - Property requested for key: DEFAULT
+Default:
 \endverbatim
 
        Confirm that the value obtained matches the one in the configuration file.
