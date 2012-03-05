@@ -167,7 +167,10 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
     }
 
     def getHealth = {
-      LOG.info("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actors.toList)
+      val actorsStr = actors.zipWithIndex.map {
+        case (a, i) => "%s -> %b".format(KeywordSource(i), a)
+      }
+      LOG.info("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actorsStr.mkString(", "))
       if (obsEvtHndl) {
         if (actors.reduceLeft({
           _ && _
