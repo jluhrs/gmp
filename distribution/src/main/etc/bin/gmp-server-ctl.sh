@@ -31,6 +31,12 @@ app_root=${GPI_ROOT}/gmp-server-$GMP_VERSION
 pid_file=${app_root}/bin/${app_name}.pid
 log_file=${app_root}/logs/${app_name}.out
 
+# check rpm root is available
+if ! [ -e ${app_root} ]; then
+    echo "gmp-server directory ${app_root} not found. Check your GPI_ROOT env variable"
+    exit -1
+fi
+
 # pax-runner needs this dir to run
 if ! [ -d $HOME/.pax/runner ]; then
     mkdir -p $HOME/.pax/runner
