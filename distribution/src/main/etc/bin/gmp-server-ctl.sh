@@ -16,7 +16,7 @@ GMP_VERSION=${gmp.version}
 which java > /dev/null || { echo "Need java in PATH to run"; exit 1; }
 
 # Verify existing variables
-if [ -z $GPI_ROOT ]; then
+if [ -z ${GPI_ROOT:-} ]; then
     GPI_ROOT=/gemsoft/opt/gpi/
     echo "GPI_ROOT not set. Using $GPI_ROOT"
 fi

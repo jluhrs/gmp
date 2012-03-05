@@ -37,7 +37,6 @@
             <useProjectArtifact>false</useProjectArtifact>
             <scope>provided</scope>
             <outputDirectory>/bundles/level2</outputDirectory>
-            <!--useTransitiveFiltering>true</useTransitiveFiltering-->
             <useTransitiveDependencies>true</useTransitiveDependencies>
             <useTransitiveFiltering>false</useTransitiveFiltering>
             <includes>
@@ -46,12 +45,6 @@
                 <include>org.ops4j.pax.web:*</include>
                 <include>org.osgi:org.osgi.compendium</include>
             </includes>
-            <!--excludes>
-                <exclude>org.ops4j.pax.runner:pax-runner</exclude>
-                <exclude>org.apache.felix:org.apache.felix.framework</exclude>
-                <exclude>org.apache.felix:org.apache.felix.main</exclude>
-                <exclude>org.apache.felix:org.apache.felix.gogo.*</exclude>
-            </excludes-->
         </dependencySet>
     </dependencySets>
 
@@ -68,43 +61,7 @@
                 <exclude>org.easymock:*</exclude>
             </excludes>
         </repository>
-        <!--repository>
-            <outputDirectory>bundles</outputDirectory>
-            <includeMetadata>true</includeMetadata>
-            <includes>
-                <include>*:*</include>
-            </includes>
-            <excludes>
-                <exclude>org.apache.felix:org.apache.felix.framework</exclude>
-                <exclude>org.apache.felix:org.apache.felix.main</exclude>
-                <exclude>org.apache.felix:org.apache.felix.gogo.*</exclude>
-            </excludes>
-        </repository-->
     </repositories>
-
-    <!--<moduleSets>-->
-        <!--<moduleSet>-->
-            <!--&lt;!&ndash; Enable access to all projects in the current multimodule build! &ndash;&gt;-->
-            <!--<useAllReactorProjects>true</useAllReactorProjects>-->
-
-            <!--&lt;!&ndash;<includeSubModules/>&ndash;&gt;-->
-            <!--<includes>-->
-                <!--<include>*:*</include>-->
-            <!--</includes>-->
-            <!--<binaries>-->
-                <!--<outputDirectory>/bundle</outputDirectory>-->
-                <!--<unpack>false</unpack>-->
-                <!--<includeDependencies/>-->
-                <!--<dependencySets>-->
-                    <!--<dependencySet>-->
-                        <!--<includes>-->
-                            <!--<include>*:*</include>-->
-                        <!--</includes>-->
-                    <!--</dependencySet>-->
-                <!--</dependencySets>-->
-            <!--</binaries>-->
-        <!--</moduleSet>-->
-    <!--</moduleSets>-->
 
     <fileSets>
         <fileSet>
@@ -126,6 +83,7 @@
             <includes>
                 <include>start.sh</include>
                 <include>gmp-server-ctl.sh</include>
+                <include>gmp-server</include>
             </includes>
         </fileSet>
         <fileSet>
