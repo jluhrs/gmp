@@ -8,12 +8,12 @@
         <version>1.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>distribution</artifactId>
+    <artifactId>gmp-server</artifactId>
     <version>0.14.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
-    <name>Distribution</name>
+    <name>GMP Server Distribution</name>
 
     <properties>
         <noUpload>false</noUpload>
@@ -313,7 +313,7 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>gmp-server-${gmp.version}</finalName>
+                            <finalName>${project.artifactId}-${gmp.version}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <tarLongFileMode>gnu</tarLongFileMode>
                             <attach>false</attach>
@@ -338,7 +338,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <name>gmp-server</name>
+                    <name>${project.artifactId}</name>
                     <group>Gemini</group>
                     <needarch>false</needarch>
                     <targetOS>linux</targetOS>
@@ -353,7 +353,7 @@
                             <directory>${installationroot}/${project.artifactId}-${gmp.version}/bundles</directory>
                             <sources>
                                 <source>
-                                    <location>${project.build.directory}/gmp-server-${gmp.version}/gmp-server-${gmp.version}/bundles/</location>
+                                    <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bundles/</location>
                                     <targetArchitecture>noarch</targetArchitecture>
                                 </source>
                             </sources>
@@ -379,12 +379,12 @@
 
                         <!--config files-->
                         <mapping>
+                            <directory>${installationroot}/${project.artifactId}-${gmp.version}/conf</directory>
                             <sources>
                                 <source>
-                                    <location>${project.build.directory}/gmp-server-${gmp.version}/gmp-server-${gmp.version}/conf</location>
+                                    <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/conf</location>
                                 </source>
                             </sources>
-                            <directory>${installationroot}/${project.parent.artifactId}-${project.version}/conf</directory>
                             <configuration>true</configuration>
                             <directoryIncluded>false</directoryIncluded>
                             <filemode>644</filemode>
@@ -393,15 +393,15 @@
                         </mapping>
                         <!--executables-->
                         <mapping>
+                            <directory>${installationroot}/${project.artifactId}-${project.version}/bin</directory>
                             <sources>
                                 <source>
-                                    <location>${project.build.directory}/gmp-server-${gmp.version}/gmp-server-${gmp.version}/bin/gmp-server</location>
-                                    <location>${project.build.directory}/gmp-server-${gmp.version}/gmp-server-${gmp.version}/bin/start.sh</location>
-                                    <location>${project.build.directory}/gmp-server-${gmp.version}/gmp-server-${gmp.version}/bin/giapi-tester.sh</location>
-                                    <location>${project.build.directory}/gmp-server-${gmp.version}/gmp-server-${gmp.version}/bin/gmp-server-ctl.sh</location>
+                                    <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/gmp-server</location>
+                                    <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/start.sh</location>
+                                    <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh</location>
+                                    <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/gmp-server-ctl.sh</location>
                                 </source>
                             </sources>
-                            <directory>${installationroot}/${project.parent.artifactId}-${project.version}/bin</directory>
                             <directoryIncluded>false</directoryIncluded>
                             <filemode>755</filemode>
                             <username>software</username>
@@ -410,7 +410,7 @@
                         <mapping>
                             <sources>
                                 <source>
-                                    <location>${project.build.directory}/gmp-server-${gmp.version}/gmp-server-${gmp.version}/bin/</location>
+                                    <location>${project.build.directory}/${project.artifactId}-${gmp.version}/${project.artifactId}-${gmp.version}/bin/</location>
                                     <excludes>
                                         <exclude>${project.parent.artifactId}</exclude>
                                     </excludes>
@@ -432,19 +432,21 @@
                     <postinstallScriptlet>
                         <script>
                             #create logs/ directory
-                            mkdir -p ${installationroot}/${project.parent.artifactId}-${project.parent.version}/logs
+                            mkdir -p ${installationroot}/${project.artifactId}-${gmp.version}/logs
 
                             #change user/group for all files(particularly directories)
-                            chown -R software.gemini ${installationroot}/${project.parent.artifactId}-${project.parent.version}/
+                            chown -R software.gemini ${installationroot}/${project.artifactId}-${gmp.version}/
 
                             #symlink /gemsoft/opt/gpi/gmp -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION
                             if [ $1 -ne 1 ]; then
-                            rm -f ${installationroot}/${project.parent.artifactId}
+                            rm -f ${installationroot}/${project.artifactId}
                             fi
-                            ln -s ${installationroot}/${project.parent.artifactId}-${project.version}/ ${installationroot}/${project.parent.artifactId}
+                            ln -s ${installationroot}/${project.artifactId}-${gmp.version}/ ${installationroot}/${project.artifactId}
 
-                            #symlink /gemsoft/opt/bin -&gt; /gemsoft/opt/gpi/gpiaocdisplay-$VERSION/bin/gpiaocdisplay
-                            ln -s ${installationroot}/${project.parent.artifactId}-${project.version}/bin/${project.parent.artifactId} /gemsoft/bin/${project.parent.artifactId}
+                            #symlink /gemsoft/opt/bin -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION/bin/gmp-server
+                            ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/${project.artifactId}-clt.sh /gemsoft/bin/${project.artifactId}-clt.sh
+                            ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester.sh
+                            ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester /gemsoft/bin/giapi-tester.sh
 
                         </script>
                     </postinstallScriptlet>
@@ -452,9 +454,11 @@
                         <script>
                             #delete leftover directories
                             if [ $1 -eq 0 ]; then
-                            rm -rf ${installationroot}/${project.parent.artifactId}-${project.version}
-                            rm ${installationroot}/${project.parent.artifactId}
-                            rm /gemsoft/bin/${project.parent.artifactId}
+                            rm -rf ${installationroot}/${project.artifactId}-${project.version}
+                            rm ${installationroot}/${project.artifactId}
+                            rm /gemsoft/bin/${project.artifactId}-ctl.sh
+                            rm /gemsoft/bin/giapi-tester.sh
+                            rm /gemsoft/bin/giapi-tester
                             fi
                         </script>
                     </postremoveScriptlet>
