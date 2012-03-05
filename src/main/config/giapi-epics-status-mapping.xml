@@ -4,30 +4,53 @@
 
     <!-- Channels for integration tests -->
     <SimpleChannel>
-        <giapiname>gpi:status1</giapiname>
+        <giapiname>gmp:status1</giapiname>
         <epicsname>status1</epicsname>
         <type>INT</type>
         <initial>2</initial>
     </SimpleChannel>
     <SimpleChannel>
-        <giapiname>gpi:status2</giapiname>
+        <giapiname>gmp:status2</giapiname>
         <epicsname>status2</epicsname>
         <type>INT</type>
         <initial>2</initial>
     </SimpleChannel>
     <AlarmChannel>
-        <giapiname>gpi:alarm1</giapiname>
+        <giapiname>gmp:alarm1</giapiname>
         <epicsname>alarm1</epicsname>
         <type>INT</type>
         <initial>2</initial>
     </AlarmChannel>
     <HealthChannel>
-        <giapiname>gpi:health1</giapiname>
+        <giapiname>gmp:health1</giapiname>
         <epicsname>health1</epicsname>
     </HealthChannel>
 
     <HealthChannel>
-        <giapiname>gpi:gds:health</giapiname>
+        <giapiname>gmp:gds:health</giapiname>
         <epicsname>gds:health</epicsname>
     </HealthChannel>
+
+    <!--STATUS ITEMS reported to Gemini-->
+    <SimpleChannel>
+        <giapiname>gmp:state</giapiname>
+        <epicsname>state</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <!-- too much noise in logs
+       <SimpleChannel>
+            <giapiname>gpi:heartbeat</giapiname>
+            <epicsname>heartbeat</epicsname>
+            <type>INT</type>
+            <initial>0</initial>
+        </SimpleChannel>
+    -->
+    <!--health-->
+    <HealthChannel>
+        <giapiname>gpi:health</giapiname>
+        <epicsname>health</epicsname>
+    </HealthChannel>
+
+
 </Channels>
