@@ -325,6 +325,10 @@ channels below
 
         You'll see a bunch of setup logging information. Check there are no errors.
 
+        Every second you will also see an update of the gmp heartbeat as
+
+        <tt>$ Status value: StatusItem{name='gpisim:gmp:heartbeat', value=2373, timestamp=Mon Mar 05 12:31:03 CLST 2012}</tt>
+
         Now start the status application. This application will generate status information for
         two items, gpi:status1 and gpi:status2. The fist one will go from 0 to 999 and the other will
         go from 1000 to 1:
