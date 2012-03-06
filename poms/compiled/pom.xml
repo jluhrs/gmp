@@ -46,7 +46,7 @@
                         <Build-Host>${maven.build.hostname}</Build-Host>
                         <Bundle-Activator>${bundle.namespace}.osgi.Activator</Bundle-Activator>
                         <Export-Package>${bundle.namespace}.*;version="${project.version}"</Export-Package>
-                        <_include>-osgi.bnd, ${basedir}/target/buildmeta.properties</_include>
+                        <_include>-osgi.bnd</_include>
                         <_debug>true</_debug>
                     </instructions>
                 </configuration>
@@ -80,7 +80,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -128,7 +128,7 @@
                         <version>20020829</version>
                     </dependency>
                 </dependencies>
-            </plugin>
+            </plugin-->
         </plugins>
     </build>
 </project>

@@ -178,6 +178,11 @@
             <artifactId>pax-web-extender-whiteboard</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-extender-war</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Configuration admin felix service -->
         <dependency>

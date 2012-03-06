@@ -120,7 +120,7 @@ function containerStatus() {
   fi
 }
 
-# Reenable as the script could called without parameters
+# Reenable as the script could be called without parameters
 set +u
 
 #
