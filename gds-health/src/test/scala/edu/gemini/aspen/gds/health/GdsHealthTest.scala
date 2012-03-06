@@ -6,21 +6,24 @@ import edu.gemini.aspen.giapi.statusservice.{StatusHandlerAggregateImpl, StatusS
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
-import org.junit.{After, Before, Test}
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import actors.threadpool.AtomicInteger
 import edu.gemini.aspen.gmp.top.Top
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, FunSuite}
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
-class GdsHealthTest {
+@RunWith(classOf[JUnitRunner])
+class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   val healthName = "gpitest:gds:health"
   val testCounter = new AtomicInteger(0)
 
-  var gdsHealth: GdsHealth = _
   val agg = new StatusHandlerAggregateImpl
   val provider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false&broker.persistent=false")
-  val top = mock(classOf[Top])
+  val top = mock[Top]
 
   // Remove non actor based sources and add 2 for GDSObseventHandler and HeaderReceiver
   val expectedUpdates = (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS).size + 2
@@ -46,8 +49,7 @@ class GdsHealthTest {
 
   }
 
-  @Before
-  def init() {
+  before {
     provider.startConnection()
     statusservice = new StatusService(agg, "Status Service " + testCounter.incrementAndGet(), ">")
     statusservice.startJms(provider)
@@ -55,13 +57,11 @@ class GdsHealthTest {
     when(top.buildStatusItemName(anyString)).thenReturn(healthName)
   }
 
-  @After
-  def shutdown() {
+  after {
     statusservice.stopJms()
   }
 
-  @Test
-  def testBad() {
+  test("Bad Health") {
     val gdsHealth = new GdsHealth(top)
     gdsHealth.validate()
     gdsHealth.startJms(provider)
@@ -77,8 +77,7 @@ class GdsHealthTest {
     gdsHealth.stopJms()
   }
 
-  @Test
-  def testWarning() {
+  test("Warning Health") {
     val gdsHealth = new GdsHealth(top)
     gdsHealth.validate()
     gdsHealth.startJms(provider)
@@ -86,7 +85,7 @@ class GdsHealthTest {
     val handler = new TestHandler(2)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.bindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
+    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandler])
     handler.waitForCompletion()
     assertEquals(2, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
@@ -96,8 +95,8 @@ class GdsHealthTest {
   }
 
   def bindAllHealthSources(gdsHealth:GdsHealth) {
-    gdsHealth.bindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
-    val fact = mock(classOf[KeywordActorsFactory])
+    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandler])
+    val fact = mock[KeywordActorsFactory]
     for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS)) {
       when(fact.getSource).thenReturn(source)
       gdsHealth.bindActorFactory(fact)
@@ -106,8 +105,7 @@ class GdsHealthTest {
     gdsHealth.bindHeaderReceiver()
   }
 
-  @Test
-  def testGood() {
+  test("Good Health") {
     val gdsHealth = new GdsHealth(top)
     gdsHealth.validate()
     gdsHealth.startJms(provider)
@@ -124,8 +122,7 @@ class GdsHealthTest {
     gdsHealth.stopJms()
   }
 
-  @Test
-  def testUnbind() {
+  test("Unbind some elements to warning") {
     val gdsHealth = new GdsHealth(top)
     gdsHealth.validate()
     gdsHealth.startJms(provider)
@@ -151,8 +148,7 @@ class GdsHealthTest {
 
   }
 
-  @Test
-  def testUnbind2() {
+  test("Unbind some elements to bad") {
     val gdsHealth = new GdsHealth(top)
     gdsHealth.validate()
     gdsHealth.startJms(provider)
@@ -173,7 +169,7 @@ class GdsHealthTest {
     val handler = new TestHandler(1)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.unbindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
+    gdsHealth.unbindGDSObseventHandler(mock[GDSObseventHandler])
     handler.waitForCompletion()
     assertEquals(1, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)
