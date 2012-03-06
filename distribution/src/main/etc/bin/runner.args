@@ -11,7 +11,7 @@
 --localRepository=file:../felix@id=felix
 
 # Pass System properties for configuration and logs
---vmOptions=-Dfelix.system.properties=file:../../conf/config.properties -Xverify:none
+--vmOptions=-Dfelix.system.properties=file:../../conf/config.properties ${vmo.settings}
 
 # Instructions on what bundles to load
 scan-dir:../bundles/level2@2

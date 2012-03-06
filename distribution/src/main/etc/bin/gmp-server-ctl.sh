@@ -51,7 +51,7 @@ set +e # disable because egrep will return 1 on mismatch
 pid_isrunning=`ps -eo pid | egrep ^[[:space:]]*${pid}$`
 # Check pax-runner lock is not there
 if [ -z ${pid_isrunning} ] && [ -e $HOME/.pax/runner/org.ops4j.pax.runner.daemon.lock ]; then
-    echo "Seems GMP is no running but the lock file is still in place"
+    echo "Seems GMP is not running but the lock file is still in place"
     echo "If you are sure GMP is not running delete $HOME/.pax/runner/org.ops4j.pax.runner.daemon.lock"
 fi
 
@@ -70,7 +70,7 @@ function startContainer() {
         sleep 4
         popd > /dev/null
         # Get the pid with ps
-        ps ax | grep "org.apache.felix.main.Main" | grep -v "grep" | sed "s/[[:space:]]*\([\d]*\) .*/\1/" > ${pid_file}
+        ps -ef | awk '/java.*org.apache.felix.main.Main$/ {print $2}' > ${pid_file}
         retval=$?
         sleep 10
         echo "Started ${app_name}"
@@ -136,10 +136,10 @@ case "$1" in
     kill)
       killContainer
       ;;
-    #restart)
-    #  stopContainer
-    #  startContainer
-    #  ;;
+    restart)
+      stopContainer
+      startContainer
+      ;;
     status)
       containerStatus
       ;;
