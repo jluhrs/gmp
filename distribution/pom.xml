@@ -212,8 +212,33 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- Export maven properties -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>
+                                ${project.build.outputDirectory}/config.properties
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <profiles>
         <profile>
+            <!-- When called it builds the documentation -->
             <id>documentation</id>
             <build>
                 <plugins>
@@ -252,6 +277,12 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>gpi</id>
+            <properties>
+                <gmp.instance>gpi</gmp.instance>
+            </properties>
         </profile>
         <profile>
             <id>production</id>
@@ -307,25 +338,6 @@
             </dependencies>
             <build>
                 <plugins>
-                    <!-- Export maven properties -->
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>properties-maven-plugin</artifactId>
-                        <version>1.0-alpha-2</version>
-                        <executions>
-                            <execution>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>write-project-properties</goal>
-                                </goals>
-                                <configuration>
-                                    <outputFile>
-                                        ${project.build.outputDirectory}/config.properties
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <!-- Use gmaven to extract a version number to be suitable for RPM -->
                     <plugin>
                         <groupId>org.codehaus.gmaven</groupId>
@@ -368,8 +380,8 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <useLastCommittedRevision>true</useLastCommittedRevision>
-                            <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+                            <useLastCommittedRevision>false</useLastCommittedRevision>
+                            <!--getRevisionOnlyOnce>true</getRevisionOnlyOnce-->
                             <scmDirectory>..</scmDirectory>
                         </configuration>
                     </plugin>

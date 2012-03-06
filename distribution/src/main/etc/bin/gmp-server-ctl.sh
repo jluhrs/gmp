@@ -25,9 +25,6 @@ if ! [ -d $GPI_ROOT ]; then
     exit -1
 fi
 
-# Check dirs
-
-
 # App variables
 app_name=gmp-server
 app_root=${GPI_ROOT}/gmp-server-$GMP_VERSION
@@ -35,11 +32,11 @@ pid_file=${app_root}/bin/${app_name}.pid
 log_dir=${app_root}/logs/
 log_file=${log_dir}/${app_name}.out
 
+# Check log dirs
 if ! [ -d ${log_dir} ]; then
     echo "Log dir is missing, creating it at ${log_dir}"
     mkdir -p ${log_dir}
 fi
-
 
 # check rpm root is available
 if ! [ -e ${app_root} ]; then

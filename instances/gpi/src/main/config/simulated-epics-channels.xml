@@ -1,0 +1,80 @@
+<!--
+    This configuration file contains the description of EPICS channels
+    that will be simulated in the GMP.
+
+    Each channel must have the following parameters:
+         name : The name of the EPICS channel that will be simulated
+         type : Data type of the epics channel. Valid data types are
+                FLOAT, DOUBLE, SHORT, STRING, BYTE. Uppercase or lowercase
+                values are accepted
+         size : Integer value that describes the number of elements the
+                EPICS channel will contain when updated in simulation.
+    updateRate: Integer value to describe the time in seconds to be used
+                when the simulation is executed. This rate is used to update the
+                value of the EPICS channel in simulation.
+
+-->
+
+
+<channels>
+    <channel>
+        <name>tcs:sad:currentZd.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>15</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:currentEl.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>16</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:currentRma.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>17</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:currentAirPressure.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>18</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:currentExternalTemp.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>19</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:currentRH.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>5</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:sourceATrackFrame.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>6</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:sourceATrackEq.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>7</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:sourceATrackWavelength.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>8</updateRate>
+    </channel>
+    <channel>
+        <name>tcs:sad:windSpeed.VAL</name>
+        <type>double</type>
+        <size>1</size>
+        <updateRate>9</updateRate>
+    </channel>
+</channels>

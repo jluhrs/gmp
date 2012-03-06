@@ -103,6 +103,12 @@
                 <include>giapi-tester.jar</include>
             </includes>
         </fileSet>
+        <!-- Copy configurations out of any project specific config -->
+        <fileSet>
+            <directory>../instances/${gmp.instance}/src/main/config</directory>
+            <outputDirectory>/conf</outputDirectory>
+            <filtered>true</filtered>
+        </fileSet>
         <!-- Copy configurations out of the top level config directory -->
         <fileSet>
             <directory>../src/main/config</directory>

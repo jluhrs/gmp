@@ -1,0 +1,17 @@
+<!--
+ This file contains the list of authorized EPICS channels
+ that can be monitored through the GIAPI.
+-->
+
+<channels>
+    <channel>tcs:sad:currentZd.VAL</channel>
+    <channel>tcs:sad:currentEl.VAL</channel>
+    <channel>tcs:sad:currentRma.VAL</channel>
+    <channel>tcs:sad:currentAirPressure.VAL</channel>
+    <channel>tcs:sad:currentExternalTemp.VAL</channel>
+    <channel>tcs:sad:currentRH.VAL</channel>
+    <channel>tcs:sad:sourceATrackFrame.VAL</channel>
+    <channel>tcs:sad:sourceATrackEq.VAL</channel>
+    <channel>tcs:sad:sourceATrackWavelength.VAL</channel>
+    <channel>tcs:sad:windSpeed.VAL</channel>
+</channels>
