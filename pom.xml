@@ -55,7 +55,7 @@
         <!-- Component versions -->
         <clover.version>3.1.0</clover.version>
         <org.activemq.core.version>5.5.1</org.activemq.core.version>
-        <pax-web.version>1.0.7</pax-web.version>
+        <pax-web.version>1.1.2</pax-web.version>
         <pax-logging.version>1.6.5</pax-logging.version>
         <pax-runner.version>1.7.6</pax-runner.version>
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
@@ -725,6 +725,11 @@
                         <artifactId>pax-swissbox-optional-jc</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.external.osgi.org.eclipse.jdt.core.compiler</groupId>
+                <artifactId>ecj</artifactId>
+                <version>3.7.1</version>
             </dependency>
 
             <!-- Testing dependencies -->
