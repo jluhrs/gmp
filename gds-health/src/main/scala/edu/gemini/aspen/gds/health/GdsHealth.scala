@@ -42,7 +42,7 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
   }
 
   private def updateHealth() {
-    LOG.info("Updating Health to " + healthState.getHealth + " " + healthSetter)
+    LOG.info("Updating Health to " + healthState.getHealth + " on " + healthName)
     stateActor ! UpdateHealth
   }
 

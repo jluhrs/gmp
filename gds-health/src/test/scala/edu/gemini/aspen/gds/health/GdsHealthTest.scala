@@ -20,13 +20,18 @@ class GdsHealthTest {
   var gdsHealth: GdsHealth = _
   val agg = new StatusHandlerAggregateImpl
   val provider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false&broker.persistent=false")
+  val top = mock(classOf[Top])
+
+  // Remove non actor based sources and add 2 for GDSObseventHandler and HeaderReceiver
+  val expectedUpdates = (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS).size + 2
 
   var statusservice: StatusService = _
 
-  private class TestHandler(retries:Int) extends StatusHandler {
+  private class TestHandler(retries: Int) extends StatusHandler {
     override def getName = "Test Handler for GdsHealthTest"
+
     val counter = new AtomicInteger(0)
-    val latch =  new CountDownLatch(retries)
+    val latch = new CountDownLatch(retries)
     var lastStatusItem: StatusItem[_] = _
 
     override def update[T](item: StatusItem[T]) {
@@ -36,30 +41,31 @@ class GdsHealthTest {
     }
 
     def waitForCompletion() {
-      latch.await(10, TimeUnit.SECONDS)
+      assertTrue(latch.await(10, TimeUnit.SECONDS))
     }
 
   }
+
   @Before
   def init() {
+    provider.startConnection()
     statusservice = new StatusService(agg, "Status Service " + testCounter.incrementAndGet(), ">")
     statusservice.startJms(provider)
-    TimeUnit.MILLISECONDS.sleep(1000)
-    val top=mock(classOf[Top])
+
     when(top.buildStatusItemName(anyString)).thenReturn(healthName)
-    gdsHealth = new GdsHealth(top)
-    gdsHealth.validate()
-    gdsHealth.startJms(provider)
   }
 
   @After
   def shutdown() {
-    gdsHealth.stopJms()
     statusservice.stopJms()
   }
 
   @Test
   def testBad() {
+    val gdsHealth = new GdsHealth(top)
+    gdsHealth.validate()
+    gdsHealth.startJms(provider)
+
     val handler = new TestHandler(1)
     agg.bindStatusHandler(handler)
 
@@ -67,10 +73,16 @@ class GdsHealthTest {
     assertEquals(1, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)
     agg.unbindStatusHandler(handler)
+
+    gdsHealth.stopJms()
   }
 
   @Test
   def testWarning() {
+    val gdsHealth = new GdsHealth(top)
+    gdsHealth.validate()
+    gdsHealth.startJms(provider)
+
     val handler = new TestHandler(2)
     agg.bindStatusHandler(handler)
 
@@ -79,13 +91,11 @@ class GdsHealthTest {
     assertEquals(2, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
     agg.unbindStatusHandler(handler)
+
+    gdsHealth.stopJms()
   }
 
-  @Test
-  def testGood() {
-    val handler = new TestHandler(KeywordSource.maxId + 2)
-    agg.bindStatusHandler(handler)
-
+  def bindAllHealthSources(gdsHealth:GdsHealth) {
     gdsHealth.bindGDSObseventHandler(mock(classOf[GDSObseventHandler]))
     val fact = mock(classOf[KeywordActorsFactory])
     for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS)) {
@@ -94,28 +104,72 @@ class GdsHealthTest {
     }
 
     gdsHealth.bindHeaderReceiver()
+  }
+
+  @Test
+  def testGood() {
+    val gdsHealth = new GdsHealth(top)
+    gdsHealth.validate()
+    gdsHealth.startJms(provider)
+
+    val handler = new TestHandler(expectedUpdates)
+    agg.bindStatusHandler(handler)
+
+    bindAllHealthSources(gdsHealth)
     handler.waitForCompletion()
-    assertEquals(KeywordSource.maxId + 1, handler.counter.get())
+    assertEquals(expectedUpdates, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.GOOD)
     agg.unbindStatusHandler(handler)
+
+    gdsHealth.stopJms()
   }
 
   @Test
   def testUnbind() {
-    testGood()
-    val handler = new TestHandler(1)
+    val gdsHealth = new GdsHealth(top)
+    gdsHealth.validate()
+    gdsHealth.startJms(provider)
+
+    val startHandler = new TestHandler(expectedUpdates)
+    agg.bindStatusHandler(startHandler)
+    bindAllHealthSources(gdsHealth)
+    startHandler.waitForCompletion()
+    agg.unbindStatusHandler(startHandler)
+
+    val handler = new TestHandler(2)
     agg.bindStatusHandler(handler)
 
     gdsHealth.unbindHeaderReceiver()
     handler.waitForCompletion()
-    assertEquals(1, handler.counter.get())
+    assertEquals(2, handler.counter.get())
+    println(handler.lastStatusItem)
+    println(handler.lastStatusItem.getValue)
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
     agg.unbindStatusHandler(handler)
+
+    gdsHealth.stopJms()
+
   }
 
   @Test
   def testUnbind2() {
-    testUnbind()
+    val gdsHealth = new GdsHealth(top)
+    gdsHealth.validate()
+    gdsHealth.startJms(provider)
+
+    val startHandler = new TestHandler(expectedUpdates)
+    agg.bindStatusHandler(startHandler)
+    bindAllHealthSources(gdsHealth)
+    startHandler.waitForCompletion()
+    agg.unbindStatusHandler(startHandler)
+
+    val warningHandler = new TestHandler(2)
+    agg.bindStatusHandler(warningHandler)
+
+    gdsHealth.unbindHeaderReceiver()
+    warningHandler.waitForCompletion()
+    agg.unbindStatusHandler(warningHandler)
+
     val handler = new TestHandler(1)
     agg.bindStatusHandler(handler)
 
@@ -124,6 +178,8 @@ class GdsHealthTest {
     assertEquals(1, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)
     agg.unbindStatusHandler(handler)
+
+    gdsHealth.stopJms()
   }
 
 }
