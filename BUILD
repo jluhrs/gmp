@@ -74,16 +74,15 @@ http://maven.apache.org/plugins/maven-failsafe-plugin/examples/single-test.html
 ------------------------------
 Idea works best by just importing the pom.xml as a project file definition
 
-6. Generate application
+8. Generate application
 -----------------------
 Applications are just other modules that define a list of bundles to
 deploy and configuration. They use the assembly plugin and will produce 
 a zip file with all the required bundles and configurations.
 
-As an example go to gmp-server and read the instructions on how to build
-the application there
+As an example go to distribution and check the pom file which defines a generic gmp-server
 
-7. Additional Documentation
+9. Additional Documentation
 --------------------------
 This project comes with a set of documentation that can be generated via doxygen.
 
@@ -92,3 +91,19 @@ To produce the documentation, go to the gmp-server directory and type:
     mvn resources:copy-resources doxygen:report
 
 and then open the generated documentation at gmp-server/target/site/doxygen/index.html
+
+10. RPM and tar.gz package
+--------------------------
+To generate the full package you need to activate the production profile using the command
+    mvn -Pproduction clean install
+
+This command will compile all the modules and at the end it will generate a tar.gz and rpm
+files to be installed
+
+They will end up in the distribution/target dir
+
+It is also possible to include the documentation. To do so you need to also activate the
+documentation profile with the command
+    mvn -Pdocumentation,production clean install
+
+The produced tarball and rpm will then include the documentation
