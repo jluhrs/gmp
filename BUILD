@@ -107,3 +107,19 @@ documentation profile with the command
     mvn -Pdocumentation,production clean install
 
 The produced tarball and rpm will then include the documentation
+
+11. Instance specific distribution files
+----------------------------------------
+The GMP can be built using configuration specific to different instruments.
+This is done using maven profiles, defined in the distribution module.
+
+profiles have names like gpi, graces, etc which correspond to directories at
+instances/<profile-name>/src/main/config
+
+That directory can contain configuration files that override the base configuration files at
+src/main/config
+
+It is then possible to build gmp-server distribution files that are specific for a given instrument
+using the command
+
+    mvn -Pgpi,production clean install
