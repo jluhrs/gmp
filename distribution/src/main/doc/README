@@ -81,6 +81,9 @@ RUNNING AS DAEMON
 A script is provided to run the GMP in daemon mode, to do so invoke:
  ./gmp-server-ctl.sh start
 
+gmp-server-ctl.sh needs that the GPI_ROOT environment variable be defined. It will try
+to find the gmp server under $GPI_ROOT/gmp-server
+
 This will launch the gmp-server-ctl.sh in the background
 
 Additionally a gmp-server script is provided that can be used as an init.d script, for which
