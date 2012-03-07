@@ -53,7 +53,7 @@ public class ActiveMQBrokerIT extends FelixContainerConfigurationBase {
         // waitForStart=4000 ensure the connection will wait for the broker to be started before giving up
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://gmp?create=false&waitForStart=4000");
         Connection connection = connectionFactory.createConnection();
-        assertEquals("5.5.0", connection.getMetaData().getProviderVersion());
+        assertEquals("5.5.1", connection.getMetaData().getProviderVersion());
     }
 
     private Bundle getJmsActiveMQBrokerBundle() throws BundleException {
