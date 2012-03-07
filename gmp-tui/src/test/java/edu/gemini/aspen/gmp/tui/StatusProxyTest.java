@@ -37,9 +37,16 @@ public class StatusProxyTest {
     }
 
     @Test
-    public void testStatusCall() {
+    public void testStatusAllCall() {
         statusProxy.status();
 
         verify(statusDB).getAll();
+    }
+
+    @Test
+    public void testStatusCall() {
+        statusProxy.status("gmp:status");
+
+        verify(statusDB).getStatusItem("gmp:status");
     }
 }

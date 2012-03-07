@@ -36,4 +36,15 @@ public class StatusProxy implements GmpCommands {
         }
     }
 
+    @Descriptor("Gives the status value and timestamp")
+    public void status(@Descriptor("status name") String name) {
+        StatusItem item = statusDatabase.getStatusItem(name);
+        if (item == null) {
+            System.out.println("Status item " + name + " not found");
+        } else {
+            System.out.println(item.getName() + " = " + item.getValue().toString() + " on " + item.getTimestamp());
+        }
+    }
+
+
 }
