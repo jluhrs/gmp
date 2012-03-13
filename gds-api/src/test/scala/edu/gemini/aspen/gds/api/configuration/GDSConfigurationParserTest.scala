@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gds.api.configuration
 
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.api.Conversions._
 import fits.FitsKeyword
 import org.junit.Assert._
 import org.junit.Test
@@ -35,7 +36,6 @@ class GDSConfigurationParserTest extends FunSuite {
     "comment with missing #")
   val blank = Array("", " ", "  ", "\t")
 
-
   test("catch bad values") {
     for (line <- wrong) {
       val result = new GDSConfigurationParser().parseText(line)
@@ -68,9 +68,8 @@ class GDSConfigurationParserTest extends FunSuite {
       assertTrue("Error parsing line with following contents: ->|" + line + "|<-", result.successful)
 
       assertFalse(result.isEmpty)
-      assertEquals(Some(GDSConfiguration(Instrument("GPI"), GDSEvent("OBS_END_ACQ"), new FitsKeyword("AIRMASS"), HeaderIndex(0), DataType("DOUBLE"), Mandatory(false), DefaultValue("NONE"), Subsystem(KeywordSource.EPICS), Channel("ws:massAirmass"), ArrayIndex(0), FitsComment("Mean airmass for the observation"))), result.get(0))
+      assertEquals(Some(GDSConfiguration("GPI", "OBS_END_ACQ", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "Mean airmass for the observation")), result.get(0))
     }
-
   }
 
   test("parse comment lines") {

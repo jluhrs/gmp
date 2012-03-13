@@ -2,7 +2,6 @@ package edu.gemini.aspen.gds.api.configuration
 
 import edu.gemini.aspen.gds.api.GDSConfiguration
 import org.apache.felix.ipojo.annotations.{Property, Provides, Component}
-import io.Source
 import java.io.{BufferedWriter, File, FileWriter}
 import edu.gemini.aspen.gds.api.Predef._
 
@@ -23,6 +22,8 @@ trait GDSConfigurationService {
    */
   def getFullConfiguration: List[ConfigItem[_]]
 
+  def hasError:Boolean
+
   /**
    * Overwrites the current configuration file
    */
@@ -40,7 +41,7 @@ trait GDSConfigurationService {
 }
 
 @Component
-@Provides(specifications = Array(classOf[GDSConfigurationService]))
+@Provides(specifications = Array[Class[_]](classOf[GDSConfigurationService]))
 class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", value = "NOVALID", mandatory = true) configurationFile: String) extends GDSConfigurationService {
   def getConfiguration: List[GDSConfiguration] = {
     GDSConfigurationFile.getConfiguration(configurationFile)
@@ -55,6 +56,8 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
       }
     }
   }
+
+  def hasError = false
 
   def getFullConfiguration: List[ConfigItem[_]] = {
     GDSConfigurationFile.getFullConfiguration(configurationFile)

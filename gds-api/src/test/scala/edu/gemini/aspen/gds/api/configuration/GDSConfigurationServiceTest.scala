@@ -4,13 +4,16 @@ import edu.gemini.aspen.gds.api._
 import org.junit.Assert._
 import edu.gemini.aspen.gds.api.Conversions._
 import java.io.File
-import org.junit.Test
 import edu.gemini.aspen.gds.api.Predef._
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.FunSuite
 
 /**
  * Specify how the GDSConfiguration parser should behave
  */
-class GDSConfigurationServiceTest {
+@RunWith(classOf[JUnitRunner])
+class GDSConfigurationServiceTest extends FunSuite {
   val ORIGINAL_CONFIG = "gds-keywords.conf"
   val NEW_CONFIG = "gds-keywords.conf.test"
   val TEST_DIR = "/tmp/"
@@ -24,10 +27,9 @@ class GDSConfigurationServiceTest {
     //todo: check for the rest of the items
   }
 
-  @Test
-  def testGet() {
+  test("read config") {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + ORIGINAL_CONFIG)
-    val serviceOrig: GDSConfigurationService = new GDSConfigurationServiceImpl(TEST_DIR + ORIGINAL_CONFIG)
+    val serviceOrig = new GDSConfigurationServiceImpl(TEST_DIR + ORIGINAL_CONFIG)
 
     val readConfig = serviceOrig.getConfiguration
 
@@ -35,10 +37,9 @@ class GDSConfigurationServiceTest {
     checkOriginalContent(readConfig)
   }
 
-  @Test
-  def testGetForUpdate() {
+  test("get for update") {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + ORIGINAL_CONFIG)
-    val serviceOrig: GDSConfigurationService = new GDSConfigurationServiceImpl(TEST_DIR + ORIGINAL_CONFIG)
+    val serviceOrig = new GDSConfigurationServiceImpl(TEST_DIR + ORIGINAL_CONFIG)
 
     val readConfig = serviceOrig.getFullConfiguration
     assertEquals(15, readConfig.size)
@@ -46,10 +47,9 @@ class GDSConfigurationServiceTest {
     checkOriginalContent(GDSConfigurationFile.getConfiguration(readConfig))
   }
 
-  @Test
-  def testNew() {
+  test("new file") {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
-    val serviceNew: GDSConfigurationService = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
+    val serviceNew = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
 
     val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
     serviceNew.replaceConfiguration(config :: Nil)
@@ -58,10 +58,9 @@ class GDSConfigurationServiceTest {
     assertTrue(readConfig.contains(config))
   }
 
-  @Test
-  def testAdd() {
+  test("add item") {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
-    val serviceNew: GDSConfigurationService = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
+    val serviceNew = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
 
     val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
     serviceNew.addConfiguration(config :: Nil)
@@ -72,10 +71,9 @@ class GDSConfigurationServiceTest {
     assertTrue(readConfig.contains(config))
   }
 
-  @Test
-  def testUpdate() {
+  test("update item") {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
-    val serviceNew: GDSConfigurationService = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
+    val serviceNew = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
 
     val newConfig = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
     val modConfig = GDSConfiguration("MOD", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")

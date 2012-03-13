@@ -12,6 +12,10 @@ object GDSConfigurationFile {
     getConfiguration(getFullConfiguration(configurationFile))
   }
 
+  def hanError(configurationFile: String): List[GDSConfiguration] = {
+    getConfiguration(getFullConfiguration(configurationFile))
+  }
+
   def getConfiguration(contents: List[ConfigItem[_]]): List[GDSConfiguration] = {
     contents filter {
       _.isInstanceOf[ConfigItem[_]]
