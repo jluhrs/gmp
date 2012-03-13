@@ -57,7 +57,7 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
     }
   }
 
-  def hasError = false
+  def hasError = GDSConfigurationFile.hasError(configurationFile)
 
   def getFullConfiguration: List[ConfigItem[_]] = {
     GDSConfigurationFile.getFullConfiguration(configurationFile)

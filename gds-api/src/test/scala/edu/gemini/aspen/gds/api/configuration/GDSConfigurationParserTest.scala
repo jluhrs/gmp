@@ -2,9 +2,7 @@ package edu.gemini.aspen.gds.api.configuration
 
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
-import fits.FitsKeyword
 import org.junit.Assert._
-import org.junit.Test
 import java.io.File
 import edu.gemini.aspen.gds.api.Predef.copy
 import org.scalatest.FunSuite

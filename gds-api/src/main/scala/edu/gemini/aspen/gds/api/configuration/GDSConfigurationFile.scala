@@ -12,9 +12,7 @@ object GDSConfigurationFile {
     getConfiguration(getFullConfiguration(configurationFile))
   }
 
-  def hanError(configurationFile: String): List[GDSConfiguration] = {
-    getConfiguration(getFullConfiguration(configurationFile))
-  }
+  def hasError(configurationFile: String): Boolean = !new GDSConfigurationParser().parseFileRawResult(configurationFile).successful
 
   def getConfiguration(contents: List[ConfigItem[_]]): List[GDSConfiguration] = {
     contents filter {

@@ -15,6 +15,7 @@ import org.scalatest.FunSuite
 @RunWith(classOf[JUnitRunner])
 class GDSConfigurationServiceTest extends FunSuite {
   val ORIGINAL_CONFIG = "gds-keywords.conf"
+  val ORIGINAL_BAD_CONFIG = "gds-keywords-with-error.conf"
   val NEW_CONFIG = "gds-keywords.conf.test"
   val TEST_DIR = "/tmp/"
 
@@ -34,6 +35,7 @@ class GDSConfigurationServiceTest extends FunSuite {
     val readConfig = serviceOrig.getConfiguration
 
     assertEquals(9, readConfig.length)
+    assertFalse(serviceOrig.hasError)
     checkOriginalContent(readConfig)
   }
 
@@ -89,6 +91,16 @@ class GDSConfigurationServiceTest extends FunSuite {
     assertTrue(GDSConfigurationFile.getConfiguration(readAgainConfig).contains(newConfig))
     assertTrue(GDSConfigurationFile.getConfiguration(readAgainConfig).contains(modConfig))
     assertFalse(GDSConfigurationFile.getConfiguration(readAgainConfig).contains(removedConfig))
+  }
+
+  test("read bad config") {
+    copyFile(ORIGINAL_BAD_CONFIG, TEST_DIR + ORIGINAL_BAD_CONFIG)
+    val serviceOrig = new GDSConfigurationServiceImpl(TEST_DIR + ORIGINAL_BAD_CONFIG)
+
+    val readConfig = serviceOrig.getConfiguration
+
+    assertEquals(0, readConfig.length)
+    assertTrue(serviceOrig.hasError)
   }
 
 }
