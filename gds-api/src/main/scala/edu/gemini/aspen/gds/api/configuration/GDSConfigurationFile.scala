@@ -8,23 +8,17 @@ import edu.gemini.aspen.gds.api.Predef._
  * This object provides utility methods to manipulate a configuration file
  */
 object GDSConfigurationFile {
-  def getConfiguration(configurationFile: String): List[GDSConfiguration] = {
-    getConfiguration(getFullConfiguration(configurationFile))
-  }
+  def getConfiguration(configurationFile: String): List[GDSConfiguration] = getConfiguration(getFullConfiguration(configurationFile))
 
   def hasError(configurationFile: String): Boolean = !new GDSConfigurationParser().parseFileRawResult(configurationFile).successful
 
-  def getConfiguration(contents: List[ConfigItem[_]]): List[GDSConfiguration] = {
-    contents filter {
+  def getConfiguration(contents: List[ConfigItem[_]]): List[GDSConfiguration] = contents filter {
       _.isInstanceOf[ConfigItem[_]]
     } map {
       _.value
-    } filter {
-      _.isInstanceOf[GDSConfiguration]
-    } map {
-      _.asInstanceOf[GDSConfiguration]
+    } collect {
+      case c:GDSConfiguration => c
     }
-  }
 
   def getFullConfiguration(configurationFile: String): List[ConfigItem[_]] = {
     var results = new GDSConfigurationParser().parseFileRawResult(configurationFile).getOrElse(Nil)
