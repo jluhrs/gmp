@@ -46,7 +46,6 @@
                             <excludes>
                                 <exclude>org/apache/activemq/store/**</exclude>
                                 <exclude>org/apache/activemq/kaha/**</exclude>
-                                <exclude>org/apache/activemq/filter/**</exclude>
                                 <exclude>org/apache/activemq/jaas/**</exclude>
                                 <exclude>org/apache/activemq/jmdns/**</exclude>
                                 <exclude>org/apache/activemq/openwire/tool/**</exclude>
