@@ -16,7 +16,7 @@ trait FitsBaseTest extends FunSuite with BeforeAndAfterEach {
 
   def updateFitsFile(headers: List[Header]) {
     val fitsUpdater = new FitsUpdater(originalFile.getParentFile, destinationFile.getParentFile, dataLabel, headers)
-    fitsUpdater.updateFitsHeaders(label => destinationFile.getName)
+    fitsUpdater.updateFitsHeaders(outputNamingFunction = label => destinationFile.getName)
   }
 
   def verifyKeywordInHeader(header: Header, keyword: String) {

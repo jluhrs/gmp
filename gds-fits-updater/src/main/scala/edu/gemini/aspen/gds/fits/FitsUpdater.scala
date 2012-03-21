@@ -6,7 +6,6 @@ import collection.JavaConversions._
 import actors.Reactor
 import java.util.logging.{Level, Logger}
 import edu.gemini.aspen.gds.api.fits.Header
-import com.google.common.io.Files
 
 case class Update(namingFunction: DataLabel => String = label => FitsUpdater.toFitsFileName(label))
 
@@ -48,7 +47,7 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
       react {
         case Update(namingFunction) => {
           try {
-            updateFitsHeaders(namingFunction)
+            updateFitsHeaders(outputNamingFunction = namingFunction)
           } catch {
             case ex =>
               LOG.log(Level.WARNING, ex.getMessage, ex)
@@ -64,9 +63,12 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
    *
    * @param namingFunction, it is a an optional method to key the new file. It is a relative key, not absolute. For example: {label => "N-" + label.getName + ".fits"}
    */
-  def updateFitsHeaders(namingFunction: DataLabel => String = FitsUpdater.toFitsFileName) {
-    val originalFile = new File(fromDirectory, FitsUpdater.toFitsFileName(dataLabel))
-    val destinationFile = new File(toDirectory, namingFunction(dataLabel))
+  def updateFitsHeaders(inputNamingFunction: DataLabel => String = FitsUpdater.toFitsFileName, outputNamingFunction: DataLabel => String = FitsUpdater.toFitsFileName) {
+    println(FitsUpdater.toFitsFileName(dataLabel))
+    println(outputNamingFunction(dataLabel))
+    val originalFile = new File(fromDirectory, inputNamingFunction(dataLabel))
+    val destinationFile = new File(toDirectory, outputNamingFunction(dataLabel))
+    LOG.fine("Updating file " + originalFile + " to " + destinationFile)
 
     val updatedHeaders = headers sortBy {
       _.index
@@ -79,6 +81,11 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
 }
 
 object FitsUpdater {
-  def toFitsFileName(dataLabel: DataLabel) = dataLabel.toString + ".fits"
+  val fitsWithExtPattern = """(.*)\.fits"""r
+
+  def toFitsFileName(dataLabel: DataLabel):String = dataLabel.toString match {
+    case f @ fitsWithExtPattern(name) => f.toString
+    case _ => dataLabel.toString + ".fits"
+  }
 }
 

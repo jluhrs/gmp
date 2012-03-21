@@ -24,6 +24,7 @@ class FitsUpdaterTest extends FitsBaseTest {
 
     assertTrue(destinationFile.exists)
   }
+
   test("should also work when used as an actor") {
     val primaryHeader = readPrimaryHeader(originalFile)
 
@@ -42,6 +43,7 @@ class FitsUpdaterTest extends FitsBaseTest {
     // Verify AIRMASS was added
     verifyKeywordInHeader(updatedPrimaryHeader, "AIRMASS")
   }
+
   test("should update the primary headers with one new keywords") {
     val primaryHeader = readPrimaryHeader(originalFile)
 
@@ -57,6 +59,7 @@ class FitsUpdaterTest extends FitsBaseTest {
     // Verify AIRMASS was added
     verifyKeywordInHeader(updatedPrimaryHeader, "AIRMASS")
   }
+
   test("should update the primary headers with several new keywords") {
     val keys = List(HeaderItem("AIRMASS", 1.0, "Mass of airmass"),HeaderItem("AIREND", 2.0, "Mass of airmass at the end"),HeaderItem("AIRSTART", 3.0, "Mass of airmass at the beggining"))
     val primaryHeader = Header(0, keys)
@@ -71,6 +74,7 @@ class FitsUpdaterTest extends FitsBaseTest {
       verifyKeywordInHeader(updatedPrimaryHeader, _)
     }
   }
+
   test("should preseve all the original primary headers of a file") {
     val originalPrimaryHeader = readPrimaryHeader(originalFile)
 
@@ -84,6 +88,7 @@ class FitsUpdaterTest extends FitsBaseTest {
       k => assertTrue(updatedPrimaryHeader.containsKey(k.keywordName))
     }
   }
+
   test("should update a file in less than 300 msecs") {
     val stopwatch = new Stopwatch().start
     val headers = createHeadersWithAirMass(0)
@@ -91,6 +96,7 @@ class FitsUpdaterTest extends FitsBaseTest {
 
     assertTrue(stopwatch.stop().elapsedMillis() <= 300)
   }
+
   test("should skip updating an extension if not present, bug GIAPI-879") {
     val originalPrimaryHeader = readPrimaryHeader(originalFile)
 
@@ -105,6 +111,12 @@ class FitsUpdaterTest extends FitsBaseTest {
       k => assertTrue(updatedPrimaryHeader.containsKey(k.keywordName))
     }
     assertFalse(updatedPrimaryHeader.containsKey("AIRMASS"))
+  }
+
+  test("should support files with or without file extension") {
+    assertEquals("DATALABEL.fits", FitsUpdater.toFitsFileName("DATALABEL"))
+
+    assertEquals("DATALABEL.fits", FitsUpdater.toFitsFileName("DATALABEL.fits"))
   }
 
 }
