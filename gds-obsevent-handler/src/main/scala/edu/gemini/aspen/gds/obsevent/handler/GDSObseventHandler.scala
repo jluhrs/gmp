@@ -65,6 +65,7 @@ class ReplyHandler(
   }
 
   private def acqRequest(obsEvent: ObservationEvent, dataLabel: DataLabel) {
+    LOG.info("ObservationEvent " + obsEvent + " for " + dataLabel)
     obsEvent match {
       case OBS_PREP => {
         eventLogger.addEventSet(dataLabel)
