@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>shared-plugin-settings</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>14.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>compiled-bundle-settings</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>14.0.0</version>
 
     <name>giapi-osgi - bundle instructions</name>
 
@@ -92,29 +91,22 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <taskdef resource="net/sf/antcontrib/antcontrib.properties"
-                                         classpathref="maven.plugin.classpath"/>
-                                <mkdir dir="${project.build.directory}"/>
-                                <exec executable="hostname" osfamily="unix" failifexecutionfails="false"
-                                      outputproperty="env.COMPUTERNAME"/>
-                                <exec executable="uuidgen" osfamily="unix" failifexecutionfails="false"
-                                      outputproperty="build.uuid"/>
-                                <property name="hostname" value="${env.COMPUTERNAME}"/>
-                                <echo file="${basedir}/target/buildmeta.properties"
-                                      message="Build-Host=${hostname}${line.separator}"/>
-                                <echo file="${basedir}/target/buildmeta.properties"
-                                      message="Build-UUID=${build.uuid}${line.separator}" append="true"/>
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
+                                <mkdir dir="${project.build.directory}" />
+                                <exec executable="hostname" osfamily="unix" failifexecutionfails="false" outputproperty="env.COMPUTERNAME" />
+                                <exec executable="uuidgen" osfamily="unix" failifexecutionfails="false" outputproperty="build.uuid" />
+                                <property name="hostname" value="${env.COMPUTERNAME}" />
+                                <echo file="${basedir}/target/buildmeta.properties" message="Build-Host=${hostname}${line.separator}" />
+                                <echo file="${basedir}/target/buildmeta.properties" message="Build-UUID=${build.uuid}${line.separator}" append="true" />
                                 <condition property="calculateChecksum">
-                                    <available file="${basedir}/target/${project.build.finalName}-sources.jar"/>
+                                    <available file="${basedir}/target/${project.build.finalName}-sources.jar" />
                                 </condition>
                                 <if>
-                                    <isset property="calculateChecksum"/>
+                                    <isset property="calculateChecksum" />
                                     <then>
-                                        <checksum file="${basedir}/target/${project.build.finalName}-sources.jar"
-                                                  property="src.md5"/>
-                                        <echo file="${basedir}/target/buildmeta.properties"
-                                              message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}"
-                                              append="true"/>
+                                        <checksum file="${basedir}/target/${project.build.finalName}-sources.jar" property="src.md5" />
+                                        <echo file="${basedir}/target/buildmeta.properties" message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}"
+                                              append="true" />
                                     </then>
                                 </if>
                             </tasks>
