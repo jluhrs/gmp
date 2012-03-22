@@ -8,6 +8,7 @@ import nom.tam.util.BufferedFile
 import java.io.File
 import annotation.tailrec
 import nom.tam.fits.{FitsException, BasicHDU, HeaderCard}
+import com.google.common.io.Files
 
 /**
  * Wrapper class that can write fits files
@@ -49,6 +50,7 @@ class FitsWriter(file: File) extends FitsReader(file) {
   private def commitChanges(destinationFile: File) {
     val stopwatch = new Stopwatch().start()
 
+    Files.createParentDirs(destinationFile)
     val finalFile = new BufferedFile(destinationFile, "rw")
     fitsFile.write(finalFile)
 

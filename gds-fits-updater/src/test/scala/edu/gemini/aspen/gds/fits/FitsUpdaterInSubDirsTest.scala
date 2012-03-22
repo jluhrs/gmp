@@ -15,19 +15,16 @@ class FitsUpdaterInSubDirsTest extends FitsBaseTest {
   val baseFile = new File(classOf[FitsUpdaterInSubDirsTest].getResource("sample1.fits").toURI)
   val dataLabel = new DataLabel("dir1/dir2/sample1.fits")
   val originalFile = new File(new File(baseFile.getParentFile, "dir1/dir2"), baseFile.getName)
-  val destinationFile = new File(baseFile.getParentFile, "N-sample1.fits")
-  println(baseFile)
-  println(originalFile)
+  val destinationFile = new File(originalFile.getParentFile, "sample1.fits")
 
   Files.createParentDirs(originalFile)
   Files.copy(baseFile, originalFile)
 
-  println(originalFile)
-
-  ignore("test for bug GIAPI-929") {
+  test("test for bug GIAPI-929") {
     val headers = Header(0, Nil)
 
-    updateFitsFile(headers :: Nil)
+    val fitsUpdater = new FitsUpdater(baseFile.getParentFile, baseFile.getParentFile, dataLabel, headers :: Nil)
+    fitsUpdater.updateFitsHeaders()
 
     assertTrue(destinationFile.exists)
   }
