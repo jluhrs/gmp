@@ -13,7 +13,7 @@ import com.google.common.base.Stopwatch
 class FitsWithExtensionsUpdaterTest extends FitsBaseTest {
   val originalFile = new File(classOf[FitsWithExtensionsUpdaterTest].getResource("sampleWithExt.fits").toURI)
   val destinationFile = new File(originalFile.getParentFile, "N-sampleWithExt.fits")
-  val dataLabel = new DataLabel("sampleWithExt")
+  val dataLabel = new DataLabel("sampleWithExt.fits")
 
   def readExtensionHeader(fitsFile: File = originalFile): Header = new FitsReader(fitsFile).header(1).get
 

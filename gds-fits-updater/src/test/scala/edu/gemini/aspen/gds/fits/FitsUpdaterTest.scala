@@ -13,7 +13,7 @@ import com.google.common.base.Stopwatch
 class FitsUpdaterTest extends FitsBaseTest {
   val originalFile = new File(classOf[FitsUpdaterTest].getResource("sample1.fits").toURI)
   val destinationFile = new File(originalFile.getParentFile, "N-sample1.fits")
-  val dataLabel = new DataLabel("sample1")
+  val dataLabel = new DataLabel("sample1.fits")
 
   def readPrimaryHeader(fitsFile: File = originalFile): Header = new FitsReader(fitsFile).header().get
 
@@ -114,7 +114,7 @@ class FitsUpdaterTest extends FitsBaseTest {
   }
 
   test("should support files with or without file extension") {
-    assertEquals("DATALABEL.fits", FitsUpdater.toFitsFileName("DATALABEL"))
+    assertEquals("DATALABEL", FitsUpdater.toFitsFileName("DATALABEL"))
 
     assertEquals("DATALABEL.fits", FitsUpdater.toFitsFileName("DATALABEL.fits"))
   }

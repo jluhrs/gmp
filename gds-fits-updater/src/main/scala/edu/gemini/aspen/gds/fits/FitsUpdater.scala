@@ -64,11 +64,9 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
    * @param namingFunction, it is a an optional method to key the new file. It is a relative key, not absolute. For example: {label => "N-" + label.getName + ".fits"}
    */
   def updateFitsHeaders(inputNamingFunction: DataLabel => String = FitsUpdater.toFitsFileName, outputNamingFunction: DataLabel => String = FitsUpdater.toFitsFileName) {
-    println(FitsUpdater.toFitsFileName(dataLabel))
-    println(outputNamingFunction(dataLabel))
     val originalFile = new File(fromDirectory, inputNamingFunction(dataLabel))
     val destinationFile = new File(toDirectory, outputNamingFunction(dataLabel))
-    LOG.fine("Updating file " + originalFile + " to " + destinationFile)
+    LOG.info("Updating file " + originalFile + " to " + destinationFile)
 
     val updatedHeaders = headers sortBy {
       _.index
@@ -81,11 +79,8 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
 }
 
 object FitsUpdater {
-  val fitsWithExtPattern = """(.*)\.fits"""r
+  def toFitsFileName(dataLabel: DataLabel):String = dataLabel.toString
 
-  def toFitsFileName(dataLabel: DataLabel):String = dataLabel.toString match {
-    case f @ fitsWithExtPattern(name) => f.toString
-    case _ => dataLabel.toString + ".fits"
-  }
+  def searchFile(dataLabel:DataLabel):File = new File(toFitsFileName(dataLabel))
 }
 
