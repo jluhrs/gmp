@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <organization>
         <name>Gemini 8m Observatories, Software Group</name>
@@ -22,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen</groupId>
     <artifactId>giapi-osgi</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>14.0.0</version>
 
     <name>giapi-osgi</name>
 
@@ -166,29 +165,22 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <taskdef resource="net/sf/antcontrib/antcontrib.properties"
-                                         classpathref="maven.plugin.classpath"/>
-                                <mkdir dir="${project.build.directory}"/>
-                                <exec executable="hostname" osfamily="unix" failifexecutionfails="false"
-                                      outputproperty="env.COMPUTERNAME"/>
-                                <exec executable="uuidgen" osfamily="unix" failifexecutionfails="false"
-                                      outputproperty="build.uuid"/>
-                                <property name="hostname" value="${env.COMPUTERNAME}"/>
-                                <echo file="${basedir}/target/buildmeta.properties"
-                                      message="Build-Host=${hostname}${line.separator}"/>
-                                <echo file="${basedir}/target/buildmeta.properties"
-                                      message="Build-UUID=${build.uuid}${line.separator}" append="true"/>
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
+                                <mkdir dir="${project.build.directory}" />
+                                <exec executable="hostname" osfamily="unix" failifexecutionfails="false" outputproperty="env.COMPUTERNAME" />
+                                <exec executable="uuidgen" osfamily="unix" failifexecutionfails="false" outputproperty="build.uuid" />
+                                <property name="hostname" value="${env.COMPUTERNAME}" />
+                                <echo file="${basedir}/target/buildmeta.properties" message="Build-Host=${hostname}${line.separator}" />
+                                <echo file="${basedir}/target/buildmeta.properties" message="Build-UUID=${build.uuid}${line.separator}" append="true" />
                                 <condition property="calculateChecksum">
-                                    <available file="${basedir}/target/${project.build.finalName}-sources.jar"/>
+                                    <available file="${basedir}/target/${project.build.finalName}-sources.jar" />
                                 </condition>
                                 <if>
-                                    <isset property="calculateChecksum"/>
+                                    <isset property="calculateChecksum" />
                                     <then>
-                                        <checksum file="${basedir}/target/${project.build.finalName}-sources.jar"
-                                                  property="src.md5"/>
-                                        <echo file="${basedir}/target/buildmeta.properties"
-                                              message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}"
-                                              append="true"/>
+                                        <checksum file="${basedir}/target/${project.build.finalName}-sources.jar" property="src.md5" />
+                                        <echo file="${basedir}/target/buildmeta.properties" message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}"
+                                              append="true" />
                                     </then>
                                 </if>
                             </tasks>
@@ -258,7 +250,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>epics-heartbeat</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
@@ -273,12 +265,12 @@
             <dependency>
                 <groupId>edu.gemini.jms</groupId>
                 <artifactId>jms-activemq-broker</artifactId>
-                <version>1.2.0-SNAPSHOT</version>
+                <version>1.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.jms</groupId>
                 <artifactId>jms-activemq-provider</artifactId>
-                <version>1.4.0-SNAPSHOT</version>
+                <version>1.4.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.external.osgi.jca-lib</groupId>
@@ -298,7 +290,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-epics-access</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
+                <version>0.3.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.cas</groupId>
@@ -313,12 +305,12 @@
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-jms-util</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
+                <version>0.3.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-status-service</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
+                <version>0.3.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
@@ -328,17 +320,17 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-status-gateway</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-status-simulator</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-services</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
+                <version>0.3.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
@@ -348,7 +340,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-commands-jms-bridge</artifactId>
-                <version>0.4.0-SNAPSHOT</version>
+                <version>0.4.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
@@ -363,27 +355,27 @@
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-fileevents</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-heartbeat</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
+                <version>0.3.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>gmp-heartbeat-distributor-service</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
+                <version>0.3.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-status-dispatcher</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-obsevents</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
@@ -393,7 +385,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-api</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -403,7 +395,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-keywords-database</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -418,7 +410,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-static-header-receiver</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -428,7 +420,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-obsevent-handler</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -448,7 +440,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-fits-updater</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -468,12 +460,12 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-fits-checker</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-health</artifactId>
-                <version>0.3.0-SNAPSHOT</version>
+                <version>0.3.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -483,17 +475,17 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-pcs-updater</artifactId>
-                <version>0.4.0-SNAPSHOT</version>
+                <version>0.4.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-tcs-context</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-logging</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
@@ -503,7 +495,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-epics-simulator</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
@@ -544,17 +536,17 @@
             <dependency>
                 <groupId>edu.gemini.aspen.giapi.web.ui.vaadin</groupId>
                 <artifactId>giapi-vaadin-common</artifactId>
-                <version>0.1.0-SNAPSHOT</version>
+                <version>0.1.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds.web.ui</groupId>
                 <artifactId>gds-web-ui</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gmp</groupId>
                 <artifactId>gmp-tui</artifactId>
-                <version>0.4.0-SNAPSHOT</version>
+                <version>0.4.0</version>
             </dependency>
 
             <!-- JAXB -->
@@ -1100,10 +1092,10 @@
     </repositories>
 
     <scm>
-        <connection>scm:svn:http://source.gemini.edu/software/giapi/giapi-osgi/trunk</connection>
-        <developerConnection>scm:svn:http://source.gemini.edu/software/giapi/gpi-osgi/trunk</developerConnection>
+        <connection>scm:svn:http://source.gemini.edu/software/giapi/giapi-osgi/tags/GMP-R14.0</connection>
+        <developerConnection>scm:svn:http://source.gemini.edu/software/giapi/gpi-osgi/tags/GMP-R14.0</developerConnection>
         <tag>HEAD</tag>
-        <url>http://source.gemini.edu:8060/Software/giapi/giapi-osgi/trunk</url>
+        <url>http://source.gemini.edu:8060/Software/giapi/giapi-osgi/tags/GMP-R14.0</url>
     </scm>
 
     <pluginRepositories>
