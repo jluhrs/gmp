@@ -1,5 +1,75 @@
 /*! \page release_notes Release Notes
 
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14
+
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-124'>GIAPI-124</a>] -         Ensure builds can be done with Internet out
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-199'>GIAPI-199</a>] -         I/O Exception when running pax-runner daemon and piping the output
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-407'>GIAPI-407</a>] -         Warning upon building examples that use curlpp
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-788'>GIAPI-788</a>] -         GDS Web console fails after a while
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-790'>GIAPI-790</a>] -         In the GDS Web UI the project version is not displayed correctly
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-794'>GIAPI-794</a>] -         Giapi tester -config with multiple configurations not working
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-812'>GIAPI-812</a>] -         Remove the gmp-properties.xml file
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-817'>GIAPI-817</a>] -         gmp-server-clt.sh does not run properly in tcsh
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-818'>GIAPI-818</a>] -         giapi-tester.sh doesn&#39;t work if its linked
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-819'>GIAPI-819</a>] -         gmp-server-ctl.sh should verify that it has rights to write to runner and logs
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-821'>GIAPI-821</a>] -         gmp-server may fail if pax-runner lock file still exists
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-869'>GIAPI-869</a>] -         Changes on GDS configuration during runtime are not properly reflected an next file write
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-875'>GIAPI-875</a>] -         gds-health has hardcoded &quot;gpi:gds:health&quot; top, should be either configurable or just &quot;gds:health&quot;
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-893'>GIAPI-893</a>] -         StatusGetter contructor should take a name
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-921'>GIAPI-921</a>] -         Possible bug on the construction of fits file names
+</li>
+</ul>
+
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-184'>GIAPI-184</a>] -         Verify closing connection handling in C++ client code
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-791'>GIAPI-791</a>] -         The GDS Web UI System Configuration tab should be password protected
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-792'>GIAPI-792</a>] -         On the GDS Web UI Status tab improve the look of the last 10 observations if empty
+</li>
+</ul>
+
+<h2>        Story
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-825'>GIAPI-825</a>] -         Create module to export EPICS channel values as StatusItems
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-833'>GIAPI-833</a>] -         Add support for Engineering commands
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-846'>GIAPI-846</a>] -         Prepare Release 14
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-885'>GIAPI-885</a>] -         Update GDS to use nom.tam.fits library
+</li>
+</ul>
+
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-842'>GIAPI-842</a>] -         Research how to monitor state(busy/idle) of moving parts of GPI(filters, shutters, etc)
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-843'>GIAPI-843</a>] -         Delete old EpicsReader/Writer and rename NewEpicsReader/Writer
+</li>
+</ul>
+
 <h1>        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 13.1</h1>
 <h2>        Bug
 </h2>
