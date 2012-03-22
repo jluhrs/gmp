@@ -4,12 +4,12 @@
     <parent>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>shared-plugin-settings</artifactId>
-        <version>14.0.0</version>
+        <version>14.0.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>compiled-bundle-settings</artifactId>
-    <version>14.0.0</version>
+    <version>14.0.1-SNAPSHOT</version>
 
     <name>giapi-osgi - bundle instructions</name>
 
@@ -105,8 +105,7 @@
                                     <isset property="calculateChecksum" />
                                     <then>
                                         <checksum file="${basedir}/target/${project.build.finalName}-sources.jar" property="src.md5" />
-                                        <echo file="${basedir}/target/buildmeta.properties" message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}"
-                                              append="true" />
+                                        <echo file="${basedir}/target/buildmeta.properties" message="Build-MD5=md5: ${project.build.finalName}-sources.jar: ${src.md5}${line.separator}" append="true" />
                                     </then>
                                 </if>
                             </tasks>
