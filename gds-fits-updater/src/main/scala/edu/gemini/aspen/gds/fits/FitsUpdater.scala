@@ -80,7 +80,5 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
 
 object FitsUpdater {
   def toFitsFileName(dataLabel: DataLabel):String = dataLabel.toString
-
-  def searchFile(dataLabel:DataLabel):File = new File(toFitsFileName(dataLabel))
 }
 
