@@ -1,5 +1,21 @@
 /*! \page release_notes Release Notes
 
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.0.1
+
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-929'>GIAPI-929</a>] -         GDS Does not support data labels with directories
+</li>
+</ul>
+
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-933'>GIAPI-933</a>] -         Make pax-runner to recreate the bundle cache at startup
+</li>
+</ul>
+
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14
 
 <h2>        Bug
