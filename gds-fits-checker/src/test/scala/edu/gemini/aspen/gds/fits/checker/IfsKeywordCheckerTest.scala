@@ -20,7 +20,8 @@ import com.google.common.io.Files
 
 @RunWith(classOf[JUnitRunner])
 class IfsKeywordCheckerTest extends FunSuite with BeforeAndAfter with MockitoSugar {
-  val destFile = new File("/tmp/sample.fits")
+  val destinationFile = new File("/tmp/sample.fits")
+  val destinationFileWithoutExtension = new File("/tmp/sample")
   val obsState = mock[ObservationStateRegistrar]
   val ph = mock[PropertyHolder]
   when(ph.getProperty(anyString)).thenReturn("/tmp")
@@ -30,7 +31,7 @@ class IfsKeywordCheckerTest extends FunSuite with BeforeAndAfter with MockitoSug
     when(conf.getConfiguration).thenReturn(GDSConfiguration("GPI", "OBS_START_ACQ", "TELSCOP", 0, "DOUBLE", true, "NONE", "IFS", "gpi:value", 0, "Mean airmass for the observation") :: Nil)
 
     val checker = new IfsKeywordsChecker(conf, obsState, ph)
-    Files.copy(new File(classOf[IfsKeywordCheckerTest].getResource("sample.fits").toURI), destFile)
+    Files.copy(new File(classOf[IfsKeywordCheckerTest].getResource("sample.fits").toURI), destinationFile)
 
     checker.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, "sample")
     TimeUnit.MILLISECONDS.sleep(200)
@@ -42,7 +43,19 @@ class IfsKeywordCheckerTest extends FunSuite with BeforeAndAfter with MockitoSug
     when(conf.getConfiguration).thenReturn(GDSConfiguration("GPI", "OBS_START_ACQ", "TELESCOP", 0, "DOUBLE", true, "NONE", "IFS", "gpi:value", 0, "Mean airmass for the observation") :: Nil)
 
     val checker = new IfsKeywordsChecker(conf, obsState, ph)
-    Files.copy(new File(classOf[IfsKeywordCheckerTest].getResource("sample.fits").toURI), new File("/tmp/sample.fits"))
+    Files.copy(new File(classOf[IfsKeywordCheckerTest].getResource("sample.fits").toURI), destinationFile)
+
+    checker.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, "sample.fits")
+    TimeUnit.MILLISECONDS.sleep(200)
+    verifyZeroInteractions(obsState)
+  }
+
+  test("check without extension, bug GIAPI-932"){
+    val conf = mock[GDSConfigurationService]
+    when(conf.getConfiguration).thenReturn(GDSConfiguration("GPI", "OBS_START_ACQ", "TELESCOP", 0, "DOUBLE", true, "NONE", "IFS", "gpi:value", 0, "Mean airmass for the observation") :: Nil)
+
+    val checker = new IfsKeywordsChecker(conf, obsState, ph)
+    Files.copy(new File(classOf[IfsKeywordCheckerTest].getResource("sample.fits").toURI), destinationFileWithoutExtension)
 
     checker.onObservationEvent(ObservationEvent.OBS_END_DSET_WRITE, "sample")
     TimeUnit.MILLISECONDS.sleep(200)
@@ -50,6 +63,7 @@ class IfsKeywordCheckerTest extends FunSuite with BeforeAndAfter with MockitoSug
   }
 
   after {
-    destFile.delete()
+    destinationFile.delete()
+    destinationFileWithoutExtension.delete()
   }
 }

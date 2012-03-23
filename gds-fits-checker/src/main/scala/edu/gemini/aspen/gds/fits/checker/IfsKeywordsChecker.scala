@@ -11,6 +11,7 @@ import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import scala.actors.Actor._
 import edu.gemini.aspen.gmp.services.PropertyHolder
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import java.util.logging.Logger
 
 @Component
 @Instantiate
@@ -18,17 +19,21 @@ import edu.gemini.aspen.gds.api.fits.FitsKeyword
 class IfsKeywordsChecker(@Requires configService: GDSConfigurationService,
                          @Requires obsState: ObservationStateRegistrar,
                          @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
+  protected val LOG = Logger.getLogger(this.getClass.getName)
 
   override def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     event match {
       case ObservationEvent.OBS_END_DSET_WRITE => actor {
-        checkMissing(dataLabel, new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH"), dataLabel + ".fits"), configService.getConfiguration)
+        checkMissing(dataLabel, configService.getConfiguration)
       } //todo: use a service to get the directory
       case _ =>
     }
   }
 
-  private[checker] def checkMissing(label: DataLabel, file: File, config: List[GDSConfiguration]) {
+  private[checker] def checkMissing(label: DataLabel, config: List[GDSConfiguration]) {
+    val file = new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH"), label.toString)
+    
+    LOG.info("Verifying original keywords of " + file)
     val readerOpt: Option[FitsReader] = try {
       Some(new FitsReader(file))
     } catch {
