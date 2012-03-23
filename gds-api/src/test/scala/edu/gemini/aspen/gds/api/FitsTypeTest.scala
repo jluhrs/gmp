@@ -2,23 +2,18 @@ package edu.gemini.aspen.gds.api
 
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Test
+import org.junit.Assert._
+import org.scalatest.FunSuite
 
+class FitsTypeTest extends FunSuite {
 
-class FitsTypeTest extends AssertionsForJUnit {
+  private def method(a: Int) = a
 
-  private def method(a: Int) {
-    println("int: " + a)
-  }
+  private def method(a: Double) = a
 
-  private def method(a: Double) {
-    println("double: " + a)
-  }
+  private def method(a: String) = a
 
-  private def method(a: String) {
-    println("string: " + a)
-  }
-
-  private def fitsMethod[T](fits: T)(implicit _fits: FitsType[T]) {
+  private def fitsMethod[T](fits: T)(implicit _fits: FitsType[T]) = {
     _fits match {
       case FitsType.IntegerType => method(fits.asInstanceOf[Int])
       case FitsType.StringType => method(fits.asInstanceOf[String])
@@ -26,13 +21,12 @@ class FitsTypeTest extends AssertionsForJUnit {
     }
   }
 
-  @Test
-  def testBasic() {
-    fitsMethod(1)
-    fitsMethod(1.0)
-    fitsMethod("1")
-    //todo: this is not a proper test
+  test("Basic types") {
+    assertEquals(1, fitsMethod(1))
+    assertEquals(1.0, fitsMethod(1.0))
+    assertEquals("1", fitsMethod("1"))
+    // The next line couldn't compile
+    //fitsMethod(new StringBuilder())
   }
-
 
 }
