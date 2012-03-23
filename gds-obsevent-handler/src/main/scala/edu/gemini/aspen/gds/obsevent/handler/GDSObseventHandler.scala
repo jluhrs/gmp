@@ -76,7 +76,7 @@ class ReplyHandler(
 
     //check that all previous obsevents have arrived
     if (!bookKeep.previousArrived(obsEvent, dataLabel)) {
-      LOG.severe("Received observation event " + obsEvent + " for datalabel " + dataLabel + " out of order")
+      LOG.warning("Received observation event " + obsEvent + " for datalabel " + dataLabel + " out of order")
     }
     eventLogger.start(dataLabel, obsEvent)
     bookKeep.addObs(obsEvent, dataLabel)
