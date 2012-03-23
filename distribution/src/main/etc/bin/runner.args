@@ -13,6 +13,9 @@
 # Pass System properties for configuration and logs
 --vmOptions=-Dfelix.system.properties=file:../../conf/config.properties ${vmo.settings}
 
+# Ensure the runner dir is cleaned
+--clean
+
 # Instructions on what bundles to load
 scan-dir:../bundles/level2@2
 scan-dir:../bundles/level4@4
