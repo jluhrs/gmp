@@ -123,3 +123,23 @@ It is then possible to build gmp-server distribution files that are specific for
 using the command
 
     mvn -Pgpi,production clean install
+
+12. Release
+-----------
+
+You can use maven to do releases by using the maven plugin. First you need to
+ensure all your dependencies are not SNAPSHOTS and that everything is commited
+
+Then you can call
+
+mvn release:clean release:prepare -DdryRun=true
+
+If that works fine you can do the actual release preparation as
+
+mvn release:prepare
+
+Once that is ready the command
+
+mvn release:perform
+
+will build everything and release the rpm/tar files and the documentation
