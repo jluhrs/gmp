@@ -623,6 +623,8 @@
                                     #symlink /gemsoft/opt/bin -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION/bin/gmp-server
 
                                     # Install the symlinks to the utilities
+                                    [ -d /gemsoft/bin ] || mkdir -p /gemsoft/bin
+
                                     [ -L /gemsoft/bin/${project.artifactId}-ctl.sh ] &amp;&amp; rm /gemsoft/bin/${project.artifactId}-ctl.sh
                                     [ -L /gemsoft/bin/giapi-tester.sh ] &amp;&amp; rm /gemsoft/bin/giapi-tester.sh
                                     [ -L /gemsoft/bin/giapi-tester ] &amp;&amp; rm /gemsoft/bin/giapi-tester
