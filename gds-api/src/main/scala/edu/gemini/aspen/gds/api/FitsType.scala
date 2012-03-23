@@ -13,7 +13,7 @@ abstract class FitsType[T] {
 object FitsType {
 
   object TypeNames extends Enumeration {
-    val STRING, DOUBLE, INT = Value
+    val STRING, DOUBLE, INT, BOOLEAN = Value
   }
 
   implicit object IntegerType extends FitsType[Int] {
@@ -31,6 +31,12 @@ object FitsType {
 
   implicit object DoubleType extends FitsType[Double] {
     override def collectedValueToHeaderItem(collectedValue: CollectedValue[Double]): HeaderItem[Double] = {
+      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment)
+    }
+  }
+
+  implicit object BooleanType extends FitsType[Boolean] {
+    override def collectedValueToHeaderItem(collectedValue: CollectedValue[Boolean]): HeaderItem[Boolean] = {
       HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment)
     }
   }

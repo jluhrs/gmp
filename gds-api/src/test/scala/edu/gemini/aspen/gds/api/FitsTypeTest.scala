@@ -1,7 +1,5 @@
 package edu.gemini.aspen.gds.api
 
-import org.scalatest.junit.AssertionsForJUnit
-import org.junit.Test
 import org.junit.Assert._
 import org.scalatest.FunSuite
 
@@ -13,11 +11,14 @@ class FitsTypeTest extends FunSuite {
 
   private def method(a: String) = a
 
+  private def method(a: Boolean) = a
+
   private def fitsMethod[T](fits: T)(implicit _fits: FitsType[T]) = {
     _fits match {
       case FitsType.IntegerType => method(fits.asInstanceOf[Int])
       case FitsType.StringType => method(fits.asInstanceOf[String])
       case FitsType.DoubleType => method(fits.asInstanceOf[Double])
+      case FitsType.BooleanType => method(fits.asInstanceOf[Boolean])
     }
   }
 
@@ -27,6 +28,10 @@ class FitsTypeTest extends FunSuite {
     assertEquals("1", fitsMethod("1"))
     // The next line couldn't compile
     //fitsMethod(new StringBuilder())
+  }
+
+  test("boolean type") {
+    assertEquals(true, fitsMethod(true))
   }
 
 }
