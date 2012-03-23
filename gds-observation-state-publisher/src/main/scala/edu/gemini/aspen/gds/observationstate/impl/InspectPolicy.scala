@@ -28,9 +28,7 @@ class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires 
 
   private def checkErrors(label: DataLabel, headers: List[CollectedValue[_]]) {
     obsState.registerCollectionError(label, headers collect {
-      case collected: ErrorCollectedValue => collected
-    } collect {
-      case c => (c.keyword, c.error)
+      case c: ErrorCollectedValue => (c.keyword, c.error)
     })
   }
 
