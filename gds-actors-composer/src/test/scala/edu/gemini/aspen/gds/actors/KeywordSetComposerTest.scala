@@ -3,7 +3,6 @@ package edu.gemini.aspen.gds.actors
 import org.junit.Assert._
 import edu.gemini.aspen.gds.keywords.database.impl.KeywordsDatabaseImpl
 import org.mockito.Mockito._
-import org.mockito.Matchers._
 import edu.gemini.aspen.gds.api.{CollectedValue, KeywordValueActor, KeywordActorsFactory}
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import actors.Futures
@@ -44,7 +43,7 @@ class KeywordSetComposerTest {
 
   @Test
   def testNoActors() {
-    // Generate dataset
+    // Generate datalabel
     val dataLabel = new DataLabel("GS-2011")
 
     val noActorsFactory = mock(classOf[KeywordActorsFactory])
@@ -110,7 +109,7 @@ class KeywordSetComposerTest {
 
     // Send an init message
     val result = composer !! AcquisitionRequest(ObservationEvent.OBS_END_READOUT, dataLabel)
-    val v = Futures awaitAll(2000, result)
+    val v = Futures awaitAll(500, result)
     assertEquals(1, v.size)
     v(0) match {
       case Some(AcquisitionRequestReply(obsEvent, replyDataSet)) => {

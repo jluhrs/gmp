@@ -16,7 +16,7 @@ trait CompositeActorsFactory extends KeywordActorsFactory
  * keyword actors factories */
 @Component
 @Instantiate
-@Provides(specifications = Array(classOf[CompositeActorsFactory]))
+@Provides(specifications = Array[Class[_]](classOf[CompositeActorsFactory]))
 class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends AbstractKeywordActorsFactory with CompositeActorsFactory {
   // List of composed factories
   @volatile var factories = immutable.List[KeywordActorsFactory]()
@@ -29,6 +29,11 @@ class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationServic
   }
 
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+    // Fetch the latest configuration
+    actorsConfiguration = configService.getConfiguration
+
+    configure(actorsConfiguration)
+
     // Collects all actors built by each factory
     factories flatMap {
       _.buildActors(obsEvent, dataLabel)
@@ -52,12 +57,8 @@ class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationServic
     }
   }
 
-  /**
-   * Method called when the Component is ready to start */
   @Validate
   def startConfiguration() {
-    actorsConfiguration = configService.getConfiguration
-
-    configure(actorsConfiguration)
+    // Required by iPojo
   }
 }

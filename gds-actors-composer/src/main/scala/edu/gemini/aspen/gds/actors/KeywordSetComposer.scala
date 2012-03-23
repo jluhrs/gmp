@@ -3,12 +3,10 @@ package edu.gemini.aspen.gds.actors
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import scala.actors._
-import scala.actors.Actor._
 import scala.collection._
-import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.keywords.database.{StoreList, KeywordsDatabase}
-import org.joda.time.DateTime
 import java.util.logging.{Level, Logger}
+import com.google.common.base.Stopwatch
 
 /**
  * Message to indicate that FITS header data collection should begin
@@ -92,10 +90,9 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   /**
    * Interceptor method to measure how long a given action takes */
   private def measureDuration[T](msg: String)(action: => T): T = {
-    val s = new DateTime()
+    val s = new Stopwatch().start()
     val result = action
-    val e = new DateTime()
-    LOG.fine(msg + " took " + (s to e).toDuration + " [ms]")
+    LOG.fine(msg + " took " + s.stop().elapsedMillis() + " [ms]")
     result
   }
 
