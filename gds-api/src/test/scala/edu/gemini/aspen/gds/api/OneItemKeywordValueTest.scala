@@ -5,8 +5,12 @@ import org.junit.Assert._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.api._
 import scala.collection._
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.FunSuite
 
-class OneItemKeywordValueTest {
+@RunWith(classOf[JUnitRunner])
+class OneItemKeywordValueTest extends FunSuite {
 
   class TestValueActor(configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
     def collectValues() = immutable.List[CollectedValue[_]]()
@@ -14,8 +18,7 @@ class OneItemKeywordValueTest {
     def testValueToCollectedValue(value: Any) = valueToCollectedValue(value)
   }
 
-  @Test
-  def testDoubleValueToCollectedValue() {
+  test("Double Value To CollectedValue") {
     val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "comment")
     val testActor = new TestValueActor(config)
     assertEquals(CollectedValue("AIRMASS", 1.0, "comment", 0), testActor.testValueToCollectedValue(1.0))
@@ -23,8 +26,7 @@ class OneItemKeywordValueTest {
     assertEquals(ErrorCollectedValue("AIRMASS", CollectionError.TypeMismatch, "comment", 0), testActor.testValueToCollectedValue("1"))
   }
 
-  @Test
-  def testIntValueToCollectedValue() {
+  test("Int Value To CollectedValue"){
     val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "INT", true, "NONE", "EPICS", "gpi:value", 0, "comment")
     val testActor = new TestValueActor(config)
     assertEquals(ErrorCollectedValue("AIRMASS", CollectionError.TypeMismatch, "comment", 0), testActor.testValueToCollectedValue(1.1))
@@ -32,12 +34,12 @@ class OneItemKeywordValueTest {
     assertEquals(ErrorCollectedValue("AIRMASS", CollectionError.TypeMismatch, "comment", 0), testActor.testValueToCollectedValue("1"))
   }
 
-  @Test
-  def testStringValueToCollectedValue() {
+  test("String Value To CollectedValue") {
     val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", "gpi:value", 0, "comment")
     val testActor = new TestValueActor(config)
     assertEquals(CollectedValue("AIRMASS", "1.0", "comment", 0), testActor.testValueToCollectedValue(1.0))
     assertEquals(CollectedValue("AIRMASS", "1", "comment", 0), testActor.testValueToCollectedValue(1))
     assertEquals(CollectedValue("AIRMASS", "1", "comment", 0), testActor.testValueToCollectedValue("1"))
   }
+
 }
