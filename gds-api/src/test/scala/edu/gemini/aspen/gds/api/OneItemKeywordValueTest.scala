@@ -42,4 +42,13 @@ class OneItemKeywordValueTest extends FunSuite {
     assertEquals(CollectedValue("AIRMASS", "1", "comment", 0), testActor.testValueToCollectedValue("1"))
   }
 
+  test("Boolean Value To CollectedValue from Integer") {
+    val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "BOOLEAN", true, "NONE", "EPICS", "gpi:value", 0, "comment")
+    val testActor = new TestValueActor(config)
+    // Integer to boolean
+    assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue(1))
+    assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue(2))
+    assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue(-1))
+    assertEquals(CollectedValue("AIRMASS", false, "comment", 0), testActor.testValueToCollectedValue(0))
+  }
 }

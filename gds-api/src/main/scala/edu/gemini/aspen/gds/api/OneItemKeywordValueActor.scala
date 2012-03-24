@@ -36,6 +36,8 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
     case DataType("DOUBLE") => newDoubleCollectedValue(value)
     // Any number can be converted to a int
     case DataType("INT") => newIntCollectedValue(value)
+    // Any number can be converted to a int
+    case DataType("BOOLEAN") => newBooleanCollectedValue(value)
     // this should not happen
     case _ => newMismatchError
   }
@@ -58,6 +60,10 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
     case _ => newMismatchError
   }
 
-  private def newMismatchError = ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
+  private def newBooleanCollectedValue(value: Any) = value match {
+    case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue() != 0, fitsComment, headerIndex)
+    case _ => newMismatchError
+  }
 
+  private def newMismatchError = ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
 }
