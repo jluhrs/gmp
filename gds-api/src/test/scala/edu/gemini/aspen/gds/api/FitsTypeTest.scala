@@ -2,7 +2,10 @@ package edu.gemini.aspen.gds.api
 
 import org.junit.Assert._
 import org.scalatest.FunSuite
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class FitsTypeTest extends FunSuite {
 
   private def method(a: Int) = a
