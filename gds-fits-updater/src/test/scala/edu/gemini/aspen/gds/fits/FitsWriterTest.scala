@@ -20,7 +20,7 @@ class FitsWriterTest extends FunSuite with FitsSamplesDownloader with FitsSample
   val destFile = File.createTempFile("test", ".fits")
 
   override def afterEach() {
-    //if (destFile.exists()) destFile.delete()
+    if (destFile.exists()) destFile.delete()
   }
 
   // Creates a new header with a single keyword
