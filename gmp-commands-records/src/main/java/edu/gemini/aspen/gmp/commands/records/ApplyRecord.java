@@ -22,6 +22,8 @@ import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +60,9 @@ public class ApplyRecord {
      * indicates that the record is currently processing a directive
      */
     volatile private boolean processing = false;
+
+    private final ExecutorService executor = Executors.newCachedThreadPool();
+
 
     /**
      * Constructor
@@ -288,15 +293,21 @@ public class ApplyRecord {
      */
     private class DirListener implements ChannelListener<Dir> {
         @Override
-        public void valueChanged(String channelName, List<Dir> values) {
+        public void valueChanged(String channelName, final List<Dir> values) {
             LOG.info("Received DIR write: " + values.get(0));
-            try {
-                processDir(values.get(0));
-
-            } catch (CAException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            } catch (TimeoutException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
+            synchronized (executor) {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            processDir(values.get(0));
+                        } catch (CAException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);
+                        } catch (TimeoutException e) {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);
+                        }
+                    }
+                });
             }
         }
     }
@@ -320,28 +331,35 @@ public class ApplyRecord {
      */
     private class CarListener implements edu.gemini.aspen.gmp.commands.records.CarListener {
         @Override
-        public void update(CarRecord.Val state, String message, Integer errorCode, Integer id) {
-            synchronized (car) {
-                LOG.info("Received CAR status change: " + state);
-                if (state == CarRecord.Val.ERR) {
-                    car.setError(Math.max(id, car.getClId()), message, errorCode);
-                }
-                for (CadRecord cad : cads) {
-                    //if any CAR is in error, then global CAR should be in error
-                    if (cad.getCar().getState() == CarRecord.Val.ERR) {
-                        car.setError(Math.max(id, cad.getCar().getClId()), message, errorCode);
-                        return;
-                    }
-                }
-                if (!processing && state == CarRecord.Val.IDLE) {
-                    for (CadRecord cad : cads) {
-                        if (cad.getCar().getState() != CarRecord.Val.IDLE) {
-                            return;
+        public void update(final CarRecord.Val state, final String message, final Integer errorCode, final Integer id) {
+            LOG.info("Received CAR status change: " + state);
+            synchronized (executor) {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized (car) {
+                            if (state == CarRecord.Val.ERR) {
+                                car.setError(Math.max(id, car.getClId()), message, errorCode);
+                            }
+                            for (CadRecord cad : cads) {
+                                //if any CAR is in error, then global CAR should be in error
+                                if (cad.getCar().getState() == CarRecord.Val.ERR) {
+                                    car.setError(Math.max(id, cad.getCar().getClId()), message, errorCode);
+                                    return;
+                                }
+                            }
+                            if (!processing && state == CarRecord.Val.IDLE) {
+                                for (CadRecord cad : cads) {
+                                    if (cad.getCar().getState() != CarRecord.Val.IDLE) {
+                                        return;
+                                    }
+                                }
+                                car.setIdle(Math.max(id, car.getClId()));
+                            }
+
                         }
                     }
-                    car.setIdle(Math.max(id, car.getClId()));
-                }
-
+                });
             }
         }
     }

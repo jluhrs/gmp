@@ -285,7 +285,6 @@ enum CadState {
         } catch (IllegalArgumentException ex) {
             resp = HandlerResponse.createError("Trying to send an " + seqCom.getName() + " with an illegal (or without) configuration. " + ex);
         }
-        LOG.severe(resp.toString());
         LOG.info("Activity: " + activity + " ClientID: " + id + " Response: " + resp.getResponse().toString());
         return resp;
     }

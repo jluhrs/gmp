@@ -132,6 +132,7 @@ public class ApplyTest {
         data_label.setValue("label");
         Thread.sleep(200);
         dir.setValue(Dir.START);
+        Thread.sleep(500);
         assertEquals(new Integer(1), clid.getFirst());
         assertEquals(new Integer(1), cadClid.getFirst());
         assertEquals(new Integer(1), carClid.getFirst());

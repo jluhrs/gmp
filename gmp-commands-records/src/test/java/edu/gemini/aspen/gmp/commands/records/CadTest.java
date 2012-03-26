@@ -79,14 +79,18 @@ public class CadTest {
         CarListener carListener = new CarListener();
         carVal.registerListener(carListener);
 
+        Thread.sleep(200);
 
         assertEquals(CadState.MARKED, cad.getState());
 
 
         //test CAR
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DIR"), Dir.CLEAR);
+        Thread.sleep(200);
         label.setValue("label");
+        Thread.sleep(200);
         dir.setValue(Dir.MARK);
+        Thread.sleep(200);
         dir.setValue(Dir.PRESET);
         if (!carListener.await(1, TimeUnit.SECONDS)) {
             fail();
@@ -99,6 +103,7 @@ public class CadTest {
 
     private void setDir(Dir d, Integer expectedState, Channel<Dir> dir, CadRecordImpl cad) throws BrokenBarrierException, InterruptedException, CAException, TimeoutException {
         dir.setValue(d);
+        Thread.sleep(200);
         assertEquals(CadState.values()[expectedState], cad.getState());
 
     }
@@ -111,6 +116,7 @@ public class CadTest {
         a.setValue("label");
 
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DIR"), Dir.CLEAR);
+        Thread.sleep(200);
 
 
         //0 -> clear -> 0

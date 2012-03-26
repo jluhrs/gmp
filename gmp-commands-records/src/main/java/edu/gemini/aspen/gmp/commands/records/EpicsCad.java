@@ -31,6 +31,7 @@ public class EpicsCad {
     private Channel<Integer> clid;
     //private Channel<Integer> ocid;
     //private Channel<Integer> mark;
+    private ChannelListener<String> attributeListener;
 
     private final List<Channel<String>> attributes = new ArrayList<Channel<String>>();
     private final ChannelAccessServer cas;
@@ -59,6 +60,7 @@ public class EpicsCad {
             omss = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".OMSS"), "");
             //ocid = cas.createChannel(top +":"+ name + ".OCID", 0);
             //mark = cas.createChannel(top +":"+ name + ".MARK", 0);
+            this.attributeListener=attributeListener;
             for (String attribute : attributeNames) {
                 Channel<String> ch = cas.createChannel(epicsTop.buildEpicsChannelName(attribute), "");
                 ch.registerListener(attributeListener);
@@ -230,7 +232,9 @@ public class EpicsCad {
         Map<String, String> map = new HashMap<String, String>();
         for (Channel<String> ch : attributes) {
             try {
+                ch.unRegisterListener(attributeListener);
                 ch.setValue("");
+                ch.registerListener(attributeListener);
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
             } catch (TimeoutException e) {
