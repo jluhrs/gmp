@@ -12,6 +12,7 @@ import org.vaadin.dialogs.ConfirmDialog
 import com.vaadin.ui.Window.Notification
 import com.vaadin.ui.{Table, Alignment}
 import com.vaadin.ui.{VerticalLayout, HorizontalLayout}
+
 /**
  * Module for the table to edit the keywords */
 class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWebModule {
@@ -39,17 +40,15 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     (p toArray).asInstanceOf[Array[AnyRef]]
   }
 
-  protected[keywords] def buildDataSource(user: Option[String]): GDSKeywordsDataSource = {
-    user match {
-      case Some(u) => new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
-      case None => new ReadOnlyGDSKeywordsDataSource(configService.getFullConfiguration)
-    }
+  protected[keywords] def buildDataSource(user: Option[String]): GDSKeywordsDataSource = user match {
+    case Some(u) => new WritableGDSKeywordsDataSource(configService.getFullConfiguration)
+    case None => new ReadOnlyGDSKeywordsDataSource(configService.getFullConfiguration)
   }
 
   private def updateTableColumns() = {
     dataSource.propertyIds foreach {
       p => table.setColumnHeader(p, dataSource.propertyHeader(p))
-           table.setColumnWidth(p, dataSource.propertyWidth(p))
+      table.setColumnWidth(p, dataSource.propertyWidth(p))
     }
     table.setColumnWidth(deleteProperty, 20)
   }
@@ -84,33 +83,35 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     saveButton.setVisible(user.isDefined)
   }
 
-  def getAppUser(app: Application): Option[String] = {
-    app.getUser match {
-      case Some(x: String) => Some[String](x)
-      case _ => None
-    }
+  def getAppUser(app: Application): Option[String] = app.getUser match {
+    case Some(x: String) => Some[String](x)
+    case _ => None
   }
 
   override def buildTabContent(app: Application) = {
-    table.setContainerDataSource(dataSource)
-    table.setNullSelectionAllowed(false)
-    table.setImmediate(true)
-    table.addStyleName("keywords-table")
-    table.setSizeFull()
-    table.setPageLength(25)
-    table.setCacheRate(0.1)
-    table.setColumnCollapsingAllowed(true)
-    table.setColumnReorderingAllowed(true)
+    if (configService.hasError) {
+      // Should produce error layout
+    } else {
+      table.setContainerDataSource(dataSource)
+      table.setNullSelectionAllowed(false)
+      table.setImmediate(true)
+      table.addStyleName("keywords-table")
+      table.setSizeFull()
+      table.setPageLength(25)
+      table.setCacheRate(0.1)
+      table.setColumnCollapsingAllowed(true)
+      table.setColumnReorderingAllowed(true)
 
-    configureNewButton(table)
+      configureNewButton(table)
 
-    tabLayout.addComponent(table)
-    tabLayout.setExpandRatio(table, 1.0f)
+      tabLayout.addComponent(table)
+      tabLayout.setExpandRatio(table, 1.0f)
 
-    tabLayout.addComponent(statusRow(app))
+      tabLayout.addComponent(statusRow(app))
 
-    tabLayout.setSizeFull
-    userChanged(getAppUser(app))
+      tabLayout.setSizeFull
+      userChanged(getAppUser(app))
+    }
 
     tabLayout
   }
@@ -131,7 +132,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     layout.addComponent(newRowButton)
     layout.addComponent(saveButton)
     val visible = getAppUser(app) match {
-      case Some(x:String) => true
+      case Some(x: String) => true
       case _ => false
     }
     newRowButton.setVisible(visible)
@@ -143,11 +144,14 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   }
 
   override def refresh(app: Application) {
-    val user = getAppUser(app)
-    dataSource = buildDataSource(user)
-    table.setContainerDataSource(dataSource)
-    table.requestRepaintAll()
-    tabLayout.replaceComponent(table, table)
+    if (configService.hasError) {
+    } else {
+      val user = getAppUser(app)
+      dataSource = buildDataSource(user)
+      table.setContainerDataSource(dataSource)
+      table.requestRepaintAll()
+      tabLayout.replaceComponent(table, table)
+    }
   }
 
   def setupDeleteColumn(table: Table) {
