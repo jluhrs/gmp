@@ -72,4 +72,17 @@ class Embedded(caption: String = null,
   Option(source) foreach setSource
 }
 
+/**
+ * Scala wrapper for com.vaadin.ui.TextField */
+class TextField(caption: String = null, width: String = null, height: String = null, property: com.vaadin.data.Property = null, value: Any = null, style: String = null, prompt: String = null)
+  extends com.vaadin.ui.TextField(caption) {
+  setWidth(width)
+  setHeight(height)
+  setStyleName(style)
+  setInputPrompt(prompt)
+  
+  Option (property) foreach setPropertyDataSource
+  Option (value) foreach setValue
+}
+
 }

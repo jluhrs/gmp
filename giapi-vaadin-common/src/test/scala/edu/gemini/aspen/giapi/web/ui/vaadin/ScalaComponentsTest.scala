@@ -58,4 +58,12 @@ class ScalaComponentsTest extends FunSuite {
     assertEquals(10.0, e.getWidth, 0)
     assertEquals(20.0, e.getHeight, 0)
   }
+
+  test("text field component construction") {
+    var t = new TextField("caption")
+    assertEquals("caption", t.getCaption)
+
+    t = new TextField(value="value")
+    assertEquals("value", t.getValue)
+  }
 }
