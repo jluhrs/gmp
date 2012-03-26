@@ -77,7 +77,7 @@ class OneItemKeywordValueTest extends FunSuite {
     assertEquals(CollectedValue("AIRMASS", false, "comment", 0), testActor.testValueToCollectedValue(0.0))
   }
 
-  ignore("Boolean Value To CollectedValue from String") {
+  test("Boolean Value To CollectedValue from String") {
     val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "BOOLEAN", true, "NONE", "EPICS", "gpi:value", 0, "comment")
     val testActor = new TestValueActor(config)
     // Float to boolean
