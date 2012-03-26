@@ -76,4 +76,20 @@ class OneItemKeywordValueTest extends FunSuite {
     assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue(-1.0))
     assertEquals(CollectedValue("AIRMASS", false, "comment", 0), testActor.testValueToCollectedValue(0.0))
   }
+
+  ignore("Boolean Value To CollectedValue from String") {
+    val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "BOOLEAN", true, "NONE", "EPICS", "gpi:value", 0, "comment")
+    val testActor = new TestValueActor(config)
+    // Float to boolean
+    assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue("true"))
+    assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue("True"))
+    assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue("1"))
+    assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue("T"))
+    assertEquals(CollectedValue("AIRMASS", true, "comment", 0), testActor.testValueToCollectedValue("Anything"))
+    assertEquals(CollectedValue("AIRMASS", false, "comment", 0), testActor.testValueToCollectedValue("false"))
+    assertEquals(CollectedValue("AIRMASS", false, "comment", 0), testActor.testValueToCollectedValue("False"))
+    assertEquals(CollectedValue("AIRMASS", false, "comment", 0), testActor.testValueToCollectedValue("F"))
+    assertEquals(CollectedValue("AIRMASS", false, "comment", 0), testActor.testValueToCollectedValue("f"))
+    assertEquals(CollectedValue("AIRMASS", false, "comment", 0), testActor.testValueToCollectedValue("0"))
+  }
 }
