@@ -18,24 +18,45 @@ enum CadState {
     CLEAR {
         @Override
         public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
-            try {
-                endProcessingNoCarUpdate(epicsCad);
-            } catch (CAException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            } catch (TimeoutException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            }
             switch (dir) {
                 case MARK:
+                    try {
+                        endProcessingNoCarUpdate(epicsCad);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
                     return MARKED;
                 case CLEAR:
+                    try {
+                        endProcessing(epicsCad, car);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
                     return CLEAR;
                 case PRESET:
                 case START:
                 case STOP:
                     //do nothing
+                    try {
+                        endProcessingNoCarUpdate(epicsCad);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
                     return CLEAR;
                 default://just so the compiler doesn't complain
+                    try {
+                        endProcessingNoCarUpdate(epicsCad);
+                    } catch (CAException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    } catch (TimeoutException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
                     return CLEAR;
             }
         }
@@ -43,7 +64,6 @@ enum CadState {
     MARKED {
         @Override
         public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
-
 
             HandlerResponse resp;
             switch (dir) {
@@ -58,7 +78,7 @@ enum CadState {
                     return MARKED;
                 case CLEAR:
                     try {
-                        endProcessingNoCarUpdate(epicsCad);
+                        endProcessing(epicsCad,car);
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     } catch (TimeoutException e) {
@@ -155,7 +175,7 @@ enum CadState {
                     return MARKED;
                 case CLEAR:
                     try {
-                        endProcessingNoCarUpdate(epicsCad);
+                        endProcessing(epicsCad, car);
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     } catch (TimeoutException e) {
@@ -252,15 +272,20 @@ enum CadState {
     private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CarRecord car, EpicsCad epicsCad) {
         HandlerResponse resp;
         Map<String, String> config = epicsCad.getConfig();
-        if (!config.isEmpty()) {
-            DefaultConfiguration.Builder builder = DefaultConfiguration.configurationBuilder();
-            for (String name : config.keySet()) {
-                builder.withConfiguration(name, config.get(name));
+        try {
+            if (!config.isEmpty()) {
+                DefaultConfiguration.Builder builder = DefaultConfiguration.configurationBuilder();
+                for (String name : config.keySet()) {
+                    builder.withConfiguration(name, config.get(name));
+                }
+                resp = cs.sendCommand(new Command(seqCom, activity, builder.build()), new CadCompletionListener(id, car));
+            } else {
+                resp = cs.sendCommand(new Command(seqCom, activity), new CadCompletionListener(id, car));
             }
-            resp = cs.sendCommand(new Command(seqCom, activity, builder.build()), new CadCompletionListener(id, car));
-        } else {
-            resp = cs.sendCommand(new Command(seqCom, activity), new CadCompletionListener(id, car));
+        } catch (IllegalArgumentException ex) {
+            resp = HandlerResponse.createError("Trying to send an " + seqCom.getName() + " with an illegal (or without) configuration. " + ex);
         }
+        LOG.severe(resp.toString());
         LOG.info("Activity: " + activity + " ClientID: " + id + " Response: " + resp.getResponse().toString());
         return resp;
     }

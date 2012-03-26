@@ -32,7 +32,7 @@ public class CadTest {
     private static final Logger LOG = Logger.getLogger(CadTest.class.getName());
 
     private ChannelAccessServerImpl cas;
-    private final Top epicsTop = new TopImpl("gpi","gpi");
+    private final Top epicsTop = new TopImpl("gpi", "gpi");
     private final String cadName = "observe";
     private CommandSender cs = MockFactory.createCommandSenderMock(epicsTop, cadName);
 
@@ -53,7 +53,7 @@ public class CadTest {
         cad.start();
 
         //test mark
-        Channel<String> a = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DATA_LABEL"), "");
+        Channel<String> label = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DATA_LABEL"), "");
         Channel<CarRecord.Val> carVal = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + "C.VAL"), CarRecord.Val.IDLE);
 
 
@@ -79,13 +79,13 @@ public class CadTest {
         CarListener carListener = new CarListener();
         carVal.registerListener(carListener);
 
-        a.setValue("label");
 
         assertEquals(CadState.MARKED, cad.getState());
 
 
         //test CAR
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DIR"), Dir.CLEAR);
+        label.setValue("label");
         dir.setValue(Dir.MARK);
         dir.setValue(Dir.PRESET);
         if (!carListener.await(1, TimeUnit.SECONDS)) {
@@ -121,22 +121,26 @@ public class CadTest {
         setDir(Dir.MARK, 1, dir, cad);
         //1 -> clear -> 0
         setDir(Dir.CLEAR, 0, dir, cad);
+        a.setValue("label"); // config was cleared, so we set it again
         //0 -> mark -> 1
         setDir(Dir.MARK, 1, dir, cad);
         //1 -> stop -> 0
         setDir(Dir.STOP, 0, dir, cad);
+        a.setValue("label"); // config was cleared, so we set it again
         //0 -> mark -> 1
         setDir(Dir.MARK, 1, dir, cad);
         //1 -> preset -> 2
         setDir(Dir.PRESET, 2, dir, cad);
         //2 -> clear -> 0
         setDir(Dir.CLEAR, 0, dir, cad);
+        a.setValue("label"); // config was cleared, so we set it again
         //0 -> mark -> 1
         setDir(Dir.MARK, 1, dir, cad);
         //1 -> preset -> 2
         setDir(Dir.PRESET, 2, dir, cad);
         //2 -> stop -> 0
         setDir(Dir.STOP, 0, dir, cad);
+        a.setValue("label"); // config was cleared, so we set it again
         //0 -> mark -> 1
         setDir(Dir.MARK, 1, dir, cad);
         //1 -> preset -> 2
@@ -149,6 +153,7 @@ public class CadTest {
         setDir(Dir.PRESET, 2, dir, cad);
         //2 -> start -> 0
         setDir(Dir.START, 0, dir, cad);
+        a.setValue("label"); // config was cleared, so we set it again
         //0 -> mark -> 1
         setDir(Dir.MARK, 1, dir, cad);
         //1 -> start -> 2->0

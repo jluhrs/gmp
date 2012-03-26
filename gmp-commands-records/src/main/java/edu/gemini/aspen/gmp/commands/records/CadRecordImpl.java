@@ -21,6 +21,7 @@ public class CadRecordImpl implements CadRecord {
 
 
     private CadState state = CadState.CLEAR;
+    private volatile boolean clearing = false;
 
 
     final private CommandSender cs;
@@ -89,18 +90,34 @@ public class CadRecordImpl implements CadRecord {
     }
 
     private synchronized CadState processDir(Dir dir) {
-        if (state != CadState.CLEAR)
+        if (state != CadState.CLEAR) {
             LOG.info("CAD Record: " + seqCom.getName() + " in State: " + state + " received Directive: " + dir);
+        }
         CadState newState = state.processDir(dir, epicsCad, cs, seqCom, car);
-        if (state != CadState.CLEAR) LOG.fine("CAD Record: " + seqCom.getName() + " now in State: " + newState);
+
+        if (newState == CadState.CLEAR) {
+            if (dir == Dir.START || dir == Dir.CLEAR || dir == Dir.STOP) {
+                clearing = true;
+                epicsCad.clearConfig();
+                clearing = false;
+            }
+        }
+
+        if (state != CadState.CLEAR) {
+            LOG.fine("CAD Record: " + seqCom.getName() + " now in State: " + newState);
+        }
+
+
         return newState;
     }
 
     private class AttributeListener implements ChannelListener<String> {
         @Override
         public void valueChanged(String channelName, List<String> values) {
-            LOG.fine("CAD Record: " + seqCom.getName() + " Attribute Received: " + values.get(0));
-            state = processDir(Dir.MARK);
+            if (!clearing) {
+                LOG.fine("CAD Record: " + seqCom.getName() + " Attribute Received: " + values.get(0));
+                state = processDir(Dir.MARK);
+            }
         }
     }
 
@@ -109,6 +126,7 @@ public class CadRecordImpl implements CadRecord {
         public void valueChanged(String channelName, List<Dir> values) {
             state = processDir(values.get(0));
         }
+
     }
 
     CadState getState() {

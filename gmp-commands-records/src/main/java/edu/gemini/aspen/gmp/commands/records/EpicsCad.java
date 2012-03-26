@@ -207,8 +207,30 @@ public class EpicsCad {
                 } else if (ch.getName().endsWith("REBOOT_OPT")) {
                     map.put("REBOOT_OPT", ch.getFirst());
                 } else {
-                    map.put(ch.getName(), ch.getFirst());
+                    String value = ch.getFirst();
+                    if (value.length() > 0) {
+                        map.put(ch.getName(), value);
+                    }
                 }
+            } catch (CAException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
+            } catch (TimeoutException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+        return map;
+    }
+
+    /**
+     * Clear the values of the attributes
+     *
+     * @return A Map containing names and values
+     */
+    public Map<String, String> clearConfig() {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Channel<String> ch : attributes) {
+            try {
+                ch.setValue("");
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
             } catch (TimeoutException e) {
