@@ -68,21 +68,35 @@ class Embedded(caption: String = null,
   setHeight(height)
   setType(objectType)
   setStyleName(style)
-  
+
   Option(source) foreach setSource
 }
 
 /**
  * Scala wrapper for com.vaadin.ui.TextField */
-class TextField(caption: String = null, width: String = null, height: String = null, property: com.vaadin.data.Property = null, value: Any = null, style: String = null, prompt: String = null)
+class TextField(caption: String = null,
+                width: String = null,
+                height: String = null,
+                property: com.vaadin.data.Property = null,
+                value: Any = null,
+                style: String = null,
+                prompt: String = null,
+                maxLength: Int = -1,
+                invalidAllowed:Boolean = true,
+                required: Boolean = true,
+                immediate: Boolean = false)
   extends com.vaadin.ui.TextField(caption) {
   setWidth(width)
   setHeight(height)
   setStyleName(style)
   setInputPrompt(prompt)
-  
-  Option (property) foreach setPropertyDataSource
-  Option (value) foreach setValue
+  setRequired(required)
+  setImmediate(immediate)
+  setInvalidAllowed(invalidAllowed)
+
+  Option(property) foreach setPropertyDataSource
+  Option(value) foreach setValue
+  Option(maxLength) foreach setMaxLength
 }
 
 }
