@@ -60,7 +60,7 @@
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.9.1</scala-lang.version>
         <scala-plugin.version>2.15.2</scala-plugin.version>
-        <vaadin.version>6.7.0</vaadin.version>
+        <vaadin.version>6.7.6</vaadin.version>
         <junit.version>4.10</junit.version>
         <felix.framework.version>4.0.2</felix.framework.version>
 
