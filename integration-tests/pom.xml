@@ -251,6 +251,10 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.external.osgi.org.eclipse.jdt.core.compiler</groupId>
+            <artifactId>ecj</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-api</artifactId>
         </dependency>

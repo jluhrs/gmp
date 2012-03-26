@@ -82,7 +82,7 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         List<Set<String>> originalKeywords = readAllExtensionsKeywords("/tmp/" + INITIAL_FITS_FILE, 3);
         assertEquals(3, originalKeywords.size()); //primary + 2 extensions
 
-        sendObservationEvents(eventHandler, new DataLabel("sampleWithExt"));
+        sendObservationEvents(eventHandler, new DataLabel("sampleWithExt.fits"));
         TimeUnit.MILLISECONDS.sleep(2000);
 
         File finalFile = new File(FINAL_FITS_FILE);

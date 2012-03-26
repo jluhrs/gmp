@@ -66,7 +66,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
 
         Set<String> originalKeywords = readOriginalKeywords();
 
-        sendObservationEvents(eventHandler, new DataLabel("sample1"));
+        sendObservationEvents(eventHandler, new DataLabel("sample1.fits"));
         TimeUnit.MILLISECONDS.sleep(2000);
 
         System.out.println(new File(FINAL_FITS_DIR + FINAL_FITS_FILE));

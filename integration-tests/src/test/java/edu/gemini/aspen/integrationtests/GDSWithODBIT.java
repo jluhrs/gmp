@@ -19,9 +19,7 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
@@ -35,9 +33,6 @@ public class GDSWithODBIT extends GDSIntegrationBase {
                 systemProperty("org.osgi.framework.bootdelegation").value("java.rmi.server"),
                 systemProperty("jini.lus.import.groups").value("swg-test"),
                 systemProperty("org.osgi.service.http.port").value("8888"),
-                mavenBundle().artifactId("pax-web-jetty-bundle").groupId("org.ops4j.pax.web").versionAsInProject(),
-                mavenBundle().artifactId("pax-web-spi").groupId("org.ops4j.pax.web").versionAsInProject(),
-                mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").versionAsInProject(),
                 mavenBundle().artifactId("jini-driver").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("spdb-activator").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("rr").groupId("gemini-nocs").versionAsInProject(),
@@ -71,7 +66,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
 
         assertFalse(originalKeywords.contains("PIFSTNAM"));
 
-        sendObservationEvents(eventHandler, new DataLabel("sample1"));
+        sendObservationEvents(eventHandler, new DataLabel("sample1.fits"));
         TimeUnit.MILLISECONDS.sleep(2000);
 
         File finalFile = new File(FINAL_FITS_DIR + FINAL_FITS_FILE);
