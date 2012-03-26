@@ -64,6 +64,7 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
     case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue() != 0, fitsComment, headerIndex)
     case x: String if x.equalsIgnoreCase("false") || x.equalsIgnoreCase("f") || x.equalsIgnoreCase("0") || x.isEmpty => CollectedValue(fitsKeyword, false, fitsComment, headerIndex)
     case x: String => CollectedValue(fitsKeyword, true, fitsComment, headerIndex)
+    case x: Boolean => CollectedValue(fitsKeyword, x, fitsComment, headerIndex)
     case _ => newMismatchError
   }
 
