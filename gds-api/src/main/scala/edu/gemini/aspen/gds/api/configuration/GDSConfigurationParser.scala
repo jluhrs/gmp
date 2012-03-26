@@ -64,7 +64,11 @@ class GDSConfigurationParser extends RegexParsers {
     x => HeaderIndex(x.toInt)
   }
 
-  def datatype = """DOUBLE|INT|STRING""".r ^^ {
+  def datatype = (FitsType.TypeNames.values.toList map {
+    _.toString
+  } reduceLeft {
+    (x, y) => x + "|" + y
+  }).r ^^ {
     x => DataType(x)
   }
 
