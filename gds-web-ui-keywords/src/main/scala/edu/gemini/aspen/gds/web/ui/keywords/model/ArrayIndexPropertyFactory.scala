@@ -1,8 +1,9 @@
 package edu.gemini.aspen.gds.web.ui.keywords.model
 
-import com.vaadin.ui.TextField
 import com.vaadin.data.validator.AbstractStringValidator
 import edu.gemini.aspen.gds.api.{ArrayIndex, GDSConfiguration}
+import edu.gemini.aspen.giapi.web.ui.vaadin.components.TextField
+import edu.gemini.aspen.giapi.web.ui.vaadin._
 
 /**
  * PropertyItemWrapperFactory for FitsKeyword that uses a TextField to make possible to edit
@@ -13,15 +14,15 @@ class ArrayIndexPropertyFactory extends PropertyItemWrapperFactory(classOf[Array
   override val title = "Index"
 
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
-    val textField = new TextField("", config.arrayIndex.value.toString)
+    val textField = new TextField(caption = "Array Index",
+      value = config.arrayIndex.value.toString,
+      width = 30 px,
+      required = true,
+      immediate = false,
+      maxLength = 3,
+      invalidAllowed = false
+    )
     textField.addValidator(ArrayIndexPropertyFactory.validator)
-    textField.setCaption("Array Index")
-    textField.setRequired(true)
-    textField.setImmediate(true)
-    textField.setRequired(true)
-    textField.setMaxLength(3)
-    textField.setWidth("30px")
-    textField.setInvalidAllowed(false)
 
     def updateFunction(config: GDSConfiguration) = {
       config.copy(arrayIndex = ArrayIndex(textField.getValue.toString.toInt))
