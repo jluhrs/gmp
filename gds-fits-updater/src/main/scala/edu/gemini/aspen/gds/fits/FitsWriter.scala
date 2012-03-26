@@ -37,6 +37,7 @@ class FitsWriter(file: File) extends FitsReader(file) {
         case s: String => hduHeader.addValue(k.keywordName, s, k.comment)
         case i: Int => hduHeader.addValue(k.keywordName, i, k.comment)
         case d: Double => hduHeader.addValue(k.keywordName, d, k.comment)
+        case b: Boolean => hduHeader.addValue(k.keywordName, b, k.comment)
         case _ => LOG.warning("Ignored key of unknown type " + k)
       }
     }

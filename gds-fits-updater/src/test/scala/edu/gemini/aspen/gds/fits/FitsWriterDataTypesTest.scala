@@ -56,4 +56,34 @@ class FitsWriterDataTypesTest extends FunSuite with BeforeAndAfterEach {
     assertEquals("1", toMap(updatedHeader).get("KEY").get)
   }
 
+  test("update keyword with true boolean item") {
+    val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)
+    val fitsFile = new FitsWriter(originalFile)
+
+    val headerUpdate = createHeadersWithKeyword(true)
+
+    fitsFile.updateHeader(headerUpdate, destFile)
+
+    val updatedFitsFile = new FitsReader(destFile)
+    val updatedHeader = updatedFitsFile.header(0).get
+
+    assertTrue(updatedHeader.containsKey("KEY"))
+    assertEquals("T", toMap(updatedHeader).get("KEY").get)
+  }
+
+  test("update keyword with false boolean item") {
+    val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)
+    val fitsFile = new FitsWriter(originalFile)
+
+    val headerUpdate = createHeadersWithKeyword(false)
+
+    fitsFile.updateHeader(headerUpdate, destFile)
+
+    val updatedFitsFile = new FitsReader(destFile)
+    val updatedHeader = updatedFitsFile.header(0).get
+
+    assertTrue(updatedHeader.containsKey("KEY"))
+    assertEquals("F", toMap(updatedHeader).get("KEY").get)
+  }
+
 }
