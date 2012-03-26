@@ -44,11 +44,13 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
   }
 
   def getTimes(label: DataLabel): String = {
-    obsState.getTimes(label) map {
+    val opt:Option[String] = obsState.getTimes(label) map {
       case (x: AnyRef, y: Option[_]) => y map {
         case t: Duration => t.getMillis.toString + "[ms]"
       } getOrElse("")
-    } head
+    } headOption
+
+    opt.getOrElse(StatusModule.defaultTimes)
   }
 
   def getProcessing: String = obsState.getObservationsInProgress.mkString(", ")
