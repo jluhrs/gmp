@@ -20,7 +20,7 @@ import org.ops4j.pax.web.service.WebContainer
  * TODO Abstract away the
  */
 @Component
-@Provides(specifications = Array(classOf[Servlet]))
+@Provides(specifications = Array[Class[_]](classOf[Servlet]))
 @Instantiate
 class VaadinServlet(@Requires(from = "VaadinAppFactory") val vaadinAppFactory: Factory, @Requires val webContainer: WebContainer) extends AbstractApplicationServlet {
   private val LOG = Logger.getLogger(this.getClass.getName)
@@ -28,6 +28,8 @@ class VaadinServlet(@Requires(from = "VaadinAppFactory") val vaadinAppFactory: F
   val label: String = "/gds"
   @ServiceProperty(name = "servlet-key", value = "GDSVaadinServlet")
   val servletName: String = "GDSVaadinServlet"
+  @ServiceProperty(name = "widgetset", value = "GDSCoreVaadinApp")
+  val widgetset: String = "GDSCoreVaadinApp"
   var sessions = List[VaadinSession]()
 
   override def getApplicationClass() = {
