@@ -1,5 +1,40 @@
 /*! \page release_notes Release Notes
 
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.0.2
+
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-927'>GIAPI-927</a>] -         GDS Web UI configuration changes are not reflected on the next observation run
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-930'>GIAPI-930</a>] -         Reload of the GDS API bundle makes it miss observation events
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-932'>GIAPI-932</a>] -         FitsChecker should assume the datalabel paramater is the filename
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-934'>GIAPI-934</a>] -         After a while the GDS Status Web Ui fails with an exception
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-937'>GIAPI-937</a>] -         GMP RPM should attempt to create the /gemsoft/bin dir
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-945'>GIAPI-945</a>] -         When logging in the GDS Keyword Editor doesn&#39;t refresh properly
+</li>
+</ul>
+
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-931'>GIAPI-931</a>] -         Mark observation events not in order as warnings rather than errors
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-940'>GIAPI-940</a>] -         Support boolean FITS keywords
+</li>
+</ul>
+
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-944'>GIAPI-944</a>] -         Upgrade to Vaadin 6.7.6
+</li>
+</ul>
+
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.0.1
 
 <h2>        Bug
