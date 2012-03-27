@@ -95,6 +95,15 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   override def buildTabContent(app: Application) = {
     if (configService.hasError) {
       // Should produce error layout
+//      val code = new AceMarkerEditor
+//      code.setMode(AceMode.textile, "ace-gds.js")
+//      configService.errors foreach {
+//        case (msg, offset, position) => code.addMarker(Marker.newErrorMarker(offset , offset + 2, msg))
+//      }
+//      code.setValue(configService.textContent)
+//      code.setWidth("100%")
+//      code.setHeight("100%")
+//      code.setReadOnly(true)
     } else {
       table.setContainerDataSource(dataSource)
       table.setNullSelectionAllowed(false)
