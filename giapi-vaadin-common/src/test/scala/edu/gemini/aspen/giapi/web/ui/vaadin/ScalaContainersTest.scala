@@ -7,7 +7,7 @@ import org.scalatest.junit.JUnitRunner
 import edu.gemini.aspen.giapi.web.ui.vaadin.containers._
 
 @RunWith(classOf[JUnitRunner])
-class ScalaComponentContainersTest extends FunSuite {
+class ScalaContainersTest extends FunSuite {
   test("tabsheet component construction") {
     val t = new TabSheet(caption = "Caption")
     assertEquals("Caption", t.getCaption)
