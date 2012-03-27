@@ -8,6 +8,8 @@ import edu.gemini.aspen.gds.api.Predef._
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
+import com.google.common.io.Files
+import com.google.common.base.Charsets
 
 /**
  * Specify how the GDSConfiguration parser should behave
@@ -101,6 +103,16 @@ class GDSConfigurationServiceTest extends FunSuite {
 
     assertEquals(0, readConfig.length)
     assertTrue(serviceOrig.hasError)
+  }
+
+  test("read textContent") {
+    copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
+    val serviceOrig = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
+
+    val fileContent = serviceOrig.textContent
+
+    val originalContent = Files.toString(new File(TEST_DIR + NEW_CONFIG), Charsets.UTF_8)
+    assertEquals(originalContent, fileContent)
   }
 
 }

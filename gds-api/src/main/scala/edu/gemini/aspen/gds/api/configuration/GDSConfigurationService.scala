@@ -4,6 +4,8 @@ import edu.gemini.aspen.gds.api.GDSConfiguration
 import org.apache.felix.ipojo.annotations.{Property, Provides, Component}
 import java.io.{BufferedWriter, File, FileWriter}
 import edu.gemini.aspen.gds.api.Predef._
+import com.google.common.io.Files
+import com.google.common.base.Charsets
 
 /**
  * Reads and writes configuration files. Update operations(saveConfiguration and updateConfiguration) try to match
@@ -22,7 +24,13 @@ trait GDSConfigurationService {
    */
   def getFullConfiguration: List[ConfigItem[_]]
 
-  def hasError:Boolean
+  /**
+   * Indicates whether an error has been detected on the configuration */
+  def hasError: Boolean
+
+  /**
+   * Returns the actual text of the configuration file */
+  def textContent: String
 
   /**
    * Overwrites the current configuration file
@@ -58,6 +66,11 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
   }
 
   def hasError = GDSConfigurationFile.hasError(configurationFile)
+
+  def textContent = {
+    val originalFile = new File(configurationFile)
+    Files.toString(originalFile, Charsets.UTF_8)
+  }
 
   def getFullConfiguration: List[ConfigItem[_]] = {
     GDSConfigurationFile.getFullConfiguration(configurationFile)
