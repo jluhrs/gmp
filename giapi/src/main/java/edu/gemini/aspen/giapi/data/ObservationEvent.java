@@ -1,8 +1,5 @@
 package edu.gemini.aspen.giapi.data;
 
-import java.util.Map;
-import java.util.HashMap;
-
 /**
  * Definiton of the GIAPI Observation Events. 
  *
@@ -44,17 +41,6 @@ public enum ObservationEvent {
 
     private String eventName;
 
-    private static Map<String, ObservationEvent> CONVERSION_TABLE = new HashMap<String, ObservationEvent>();
-
-    /**
-     * Map observation event names to the corresponding enum values. 
-     */
-    static {
-        for (ObservationEvent event: ObservationEvent.values()) {
-            CONVERSION_TABLE.put(event.getObservationEventName(), event);
-        }
-    }
-
     private ObservationEvent(String name) {
         eventName = name;
     }
@@ -62,14 +48,5 @@ public enum ObservationEvent {
     public String getObservationEventName() {
         return eventName;
     }
-
-    public static ObservationEvent getObservationEvent(String name) throws IllegalArgumentException {
-        ObservationEvent event = CONVERSION_TABLE.get(name);
-        if (event == null) {
-            throw new IllegalArgumentException("No such observation event: " + name);
-        }
-        return event;
-    }
-
 
 }

@@ -1,5 +1,6 @@
 package edu.gemini.aspen.giapi.data.obsevents.jms;
 
+import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.data.ObservationEvent;
@@ -31,13 +32,15 @@ public class JmsObservationEventListener implements MessageListener {
         try {
             String type = m.getStringProperty(JmsKeys.GMP_DATA_OBSEVENT_NAME);
             String file = m.getStringProperty(JmsKeys.GMP_DATA_OBSEVENT_FILENAME);
-            ObservationEvent obsEvent = ObservationEvent.getObservationEvent(type);
+            Preconditions.checkArgument(type != null);
+            Preconditions.checkArgument(file != null);
+            ObservationEvent obsEvent = ObservationEvent.valueOf(type);
             DataLabel dataLabel = new DataLabel(file);
             _action.onObservationEvent(obsEvent, dataLabel);
         } catch (JMSException e) {
             LOG.warning("Jms Exception: " + e.getMessage());
         } catch (IllegalArgumentException ex) {
-            //an unexpected arg came in the meesages
+            //an unexpected arg came in the messages
             LOG.warning("Bad argument in message: " + ex.getMessage());
         }
     }
