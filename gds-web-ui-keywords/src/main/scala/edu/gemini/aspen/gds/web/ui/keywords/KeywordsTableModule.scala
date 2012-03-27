@@ -11,7 +11,8 @@ import com.vaadin.Application
 import org.vaadin.dialogs.ConfirmDialog
 import com.vaadin.ui.Window.Notification
 import com.vaadin.ui.{Table, Alignment}
-import com.vaadin.ui.{VerticalLayout, HorizontalLayout}
+import edu.gemini.aspen.giapi.web.ui.vaadin.layouts.{HorizontalLayout, VerticalLayout}
+import com.vaadin.ui.{Button => VaadinButton}
 
 /**
  * Module for the table to edit the keywords */
@@ -20,15 +21,18 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   val order = 2
   var dataSource: GDSKeywordsDataSource = buildDataSource(None)
 
-  val tabLayout = new VerticalLayout
+  val tabLayout = new VerticalLayout(sizeFull = true)
   val table = new Table("Keywords")
 
   var deleteIcon = new ThemeResource("../runo/icons/16/document-delete.png")
   val deleteTooltip = "Delete row"
   val deleteProperty = "DEL"
 
-  val saveButton = new Button(caption = "Save..")
-  val newRowButton = new Button(caption = "New row...")
+  val saveButton = new Button(caption = "Save..", action = save)
+  saveButton.setDebugId(KeywordsTableModule.SAVE_BUTTON_DEBUG_ID)
+  val newRowButton = new Button(caption = "New row...", action = newRow)
+  newRowButton.setDebugId(KeywordsTableModule.NEW_ROW_BUTTON_DEBUG_ID)
+
 
   def visibleColumns(user: Option[String]): Array[AnyRef] = {
     val prop = user map {
@@ -102,14 +106,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
       table.setColumnCollapsingAllowed(true)
       table.setColumnReorderingAllowed(true)
 
-      configureNewButton(table)
+      tabLayout.add(table, ratio = 1f)
 
-      tabLayout.addComponent(table)
-      tabLayout.setExpandRatio(table, 1.0f)
+      tabLayout.add(statusRow(app))
 
-      tabLayout.addComponent(statusRow(app))
-
-      tabLayout.setSizeFull
       userChanged(getAppUser(app))
     }
 
@@ -117,28 +117,19 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   }
 
   def statusRow(app: Application) = {
-    val layout = new HorizontalLayout
-    layout.addStyleName("keywords-control")
-    layout.setMargin(false)
-    layout.setWidth(100 percent)
-    layout.addStyleName("keywords-control")
     val label = new Label("Keywords count: " + table.getContainerDataSource.size)
-
-    layout.addComponent(label)
-    layout.setComponentAlignment(label, Alignment.MIDDLE_LEFT)
-    layout.setExpandRatio(label, 1.0f)
-
-    val saveButton = configureSaveButton(app)
-    layout.addComponent(newRowButton)
-    layout.addComponent(saveButton)
     val visible = getAppUser(app) match {
       case Some(x: String) => true
       case _ => false
     }
     newRowButton.setVisible(visible)
     saveButton.setVisible(visible)
-    layout.setComponentAlignment(newRowButton, Alignment.MIDDLE_RIGHT)
-    layout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT)
+
+    val layout = new HorizontalLayout(style = "keywords-control", margin = false, width = 100 percent) {
+      add(label, ratio = 1f, alignment = Alignment.MIDDLE_LEFT)
+      add(newRowButton, alignment = Alignment.MIDDLE_RIGHT)
+      add(saveButton, alignment = Alignment.MIDDLE_RIGHT)
+    }
 
     layout
   }
@@ -180,22 +171,13 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     table.setColumnWidth(deleteProperty, 20)
   }
 
-  private def configureNewButton(table: Table) {
-    newRowButton.addListener(_ => {
-      table.getApplication.getMainWindow.addWindow(new NewRowWindow(dataSource))
-    })
-    newRowButton.setDebugId(KeywordsTableModule.NEW_ROW_BUTTON_DEBUG_ID)
-    newRowButton
+  private def newRow(e: VaadinButton#ClickEvent) {
+    e.getComponent.getApplication.getMainWindow.addWindow(new NewRowWindow(dataSource))
   }
 
-  private def configureSaveButton(app: Application): Button = {
-    saveButton.addListener(_ => {
-      configService.updateConfiguration(dataSource.toGDSConfiguration)
-      app.getMainWindow.showNotification("Saving...", Notification.TYPE_HUMANIZED_MESSAGE)
-      //todo: check that file hasn't changed between the time it was read and now.
-    })
-    saveButton.setDebugId(KeywordsTableModule.SAVE_BUTTON_DEBUG_ID)
-    saveButton
+  private def save(e: VaadinButton#ClickEvent) = {
+    configService.updateConfiguration(dataSource.toGDSConfiguration)
+    e.getComponent.getApplication.getMainWindow.showNotification("Saving...", Notification.TYPE_HUMANIZED_MESSAGE)
   }
 
 }
