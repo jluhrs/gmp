@@ -148,7 +148,6 @@
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
             <artifactId>aceeditor</artifactId>
-            <version>0.1.2</version>
         </dependency>
     </dependencies>
 

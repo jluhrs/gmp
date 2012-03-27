@@ -848,6 +848,11 @@
                 <artifactId>pagedtable</artifactId>
                 <version>0.6.2</version>
             </dependency>
+            <dependency>
+                <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                <artifactId>aceeditor</artifactId>
+                <version>0.1.2</version>
+            </dependency>
 
             <!-- XMLRPC Server dependencies -->
             <dependency>
@@ -971,6 +976,12 @@
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.gemini.external.osgi.com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.3.0</version>
         </dependency>
 
         <dependency>
