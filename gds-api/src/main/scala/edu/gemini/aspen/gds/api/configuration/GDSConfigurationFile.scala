@@ -3,6 +3,7 @@ package edu.gemini.aspen.gds.api.configuration
 import edu.gemini.aspen.gds.api.GDSConfiguration
 import java.io.{FileWriter, BufferedWriter, File}
 import edu.gemini.aspen.gds.api.Predef._
+import util.parsing.input.Position
 
 /**
  * This object provides utility methods to manipulate a configuration file
@@ -11,6 +12,14 @@ object GDSConfigurationFile {
   def getConfiguration(configurationFile: String): List[GDSConfiguration] = getConfiguration(getFullConfiguration(configurationFile))
 
   def hasError(configurationFile: String): Boolean = !new GDSConfigurationParser().parseFileRawResult(configurationFile).successful
+
+  def errors(configurationFile: String): Option[(String, Int, Position)] = {
+    val parser = new GDSConfigurationParser()
+    parser.parseFileRawResult(configurationFile) match {
+      case parser.Failure(msg, next) => Some(msg, next.offset, next.pos)
+      case _ => None
+    }
+  }
 
   def getConfiguration(contents: List[ConfigItem[_]]): List[GDSConfiguration] = contents filter {
       _.isInstanceOf[ConfigItem[_]]

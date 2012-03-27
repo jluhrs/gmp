@@ -41,6 +41,19 @@ class GDSConfigurationParserTest extends FunSuite {
     }
   }
 
+  test("parse bad values") {
+    val parser = new GDSConfigurationParser()
+    val result = parser.parseText(wrong(0))
+    result match {
+      case parser.Failure(msg, k) =>
+        assertEquals("string matching regex `OBS_PREP|OBS_START_ACQ|OBS_END_ACQ|OBS_START_READOUT|OBS_END_READOUT|OBS_START_DSET_WRITE|OBS_END_DSET_WRITE' expected but `O' found", msg)
+        assertEquals(1, k.pos.line)
+        assertEquals(5, k.pos.column)
+        assertFalse(k.atEnd)
+        assertEquals(4, k.offset)
+    }
+  }
+
   test("parse blank lines") {
     for (line <- blank) {
       val result = new GDSConfigurationParser().parseText(line)

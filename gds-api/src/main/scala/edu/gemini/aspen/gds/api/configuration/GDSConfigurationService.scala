@@ -6,6 +6,7 @@ import java.io.{BufferedWriter, File, FileWriter}
 import edu.gemini.aspen.gds.api.Predef._
 import com.google.common.io.Files
 import com.google.common.base.Charsets
+import util.parsing.input.Position
 
 /**
  * Reads and writes configuration files. Update operations(saveConfiguration and updateConfiguration) try to match
@@ -31,6 +32,10 @@ trait GDSConfigurationService {
   /**
    * Returns the actual text of the configuration file */
   def textContent: String
+
+  /**
+   * Returns the actual text of the configuration file */
+  def errors: Option[(String, Int, Position)]
 
   /**
    * Overwrites the current configuration file
@@ -71,6 +76,8 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
     val originalFile = new File(configurationFile)
     Files.toString(originalFile, Charsets.UTF_8)
   }
+
+  def errors: Option[(String, Int, Position)] = GDSConfigurationFile.errors(configurationFile)
 
   def getFullConfiguration: List[ConfigItem[_]] = {
     GDSConfigurationFile.getFullConfiguration(configurationFile)

@@ -10,6 +10,7 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import com.google.common.io.Files
 import com.google.common.base.Charsets
+import util.parsing.input.OffsetPosition
 
 /**
  * Specify how the GDSConfiguration parser should behave
@@ -113,6 +114,17 @@ class GDSConfigurationServiceTest extends FunSuite {
 
     val originalContent = Files.toString(new File(TEST_DIR + NEW_CONFIG), Charsets.UTF_8)
     assertEquals(originalContent, fileContent)
+    assertTrue(serviceOrig.errors.isEmpty)
+  }
+
+  test("get errors") {
+    copyFile(ORIGINAL_BAD_CONFIG, TEST_DIR + ORIGINAL_BAD_CONFIG)
+    val serviceOrig = new GDSConfigurationServiceImpl(TEST_DIR + ORIGINAL_BAD_CONFIG)
+
+    assertEquals("""string matching regex `\d+' expected but `[' found""", serviceOrig.errors.get._1)
+    assertEquals(602, serviceOrig.errors.get._2)
+    assertEquals(OffsetPosition(serviceOrig.textContent, 602).column, serviceOrig.errors.get._3.column)
+    assertEquals(OffsetPosition(serviceOrig.textContent, 602).line, serviceOrig.errors.get._3.line)
   }
 
 }
