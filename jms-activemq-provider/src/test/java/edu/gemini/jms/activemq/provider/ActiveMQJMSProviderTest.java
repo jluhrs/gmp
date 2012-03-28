@@ -6,6 +6,7 @@ import edu.gemini.jms.api.JmsProviderStatusListener;
 import org.junit.Test;
 
 import javax.jms.JMSException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -37,11 +38,13 @@ public class ActiveMQJMSProviderTest {
         ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
 
         final AtomicBoolean resumed = new AtomicBoolean(false);
+        final CountDownLatch latch = new CountDownLatch(1);
 
         provider.bindJmsStatusListener(new JmsProviderStatusListener() {
             @Override
             public void transportResumed() {
                 resumed.set(true);
+                latch.countDown();
             }
 
             @Override
@@ -53,7 +56,7 @@ public class ActiveMQJMSProviderTest {
 
         provider.startConnection();
 
-        TimeUnit.SECONDS.sleep(2);
+        latch.await(5, TimeUnit.SECONDS);
 
         assertTrue(resumed.get());
     }
