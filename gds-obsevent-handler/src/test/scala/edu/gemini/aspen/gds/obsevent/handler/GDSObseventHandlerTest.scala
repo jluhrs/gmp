@@ -37,7 +37,7 @@ class GDSObseventHandlerTest {
       verify(actorsFactory).buildActors(evt, dataLabel)
     }
     verify(registrar).startObservation(dataLabel)
-    Thread.sleep(100)
+    Thread.sleep(200)
     verify(registrar).endObservation(dataLabel)
   }
 
