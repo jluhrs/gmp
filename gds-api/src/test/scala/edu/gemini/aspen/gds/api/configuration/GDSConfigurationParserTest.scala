@@ -46,7 +46,7 @@ class GDSConfigurationParserTest extends FunSuite {
     val result = parser.parseText(wrong(0))
     result match {
       case parser.Failure(msg, k) =>
-        assertEquals("string matching regex `OBS_PREP|OBS_START_ACQ|OBS_END_ACQ|OBS_START_READOUT|OBS_END_READOUT|OBS_START_DSET_WRITE|OBS_END_DSET_WRITE' expected but `O' found", msg)
+        assertEquals("string matching regex `OBS_PREP|OBS_START_ACQ|OBS_END_ACQ|OBS_START_READOUT|OBS_END_READOUT|OBS_START_DSET_WRITE|OBS_END_DSET_WRITE|EXT_START_OBS|EXT_END_OBS' expected but `O' found", msg)
         assertEquals(1, k.pos.line)
         assertEquals(5, k.pos.column)
         assertFalse(k.atEnd)
@@ -126,5 +126,17 @@ class GDSConfigurationParserTest extends FunSuite {
     assertTrue(result.successful)
 
     assertEquals(Channel("gpi:cc.value1"), result.get(0).get.asInstanceOf[GDSConfiguration].channel)
+  }
+
+  test("supports external start observation event") {
+    val text = """GPI EXT_START_OBS AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "Mean airmass for the observation""""
+    val result = new GDSConfigurationParser().parseText(text)
+    assertEquals(Some(GDSConfiguration("GPI", "EXT_START_OBS", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "Mean airmass for the observation")), result.get(0))
+  }
+
+  test("supports external ond observation event") {
+    val text = """GPI EXT_END_OBS AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "Mean airmass for the observation""""
+    val result = new GDSConfigurationParser().parseText(text)
+    assertEquals(Some(GDSConfiguration("GPI", "EXT_END_OBS", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "Mean airmass for the observation")), result.get(0))
   }
 }

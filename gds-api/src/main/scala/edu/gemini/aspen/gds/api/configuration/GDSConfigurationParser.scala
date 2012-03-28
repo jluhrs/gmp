@@ -47,7 +47,7 @@ class GDSConfigurationParser extends RegexParsers {
     x => Instrument(x)
   }
 
-  //Equivalent to: """OBS_PREP|OBS_START_ACQ|OBS_END_ACQ|OBS_START_READOUT|OBS_END_READOUT|OBS_START_DSET_WRITE|OBS_END_DSET_WRITE"""
+  //Equivalent to: """OBS_PREP|OBS_START_ACQ|OBS_END_ACQ|OBS_START_READOUT|OBS_END_READOUT|OBS_START_DSET_WRITE|OBS_END_DSET_WRITE|EXT_START_OBS|EXT_END_OBS"""
   def observationEvent = (ObservationEvent.values().toList map {
     _.name
   } reduceLeft {
