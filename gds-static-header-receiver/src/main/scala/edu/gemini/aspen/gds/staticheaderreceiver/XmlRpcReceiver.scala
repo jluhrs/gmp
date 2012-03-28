@@ -1,32 +1,31 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
 import edu.gemini.aspen.gds.api.Conversions._
-import scala.collection.JavaConversions._
 import java.util.logging.{Level, Logger}
+import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabase}
+import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Store
 
-case class IntKeyword(keyword: String, value: Int)
-
-/**
- * XMLRPC server, forwards calls to a singleton actor, needed because this class
- * is instantiated by the XMLRPC library, so we cannot pass parameters to it.
- */
-class XmlRpcReceiver(requestHandler: RequestHandler) {
+class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, programIdDB: ProgramIdDatabase) {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
   def initObservation(programId: String, dataLabel: String) {
-    requestHandler ! InitObservation(programId, dataLabel)
+    LOG.info("Program ID: " + programId + " Data label: " + dataLabel)
+    programIdDB ! StoreProgramId(dataLabel, programId)
   }
 
   def storeKeyword(dataLabel: String, keyword: String, value: String) {
-    requestHandler ! StoreKeyword(dataLabel, keyword, value)
+    LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
+    keywordsDatabase ! Store(dataLabel, keyword, value)
   }
 
   def storeKeyword(dataLabel: String, keyword: String, value: Double) {
-    requestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
+    LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
+    keywordsDatabase ! Store(dataLabel, keyword, value.asInstanceOf[AnyRef])
   }
 
   def storeKeyword(dataLabel: String, keyword: String, value: Int) {
-    requestHandler ! StoreKeyword(dataLabel, keyword, value.asInstanceOf[AnyRef])
+    LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
+    keywordsDatabase ! Store(dataLabel, keyword, value.asInstanceOf[AnyRef])
   }
 
   def storeKeywords(dataLabel: String, keywords: Array[Object]) {
@@ -37,9 +36,9 @@ class XmlRpcReceiver(requestHandler: RequestHandler) {
       val value = pieces(2).trim()
       try {
         dataType match {
-          case "INT" => requestHandler ! StoreKeyword(dataLabel, key, value.toInt.asInstanceOf[AnyRef])
-          case "DOUBLE" => requestHandler ! StoreKeyword(dataLabel, key, value.toDouble.asInstanceOf[AnyRef])
-          case "STRING" => requestHandler ! StoreKeyword(dataLabel, key, value.toString.asInstanceOf[AnyRef])
+          case "INT" => storeKeyword(dataLabel, key, value.toInt)
+          case "DOUBLE" => storeKeyword(dataLabel, key, value.toDouble)
+          case "STRING" => storeKeyword(dataLabel, key, value.toString)
           case x => LOG.severe("Wrong data type: " + x)
         }
       } catch {

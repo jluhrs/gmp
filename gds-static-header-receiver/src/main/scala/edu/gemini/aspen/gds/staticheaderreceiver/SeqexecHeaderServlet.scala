@@ -15,7 +15,6 @@ import org.apache.xmlrpc.XmlRpcRequest
 @Provides(specifications = Array[Class[_]](classOf[HeaderReceiver]))
 class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase, @Requires programIdDB: ProgramIdDatabase, @Requires webContainer: WebContainer) extends XmlRpcServlet with HeaderReceiver {
   val initParams = mutable.Map("enabledForExtensions" -> "true")
-  val requestHandler = new RequestHandler(keywordsDatabase, programIdDB)
   // Register XMLRPC Handler
   webContainer.registerServlet(this, Array("/xmlrpc/*"), initParams, null)
 
@@ -29,12 +28,10 @@ class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsD
 
   @Validate
   def start() {
-    requestHandler.start()
   }
 
   @Invalidate
   def stop() {
-    requestHandler ! ExitRequestHandler()
   }
 
   /**
@@ -44,7 +41,7 @@ class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsD
   }
 
   class XmlRpcReceiverProcessFactory extends RequestProcessorFactory {
-    def getRequestProcessor(r: XmlRpcRequest) = new XmlRpcReceiver(requestHandler)
+    def getRequestProcessor(r: XmlRpcRequest) = new XmlRpcReceiver(keywordsDatabase,programIdDB)
   }
 
 }
