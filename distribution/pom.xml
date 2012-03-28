@@ -663,10 +663,10 @@
                                 <configuration>
                                     <serverId>sbfgpidev</serverId>
                                     <fromFile>
-                                        ${project.build.directory}/${project.parent.name}-${project.parent.version}.tar.gz
+                                        ${project.build.directory}/${project.artifactId}-${gmp.version}.tar.gz
                                     </fromFile>
                                     <url>
-                                        scp://sbfgpidev1.cl.gemini.edu/export/home/software/gpi/webcontent/gpi/${project.parent.name}
+                                        scp://sbfgpidev1.cl.gemini.edu/export/home/software/gpi/webcontent/gpi/${project.artifactId}/R${project.version}/
                                     </url>
                                     <skip>${noUpload}</skip>
                                 </configuration>
@@ -680,10 +680,10 @@
                                 <configuration>
                                     <serverId>sbfgpidev</serverId>
                                     <fromFile>
-                                        ${project.build.directory}/rpm/${project.parent.name}/RPMS/i386/${project.parent.name}-${rpmversion}-${buildNumber}.i386.rpm
+                                        ${project.build.directory}/rpm/${project.parent.name}/RPMS/i386/${project.artifactId}-${rpmversion}-${buildNumber}.i386.rpm
                                     </fromFile>
                                     <url>
-                                        scp://sbfgpidev1.cl.gemini.edu/export/home/software/gpi/webcontent/gpi/${project.parent.name}
+                                        scp://sbfgpidev1.cl.gemini.edu/export/home/software/gpi/webcontent/gpi/${project.artifactId}/R${project.version}/
                                     </url>
                                     <skip>${noUpload}</skip>
                                 </configuration>
