@@ -22,8 +22,8 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
   when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
 
   val registrar = mock(classOf[ObservationStateRegistrar])
-  val dataLabel = new DataLabel("GS-2011")
-  val dummyFile = new File(tempDir, dataLabel.getName + ".fits")
+  val dataLabel = new DataLabel("GS-2011.fits")
+  val dummyFile = new File(tempDir, dataLabel.getName)
 
   before {
     dummyFile.createNewFile()
@@ -84,6 +84,24 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     verify(registrar, times(0)).endObservation(dataLabel)
     Thread.sleep(1500)
     observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
+    Thread.sleep(1500)
+    verify(registrar).endObservation(dataLabel)
+  }
+
+  test("without start/end transaction") {
+    for {evt <- ObservationEvent.values()
+      if (evt != ObservationEvent.EXT_END_OBS && evt != ObservationEvent.EXT_START_OBS)
+    } {
+      when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
+
+        observationHandler.onObservationEvent(evt, dataLabel)
+
+        Thread.sleep(100)
+
+        // verify mock
+        verify(actorsFactory).buildActors(evt, dataLabel)
+      }
+    verify(registrar).startObservation(dataLabel)
     Thread.sleep(1500)
     verify(registrar).endObservation(dataLabel)
   }
