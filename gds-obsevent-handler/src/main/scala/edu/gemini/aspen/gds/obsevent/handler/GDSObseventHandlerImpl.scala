@@ -19,6 +19,9 @@ import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gmp.services.PropertyHolder
 import org.apache.felix.ipojo.handlers.event.Subscriber
 import org.apache.felix.ipojo.annotations.{Provides, Requires, Instantiate, Component}
+import collection.mutable.ConcurrentMap
+import com.google.common.cache.CacheBuilder
+import java.util.concurrent.TimeUnit._
 
 /**
  * Marker interface used to export GDSObseventHandlerImpl and used by the Health component */
@@ -58,6 +61,15 @@ class ReplyHandler(
   private val eventLogger = new EventLogger
   private val bookKeep = new ObsEventBookKeeping
 
+  import scala.collection.JavaConversions._
+
+  // expiration of 1 day by default but tests can override it
+  def expirationMillis = 24 * 60 * 60 * 1000
+
+  val observationTransactions: ConcurrentMap[DataLabel, String] = CacheBuilder.newBuilder()
+    .expireAfterWrite(expirationMillis, MILLISECONDS)
+    .build[DataLabel, String]().asMap()
+
   start()
 
   def act() {
@@ -77,6 +89,10 @@ class ReplyHandler(
         eventLogger.addEventSet(dataLabel)
         obsState.startObservation(dataLabel)
       }
+      // This indicates that the observation was started by the seqexec using a "transaction" of sorts
+      case EXT_START_OBS => {
+        observationTransactions.put(dataLabel, "")
+      }
       case _ =>
     }
 
@@ -88,6 +104,42 @@ class ReplyHandler(
     bookKeep.addObs(obsEvent, dataLabel)
 
     new KeywordSetComposer(actorsFactory, keywordsDatabase) ! AcquisitionRequest(obsEvent, dataLabel)
+  }
+
+  def writeFinalFile(dataLabel: DataLabel, obsEvent: ObservationEvent) {
+    {
+      //if all obsevents replies have arrived
+      if (bookKeep.allRepliesArrived(dataLabel)) {
+        bookKeep.clean(dataLabel)
+        endWrite(dataLabel)
+        endAcqRequestReply(obsEvent, dataLabel)
+      } else {
+        LOG.warning("Received data collection reply for " + obsEvent + " for dataset " + dataLabel + ", but data collection on other observation events hasn't finished. Wait and retry.")
+        //sleep one second and retry (5 times)
+        actor {
+          def retry(retries: Int, sleep: Long) {
+            Thread.sleep(sleep)
+            if (bookKeep.allRepliesArrived(dataLabel)) {
+              //OK, can continue
+              bookKeep.clean(dataLabel)
+              endWrite(dataLabel)
+              endAcqRequestReply(obsEvent, dataLabel)
+            } else if (retries > 1) {
+              //retry
+              LOG.warning("Still haven't completed data collection on other observation events. Wait and retry.")
+              retry(retries - 1, sleep)
+            } else {
+              //we failed, wrap things up anyway
+              bookKeep.clean(dataLabel)
+              endWrite(dataLabel)
+              endAcqRequestReply(obsEvent, dataLabel)
+              LOG.severe("Retry limit for " + obsEvent + " for dataset " + dataLabel + " reached. FITS file is probably incomplete.")
+            }
+          }
+          retry(5, 1000)
+        }
+      }
+    }
   }
 
   private def acqRequestReply(obsEvent: ObservationEvent, dataLabel: DataLabel) {
@@ -103,39 +155,9 @@ class ReplyHandler(
     bookKeep.addReply(obsEvent, dataLabel)
 
     obsEvent match {
-      case OBS_END_DSET_WRITE => {
-        //if all obsevents replies have arrived
-        if (bookKeep.allRepliesArrived(dataLabel)) {
-          bookKeep.clean(dataLabel)
-          endWrite(dataLabel)
-          endAcqRequestReply(obsEvent, dataLabel)
-        } else {
-          LOG.warning("Received data collection reply for " + obsEvent + " for dataset " + dataLabel + ", but data collection on other observation events hasn't finished. Wait and retry.")
-          //sleep one second and retry (5 times)
-          actor {
-            def retry(retries: Int, sleep: Long) {
-              Thread.sleep(sleep)
-              if (bookKeep.allRepliesArrived(dataLabel)) {
-                //OK, can continue
-                bookKeep.clean(dataLabel)
-                endWrite(dataLabel)
-                endAcqRequestReply(obsEvent, dataLabel)
-              } else if (retries > 1) {
-                //retry
-                LOG.warning("Still haven't completed data collection on other observation events. Wait and retry.")
-                retry(retries - 1, sleep)
-              } else {
-                //we failed, wrap things up anyway
-                bookKeep.clean(dataLabel)
-                endWrite(dataLabel)
-                endAcqRequestReply(obsEvent, dataLabel)
-                LOG.severe("Retry limit for " + obsEvent + " for dataset " + dataLabel + " reached. FITS file is probably incomplete.")
-              }
-            }
-            retry(5, 1000)
-          }
-        }
-      }
+      case OBS_END_DSET_WRITE  => writeFinalFile(dataLabel, obsEvent)
+      //case OBS_END_DSET_WRITE if !observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
+      //case EXT_END_OBS if observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
       case _ => endAcqRequestReply(obsEvent, dataLabel)
     }
 

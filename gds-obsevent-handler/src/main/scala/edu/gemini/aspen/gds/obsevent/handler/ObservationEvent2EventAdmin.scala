@@ -4,7 +4,6 @@ import org.apache.felix.ipojo.annotations.{Provides, Instantiate, Component}
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent, ObservationEventHandler}
 import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 import org.apache.felix.ipojo.handlers.event.Publishes
-import java.util.logging.Logger
 
 /**
  * Very simple object that passes observation events through the OSGi EventAdmin using the iPojo adapters */

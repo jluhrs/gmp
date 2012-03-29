@@ -16,14 +16,14 @@ class GDSObseventHandlerImplTest {
   val propertyHolder = mock(classOf[PropertyHolder])
   val keywordsDatabase = new KeywordsDatabaseImpl()
   val tempDir = System.getProperty("java.io.tmpdir")
+  when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
+
   val registrar = mock(classOf[ObservationStateRegistrar])
+  val dataLabel = new DataLabel("GS-2011")
   private val observationHandler = new GDSObseventHandlerImpl(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), registrar, propertyHolder)
 
   @Test
   def testGDSObseventHandler {
-    val dataLabel = new DataLabel("GS-2011")
-    when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
-
     new File(tempDir, dataLabel.getName + ".fits").createNewFile()
 
     for (evt <- ObservationEvent.values()) {
@@ -44,9 +44,6 @@ class GDSObseventHandlerImplTest {
 
   @Test
   def testWithMissingEvent {
-    val dataLabel = new DataLabel("GS-2011")
-    when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
-
     new File(tempDir, dataLabel.getName + ".fits").createNewFile()
 
     for (evt <- ObservationEvent.values()) {
@@ -69,9 +66,6 @@ class GDSObseventHandlerImplTest {
 
   @Test
   def testWithSlowEvent {
-    val dataLabel = new DataLabel("GS-2011")
-    when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
-
     new File(tempDir, dataLabel.getName + ".fits").createNewFile()
 
     for (evt <- ObservationEvent.values()) {
