@@ -11,6 +11,7 @@ import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import org.junit.Before;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.options.WrappedUrlProvisionOption;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static scala.collection.JavaConversions.seqAsJavaList;
 
@@ -65,8 +67,9 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("pax-web-jetty-bundle").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-spi").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("ecj").groupId("edu.gemini.external.osgi.org.eclipse.jdt.core.compiler").versionAsInProject(),
-                mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").versionAsInProject()
-        );
+                wrappedBundle(mavenBundle().artifactId("casdb").groupId("edu.gemini.cas").versionAsInProject()).overwriteManifest(WrappedUrlProvisionOption.OverwriteMode.FULL),
+                        mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").versionAsInProject()
+                );
     }
 
     @Override
