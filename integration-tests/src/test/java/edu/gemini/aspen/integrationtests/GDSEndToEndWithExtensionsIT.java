@@ -52,7 +52,7 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
 
     @Override
     protected String confDir() {
-        return "/src/test/resources/conf/GDSEndToEndWithExtensionsIT";
+        return "/src/test/resources/conf/gds_with_extension";
     }
 
     @Test
@@ -96,13 +96,12 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
             assertTrue(afterProcessingAllExtensionsKeywords.get(i).containsAll(originalKeywords.get(i)));
         }
 
-        assertTrue(afterProcessingAllExtensionsKeywords.get(0).contains("WINDSPEE"));
-        assertTrue(afterProcessingAllExtensionsKeywords.get(0).contains("WINDDIRE"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(0).contains("HUMIDITY"));
 
         assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("AIRMASS"));
-        assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("HUMIDITY"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(1).contains("PRESSURE"));
+
         assertTrue(afterProcessingAllExtensionsKeywords.get(2).contains("TAMBIENT"));
-        assertTrue(afterProcessingAllExtensionsKeywords.get(2).contains("PRESSURE"));
 
     }
 

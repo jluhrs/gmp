@@ -69,7 +69,6 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         sendObservationEvents(eventHandler, new DataLabel("sample1.fits"));
         TimeUnit.MILLISECONDS.sleep(2000);
 
-        System.out.println(new File(FINAL_FITS_DIR + FINAL_FITS_FILE));
         File finalFile = new File(FINAL_FITS_DIR + FINAL_FITS_FILE);
         assertTrue(finalFile.exists());
 
@@ -79,8 +78,6 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         assertTrue(afterProcessingKeywords.contains("HUMIDITY"));
         assertTrue(afterProcessingKeywords.contains("TAMBIENT"));
         assertTrue(afterProcessingKeywords.contains("PRESSURE"));
-        assertTrue(afterProcessingKeywords.contains("WINDSPEE"));
-        assertTrue(afterProcessingKeywords.contains("WINDDIRE"));
     }
 
 }
