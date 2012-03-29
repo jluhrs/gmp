@@ -58,6 +58,8 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("gds-fits-updater").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-observation-state-publisher").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-obsevent-handler").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("org.apache.felix.eventadmin").groupId("org.apache.felix").versionAsInProject(),
+                mavenBundle().artifactId("org.apache.felix.ipojo.handler.eventadmin").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("shared-test").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("shared-util").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-jetty-bundle").groupId("org.ops4j.pax.web").versionAsInProject(),
