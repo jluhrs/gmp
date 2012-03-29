@@ -10,8 +10,12 @@ import org.junit.Test
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import java.io.File
 import edu.gemini.aspen.gmp.services.PropertyHolder
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{OneInstancePerTest, FunSuite}
 
-class GDSObseventHandlerImplTest {
+@RunWith(classOf[JUnitRunner])
+class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest {
   val actorsFactory = mock(classOf[CompositeActorsFactory])
   val propertyHolder = mock(classOf[PropertyHolder])
   val keywordsDatabase = new KeywordsDatabaseImpl()
@@ -22,8 +26,7 @@ class GDSObseventHandlerImplTest {
   val dataLabel = new DataLabel("GS-2011")
   private val observationHandler = new GDSObseventHandlerImpl(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), registrar, propertyHolder)
 
-  @Test
-  def testGDSObseventHandler {
+  test("GDSObseventHandler") {
     new File(tempDir, dataLabel.getName + ".fits").createNewFile()
 
     for (evt <- ObservationEvent.values()) {
@@ -41,9 +44,7 @@ class GDSObseventHandlerImplTest {
     verify(registrar).endObservation(dataLabel)
   }
 
-
-  @Test
-  def testWithMissingEvent {
+  test("WithMissingEvent") {
     new File(tempDir, dataLabel.getName + ".fits").createNewFile()
 
     for (evt <- ObservationEvent.values()) {
@@ -64,8 +65,7 @@ class GDSObseventHandlerImplTest {
     verify(registrar).endObservation(dataLabel)
   }
 
-  @Test
-  def testWithSlowEvent {
+  test("WithSlowEvent") {
     new File(tempDir, dataLabel.getName + ".fits").createNewFile()
 
     for (evt <- ObservationEvent.values()) {
