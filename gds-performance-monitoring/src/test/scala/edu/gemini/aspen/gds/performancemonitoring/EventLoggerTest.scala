@@ -13,7 +13,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   }
 
   val delay = 100;
-  var el: EventLogger = _
+  var el: EventLogger[String, String] = _
 
   @Before
   def setup() {
@@ -41,14 +41,10 @@ class EventLoggerTest extends AssertionsForJUnit {
   @Test
   def testRetrieve() {
 
-    el.retrieve("set") match {
-      case x: scala.collection.Map[AnyRef, Option[Duration]] => {
-        assert(check(x("hola").get, delay.millis, 100.millis), "Time is: " + x("hola").get)
-        assert(x("chao").isEmpty) //doesn't end
-        assert(x("Oops").isEmpty) //doesn't start
-      }
-      case _ => fail()
-    }
+    val x = el.retrieve("set")
+    assert(check(x("hola").get, delay.millis, 100.millis), "Time is: " + x("hola").get)
+    assert(x("chao").isEmpty) //doesn't end
+    assert(x("Oops").isEmpty) //doesn't start
   }
 
   @Test

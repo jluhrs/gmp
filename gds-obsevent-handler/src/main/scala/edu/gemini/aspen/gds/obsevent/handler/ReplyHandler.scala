@@ -26,9 +26,8 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
   errorPolicy: ErrorPolicy,
   obsRegistry: ObservationStateRegistrar,
   propertyHolder: PropertyHolder) extends Actor {
-  private val LOG = Logger.getLogger(this.getClass.getName)
-  private val collectDeadline = 5000L
-  private val eventLogger = new EventLogger
+  private implicit val LOG = Logger.getLogger(this.getClass.getName)
+  private val eventLogger = new ObservationEventLogger
   private val bookKeep = new ObsEventBookKeeping
 
   import scala.collection.JavaConversions._
@@ -151,10 +150,10 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
   private def enforceTimeConstraints(evt: ObservationEvent, label: DataLabel) {
     evt match {
       case OBS_START_ACQ => {
-        checkTime(evt, label)
+        eventLogger.checkTimeWithinLimits(evt, label)
       }
       case OBS_END_ACQ => {
-        checkTime(evt, label)
+        eventLogger.checkTimeWithinLimits(evt, label)
       }
       case _ =>
     }
@@ -173,16 +172,6 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
     }
     LOG.info("Average timing for event " + evt + ": " + avgTime + "[ms]")
     LOG.info("Timing for event " + evt + " DataLabel " + label + ": " + currTime + "[ms]")
-  }
-
-  private def checkTime(obsEvent: ObservationEvent, dataLabel: DataLabel) {
-    //check if the keyword recollection was performed on time
-    eventLogger.check(dataLabel, obsEvent, collectDeadline) match {
-      case onTime: Boolean => if (!onTime) {
-        LOG.severe("Dataset " + dataLabel + ", Event " + obsEvent + ", didn't finish on time")
-      }
-      case _ => LOG.severe("Performance monitoring module failed to respond")
-    }
   }
 
   private def endWrite(dataLabel: DataLabel) {
@@ -216,7 +205,7 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
     }
 
     actor {
-      eventLogger.start(dataLabel, "FITS update")
+      //eventLogger.start(dataLabel, "FITS update")
       val start = new DateTime
       (try {
         Some(new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), new File(propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")), dataLabel, headers))
@@ -240,10 +229,22 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
       }
       val end = new DateTime
       LOG.info("Writing updated FITS file at " + new File(dataLabel.toString) + " took " + (start to end).toDuration)
-      eventLogger.end(dataLabel, "FITS update")
+      //eventLogger.end(dataLabel, "FITS update")
       obsRegistry.registerTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable)
       obsRegistry.endObservation(dataLabel)
     }
+  }
+
+}
+
+class ObservationEventLogger(val collectDeadline:Long = 5000L)(implicit LOG:Logger) extends EventLogger[DataLabel, ObservationEvent] {
+
+  def checkTimeWithinLimits(obsEvent: ObservationEvent, dataLabel: DataLabel) {
+    // Function with side effects
+    // check if the keyword recollection was performed on time
+    if (!check(dataLabel, obsEvent, collectDeadline)) {
+        LOG.severe("Dataset " + dataLabel + ", Event " + obsEvent + ", didn't finish on time")
+      }
   }
 
 }
