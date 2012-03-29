@@ -6,16 +6,15 @@ import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.aspen.gds.keywords.database.impl.KeywordsDatabaseImpl
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.api.{CompositeErrorPolicyImpl, KeywordValueActor}
-import org.junit.Test
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import java.io.File
 import edu.gemini.aspen.gmp.services.PropertyHolder
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{OneInstancePerTest, FunSuite}
+import org.scalatest.{BeforeAndAfter, OneInstancePerTest, FunSuite}
 
 @RunWith(classOf[JUnitRunner])
-class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest {
+class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with BeforeAndAfter {
   val actorsFactory = mock(classOf[CompositeActorsFactory])
   val propertyHolder = mock(classOf[PropertyHolder])
   val keywordsDatabase = new KeywordsDatabaseImpl()
@@ -24,10 +23,15 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest {
 
   val registrar = mock(classOf[ObservationStateRegistrar])
   val dataLabel = new DataLabel("GS-2011")
+  val dummyFile = new File(tempDir, dataLabel.getName + ".fits")
+
+  before {
+    dummyFile.createNewFile()
+  }
+
   private val observationHandler = new GDSObseventHandlerImpl(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), registrar, propertyHolder)
 
-  test("GDSObseventHandler") {
-    new File(tempDir, dataLabel.getName + ".fits").createNewFile()
+  test("verify all events") {
 
     for (evt <- ObservationEvent.values()) {
       when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
@@ -44,9 +48,7 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest {
     verify(registrar).endObservation(dataLabel)
   }
 
-  test("WithMissingEvent") {
-    new File(tempDir, dataLabel.getName + ".fits").createNewFile()
-
+  test("with a missing event") {
     for (evt <- ObservationEvent.values()) {
       if (evt != ObservationEvent.OBS_START_ACQ) {
         when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
@@ -65,9 +67,7 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest {
     verify(registrar).endObservation(dataLabel)
   }
 
-  test("WithSlowEvent") {
-    new File(tempDir, dataLabel.getName + ".fits").createNewFile()
-
+  test("with slow event") {
     for (evt <- ObservationEvent.values()) {
       when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
 
@@ -86,5 +86,9 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest {
     observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
     Thread.sleep(1500)
     verify(registrar).endObservation(dataLabel)
+  }
+
+  after {
+    dummyFile.delete()
   }
 }
