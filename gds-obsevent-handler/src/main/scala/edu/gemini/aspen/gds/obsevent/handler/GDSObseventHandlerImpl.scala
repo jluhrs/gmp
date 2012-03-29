@@ -156,7 +156,7 @@ class ReplyHandler(
 
     obsEvent match {
       case OBS_END_DSET_WRITE if !observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
-      //case EXT_END_OBS if observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
+      case EXT_END_OBS if observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
       case _ => endAcqRequestReply(obsEvent, dataLabel)
     }
 
