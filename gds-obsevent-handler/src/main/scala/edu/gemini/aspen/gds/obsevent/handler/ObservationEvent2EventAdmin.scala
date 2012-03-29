@@ -12,14 +12,11 @@ import java.util.logging.Logger
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ObservationEventHandler]))
 class ObservationEvent2EventAdmin(publisher0:Publisher = null) extends ObservationEventHandler {
-  private val LOG = Logger.getLogger(this.getClass.getName)
-
   @Publishes(name="obsrelay", topics = "edu/gemini/aspen/gds/obsevent/handler", dataKey = "observationevent")
   val publisher:Publisher = publisher0
 
   def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     require(publisher != null)
-    LOG.fine("Publishing event " + event + " " + dataLabel)
     publisher.sendData((event, dataLabel))
   }
 
