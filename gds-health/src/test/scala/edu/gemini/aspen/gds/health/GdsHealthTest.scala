@@ -7,7 +7,7 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
-import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
+import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandlerImpl
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import actors.threadpool.AtomicInteger
 import edu.gemini.aspen.gmp.top.Top
@@ -25,7 +25,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   val provider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false&broker.persistent=false")
   val top = mock[Top]
 
-  // Remove non actor based sources and add 2 for GDSObseventHandler and HeaderReceiver
+  // Remove non actor based sources and add 2 for GDSObseventHandlerImpl and HeaderReceiver
   val expectedUpdates = (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS).size + 2
 
   var statusservice: StatusService = _
@@ -85,7 +85,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     val handler = new TestHandler(2)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandler])
+    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandlerImpl])
     handler.waitForCompletion()
     assertEquals(2, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
@@ -95,7 +95,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   }
 
   def bindAllHealthSources(gdsHealth:GdsHealth) {
-    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandler])
+    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandlerImpl])
     val fact = mock[KeywordActorsFactory]
     for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS)) {
       when(fact.getSource).thenReturn(source)
@@ -169,7 +169,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     val handler = new TestHandler(1)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.unbindGDSObseventHandler(mock[GDSObseventHandler])
+    gdsHealth.unbindGDSObseventHandler(mock[GDSObseventHandlerImpl])
     handler.waitForCompletion()
     assertEquals(1, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)

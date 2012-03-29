@@ -7,12 +7,12 @@ import edu.gemini.aspen.giapi.status.Health
 import edu.gemini.aspen.giapi.util.jms.status.StatusSetter
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 import edu.gemini.aspen.giapi.data.ObservationEventHandler
-import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 
 import scala.actors.Actor._
 import actors.Actor
 import edu.gemini.jms.api.{JmsArtifact, JmsProvider}
 import edu.gemini.aspen.gmp.top.Top
+import edu.gemini.aspen.gds.obsevent.handler.{GDSObseventHandler, GDSObseventHandlerImpl}
 
 case object UpdateHealth
 
@@ -70,26 +70,18 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
     updateHealth()
   }
 
-  @Bind(aggregate = true, specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler", optional = true)
-  def bindGDSObseventHandler(evtHndlr: ObservationEventHandler) {
-    LOG.info("Binding GDSObseventHandler")
-    evtHndlr match {
-      case e: GDSObseventHandler =>
-        healthState.registerGDSObseventHandler()
-        updateHealth()
-      case _ => LOG.info("Ignoring observation event handler: " + evtHndlr)
-    }
+  @Bind(aggregate = true, specification = "edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler", optional = true)
+  def bindGDSObseventHandler(evtHndlr: GDSObseventHandler) {
+    LOG.info("Binding GDSObseventHandlerImpl")
+    healthState.registerGDSObseventHandler()
+    updateHealth()
   }
 
-  @Unbind(aggregate = true, specification = "edu.gemini.aspen.giapi.data.ObservationEventHandler", optional = true)
-  def unbindGDSObseventHandler(evtHndlr: ObservationEventHandler) {
-    LOG.info("Unbinding GDSObseventHandler")
-    evtHndlr match {
-      case e: GDSObseventHandler =>
-        healthState.unregisterGDSObseventHandler()
-        updateHealth()
-      case _ => LOG.info("Ignoring observation event handler: " + evtHndlr)
-    }
+  @Unbind(aggregate = true, specification = "edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler", optional = true)
+  def unbindGDSObseventHandler(evtHndlr: GDSObseventHandler) {
+    LOG.info("Unbinding GDSObseventHandlerImpl")
+    healthState.unregisterGDSObseventHandler()
+    updateHealth()
   }
 
   @Bind(aggregate = true, optional = true)
