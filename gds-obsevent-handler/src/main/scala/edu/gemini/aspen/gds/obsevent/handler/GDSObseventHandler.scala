@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gds.obsevent.handler
 
 import edu.gemini.aspen.giapi.data.ObservationEvent._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel, ObservationEventHandler}
-import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
+import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Component}
 import edu.gemini.aspen.gds.fits.FitsUpdater
 import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
@@ -18,6 +18,7 @@ import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gmp.services.PropertyHolder
+import org.apache.felix.ipojo.handlers.event.Subscriber
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -25,18 +26,18 @@ import edu.gemini.aspen.gmp.services.PropertyHolder
  */
 @Component
 @Instantiate
-@Provides(specifications = Array[Class[_]](classOf[ObservationEventHandler]))
 // todo: reduce amount of dependencies
 class GDSObseventHandler(
                           @Requires actorsFactory: CompositeActorsFactory,
                           @Requires keywordsDatabase: KeywordsDatabase,
                           @Requires errorPolicy: CompositeErrorPolicy,
                           @Requires obsState: ObservationStateRegistrar,
-                          @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
+                          @Requires propertyHolder: PropertyHolder) {
   private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, obsState, propertyHolder)
 
-  def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
-    replyHandler ! AcquisitionRequest(event, dataLabel)
+  @Subscriber(name="obsend", topics="edu/gemini/aspen/gds/obsevent/handler", dataType = "scala.Tuple2", dataKey = "observationevent")
+  def onObservationEvent(event: (ObservationEvent, DataLabel)) {
+    replyHandler ! AcquisitionRequest(event._1, event._2)
   }
 
 }
