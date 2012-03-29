@@ -155,8 +155,7 @@ class ReplyHandler(
     bookKeep.addReply(obsEvent, dataLabel)
 
     obsEvent match {
-      case OBS_END_DSET_WRITE  => writeFinalFile(dataLabel, obsEvent)
-      //case OBS_END_DSET_WRITE if !observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
+      case OBS_END_DSET_WRITE if !observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
       //case EXT_END_OBS if observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
       case _ => endAcqRequestReply(obsEvent, dataLabel)
     }

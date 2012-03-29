@@ -44,7 +44,7 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
       verify(actorsFactory).buildActors(evt, dataLabel)
     }
     verify(registrar).startObservation(dataLabel)
-    Thread.sleep(1500)
+    Thread.sleep(500)
     verify(registrar).endObservation(dataLabel)
   }
 
@@ -82,7 +82,7 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     }
     verify(registrar).startObservation(dataLabel)
     verify(registrar, times(0)).endObservation(dataLabel)
-    Thread.sleep(1500)
+    Thread.sleep(500)
     observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
     Thread.sleep(1500)
     verify(registrar).endObservation(dataLabel)
@@ -102,8 +102,31 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
         verify(actorsFactory).buildActors(evt, dataLabel)
       }
     verify(registrar).startObservation(dataLabel)
-    Thread.sleep(1500)
+    Thread.sleep(500)
     verify(registrar).endObservation(dataLabel)
+  }
+
+  test("with start transaction but no end transaction") {
+    // Simulate an ext start obs arriving
+    when(actorsFactory.buildActors(ObservationEvent.EXT_START_OBS, dataLabel)).thenReturn(List[KeywordValueActor]())
+
+    observationHandler.onObservationEvent(ObservationEvent.EXT_START_OBS, dataLabel)
+
+    for {evt <- ObservationEvent.values()
+         if (evt != ObservationEvent.EXT_END_OBS && evt != ObservationEvent.EXT_START_OBS)}
+    {
+      when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
+
+      observationHandler.onObservationEvent(evt, dataLabel)
+
+      Thread.sleep(100)
+
+      // verify mock
+      verify(actorsFactory).buildActors(evt, dataLabel)
+    }
+    verify(registrar).startObservation(dataLabel)
+    Thread.sleep(500)
+    verify(registrar, times(0)).endObservation(dataLabel)
   }
 
   after {
