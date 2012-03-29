@@ -3,6 +3,7 @@ package edu.gemini.aspen.gds.obsevent.handler
 import java.util.EnumSet
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 import collection.mutable.{SynchronizedMap, HashMap}
+import scala.collection.JavaConversions._
 
 /**
  * Keep track of which observation events have arrived and which data collection are done
@@ -35,8 +36,8 @@ class ObsEventBookKeeping {
   /**
    * Ask if replies for data collection for all observation events have arrived
    */
-  def allRepliesArrived(dataLabel: DataLabel) = {
-    repliesMap.getOrElse(dataLabel, EnumSet.noneOf(classOf[ObservationEvent])).containsAll(EnumSet.allOf(classOf[ObservationEvent]))
+  def allRepliesArrived(dataLabel: DataLabel):Boolean = {
+    repliesMap.getOrElse(dataLabel, EnumSet.noneOf(classOf[ObservationEvent])).containsAll(EnumSet.allOf(classOf[ObservationEvent]) filter {_.getObservationEventName.startsWith("OBS")})
   }
 
   /**
