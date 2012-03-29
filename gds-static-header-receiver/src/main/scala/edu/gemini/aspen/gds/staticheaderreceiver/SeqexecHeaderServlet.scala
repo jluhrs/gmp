@@ -9,14 +9,21 @@ import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase
 import org.apache.xmlrpc.server.{RequestProcessorFactoryFactory, XmlRpcHandlerMapping, PropertyHandlerMapping}
 import org.apache.xmlrpc.server.RequestProcessorFactoryFactory.RequestProcessorFactory
 import org.apache.xmlrpc.XmlRpcRequest
+import org.apache.felix.ipojo.handlers.event.Publishes
+import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 
 @Component
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[HeaderReceiver]))
-class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase, @Requires programIdDB: ProgramIdDatabase, @Requires webContainer: WebContainer) extends XmlRpcServlet with HeaderReceiver {
+class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase,
+                           @Requires programIdDB: ProgramIdDatabase,
+                           @Requires webContainer: WebContainer,
+                           publisher0:Publisher = null) extends XmlRpcServlet with HeaderReceiver {
   val initParams = mutable.Map("enabledForExtensions" -> "true")
   // Register XMLRPC Handler
   webContainer.registerServlet(this, Array("/xmlrpc/*"), initParams, null)
+  @Publishes(name="SeqexecHeaderServlet", topics = "edu/gemini/aspen/gds/obsevent/handler", dataKey = "observationevent")
+  val publisher:Publisher = publisher0
 
   override def newXmlRpcHandlerMapping(): XmlRpcHandlerMapping = {
     val phm = new PropertyHandlerMapping()
@@ -41,7 +48,7 @@ class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsD
   }
 
   class XmlRpcReceiverProcessFactory extends RequestProcessorFactory {
-    def getRequestProcessor(r: XmlRpcRequest) = new XmlRpcReceiver(keywordsDatabase,programIdDB)
+    def getRequestProcessor(r: XmlRpcRequest) = new XmlRpcReceiver(keywordsDatabase, programIdDB, publisher)
   }
 
 }

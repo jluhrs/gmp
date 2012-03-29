@@ -4,30 +4,101 @@ import edu.gemini.aspen.gds.api.Conversions._
 import java.util.logging.{Level, Logger}
 import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabase}
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Store
+import edu.gemini.aspen.giapi.data.ObservationEvent
+import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 
-class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, programIdDB: ProgramIdDatabase) {
+class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, programIdDB: ProgramIdDatabase, publisher: Publisher) {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
-  def initObservation(programId: String, dataLabel: String) {
-    LOG.info("Program ID: " + programId + " Data label: " + dataLabel)
+
+  /**
+   * Opening an observation means associating it with a program ID, and telling GDS to wait for
+   * someone to close it before writing the FITS file.
+   *
+   * @param programId The ID of the program in the ODB that specifies this observation
+   * @param dataLabel The name of the FITS file to be written
+   */
+  def openObservation(programId: String, dataLabel: String) {
+    LOG.info("Opened Observation, Program ID: " + programId + " Data label: " + dataLabel)
     programIdDB ! StoreProgramId(dataLabel, programId)
+    publisher.sendData(ObservationEvent.EXT_START_OBS, dataLabel)
   }
 
+  /**
+   * Convenience method to save on XMLRPC calls
+   *
+   * @param programId The ID of the program in the ODB that specifies this observation
+   * @param dataLabel The name of the FITS file to be written, and to which keywords must be associated
+   * @param keywords An array of Strings, each of which contains three parts, separated by a comma: the keyword name, the data type and the value
+   */
+  def openObservation(programId: String, dataLabel: String, keywords: Array[Object]) {
+    openObservation(programId, dataLabel)
+    storeKeywords(dataLabel, keywords)
+  }
+
+  /**
+   * Closing an observation means all keywords have been sent, so the FITS file may be updated
+   *
+   * @param dataLabel The name of the FITS file to be written
+   */
+  def closeObservation(dataLabel: String) {
+    LOG.info("Closed Observation, Data label: " + dataLabel)
+    publisher.sendData(ObservationEvent.EXT_END_OBS, dataLabel)
+  }
+
+  /**
+   * Convenience method to save on XMLRPC calls
+   *
+   * @param dataLabel The name of the FITS file to be written, and to which keywords must be associated
+   * @param keywords An array of Strings, each of which contains three parts, separated by a comma: the keyword name, the data type and the value
+   */
+  def closeObservation(dataLabel: String, keywords: Array[Object]) {
+    storeKeywords(dataLabel, keywords)
+    closeObservation(dataLabel)
+  }
+
+  /**
+   * Associate a keyword to a given data set
+   *
+   * @param dataLabel The name of the FITS file to be written, and to which keywords must be associated
+   * @param keyword The FITS keyword name
+   * @param value The FITS keyword value
+   */
   def storeKeyword(dataLabel: String, keyword: String, value: String) {
     LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
     keywordsDatabase ! Store(dataLabel, keyword, value)
   }
 
+  /**
+   * Associate a keyword to a given data set
+   *
+   * @param dataLabel The name of the FITS file to be written, and to which keywords must be associated
+   * @param keyword The FITS keyword name
+   * @param value The FITS keyword value
+   */
   def storeKeyword(dataLabel: String, keyword: String, value: Double) {
     LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
     keywordsDatabase ! Store(dataLabel, keyword, value.asInstanceOf[AnyRef])
   }
 
+  /**
+   * Associate a keyword to a given data set
+   *
+   * @param dataLabel The name of the FITS file to be written, and to which keywords must be associated
+   * @param keyword The FITS keyword name
+   * @param value The FITS keyword value
+   */
   def storeKeyword(dataLabel: String, keyword: String, value: Int) {
     LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
     keywordsDatabase ! Store(dataLabel, keyword, value.asInstanceOf[AnyRef])
   }
 
+  /**
+   * Associate keywords to a given data set
+   *
+   * @param dataLabel The name of the FITS file to be written, and to which keywords must be associated
+   * @param keywords An array of Strings, each of which contains three parts, separated by a comma: the keyword name, the data type and the value
+   */
   def storeKeywords(dataLabel: String, keywords: Array[Object]) {
     for (keyword <- keywords) {
       val pieces = keyword.asInstanceOf[String].split(",")

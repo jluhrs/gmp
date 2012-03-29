@@ -8,31 +8,33 @@ import edu.gemini.aspen.gds.keywords.database.impl.ProgramIdDatabaseImpl
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{Store, Retrieve, Clean}
 import scala.Some
 import edu.gemini.aspen.gds.keywords.database.RetrieveProgramId
+import org.scalatest.mock.MockitoSugar
+import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 
-class XmlRpcReceiverTest extends AssertionsForJUnit {
+class XmlRpcReceiverTest extends AssertionsForJUnit with MockitoSugar {
   val db = new TemporarySeqexecKeywordsDatabaseImpl
   val pdb = new ProgramIdDatabaseImpl
-  val xmlRpcReceiver = new XmlRpcReceiver(db, pdb)
-
+  val publisher = mock[Publisher]
+  val xmlRpcReceiver = new XmlRpcReceiver(db, pdb, publisher)
 
 
   @Test
   def testDB() {
     db ! Store("label", "KEY", 1.asInstanceOf[AnyRef])
-    (db !? (1000, Retrieve("label", "KEY"))) match {
+    (db !?(1000, Retrieve("label", "KEY"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("wronglabel", "KEY"))) match {
+    (db !?(1000, Retrieve("wronglabel", "KEY"))) match {
       case Some(None) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label", "WRONGKEY"))) match {
+    (db !?(1000, Retrieve("label", "WRONGKEY"))) match {
       case Some(None) =>
       case _ => fail()
     }
     db ! Clean("label")
-    (db !? (1000, Retrieve("label", "KEY"))) match {
+    (db !?(1000, Retrieve("label", "KEY"))) match {
       case Some(None) =>
       case _ => fail()
     }
@@ -41,27 +43,27 @@ class XmlRpcReceiverTest extends AssertionsForJUnit {
 
   @Test
   def testXmlRpcReceiver() {
+    xmlRpcReceiver.openObservation("id", "label")
     xmlRpcReceiver.storeKeyword("label", "KEY", 1)
     xmlRpcReceiver.storeKeywords("label2", ("KEY,INT,1" :: "KEY2,DOUBLE,1.0" :: "KEY3,STRING,uno" :: Nil).toArray)
-    xmlRpcReceiver.initObservation("id", "label")
-    Thread.sleep(100) //allow for messages to arrive
-    (db !? (1000, Retrieve("label", "KEY"))) match {
+    xmlRpcReceiver.closeObservation("label")
+    (db !?(1000, Retrieve("label", "KEY"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label2", "KEY"))) match {
+    (db !?(1000, Retrieve("label2", "KEY"))) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label2", "KEY2"))) match {
+    (db !?(1000, Retrieve("label2", "KEY2"))) match {
       case Some(Some(1.0)) =>
       case _ => fail()
     }
-    (db !? (1000, Retrieve("label2", "KEY3"))) match {
+    (db !?(1000, Retrieve("label2", "KEY3"))) match {
       case Some(Some("uno")) =>
       case _ => fail()
     }
-    (pdb !? (1000, RetrieveProgramId("label"))) match {
+    (pdb !?(1000, RetrieveProgramId("label"))) match {
       case Some(Some("id")) =>
       case _ => fail()
     }
