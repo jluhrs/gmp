@@ -2,7 +2,6 @@ package edu.gemini.aspen.gds.obsevent.handler
 
 import edu.gemini.aspen.giapi.data.ObservationEvent._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Component}
 import edu.gemini.aspen.gds.fits.FitsUpdater
 import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
@@ -19,6 +18,11 @@ import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gmp.services.PropertyHolder
 import org.apache.felix.ipojo.handlers.event.Subscriber
+import org.apache.felix.ipojo.annotations.{Provides, Requires, Instantiate, Component}
+
+/**
+ * Marker interface used to export GDSObseventHandlerImpl and used by the Health component */
+trait GDSObseventHandler
 
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
@@ -26,13 +30,14 @@ import org.apache.felix.ipojo.handlers.event.Subscriber
  */
 @Component
 @Instantiate
+@Provides(specifications = Array[Class[_]](classOf[GDSObseventHandler]))
 // todo: reduce amount of dependencies
-class GDSObseventHandler(
+class GDSObseventHandlerImpl(
                           @Requires actorsFactory: CompositeActorsFactory,
                           @Requires keywordsDatabase: KeywordsDatabase,
                           @Requires errorPolicy: CompositeErrorPolicy,
                           @Requires obsState: ObservationStateRegistrar,
-                          @Requires propertyHolder: PropertyHolder) {
+                          @Requires propertyHolder: PropertyHolder) extends GDSObseventHandler {
   private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, obsState, propertyHolder)
 
   @Subscriber(name="obsend", topics="edu/gemini/aspen/gds/obsevent/handler", dataType = "scala.Tuple2", dataKey = "observationevent")

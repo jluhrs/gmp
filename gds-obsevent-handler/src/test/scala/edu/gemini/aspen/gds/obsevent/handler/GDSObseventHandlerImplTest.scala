@@ -11,13 +11,13 @@ import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import java.io.File
 import edu.gemini.aspen.gmp.services.PropertyHolder
 
-class GDSObseventHandlerTest {
+class GDSObseventHandlerImplTest {
   val actorsFactory = mock(classOf[CompositeActorsFactory])
   val propertyHolder = mock(classOf[PropertyHolder])
   val keywordsDatabase = new KeywordsDatabaseImpl()
   val tempDir = System.getProperty("java.io.tmpdir")
   val registrar = mock(classOf[ObservationStateRegistrar])
-  private val observationHandler = new GDSObseventHandler(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), registrar, propertyHolder)
+  private val observationHandler = new GDSObseventHandlerImpl(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), registrar, propertyHolder)
 
   @Test
   def testGDSObseventHandler {

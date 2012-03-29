@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.obsevent.handler
 import org.apache.felix.ipojo.annotations.{Provides, Instantiate, Component}
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent, ObservationEventHandler}
 import org.apache.felix.ipojo.handlers.event.publisher.Publisher
-import org.apache.felix.ipojo.handlers.event.{Subscriber, Publishes}
+import org.apache.felix.ipojo.handlers.event.Publishes
 import java.util.logging.Logger
 
 /**
