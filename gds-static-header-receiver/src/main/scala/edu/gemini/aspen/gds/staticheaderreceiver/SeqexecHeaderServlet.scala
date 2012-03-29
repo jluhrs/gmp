@@ -17,13 +17,20 @@ import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 @Provides(specifications = Array[Class[_]](classOf[HeaderReceiver]))
 class SeqexecHeaderServlet(@Requires keywordsDatabase: TemporarySeqexecKeywordsDatabase,
                            @Requires programIdDB: ProgramIdDatabase,
-                           @Requires webContainer: WebContainer,
-                           publisher0:Publisher = null) extends XmlRpcServlet with HeaderReceiver {
+                           @Requires webContainer: WebContainer) extends XmlRpcServlet with HeaderReceiver {
   val initParams = mutable.Map("enabledForExtensions" -> "true")
   // Register XMLRPC Handler
   webContainer.registerServlet(this, Array("/xmlrpc/*"), initParams, null)
-  @Publishes(name="SeqexecHeaderServlet", topics = "edu/gemini/aspen/gds/obsevent/handler", dataKey = "observationevent")
-  val publisher:Publisher = publisher0
+  @Publishes(name = "SeqexecHeaderServlet", topics = "edu/gemini/aspen/gds/obsevent/handler", dataKey = "observationevent")
+  var publisher: Publisher = _
+
+  def this(keywordsDatabase: TemporarySeqexecKeywordsDatabase,
+           programIdDB: ProgramIdDatabase,
+           webContainer: WebContainer,
+           publisher0: Publisher = null) {
+    this(keywordsDatabase, programIdDB, webContainer)
+    publisher = publisher0
+  }
 
   override def newXmlRpcHandlerMapping(): XmlRpcHandlerMapping = {
     val phm = new PropertyHandlerMapping()
