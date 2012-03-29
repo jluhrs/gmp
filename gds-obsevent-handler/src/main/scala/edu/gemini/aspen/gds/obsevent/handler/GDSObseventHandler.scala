@@ -116,7 +116,7 @@ class ReplyHandler(
                 endAcqRequestReply(obsEvent, dataLabel)
               } else if (retries > 1) {
                 //retry
-                LOG.warning("Still haven't completed data collection on other observation events hasn't finished. Wait and retry.")
+                LOG.warning("Still haven't completed data collection on other observation events. Wait and retry.")
                 retry(retries - 1, sleep)
               } else {
                 //we failed, wrap things up anyway
