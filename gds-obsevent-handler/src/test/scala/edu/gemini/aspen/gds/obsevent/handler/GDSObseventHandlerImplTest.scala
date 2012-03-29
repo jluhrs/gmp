@@ -39,70 +39,58 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
 
       observationHandler.onObservationEvent(evt, dataLabel)
 
-      Thread.sleep(300)
+      sleep(300)
 
       // verify mock
       verify(actorsFactory).buildActors(evt, dataLabel)
     }
     verify(registrar).startObservation(dataLabel)
-    Thread.sleep(500)
+    sleep(500)
     verify(registrar).endObservation(dataLabel)
   }
 
   test("with a missing event") {
+    when(actorsFactory.buildActors(any[ObservationEvent], any[DataLabel])).thenReturn(List[KeywordValueActor]())
+
     for {evt <- ObservationEvent.values()
          if (evt != ObservationEvent.EXT_END_OBS && evt != ObservationEvent.EXT_START_OBS && evt != ObservationEvent.OBS_START_ACQ)} {
-      when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
-
       observationHandler.onObservationEvent(evt, dataLabel)
-
-      Thread.sleep(300)
-
-      // verify mock
-      verify(actorsFactory).buildActors(evt, dataLabel)
     }
+    sleep(300)
     verify(registrar).startObservation(dataLabel)
     verify(registrar, times(0)).endObservation(dataLabel)
-    Thread.sleep(6500)
+    sleep(6500)
     verify(registrar).endObservation(dataLabel)
   }
 
   test("with slow event") {
-    for (evt <- ObservationEvent.values()) {
-      when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
+    when(actorsFactory.buildActors(any[ObservationEvent], any[DataLabel])).thenReturn(List[KeywordValueActor]())
 
+    for (evt <- ObservationEvent.values()) {
       if (evt != ObservationEvent.OBS_START_ACQ) {
         observationHandler.onObservationEvent(evt, dataLabel)
-
-        Thread.sleep(300)
-
-        // verify mock
-        verify(actorsFactory).buildActors(evt, dataLabel)
       }
     }
+    sleep(300)
     verify(registrar).startObservation(dataLabel)
     verify(registrar, times(0)).endObservation(dataLabel)
-    Thread.sleep(500)
+    sleep(500)
     observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
-    Thread.sleep(1500)
+    sleep(1500)
     verify(registrar).endObservation(dataLabel)
   }
 
   test("without start/end transaction") {
+    when(actorsFactory.buildActors(any[ObservationEvent], any[DataLabel])).thenReturn(List[KeywordValueActor]())
+
     for {evt <- ObservationEvent.values()
          if (evt != ObservationEvent.EXT_END_OBS && evt != ObservationEvent.EXT_START_OBS)
     } {
-      when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
-
       observationHandler.onObservationEvent(evt, dataLabel)
-
-      Thread.sleep(100)
-
-      // verify mock
-      verify(actorsFactory).buildActors(evt, dataLabel)
     }
+    sleep(300)
     verify(registrar).startObservation(dataLabel)
-    Thread.sleep(500)
+    sleep(500)
     verify(registrar).endObservation(dataLabel)
   }
 
@@ -116,9 +104,9 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
          if (evt != ObservationEvent.EXT_END_OBS && evt != ObservationEvent.EXT_START_OBS)} {
       observationHandler.onObservationEvent(evt, dataLabel)
     }
-    Thread.sleep(500)
+    sleep(500)
     verify(registrar).startObservation(dataLabel)
-    Thread.sleep(500)
+    sleep(500)
     verify(registrar, times(0)).endObservation(dataLabel)
   }
 
