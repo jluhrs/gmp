@@ -19,7 +19,7 @@
     <version>0.2.0-SNAPSHOT</version>
 
     <name>GDS Performance Monitoring</name>
-    <description>The module provides a service tu publish/retrieve performance stats</description>
+    <description>The module provides a service to publish/retrieve performance stats</description>
 
     <packaging>bundle</packaging>
 
