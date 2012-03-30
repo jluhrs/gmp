@@ -2,7 +2,6 @@ package edu.gemini.aspen.gds.obsevent.handler
 
 import edu.gemini.aspen.giapi.data.ObservationEvent._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.aspen.gds.fits.FitsUpdater
 import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
@@ -11,15 +10,12 @@ import actors.Actor.actor
 import java.io.{FileNotFoundException, File}
 import java.util.logging.{Level, Logger}
 
-import edu.gemini.aspen.gds.api.fits.Header
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.gmp.services.PropertyHolder
 import collection.mutable.ConcurrentMap
 import com.google.common.cache.CacheBuilder
 import java.util.concurrent.TimeUnit._
-import edu.gemini.aspen.gds.performancemonitoring.EventLogger
-import com.google.common.base.Stopwatch
 
 class ReplyHandler(actorsFactory: CompositeActorsFactory,
   keywordsDatabase: KeywordsDatabase,
@@ -30,15 +26,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
   private val eventLogger = new ObservationEventLogger
   private val bookKeeper = new ObsEventBookKeeping
   private val fileProcessor = new FitsFileProcessor(propertyHolder, obsRegistry, eventLogger)
-
-  import scala.collection.JavaConversions._
-
-  // expiration of 1 day by default but tests can override it
-  def expirationMillis = 24 * 60 * 60 * 1000
-
-  val observationTransactions: ConcurrentMap[DataLabel, String] = CacheBuilder.newBuilder()
-    .expireAfterWrite(expirationMillis, MILLISECONDS)
-    .build[DataLabel, String]().asMap()
+  private val obsTransactions = new ObservationTransactionsStore()
 
   start()
 
@@ -60,7 +48,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
         obsRegistry.startObservation(dataLabel)
       // This indicates that the observation was started by the seqexec using a "transaction" of sorts
       case EXT_START_OBS =>
-        observationTransactions.put(dataLabel, "")
+        obsTransactions.startTransaction(dataLabel)
       case _ =>
     }
 
@@ -117,8 +105,8 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
     bookKeeper.addReply(obsEvent, dataLabel)
 
     obsEvent match {
-      case OBS_END_DSET_WRITE if !observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
-      case EXT_END_OBS if observationTransactions.contains(dataLabel) => writeFinalFile(dataLabel, obsEvent)
+      case OBS_END_DSET_WRITE if !obsTransactions.hasTransaction(dataLabel) => writeFinalFile(dataLabel, obsEvent)
+      case EXT_END_OBS if obsTransactions.hasTransaction(dataLabel) => writeFinalFile(dataLabel, obsEvent)
       case _ => endAcqRequestReply(obsEvent, dataLabel)
     }
 
@@ -157,3 +145,4 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
   }
 
 }
+
