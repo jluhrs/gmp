@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
 import org.scala_tools.time.Imports._
-import java.util.logging.Logger
 import scala.{Some, Option}
 import collection.mutable.{SynchronizedMap, HashMap}
 
@@ -29,20 +28,18 @@ class EventLogger[A, B] {
     map.getOrElseUpdate(set, new HashMap[B, (Option[DateTime], Option[DateTime])] with SynchronizedMap[B, (Option[DateTime], Option[DateTime])]) += evt ->(map(set).getOrElse(evt, (None, None))._1, Some(DateTime.now))
   }
 
-  def retrieve(set: A): scala.collection.Map[B, Option[Duration]] = {
+  def retrieve(set: A): scala.collection.Map[B, Option[Duration]] =
     map.getOrElse(set, collection.mutable.Map.empty[B, (Option[DateTime], Option[DateTime])])
       .mapValues({
       case (Some(start), Some(end)) => Some((start to end).toDuration)
       case _ => None
     })
-  }
 
-  def retrieve(set: A, evt: B): Option[Duration] = {
+  def retrieve(set: A, evt: B): Option[Duration] =
     map.getOrElse(set, collection.mutable.Map.empty[B, (Option[DateTime], Option[DateTime])]).get(evt) flatMap {
       case (Some(start), Some(end)) => Some((start to end).toDuration)
       case _ => None
     }
-  }
 
   def average(evt: B): Option[Duration] = {
     val values = for {
@@ -73,7 +70,7 @@ class EventLogger[A, B] {
     }.average()
   }
 
-  def retrieveAll() = {
+  def retrieveAll(): scala.collection.Map[A, scala.collection.Map[B, Option[Duration]]] = {
     map.mapValues({
       case m => m.mapValues({
         case (Some(start), Some(end)) => Some((start to end).toDuration)
@@ -83,7 +80,7 @@ class EventLogger[A, B] {
   }
 
   def check(set: A, evt: B, millis: Long): Boolean = retrieve(set, evt) match {
-      case Some(x: Duration) => x.millis <= millis
-      case _ => false
-    }
+    case Some(x: Duration) => x.millis <= millis
+    case _ => false
+  }
 }
