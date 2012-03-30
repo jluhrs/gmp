@@ -22,7 +22,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
   private implicit val LOG = Logger.getLogger(this.getClass.getName)
   private val eventLogger = new ObservationEventLogger
   private val bookKeeper = new ObsEventBookKeeping
-  private val fileProcessor = new FitsFileProcessor(propertyHolder, eventLogger)
+  private val fileProcessor = new FitsFileProcessor(propertyHolder)
   private val obsTransactions = new ObservationTransactionsStore()
 
   start()

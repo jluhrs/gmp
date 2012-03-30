@@ -1,8 +1,7 @@
 package edu.gemini.aspen.gds.obsevent.handler
 
 import edu.gemini.aspen.gmp.services.PropertyHolder
-import edu.gemini.aspen.gds.performancemonitoring.EventLogger
-import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
+import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.fits.Header
 import edu.gemini.aspen.gds.api.CollectedValue
 import com.google.common.base.Stopwatch
@@ -12,7 +11,7 @@ import java.io.File
 
 /**
  * Utility class capable of coordinating the process of writing the FITS file once all observations have arrived */
-class FitsFileProcessor(propertyHolder: PropertyHolder, eventLogger: EventLogger[DataLabel, ObservationEvent])(implicit LOG: Logger) {
+class FitsFileProcessor(propertyHolder: PropertyHolder)(implicit LOG: Logger) {
   /**
    * Converts a list of collected value to a list of headers containing the values */
   def convertToHeaders(processedList: List[CollectedValue[_]]): Seq[Header] = {
