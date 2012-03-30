@@ -20,6 +20,7 @@ import collection.mutable.ConcurrentMap
 import com.google.common.cache.CacheBuilder
 import java.util.concurrent.TimeUnit._
 import edu.gemini.aspen.gds.performancemonitoring.EventLogger
+import com.google.common.base.Stopwatch
 
 class ReplyHandler(actorsFactory: CompositeActorsFactory,
   keywordsDatabase: KeywordsDatabase,
@@ -160,10 +161,10 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
 }
 
 class FitsFileProcessor(propertyHolder: PropertyHolder, obsRegistry: ObservationStateRegistrar, eventLogger:EventLogger[DataLabel, ObservationEvent])(implicit LOG: Logger) {
-  def updateFITSFile(dataLabel: DataLabel, processedList:List[CollectedValue[_]]) {
+  def convertToHeaders(processedList: scala.List[CollectedValue[_]]): scala.List[Header] = {
     val maxHeader = (0 /: processedList)((i, m) => m.index.max(i))
 
-    val headers: List[Header] = List.range(0, maxHeader + 1) map {
+    List.range(0, maxHeader + 1) map {
       headerIndex => {
         val headerItems = processedList filter {
           _.index == headerIndex
@@ -176,31 +177,26 @@ class FitsFileProcessor(propertyHolder: PropertyHolder, obsRegistry: Observation
         new Header(headerIndex, headerItems)
       }
     }
+  }
+
+  def updateFITSFile(dataLabel: DataLabel, processedList:List[CollectedValue[_]]) {
+    val headers: List[Header] = convertToHeaders(processedList)
 
     actor {
-      val start = new DateTime
-      (try {
-        Some(new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), new File(propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")), dataLabel, headers))
+      val stopwatch = new Stopwatch().start()
+      val srcPath = propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")
+      val destPath = propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")
+
+      try {
+        val fu = new FitsUpdater(new File(srcPath), new File(destPath), dataLabel, headers)
+        fu.updateFitsHeaders()
       } catch {
-        case ex => {
+        case ex =>
           obsRegistry.registerError(dataLabel, "Problem writing FITS file")
           LOG.log(Level.SEVERE, ex.getMessage, ex)
           None
-        }
-      }) map {
-        updater: FitsUpdater => {
-          try {
-            updater.updateFitsHeaders()
-          } catch {
-            case ex => {
-              obsRegistry.registerError(dataLabel, "Problem writing FITS file")
-              LOG.log(Level.SEVERE, ex.getMessage, ex)
-            }
-          }
-        }
       }
-      val end = new DateTime
-      LOG.info("Writing updated FITS file at " + new File(dataLabel.toString) + " took " + (start to end).toDuration)
+      LOG.info("Writing updated FITS file at " + dataLabel.toString + " took " + stopwatch.stop().elapsedMillis() + " [ms]")
       obsRegistry.registerTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable)
       obsRegistry.endObservation(dataLabel)
     }
