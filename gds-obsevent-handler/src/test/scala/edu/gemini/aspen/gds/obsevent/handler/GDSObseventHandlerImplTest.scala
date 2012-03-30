@@ -12,7 +12,8 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, OneInstancePerTest, FunSuite}
 import java.util.concurrent.TimeUnit
 import org.apache.felix.ipojo.handlers.event.publisher.Publisher
-import edu.gemini.aspen.gds.api.{GDSEndObservation, GDSStartObservation, CompositeErrorPolicyImpl, KeywordValueActor}
+import edu.gemini.aspen.gds.api._
+import org.joda.time.Duration
 
 @RunWith(classOf[JUnitRunner])
 class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with BeforeAndAfter {
@@ -49,7 +50,8 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
     sleep(500)
     verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
-    //verify(registrar).endObservation(dataLabel)
+    // use refEq to skip comparing the "times" field
+    verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
   }
 
   test("with a missing event") {
@@ -62,11 +64,9 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     sleep(300)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
     verify(mockPublisher, times(0)).sendData(GDSEndObservation(dataLabel))
-//    verify(registrar).startObservation(dataLabel)
-    //    verify(registrar, times(0)).endObservation(dataLabel)
     sleep(6500)
     verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
-    //    verify(registrar).endObservation(dataLabel)
+    verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
   }
 
   test("with slow event") {
@@ -80,13 +80,11 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     sleep(300)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
     verify(mockPublisher, times(0)).sendData(GDSEndObservation(dataLabel))
-//    verify(registrar).startObservation(dataLabel)
-//    verify(registrar, times(0)).endObservation(dataLabel)
     sleep(500)
     observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
     sleep(1500)
     verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
-//    verify(registrar).endObservation(dataLabel)
+    verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
   }
 
   test("without start/end transaction") {
@@ -98,11 +96,10 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
       observationHandler.onObservationEvent(evt, dataLabel)
     }
     sleep(300)
-//    verify(registrar).startObservation(dataLabel)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
     sleep(1500)
     verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
-//    verify(registrar).endObservation(dataLabel)
+    verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
   }
 
   test("with start transaction but no end transaction") {
@@ -117,10 +114,8 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     }
     sleep(500)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
-//    verify(registrar).startObservation(dataLabel)
     sleep(500)
     verify(mockPublisher, times(0)).sendData(GDSEndObservation(dataLabel))
-//    verify(registrar, times(0)).endObservation(dataLabel)
   }
 
   test("with start transaction and end transaction") {
@@ -136,16 +131,14 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     }
     sleep(500)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
-//    verify(registrar).startObservation(dataLabel)
     sleep(500)
     verify(mockPublisher, times(0)).sendData(GDSEndObservation(dataLabel))
-//    verify(registrar, times(0)).endObservation(dataLabel)
 
     // Simulate an end obs arriving
     observationHandler.onObservationEvent(ObservationEvent.EXT_END_OBS, dataLabel)
     sleep(500)
     verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
-//    verify(registrar).endObservation(dataLabel)
+    verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
 
   }
 

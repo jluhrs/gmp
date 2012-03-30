@@ -135,7 +135,6 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
       fileProcessor.updateFITSFile(dataLabel, processedList) match {
         case Right(msg:String) =>
           LOG.info(msg)
-          //obsRegistry.registerTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable)
           publisher.sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable))
         case Left(errorMsg:String) =>
           LOG.severe(errorMsg)
