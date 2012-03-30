@@ -19,8 +19,9 @@ import edu.gemini.aspen.gmp.services.PropertyHolder
 import collection.mutable.ConcurrentMap
 import com.google.common.cache.CacheBuilder
 import java.util.concurrent.TimeUnit._
+import edu.gemini.aspen.gds.performancemonitoring.EventLogger
 
-class ReplyHandler( actorsFactory: CompositeActorsFactory,
+class ReplyHandler(actorsFactory: CompositeActorsFactory,
   keywordsDatabase: KeywordsDatabase,
   errorPolicy: ErrorPolicy,
   obsRegistry: ObservationStateRegistrar,
@@ -28,6 +29,7 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
   private implicit val LOG = Logger.getLogger(this.getClass.getName)
   private val eventLogger = new ObservationEventLogger
   private val bookKeep = new ObsEventBookKeeping
+  private val fileProcessor = new FitsFileProcessor(propertyHolder, obsRegistry, eventLogger)
 
   import scala.collection.JavaConversions._
 
@@ -53,14 +55,12 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
   private def acqRequest(obsEvent: ObservationEvent, dataLabel: DataLabel) {
     LOG.info("ObservationEvent " + obsEvent + " for " + dataLabel)
     obsEvent match {
-      case OBS_PREP => {
+      case OBS_PREP =>
         eventLogger.addEventSet(dataLabel)
         obsRegistry.startObservation(dataLabel)
-      }
       // This indicates that the observation was started by the seqexec using a "transaction" of sorts
-      case EXT_START_OBS => {
+      case EXT_START_OBS =>
         observationTransactions.put(dataLabel, "")
-      }
       case _ =>
     }
 
@@ -75,37 +75,35 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
   }
 
   def writeFinalFile(dataLabel: DataLabel, obsEvent: ObservationEvent) {
-    {
-      //if all obsevents replies have arrived
-      if (bookKeep.allRepliesArrived(dataLabel)) {
-        bookKeep.clean(dataLabel)
-        endWrite(dataLabel)
-        endAcqRequestReply(obsEvent, dataLabel)
-      } else {
-        LOG.warning("Received data collection reply for " + obsEvent + " for dataset " + dataLabel + ", but data collection on other observation events hasn't finished. Wait and retry.")
-        //sleep one second and retry (5 times)
-        actor {
-          def retry(retries: Int, sleep: Long) {
-            Thread.sleep(sleep)
-            if (bookKeep.allRepliesArrived(dataLabel)) {
-              //OK, can continue
-              bookKeep.clean(dataLabel)
-              endWrite(dataLabel)
-              endAcqRequestReply(obsEvent, dataLabel)
-            } else if (retries > 1) {
-              //retry
-              LOG.warning("Still haven't completed data collection on other observation events. Wait and retry.")
-              retry(retries - 1, sleep)
-            } else {
-              //we failed, wrap things up anyway
-              bookKeep.clean(dataLabel)
-              endWrite(dataLabel)
-              endAcqRequestReply(obsEvent, dataLabel)
-              LOG.severe("Retry limit for " + obsEvent + " for dataset " + dataLabel + " reached. FITS file is probably incomplete.")
-            }
+    //if all obsevents replies have arrived
+    if (bookKeep.allRepliesArrived(dataLabel)) {
+      bookKeep.clean(dataLabel)
+      endWrite(dataLabel)
+      endAcqRequestReply(obsEvent, dataLabel)
+    } else {
+      LOG.warning("Received data collection reply for " + obsEvent + " for dataset " + dataLabel + ", but data collection on other observation events hasn't finished. Wait and retry.")
+      //sleep one second and retry (5 times)
+      actor {
+        def retry(retries: Int, sleep: Long) {
+          Thread.sleep(sleep)
+          if (bookKeep.allRepliesArrived(dataLabel)) {
+            //OK, can continue
+            bookKeep.clean(dataLabel)
+            endWrite(dataLabel)
+            endAcqRequestReply(obsEvent, dataLabel)
+          } else if (retries > 1) {
+            //retry
+            LOG.warning("Still haven't completed data collection on other observation events. Wait and retry.")
+            retry(retries - 1, sleep)
+          } else {
+            //we failed, wrap things up anyway
+            bookKeep.clean(dataLabel)
+            endWrite(dataLabel)
+            endAcqRequestReply(obsEvent, dataLabel)
+            LOG.severe("Retry limit for " + obsEvent + " for dataset " + dataLabel + " reached. FITS file is probably incomplete.")
           }
-          retry(5, 1000)
         }
+        retry(5, 1000)
       }
     }
   }
@@ -148,17 +146,21 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
 
   private def endWrite(dataLabel: DataLabel) {
     try {
-      updateFITSFile(dataLabel)
+      //if the option is None, use an empty List
+      val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[List[CollectedValue[_]]]
+      val processedList = errorPolicy.applyPolicy(dataLabel, list)
+
+      fileProcessor.updateFITSFile(dataLabel, processedList)
     } catch {
       case ex: FileNotFoundException => LOG.log(Level.SEVERE, ex.getMessage, ex)
     }
     keywordsDatabase ! Clean(dataLabel)
   }
 
-  private def updateFITSFile(dataLabel: DataLabel) {
-    //if the option is None, use an empty List
-    val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[List[CollectedValue[_]]]
-    val processedList = errorPolicy.applyPolicy(dataLabel, list)
+}
+
+class FitsFileProcessor(propertyHolder: PropertyHolder, obsRegistry: ObservationStateRegistrar, eventLogger:EventLogger[DataLabel, ObservationEvent])(implicit LOG: Logger) {
+  def updateFITSFile(dataLabel: DataLabel, processedList:List[CollectedValue[_]]) {
     val maxHeader = (0 /: processedList)((i, m) => m.index.max(i))
 
     val headers: List[Header] = List.range(0, maxHeader + 1) map {
@@ -173,11 +175,9 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
         }
         new Header(headerIndex, headerItems)
       }
-
     }
 
     actor {
-      //eventLogger.start(dataLabel, "FITS update")
       val start = new DateTime
       (try {
         Some(new FitsUpdater(new File(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")), new File(propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")), dataLabel, headers))
@@ -201,11 +201,9 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
       }
       val end = new DateTime
       LOG.info("Writing updated FITS file at " + new File(dataLabel.toString) + " took " + (start to end).toDuration)
-      //eventLogger.end(dataLabel, "FITS update")
       obsRegistry.registerTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable)
       obsRegistry.endObservation(dataLabel)
     }
   }
 
 }
-
