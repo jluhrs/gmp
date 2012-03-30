@@ -46,6 +46,20 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
     val cv = List(CollectedValue("KEY", "1.0", "comment", 0))
 
     assertEquals(List(Header(0, HeaderItem("KEY", "1.0", "comment") :: Nil)), fp.convertToHeaders(cv))
+
+    val cv2 = CollectedValue("KEY", "1.0", "comment", 0) :: CollectedValue("KEY2", "1.0", "comment", 0) :: Nil
+
+    assertEquals(List(Header(0, HeaderItem("KEY", "1.0", "comment") :: HeaderItem("KEY2", "1.0", "comment") :: Nil)), fp.convertToHeaders(cv2))
+  }
+
+  test("convertToHeaders with two headers") {
+    implicit val LOG = mock[Logger]
+    val eventLogger = new ObservationEventLogger
+    val fp = new FitsFileProcessor(propertyHolder, registrar, eventLogger)
+
+    val cv2 = CollectedValue("KEY", "1.0", "comment", 0) :: CollectedValue("KEY2", "1.0", "comment", 1) :: Nil
+
+    assertEquals(Header(0, HeaderItem("KEY", "1.0", "comment") :: Nil) :: Header(1, HeaderItem("KEY2", "1.0", "comment") :: Nil) :: Nil, fp.convertToHeaders(cv2))
   }
 
   after {
