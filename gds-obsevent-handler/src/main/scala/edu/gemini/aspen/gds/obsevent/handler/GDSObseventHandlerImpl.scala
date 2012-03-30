@@ -5,10 +5,11 @@ import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
 import edu.gemini.aspen.gds.api._
-import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.gmp.services.PropertyHolder
-import org.apache.felix.ipojo.handlers.event.Subscriber
 import org.apache.felix.ipojo.annotations.{Provides, Requires, Instantiate, Component}
+import org.apache.felix.ipojo.handlers.event.publisher.Publisher
+import org.apache.felix.ipojo.handlers.event.{Publishes, Subscriber}
+
 /**
  * Marker interface used to export GDSObseventHandlerImpl and used by the Health component */
 trait GDSObseventHandler
@@ -25,9 +26,12 @@ class GDSObseventHandlerImpl(
                           @Requires actorsFactory: CompositeActorsFactory,
                           @Requires keywordsDatabase: KeywordsDatabase,
                           @Requires errorPolicy: CompositeErrorPolicy,
-                          @Requires obsState: ObservationStateRegistrar,
                           @Requires propertyHolder: PropertyHolder) extends GDSObseventHandler {
-  private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, obsState, propertyHolder)
+
+  @Publishes(name="gdsrelay", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent")
+  var publisher:Publisher = _
+
+  private lazy val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, propertyHolder, publisher)
 
   @Subscriber(name="obsend", topics="edu/gemini/aspen/gds/obsevent/handler", dataType = "scala.Tuple2", dataKey = "observationevent")
   def onObservationEvent(event: (ObservationEvent, DataLabel)) {

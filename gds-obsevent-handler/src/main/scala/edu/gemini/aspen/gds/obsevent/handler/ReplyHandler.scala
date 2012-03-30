@@ -7,25 +7,22 @@ import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
 import actors.Actor
 import actors.Actor.actor
-import java.io.{FileNotFoundException, File}
+import java.io.FileNotFoundException
 import java.util.logging.{Level, Logger}
 
 import edu.gemini.aspen.gds.api._
-import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.gmp.services.PropertyHolder
-import collection.mutable.ConcurrentMap
-import com.google.common.cache.CacheBuilder
-import java.util.concurrent.TimeUnit._
+import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 
 class ReplyHandler(actorsFactory: CompositeActorsFactory,
   keywordsDatabase: KeywordsDatabase,
   errorPolicy: ErrorPolicy,
-  obsRegistry: ObservationStateRegistrar,
-  propertyHolder: PropertyHolder) extends Actor {
+  propertyHolder: PropertyHolder,
+  publisher: Publisher) extends Actor {
   private implicit val LOG = Logger.getLogger(this.getClass.getName)
   private val eventLogger = new ObservationEventLogger
   private val bookKeeper = new ObsEventBookKeeping
-  private val fileProcessor = new FitsFileProcessor(propertyHolder, obsRegistry, eventLogger)
+  private val fileProcessor = new FitsFileProcessor(propertyHolder, eventLogger)
   private val obsTransactions = new ObservationTransactionsStore()
 
   start()
@@ -45,9 +42,9 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
     obsEvent match {
       case OBS_PREP =>
         eventLogger.addEventSet(dataLabel)
-        obsRegistry.startObservation(dataLabel)
-      // This indicates that the observation was started by the seqexec using a "transaction" of sorts
+        publisher.sendData(GDSStartObservation(dataLabel))
       case EXT_START_OBS =>
+        // This indicates that the observation was started by the seqexec using a "transaction" of sorts
         obsTransactions.startTransaction(dataLabel)
       case _ =>
     }
@@ -135,14 +132,22 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
       val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[List[CollectedValue[_]]]
       val processedList = errorPolicy.applyPolicy(dataLabel, list)
 
-      fileProcessor.updateFITSFile(dataLabel, processedList)
+      fileProcessor.updateFITSFile(dataLabel, processedList) match {
+        case Right(msg:String) =>
+          LOG.info(msg)
+          //obsRegistry.registerTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable)
+          publisher.sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable))
+        case Left(errorMsg:String) =>
+          LOG.severe(errorMsg)
+          publisher.sendData(GDSObservationError(dataLabel, "Problem writing FITS file"))
+      }
     } catch {
       case ex: FileNotFoundException => LOG.log(Level.SEVERE, ex.getMessage, ex)
     }
 
     endAcqRequestReply(obsEvent, dataLabel)
+    publisher.sendData(GDSEndObservation(dataLabel))
     keywordsDatabase ! Clean(dataLabel)
   }
 
 }
-

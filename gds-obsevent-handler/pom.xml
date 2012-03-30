@@ -41,10 +41,6 @@
             <artifactId>gds-performance-monitoring</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen.gds</groupId>
-            <artifactId>gds-observation-state-publisher</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-services</artifactId>
         </dependency>
