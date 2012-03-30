@@ -136,8 +136,10 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
         case Right(msg:String) =>
           LOG.info(msg)
           publisher.sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable))
+          publisher.sendData(GDSEndObservation(dataLabel))
         case Left(errorMsg:String) =>
           LOG.severe(errorMsg)
+          println("HERE is the error")
           publisher.sendData(GDSObservationError(dataLabel, "Problem writing FITS file"))
       }
     } catch {
@@ -145,7 +147,6 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
     }
 
     endAcqRequestReply(obsEvent, dataLabel)
-    publisher.sendData(GDSEndObservation(dataLabel))
     keywordsDatabase ! Clean(dataLabel)
   }
 

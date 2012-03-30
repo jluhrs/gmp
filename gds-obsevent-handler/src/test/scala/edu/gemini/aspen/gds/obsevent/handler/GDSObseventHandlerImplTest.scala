@@ -13,7 +13,6 @@ import org.scalatest.{BeforeAndAfter, OneInstancePerTest, FunSuite}
 import java.util.concurrent.TimeUnit
 import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 import edu.gemini.aspen.gds.api._
-import org.joda.time.Duration
 
 @RunWith(classOf[JUnitRunner])
 class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with BeforeAndAfter {
@@ -139,7 +138,23 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     sleep(500)
     verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
     verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
+  }
 
+  test("with writing error") {
+    // Simulate an ext start obs arriving
+    when(actorsFactory.buildActors(any[ObservationEvent], any[DataLabel])).thenReturn(List[KeywordValueActor]())
+
+    val dummyDataLabel = new DataLabel("dummy")
+
+    for {evt <- ObservationEvent.values()
+         if (evt != ObservationEvent.EXT_END_OBS && evt != ObservationEvent.EXT_START_OBS)} {
+      observationHandler.onObservationEvent(evt, dummyDataLabel)
+    }
+    sleep(500)
+    verify(mockPublisher).sendData(GDSStartObservation(dummyDataLabel))
+    sleep(2500)
+    verify(mockPublisher, times(0)).sendData(GDSEndObservation(dummyDataLabel))
+    verify(mockPublisher).sendData(refEq(GDSObservationError(dummyDataLabel, ""), "msg"))
   }
 
   private def sleep(time: Long) {
