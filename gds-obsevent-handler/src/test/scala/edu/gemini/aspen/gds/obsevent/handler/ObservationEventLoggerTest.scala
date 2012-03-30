@@ -13,11 +13,12 @@ import org.scalatest.{OneInstancePerTest, FunSuite}
 import java.util.concurrent.TimeUnit
 
 @RunWith(classOf[JUnitRunner])
-class ObservationEventLoggerTest extends FunSuite with MockitoSugar with OneInstancePerTest {
+class ObservationEventLoggerTest extends FunSuite with MockitoSugar {
+  val dataLabel = new DataLabel("GS-2011")
+
   test("check time exceeded") {
     val LOG = mock[Logger]
     val logger = new ObservationEventLogger(5000L)(LOG)
-    val dataLabel = new DataLabel("GS-2011")
 
     logger.start(dataLabel, OBS_PREP)
 
@@ -30,7 +31,6 @@ class ObservationEventLoggerTest extends FunSuite with MockitoSugar with OneInst
   test("check time ok") {
     val LOG = mock[Logger]
     val logger = new ObservationEventLogger(5000L)(LOG)
-    val dataLabel = new DataLabel("GS-2011")
 
     logger.start(dataLabel, OBS_PREP)
 
@@ -47,11 +47,20 @@ class ObservationEventLoggerTest extends FunSuite with MockitoSugar with OneInst
   test("log timing") {
     val LOG = mock[Logger]
     val logger = new ObservationEventLogger(5000L)(LOG)
-    val dataLabel = new DataLabel("GS-2011")
 
     logger.logTiming(OBS_PREP, dataLabel)
 
     // Boring test
     verify(LOG, times(2)).info(anyString)
+  }
+
+  test("enforce time constraints") {
+    val LOG = mock[Logger]
+    val logger = new ObservationEventLogger(5000L)(LOG)
+
+    logger.enforceTimeConstraints(OBS_END_ACQ, dataLabel)
+
+    // Boring test
+    verify(LOG).severe(anyString)
   }
 }

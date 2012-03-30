@@ -134,7 +134,7 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
   private def endAcqRequestReply(obsEvent: ObservationEvent, dataLabel: DataLabel) {
     eventLogger.end(dataLabel, obsEvent)
 
-    enforceTimeConstraints(obsEvent, dataLabel)
+    eventLogger.enforceTimeConstraints(obsEvent, dataLabel)
 
     obsEvent match {
       case OBS_END_DSET_WRITE => {
@@ -142,18 +142,6 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
         for (evt <- ObservationEvent.values()) {
           eventLogger.logTiming(evt, dataLabel)
         }
-      }
-      case _ =>
-    }
-  }
-
-  private def enforceTimeConstraints(evt: ObservationEvent, label: DataLabel) {
-    evt match {
-      case OBS_START_ACQ => {
-        eventLogger.checkTimeWithinLimits(evt, label)
-      }
-      case OBS_END_ACQ => {
-        eventLogger.checkTimeWithinLimits(evt, label)
       }
       case _ =>
     }
@@ -245,6 +233,14 @@ class ObservationEventLogger(val collectDeadline:Long = 5000L)(implicit LOG:Logg
     }
     LOG.info("Average timing for event " + evt + ": " + avgTime + "[ms]")
     LOG.info("Timing for event " + evt + " DataLabel " + label + ": " + currTime + "[ms]")
+  }
+
+  def enforceTimeConstraints(evt: ObservationEvent, label: DataLabel) {
+    evt match {
+      case OBS_START_ACQ => checkTimeWithinLimits(evt, label)
+      case OBS_END_ACQ => checkTimeWithinLimits(evt, label)
+      case _ =>
+    }
   }
 
 }
