@@ -37,11 +37,21 @@ class ObservationEventLoggerTest extends FunSuite with MockitoSugar with OneInst
     TimeUnit.MILLISECONDS.sleep(100)
 
     logger.end(dataLabel, OBS_PREP)
-    println("TO CHECX " + logger.check(dataLabel, OBS_PREP, 5000L))
     assertTrue(logger.check(dataLabel, OBS_PREP, 5000L))
 
     logger.checkTimeWithinLimits(OBS_PREP, dataLabel)
 
     verifyZeroInteractions(LOG)
+  }
+
+  test("log timing") {
+    val LOG = mock[Logger]
+    val logger = new ObservationEventLogger(5000L)(LOG)
+    val dataLabel = new DataLabel("GS-2011")
+
+    logger.logTiming(OBS_PREP, dataLabel)
+
+    // Boring test
+    verify(LOG, times(2)).info(anyString)
   }
 }

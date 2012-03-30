@@ -140,7 +140,7 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
       case OBS_END_DSET_WRITE => {
         //log timing stats for this datalabel
         for (evt <- ObservationEvent.values()) {
-          logTiming(evt, dataLabel)
+          eventLogger.logTiming(evt, dataLabel)
         }
       }
       case _ =>
@@ -157,21 +157,6 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
       }
       case _ =>
     }
-  }
-
-  private def logTiming(evt: ObservationEvent, label: DataLabel) {
-    val avgTime = eventLogger.average(evt) map {
-      x => x.getMillis
-    } getOrElse {
-      "unknown"
-    }
-    val currTime = eventLogger.retrieve(label, evt) map {
-      x => x.getMillis
-    } getOrElse {
-      "unknown"
-    }
-    LOG.info("Average timing for event " + evt + ": " + avgTime + "[ms]")
-    LOG.info("Timing for event " + evt + " DataLabel " + label + ": " + currTime + "[ms]")
   }
 
   private def endWrite(dataLabel: DataLabel) {
@@ -245,6 +230,21 @@ class ObservationEventLogger(val collectDeadline:Long = 5000L)(implicit LOG:Logg
     if (!check(dataLabel, obsEvent, collectDeadline)) {
         LOG.severe("Dataset " + dataLabel + ", Event " + obsEvent + ", didn't finish on time")
       }
+  }
+
+  def logTiming(evt: ObservationEvent, label: DataLabel) {
+    val avgTime = average(evt) map {
+      x => x.getMillis
+    } getOrElse {
+      "unknown"
+    }
+    val currTime = retrieve(label, evt) map {
+      x => x.getMillis
+    } getOrElse {
+      "unknown"
+    }
+    LOG.info("Average timing for event " + evt + ": " + avgTime + "[ms]")
+    LOG.info("Timing for event " + evt + " DataLabel " + label + ": " + currTime + "[ms]")
   }
 
 }
