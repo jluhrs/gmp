@@ -4,8 +4,8 @@ import edu.gemini.aspen.gds.api.Conversions._
 import java.util.logging.{Level, Logger}
 import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabase}
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Store
-import edu.gemini.aspen.giapi.data.ObservationEvent
 import org.apache.felix.ipojo.handlers.event.publisher.Publisher
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 
 class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, programIdDB: ProgramIdDatabase, publisher: Publisher) {
   protected val LOG = Logger.getLogger(this.getClass.getName)
@@ -21,7 +21,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
   def openObservation(programId: String, dataLabel: String) {
     LOG.info("Opened Observation, Program ID: " + programId + " Data label: " + dataLabel)
     programIdDB ! StoreProgramId(dataLabel, programId)
-    publisher.sendData(ObservationEvent.EXT_START_OBS, dataLabel)
+    publisher.sendData(ObservationEvent.EXT_START_OBS, new DataLabel(dataLabel))
   }
 
   /**
@@ -43,7 +43,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    */
   def closeObservation(dataLabel: String) {
     LOG.info("Closed Observation, Data label: " + dataLabel)
-    publisher.sendData(ObservationEvent.EXT_END_OBS, dataLabel)
+    publisher.sendData(ObservationEvent.EXT_END_OBS, new DataLabel(dataLabel))
   }
 
   /**
