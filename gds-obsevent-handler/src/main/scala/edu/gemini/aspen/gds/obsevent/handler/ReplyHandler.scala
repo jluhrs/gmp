@@ -6,7 +6,6 @@ import edu.gemini.aspen.gds.fits.FitsUpdater
 import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
-import edu.gemini.aspen.gds.performancemonitoring._
 import actors.Actor
 import actors.Actor.actor
 import java.io.{FileNotFoundException, File}
@@ -210,37 +209,3 @@ class ReplyHandler( actorsFactory: CompositeActorsFactory,
 
 }
 
-class ObservationEventLogger(val collectDeadline:Long = 5000L)(implicit LOG:Logger) extends EventLogger[DataLabel, ObservationEvent] {
-
-  def checkTimeWithinLimits(obsEvent: ObservationEvent, dataLabel: DataLabel) {
-    // Function with side effects
-    // check if the keyword recollection was performed on time
-    if (!check(dataLabel, obsEvent, collectDeadline)) {
-        LOG.severe("Dataset " + dataLabel + ", Event " + obsEvent + ", didn't finish on time")
-      }
-  }
-
-  def logTiming(evt: ObservationEvent, label: DataLabel) {
-    val avgTime = average(evt) map {
-      x => x.getMillis
-    } getOrElse {
-      "unknown"
-    }
-    val currTime = retrieve(label, evt) map {
-      x => x.getMillis
-    } getOrElse {
-      "unknown"
-    }
-    LOG.info("Average timing for event " + evt + ": " + avgTime + "[ms]")
-    LOG.info("Timing for event " + evt + " DataLabel " + label + ": " + currTime + "[ms]")
-  }
-
-  def enforceTimeConstraints(evt: ObservationEvent, label: DataLabel) {
-    evt match {
-      case OBS_START_ACQ => checkTimeWithinLimits(evt, label)
-      case OBS_END_ACQ => checkTimeWithinLimits(evt, label)
-      case _ =>
-    }
-  }
-
-}
