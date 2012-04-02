@@ -49,7 +49,7 @@ class EnforceMandatoryPolicyTest extends FunSuite with MockitoSugar {
 
   test("ignore instrument keywords, fix for GIAPI-867") {
     val config = mock[GDSConfigurationService]
-    when(config.getConfiguration).thenReturn(GDSConfiguration("GPI", "OBS_START_ACQ", "KEY2", 0, "STRING", true, "default", "IFS", "gpi:value", 0, "comment") :: Nil)
+    when(config.getConfiguration).thenReturn(GDSConfiguration("GPI", "OBS_START_ACQ", "KEY2", 0, "STRING", true, "default", "INSTRUMENT", "gpi:value", 0, "comment") :: Nil)
 
     val ep = new EnforceMandatoryPolicy(config)
     val collectedValues = Nil
