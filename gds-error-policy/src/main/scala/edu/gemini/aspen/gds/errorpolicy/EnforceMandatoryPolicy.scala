@@ -31,7 +31,7 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
         collected => collected.keyword == config.keyword
       }
     } filter {
-      config => config.subsystem != Subsystem(KeywordSource.IFS)
+      config => config.subsystem != Subsystem(KeywordSource.INSTRUMENT)
     }
   }
 

@@ -34,7 +34,7 @@ class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires 
 
   private def checkMissing(label: DataLabel, headers: List[CollectedValue[_]]) {
     val configList = configService.getConfiguration filterNot {
-      _.subsystem.name == KeywordSource.IFS //IFS keywords are not written by us, they are already in the file
+      _.subsystem.name == KeywordSource.INSTRUMENT //IFS keywords are not written by us, they are already in the file
     }
     obsState.registerMissingKeyword(label, configList filterNot {
       config => headers exists {

@@ -5,8 +5,6 @@ import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Component}
 import org.apache.felix.ipojo.handlers.event.Subscriber
 import edu.gemini.aspen.gds.api._
 import java.util.logging.Logger
-import org.joda.time.Duration
-import edu.gemini.aspen.giapi.data.ObservationEvent
 
 /**
  * Intermediate class to convert GDS events into calls to ObservationStateRegistrar */

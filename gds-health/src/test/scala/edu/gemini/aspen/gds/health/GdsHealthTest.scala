@@ -26,7 +26,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   val top = mock[Top]
 
   // Remove non actor based sources and add 2 for GDSObseventHandlerImpl and HeaderReceiver
-  val expectedUpdates = (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS).size + 2
+  val expectedUpdates = (KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT).size + 2
 
   var statusservice: StatusService = _
 
@@ -97,7 +97,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   def bindAllHealthSources(gdsHealth:GdsHealth) {
     gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandlerImpl])
     val fact = mock[KeywordActorsFactory]
-    for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.IFS)) {
+    for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT)) {
       when(fact.getSource).thenReturn(source)
       gdsHealth.bindActorFactory(fact)
     }

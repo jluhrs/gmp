@@ -13,10 +13,12 @@ import edu.gemini.aspen.gmp.services.PropertyHolder
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
 import java.util.logging.Logger
 
+/**
+ * Factory class that instead of adding keywords to a file verifies those already on the file */
 @Component
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ObservationEventHandler]))
-class IfsKeywordsChecker(@Requires configService: GDSConfigurationService,
+class InstrumentKeywordsChecker(@Requires configService: GDSConfigurationService,
                          @Requires obsState: ObservationStateRegistrar,
                          @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
   protected val LOG = Logger.getLogger(this.getClass.getName)
@@ -25,7 +27,7 @@ class IfsKeywordsChecker(@Requires configService: GDSConfigurationService,
     event match {
       case ObservationEvent.OBS_END_DSET_WRITE => actor {
         checkMissing(dataLabel, configService.getConfiguration)
-      } //todo: use a service to get the directory
+      }
       case _ =>
     }
   }
@@ -41,7 +43,7 @@ class IfsKeywordsChecker(@Requires configService: GDSConfigurationService,
     }
 
     val configKeywords: Map[Int, Set[GDSConfiguration]] = config.filter{
-      _.subsystem.name == KeywordSource.IFS
+      _.subsystem.name == KeywordSource.INSTRUMENT
     }.toSet.groupBy(_.index.index)
 
     configKeywords foreach {
