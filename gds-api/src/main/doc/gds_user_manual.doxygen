@@ -37,7 +37,7 @@ The events are listed below:
     </tr>
     <tr>
         <td>T1</td>
-    <td>OBS_PREP</td>
+        <td>OBS_PREP</td>
         <td>Depends on configuration</td>
     </tr>
     <tr>
@@ -72,11 +72,45 @@ The events are listed below:
     </tr>
 </table>
 
+\subsection ExternalObservationEvents
+Additionally there exist the concept of external events, meaning events that are not triggered by the instrument
+but by another entity, typically Seqexec can send external observation events marking a sort of transaction.
+These events are optional and are not included in the GIAPI glue as they don't affect the Instrument interface.
+
+If GDS receives an external start observation it will not write the file until an external start observation
+is completed.
+
+The external observation events can also trigger data collection.
+
+The following external observation events have been defined
+<table>
+    <tr>
+        <th>Event Time</th>
+        <th>GIAPI Observation Event</th>
+        <th>Used in GDS</th>
+        <th>Optional</th>
+    </tr>
+    <tr>
+        <td>T0</td>
+        <td>EXT_START_OBS</td>
+        <td>Depends on configuration</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>T8</td>
+        <td>EXT_END_OBS</td>
+        <td>Depends on configuration</td>
+        <td>yes</td>
+    </tr>
+</table>
+
+\subsection Observation sequence
+
 The observation process is nevertheless driven by Seqexec which sends the command
 to the instrument, first querying the DHS for the next available data label.
 Seqexec also needs to send to GDS whatever keywords it needs to be included in the FITS file.
 
-The whole sequence of steps for an observation is listep below:
+The whole sequence of steps for an observation is listed below:
 - An observation is triggered on Seqexec, e.g. by a manual command of the user
 - Seqexec gets a new data label from the DHS
 - Seqexec sends to the GDS a mapping between the data label and the program id being observed
@@ -90,6 +124,27 @@ The whole sequence of steps for an observation is listep below:
 The following picture describes the process of events and data gathering
 
 \image html gds-sequence.jpg
+
+In the case we have an externally controlled sequence we need to add, two events sent by Seqexec before and after the
+rest of the sequence as follows:
+
+- An observation is triggered on Seqexec, e.g. by a manual command of the user
+- Seqexec gets a new data label from the DHS
+- <b>Seqexec sends an EXT_START_OBS event including optional keywords</b>
+- <b>Seqexec sends an Observe command</b>
+- Seqexec sends to the GDS a mapping between the data label and the program id being observed
+- Seqexec sends a list of keywords for that data label to GDS
+- Seqexec sends and observation sequence command to the Instrument
+- The instrument starts the observation and sends observation events along the way
+- GDS reacts to those events gathering data from the predefined data sources according to the configuration
+- The instrument writes the basic FITS file and sends the last observation event
+- <b>Observe command completes</b>
+- <b>Seqexec sends an EXT_END_OBS event including optional keywords</b>
+- GDS reviews the collected data and writes the extended keywords onto the FITS file
+
+This extended sequence is depicted in the following diagram
+
+\image html gds-ext-sequence.svg
 
 \section sources Sources
 GDS is designed to support different data sources from where data can be gathered. The data is used to complete
