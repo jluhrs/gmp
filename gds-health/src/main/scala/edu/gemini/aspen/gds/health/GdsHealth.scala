@@ -6,13 +6,12 @@ import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.Health
 import edu.gemini.aspen.giapi.util.jms.status.StatusSetter
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
-import edu.gemini.aspen.giapi.data.ObservationEventHandler
 
 import scala.actors.Actor._
 import actors.Actor
 import edu.gemini.jms.api.{JmsArtifact, JmsProvider}
 import edu.gemini.aspen.gmp.top.Top
-import edu.gemini.aspen.gds.obsevent.handler.{GDSObseventHandler, GDSObseventHandlerImpl}
+import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 
 case object UpdateHealth
 
@@ -27,10 +26,10 @@ case object StopJms
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[JmsArtifact]))
 class GdsHealth(@Requires top: Top) extends JmsArtifact {
+  implicit private val LOG = Logger.getLogger(this.getClass.getName)
 
-  private var healthName: String = _
-  private val healthSetter: StatusSetter = new StatusSetter("GDS Health", healthName)
-  private val LOG = Logger.getLogger(this.getClass.getName)
+  private val healthName = top.buildStatusItemName("gds:health")
+  private val healthSetter = new StatusSetter("GDS Health", healthName)
 
   private val healthState = new HealthState
   private val stateActor = new StateActor()
@@ -38,7 +37,7 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
 
   @Validate
   def validate() {
-    healthName = top.buildStatusItemName("gds:health")
+    // Required by iPojo
   }
 
   private def updateHealth() {
@@ -58,42 +57,42 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
 
   @Bind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
   def bindHeaderReceiver() {
-    LOG.info("Binding HeaderReceiver")
+    LOG.fine("Binding HeaderReceiver")
     healthState.registerHeaderReceiver()
     updateHealth()
   }
 
   @Unbind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
   def unbindHeaderReceiver() {
-    LOG.info("Unbinding HeaderReceiver")
+    LOG.fine("Unbinding HeaderReceiver")
     healthState.unregisterHeaderReceiver()
     updateHealth()
   }
 
   @Bind(aggregate = true, specification = "edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler", optional = true)
   def bindGDSObseventHandler(evtHndlr: GDSObseventHandler) {
-    LOG.info("Binding GDSObseventHandlerImpl")
+    LOG.fine("Binding GDSObseventHandlerImpl")
     healthState.registerGDSObseventHandler()
     updateHealth()
   }
 
   @Unbind(aggregate = true, specification = "edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler", optional = true)
   def unbindGDSObseventHandler(evtHndlr: GDSObseventHandler) {
-    LOG.info("Unbinding GDSObseventHandlerImpl")
+    LOG.fine("Unbinding GDSObseventHandlerImpl")
     healthState.unregisterGDSObseventHandler()
     updateHealth()
   }
 
   @Bind(aggregate = true, optional = true)
   def bindActorFactory(fact: KeywordActorsFactory) {
-    LOG.info("Binding ActorsFactory: " + fact.getClass.getName)
+    LOG.fine("Binding ActorsFactory: " + fact.getClass.getName)
     healthState.registerActorFactory(fact.getSource)
     updateHealth()
   }
 
   @Unbind(aggregate = true, optional = true)
   def unbindActorFactory(fact: KeywordActorsFactory) {
-    LOG.info("Unbinding ActorsFactory: " + fact.getClass.getName)
+    LOG.fine("Unbinding ActorsFactory: " + fact.getClass.getName)
     healthState.unregisterActorFactory(fact.getSource)
     updateHealth()
   }
@@ -120,8 +119,7 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
     }
   }
 
-  private class HealthState {
-    private val LOG = Logger.getLogger(this.getClass.getName)
+  private class HealthState(implicit val LOG:Logger) {
 
     private val actors = new Array[Boolean](5) //Booleans are initialized to false
 
@@ -146,14 +144,14 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
 
     def registerActorFactory(source: KeywordSource.Value) {
       source match {
-        case KeywordSource.NONE => LOG.info("Registered KeywordActorsFactory of unknown type: " + source)
+        case KeywordSource.NONE => LOG.fine("Registered KeywordActorsFactory of unknown type: " + source)
         case x => actors(x.id) = true
       }
     }
 
     def unregisterActorFactory(source: KeywordSource.Value) {
       source match {
-        case KeywordSource.NONE => LOG.info("Unregistered KeywordActorsFactory of unknown type: " + source)
+        case KeywordSource.NONE => LOG.fine("Unregistered KeywordActorsFactory of unknown type: " + source)
         case x => actors(x.id) = false
       }
     }
@@ -162,7 +160,7 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
       val actorsStr = actors.zipWithIndex.map {
         case (a, i) => "%s -> %b".format(KeywordSource(i), a)
       }
-      LOG.info("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actorsStr.mkString(", "))
+      LOG.fine("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actorsStr.mkString(", "))
       if (obsEvtHndl) {
         if (actors.reduceLeft({
           _ && _
