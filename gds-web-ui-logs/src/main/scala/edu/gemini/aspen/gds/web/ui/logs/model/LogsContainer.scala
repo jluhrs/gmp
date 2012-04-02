@@ -6,15 +6,15 @@ import com.vaadin.data.Container.{Filter, Filterable}
 /**
  * Needed for vaadin lazy query container to support filters */
 class LogsContainer(queryDefinition: LogSourceQueryDefinition, queryFactory: QueryFactory) extends LazyQueryContainer(queryDefinition, queryFactory) with Filterable {
-  def addContainerFilter(f: Filter) {
+  override def addContainerFilter(f: Filter) {
     queryDefinition.addContainerFilter(f)
   }
 
-  def removeContainerFilter(f: Filter) {
+  override def removeContainerFilter(f: Filter) {
     queryDefinition.removeContainerFilter(f)
   }
 
-  def removeAllContainerFilters() {
+  override def removeAllContainerFilters() {
     queryDefinition.removeAllContainerFilters()
   }
 }

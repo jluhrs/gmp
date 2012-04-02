@@ -15,7 +15,7 @@ import com.google.common.cache.CacheBuilder
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[PaxAppender], classOf[LogSource]))
 class InMemoryLogSource extends PaxAppender with LogSource {
-  val MAXSIZE = 1000
+  val MAXSIZE = 10000
   /** Service property that matches the configuration on the org.ops4j.pax.logging.cfg file */
   @ServiceProperty(name = "org.ops4j.pax.logging.appender.name", value = "GeminiAppender")
   val name = "GeminiAppender"
@@ -27,6 +27,7 @@ class InMemoryLogSource extends PaxAppender with LogSource {
   val index = new AtomicInteger(0)
   val logEventsMap: ConcurrentMap[java.lang.Integer, LogEventWrapper] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
+    .maximumSize(MAXSIZE)
     .build[java.lang.Integer, LogEventWrapper]().asMap
 
   @Validate

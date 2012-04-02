@@ -14,8 +14,13 @@ import org.joda.time.DateTimeZone
 class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[LogEventWrapper](queryDefinition0, queryConfiguration, sortPropertyIds, sortStates) {
   val LOG = Logger.getLogger(this.getClass.getName)
 
-  val logSource = queryDefinition0 match {
-    case q: LogSourceQueryDefinition => q.logSource
+  val logSource:LogSourceQueryDefinition = queryDefinition0 match {
+    case q: LogSourceQueryDefinition =>
+      val ls = new LogSourceQueryDefinition(q.logSource, true, 200)
+      q.filters foreach {
+        case f => ls.addContainerFilter(f)
+      }
+      ls
     case _ => sys.error("Should not happen")
   }
 
@@ -42,7 +47,7 @@ class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
 
   override def constructBean() = throw new UnsupportedOperationException()
 
-  private def filteredLogs = logSource.logEvents
+  private def filteredLogs = logSource.filterResults(logSource.logSource.logEvents)
 }
 
 object LoggingEventBeanQuery {

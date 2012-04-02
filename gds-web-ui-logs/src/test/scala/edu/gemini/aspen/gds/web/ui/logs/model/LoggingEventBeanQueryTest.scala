@@ -89,7 +89,6 @@ class LoggingEventBeanQueryTest extends Mockito {
     }
   } 
 
-  @Ignore("Filer disabled")
   @Test
   def loadWithTwoFilters {
     val logEvents = for (i <- 0 to 10) yield buildEvent(i)
@@ -102,7 +101,6 @@ class LoggingEventBeanQueryTest extends Mockito {
     assertTrue(logs.isEmpty)
   }
 
-  @Ignore("Filer disabled")
   @Test
   def loadWithFilter {
     // Add two level of logs
