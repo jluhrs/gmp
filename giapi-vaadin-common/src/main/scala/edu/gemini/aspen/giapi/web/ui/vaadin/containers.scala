@@ -24,4 +24,20 @@ class TabSheet(width: String = 100 percent, height: String = null, caption: Stri
 
   def getComponents(): TraversableOnce[Component] = getComponentIterator.asScala.toSeq
 }
+
+class Panel(caption: String = null, width: String = 100 percent, height: String = null, style: String = null, sizeFull:Boolean = false)
+  extends com.vaadin.ui.Panel() {
+  setCaption(caption)
+  setWidth(width)
+  setHeight(height)
+  setStyleName(style)
+  if (sizeFull) setSizeFull()
+
+  def getComponents(): TraversableOnce[Component] = getComponentIterator.asScala.toSeq
+
+  def add[C <: com.vaadin.ui.Component](component: C = null): C = {
+    addComponent(component)
+    component
+  }
+}
 }

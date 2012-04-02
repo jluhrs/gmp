@@ -13,4 +13,9 @@ class ScalaContainersTest extends FunSuite {
     assertEquals("Caption", t.getCaption)
   }
 
+  test("panel component construction") {
+    val t = new Panel(caption = "Caption")
+    assertEquals("Caption", t.getCaption)
+  }
+
 }
