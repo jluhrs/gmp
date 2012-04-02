@@ -232,7 +232,7 @@ The names of the sources are used in the Configuration file as shown in the next
     <tr>
         <td>Data Type</td>
         <td>FITS data type</td>
-        <td>DOUBLE, INT, STRING</td>
+        <td>DOUBLE, INT, STRING, BOOL</td>
     </tr>
     <tr>
         <td>Gemini Mandatory</td>
@@ -247,7 +247,7 @@ The names of the sources are used in the Configuration file as shown in the next
     <tr>
         <td>Source</td>
         <td>Which subsytem provides this value</td>
-        <td>EPICS, STATUS, SEQEXEC, ODB</td>
+        <td>EPICS, STATUS, SEQEXEC, ODB, CONSTANT, INSTRUMENT</td>
     </tr>
     <tr>
         <td>Source Channel</td>
