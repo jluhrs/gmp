@@ -121,10 +121,10 @@ class GDSConfigurationServiceTest extends FunSuite {
     copyFile(ORIGINAL_BAD_CONFIG, TEST_DIR + ORIGINAL_BAD_CONFIG)
     val serviceOrig = new GDSConfigurationServiceImpl(TEST_DIR + ORIGINAL_BAD_CONFIG)
 
-    assertEquals("""string matching regex `\d+' expected but `[' found""", serviceOrig.errors.get._1)
-    assertEquals(602, serviceOrig.errors.get._2)
-    assertEquals(OffsetPosition(serviceOrig.textContent, 602).column, serviceOrig.errors.get._3.column)
-    assertEquals(OffsetPosition(serviceOrig.textContent, 602).line, serviceOrig.errors.get._3.line)
+    assertEquals("""string matching regex `\d+' expected but `?' found""", serviceOrig.errors.get._1)
+    assertEquals(604, serviceOrig.errors.get._2)
+    assertEquals(OffsetPosition(serviceOrig.textContent, 604).column, serviceOrig.errors.get._3.column)
+    assertEquals(OffsetPosition(serviceOrig.textContent, 604).line, serviceOrig.errors.get._3.line)
   }
 
 }

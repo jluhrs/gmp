@@ -93,7 +93,7 @@ class GDSConfigurationParser extends RegexParsers {
   }
 
   // Default value can be anything that does not contain a space
-  def channelName = """[:\w\.]+""".r ^^ {
+  def channelName = """[:\w\.\]\[]+""".r ^^ {
     x:String => Channel(x)
   }
 

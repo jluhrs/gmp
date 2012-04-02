@@ -128,6 +128,13 @@ class GDSConfigurationParserTest extends FunSuite {
     assertEquals(Channel("gpi:cc.value1"), result.get(0).get.asInstanceOf[GDSConfiguration].channel)
   }
 
+  test("parse channel with square parentheses. Bug GIAPI-963") {
+    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 STATUS gpi:cc.value[1] 0 "Mean airmass for the observation"""")
+    assertTrue(result.successful)
+
+    assertEquals(Channel("gpi:cc.value[1]"), result.get(0).get.asInstanceOf[GDSConfiguration].channel)
+  }
+
   test("supports external start observation event") {
     val text = """GPI EXT_START_OBS AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "Mean airmass for the observation""""
     val result = new GDSConfigurationParser().parseText(text)
