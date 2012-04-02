@@ -120,3 +120,7 @@ input.v-textfield-validation-error {
 .v-embedded-gds-title {
     padding-right: 12px;
 }
+
+.vertical-separator {
+  background:lightgray;
+}

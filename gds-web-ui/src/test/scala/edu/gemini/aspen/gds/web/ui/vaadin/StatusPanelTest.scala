@@ -27,7 +27,7 @@ class StatusPanelTest {
     })
     val panel = statusPanel.buildStatusPanel
     assertNotNull(panel)
-    assertEquals(1, panel.getComponentIterator.toList.size)
+    assertEquals(2, panel.getComponentIterator.toList.size)
   }
 
   @Test
@@ -45,8 +45,8 @@ class StatusPanelTest {
     })
     val panel = statusPanel.buildStatusPanel
     assertNotNull(panel)
-    assertEquals(2, panel.getComponentIterator.toList.size)
+    assertEquals(4, panel.getComponentIterator.toList.size)
     assertTrue(panel.getComponentIterator.toList(0).isInstanceOf[Panel])
-    assertTrue(panel.getComponentIterator.toList(1).isInstanceOf[VerticalLayout])
+    assertTrue(panel.getComponentIterator.toList(2).isInstanceOf[VerticalLayout])
   }
 }
