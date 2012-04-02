@@ -113,7 +113,7 @@ Seqexec also needs to send to GDS whatever keywords it needs to be included in t
 The whole sequence of steps for an observation is listed below:
 - An observation is triggered on Seqexec, e.g. by a manual command of the user
 - Seqexec gets a new data label from the DHS
-- Seqexec sends to the GDS a mapping between the data label and the program id being observed
+- <b>Seqexec sends an EXT_START_OBS event including optional keywords</b>
 - Seqexec sends a list of keywords for that data label to GDS
 - Seqexec sends and observation sequence command to the Instrument
 - The instrument starts the observation and sends observation events along the way
@@ -132,7 +132,6 @@ rest of the sequence as follows:
 - Seqexec gets a new data label from the DHS
 - <b>Seqexec sends an EXT_START_OBS event including optional keywords</b>
 - <b>Seqexec sends an Observe command</b>
-- Seqexec sends to the GDS a mapping between the data label and the program id being observed
 - Seqexec sends a list of keywords for that data label to GDS
 - Seqexec sends and observation sequence command to the Instrument
 - The instrument starts the observation and sends observation events along the way
