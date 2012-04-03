@@ -57,6 +57,7 @@ public class GDSEndToEndStartedFromSeqexecIT extends GDSIntegrationBase {
 
         DataLabel dataLabel = new DataLabel("sample1.fits");
 
+        // Start transaction
         eventHandler.onObservationEvent(ObservationEvent.EXT_START_OBS, dataLabel);
 
         sendObservationEvents(eventHandler, dataLabel);
@@ -65,6 +66,8 @@ public class GDSEndToEndStartedFromSeqexecIT extends GDSIntegrationBase {
         File finalFile = new File(FINAL_FITS_DIR + FINAL_FITS_FILE);
 
         assertFalse(finalFile.exists());
+
+        // End transaction
         eventHandler.onObservationEvent(ObservationEvent.EXT_END_OBS, dataLabel);
         TimeUnit.MILLISECONDS.sleep(2000);
 
