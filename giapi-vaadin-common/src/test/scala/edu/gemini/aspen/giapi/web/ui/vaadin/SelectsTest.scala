@@ -5,6 +5,7 @@ import org.junit.Assert._
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import edu.gemini.aspen.giapi.web.ui.vaadin.selects._
+import java.util.concurrent.atomic.AtomicReference
 
 @RunWith(classOf[JUnitRunner])
 class SelectsTest extends FunSuite {
@@ -40,8 +41,12 @@ class SelectsTest extends FunSuite {
   }
 
   test("NativeSelect with action") {
-    val ns = new NativeSelect(caption = "Caption", action = e => {println("e")})
+    val ref = new AtomicReference[String]("")
+    val ns = new NativeSelect(caption = "Caption", action = e => {ref.set(e.getProperty.toString)})
+    ns.addItem("VALUE")
     ns.setValue("VALUE")
+
+    assertEquals("VALUE", ref.get())
   }
 
 }
