@@ -61,6 +61,10 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>drawer</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
