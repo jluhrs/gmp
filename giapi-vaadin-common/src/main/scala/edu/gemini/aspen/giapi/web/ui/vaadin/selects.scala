@@ -1,8 +1,8 @@
 package edu.gemini.aspen.giapi.web.ui.vaadin
 
-import com.vaadin.data.Container
 import com.vaadin.ui.Table.ColumnGenerator
 import com.vaadin.data.Property.ValueChangeEvent
+import com.vaadin.data.{Property, Container}
 
 object selects {
 
@@ -89,15 +89,17 @@ object selects {
     setStyleName(style)
   }
 
-  class NativeSelect(caption: String = null, width: String = null, height: String = null, value: Any = null, style: String = null, nullSelectionAllowed: Boolean = true, action: com.vaadin.data.Property.ValueChangeEvent => Unit = null)
+  class NativeSelect(caption: String = null, width: String = null, height: String = null, value: Any = null, style: String = null, property:Property = null, nullSelectionAllowed: Boolean = true, action: com.vaadin.data.Property.ValueChangeEvent => Unit = null, immediate:Boolean=false)
     extends com.vaadin.ui.NativeSelect(caption) with ValueChangeFunction {
     setWidth(width)
     setHeight(height)
+    setNullSelectionAllowed(nullSelectionAllowed)
+    setImmediate(immediate)
+
     Option(value) map setValue
     Option(action) map addListener
-
-    setStyleName(style)
-    setNullSelectionAllowed(nullSelectionAllowed)
+    Option(property) map setPropertyDataSource
+    Option(style) map setStyleName
 
     protected[vaadin] class ValueChangeListener(action: com.vaadin.data.Property.ValueChangeEvent => Unit) extends com.vaadin.data.Property.ValueChangeListener {
       override def valueChange(event: com.vaadin.data.Property.ValueChangeEvent) = action(event)
