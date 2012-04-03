@@ -88,4 +88,14 @@ object selects {
     setStyleName(style)
   }
 
+  class NativeSelect(caption: String = null, width: String = null, height: String = null, value: Any = null, style: String = null, nullSelectionAllowed: Boolean = true)
+    extends com.vaadin.ui.NativeSelect(caption) with ValueChangeFunction {
+    setWidth(width)
+    setHeight(height)
+    Option(value) map setValue
+    setStyleName(style)
+    setNullSelectionAllowed(nullSelectionAllowed)
+  }
+
+
 }

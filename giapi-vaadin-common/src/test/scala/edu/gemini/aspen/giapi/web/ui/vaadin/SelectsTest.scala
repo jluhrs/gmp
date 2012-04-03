@@ -34,4 +34,9 @@ class SelectsTest extends FunSuite {
     assertNotNull(table.getCellStyleGenerator)
   }
 
+  test("Building NativeSelect") {
+    val ns = new NativeSelect(caption = "Caption")
+    assertEquals("Caption", ns.getCaption)
+  }
+
 }
