@@ -4,6 +4,10 @@ import scala.collection.JavaConverters._
 import com.vaadin.ui.Component
 
 package containers {
+
+import com.vaadin.ui.ComponentContainer
+import com.vaadin.terminal.Resource
+
 class SelectedTabChangeListener(action: com.vaadin.ui.TabSheet#SelectedTabChangeEvent => Unit) extends com.vaadin.ui.TabSheet.SelectedTabChangeListener {
   def selectedTabChange(event: com.vaadin.ui.TabSheet#SelectedTabChangeEvent) = action(event)
 }
@@ -25,7 +29,7 @@ class TabSheet(width: String = 100 percent, height: String = null, caption: Stri
   def getComponents(): TraversableOnce[Component] = getComponentIterator.asScala.toSeq
 }
 
-class Panel(caption: String = null, width: String = 100 percent, height: String = null, style: String = null, sizeFull:Boolean = false)
+class Panel(caption: String = null, width: String = 100 percent, height: String = null, style: String = null, sizeFull: Boolean = false)
   extends com.vaadin.ui.Panel() {
   setCaption(caption)
   setWidth(width)
@@ -40,4 +44,24 @@ class Panel(caption: String = null, width: String = 100 percent, height: String 
     component
   }
 }
+
+class Window(caption: String = null, width: String = null, height: String = null, content: ComponentContainer = null, modal: Boolean = false, icon: Resource = null, style: String = null, resizable: Boolean = true, draggable: Boolean = true, closable: Boolean = true)
+  extends com.vaadin.ui.Window(caption, content) {
+  setWidth(width)
+  setHeight(height)
+  setModal(modal)
+  setIcon(icon)
+  setStyleName(style)
+  setResizable(resizable)
+  setClosable(closable)
+  setDraggable(draggable)
+
+  def add[C <: com.vaadin.ui.Component](component: C = null): C = {
+    addComponent(component)
+    component
+  }
+
+  def getComponents(): TraversableOnce[Component] = getComponentIterator.asScala.toSeq
+}
+
 }

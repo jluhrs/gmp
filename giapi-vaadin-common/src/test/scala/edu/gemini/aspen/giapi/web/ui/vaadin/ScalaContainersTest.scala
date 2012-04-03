@@ -18,4 +18,10 @@ class ScalaContainersTest extends FunSuite {
     assertEquals("Caption", t.getCaption)
   }
 
+  test("window construction") {
+    val w = new Window()
+
+    assertFalse(w.isModal)
+  }
+
 }
