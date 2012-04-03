@@ -39,4 +39,9 @@ class SelectsTest extends FunSuite {
     assertEquals("Caption", ns.getCaption)
   }
 
+  test("NativeSelect with action") {
+    val ns = new NativeSelect(caption = "Caption", action = e => {println("e")})
+    ns.setValue("VALUE")
+  }
+
 }

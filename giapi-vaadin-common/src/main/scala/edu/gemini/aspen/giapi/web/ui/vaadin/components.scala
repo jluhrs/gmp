@@ -37,7 +37,7 @@ class Button(caption: String = null,
   Option(action) foreach addListener
 
   protected[vaadin] class ButtonClickListener(action: com.vaadin.ui.Button#ClickEvent => Unit) extends com.vaadin.ui.Button.ClickListener {
-    def buttonClick(event: com.vaadin.ui.Button#ClickEvent) = action(event)
+    override def buttonClick(event: com.vaadin.ui.Button#ClickEvent) = action(event)
   }
 
   def addListener(action: com.vaadin.ui.Button#ClickEvent => Unit): Unit = addListener(new ButtonClickListener(action))
