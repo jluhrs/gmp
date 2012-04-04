@@ -1098,6 +1098,7 @@
         <module>gmp-web-ui-properties</module>
         <!--module>gpi-ao-plot</module>
         <module>gmp-web-ui-console</module-->
+        <module>gmp-web-ui-status</module>
         <module>integration-tests</module>
         <module>distribution</module>
     </modules>
