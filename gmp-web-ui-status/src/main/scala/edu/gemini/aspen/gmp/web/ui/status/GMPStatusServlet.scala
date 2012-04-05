@@ -10,7 +10,7 @@ import org.apache.felix.ipojo.{InstanceManager, ComponentInstance, Factory}
 import java.util.logging.{Level, Logger}
 
 @IPOJOComponent
-@Provides(specifications = Array(classOf[Servlet]))
+@Provides(specifications = Array[Class[_]](classOf[Servlet]))
 @Instantiate
 class GMPStatusServlet(@Requires(from = "GMPStatusApp") val vaadinAppFactory: Factory) extends AbstractApplicationServlet {
   private val LOG = Logger.getLogger(this.getClass.getName)

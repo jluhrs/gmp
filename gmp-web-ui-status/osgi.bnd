@@ -3,3 +3,4 @@
 #-----------------------------------------------------------------
 
 Bundle-Activator:
+Vaadin-Widgetsets: edu.gemini.aspen.gmp.web.ui.status
