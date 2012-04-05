@@ -54,7 +54,7 @@ class ScalaComponentsTest extends FunSuite {
     var e = new Embedded("caption")
     assertEquals("caption", e.getCaption)
 
-    e = new Embedded(width=10 px, height=20 px)
+    e = new Embedded(width = 10 px, height = 20 px)
     assertEquals(10.0, e.getWidth, 0)
     assertEquals(20.0, e.getHeight, 0)
   }
@@ -63,7 +63,12 @@ class ScalaComponentsTest extends FunSuite {
     var t = new TextField("caption")
     assertEquals("caption", t.getCaption)
 
-    t = new TextField(value="value")
+    t = new TextField(value = "value")
     assertEquals("value", t.getValue)
+  }
+
+  test("progress indicator construction") {
+    val p = new ProgressIndicator(value = 1, caption = "Caption")
+    assertEquals("Caption", p.getCaption)
   }
 }

@@ -99,4 +99,21 @@ class TextField(caption: String = null,
   Option(maxLength) foreach setMaxLength
 }
 
+/**
+ * Scala wrapper for com.vaadin.ui.ProgressIndicator */
+class ProgressIndicator(value:Float = 0f,
+               caption: String = null,
+               pollingInterval:Int = 500,
+               width: String = null,
+               height: String = null,
+               style: String = null)
+  extends com.vaadin.ui.ProgressIndicator(value) {
+  setCaption(caption)
+  setWidth(width)
+  setHeight(height)
+  setStyleName(style)
+  setPollingInterval(pollingInterval)
+}
+
+
 }
