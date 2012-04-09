@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen</groupId>
     <artifactId>giapi-status-service</artifactId>
-    <version>0.3.3-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
 
     <name>GIAPI Status Service</name>
     <description>The Status Service listen for Status Items via JMS and notifies registered Status Handlers
@@ -42,6 +42,32 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-top</artifactId>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.sun.tools.xjc.maven2</groupId>
+                <artifactId>maven-jaxb-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generatePackage>edu.gemini.aspen.giapi.statusservice.generated</generatePackage>
+                    <generateDirectory>src/main/java</generateDirectory>
+                    <removeOldOutput>true</removeOldOutput>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

@@ -3,16 +3,20 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
-import edu.gemini.jms.api.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.ops4j.pax.exam.*;
-import org.ops4j.pax.exam.junit.*;
-import org.osgi.framework.*;
+import edu.gemini.jms.api.JmsProvider;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Inject;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
 
 /**
  * Basic integration test for StatusService basically verifying that the services run or do not run depending
@@ -59,8 +63,9 @@ public class StatusServiceIT {
                 mavenBundle().artifactId("geronimo-j2ee-management_1.1_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").versionAsInProject(),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
+                mavenBundle().artifactId("gmp-top").groupId("edu.gemini.aspen.gmp").versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").update().versionAsInProject()
-                );
+        );
     }
 
     @Test
