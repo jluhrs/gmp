@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.web.ui.status
 
 import com.vaadin.Application
-import edu.gemini.aspen.giapi.web.ui.vaadin.layouts.VerticalLayout
 import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
 import edu.gemini.aspen.giapi.web.ui.vaadin._
 import edu.gemini.aspen.giapi.web.ui.vaadin.containers.{Panel, Window}
@@ -14,23 +13,25 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
 import edu.gemini.aspen.giapi.web.ui.vaadin.components.{ProgressIndicator, Label}
 import com.google.common.util.concurrent.AbstractScheduledService.Scheduler
 import java.util.concurrent.{Executors, TimeUnit}
+import edu.gemini.aspen.giapi.web.ui.vaadin.layouts.{HorizontalLayout, VerticalLayout}
+import java.util.Date
+import com.vaadin.ui.Alignment
 
 @Component(name = "GMPStatusApp")
 class GMPStatusApp(@Requires statusDB: StatusDatabaseService) extends Application {
   val dataSource = buildDataSource
   val scheduler = Executors.newScheduledThreadPool(1)
+  val lastUpdateProperty = Property("Last Update: " + new Date())
 
   def init() {
     val mainContent = new VerticalLayout(sizeFull = true, margin = true) {
-      add(new Panel() {
-        add(new Label("GMP Status Items"))
-      })
-      add(new Table(sizeFull = true, dataSource = dataSource, height = 100 percent), ratio = 1f)
-      add(new Panel() {
-        //add(new TextField("Refresh rate [s]", value = "2"))
-        add(new ProgressIndicator(caption = "Rate", pollingInterval = 5000, style = "hidden"))
-      })
-
+      add(
+        new HorizontalLayout(height=45 px, width = 100 percent, margin = false, style = "status-panel") {
+          add(new Label("GMP Status Items", style = "status-title"), alignment = Alignment.MIDDLE_LEFT)
+          add(new Label(style = "status-title", property = lastUpdateProperty), alignment = Alignment.MIDDLE_RIGHT)
+        })
+      add(new Table(sizeFull = true, dataSource = dataSource), ratio = 1f)
+      add(new ProgressIndicator(caption = "Rate", pollingInterval = 5000, style = "status-hidden"))
     }
     setMainWindow(new Window(caption = "GMP Status Items", content = mainContent))
     setTheme("gmp")
@@ -63,5 +64,6 @@ class GMPStatusApp(@Requires statusDB: StatusDatabaseService) extends Applicatio
         it.getItemProperty("value").setValue(Property(s.getValue))
         it.getItemProperty("timestamp").setValue(Property(s.getTimestamp))
     }
+    lastUpdateProperty.setValue("Last Update: " + new Date())
   }
 }
