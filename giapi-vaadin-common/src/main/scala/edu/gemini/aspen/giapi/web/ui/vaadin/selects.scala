@@ -65,6 +65,7 @@ object selects {
               immediate: Boolean = false,
               sizeFull: Boolean = false,
               columnReorderingAllowed: Boolean = true,
+              collapsingAllowed:Boolean = true,
               sortAscending: Boolean = true,
               sortPropertyId: String = null,
               style: String = null,
@@ -83,6 +84,8 @@ object selects {
       override def getStyle(itemId: AnyRef, propertyId: AnyRef) = cellStyleGenerator(itemId, propertyId)
     })
     setColumnReorderingAllowed(columnReorderingAllowed)
+    setColumnCollapsingAllowed(collapsingAllowed)
+
     setSortAscending(sortAscending)
     setSelectable(selectable)
     setImmediate(immediate)

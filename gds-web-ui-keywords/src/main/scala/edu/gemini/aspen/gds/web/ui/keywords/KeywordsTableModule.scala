@@ -10,12 +10,13 @@ import com.vaadin.terminal.ThemeResource
 import com.vaadin.Application
 import org.vaadin.dialogs.ConfirmDialog
 import com.vaadin.ui.Window.Notification
-import com.vaadin.ui.{Table, Alignment}
+import com.vaadin.ui.Alignment
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts.{HorizontalLayout, VerticalLayout}
 import com.vaadin.ui.{Button => VaadinButton}
 import org.vaadin.codeeditor.AceMarkerEditor
 import org.vaadin.codeeditor.gwt.ace.AceMode
 import org.vaadin.codeeditor.gwt.shared.Marker
+import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
 
 /**
  * Module for the table to edit the keywords */
@@ -25,7 +26,12 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   var dataSource: GDSKeywordsDataSource = buildDataSource(None)
 
   val tabLayout = new VerticalLayout(sizeFull = true)
-  val table = new Table("Keywords")
+  val table = new Table(caption="Keywords", dataSource = dataSource, immediate = true, sizeFull = true)
+
+  table.setNullSelectionAllowed(false)
+  table.addStyleName("keywords-table")
+  table.setPageLength(25)
+  table.setCacheRate(0.1)
 
   var deleteIcon = new ThemeResource("../runo/icons/16/document-delete.png")
   val deleteTooltip = "Delete row"
@@ -158,8 +164,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   }
 
   def setupDeleteColumn(table: Table) {
-    table.addGeneratedColumn(deleteProperty, new ColumnGenerator {
-      def generateCell(source: Table, itemId: AnyRef, columnId: AnyRef) = {
+    table.addGeneratedColumn(deleteProperty, (itemId: AnyRef, columnId: AnyRef) => {
         def confirmDelete() = {
           val message = "Do you want to delete the item " + itemId + "?\n" +
             "Keyword: %s".format(dataSource.getItem(itemId).getItemProperty("FitsKeyword"))
@@ -175,11 +180,10 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
             })
         }
         new LinkButton(caption = "", icon = deleteIcon, action = _ => confirmDelete, description = deleteTooltip)
-      }
-    })
+      })
     table.setColumnIcon(deleteProperty, deleteIcon)
     table.setColumnHeader(deleteProperty, deleteProperty)
-    table.setColumnAlignment(deleteProperty, Table.ALIGN_CENTER)
+    table.setColumnAlignment(deleteProperty, com.vaadin.ui.Table.ALIGN_CENTER)
     table.setColumnWidth(deleteProperty, 20)
   }
 
