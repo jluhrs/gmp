@@ -12,11 +12,13 @@ import com.vaadin.data.util.IndexedContainer
 import scala.collection.JavaConversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
 import edu.gemini.aspen.giapi.web.ui.vaadin.components.{ProgressIndicator, Label}
-import java.util.concurrent.TimeUnit
+import com.google.common.util.concurrent.AbstractScheduledService.Scheduler
+import java.util.concurrent.{Executors, TimeUnit}
 
 @Component(name = "GMPStatusApp")
 class GMPStatusApp(@Requires statusDB: StatusDatabaseService) extends Application {
   val dataSource = buildDataSource
+  val scheduler = Executors.newScheduledThreadPool(1)
 
   def init() {
     val mainContent = new VerticalLayout(sizeFull = true, margin = true) {
@@ -26,7 +28,7 @@ class GMPStatusApp(@Requires statusDB: StatusDatabaseService) extends Applicatio
       add(new Table(sizeFull = true, dataSource = dataSource, height = 100 percent), ratio = 1f)
       add(new Panel() {
         //add(new TextField("Refresh rate [s]", value = "2"))
-        add(new ProgressIndicator(caption = "Rate", pollingInterval = 200))
+        add(new ProgressIndicator(caption = "Rate", pollingInterval = 5000, style = "hidden"))
       })
 
     }
@@ -34,18 +36,15 @@ class GMPStatusApp(@Requires statusDB: StatusDatabaseService) extends Applicatio
     setTheme("gmp")
     populateStatusList()
 
-    new Thread(new Runnable() {
+    scheduler.scheduleAtFixedRate(new Runnable() {
       def run() {
-        while(true) {
-          populateStatusList()
-          TimeUnit.MILLISECONDS.sleep(1000)
-        }
+        populateStatusList()
       }
-    }).start()
+    }, 0, 200, TimeUnit.MILLISECONDS)
   }
 
   override def close() {
-    println("CLOSED")
+    scheduler.shutdown()
   }
 
   private def buildDataSource: Container = {
