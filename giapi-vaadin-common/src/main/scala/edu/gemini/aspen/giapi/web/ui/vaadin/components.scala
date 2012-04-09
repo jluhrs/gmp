@@ -28,11 +28,13 @@ class Button(caption: String = null,
              icon: Resource = null,
              style: String = null,
              enabled: Boolean = true,
-             description: String = null)
+             description: String = null,
+             debugId:String = null)
   extends com.vaadin.ui.Button(caption) {
   setIcon(icon)
   setStyleName(style)
   setEnabled(enabled)
+  setDebugId(debugId)
 
   Option(action) foreach addListener
 

@@ -31,10 +31,8 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   val deleteTooltip = "Delete row"
   val deleteProperty = "DEL"
 
-  val saveButton = new Button(caption = "Save..", action = save)
-  saveButton.setDebugId(KeywordsTableModule.SAVE_BUTTON_DEBUG_ID)
-  val newRowButton = new Button(caption = "New row...", action = newRow)
-  newRowButton.setDebugId(KeywordsTableModule.NEW_ROW_BUTTON_DEBUG_ID)
+  val saveButton = new Button(caption = "Save..", action = save, debugId = KeywordsTableModule.SAVE_BUTTON_DEBUG_ID)
+  val newRowButton = new Button(caption = "New row...", action = newRow, debugId = KeywordsTableModule.NEW_ROW_BUTTON_DEBUG_ID)
 
 
   def visibleColumns(user: Option[String]): Array[AnyRef] = {
