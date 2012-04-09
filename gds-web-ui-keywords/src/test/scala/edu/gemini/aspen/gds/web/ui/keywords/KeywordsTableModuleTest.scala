@@ -11,6 +11,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.mockito.stubbing.Answer
 import org.mockito.invocation.InvocationOnMock
+import org.vaadin.codeeditor.AceMarkerEditor
 
 /**
  * Construction tests
@@ -126,5 +127,17 @@ class KeywordsTableModuleTest extends FunSuite with MockitoSugar {
         "Comment",
         "DEL"),
       tableColumnHeaders.toList)
+  }
+
+  test("configuration error") {
+    val configService = mock[GDSConfigurationService]
+    when(configService.hasError).thenReturn(true)
+    when(configService.errors).thenReturn(None)
+    when(configService.getFullConfiguration).thenReturn(List[ConfigItem[_]]())
+    val module = new KeywordsTableModule(configService)
+
+    val app = mock[Application]
+    module.buildTabContent(app)
+    assertTrue(module.tabLayout.getComponent(0).isInstanceOf[AceMarkerEditor])
   }
 }

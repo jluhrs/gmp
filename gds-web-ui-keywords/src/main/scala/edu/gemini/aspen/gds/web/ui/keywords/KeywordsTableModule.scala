@@ -99,18 +99,23 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     case _ => None
   }
 
+  def buildConfigurationEditor: AceMarkerEditor = {
+    // Should produce error layout
+    val code = new AceMarkerEditor
+    code.setMode(AceMode.textile, "ace-gds.js")
+    configService.errors foreach {
+      case (msg, offset, position) => println(msg); code.addMarker(Marker.newErrorMarker(offset, offset + 2, msg))
+    }
+    code.setValue(configService.textContent)
+    code.setWidth("100%")
+    code.setHeight("100%")
+    code.setReadOnly(true)
+    code
+  }
+
   override def buildTabContent(app: Application) = {
     if (configService.hasError) {
-      // Should produce error layout
-      val code = new AceMarkerEditor
-      code.setMode(AceMode.textile, "ace-gds.js")
-      configService.errors foreach {
-        case (msg, offset, position) => println(msg);code.addMarker(Marker.newErrorMarker(offset , offset + 2, msg))
-      }
-      code.setValue(configService.textContent)
-      code.setWidth("100%")
-      code.setHeight("100%")
-      code.setReadOnly(true)
+      val code = buildConfigurationEditor
       tabLayout.add(code, ratio = 1f)
     } else {
       table.setContainerDataSource(dataSource)
