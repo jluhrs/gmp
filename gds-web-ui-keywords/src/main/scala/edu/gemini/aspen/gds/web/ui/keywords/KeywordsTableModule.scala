@@ -13,6 +13,9 @@ import com.vaadin.ui.Window.Notification
 import com.vaadin.ui.{Table, Alignment}
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts.{HorizontalLayout, VerticalLayout}
 import com.vaadin.ui.{Button => VaadinButton}
+import org.vaadin.codeeditor.AceMarkerEditor
+import org.vaadin.codeeditor.gwt.ace.AceMode
+import org.vaadin.codeeditor.gwt.shared.Marker
 
 /**
  * Module for the table to edit the keywords */
@@ -95,15 +98,16 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
   override def buildTabContent(app: Application) = {
     if (configService.hasError) {
       // Should produce error layout
-//      val code = new AceMarkerEditor
-//      code.setMode(AceMode.textile, "ace-gds.js")
-//      configService.errors foreach {
-//        case (msg, offset, position) => code.addMarker(Marker.newErrorMarker(offset , offset + 2, msg))
-//      }
-//      code.setValue(configService.textContent)
-//      code.setWidth("100%")
-//      code.setHeight("100%")
-//      code.setReadOnly(true)
+      val code = new AceMarkerEditor
+      code.setMode(AceMode.textile, "ace-gds.js")
+      configService.errors foreach {
+        case (msg, offset, position) => println(msg);code.addMarker(Marker.newErrorMarker(offset , offset + 2, msg))
+      }
+      code.setValue(configService.textContent)
+      code.setWidth("100%")
+      code.setHeight("100%")
+      code.setReadOnly(true)
+      tabLayout.add(code, ratio = 1f)
     } else {
       table.setContainerDataSource(dataSource)
       table.setNullSelectionAllowed(false)
@@ -145,6 +149,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
   override def refresh(app: Application) {
     if (configService.hasError) {
+      app.getMainWindow.showNotification("Error in configuration", "<br/>There is an error in the configuration, please check the configuration and save!", Notification.TYPE_ERROR_MESSAGE)
     } else {
       val user = getAppUser(app)
       dataSource = buildDataSource(user)
