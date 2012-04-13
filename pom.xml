@@ -1121,20 +1121,7 @@
         <repository>
             <!-- Maven central mirror -->
             <id>edu.gemini.mirror</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/repo1</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <!-- Repository of other local dependencies stored locally -->
-            <id>edu.gemini.ext-releases-local</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
-        </repository>
-        <repository>
-            <!-- Repository of other local dependencies stored locally -->
-            <id>edu.gemini.libs-releases-local</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases</url>
         </repository>
     </repositories>
 
