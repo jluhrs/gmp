@@ -6,14 +6,14 @@ import org.junit.Test;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Class StatusItemTranslatorImplTest
  */
 public class StatusItemTranslatorImplTest {
     @Test
-    public void testSimpleConfiguration() throws JAXBException, FileNotFoundException, JMSException {
+    public void testSimpleConfiguration() throws JAXBException, IOException, JMSException {
         Top top = new TopImpl("gpi", "gpi");
         String file = getClass().getResource("status-translator.xml").getFile();
         StatusItemTranslatorImpl translator = new StatusItemTranslatorImpl(top, file);
@@ -24,7 +24,7 @@ public class StatusItemTranslatorImplTest {
     }
 
     @Test
-    public void testConfigurationWithSubstitution() throws JAXBException, FileNotFoundException, JMSException {
+    public void testConfigurationWithSubstitution() throws JAXBException, IOException, JMSException {
         Top top = new TopImpl("gpi", "gpi");
         System.setProperty("conf.file", "status-translator");
         String file = getClass().getResource("status-translator.xml").getFile();
