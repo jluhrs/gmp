@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class StatusItemTranslatorConfiguration {
     private final TranslateStatus translatedStatuses;
-
     public StatusItemTranslatorConfiguration(InputStream resourceAsStream) throws JAXBException {
         ClassLoader cl = ObjectFactory.class.getClassLoader();
         JAXBContext jaxbContext = JAXBContext.

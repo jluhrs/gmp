@@ -18,7 +18,7 @@ import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -50,12 +50,13 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
     }
 
     @Validate
-    public void start() throws FileNotFoundException, JAXBException {
+    public void start() throws IOException, JAXBException {
         File f = new File(substituteProperties(xmlFileName));
         if (!f.exists()) {
             LOG.severe("Configuration file " + f + " does not exist");
             return;
         }
+        LOG.info("Start StatusItemTranslator with configuration file " + f);
 
         //read mappings
         StatusItemTranslatorConfiguration config = new StatusItemTranslatorConfiguration(new FileInputStream(f));
