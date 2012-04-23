@@ -3,8 +3,8 @@ package edu.gemini.aspen.gmp.commands.records;
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.records.generated.ConfigRecordType;
 import edu.gemini.aspen.gmp.commands.records.generated.ConfigSetType;
-import edu.gemini.aspen.gmp.commands.records.generated.ConfigSets;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;
@@ -13,14 +13,9 @@ import edu.gemini.epics.api.ReadOnlyChannel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
-import org.apache.felix.ipojo.annotations.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,12 +28,10 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 3/17/11
  */
-@Component
+
 public class ApplyRecord {
     private static final Logger LOG = Logger.getLogger(ApplyRecord.class.getName());
-    private final String name = "apply";
-    //private final String epicsTop = "gpi";//to be read from elsewhere(cas?);
-    private final String resetRecordsName = "gmp:resetRecords";
+    private final String name;
 
     private final Top epicsTop;
 
@@ -48,12 +41,10 @@ public class ApplyRecord {
     private Channel<String> omss;
     private Channel<Integer> clid;
 
-    private Channel<Reset> reset;
 
     private final CarRecord car;
 
     private final ChannelAccessServer cas;
-    private final CommandSender cs;
     private final List<CadRecord> cads = new ArrayList<CadRecord>();
 
     /**
@@ -67,45 +58,24 @@ public class ApplyRecord {
     /**
      * Constructor
      *
-     * @param cas         Channel Access Server to use
-     * @param cs          Command Sender to use
-     * @param epicsTop    The Top level for the Epics Channel
-     * @param xmlFileName XML Configuration File
-     * @param xsdFileName Schema of the configuration file
+     * @param cas      Channel Access Server to use
+     * @param cs       Command Sender to use
+     * @param epicsTop The Top level for the Epics Channel
      */
-    protected ApplyRecord(@Requires ChannelAccessServer cas,
-            @Requires CommandSender cs,
-            @Requires Top epicsTop,
-            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
-            @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
+    protected ApplyRecord(ChannelAccessServer cas,
+                          CommandSender cs,
+                          Top epicsTop,
+                          Collection<SequenceCommand> seqComs,
+                          Collection<ConfigRecordType> configs,
+                          String name) {
         LOG.info("Constructor");
         this.cas = cas;
-        this.cs = cs;
         this.epicsTop = epicsTop;
+        this.name = name;
         car = new CarRecord(cas, epicsTop.buildEpicsChannelName(name + "C"));
-        ConfigSets configSets;
-        try {
-            JAXBContext jc = JAXBContext.newInstance(ConfigSets.class);
-            Unmarshaller um = jc.createUnmarshaller();
-            SchemaFactory factory =
-                    SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-            Schema schema = factory.newSchema(new File(xsdFileName));
-            um.setSchema(schema); //to enable validation
-            configSets = (ConfigSets) um.unmarshal(new File(xmlFileName));
-        } catch (Exception ex) {
-            LOG.log(Level.SEVERE, "Error parsing xml file " + xmlFileName, ex);
-            throw new IllegalArgumentException("Problem parsing XML", ex);
-        }
-        for (SequenceCommand seq : SequenceCommand.values()) {
-            if (seq.equals(SequenceCommand.APPLY)) {
-                List<String> attributes = new ArrayList<String>();
-                for (ConfigSetType conf : configSets.getConfigSet()) {
-                    for (String field : conf.getField()) {
-                        attributes.add(conf.getName() + "." + field);
-                    }
-                }
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, "config", attributes));
-            } else if (seq.equals(SequenceCommand.OBSERVE)) {
+
+        for (SequenceCommand seq : seqComs) {
+            if (seq.equals(SequenceCommand.OBSERVE)) {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase() + ".DATA_LABEL")));
             } else if (seq.equals(SequenceCommand.REBOOT)) {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase() + ".REBOOT_OPT")));
@@ -114,14 +84,21 @@ public class ApplyRecord {
             } else {
                 cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), new ArrayList<String>()));
             }
-
+        }
+        for (ConfigRecordType configRecord : configs) {
+            List<String> attributes = new ArrayList<String>();
+            for (ConfigSetType configSet : configRecord.getConfigSet()) {
+                for (String field : configSet.getField()) {
+                    attributes.add(configSet.getName() + "." + field);
+                }
+            }
+            cads.add(new CadRecordImpl(cas, cs, epicsTop, configRecord.getName(), attributes));
         }
     }
 
     /**
      * Create Channels and start CAR
      */
-    @Validate
     public void start() {
         synchronized (car) {
             LOG.info("Validate");
@@ -133,8 +110,6 @@ public class ApplyRecord {
                 omss = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".OMSS"), "");
                 clid = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".CLID"), 0);
 
-                reset = cas.createChannel(epicsTop.buildEpicsChannelName(resetRecordsName), Reset.NO_RESET);
-                reset.registerListener(new ResetListener());
 
                 car.start();
                 for (CadRecord cad : cads) {
@@ -150,7 +125,6 @@ public class ApplyRecord {
     /**
      * Destroy Channels and stop CAR
      */
-    @Invalidate
     public void stop() {
         synchronized (car) {
             LOG.info("Invalidate");
@@ -161,7 +135,6 @@ public class ApplyRecord {
                 cas.destroyChannel(omss);
                 cas.destroyChannel(clid);
 
-                cas.destroyChannel(reset);
 
                 car.stop();
                 for (CadRecord cad : cads) {
@@ -312,19 +285,6 @@ public class ApplyRecord {
         }
     }
 
-    /**
-     * This listener will be called when a directive is written to the DIR field
-     */
-    private class ResetListener implements ChannelListener<Reset> {
-        @Override
-        public void valueChanged(String channelName, List<Reset> values) {
-            LOG.warning("Received reset write: " + values.get(0));
-            if (values.get(0).equals(Reset.RESET)) {
-                stop();
-                start();
-            }
-        }
-    }
 
     /**
      * This listener will be invoked when any CAR changes state, and will reflect the states in the main CAR

@@ -52,11 +52,15 @@ public class CadRecordImpl implements CadRecord {
         this.cs = cs;
         this.epicsTop = epicsTop;
         this.name = name.toLowerCase();
-        if (name.equalsIgnoreCase("config")) {
-            seqCom = SequenceCommand.valueOf("APPLY");
-        } else {
-            seqCom = SequenceCommand.valueOf(name.toUpperCase());
+
+        SequenceCommand seqComTemp;
+        try {
+            seqComTemp = SequenceCommand.valueOf(name.toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            seqComTemp = SequenceCommand.valueOf("APPLY");
         }
+        seqCom = seqComTemp;
+
         for (String att : attributes) {
             attributeNames.add(att);
         }

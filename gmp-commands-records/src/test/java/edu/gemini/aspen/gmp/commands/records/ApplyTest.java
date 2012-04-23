@@ -117,8 +117,8 @@ public class ApplyTest {
 
     @Test
     public void applyTestObserve() throws CAException, InterruptedException, IOException, TimeoutException {
-        ApplyRecord apply = new ApplyRecord(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
-        apply.start();
+        RecordFactory rf = new RecordFactory(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
+        rf.start();
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName("apply.DIR"), Dir.CLEAR);
         Channel<Integer> val = cas.createChannel(epicsTop.buildEpicsChannelName("apply.VAL"), 0);
         Channel<Integer> clid = cas.createChannel(epicsTop.buildEpicsChannelName("apply.CLID"), 0);
@@ -140,13 +140,13 @@ public class ApplyTest {
         assertEquals(new Integer(1), val.getFirst());
 
         data_label.destroy();
-        apply.stop();
+        rf.stop();
     }
 
     @Test
     public void testReset() throws CAException, TimeoutException, InterruptedException {
-        ApplyRecord apply = new ApplyRecord(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
-        apply.start();
+        RecordFactory rf = new RecordFactory(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
+        rf.start();
 
         Channel<Reset> reset = cas.createChannel(epicsTop.buildEpicsChannelName("gmp:resetRecords"), Reset.NO_RESET);
 
@@ -162,7 +162,7 @@ public class ApplyTest {
         assertEquals("", useAo.getFirst());
 
         useAo.destroy();
-        apply.stop();
+        rf.stop();
 
 
     }
