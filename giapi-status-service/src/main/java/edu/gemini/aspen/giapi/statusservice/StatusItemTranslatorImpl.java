@@ -11,10 +11,12 @@ import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
+import net.jmatrix.eproperties.EProperties;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -39,6 +41,7 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
     private final String xmlFileName;
     private final String name = "StatusItemTranslator: " + this;
     private final Top top;
+    private static final String CONFIGURATION_DIR = "statusTranslatorFile";
 
     public StatusItemTranslatorImpl(@Requires Top top,
             @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
@@ -46,11 +49,22 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
         this.xmlFileName = xmlFileName;
     }
 
+    private String substituteProperties(String url) {
+        EProperties props = new EProperties();
+        props.addAll(System.getProperties());
+        props.put(CONFIGURATION_DIR, url);
+        return props.get(CONFIGURATION_DIR, "/").toString();
+    }
+
     @Validate
     public void start() throws FileNotFoundException, JAXBException {
-        //read mappings
-        StatusItemTranslatorConfiguration config = new StatusItemTranslatorConfiguration(new FileInputStream(xmlFileName));
+        File f = new File(substituteProperties(xmlFileName));
+        if (!f.exists()) {
+            LOG.severe("Configuration file " + f + " does not exist");
+        }
 
+        //read mappings
+        StatusItemTranslatorConfiguration config = new StatusItemTranslatorConfiguration(new FileInputStream(f));
 
         // initialize mappings
         for (StatusType status : config.getStatuses()) {

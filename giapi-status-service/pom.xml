@@ -25,15 +25,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
@@ -45,6 +36,10 @@
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-top</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.net.jmatrix.eproperties</groupId>
+            <artifactId>eproperties</artifactId>
         </dependency>
     </dependencies>
 
