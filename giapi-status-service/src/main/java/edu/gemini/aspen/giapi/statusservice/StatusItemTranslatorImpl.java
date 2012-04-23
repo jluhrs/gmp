@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 @Provides
 public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslator {
     private static final Logger LOG = Logger.getLogger(StatusItemTranslatorImpl.class.getName());
+    private static final String CONF_DIR_PROPERTY = "statusTranslatorFile";
     private final Map<String, StatusSetter> setters = new HashMap<String, StatusSetter>();
     private final Map<String, String> names = new HashMap<String, String>();
     private final Map<String, DataType> types = new HashMap<String, DataType>();
@@ -41,7 +42,6 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
     private final String xmlFileName;
     private final String name = "StatusItemTranslator: " + this;
     private final Top top;
-    private static final String CONFIGURATION_DIR = "statusTranslatorFile";
 
     public StatusItemTranslatorImpl(@Requires Top top,
             @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
@@ -49,18 +49,12 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
         this.xmlFileName = xmlFileName;
     }
 
-    private String substituteProperties(String url) {
-        EProperties props = new EProperties();
-        props.addAll(System.getProperties());
-        props.put(CONFIGURATION_DIR, url);
-        return props.get(CONFIGURATION_DIR, "/").toString();
-    }
-
     @Validate
     public void start() throws FileNotFoundException, JAXBException {
         File f = new File(substituteProperties(xmlFileName));
         if (!f.exists()) {
             LOG.severe("Configuration file " + f + " does not exist");
+            return;
         }
 
         //read mappings
@@ -87,6 +81,13 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
             types.put(top.buildStatusItemName(status.getOriginalName()), status.getTranslatedType());
             names.put(top.buildStatusItemName(status.getOriginalName()), top.buildStatusItemName(status.getTranslatedName()));
         }
+    }
+
+    private String substituteProperties(String url) {
+        EProperties props = new EProperties();
+        props.addAll(System.getProperties());
+        props.put(CONF_DIR_PROPERTY, url);
+        return props.get(CONF_DIR_PROPERTY, "/").toString();
     }
 
     @Invalidate

@@ -26,9 +26,9 @@ public class StatusItemTranslatorConfigurationTest {
         assertEquals("new", statuses.get(0).getTranslatedName());
         assertEquals(DataType.INT, statuses.get(0).getOriginalType());
         assertEquals(DataType.HEALTH, statuses.get(0).getTranslatedType());
-       for(int i=0;i<2;i++){
-           assertEquals(Integer.toString(i),statuses.get(0).getMaps().getMap().get(i).getFrom());
-           assertEquals(Health.values()[i], Health.valueOf(statuses.get(0).getMaps().getMap().get(i).getTo()));
-       }
+        for (int i = 0; i < 2; i++) {
+            assertEquals(Integer.toString(i), statuses.get(0).getMaps().getMap().get(i).getFrom());
+            assertEquals(Health.values()[i], Health.valueOf(statuses.get(0).getMaps().getMap().get(i).getTo()));
+        }
     }
 }
