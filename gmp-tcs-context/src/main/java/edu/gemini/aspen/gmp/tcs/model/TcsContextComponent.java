@@ -71,6 +71,7 @@ public class TcsContextComponent implements JmsArtifact {
     public void validated() throws JMSException {
         LOG.info("Got instance of epics reader " + _epicsReader);
         if (!simulation) {
+            LOG.info("TCS in simulation mode");
             addNewTcsContextFetcher();
         }
     }
