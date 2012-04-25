@@ -3,6 +3,7 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
+import edu.gemini.aspen.giapi.statusservice.LocalStatusItemTranslatorImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.jms.api.JmsProvider;
@@ -15,15 +16,17 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.options.WrappedUrlProvisionOption;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
-public class StatusTranslatorIT extends FelixContainerConfigurationBase {
+public class LocalStatusTranslatorIT extends FelixContainerConfigurationBase {
 
     @Inject
     private BundleContext context;
@@ -43,6 +46,8 @@ public class StatusTranslatorIT extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").versionAsInProject(),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
                 mavenBundle().artifactId("gmp-top").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
+                mavenBundle().artifactId("shared-test").groupId("gemini-nocs").update().versionAsInProject(),
+                mavenBundle().artifactId("shared-util").groupId("gemini-nocs").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("gmp-status-gateway").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
@@ -56,17 +61,22 @@ public class StatusTranslatorIT extends FelixContainerConfigurationBase {
 
     @Override
     protected String confDir() {
-        return "/src/test/resources/conf/services";
+        return "/src/test/resources/conf/status-item-translator/local";
     }
 
     @Test
-    public void translator() throws Exception {
+    public void localTranslator() throws Exception {
         //register handlers
         StatusTranslatorTestHandler testHandler1 = new StatusTranslatorTestHandler();
         context.registerService(FilteredStatusHandler.class.getName(), testHandler1, null);
         JmsProvider provider = (JmsProvider) context.getService(context.getServiceReference("edu.gemini.jms.api.JmsProvider"));
         assertNotNull(provider);
         assertNotNull(context.getService(context.getServiceReference(StatusHandlerAggregate.class.getName())));
+
+        //check that the correct translator is running
+        ServiceReference[] refs=context.getAllServiceReferences("edu.gemini.aspen.giapi.statusservice.StatusItemTranslator",null);
+        assertEquals(1,refs.length);
+        assertTrue(context.getService(refs[0]) instanceof LocalStatusItemTranslatorImpl);
 
         // Wait a bit for the services to be registered before sending the status update
         TimeUnit.MILLISECONDS.sleep(300);

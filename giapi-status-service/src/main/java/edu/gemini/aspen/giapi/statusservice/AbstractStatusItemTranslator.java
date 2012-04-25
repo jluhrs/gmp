@@ -7,14 +7,12 @@ import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.giapi.statusservice.generated.DataType;
 import edu.gemini.aspen.giapi.statusservice.generated.MapType;
 import edu.gemini.aspen.giapi.statusservice.generated.StatusType;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.jms.api.JmsArtifact;
-import edu.gemini.jms.api.JmsProvider;
+import edu.gemini.shared.util.immutable.None;
+import edu.gemini.shared.util.immutable.Option;
+import edu.gemini.shared.util.immutable.Some;
 import net.jmatrix.eproperties.EProperties;
-import org.apache.felix.ipojo.annotations.*;
 
-import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,31 +23,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class StatusItemTranslatorImpl
- *
- * @author Nicolas A. Barriga
- *         Date: 4/5/12
+ * Base class for building status translators
  */
-@Component
-@Provides
-public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslator {
-    private static final Logger LOG = Logger.getLogger(StatusItemTranslatorImpl.class.getName());
+abstract public class AbstractStatusItemTranslator implements StatusItemTranslator {
+    private static final Logger LOG = Logger.getLogger(AbstractStatusItemTranslator.class.getName());
     private static final String CONF_DIR_PROPERTY = "statusTranslatorFile";
-    private final Map<String, StatusSetter> setters = new HashMap<String, StatusSetter>();
     private final Map<String, String> names = new HashMap<String, String>();
     private final Map<String, DataType> types = new HashMap<String, DataType>();
     private final Map<String, Map<String, String>> translations = new HashMap<String, Map<String, String>>();
     private final String xmlFileName;
     private final String name = "StatusItemTranslator: " + this;
-    private final Top top;
+    protected final Top top;
+    protected StatusItemTranslatorConfiguration config;
 
-    public StatusItemTranslatorImpl(@Requires Top top,
-            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
+    public AbstractStatusItemTranslator(Top top, String xmlFileName) {
         this.top = top;
         this.xmlFileName = xmlFileName;
     }
 
-    @Validate
     public void start() throws IOException, JAXBException {
         File f = new File(substituteProperties(xmlFileName));
         if (!f.exists()) {
@@ -59,7 +50,7 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
         LOG.info("Start StatusItemTranslator with configuration file " + f);
 
         //read mappings
-        StatusItemTranslatorConfiguration config = new StatusItemTranslatorConfiguration(new FileInputStream(f));
+        config = new StatusItemTranslatorConfiguration(new FileInputStream(f));
 
         // initialize mappings
         for (StatusType status : config.getStatuses()) {
@@ -69,14 +60,7 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
             }
             translations.put(top.buildStatusItemName(status.getOriginalName()), tr);
         }
-        //create status setters
-        for (StatusType status : config.getStatuses()) {
-            setters.put(
-                    top.buildStatusItemName(status.getOriginalName()),
-                    new StatusSetter(
-                            this.getName() + status.getOriginalName(),
-                            top.buildStatusItemName(status.getOriginalName())));
-        }
+
         //store types and names
         for (StatusType status : config.getStatuses()) {
             types.put(top.buildStatusItemName(status.getOriginalName()), status.getTranslatedType());
@@ -91,23 +75,8 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
         return props.get(CONF_DIR_PROPERTY, "/").toString();
     }
 
-    @Invalidate
     public void stop() {
 
-    }
-
-    @Override
-    public void startJms(JmsProvider provider) throws JMSException {
-        for (StatusSetter ss : setters.values()) {
-            ss.startJms(provider);
-        }
-    }
-
-    @Override
-    public void stopJms() {
-        for (StatusSetter ss : setters.values()) {
-            ss.stopJms();
-        }
     }
 
     @Override
@@ -115,11 +84,10 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
         return name;
     }
 
-    @Override
-    public <T> void update(StatusItem<T> item) {
+    protected <T> Option<StatusItem<?>> translate(StatusItem<T> item) {
         //if there is no translation for this item, do nothing
         if (translations.get(item.getName()) == null) {
-            return;
+            return None.instance();
         }
 
         //translate
@@ -148,14 +116,10 @@ public class StatusItemTranslatorImpl implements JmsArtifact, StatusItemTranslat
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
 
-
-        //publish translation
         if (newItem != null) {
-            try {
-                setters.get(item.getName()).setStatusItem(newItem);
-            } catch (JMSException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            }
+            return new Some<StatusItem<?>>(newItem);
+        } else {
+            return None.instance();
         }
     }
 }

@@ -9,14 +9,14 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
 /**
- * Class StatusItemTranslatorImplTest
+ * Class LocalStatusItemTranslatorImplTest
  */
-public class StatusItemTranslatorImplTest {
+public class JmsStatusItemTranslatorImplTest {
     @Test
     public void testSimpleConfiguration() throws JAXBException, IOException, JMSException {
         Top top = new TopImpl("gpi", "gpi");
         String file = getClass().getResource("status-translator.xml").getFile();
-        StatusItemTranslatorImpl translator = new StatusItemTranslatorImpl(top, file);
+        JmsStatusItemTranslatorImpl translator = new JmsStatusItemTranslatorImpl(top, file);
         translator.start();
 
         /*JmsProvider provider = mock(JmsProvider.class);
@@ -29,7 +29,7 @@ public class StatusItemTranslatorImplTest {
         System.setProperty("conf.file", "status-translator");
         String file = getClass().getResource("status-translator.xml").getFile();
         file = file.replace("status-translator", "${conf.file}");
-        StatusItemTranslatorImpl translator = new StatusItemTranslatorImpl(top, file);
+        JmsStatusItemTranslatorImpl translator = new JmsStatusItemTranslatorImpl(top, file);
         translator.start();
     }
 }
