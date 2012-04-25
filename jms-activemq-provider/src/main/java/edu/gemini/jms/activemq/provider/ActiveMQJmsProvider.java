@@ -50,7 +50,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             @Property(name = CLOSE_TIMEOUT_PROPERTY, value = "1000", mandatory = false) String closeTimeout) {
         this.brokerUrl = substituteProperties(url);
         // Setup the connection factory
-        LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl);
+        LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl + " and close timeout " + closeTimeout);
         _factory = new ActiveMQConnectionFactory(brokerUrl);
         _factory.setCloseTimeout(Integer.parseInt(closeTimeout));
         _factory.setTransportListener(transportListener);
