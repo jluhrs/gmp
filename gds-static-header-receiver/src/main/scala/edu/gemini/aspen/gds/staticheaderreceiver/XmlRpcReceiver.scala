@@ -102,7 +102,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
   def storeKeywords(dataLabel: String, keywords: Array[Object]) {
     for (keyword <- keywords) {
       val pieces = keyword.asInstanceOf[String].split(",")
-      val key = pieces(0).trim()
+      val key = pieces(0).trim().toUpperCase()
       val dataType = pieces(1).trim()
       val value = pieces(2).trim()
       try {
