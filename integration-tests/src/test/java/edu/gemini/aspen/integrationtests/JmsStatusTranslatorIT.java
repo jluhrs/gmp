@@ -1,7 +1,6 @@
 package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.aspen.giapi.status.Health;
-import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.statusservice.JmsStatusItemTranslatorImpl;
@@ -46,8 +45,6 @@ public class JmsStatusTranslatorIT extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").versionAsInProject(),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
                 mavenBundle().artifactId("gmp-top").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
-                mavenBundle().artifactId("shared-test").groupId("gemini-nocs").update().versionAsInProject(),
-                mavenBundle().artifactId("shared-util").groupId("gemini-nocs").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("gmp-status-gateway").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
