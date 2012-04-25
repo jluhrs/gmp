@@ -29,7 +29,6 @@ public class StatusSetter extends BaseMessageProducer {
         //request the value
         Message m = MessageBuilder.buildStatusItemMessage(_session, statusItem);
 
-
         //sendStatusItem the message
         _producer.send(m);
 
