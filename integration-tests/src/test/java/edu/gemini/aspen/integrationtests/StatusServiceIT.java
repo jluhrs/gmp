@@ -64,6 +64,8 @@ public class StatusServiceIT {
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").versionAsInProject(),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
                 mavenBundle().artifactId("gmp-top").groupId("edu.gemini.aspen.gmp").versionAsInProject(),
+                mavenBundle().artifactId("shared-test").groupId("gemini-nocs").update().versionAsInProject(),
+                mavenBundle().artifactId("shared-util").groupId("gemini-nocs").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").update().versionAsInProject()
         );
     }
