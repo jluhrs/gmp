@@ -1,13 +1,11 @@
 package edu.gemini.aspen.giapi.status.dispatcher;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
-
 import org.apache.felix.ipojo.annotations.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
 
@@ -31,7 +29,7 @@ public class StatusDispatcher implements StatusHandler {
 
     private final static Logger LOG = Logger.getLogger(StatusDispatcher.class.getName());
 
-    private final Multimap<StatusItemFilter, FilteredStatusHandler> _handlers = HashMultimap.create();
+    private final List<FilteredStatusHandler> _handlers = new ArrayList<FilteredStatusHandler>();
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 
@@ -47,19 +45,17 @@ public class StatusDispatcher implements StatusHandler {
 
     @Override
     public <T> void update(StatusItem<T> item) {
-        for(StatusItemFilter filter = new StatusItemFilter(item.getName()); !filter.equals(StatusItemFilter.EMPTY_FILTER); filter=filter.getParent()){
-            lock.readLock().lock();
-            for (FilteredStatusHandler handler : _handlers.get(filter)) {
+        for(FilteredStatusHandler handler:_handlers){
+            if(handler.getFilter().match(item)){
                 handler.update(item);
             }
-            lock.readLock().unlock();
         }
     }
 
     @Bind(aggregate = true, optional = true)
     public void bindStatusHandler(FilteredStatusHandler handler) {
         lock.writeLock().lock();
-        _handlers.put(handler.getFilter(), handler);
+        _handlers.add(handler);
         lock.writeLock().unlock();
         LOG.info("Status Handler Registered at Dispatcher: " + handler);
     }
@@ -67,7 +63,7 @@ public class StatusDispatcher implements StatusHandler {
     @Unbind
     public void unbindStatusHandler(FilteredStatusHandler handler) {
         lock.writeLock().lock();
-        _handlers.remove(handler.getFilter(), handler);
+        _handlers.remove(handler);
         lock.writeLock().unlock();
         LOG.info("Removed Status Handler from Dispatcher: " + handler);
     }

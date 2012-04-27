@@ -381,7 +381,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
                 <artifactId>giapi-status-dispatcher</artifactId>
-                <version>0.2.3-SNAPSHOT</version>
+                <version>0.2.4-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen</groupId>
@@ -791,7 +791,7 @@
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
-                <version>1.6</version>
+                <version>1.6.2</version>
             </dependency>
 
             <!-- OCS shared -->

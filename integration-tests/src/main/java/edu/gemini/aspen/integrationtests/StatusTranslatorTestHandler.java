@@ -3,7 +3,7 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
-import edu.gemini.aspen.giapi.status.dispatcher.StatusItemFilter;
+import edu.gemini.aspen.giapi.status.dispatcher.filters.ConfigPathFilter;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Validate;
@@ -29,8 +29,8 @@ public class StatusTranslatorTestHandler implements FilteredStatusHandler {
         LOG.info("Constructing StatusTranslatorTestHandler");
     }
     @Override
-    public StatusItemFilter getFilter() {
-        return new StatusItemFilter("gpisim:new");
+    public ConfigPathFilter getFilter() {
+        return new ConfigPathFilter("gpisim:new");
     }
 
     @Override

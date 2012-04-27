@@ -3,5 +3,5 @@
 #-----------------------------------------------------------------
 
 Bundle-Activator:
-Export-Package: ${bundle.namespace}
-Private-Package: ${bundle.namespace}.*
+Export-Package: ${bundle.namespace}, ${bundle.namespace}.filters
+Private-Package: ${bundle.namespace}.handlers

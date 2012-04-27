@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen</groupId>
     <artifactId>giapi-status-dispatcher</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.2.4-SNAPSHOT</version>
 
     <name>GIAPI Status Dispatcher</name>
     <description>Status Dispatcher</description>
@@ -53,6 +53,10 @@
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-activemq-provider</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
         </dependency>
     </dependencies>
 
