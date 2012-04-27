@@ -4,7 +4,8 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.dispatcher.StatusItemFilter;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class ListFilter implements a filter based on exact matching of a list of status item names
@@ -13,20 +14,15 @@ import java.util.List;
  *         Date: 4/26/12
  */
 public class ListFilter implements StatusItemFilter {
-    private final List<String> filters;
+    private final Set<String> filters;
 
     public ListFilter(String... filters) {
-        this.filters = Arrays.asList(filters);
+        this.filters = new HashSet<String>(Arrays.asList(filters));
     }
 
     @Override
     public boolean match(StatusItem item) {
-        for (String f : filters) {
-            if (f.equals(item.getName())) {
-                return true;
-            }
-        }
-        return false;
+        return filters.contains(item.getName());
     }
 
     @Override
