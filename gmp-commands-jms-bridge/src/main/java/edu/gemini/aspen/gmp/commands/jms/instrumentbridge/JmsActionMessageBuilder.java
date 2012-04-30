@@ -37,7 +37,7 @@ class JmsActionMessageBuilder implements ActionMessageBuilder {
     static {
         for (SequenceCommand sc : SequenceCommand.values()) {
             TOPIC_MAP.put(sc,
-                    JmsKeys.GMP_SEQUENCE_COMMAND_PREFIX + sc.getName());
+                    JmsKeys.GMP_SEQUENCE_COMMAND_PREFIX + sc.toString());
         }
     }
 

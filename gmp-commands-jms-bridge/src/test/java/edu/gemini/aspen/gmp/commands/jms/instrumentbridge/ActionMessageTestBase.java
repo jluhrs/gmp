@@ -74,7 +74,7 @@ public abstract class ActionMessageTestBase {
 
             //name
             StringBuilder sb = new StringBuilder(JmsKeys.GMP_SEQUENCE_COMMAND_PREFIX);
-            sb.append(a.getCommand().getSequenceCommand().getName());
+            sb.append(a.getCommand().getSequenceCommand().toString());
             assertEquals(sb.toString(), dd);
         }
     }

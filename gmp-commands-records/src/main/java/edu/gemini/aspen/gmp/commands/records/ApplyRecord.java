@@ -76,13 +76,13 @@ public class ApplyRecord {
 
         for (SequenceCommand seq : seqComs) {
             if (seq.equals(SequenceCommand.OBSERVE)) {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase() + ".DATA_LABEL")));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), Lists.<String>newArrayList(seq.getName() + ".DATA_LABEL")));
             } else if (seq.equals(SequenceCommand.REBOOT)) {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), Lists.<String>newArrayList(seq.getName().toLowerCase() + ".REBOOT_OPT")));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), Lists.<String>newArrayList(seq.getName() + ".REBOOT_OPT")));
             } else if (seq.equals(SequenceCommand.ENGINEERING)) {
                 //We do not want to expose engineering command to EPICS at this moment
             } else {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName().toLowerCase(), new ArrayList<String>()));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), new ArrayList<String>()));
             }
         }
         for (ConfigRecordType configRecord : configs) {

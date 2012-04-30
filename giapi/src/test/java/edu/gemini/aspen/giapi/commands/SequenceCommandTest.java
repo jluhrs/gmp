@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 public class SequenceCommandTest {
     @Test
     public void trivialTestOfGetName() {
-        assertEquals("ABORT", SequenceCommand.ABORT.getName());
+        assertEquals("ABORT", SequenceCommand.ABORT.toString());
     }
 
     @Test

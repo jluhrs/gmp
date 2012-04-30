@@ -51,11 +51,11 @@ public class CadRecordImpl implements CadRecord {
                             Iterable<String> attributes) {
         this.cs = cs;
         this.epicsTop = epicsTop;
-        this.name = name.toLowerCase();
+        this.name = name;
 
         SequenceCommand seqComTemp;
         try {
-            seqComTemp = SequenceCommand.valueOf(name.toUpperCase());
+            seqComTemp = SequenceCommand.getFromName(name);
         } catch (IllegalArgumentException ex) {
             seqComTemp = SequenceCommand.valueOf("APPLY");
         }
@@ -65,7 +65,7 @@ public class CadRecordImpl implements CadRecord {
             attributeNames.add(att);
         }
         epicsCad = new EpicsCad(cas);
-        car = new CarRecord(cas, epicsTop.buildEpicsChannelName(name.toLowerCase() + "C"));
+        car = new CarRecord(cas, epicsTop.buildEpicsChannelName(name + "C"));
         LOG.fine("Finished constructing CAD record " + name);
     }
 
