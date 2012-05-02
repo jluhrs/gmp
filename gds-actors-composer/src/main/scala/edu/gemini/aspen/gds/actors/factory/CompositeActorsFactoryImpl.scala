@@ -59,6 +59,8 @@ class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationServic
 
   @Validate
   def startConfiguration() {
-    // Required by iPojo
+    actorsConfiguration = configService.getConfiguration
+    //this had to be added for the epics factory. Channels take time to connect, so we want them early
+    configure(actorsConfiguration)
   }
 }

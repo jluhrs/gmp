@@ -6,6 +6,7 @@ import scala.collection._
 import edu.gemini.epics.{ReadOnlyClientEpicsChannel, EpicsReader, EpicsException}
 import mutable.HashMap
 import edu.gemini.aspen.gds.api.{Channel, GDSConfiguration, AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
+import gov.aps.jca.CAException
 
 @Component
 @Instantiate
@@ -38,13 +39,31 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
   }
 
   override def configure(configuration: immutable.List[GDSConfiguration]) {
+    val oldConfig=actorsConfiguration.toSet
     super.configure(configuration)
-    actorsConfiguration foreach {
+    val newConfig = actorsConfiguration.toSet
+
+    val addedElements = newConfig -- oldConfig
+    val removedElements = oldConfig -- newConfig
+
+    addedElements foreach {
       c => {
         try {
           channels.put(c.channel, epicsReader.getChannelAsync(c.channel.name))
         } catch {
           case ex: EpicsException => {
+            LOG.severe(ex.getMessage)
+          }
+        }
+      }
+    }
+
+    removedElements foreach {
+      c => {
+        try {
+          channels.remove(c.channel) foreach  {_.destroy()}
+        } catch {
+          case ex: CAException => {
             LOG.severe(ex.getMessage)
           }
         }

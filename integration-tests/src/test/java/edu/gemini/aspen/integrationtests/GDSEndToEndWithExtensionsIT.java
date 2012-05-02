@@ -103,6 +103,8 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
 
         assertTrue(afterProcessingAllExtensionsKeywords.get(2).contains("TAMBIENT"));
 
+        assertTrue(afterProcessingAllExtensionsKeywords.get(0).contains("WINDDIRE"));
+        assertTrue(afterProcessingAllExtensionsKeywords.get(0).contains("WINDSPEE"));
     }
 
 }

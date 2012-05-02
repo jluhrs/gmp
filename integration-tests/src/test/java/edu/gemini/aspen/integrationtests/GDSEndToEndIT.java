@@ -78,6 +78,8 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         assertTrue(afterProcessingKeywords.contains("HUMIDITY"));
         assertTrue(afterProcessingKeywords.contains("TAMBIENT"));
         assertTrue(afterProcessingKeywords.contains("PRESSURE"));
+        assertTrue(afterProcessingKeywords.contains("WINDDIRE"));
+        assertTrue(afterProcessingKeywords.contains("WINDSPEE"));
     }
 
 }

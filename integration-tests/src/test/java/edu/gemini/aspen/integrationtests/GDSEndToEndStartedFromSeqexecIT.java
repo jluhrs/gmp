@@ -20,9 +20,7 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
@@ -79,6 +77,8 @@ public class GDSEndToEndStartedFromSeqexecIT extends GDSIntegrationBase {
         assertTrue(afterProcessingKeywords.contains("HUMIDITY"));
         assertTrue(afterProcessingKeywords.contains("TAMBIENT"));
         assertTrue(afterProcessingKeywords.contains("PRESSURE"));
+        assertTrue(afterProcessingKeywords.contains("WINDDIRE"));
+        assertTrue(afterProcessingKeywords.contains("WINDSPEE"));
     }
 
 }
