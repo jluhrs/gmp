@@ -1,7 +1,9 @@
 package edu.gemini.aspen.integrationtests;
 
+import com.google.common.collect.Sets;
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
 import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
+import edu.gemini.aspen.gds.api.ErrorPolicy;
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
@@ -12,6 +14,8 @@ import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +23,7 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
@@ -36,7 +39,8 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
                 mavenBundle().artifactId("epics-api").groupId("edu.gemini.epics").versionAsInProject(),
                 mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").versionAsInProject(),
                 mavenBundle().artifactId("jca-lib").groupId("edu.gemini.external.osgi.jca-lib").versionAsInProject(),
-                mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject()
+                mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-error-policy").groupId("edu.gemini.aspen.gds").versionAsInProject()
         );
     }
 
@@ -61,6 +65,18 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
+
+        //verify that the error policies are loaded
+        Set<String> errorPolicies = Sets.newHashSet();
+        try {
+            for (ServiceReference ref : context.getServiceReferences(ErrorPolicy.class.getName(), null)) {
+                errorPolicies.add(context.getService(ref).getClass().getName());
+            }
+        } catch (InvalidSyntaxException ex) {
+            fail();
+        }
+        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.errorpolicy.EnforceOrderPolicy"));
+
 
         copyInitialFile();
 
