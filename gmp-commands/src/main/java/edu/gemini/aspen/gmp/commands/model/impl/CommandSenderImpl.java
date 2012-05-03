@@ -13,6 +13,8 @@ import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
 
+import java.util.logging.Logger;
+
 /**
  * Command Sender implementation.
  * This is the implementation used by OSGi clients to send commands
@@ -22,6 +24,7 @@ import org.apache.felix.ipojo.annotations.Requires;
 @Instantiate
 @Provides
 public class CommandSenderImpl implements CommandSender {
+    private static final Logger LOG = Logger.getLogger(CommandSender.class.getName());
 
     /**
      * Holds state of the actions being tracked in the system
@@ -79,6 +82,7 @@ public class CommandSenderImpl implements CommandSender {
         //will complete immediately.
         _manager.registerAction(action);
 
+        LOG.fine("About to execute apply " + action + " with " + _executor);
         HandlerResponse response = _executor.execute(action, _sender);
 
         //The only response that indicates actions have started is
@@ -87,6 +91,7 @@ public class CommandSenderImpl implements CommandSender {
         //Completion listener is ignored in this case. See GIAPI design
         //and use, section 10.6
         if (response != null) {
+            LOG.fine("Got response " + response + " for action " + action);
             if (response.getResponse() == HandlerResponse.Response.STARTED) {
                 //now, it is possible the action has completed _while_ we were
                 //here.... let's take care of that case and if so, use the
@@ -100,6 +105,7 @@ public class CommandSenderImpl implements CommandSender {
                 try {
                     if (decoratorListener.getResponse() != null) {
                         response = decoratorListener.getResponse();
+                        LOG.fine("Got response " + response + " for action " + action);
                         //this action is no longer valid.
                         _manager.unregisterAction(action);
                     }
