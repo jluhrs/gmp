@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gmp.commands.records;
 
-import edu.gemini.epics.api.Channel;
 import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.epics.api.Channel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *         Date: 3/17/11
  */
 public class CarRecord {
-    private static final Logger LOG = Logger.getLogger(CarRecord.class.getName());
+    private final Logger LOG;
 
     enum Val {
         UNAVAILABLE,
@@ -58,6 +58,8 @@ public class CarRecord {
      * @param prefix name of the CAR. ex.: "gpi:applyC"
      */
     public CarRecord(ChannelAccessServer cas, String prefix) {
+        LOG = Logger.getLogger("CAR Record " + prefix);
+
         LOG.info("CAR constructor: " + prefix);
         this.cas = cas;
         this.prefix = prefix;

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *         Date: 3/24/11
  */
 public class CadRecordImpl implements CadRecord {
-    private static final Logger LOG = Logger.getLogger(CadRecordImpl.class.getName());
+    private final Logger LOG;
 
 
     private CadState state = CadState.CLEAR;
@@ -49,6 +49,8 @@ public class CadRecordImpl implements CadRecord {
                             Top epicsTop,
                             String name,
                             Iterable<String> attributes) {
+        LOG = Logger.getLogger("CAD Record " + epicsTop.buildEpicsChannelName(name));
+
         this.cs = cs;
         this.epicsTop = epicsTop;
         this.name = name;

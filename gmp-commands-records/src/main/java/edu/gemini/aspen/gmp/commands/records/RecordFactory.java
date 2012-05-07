@@ -44,7 +44,7 @@ public class RecordFactory {
                             @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
                             @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
 
-        LOG.info("Constructor");
+        LOG.info("Constructing RecordFactory");
         this.cas = cas;
         this.epicsTop = epicsTop;
         Records records;

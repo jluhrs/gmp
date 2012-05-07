@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  */
 
 public class ApplyRecord {
-    private static final Logger LOG = Logger.getLogger(ApplyRecord.class.getName());
+    private final Logger LOG;
     private final String name;
 
     private final Top epicsTop;
@@ -68,7 +68,9 @@ public class ApplyRecord {
                           Collection<SequenceCommand> seqComs,
                           Collection<ConfigRecordType> configs,
                           String name) {
-        LOG.info("Constructor");
+        LOG = Logger.getLogger("APPLY Record " + epicsTop.buildEpicsChannelName(name));
+
+        LOG.fine("Constructing APPLY Record");
         this.cas = cas;
         this.epicsTop = epicsTop;
         this.name = name;
@@ -101,7 +103,7 @@ public class ApplyRecord {
      */
     public void start() {
         synchronized (car) {
-            LOG.info("Validate");
+            LOG.fine("Validating APPLY Record");
             try {
                 dir = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".DIR"), Dir.CLEAR);
                 dir.registerListener(new DirListener());
@@ -127,7 +129,7 @@ public class ApplyRecord {
      */
     public void stop() {
         synchronized (car) {
-            LOG.info("Invalidate");
+            LOG.info("Invalidating APPLY Record");
             try {
                 cas.destroyChannel(dir);
                 cas.destroyChannel(val);
