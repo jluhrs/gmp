@@ -4,6 +4,7 @@ import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.jms.api.JmsProviderStatusListener;
 import net.jmatrix.eproperties.EProperties;
+import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.felix.ipojo.annotations.*;
@@ -13,10 +14,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -43,7 +41,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     private final String brokerUrl;
     private final TransportListener transportListener = new JmsTransportListener();
 
-    private final AtomicReference<Connection> baseConnection = new AtomicReference<Connection>();
+    private final AtomicReference<ActiveMQConnection> baseConnection = new AtomicReference<ActiveMQConnection>();
     private final AtomicBoolean connected = new AtomicBoolean(false);
 
     public ActiveMQJmsProvider(@Property(name = BROKER_URL_PROPERTY, value = DEFAULT_BROKER_URL, mandatory = true) String url,
@@ -75,7 +73,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             @Override
             public void run() {
                 try {
-                    Connection connection = _factory.createConnection();
+                    ActiveMQConnection connection = (ActiveMQConnection) _factory.createConnection();
                     connection.start();
                     LOG.info("Base connection established to " + brokerUrl);
                     Connection previousConnection = baseConnection.getAndSet(connection);
@@ -113,7 +111,9 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     @Bind(aggregate = true, optional = true)
     public void bindJmsArtifact(JmsArtifact jmsArtifact) {
-        _jmsArtifacts.add(jmsArtifact);
+        synchronized (_jmsArtifacts) {
+            _jmsArtifacts.add(jmsArtifact);
+        }
         if (connected.get()) {
             try {
                 jmsArtifact.startJms(this);
@@ -126,10 +126,12 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     @Unbind(aggregate = true)
     public void unbindJmsArtifact(JmsArtifact jmsArtifact) {
+        synchronized (_jmsArtifacts) {
+            _jmsArtifacts.remove(jmsArtifact);
+        }
         if (connected.get()) {
             jmsArtifact.stopJms();
         }
-        _jmsArtifacts.remove(jmsArtifact);
         LOG.info("JMS Artifact Removed: " + jmsArtifact);
     }
 
@@ -149,12 +151,12 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             for (JmsProviderStatusListener l : _statusListenerHandlers) {
                 l.transportInterrupted();
             }
-            if (connected.getAndSet(false)) {
+            if (connected.compareAndSet(true, false)) {
                 for (JmsArtifact a : _jmsArtifacts) {
                     try {
                         a.stopJms();
                     } catch (Exception e) {
-                        LOG.log(Level.SEVERE, "Exception while shutting down jms artifact "+ a, e);
+                        LOG.log(Level.SEVERE, "Exception while shutting down jms artifact " + a, e);
                     }
                 }
             }
@@ -179,22 +181,4 @@ public final class ActiveMQJmsProvider implements JmsProvider {
             }
         }
     }
-
-    class StartJmsUpdater implements Callable<Void> {
-
-        private final BlockingQueue<JmsArtifact> _updateQueue =
-                new LinkedBlockingQueue<JmsArtifact>();
-
-        public void addArtifact(JmsArtifact artifact) {
-            _updateQueue.add(artifact);
-        }
-
-        @Override
-        public Void call() throws Exception {
-
-            //connected.
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
-        }
-    }
-
 }
