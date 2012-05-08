@@ -77,7 +77,7 @@
  * bundles.
  *
  * The most important service that can be used by any other bundle to send commands to an instrument is CommandSender,
- * implemented in this bundle by \ref edu.gemini.aspen.gmp.commands.model.CommandSenderImpl "CommandSenderImpl"
+ * implemented in this bundle by \ref edu.gemini.aspen.gmp.commands.model.impl.CommandSenderImpl "CommandSenderImpl"
  *
  * A full summary of the services provided by this bundle is included below:
  *
@@ -88,9 +88,9 @@
  * - \ref edu.gemini.aspen.giapi.commands.CommandUpdater "CommandUpdater" implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.CommandUpdaterImpl "CommandUpdater" is a service
  * used as a back channel from \ref edu.gemini.aspen.gmp.commands.model.ActionSender "ActionSender" to inform the commands module 
  * when a command has completed or failed
- * - \ref edu.gemini.aspen.gmp.commands.model.ActionManager "ActionManager" implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.ActionManagerImpl "ActionManagerImpl" is a service used
+ * - \ref edu.gemini.aspen.gmp.commands.model.impl.ActionManager "ActionManager" implemented by \ref edu.gemini.aspen.gmp.commands.model.impl.ActionManagerImpl "ActionManagerImpl" is a service used
  * internally by gmp-commands to keep track of command execution
- * - \ref edu.gemini.aspen.gmp.commands.model.SequenceCommandExecutor "SequenceCommandExecutor" implemented by \ref edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutorStrategy "SequenceCommandExecutorStrategy"
+ * - \ref edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutor "SequenceCommandExecutor" implemented by \ref edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutorStrategy "SequenceCommandExecutorStrategy"
  * is used internally by ActionManager to perform different types of commands like REBOOT or PARK
  *
  * \section gmp-commands_requires_sec Required Services
@@ -100,10 +100,10 @@
  * - \ref edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder "ActionMessageBuilder"
  *
   \section gmp-commands_configuration_sec Configuration
-   This bundle has one configuration file: \ref edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutorStrategy-gpi.cfg. This file has
+   This bundle has one configuration file: \ref edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutorStrategy-default.cfg. This file has
   only the \c instrumentStartupScript configuration parameter, that must be set to the appropriate script. For instance "instrumentStartupScript=gpi-tlcd".
 
-   A bit of configuration is also needed for the REBOOT functionality. The option \tt requiretty must not be set, the user \tt software must have permission
+   A bit of configuration is also needed for the REBOOT functionality. The option \c requiretty must not be set, the user \c software must have permission
    to execute init.d scripts, chkconfig and shutdown, and no password needs to be asked. A snippet of a valid config file follows:
    \verbatim
     #Defaults    requiretty

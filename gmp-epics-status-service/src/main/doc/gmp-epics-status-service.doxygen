@@ -2,7 +2,7 @@
  * \page gmp-epics-status-service GMP Epics Status Service
  *
  * This bundle receives \ref edu.gemini.aspen.giapi.status.StatusItem "Status Item" updates and reflects it in the
- * corresponding EPICS \ref edu.gemini.cas.Channel "Channel".
+ * corresponding EPICS \ref edu.gemini.epics.api.Channel "Channel".
  *
  * \section gmp-epics-status-service_provides_sec Provided Services
  * The \ref edu.gemini.aspen.gmp.statusservice.EpicsStatusService "EpicsStatusService" class provides the main entry

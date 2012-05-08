@@ -18,8 +18,8 @@
   - \ref edu.gemini.epics.EpicsObserver "EpicsObserver" A service to register EpicsClient to get updates to EpicsChannels.
  
   \section epics-service_requires_sec Required Services
-  This bundle can use implementations of the \ref edu.gemini.epics.EpicsClient "EpicsClient" service. Implementations
-  subscribe to get updates when certain EPICS Channels are updated. An implementation of \ref edu.gemini.epics.EpicsClient "EpicsClient"
+  This bundle can use implementations of the \ref edu.gemini.epics.api.EpicsClient "EpicsClient" service. Implementations
+  subscribe to get updates when certain EPICS Channels are updated. An implementation of \ref edu.gemini.epics.api.EpicsClient "EpicsClient"
   must inform what channels it wants to monitor by means of setting a service property named edu.gemini.epics.EpicsClient.EPICS_CHANNELS
   to an array of Strings, each representing a monitored channel.
  

@@ -30,7 +30,7 @@ Minuses
 
  Writing components:
 
- To write components you should refer to the official documentation at \link http://felix.apache.org/site/apache-felix-ipojo.html \endlink
+ To write components you should refer to the official documentation at <a href="http://felix.apache.org/site/apache-felix-ipojo.html">Apache Felix iPOJO</a>
 
  Additionally we have been using the following coventions for iPojo
 
