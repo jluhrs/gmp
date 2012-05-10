@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 @Instantiate
 @Provides(specifications = {ActionSender.class, JmsArtifact.class})
 class ActionMessageActionSender implements ActionSender, JmsArtifact {
+    private static final Logger LOG = Logger.getLogger(ActionMessageActionSender.class.getName());
     private final HandlerResponseSenderReply _messageSender = new HandlerResponseSenderReply(JmsKeys.GW_COMMAND_TOPIC);
 
     @Override
@@ -58,6 +59,7 @@ class ActionMessageActionSender implements ActionSender, JmsArtifact {
         ObjectBasedMessageBuilder instrumentMessageBuilder = new ObjectBasedMessageBuilder(
                 actionMessage.getDataElements(),
                 actionMessage.getProperties());
+        LOG.fine("Attempt to send action message to " + destinationData + " and wait for reply");
 
         return _messageSender.sendMessageWithReply(destinationData, instrumentMessageBuilder, timeout);
     }
