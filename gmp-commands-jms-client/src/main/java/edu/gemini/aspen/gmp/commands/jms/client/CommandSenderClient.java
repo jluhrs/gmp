@@ -23,7 +23,6 @@ import java.util.UUID;
  * Instead it is meant to be used as a standalone client
  */
 public class CommandSenderClient implements CommandSender {
-    private static final int DEFAULT_TIMEOUT = 5000;
     private final JmsProvider provider;
 
     public CommandSenderClient(JmsProvider provider) {
@@ -33,7 +32,7 @@ public class CommandSenderClient implements CommandSender {
 
     @Override
     public HandlerResponse sendCommand(Command command, CompletionListener listener) {
-        return connectAndSendCommand(command, listener, DEFAULT_TIMEOUT);
+        return connectAndSendCommand(command, listener, DEFAULT_COMMAND_RESPONSE_TIMEOUT);
     }
 
     @Override
