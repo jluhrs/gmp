@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.model.impl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
@@ -82,7 +83,8 @@ public class CommandSenderImpl implements CommandSender {
         //will complete immediately.
         _manager.registerAction(action);
 
-        LOG.fine("About to execute apply " + action + " with " + _executor);
+        Stopwatch stopwatch = new Stopwatch().start();
+        LOG.fine("About to execute apply " + action);
         HandlerResponse response = _executor.execute(action, _sender);
 
         //The only response that indicates actions have started is
@@ -90,6 +92,7 @@ public class CommandSenderImpl implements CommandSender {
         //that must be completed at a later time, therefore the
         //Completion listener is ignored in this case. See GIAPI design
         //and use, section 10.6
+        LOG.info("Response for " + action + " arrived: " + response + " in " + stopwatch.stop().elapsedMillis() + " [ms]");
         if (response != null) {
             LOG.fine("Got response " + response + " for action " + action);
             if (response.getResponse() == HandlerResponse.Response.STARTED) {

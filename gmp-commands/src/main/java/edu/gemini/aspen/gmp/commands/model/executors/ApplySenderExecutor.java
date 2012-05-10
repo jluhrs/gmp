@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
+import com.google.common.base.Stopwatch;
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
@@ -7,6 +8,7 @@ import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.impl.HandlerResponseAnalyzer;
 
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Sequence Command executor for the APPLY Sequence Command. It's job
@@ -17,6 +19,7 @@ import java.util.Set;
  * the handler(s) that will process it.
  */
 public class ApplySenderExecutor implements SequenceCommandExecutor {
+    private static final Logger LOG = Logger.getLogger(ApplySenderExecutor.class.getName());
 
     private final ActionMessageBuilder _actionMessageBuilder;
     private final ActionManager _actionManager;
@@ -59,6 +62,7 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
         Set<ConfigPath> configPathSet = navigator.getChildPaths(path);
 
         if (configPathSet.isEmpty()) {
+            LOG.fine("Action " + action + " has empty path set, respond NOANSWER");
             return HandlerResponse.NOANSWER;
         }
 
@@ -68,10 +72,13 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
         for (ConfigPath cp : configPathSet) {
             //get the sub-configuration
             Configuration c = config.getSubConfiguration(cp);
+            LOG.fine("Attempt to send apply for configuration " + c + " with timeout " + action.getTimeout());
 
             ActionMessage am = _actionMessageBuilder.buildActionMessage(action, cp);
 
+            Stopwatch s = new Stopwatch().start();
             HandlerResponse response = sender.send(am, action.getTimeout());
+            LOG.fine("Response for apply was " + response + " took " + s.stop().elapsedMillis() + " [ms]");
 
             //if the response is started, there is one handler that will
             //provide answer to this action later. Notify the action
