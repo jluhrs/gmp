@@ -69,6 +69,10 @@ public abstract class JmsMapMessageSenderReply<T> extends JmsMapMessageSender
             TemporaryQueue temporaryQueue = (TemporaryQueue) requestMessage.getJMSReplyTo();
             temporaryQueue.delete();
         }
+        if (reply == null) {
+            LOG.severe("Reply awaited on " + tempConsumer + " is null, probably the response timeoutd after " + timeout + " [ms]");
+            //throw new JMSException("Expected reply for a request");
+        }
         return buildResponse(reply);
     }
 
