@@ -103,5 +103,30 @@ Whether the master CAR record is IDLE or BUSY, it will contain the client ID of 
 
 The CAR record implemented in \ref edu.gemini.aspen.gmp.commands.records.CarRecord is fairly simple, just a collection
 of EPICS channels and some methods to manipulate its state.
+
+\section comm_records_troubleshooting_sec Troubleshooting
+
+If something goes wrong, and you want the records to go to a clean state, you have three options:
+
+\subsection comm_records_clear_sec The CLEAR directive
+If any of the CAR records is stuck in any state but IDLE, the first thing to try is to send a CLEAR directive to its
+corresponding CAD. For example, if \$(top):testC.VAL equals ERR, you can write CLEAR in \$(top):test.DIR and the CAR
+should go to IDLE and the CAD to a CLEAR state.
+
+If there are several CARs/CADs in problem, you can mark them all (issuing the MARK directive or changing any of their
+attributes) and then issue a CLEAR to their APPLY record.
+
+\subsection comm_records_reset_sec The resetRecords channel
+If the problem persists, or the problem is at a lower level (i.e. missing EPICS channels), you can try writing RESET to
+\$(top):gmp:resetRecords. This will destroy all the EPICS channels of the APPLY, CAD and CAR records, and recreate them.
+
+\subsection comm_records_restart_sec Restarting
+Finally, your last resort short of restarting the GMP, is to stop and restart the GMP Commands Records bundle.
+
+
+
+
+
+
 */
 
