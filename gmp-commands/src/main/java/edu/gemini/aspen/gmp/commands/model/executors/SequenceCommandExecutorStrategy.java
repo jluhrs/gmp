@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
+import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
@@ -36,9 +37,10 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
      */
     public SequenceCommandExecutorStrategy(@Requires ActionMessageBuilder builder,
                                            @Requires ActionManager manager,
+                                           @Requires CommandHandlers commandHandlers,
                                            @Property(name = "instrumentStartupScript", value = "INVALID", mandatory = true) String instrumentStartupScript) {
         _defaultExecutor = new DefaultSenderExecutor(builder);
-        _applyExecutor = new ApplySenderExecutor(builder, manager);
+        _applyExecutor = new ApplySenderExecutor(builder, manager, commandHandlers);
         _rebootExecutor = new RebootSenderExecutor(new LinuxRebootManager(instrumentStartupScript));
     }
 

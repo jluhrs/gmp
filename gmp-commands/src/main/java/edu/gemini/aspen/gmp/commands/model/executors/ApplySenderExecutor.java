@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 
 import com.google.common.base.Stopwatch;
 import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
@@ -26,7 +27,7 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
 
     static final String ERROR_MSG = "No configuration present for Apply Sequence command";
 
-    public ApplySenderExecutor(ActionMessageBuilder builder, ActionManager manager) {
+    public ApplySenderExecutor(ActionMessageBuilder builder, ActionManager manager, CommandHandlers commandHandlers) {
         _actionMessageBuilder = builder;
         _actionManager = manager;
     }

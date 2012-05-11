@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
+import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
@@ -33,11 +34,12 @@ public class ApplySenderExecutorTest {
     @Before
     public void setUp() {
         ActionMessageBuilder builder = mock(ActionMessageBuilder.class);
+        CommandHandlers handlers = mock(CommandHandlers.class);
 
         actionManager = new ActionManagerImpl();
         actionManager.start();
 
-        _executor = new ApplySenderExecutor(builder, actionManager);
+        _executor = new ApplySenderExecutor(builder, actionManager, handlers);
 
         _responses = new HandlerResponse[]{
                 HandlerResponse.COMPLETED,

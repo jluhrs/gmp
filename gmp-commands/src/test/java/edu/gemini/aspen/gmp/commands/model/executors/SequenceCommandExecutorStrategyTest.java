@@ -2,6 +2,7 @@ package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.*;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
+import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
@@ -19,13 +20,14 @@ import static org.mockito.Mockito.mock;
 public class SequenceCommandExecutorStrategyTest {
 
     private ActionMessageBuilder builder = mock(ActionMessageBuilder.class);
+    private CommandHandlers handlers = mock(CommandHandlers.class);
     private ActionManager manager = mock(ActionManager.class);
     private SequenceCommandExecutorStrategy strategy;
     private CompletionListenerMock listener = new CompletionListenerMock();
 
     @Before
     public void setUp() throws Exception {
-        strategy = new SequenceCommandExecutorStrategy(builder, manager, "noscript");
+        strategy = new SequenceCommandExecutorStrategy(builder, manager, handlers, "noscript");
     }
 
 
