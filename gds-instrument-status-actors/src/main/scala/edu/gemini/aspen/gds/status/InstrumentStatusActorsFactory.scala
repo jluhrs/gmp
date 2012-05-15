@@ -2,7 +2,6 @@ package edu.gemini.aspen.gds.status
 
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemin.aspen.gds.status.InstrumentStatusActor
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
 

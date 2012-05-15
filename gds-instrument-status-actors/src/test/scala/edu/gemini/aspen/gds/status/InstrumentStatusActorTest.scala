@@ -9,7 +9,6 @@ import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.giapi.status.impl.BasicStatus
 import org.junit.Assert._
 import edu.gemini.aspen.gds.api._
-import edu.gemin.aspen.gds.status.InstrumentStatusActor
 import fits.FitsKeyword
 
 class InstrumentStatusActorTest extends Mockito {

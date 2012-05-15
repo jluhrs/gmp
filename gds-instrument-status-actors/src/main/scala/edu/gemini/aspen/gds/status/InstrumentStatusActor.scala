@@ -1,4 +1,4 @@
-package edu.gemin.aspen.gds.status
+package edu.gemini.aspen.gds.status
 
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
