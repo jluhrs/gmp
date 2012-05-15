@@ -27,5 +27,6 @@
  * - \subpage gmp_internal_documentation
  * - \subpage gds_internal_documentation
  * - \subpage gpi_validation
+ * - <a href="../scaladocs/index.html">GDS Scala API</a>
  *
  */

@@ -4,6 +4,8 @@
 The Gemini Data Service (GDS) is the system that will (partially) replace the Gemini Data Handling System (DHS) for GIAPI
 based instruments, such as GPI.
 
+The GDS is written in Scala, so doxygen cannot generate its API documentation. It can be accessed at <a href="../scaladocs/index.html">GDS API</a>.
+
 \section gds_bundles_sec Bundles
 The GDS is comprised of the following bundles:
 - \subpage gds-actors-composer

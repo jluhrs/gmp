@@ -281,8 +281,276 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.scala-tools</groupId>
+                        <artifactId>maven-scala-plugin</artifactId>
+                        <version>2.15.2</version>
+                        <configuration>
+                            <includes>
+                                <include>**/*.scala</include>
+                            </includes>
+                            <sourceDir>../</sourceDir>
+                            <excludes>
+                                <exclude>gmp-web-ui-console/**/*.scala</exclude>
+                                <exclude>gpi-ao-plot/**/*.scala</exclude>
+                            </excludes>
+                            <jvmArgs>
+                                <jvmArg>-Xmx2048m</jvmArg>
+                            </jvmArgs>
+                            <!--Except for doctitle, the rest don't seem to work-->
+                            <!--<bottom>bottom: Copyright (c) {inceptionYear}-{currentYear} {organizationName}. All Rights Reserved..</bottom>-->
+                            <!--<description>description: ScalaDoc API.</description>-->
+                            <!--<doctitle>doctitle: ${project.name} ${project.version} API.</doctitle>-->
+                            <!--<footer>footer</footer>-->
+                            <!--<header>header</header>-->
+                            <!--<top>top</top>-->
+                            <!--<windowtitle>windowtitle: ${project.name} ${project.version} API.</windowtitle>-->
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.specs2</groupId>
+                    <artifactId>specs2_2.9.1</artifactId>
+                    <version>1.6.1</version>
+                </dependency>
+
+
+
+                <!-- JAXB -->
+                <dependency>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </dependency>
+
+                <!-- EProperties -->
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.net.jmatrix.eproperties</groupId>
+                    <artifactId>eproperties</artifactId>
+                </dependency>
+
+                <!-- JMS -->
+                <dependency>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>com.springsource.javax.jms</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </dependency>
+
+                <!-- ActiveMQ -->
+                <dependency>
+                    <groupId>org.apache.activemq</groupId>
+                    <artifactId>activemq-core</artifactId>
+                </dependency>
+
+                <!-- OSGI -->
+                <dependency>
+                    <groupId>org.osgi</groupId>
+                    <artifactId>org.osgi.compendium</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.osgi</groupId>
+                    <artifactId>org.osgi.core</artifactId>
+                </dependency>
+
+                <!-- Scala dependencies -->
+                <dependency>
+                    <groupId>com.weiglewilczek.scala-lang-osgi</groupId>
+                    <artifactId>scala-library</artifactId>
+                </dependency>
+
+                 <!--IPojo dependencies-->
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.ipojo.handler.eventadmin</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.ipojo</artifactId>
+                </dependency>
+
+                <!-- SPModel -->
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>spModel-type</artifactId>
+                </dependency>
+
+                <!-- PAX-WEB -->
+                <dependency>
+                    <groupId>org.ops4j.pax.web</groupId>
+                    <artifactId>pax-web-jetty-bundle</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.ops4j.pax.web</groupId>
+                    <artifactId>pax-web-extender-war</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.ops4j.pax.web</groupId>
+                    <artifactId>pax-web-extender-whiteboard</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.eclipse.jdt.core.compiler</groupId>
+                    <artifactId>ecj</artifactId>
+                </dependency>
+
+                <!-- Testing dependencies -->
+                <dependency>
+                    <groupId>org.scalatest</groupId>
+                    <artifactId>scalatest_2.9.1</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-all</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>gsbase</groupId>
+                    <artifactId>gsbase</artifactId>
+                </dependency>
+
+                <!-- Guava -->
+                <dependency>
+                    <groupId>com.googlecode.guava-osgi</groupId>
+                    <artifactId>guava-osgi</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </dependency>
+
+                <!-- Joda time dependencies -->
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
+                    <artifactId>time_2.9.1</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>joda-time</groupId>
+                    <artifactId>joda-time</artifactId>
+                </dependency>
+
+                <!-- OCS shared -->
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>shared-util</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>shared-test</artifactId>
+                </dependency>
+
+                <!-- ODB/Jini dependencies -->
+                <dependency>
+                    <groupId>net.jini</groupId>
+                    <artifactId>jini-core</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>pot-client</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>shared-jini</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>spModel</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>spModel-pio</artifactId>
+                </dependency>
+
+                <!-- Vaadin dependencies -->
+                <dependency>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>vaadin</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                    <artifactId>confirmdialog</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
+                    <artifactId>vaadin-lazyquerycontainer</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                    <artifactId>pagedtable</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                    <artifactId>aceeditor</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                    <artifactId>drawer</artifactId>
+                </dependency>
+
+                <!-- XMLRPC Server dependencies -->
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.apache.xmlrpc</groupId>
+                    <artifactId>xmlrpc-server</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.org.apache.xmlrpc</groupId>
+                    <artifactId>xmlrpc-common</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.ws-commons-util</groupId>
+                    <artifactId>ws-commons-util</artifactId>
+                </dependency>
+
+                <!-- Dependency on nom.tam.fits library -->
+                <dependency>
+                    <groupId>edu.gemini.external.osgi.nom.tam</groupId>
+                    <artifactId>fits</artifactId>
+                </dependency>
+
+                <!-- PAX-Logging -->
+                <dependency>
+                    <groupId>org.ops4j.pax.logging</groupId>
+                    <artifactId>pax-logging-api</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.ops4j.pax.logging</groupId>
+                    <artifactId>pax-logging-service</artifactId>
+                </dependency>
+
+                <!-- ODB Dependencies -->
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>jini-driver</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>spdb-activator</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>gemini-nocs</groupId>
+                    <artifactId>rr</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.metatype</artifactId>
+                </dependency>
+
+
+            </dependencies>
+
+
         </profile>
         <profile>
             <id>gpi</id>
@@ -580,14 +848,16 @@
                                             </includes>
                                         </source>
                                     </sources>
-                                    <directory>${installationroot}/${project.artifactId}-${project.version}/bin</directory>
+                                    <directory>${installationroot}/${project.artifactId}-${project.version}/bin
+                                    </directory>
                                     <directoryIncluded>false</directoryIncluded>
                                     <filemode>644</filemode>
                                     <username>software</username>
                                     <groupname>gemini</groupname>
                                 </mapping>
                                 <mapping>
-                                    <directory>${installationroot}/${project.artifactId}-${project.version}/docs</directory>
+                                    <directory>${installationroot}/${project.artifactId}-${project.version}/docs
+                                    </directory>
                                     <sources>
                                         <source>
                                             <location>target/site/doxygen</location>
@@ -603,7 +873,10 @@
                             <preinstallScriptlet>
                                 <script>
                                     #check for user, or create it?
-                                    id -u software &amp;&gt; /dev/null || useradd software -u 3624 -g gemini -m &amp;&gt; /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user software"
+                                    id -u software &amp;&gt; /dev/null || useradd software -u 3624 -g gemini -m &amp;&gt;
+                                    /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd
+                                    software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user
+                                    software"
                                 </script>
                             </preinstallScriptlet>
                             <postinstallScriptlet>
@@ -616,32 +889,38 @@
 
                                     #symlink /gemsoft/opt/gpi/gmp -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION
                                     if [ $1 -ne 1 ]; then
-                                        rm -f ${installationroot}/${project.artifactId}
+                                    rm -f ${installationroot}/${project.artifactId}
                                     fi
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/ ${installationroot}/${project.artifactId}
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/
+                                    ${installationroot}/${project.artifactId}
 
                                     #symlink /gemsoft/opt/bin -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION/bin/gmp-server
 
                                     # Install the symlinks to the utilities
                                     [ -d /gemsoft/bin ] || mkdir -p /gemsoft/bin
 
-                                    [ -L /gemsoft/bin/${project.artifactId}-ctl.sh ] &amp;&amp; rm /gemsoft/bin/${project.artifactId}-ctl.sh
+                                    [ -L /gemsoft/bin/${project.artifactId}-ctl.sh ] &amp;&amp; rm
+                                    /gemsoft/bin/${project.artifactId}-ctl.sh
                                     [ -L /gemsoft/bin/giapi-tester.sh ] &amp;&amp; rm /gemsoft/bin/giapi-tester.sh
                                     [ -L /gemsoft/bin/giapi-tester ] &amp;&amp; rm /gemsoft/bin/giapi-tester
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/${project.artifactId}-ctl.sh /gemsoft/bin/${project.artifactId}-ctl.sh
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester.sh
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester
+                                    ln -s
+                                    ${installationroot}/${project.artifactId}-${gmp.version}/bin/${project.artifactId}-ctl.sh
+                                    /gemsoft/bin/${project.artifactId}-ctl.sh
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh
+                                    /gemsoft/bin/giapi-tester.sh
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh
+                                    /gemsoft/bin/giapi-tester
                                 </script>
                             </postinstallScriptlet>
                             <postremoveScriptlet>
                                 <script>
                                     #delete leftover directories
                                     if [ $1 -eq 0 ]; then
-                                        rm -rf ${installationroot}/${project.artifactId}-${project.version}
-                                        rm ${installationroot}/${project.artifactId}
-                                        rm /gemsoft/bin/${project.artifactId}-ctl.sh
-                                        rm /gemsoft/bin/giapi-tester.sh
-                                        rm /gemsoft/bin/giapi-tester
+                                    rm -rf ${installationroot}/${project.artifactId}-${project.version}
+                                    rm ${installationroot}/${project.artifactId}
+                                    rm /gemsoft/bin/${project.artifactId}-ctl.sh
+                                    rm /gemsoft/bin/giapi-tester.sh
+                                    rm /gemsoft/bin/giapi-tester
                                     fi
                                 </script>
                             </postremoveScriptlet>
