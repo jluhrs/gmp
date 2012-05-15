@@ -25,8 +25,9 @@ public class CommandHandlersImpl implements CommandHandlers {
                         Query.isInstanceOf(Query.value("org.apache.activemq.broker.jmx.TopicView")));
                 for (ObjectName on : objectNames) {
                     String handlerRoute = s.getAttribute(on, "Name").toString();
+                    Long consumerCount = (Long)s.getAttribute(on, "ConsumerCount");
                     String prefix = "GMP.SC.APPLY.";
-                    if (handlerRoute.startsWith(prefix)) {
+                    if (handlerRoute.startsWith(prefix) && consumerCount.longValue() > 0) {
                         handlers.add(ConfigPath.configPath(handlerRoute.substring(prefix.length())));
                     }
                 }
