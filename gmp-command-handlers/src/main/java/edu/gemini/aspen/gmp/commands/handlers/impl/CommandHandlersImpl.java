@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.handlers.impl;
 
 import com.google.common.collect.Lists;
+import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
@@ -15,9 +16,9 @@ import java.util.Set;
 @Provides
 public class CommandHandlersImpl implements CommandHandlers {
     @Override
-    public List<String> getApplyHandlers() {
+    public List<ConfigPath> getApplyHandlers() {
         List<MBeanServer> mBeanServers = MBeanServerFactory.findMBeanServer(null);
-        List<String> handlers = Lists.newArrayList();
+        List<ConfigPath> handlers = Lists.newArrayList();
         for (MBeanServer s : mBeanServers) {
             try {
                 Set<ObjectName> objectNames = s.queryNames(new ObjectName("org.apache.activemq:*"),
@@ -26,7 +27,7 @@ public class CommandHandlersImpl implements CommandHandlers {
                     String handlerRoute = s.getAttribute(on, "Name").toString();
                     String prefix = "GMP.SC.APPLY.";
                     if (handlerRoute.startsWith(prefix)) {
-                        handlers.add(handlerRoute.substring(prefix.length()));
+                        handlers.add(ConfigPath.configPath(handlerRoute.substring(prefix.length())));
                     }
                 }
             } catch (MalformedObjectNameException e) {
