@@ -139,7 +139,6 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
           publisher.sendData(GDSEndObservation(dataLabel))
         case Left(errorMsg:String) =>
           LOG.severe(errorMsg)
-          println("HERE is the error")
           publisher.sendData(GDSObservationError(dataLabel, "Problem writing FITS file"))
       }
     } catch {
