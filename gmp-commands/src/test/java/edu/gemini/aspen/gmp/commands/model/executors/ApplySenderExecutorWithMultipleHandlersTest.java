@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import edu.gemini.aspen.giapi.commands.*;
@@ -8,17 +9,16 @@ import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers;
 import edu.gemini.aspen.gmp.commands.model.*;
 import edu.gemini.aspen.gmp.commands.model.impl.ActionManagerImpl;
-import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static edu.gemini.aspen.giapi.commands.ConfigPath.configPath;
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.configurationBuilder;
-import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -29,28 +29,29 @@ public class ApplySenderExecutorWithMultipleHandlersTest {
 
     private ApplySenderExecutor _executor;
 
-    private HandlerResponse[] _responses;
-
     private Configuration _applyConfig;
     private ActionManagerImpl actionManager;
     private ActionMessageBuilder builder = new MockActionMessageBuilder();
+    private CommandHandlers handlers = mock(CommandHandlers.class);
 
     @Before
     public void setUp() {
-        CommandHandlers handlers = mock(CommandHandlers.class);
-
         actionManager = new ActionManagerImpl();
         actionManager.start();
+    }
 
+    @After
+    public void shutDown() {
+        actionManager.stop();
+    }
+
+    /**
+     * This test runs with the case that there is no top level X handler
+     * but there are several sub handlers
+     */
+    @Test
+    public void testCommandWithoutCommandHandlers() {
         _executor = new ApplySenderExecutor(builder, actionManager, handlers);
-
-        _responses = new HandlerResponse[]{
-                HandlerResponse.COMPLETED,
-                HandlerResponse.STARTED,
-                HandlerResponse.ACCEPTED,
-                HandlerResponse.NOANSWER,
-                HandlerResponse.createError("Error message")
-        };
 
         _applyConfig = configurationBuilder()
                 .withPath(configPath("X:S1:A.val1"), "xa1")
@@ -64,19 +65,45 @@ public class ApplySenderExecutorWithMultipleHandlersTest {
                 .withPath(configPath("X:S2:C.val2"), "xc2")
                 .withPath(configPath("X:S2:C.val3"), "xc3")
                 .build();
-    }
 
-    @After
-    public void shutDown() {
-        actionManager.stop();
+        Command command = new Command(
+                SequenceCommand.APPLY,
+                Activity.START,
+                _applyConfig);
+
+        Action action = new Action(command, new CompletionListenerMock());
+
+        List<ConfigPath> registeredHandlers = ImmutableList.of(configPath("X:S1"), configPath("X:S2"));
+        when(handlers.getApplyHandlers()).thenReturn(registeredHandlers);
+
+        ActionSenderMockWithoutTopLevel sender = new ActionSenderMockWithoutTopLevel();
+        HandlerResponse myResponse = _executor.execute(action, sender);
+        assertEquals(HandlerResponse.ACCEPTED, myResponse);
+        assertEquals(2, sender.getCallsCounter());
     }
 
     /**
      * This test runs with the case that there is no top level X handler
-     * but there are several sub handlers
+     * but there are several sub handlers, and the CommandHandlers can inform the decision
      */
     @Test
-    public void testCorrectHandlerResponse() {
+    public void testCommandWithCommandHandlers() {
+
+        _executor = new ApplySenderExecutor(builder, actionManager, handlers);
+
+        _applyConfig = configurationBuilder()
+                .withPath(configPath("X:S1:A.val1"), "xa1")
+                .withPath(configPath("X:S1:A.val2"), "xa2")
+                .withPath(configPath("X:S1.A.val2"), "xa2")
+                .withPath(configPath("X:S1:A.val3"), "xa3")
+                .withPath(configPath("X:S1:B.val1"), "xb1")
+                .withPath(configPath("X:S1:B.val2"), "xb2")
+                .withPath(configPath("X:S1:B.val3"), "xb3")
+                .withPath(configPath("X:S2:C.val1"), "xc1")
+                .withPath(configPath("X:S2:C.val2"), "xc2")
+                .withPath(configPath("X:S2:C.val3"), "xc3")
+                .build();
+
         Command command = new Command(
                 SequenceCommand.APPLY,
                 Activity.START,
@@ -88,6 +115,38 @@ public class ApplySenderExecutorWithMultipleHandlersTest {
         HandlerResponse myResponse = _executor.execute(action, sender);
         assertEquals(HandlerResponse.ACCEPTED, myResponse);
         assertEquals(3, sender.getCallsCounter());
+    }
+
+    /**
+     * This test runs with the case that there is no top level X handler
+     * but there are several sub handlers, and the CommandHandlers can inform the decision
+     */
+    @Test
+    public void testCommandWithOneLevelCommandHandlers() {
+
+        _executor = new ApplySenderExecutor(builder, actionManager, handlers);
+
+        _applyConfig = configurationBuilder()
+                .withPath(configPath("X:A.val1"), "xa1")
+                .withPath(configPath("X:A.val2"), "xa2")
+                .withPath(configPath("X:B.val1"), "xb1")
+                .withPath(configPath("X:B.val2"), "xb2")
+                .build();
+
+        Command command = new Command(
+                SequenceCommand.APPLY,
+                Activity.START,
+                _applyConfig);
+
+        Action action = new Action(command, new CompletionListenerMock());
+
+        List<ConfigPath> registeredHandlers = ImmutableList.of(configPath("X:A"), configPath("X:B"));
+        when(handlers.getApplyHandlers()).thenReturn(registeredHandlers);
+
+        ActionSenderMockWithoutTopLevel sender = new ActionSenderMockWithoutTopLevel();
+        HandlerResponse myResponse = _executor.execute(action, sender);
+        assertEquals(HandlerResponse.ACCEPTED, myResponse);
+        assertEquals(2, sender.getCallsCounter());
     }
 
     private static class ActionSenderMockWithoutTopLevel implements ActionSender {

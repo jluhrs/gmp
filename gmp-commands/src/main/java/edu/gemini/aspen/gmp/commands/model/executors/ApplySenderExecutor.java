@@ -8,6 +8,7 @@ import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
 import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
 import edu.gemini.aspen.gmp.commands.model.impl.HandlerResponseAnalyzer;
 
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -24,12 +25,14 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
 
     private final ActionMessageBuilder _actionMessageBuilder;
     private final ActionManager _actionManager;
+    private final CommandHandlers commandHandlers;
 
     static final String ERROR_MSG = "No configuration present for Apply Sequence command";
 
     public ApplySenderExecutor(ActionMessageBuilder builder, ActionManager manager, CommandHandlers commandHandlers) {
         _actionMessageBuilder = builder;
         _actionManager = manager;
+        this.commandHandlers = commandHandlers;
     }
 
     @Override
@@ -69,35 +72,43 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
 
         //this analyzer will get the result answer from this part of the configuration
         HandlerResponseAnalyzer analyzer = new HandlerResponseAnalyzer();
+        List<ConfigPath> applyHandlers = commandHandlers.getApplyHandlers();
 
         for (ConfigPath cp : configPathSet) {
             //get the sub-configuration
             Configuration c = config.getSubConfiguration(cp);
-            LOG.fine("Attempt to send apply for configuration " + c + " with timeout " + action.getTimeout());
 
-            ActionMessage am = _actionMessageBuilder.buildActionMessage(action, cp);
+            HandlerResponse response = null;
+            if (applyHandlers.isEmpty() || applyHandlers.contains(cp)) {
+                LOG.fine("Attempt to send apply for configuration " + c + " with id " + action.getId() + " and timeout " + action.getTimeout());
+                ActionMessage am = _actionMessageBuilder.buildActionMessage(action, cp);
+                Stopwatch s = new Stopwatch().start();
+                response = sender.send(am, action.getTimeout());
+                LOG.fine("Response for apply was " + response + " took " + s.stop().elapsedMillis() + " [ms]");
 
-            Stopwatch s = new Stopwatch().start();
-            HandlerResponse response = sender.send(am, action.getTimeout());
-            LOG.fine("Response for apply was " + response + " took " + s.stop().elapsedMillis() + " [ms]");
+                //if the response is started, there is one handler that will
+                //provide answer to this action later. Notify the action
+                //manager about this
+                if (response == HandlerResponse.STARTED) {
+                    LOG.finer("Increase expected responses for action " + action.getId());
+                    _actionManager.increaseRequiredResponses(action);
+                }
 
-            //if the response is started, there is one handler that will
-            //provide answer to this action later. Notify the action
-            //manager about this
-            if (response == HandlerResponse.STARTED) {
-                _actionManager.increaseRequiredResponses(action);
-            }
+                //if there are no handlers, recursively decompose this config in
+                //smaller units if possible, and return the answer.
+                if (response == HandlerResponse.NOANSWER) {
+                    response = getResponse(action, c, cp, sender);
+                }
 
-            //if there are no handlers, recursively decompose this config in
-            //smaller units if possible, and return the answer.
-            if (response == HandlerResponse.NOANSWER) {
+                //if the answer is still NOANSWER, return immediately, there is no one
+                //that can process this part of the configuration.
+                if (response == HandlerResponse.NOANSWER) {
+                    return response;
+                }
+            } else {
+                LOG.finer("No handler for " + cp + " go to next sub-level..");
+                // If there are no handlers registered go straight to the sub-handlers
                 response = getResponse(action, c, cp, sender);
-            }
-
-            //if the answer is still NOANSWER, return immediately, there is no one
-            //that can process this part of the configuration.
-            if (response == HandlerResponse.NOANSWER) {
-                return response;
             }
             analyzer.addResponse(response);
         }
