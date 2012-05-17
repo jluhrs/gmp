@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-commands-records</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
 
     <name>GMP Commands Records</name>
     <description>GMP Commands Records</description>
@@ -25,15 +25,6 @@
 
 
     <dependencies>
-        <!--
-         | uncomment to add all imported (non-local) bundles to your compilation classpath
-        <dependency>
-          <type>pom</type>
-          <groupId>${parent.groupId}</groupId>
-          <artifactId>provision</artifactId>
-          <optional>true</optional>
-        </dependency>
-        -->
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>
@@ -51,11 +42,6 @@
             <artifactId>jca-lib</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
             <scope>test</scope>
@@ -69,9 +55,9 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.sun.tools.xjc.maven2</groupId>
-                <artifactId>maven-jaxb-plugin</artifactId>
-                <version>1.1.1</version>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.8.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -81,7 +67,6 @@
                 </executions>
                 <configuration>
                     <generatePackage>edu.gemini.aspen.gmp.commands.records.generated</generatePackage>
-                    <generateDirectory>src/main/java</generateDirectory>
                     <removeOldOutput>true</removeOldOutput>
                 </configuration>
             </plugin>
