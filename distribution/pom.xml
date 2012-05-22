@@ -873,10 +873,7 @@
                             <preinstallScriptlet>
                                 <script>
                                     #check for user, or create it?
-                                    id -u software &amp;&gt; /dev/null || useradd software -u 3624 -g gemini -m &amp;&gt;
-                                    /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd
-                                    software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user
-                                    software"
+                                    id -u software &amp;&gt; /dev/null || useradd software -u 3624 -g gemini -m &amp;&gt; /dev/null || (groupadd -g 2000 gemini &amp;&gt; /dev/null &amp;&amp; useradd software -g gemini -m &amp;&gt; /dev/null) || echo "Problem: could not create user software"
                                 </script>
                             </preinstallScriptlet>
                             <postinstallScriptlet>
@@ -889,38 +886,32 @@
 
                                     #symlink /gemsoft/opt/gpi/gmp -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION
                                     if [ $1 -ne 1 ]; then
-                                    rm -f ${installationroot}/${project.artifactId}
+                                        rm -f ${installationroot}/${project.artifactId}
                                     fi
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/
-                                    ${installationroot}/${project.artifactId}
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/ ${installationroot}/${project.artifactId}
 
                                     #symlink /gemsoft/opt/bin -&gt; /gemsoft/opt/gpi/gmp-server-$VERSION/bin/gmp-server
 
                                     # Install the symlinks to the utilities
                                     [ -d /gemsoft/bin ] || mkdir -p /gemsoft/bin
 
-                                    [ -L /gemsoft/bin/${project.artifactId}-ctl.sh ] &amp;&amp; rm
-                                    /gemsoft/bin/${project.artifactId}-ctl.sh
+                                    [ -L /gemsoft/bin/${project.artifactId}-ctl.sh ] &amp;&amp; rm /gemsoft/bin/${project.artifactId}-ctl.sh
                                     [ -L /gemsoft/bin/giapi-tester.sh ] &amp;&amp; rm /gemsoft/bin/giapi-tester.sh
                                     [ -L /gemsoft/bin/giapi-tester ] &amp;&amp; rm /gemsoft/bin/giapi-tester
-                                    ln -s
-                                    ${installationroot}/${project.artifactId}-${gmp.version}/bin/${project.artifactId}-ctl.sh
-                                    /gemsoft/bin/${project.artifactId}-ctl.sh
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh
-                                    /gemsoft/bin/giapi-tester.sh
-                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh
-                                    /gemsoft/bin/giapi-tester
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/${project.artifactId}-ctl.sh /gemsoft/bin/${project.artifactId}-ctl.sh
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester.sh
+                                    ln -s ${installationroot}/${project.artifactId}-${gmp.version}/bin/giapi-tester.sh /gemsoft/bin/giapi-tester
                                 </script>
                             </postinstallScriptlet>
                             <postremoveScriptlet>
                                 <script>
                                     #delete leftover directories
                                     if [ $1 -eq 0 ]; then
-                                    rm -rf ${installationroot}/${project.artifactId}-${project.version}
-                                    rm ${installationroot}/${project.artifactId}
-                                    rm /gemsoft/bin/${project.artifactId}-ctl.sh
-                                    rm /gemsoft/bin/giapi-tester.sh
-                                    rm /gemsoft/bin/giapi-tester
+                                        rm -rf ${installationroot}/${project.artifactId}-${project.version}
+                                        rm ${installationroot}/${project.artifactId}
+                                        rm /gemsoft/bin/${project.artifactId}-ctl.sh
+                                        rm /gemsoft/bin/giapi-tester.sh
+                                        rm /gemsoft/bin/giapi-tester
                                     fi
                                 </script>
                             </postremoveScriptlet>

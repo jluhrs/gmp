@@ -1,5 +1,63 @@
 /*! \page release_notes Release Notes
 
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.1.1
+
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-980'>GIAPI-980</a>] -         RPM for version 14.1.0 does not run
+</li>
+</ul>
+
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.1
+
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-820'>GIAPI-820</a>] -         old versions of the library still included in tar.gz
+</li>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-823'>GIAPI-823</a>] -         Sending a command over the EPICS interface does not always work
+</li>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-963'>GIAPI-963</a>] -         The GDS dosen&#39;t support status items of the form zernikes[0]
+</li>
+</ul>
+
+<h2>        Story
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-130'>GIAPI-130</a>] -         Make apply command handling more efficient detecting what handlers are available
+</li>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-946'>GIAPI-946</a>] -         Support external GDS events
+</li>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-955'>GIAPI-955</a>] -         Redisign gds-obseventhandler to use events
+</li>
+</ul>
+
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-962'>GIAPI-962</a>] -         Rename the configuration for FITS header checker from IFS to INSTRUMENT
+</li>
+</ul>
+
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.0.3
+
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-870'>GIAPI-870</a>] -         GDS Web UI should have a button to reload the configuration
+</li>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-925'>GIAPI-925</a>] -         giapi-tester -? command fails in csh
+</li>
+</ul>
+
+<h2>        Technical task
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-924'>GIAPI-924</a>] -         GDS Web UI Status panel crashes after one day
+</li>
+</ul>
+
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.0.2
 
 <h2>        Bug
