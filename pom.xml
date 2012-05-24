@@ -1086,7 +1086,7 @@
         <module>gds-actors-composer</module>
         <module>gds-epics-actors</module>
         <module>gds-instrument-status-actors</module>
-        <!--module>gds-properties-actors</module-->
+        <module>gds-properties-actors</module>
         <module>gds-odb-actors</module>
         <module>gds-constant-actors</module>
         <module>gds-obsevent-handler</module>
