@@ -1,31 +1,40 @@
 package edu.gemini.aspen.gds.properties
 
 import org.junit.Assert._
-import org.junit.Test
-import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import edu.gemini.aspen.gds.seqexec.PropertiesActorsFactory
+import org.scalatest.FunSuite
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
-class PropertiesActorsFactoryTest extends Mockito {
+@RunWith(classOf[JUnitRunner])
+class PropertiesActorsFactoryTest extends FunSuite {
   val programID = "GS-2011-Q-56"
   val dataLabel = new DataLabel("GS-2011")
   val propertiesFactory = new PropertiesActorsFactory()
 
-  @Test
-  def testConfigureWithOneItem {
+  test("One configurable item") {
     val configuration = buildOneConfiguration("OBS_PREP", "JAVAVER", "java.runtime.version")
     propertiesFactory.configure(configuration)
 
     val actors = propertiesFactory.buildActors(ObservationEvent.OBS_PREP, dataLabel)
-    assertEquals(0, actors.length)
+    assertEquals(1, actors.length)
+  }
+
+  test("Without a configurable item") {
+    val configuration = buildOneNonPropertyConfiguration("OBS_PREP", "JAVAVER", "java.runtime.version")
+    propertiesFactory.configure(configuration)
+
+    val actors = propertiesFactory.buildActors(ObservationEvent.OBS_PREP, dataLabel)
+    assertTrue(actors.isEmpty)
   }
 
   def buildOneConfiguration(event: String, keyword: String, channel: String) =
     List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "PROPERTY", channel, 0, "A comment"))
 
-  def buildOneNonPropesConfiguration(event: String, keyword: String, channel: String) =
+  def buildOneNonPropertyConfiguration(event: String, keyword: String, channel: String) =
     List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "ODB", channel, 0, "A comment"))
 
 }
