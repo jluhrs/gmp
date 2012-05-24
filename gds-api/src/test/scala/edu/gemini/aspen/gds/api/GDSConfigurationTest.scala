@@ -28,7 +28,11 @@ class GDSConfigurationTest extends FunSuite {
     val booleanKeyword = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "BOOLEAN", true, "T", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
     assertEquals("BOOLEAN", booleanKeyword.dataType.name)
     assertEquals("T", booleanKeyword.nullValue.value)
+  }
 
+  test("property source") {
+    val booleanKeyword = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "BOOLEAN", true, "T", "PROPERTY", "gpi:value", 0, "Mean airmass for the observation")
+    assertEquals("PROPERTY", booleanKeyword.subsystem.name.toString)
   }
 
 }

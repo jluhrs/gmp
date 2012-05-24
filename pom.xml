@@ -401,7 +401,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-api</artifactId>
-                <version>0.3.3-SNAPSHOT</version>
+                <version>0.4.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -1086,6 +1086,7 @@
         <module>gds-actors-composer</module>
         <module>gds-epics-actors</module>
         <module>gds-instrument-status-actors</module>
+        <!--module>gds-properties-actors</module-->
         <module>gds-odb-actors</module>
         <module>gds-constant-actors</module>
         <module>gds-obsevent-handler</module>

@@ -10,6 +10,7 @@ object KeywordSource extends Enumeration {
     val STATUS = Value //sent previously by the instrument as StatusItem
     val CONSTANT = Value //constant value read from gds config file
     val INSTRUMENT = Value //value already written in the FITS file by the Instrument. GDS will check that these items are in place.
+    val PROPERTY = Value //value read out of a system or java property
 
     val NONE = Value
 }
