@@ -121,7 +121,7 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
 
   private class HealthState(implicit val LOG:Logger) {
 
-    private val actors = new Array[Boolean](5) //Booleans are initialized to false
+    private val actors = new Array[Boolean](6) //Booleans are initialized to false
 
     private var obsEvtHndl = false
     private var headerRec = false

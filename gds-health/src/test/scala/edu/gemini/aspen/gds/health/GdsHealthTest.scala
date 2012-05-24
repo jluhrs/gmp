@@ -44,7 +44,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     }
 
     def waitForCompletion() {
-      assertTrue(latch.await(10, TimeUnit.SECONDS))
+      assertTrue(latch.await(20, TimeUnit.SECONDS))
     }
 
   }
@@ -98,6 +98,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandlerImpl])
     val fact = mock[KeywordActorsFactory]
     for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT)) {
+      println("Bind source " + source)
       when(fact.getSource).thenReturn(source)
       gdsHealth.bindActorFactory(fact)
     }
@@ -110,12 +111,11 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     gdsHealth.validate()
     gdsHealth.startJms(provider)
 
-    val handler = new TestHandler(expectedUpdates)
+    val handler = new TestHandler(expectedUpdates + 1)
     agg.bindStatusHandler(handler)
 
     bindAllHealthSources(gdsHealth)
     handler.waitForCompletion()
-    assertEquals(expectedUpdates, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.GOOD)
     agg.unbindStatusHandler(handler)
 
@@ -127,7 +127,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     gdsHealth.validate()
     gdsHealth.startJms(provider)
 
-    val startHandler = new TestHandler(expectedUpdates)
+    val startHandler = new TestHandler(expectedUpdates - 1)
     agg.bindStatusHandler(startHandler)
     bindAllHealthSources(gdsHealth)
     startHandler.waitForCompletion()
@@ -138,9 +138,6 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
     gdsHealth.unbindHeaderReceiver()
     handler.waitForCompletion()
-    assertEquals(2, handler.counter.get())
-    println(handler.lastStatusItem)
-    println(handler.lastStatusItem.getValue)
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
     agg.unbindStatusHandler(handler)
 
