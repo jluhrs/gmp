@@ -93,6 +93,10 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         //translate
         String newVal = translations.get(item.getName()).get(item.getValue().toString());
         String newName = names.get(item.getName());
+        if (newVal == null) {
+            LOG.warning("Null value returned upon translating " + item + " to " + newName);
+            return None.instance();
+        }
         StatusItem<?> newItem = null;
         try {
             switch (types.get(item.getName())) {
