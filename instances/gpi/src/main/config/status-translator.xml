@@ -217,4 +217,24 @@
             </Map>
         </Maps>
     </Status>
+    <Status>
+        <originalName>polarizerDeploy</originalName>
+        <translatedName>polarizerDeploy.gemini</translatedName>
+        <originalType>INT</originalType>
+        <translatedType>STRING</translatedType>
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>DISP_WOLLASTON_G6261</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>DISP_PRISM_G6262</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>DISP_OPEN_G6263 </to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>
