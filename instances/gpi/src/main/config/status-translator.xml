@@ -173,4 +173,48 @@
             </Map>
         </Maps>
     </Status>
+    <Status>
+        <originalName>fpmMask</originalName>
+        <translatedName>fpmMask.gemini</translatedName>
+        <originalType>STRING</originalType>
+        <translatedType>STRING</translatedType>
+        <Maps>
+            <Map>
+                <from>Open</from>
+                <to>FPM_OPEN_G6221</to>
+            </Map>
+            <Map>
+                <from>50umPIN</from>
+                <to>FPM_PINHOLE_G6222</to>
+            </Map>
+            <Map>
+                <from>WITH_DOT</from>
+                <to>FPM_WITH_DOT_G6228</to>
+            </Map>
+            <Map>
+                <from>SCIENCE</from>
+                <to>FPM_SCIENCE_G6227</to>
+            </Map>
+            <Map>
+                <from>FPM_K1</from>
+                <to>FPM_K1_G6226</to>
+            </Map>
+            <Map>
+                <from>FPM_H</from>
+                <to>FPM_H_G6225</to>
+            </Map>
+            <Map>
+                <from>FPM_J</from>
+                <to>FPM_J_G6224</to>
+            </Map>
+            <Map>
+                <from>FPM_Y</from>
+                <to>FPM_Y_G6223</to>
+            </Map>
+            <Map>
+                <from>UNKNOWN</from>
+                <to>UNKNOWN</to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>
