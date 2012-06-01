@@ -231,10 +231,13 @@ public class EpicsStatusService implements StatusHandler {
                 LOG.finer("Unknown item " + item.getName());
             }
         } catch (CAException ex) {
+            LOG.log(Level.SEVERE, "Error setting status item " + item);
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IllegalArgumentException ex) {
+            LOG.log(Level.SEVERE, "Error setting status item " + item);
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (TimeoutException e) {
+            LOG.log(Level.SEVERE, "Error setting status item " + item);
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
