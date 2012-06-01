@@ -233,7 +233,27 @@
             </Map>
             <Map>
                 <from>0</from>
-                <to>DISP_OPEN_G6263 </to>
+                <to>DISP_OPEN_G6263</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status>
+        <originalName>ifs.health</originalName>
+        <translatedName>ifs.health.gemini</translatedName>
+        <originalType>INT</originalType>
+        <translatedType>STRING</translatedType>
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
             </Map>
         </Maps>
     </Status>
