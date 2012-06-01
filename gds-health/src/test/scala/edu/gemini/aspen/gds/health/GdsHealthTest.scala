@@ -44,7 +44,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     }
 
     def waitForCompletion() {
-      assertTrue(latch.await(20, TimeUnit.SECONDS))
+      assertTrue(latch.await(10, TimeUnit.SECONDS))
     }
 
   }
