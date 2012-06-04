@@ -8,9 +8,9 @@ import edu.gemini.aspen.giapi.statusservice.generated.DataType;
 import edu.gemini.aspen.giapi.statusservice.generated.MapType;
 import edu.gemini.aspen.giapi.statusservice.generated.StatusType;
 import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.shared.util.immutable.ImOption;
 import edu.gemini.shared.util.immutable.None;
 import edu.gemini.shared.util.immutable.Option;
-import edu.gemini.shared.util.immutable.Some;
 import net.jmatrix.eproperties.EProperties;
 
 import javax.xml.bind.JAXBException;
@@ -31,6 +31,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
     private final Map<String, String> names = new HashMap<String, String>();
     private final Map<String, DataType> types = new HashMap<String, DataType>();
     private final Map<String, Map<String, String>> translations = new HashMap<String, Map<String, String>>();
+    private final Map<String, String> defaults = new HashMap<String, String>();
     private final String xmlFileName;
     private final String name = "StatusItemTranslator: " + this;
     protected final Top top;
@@ -59,6 +60,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
                 tr.put(map.getFrom(), map.getTo());
             }
             translations.put(top.buildStatusItemName(status.getOriginalName()), tr);
+            defaults.put(top.buildStatusItemName(status.getOriginalName()), status.getDefault());
         }
 
         //store types and names
@@ -84,22 +86,10 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         return name;
     }
 
-    protected <T> Option<StatusItem<?>> translate(StatusItem<T> item) {
-        //if there is no translation for this item, do nothing
-        if (translations.get(item.getName()) == null) {
-            return None.instance();
-        }
-
-        //translate
-        String newVal = translations.get(item.getName()).get(item.getValue().toString());
-        String newName = names.get(item.getName());
-        if (newVal == null) {
-            LOG.warning("Null value returned upon translating " + item + " to " + newName);
-            return None.instance();
-        }
+    private Option/*<StatusItem<?>>*/ createStatus(DataType type, String newName, String newVal) {
         StatusItem<?> newItem = null;
         try {
-            switch (types.get(item.getName())) {
+            switch (type) {
                 case INT:
                     newItem = new BasicStatus<Integer>(newName, Integer.valueOf(newVal));
                     break;
@@ -118,12 +108,30 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
             }
         } catch (NumberFormatException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
+        } catch (NullPointerException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        if (newItem != null) {
-            return new Some<StatusItem<?>>(newItem);
-        } else {
+        return ImOption.apply(newItem);
+    }
+
+    protected <T> Option<StatusItem<?>> translate(StatusItem<T> item) {
+        String newName = names.get(item.getName());
+
+        //if there is no translation for this item, return None
+        if (translations.get(item.getName()) == null) {
             return None.instance();
         }
+
+        //translate
+        String newVal = translations.get(item.getName()).get(item.getValue().toString());
+
+        //no translation, return default
+        if (newVal == null) {
+            return createStatus(types.get(item.getName()), newName, defaults.get(item.getName()));
+        }
+
+        //return proper translation
+        return createStatus(types.get(item.getName()), newName, newVal);
     }
 }

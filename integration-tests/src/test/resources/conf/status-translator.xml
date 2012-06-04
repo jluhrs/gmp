@@ -6,6 +6,7 @@
         <translatedName>new</translatedName>
         <originalType>INT</originalType>
         <translatedType>HEALTH</translatedType>
+        <default>BAD</default>
         <Maps>
             <Map>
                 <from>0</from>

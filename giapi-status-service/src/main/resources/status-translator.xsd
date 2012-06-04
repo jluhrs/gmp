@@ -19,13 +19,14 @@
     </xs:simpleType>
 
     <xs:complexType name="StatusType">
-        <xs:sequence>
-            <xs:element name="originalName" type="xs:string"/>
-            <xs:element name="translatedName" type="xs:string"/>
-            <xs:element name="originalType" type="dataType"/>
-            <xs:element name="translatedType" type="dataType"/>
+        <xs:sequence  minOccurs="1">
             <xs:element name="Maps" type="MapList"/>
         </xs:sequence>
+        <xs:attribute name="originalName" type="xs:string" use="required"/>
+        <xs:attribute name="translatedName" type="xs:string" use="required"/>
+        <xs:attribute name="originalType" type="dataType" use="required"/>
+        <xs:attribute name="translatedType" type="dataType" use="required"/>
+        <xs:attribute name="default" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="MapList">
