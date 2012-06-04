@@ -46,10 +46,6 @@
             <version>0.10.0</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-statusdb</artifactId>
         </dependency>

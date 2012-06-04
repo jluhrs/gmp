@@ -94,10 +94,6 @@
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-service</artifactId>
         </dependency>
         <dependency>
@@ -197,10 +193,6 @@
         <dependency>
             <groupId>gemini-nocs</groupId>
             <artifactId>rr</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.compendium</artifactId>
         </dependency>
         <dependency>
             <groupId>gemini-nocs</groupId>
