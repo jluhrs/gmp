@@ -7,12 +7,14 @@ import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.giapi.statusservice.generated.DataType;
 import edu.gemini.aspen.giapi.statusservice.generated.MapType;
 import edu.gemini.aspen.giapi.statusservice.generated.StatusType;
+import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.shared.util.immutable.ImOption;
 import edu.gemini.shared.util.immutable.None;
 import edu.gemini.shared.util.immutable.Option;
 import net.jmatrix.eproperties.EProperties;
 
+import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +38,8 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
     private final String name = "StatusItemTranslator: " + this;
     protected final Top top;
     protected StatusItemTranslatorConfiguration config;
+    protected final StatusGetter getter = new StatusGetter("Status Translator initial item loader");
+    protected boolean jmsStarted=false,validated=false;
 
     public AbstractStatusItemTranslator(Top top, String xmlFileName) {
         this.top = top;
@@ -67,6 +71,22 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         for (StatusType status : config.getStatuses()) {
             types.put(top.buildStatusItemName(status.getOriginalName()), status.getTranslatedType());
             names.put(top.buildStatusItemName(status.getOriginalName()), top.buildStatusItemName(status.getTranslatedName()));
+        }
+
+        try {
+            initItems();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Couldn't initialize items to translate", e);
+        }
+    }
+
+    protected void initItems() {
+        try {
+            for(StatusItem<?> item:getter.getAllStatusItems()){
+                update(item);
+            }
+        } catch (JMSException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 

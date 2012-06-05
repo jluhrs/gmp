@@ -45,23 +45,35 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
                             this.getName() + status.getOriginalName(),
                             top.buildStatusItemName(status.getOriginalName())));
         }
+        validated=true;
+        if(validated&&jmsStarted){
+            initItems();
+        }
     }
 
 
     @Invalidate
     public void stop() {
+        validated=false;
         super.stop();
     }
 
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
+        getter.startJms(provider);
         for (StatusSetter ss : setters.values()) {
             ss.startJms(provider);
+        }
+        jmsStarted=true;
+        if(validated&&jmsStarted){
+            initItems();
         }
     }
 
     @Override
     public void stopJms() {
+        jmsStarted=false;
+        getter.stopJms();
         for (StatusSetter ss : setters.values()) {
             ss.stopJms();
         }
