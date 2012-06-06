@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator implements JmsArtifact, StatusItemTranslator {
     private static final Logger LOG = Logger.getLogger(JmsStatusItemTranslatorImpl.class.getName());
     private final Map<String, StatusSetter> setters = new HashMap<String, StatusSetter>();
+    private JmsProvider provider;
 
     public JmsStatusItemTranslatorImpl(@Requires Top top,
                                        @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
@@ -47,10 +48,20 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
         }
         validated=true;
         if(validated&&jmsStarted){
+            initSetters();
             initItems();
         }
     }
 
+    private void initSetters(){
+        for (StatusSetter ss : setters.values()) {
+            try {
+                ss.startJms(provider);
+            } catch (JMSException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+    }
 
     @Invalidate
     public void stop() {
@@ -61,11 +72,10 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
         getter.startJms(provider);
-        for (StatusSetter ss : setters.values()) {
-            ss.startJms(provider);
-        }
+        this.provider = provider;
         jmsStarted=true;
         if(validated&&jmsStarted){
+            initSetters();
             initItems();
         }
     }

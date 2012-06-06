@@ -40,7 +40,7 @@ public class StatusTranslatorTestHandler implements FilteredStatusHandler {
 
     @Override
     public <T> void update(StatusItem<T> item) {
-        LOG.info(item.toString());
+        LOG.info("Received "+item);
         value=(Health)item.getValue();
         counter++;
         latch.countDown();

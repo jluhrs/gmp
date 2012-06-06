@@ -72,15 +72,11 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
             types.put(top.buildStatusItemName(status.getOriginalName()), status.getTranslatedType());
             names.put(top.buildStatusItemName(status.getOriginalName()), top.buildStatusItemName(status.getTranslatedName()));
         }
-
-        try {
-            initItems();
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, "Couldn't initialize items to translate", e);
-        }
     }
 
     protected void initItems() {
+        LOG.finer("Start initItems");
+
         try {
             for(StatusItem<?> item:getter.getAllStatusItems()){
                 update(item);
@@ -88,6 +84,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         } catch (JMSException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
+        LOG.finer("End initItems");
     }
 
     private String substituteProperties(String url) {
@@ -136,6 +133,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
     }
 
     protected <T> Option<StatusItem<?>> translate(StatusItem<T> item) {
+        LOG.fine("Translating "+item);
         String newName = names.get(item.getName());
 
         //if there is no translation for this item, return None
