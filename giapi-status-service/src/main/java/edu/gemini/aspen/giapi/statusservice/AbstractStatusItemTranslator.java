@@ -46,6 +46,12 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         this.xmlFileName = xmlFileName;
     }
 
+    /**
+     * Reads in the configuration and stores it for using it in  translations
+     *
+     * @throws IOException
+     * @throws JAXBException
+     */
     public void start() throws IOException, JAXBException {
         File f = new File(substituteProperties(xmlFileName));
         if (!f.exists()) {
@@ -74,6 +80,9 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         }
     }
 
+    /**
+     * Try to fetch items from the StatusDB at startup. Translate those found.
+     */
     protected void initItems() {
         LOG.finer("Start initItems");
 
@@ -103,6 +112,15 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         return name;
     }
 
+    /**
+     * Create a StatusItem
+     *
+     * @param type  DataType of the item to create
+     * @param newName name of the item
+     * @param newVal  value of the item
+     *
+     * @return a Some<StatusItem<?>> if everything is correct, otherwise a None.
+     */
     private Option/*<StatusItem<?>>*/ createStatus(DataType type, String newName, String newVal) {
         StatusItem<?> newItem = null;
         try {
@@ -132,6 +150,14 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         return ImOption.apply(newItem);
     }
 
+    /**
+     * Translate a StatusItem according to translations specified in the config file.
+     *
+     * @param item the item to translate
+     * @param <T>
+     *
+     * @return a Some<StatusItem<?>> with the translated item, or a None if a problem occured
+     */
     protected <T> Option<StatusItem<?>> translate(StatusItem<T> item) {
         LOG.fine("Translating "+item);
         String newName = names.get(item.getName());

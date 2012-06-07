@@ -53,6 +53,9 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
         }
     }
 
+    /**
+     * Connect JMS on the StatusSetters
+     */
     private void initSetters(){
         for (StatusSetter ss : setters.values()) {
             try {
