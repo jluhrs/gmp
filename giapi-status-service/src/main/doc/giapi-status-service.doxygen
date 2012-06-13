@@ -1,0 +1,31 @@
+/*!
+ * \page giapi-status-service GIAPI Status Service
+ *
+ * This bundle contains core components and interfaces for the routing of StatusItem updates.
+ *
+ * \section giapi-status-service_provides_sec Provided Services
+ * This bundle provides implementations for the \ref edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate "StatusHandlerAggregate"
+ and \ref edu.gemini.aspen.giapi.statusservice.StatusItemTranslator "StatusItemTranslator" services. The aggregate accept many
+ subscibers to receive StatusItem updates. The translator takes a StatusItem, and publishes a new one according to some configurable rules.
+ It also provides a component
+ \ref edu.gemini.aspen.giapi.statusservice.StatusService "StatusService" which starts the object that listens to StatusItem updates and passes
+ it to the StatusHandlerAggregate.
+
+ *
+ * \section giapi-status-service_requires_sec Required Services
+ * This bundle requires the \ref edu.gemini.aspen.gmp.top.Top "Top" and \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI services,
+ provided by the \ref gmp-top bundle and the \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service, provided by
+\ref jms-activemq-provider bundle.
+
+ * \section giapi-status-service_configuration_sec Configuration
+ * The \ref edu.gemini.aspen.giapi.statusservice.StatusService "StatusService" component needs to be configured with
+ two properties: serviceName and statusName. You can check
+  a sample at \ref edu.gemini.aspen.giapi.statusservice.StatusService-default.cfg.
+
+  If you want a \ref edu.gemini.aspen.giapi.statusservice.LocalStatusItemTranslatorImpl or a
+  \ref edu.gemini.aspen.giapi.statusservice.JmsStatusItemTranslatorImpl you need to configure the appropriate one with an
+  xmlFileName property.
+
+  The XML (sample at \ref status-translator.xml) contains the name and type of an item to translate, the name and type of the new item
+  to be created, and a translation specification.
+ */
