@@ -1,0 +1,20 @@
+/*!
+ * \page gmp-epics-to-status GMP Epics To Status
+ *
+ * This bundle listens to EPICS channels and publishes any changes as StatusItems.
+ *
+ * \section gmp-epics-to-status_provides_sec Provided Services
+ * The \ref edu.gemini.aspen.gmp.epicstostatus.EpicsToStatusComponent "EpicsToStatusComponent" is the component that provides the translation
+ between EPICS channels and StatusItems.
+ *
+ * \section gmp-epics-to-status_requires_sec Required Services
+ * This bundle requires the \ref edu.gemini.epics.EpicsReader "EpicsReader" OSGI service, provided by
+ * \ref epics-service bundle and the \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service, provided by
+\ref jms-activemq-provider bundle.
+
+ * \section gmp-epics-to-status_configuration_sec Configuration
+ * This bundle has a component that needs to be configured with two properties: xmlFileName and xsdFileName. You can check
+  a sample at \ref gmp-epics-to-status-mapping.xml and \ref gmp-epics-to-status-mapping.xsd.
+
+  The XML is just a map between EPICS channel names (and optional array index) and a StatusItem name.
+ */
