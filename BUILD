@@ -88,7 +88,7 @@ This project comes with a set of documentation that can be generated via doxygen
 
 To produce the documentation, go to the gmp-server directory and type:
 
-    mvn -Pdocumentation,production resources:copy-resources doxygen:report
+    mvn -Pdocumentation,production resources:copy-resources doxygen:report scala:doc
 
 and then open the generated documentation at gmp-server/target/site/doxygen/index.html
 
