@@ -22,6 +22,9 @@
  * - \subpage gmp-commands-jms-client
  * - \subpage comm_records
  * - \subpage gmp_epics_top
+ * - \subpage giapi-status-dispatcher
+ * - \subpage giapi-status-service
+ * - \subpage gmp-epics-to-status
  *
  * \section perf_tests_sec Performance and Testing
  * \li GMP EPICS Status Service and CAS performance tests at \subpage performance.
