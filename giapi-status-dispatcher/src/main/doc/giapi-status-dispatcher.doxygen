@@ -1,0 +1,18 @@
+/*!
+ * \page giapi-status-dispatcher GIAPI Status Dispatcher
+ *
+ * This bundle provides status item dispatching services.
+ *
+ * \section giapi-status-dispatcher_provides_sec Provided Services
+ * This bundle provides the \ref edu.gemini.aspen.giapi.status.dispatcher.StatusDispatcher "StatusDispatcher" component,
+ which implements \ref edu.gemini.aspen.giapi.status.StatusHandler "StatusHandler". It receives StatusItems and dispatches them
+ to registered \ref edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler "FilteredStatusHandler" components. These
+ components specify a filter on which StatusItem updates to receive. Several filters are provided, and custom ones can be built by
+ implementing the \ref edu.gemini.aspen.giapi.status.dispatcher.StatusItemFilter "StatusItemFilter" interface.
+ *
+ * \section giapi-status-dispatcher_requires_sec Required Services
+ * This bundle requires that the \ref giapi-status-service bundle is active.
+
+ * \section giapi-status-dispatcher_configuration_sec Configuration
+ * This bundle does not require any configuration.
+ */
