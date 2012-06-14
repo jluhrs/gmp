@@ -446,6 +446,11 @@
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
+                <artifactId>gds-properties-actors</artifactId>
+                <version>0.1.5-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-constant-actors</artifactId>
                 <version>0.1.10-SNAPSHOT</version>
             </dependency>
