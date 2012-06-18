@@ -34,8 +34,6 @@ public class ApplyTest {
     private static final Logger LOG = Logger.getLogger(ApplyTest.class.getName());
     private static final String xmlStr;
 
-    private static final String xsdStr;
-    private static File xsdFile = null;
     private static File xmlFile = null;
 
     private ChannelAccessServerImpl cas;
@@ -46,7 +44,7 @@ public class ApplyTest {
     private CAJContext context;
 
     static {
-        BufferedReader in = new BufferedReader(new InputStreamReader(ApplyTest.class.getResourceAsStream("../../../../../../giapi-apply-config.xml")));
+        BufferedReader in = new BufferedReader(new InputStreamReader(ApplyTest.class.getResourceAsStream("giapi-apply-config.xml")));
         String xml = "";
         try {
 
@@ -61,33 +59,13 @@ public class ApplyTest {
         }
         xmlStr = xml;
 
-        in = new BufferedReader(new InputStreamReader(ApplyTest.class.getResourceAsStream("../../../../../../giapi-apply-config.xsd")));
-        String xsd = "";
-        try {
-            String line = in.readLine();
-            while (line != null) {
-                xsd += line;
-                line = in.readLine();
-
-            }
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        xsdStr = xsd;
-
         try {
             xmlFile = File.createTempFile("ApplyTest", ".xml");
 
-
-            xsdFile = File.createTempFile("ApplyTest", ".xsd");
-
             FileWriter xmlWrt = new FileWriter(xmlFile);
-            FileWriter xsdWrt = new FileWriter(xsdFile);
 
             xmlWrt.write(xmlStr);
-            xsdWrt.write(xsdStr);
             xmlWrt.close();
-            xsdWrt.close();
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -117,7 +95,7 @@ public class ApplyTest {
 
     @Test
     public void applyTestObserve() throws CAException, InterruptedException, IOException, TimeoutException {
-        RecordFactory rf = new RecordFactory(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
+        RecordFactory rf = new RecordFactory(cas, cs, epicsTop, xmlFile.getPath());
         rf.start();
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName("apply.DIR"), Dir.CLEAR);
         Channel<Integer> val = cas.createChannel(epicsTop.buildEpicsChannelName("apply.VAL"), 0);
@@ -145,7 +123,7 @@ public class ApplyTest {
 
     @Test
     public void testReset() throws CAException, TimeoutException, InterruptedException {
-        RecordFactory rf = new RecordFactory(cas, cs, epicsTop, xmlFile.getPath(), xsdFile.getPath());
+        RecordFactory rf = new RecordFactory(cas, cs, epicsTop, xmlFile.getPath());
         rf.start();
 
         Channel<Reset> reset = cas.createChannel(epicsTop.buildEpicsChannelName("gmp:resetRecords"), Reset.NO_RESET);

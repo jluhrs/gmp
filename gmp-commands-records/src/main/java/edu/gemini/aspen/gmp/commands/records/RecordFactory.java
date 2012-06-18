@@ -41,8 +41,7 @@ public class RecordFactory {
     protected RecordFactory(@Requires ChannelAccessServer cas,
                             @Requires CommandSender cs,
                             @Requires Top epicsTop,
-                            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
-                            @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
+                            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
 
         LOG.info("Constructing RecordFactory");
         this.cas = cas;
@@ -53,7 +52,7 @@ public class RecordFactory {
             Unmarshaller um = jc.createUnmarshaller();
             SchemaFactory factory =
                     SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-            Schema schema = factory.newSchema(new File(xsdFileName));
+            Schema schema = factory.newSchema(this.getClass().getResource("giapi-apply-config.xsd"));
             um.setSchema(schema); //to enable validation
             records = (Records) um.unmarshal(new File(xmlFileName));
         } catch (Exception ex) {
