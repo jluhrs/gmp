@@ -83,4 +83,15 @@ public class LocalStatusItemTranslatorImplTest {
         assertEquals(None.instance(),translator.translate(new BasicStatus<Object>(top.buildStatusItemName("inexistant translation"), 0)));
 
     }
+
+    @Test
+    public void testNoDefault() throws JAXBException, IOException, JMSException {
+        Top top = new TopImpl("gpi", "gpi");
+        String file = getClass().getResource("status-translator.xml").getFile();
+        LocalStatusItemTranslatorImpl translator = new LocalStatusItemTranslatorImpl(top, null, file);
+        translator.start();
+
+        assertEquals(None.instance(),translator.translate(new BasicStatus<Object>(top.buildStatusItemName("oldnodefault"), 3)));
+
+    }
 }

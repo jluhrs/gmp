@@ -17,4 +17,20 @@
             </Map>
         </Maps>
     </Status>
+    <Status originalName="oldnodefault" originalType="INT" translatedName="newnodefault" translatedType="HEALTH">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>

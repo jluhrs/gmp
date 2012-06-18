@@ -39,7 +39,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
     protected final Top top;
     protected StatusItemTranslatorConfiguration config;
     protected final StatusGetter getter = new StatusGetter("Status Translator initial item loader");
-    protected boolean jmsStarted=false,validated=false;
+    protected boolean jmsStarted = false, validated = false;
 
     public AbstractStatusItemTranslator(Top top, String xmlFileName) {
         this.top = top;
@@ -70,7 +70,9 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
                 tr.put(map.getFrom(), map.getTo());
             }
             translations.put(top.buildStatusItemName(status.getOriginalName()), tr);
-            defaults.put(top.buildStatusItemName(status.getOriginalName()), status.getDefault());
+            if (status.getDefault() != null) {
+                defaults.put(top.buildStatusItemName(status.getOriginalName()), status.getDefault());
+            }
         }
 
         //store types and names
@@ -87,7 +89,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         LOG.finer("Start initItems");
 
         try {
-            for(StatusItem<?> item:getter.getAllStatusItems()){
+            for (StatusItem<?> item : getter.getAllStatusItems()) {
                 update(item);
             }
         } catch (JMSException e) {
@@ -115,10 +117,9 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
     /**
      * Create a StatusItem
      *
-     * @param type  DataType of the item to create
+     * @param type    DataType of the item to create
      * @param newName name of the item
      * @param newVal  value of the item
-     *
      * @return a Some<StatusItem<?>> if everything is correct, otherwise a None.
      */
     private Option/*<StatusItem<?>>*/ createStatus(DataType type, String newName, String newVal) {
@@ -155,11 +156,10 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
      *
      * @param item the item to translate
      * @param <T>
-     *
      * @return a Some<StatusItem<?>> with the translated item, or a None if a problem occured
      */
     protected <T> Option<StatusItem<?>> translate(StatusItem<T> item) {
-        LOG.fine("Translating "+item);
+        LOG.fine("Translating " + item);
         String newName = names.get(item.getName());
 
         //if there is no translation for this item, return None
@@ -172,7 +172,12 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
 
         //no translation, return default
         if (newVal == null) {
-            return createStatus(types.get(item.getName()), newName, defaults.get(item.getName()));
+            if (defaults.get(item.getName()) != null) {
+                return createStatus(types.get(item.getName()), newName, defaults.get(item.getName()));
+            } else {
+                //no default, ignore
+                return None.instance();
+            }
         }
 
         //return proper translation
