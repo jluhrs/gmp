@@ -83,7 +83,7 @@ public class EpicsStatusServiceIT{
 
         StatusItem<Double> asi = new AlarmStatus<Double>("giapialarmdouble", 2.0, AlarmSeverity.ALARM_FAILURE, AlarmCause.ALARM_CAUSE_HI);
         ess.update(asi);
-        assertEquals(2.0, ((double[]) ac.get("giapialarmdouble").getDBR().getValue())[0]);
+        assertEquals(2.0, ((double[]) ac.get("giapialarmdouble").getDBR().getValue())[0],0.00001);
         assertEquals(Severity.MAJOR_ALARM, ((DBR_STS_Double) ac.get("giapialarmdouble").getDBR()).getSeverity());
         assertEquals(Status.HIGH_ALARM, ((DBR_STS_Double) ac.get("giapialarmdouble").getDBR()).getStatus());
 
