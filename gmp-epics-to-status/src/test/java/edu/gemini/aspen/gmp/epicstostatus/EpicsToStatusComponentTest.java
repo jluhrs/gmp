@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,8 +31,6 @@ import static org.junit.Assert.assertTrue;
  *         Date: Nov 9, 2010
  */
 public class EpicsToStatusComponentTest {
-    private static final Logger LOG = Logger.getLogger(EpicsToStatusComponentTest.class.getName());
-
     private class StatusMonitor implements StatusHandler {
         private StatusItem lastItem;
 
@@ -60,24 +57,16 @@ public class EpicsToStatusComponentTest {
     @Test
     public void testWithCas() throws Exception {
         //create fake config files
-        File xml = null;
-
-        xml = File.createTempFile("EpicsTest", "xml");
-
-        File xsd = null;
-        xsd = File.createTempFile("EpicsTest", "xsd");
+        File xml = File.createTempFile("EpicsTest", "xml");
 
         FileWriter xmlWrt = new FileWriter(xml);
-        FileWriter xsdWrt = new FileWriter(xsd);
 
         xmlWrt.write(EpicsToStatusConfigurationTest.xmlStr);
-        xsdWrt.write(EpicsToStatusConfigurationTest.xsdStr);
         xmlWrt.close();
-        xsdWrt.close();
 
 
         //read config
-        EpicsToStatusConfiguration essc = new EpicsToStatusConfiguration(xml.getPath(), xsd.getPath());
+        EpicsToStatusConfiguration essc = new EpicsToStatusConfiguration(xml.getPath());
 
         //create EPICS channels
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
@@ -104,7 +93,7 @@ public class EpicsToStatusComponentTest {
         service.startJms(provider);
 
         //initialize client EPICS channels, channel listeners and StatusSetters
-        EpicsToStatusComponent esc = new EpicsToStatusComponent(reader, provider, xml.getPath(), xsd.getPath());
+        EpicsToStatusComponent esc = new EpicsToStatusComponent(reader, provider, xml.getPath());
         esc.initialize();
 
         //write the channel to trigger an update

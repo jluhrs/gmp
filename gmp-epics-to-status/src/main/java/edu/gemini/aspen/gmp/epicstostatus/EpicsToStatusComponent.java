@@ -14,14 +14,15 @@ import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.ChannelListener;
-import edu.gemini.epics.api.ReadOnlyChannel;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.shared.util.immutable.Pair;
 import edu.gemini.shared.util.immutable.Tuple2;
 import gov.aps.jca.CAException;
 import org.apache.felix.ipojo.annotations.*;
+import org.xml.sax.SAXException;
 
 import javax.jms.JMSException;
+import javax.xml.bind.JAXBException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,29 +42,24 @@ public class EpicsToStatusComponent {
      * Structure mapping Giapi Status Item -> Epics PV
      */
     private final Map<String, Tuple2<StatusSetter, ReadOnlyClientEpicsChannel<?>>> channelMap = new HashMap<String, Tuple2<StatusSetter, ReadOnlyClientEpicsChannel<?>>>();
-    private final Map<String, ReadOnlyChannel<?>> alarmChannelMap = new HashMap<String, ReadOnlyChannel<?>>();
-    private final Map<String, ReadOnlyChannel<String>> healthChannelMap = new HashMap<String, ReadOnlyChannel<String>>();
 
     private final EpicsReader _reader;
     private final String xmlFileName;
-    private final String xsdFileName;
     private final JmsProvider provider;
 
     private static final String NAME = "GMP_EPICS_TO_STATUS";
 
     public EpicsToStatusComponent(@Requires EpicsReader reader,
                                   @Requires JmsProvider provider,
-                                  @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
-                                  @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
+                                  @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
         _reader = reader;
         this.xmlFileName = xmlFileName;
-        this.xsdFileName = xsdFileName;
         this.provider = provider;
     }
 
     @Validate
-    public void initialize() {
-        EpicsToStatusConfiguration conf = new EpicsToStatusConfiguration(xmlFileName, xsdFileName);
+    public void initialize() throws JAXBException, SAXException {
+        EpicsToStatusConfiguration conf = new EpicsToStatusConfiguration(xmlFileName);
         initialize(conf.getSimulatedChannels());
     }
 

@@ -80,6 +80,9 @@
                 <configuration>
                     <generatePackage>edu.gemini.aspen.gmp.epicstostatus.generated</generatePackage>
                     <removeOldOutput>true</removeOldOutput>
+                    <schemaIncludes>
+                        <schemaInclude>**/*.xsd</schemaInclude>
+                    </schemaIncludes>
                 </configuration>
             </plugin>
         </plugins>

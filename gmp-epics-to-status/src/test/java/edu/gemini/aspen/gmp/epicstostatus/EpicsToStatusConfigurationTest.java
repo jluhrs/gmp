@@ -3,7 +3,9 @@ package edu.gemini.aspen.gmp.epicstostatus;
 import edu.gemini.aspen.gmp.epicstostatus.generated.Channels;
 import edu.gemini.aspen.gmp.epicstostatus.generated.SimpleChannelType;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,11 +23,9 @@ public class EpicsToStatusConfigurationTest {
     private static final Logger LOG = Logger.getLogger(EpicsToStatusConfigurationTest.class.getName());
     public static final String xmlStr;
 
-    public static final String xsdStr;
-
 
     static {
-        BufferedReader in = new BufferedReader(new InputStreamReader(EpicsToStatusConfigurationTest.class.getResourceAsStream("../../../../../gmp-epics-to-status-mapping.xml")));
+        BufferedReader in = new BufferedReader(new InputStreamReader(EpicsToStatusConfigurationTest.class.getResourceAsStream("gmp-epics-to-status-mapping.xml")));
         String xml = "";
         try {
 
@@ -40,41 +40,19 @@ public class EpicsToStatusConfigurationTest {
         }
         xmlStr = xml;
 
-        in = new BufferedReader(new InputStreamReader(EpicsToStatusConfigurationTest.class.getResourceAsStream("../../../../../gmp-epics-to-status-mapping.xsd")));
-        String xsd = "";
-        try {
-            String line = in.readLine();
-            while (line != null) {
-                xsd += line;
-                line = in.readLine();
-
-            }
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        xsdStr = xsd;
-
     }
 
     @Test
-    public void testBasic() {
+    public void testBasic() throws JAXBException, SAXException {
         try {
-            File xml = null;
-
-            xml = File.createTempFile("EpicsTest", ".xml");
-
-            File xsd = null;
-            xsd = File.createTempFile("EpicsTest", ".xsd");
+            File xml = File.createTempFile("EpicsTest", ".xml");
 
             FileWriter xmlWrt = new FileWriter(xml);
-            FileWriter xsdWrt = new FileWriter(xsd);
 
             xmlWrt.write(xmlStr);
-            xsdWrt.write(xsdStr);
             xmlWrt.close();
-            xsdWrt.close();
 
-            EpicsToStatusConfiguration ep = new EpicsToStatusConfiguration(xml.getPath(), xsd.getPath());
+            EpicsToStatusConfiguration ep = new EpicsToStatusConfiguration(xml.getPath());
 
 
             Channels channels = ep.getSimulatedChannels();
@@ -89,24 +67,16 @@ public class EpicsToStatusConfigurationTest {
     }
 
     @Test
-    public void testNoIndex() {
+    public void testNoIndex() throws JAXBException, SAXException {
         try {
-            File xml = null;
-
-            xml = File.createTempFile("EpicsTest", ".xml");
-
-            File xsd = null;
-            xsd = File.createTempFile("EpicsTest", ".xsd");
+            File xml = File.createTempFile("EpicsTest", ".xml");
 
             FileWriter xmlWrt = new FileWriter(xml);
-            FileWriter xsdWrt = new FileWriter(xsd);
 
             xmlWrt.write(xmlStr);
-            xsdWrt.write(xsdStr);
             xmlWrt.close();
-            xsdWrt.close();
 
-            EpicsToStatusConfiguration ep = new EpicsToStatusConfiguration(xml.getPath(), xsd.getPath());
+            EpicsToStatusConfiguration ep = new EpicsToStatusConfiguration(xml.getPath());
 
 
             Channels channels = ep.getSimulatedChannels();
