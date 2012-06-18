@@ -393,24 +393,6 @@
                     <artifactId>ecj</artifactId>
                 </dependency>
 
-                <!-- Testing dependencies -->
-                <!--<dependency>-->
-                    <!--<groupId>org.scalatest</groupId>-->
-                    <!--<artifactId>scalatest_2.9.1</artifactId>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>junit</groupId>-->
-                    <!--<artifactId>junit</artifactId>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>org.mockito</groupId>-->
-                    <!--<artifactId>mockito-all</artifactId>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>gsbase</groupId>-->
-                    <!--<artifactId>gsbase</artifactId>-->
-                <!--</dependency>-->
-
                 <!-- Guava -->
                 <dependency>
                     <groupId>com.googlecode.guava-osgi</groupId>
@@ -537,11 +519,7 @@
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.metatype</artifactId>
                 </dependency>
-
-
             </dependencies>
-
-
         </profile>
         <profile>
             <id>gpi</id>
@@ -898,7 +876,11 @@
                                 <script>
                                     #delete leftover directories
                                     if [ $1 -eq 0 ]; then
-                                        rm -rf ${installationroot}/${project.artifactId}-${project.version}
+                                        rm -rf ${installationroot}/${project.artifactId}-${project.version}/bin
+                                        rm -rf ${installationroot}/${project.artifactId}-${project.version}/bundles
+                                        rm -rf ${installationroot}/${project.artifactId}-${project.version}/conf
+                                        rm -rf ${installationroot}/${project.artifactId}-${project.version}/docs
+                                        rm -rf ${installationroot}/${project.artifactId}-${project.version}/felix
                                         rm ${installationroot}/${project.artifactId}
                                         rm /gemsoft/bin/${project.artifactId}-ctl.sh
                                         rm /gemsoft/bin/giapi-tester.sh
