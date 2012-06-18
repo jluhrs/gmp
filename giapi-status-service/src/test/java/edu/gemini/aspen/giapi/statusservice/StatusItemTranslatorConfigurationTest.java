@@ -21,7 +21,7 @@ public class StatusItemTranslatorConfigurationTest {
     public void testSimpleConfiguration() throws JAXBException {
         StatusItemTranslatorConfiguration configuration = new StatusItemTranslatorConfiguration(getClass().getResourceAsStream("status-translator.xml"));
         List<StatusType> statuses = configuration.getStatuses();
-        assertEquals(1, statuses.size());
+        assertEquals(2, statuses.size());
         assertEquals("old", statuses.get(0).getOriginalName());
         assertEquals("new", statuses.get(0).getTranslatedName());
         assertEquals(DataType.INT, statuses.get(0).getOriginalType());
@@ -30,5 +30,7 @@ public class StatusItemTranslatorConfigurationTest {
             assertEquals(Integer.toString(i), statuses.get(0).getMaps().getMap().get(i).getFrom());
             assertEquals(Health.values()[i], Health.valueOf(statuses.get(0).getMaps().getMap().get(i).getTo()));
         }
+        assertEquals("BAD", statuses.get(0).getDefault());
+        assertEquals(null, statuses.get(1).getDefault());
     }
 }
