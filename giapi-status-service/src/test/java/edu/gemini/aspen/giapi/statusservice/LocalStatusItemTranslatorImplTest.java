@@ -9,6 +9,7 @@ import edu.gemini.aspen.gmp.top.TopImpl;
 import edu.gemini.shared.util.immutable.None;
 import edu.gemini.shared.util.immutable.Option;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
@@ -22,7 +23,7 @@ import static org.junit.Assert.assertNotSame;
  */
 public class LocalStatusItemTranslatorImplTest {
     @Test
-    public void testSimpleConfiguration() throws JAXBException, IOException, JMSException {
+    public void testSimpleConfiguration() throws JAXBException, IOException, JMSException, SAXException {
         Top top = new TopImpl("gpi", "gpi");
         String file = getClass().getResource("status-translator.xml").getFile();
         LocalStatusItemTranslatorImpl translator = new LocalStatusItemTranslatorImpl(top, null, file);
@@ -33,7 +34,7 @@ public class LocalStatusItemTranslatorImplTest {
     }
 
     @Test
-    public void testConfigurationWithSubstitution() throws JAXBException, IOException, JMSException {
+    public void testConfigurationWithSubstitution() throws JAXBException, IOException, JMSException, SAXException {
         Top top = new TopImpl("gpi", "gpi");
         System.setProperty("conf.file", "status-translator");
         String file = getClass().getResource("status-translator.xml").getFile();
@@ -43,7 +44,7 @@ public class LocalStatusItemTranslatorImplTest {
     }
 
     @Test
-    public void testTranslations() throws JAXBException, IOException, JMSException {
+    public void testTranslations() throws JAXBException, IOException, JMSException, SAXException {
         Top top = new TopImpl("gpi", "gpi");
         String file = getClass().getResource("status-translator.xml").getFile();
         LocalStatusItemTranslatorImpl translator = new LocalStatusItemTranslatorImpl(top, null, file);
@@ -58,7 +59,7 @@ public class LocalStatusItemTranslatorImplTest {
     }
 
     @Test
-    public void testDefault() throws JAXBException, IOException, JMSException {
+    public void testDefault() throws JAXBException, IOException, JMSException, SAXException {
         Top top = new TopImpl("gpi", "gpi");
         String file = getClass().getResource("status-translator.xml").getFile();
         LocalStatusItemTranslatorImpl translator = new LocalStatusItemTranslatorImpl(top, null, file);
@@ -74,7 +75,7 @@ public class LocalStatusItemTranslatorImplTest {
     }
 
     @Test
-    public void testNonExistant() throws JAXBException, IOException, JMSException {
+    public void testNonExistant() throws JAXBException, IOException, JMSException, SAXException {
         Top top = new TopImpl("gpi", "gpi");
         String file = getClass().getResource("status-translator.xml").getFile();
         LocalStatusItemTranslatorImpl translator = new LocalStatusItemTranslatorImpl(top, null, file);
@@ -85,7 +86,7 @@ public class LocalStatusItemTranslatorImplTest {
     }
 
     @Test
-    public void testNoDefault() throws JAXBException, IOException, JMSException {
+    public void testNoDefault() throws JAXBException, IOException, JMSException, SAXException {
         Top top = new TopImpl("gpi", "gpi");
         String file = getClass().getResource("status-translator.xml").getFile();
         LocalStatusItemTranslatorImpl translator = new LocalStatusItemTranslatorImpl(top, null, file);

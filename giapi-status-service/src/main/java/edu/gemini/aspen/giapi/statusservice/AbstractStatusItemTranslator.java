@@ -13,6 +13,7 @@ import edu.gemini.shared.util.immutable.ImOption;
 import edu.gemini.shared.util.immutable.None;
 import edu.gemini.shared.util.immutable.Option;
 import net.jmatrix.eproperties.EProperties;
+import org.xml.sax.SAXException;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
@@ -52,7 +53,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
      * @throws IOException
      * @throws JAXBException
      */
-    public void start() throws IOException, JAXBException {
+    public void start() throws IOException, JAXBException, SAXException {
         File f = new File(substituteProperties(xmlFileName));
         if (!f.exists()) {
             LOG.severe("Configuration file " + f + " does not exist");

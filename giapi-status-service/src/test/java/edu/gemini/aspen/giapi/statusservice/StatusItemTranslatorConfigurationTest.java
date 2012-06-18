@@ -4,6 +4,7 @@ import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.statusservice.generated.DataType;
 import edu.gemini.aspen.giapi.statusservice.generated.StatusType;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class StatusItemTranslatorConfigurationTest {
     @Test
-    public void testSimpleConfiguration() throws JAXBException {
+    public void testSimpleConfiguration() throws JAXBException, SAXException {
         StatusItemTranslatorConfiguration configuration = new StatusItemTranslatorConfiguration(getClass().getResourceAsStream("status-translator.xml"));
         List<StatusType> statuses = configuration.getStatuses();
         assertEquals(2, statuses.size());

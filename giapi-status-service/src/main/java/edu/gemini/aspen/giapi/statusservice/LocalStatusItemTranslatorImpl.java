@@ -6,6 +6,7 @@ import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.shared.util.immutable.Option;
 import org.apache.felix.ipojo.annotations.*;
+import org.xml.sax.SAXException;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
@@ -32,7 +33,7 @@ public class LocalStatusItemTranslatorImpl extends AbstractStatusItemTranslator 
     }
 
     @Validate
-    public void start() throws IOException, JAXBException {
+    public void start() throws IOException, JAXBException, SAXException {
         LOG.finer("Start validate");
         super.start();
         validated=true;

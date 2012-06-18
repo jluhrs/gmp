@@ -8,6 +8,7 @@ import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.shared.util.immutable.Option;
 import org.apache.felix.ipojo.annotations.*;
+import org.xml.sax.SAXException;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
@@ -36,7 +37,7 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
     }
 
     @Validate
-    public void start() throws IOException, JAXBException {
+    public void start() throws IOException, JAXBException, SAXException {
         super.start();
         //create status setters
         for (StatusType status : config.getStatuses()) {

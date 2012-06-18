@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TranslateStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:noNamespaceSchemaLocation="../../../../../../../main/resources/status-translator.xsd">
+                 xsi:noNamespaceSchemaLocation="../../../../../../../main/resources/edu/gemini/aspen/giapi/statusservice/status-translator.xsd">
     <Status default="BAD" originalName="old" originalType="INT" translatedName="new" translatedType="HEALTH">
         <Maps>
             <Map>
