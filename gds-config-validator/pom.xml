@@ -64,5 +64,10 @@
             <artifactId>gds-api</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.weiglewilczek.scala-lang-osgi</groupId>
+            <artifactId>scala-library</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 </project>
