@@ -12,7 +12,9 @@ import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 import org.apache.felix.ipojo.annotations.*;
+import org.xml.sax.SAXException;
 
+import javax.xml.bind.JAXBException;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -58,24 +60,21 @@ public class EpicsStatusService implements StatusHandler {
 
     private final ChannelAccessServer _channelAccessServer;
     private final String xmlFileName;
-    private final String xsdFileName;
     private final Top epicsTop;
 
 
     public EpicsStatusService(@Requires ChannelAccessServer cas,
             @Requires Top epicsTop,
-            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName,
-            @Property(name = "xsdFileName", value = "INVALID", mandatory = true) String xsdFileName) {
+            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
         _channelAccessServer = cas;
         this.xmlFileName = xmlFileName;
-        this.xsdFileName = xsdFileName;
         this.epicsTop = epicsTop;
     }
 
 
     @Validate
-    public void initialize() {
-        EpicsStatusServiceConfiguration conf = new EpicsStatusServiceConfiguration(xmlFileName, xsdFileName);
+    public void initialize() throws JAXBException, SAXException {
+        EpicsStatusServiceConfiguration conf = new EpicsStatusServiceConfiguration(xmlFileName);
         initialize(conf.getSimulatedChannels());
     }
 

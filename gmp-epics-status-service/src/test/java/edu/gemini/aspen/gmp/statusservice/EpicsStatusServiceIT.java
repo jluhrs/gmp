@@ -20,14 +20,14 @@ import edu.gemini.epics.api.Channel;
 import gov.aps.jca.dbr.DBR_STS_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
 
 /**
  * Class EpicsStatusServiceTest
@@ -35,35 +35,25 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: Nov 9, 2010
  */
-public class EpicsStatusServiceIT extends TestCase {
-    private static final Logger LOG = Logger.getLogger(EpicsStatusServiceIT.class.getName());
-
+public class EpicsStatusServiceIT{
     @Test
     public void testWithCas() throws Exception {
         //create fake config files
-        File xml = null;
-
-        xml = File.createTempFile("EpicsTest", "xml");
-
-        File xsd = null;
-        xsd = File.createTempFile("EpicsTest", "xsd");
+        File xml = File.createTempFile("EpicsTest", "xml");
 
         FileWriter xmlWrt = new FileWriter(xml);
-        FileWriter xsdWrt = new FileWriter(xsd);
 
         xmlWrt.write(EpicsStatusServiceConfigurationTest.xmlStr);
-        xsdWrt.write(EpicsStatusServiceConfigurationTest.xsdStr);
         xmlWrt.close();
-        xsdWrt.close();
 
         Top epicsTop = new TopImpl("gpi","gpi");
 
         //initialize and check channels are created
-        EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
+        EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath());
 
         ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
         cas.start();
-        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath(), xsd.getPath());
+        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath());
 
 
         ess.initialize();

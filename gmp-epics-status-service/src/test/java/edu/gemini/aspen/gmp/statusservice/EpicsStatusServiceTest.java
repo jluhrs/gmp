@@ -15,7 +15,6 @@ import edu.gemini.cas.AlarmChannel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,8 +23,8 @@ import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -34,9 +33,7 @@ import static org.mockito.Mockito.*;
  * @author Nicolas A. Barriga
  *         Date: Nov 9, 2010
  */
-public class EpicsStatusServiceTest extends TestCase {
-    private static final Logger LOG = Logger.getLogger(EpicsStatusServiceTest.class.getName());
-
+public class EpicsStatusServiceTest{
     private AlarmChannelType buildAlarmChannel(String giapiname, String epicsname, DataType type, String initial) {
         AlarmChannelType ch = new AlarmChannelType();
         ch.setGiapiname(giapiname);
@@ -48,7 +45,6 @@ public class EpicsStatusServiceTest extends TestCase {
 
     private ChannelAccessServer cas;
     private File xml = null;
-    private File xsd = null;
     private Top epicsTop;
 
     @Before
@@ -68,22 +64,18 @@ public class EpicsStatusServiceTest extends TestCase {
 
         xml = File.createTempFile("EpicsTest", "xml");
 
-        xsd = File.createTempFile("EpicsTest", "xsd");
 
         FileWriter xmlWrt = new FileWriter(xml);
-        FileWriter xsdWrt = new FileWriter(xsd);
 
         xmlWrt.write(EpicsStatusServiceConfigurationTest.xmlStr);
-        xsdWrt.write(EpicsStatusServiceConfigurationTest.xsdStr);
         xmlWrt.close();
-        xsdWrt.close();
 
-        epicsTop = new TopImpl("gpi","gpi");
+        epicsTop = new TopImpl("gpi", "gpi");
     }
 
     @Test
     public void testBasic() {
-        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath(), xsd.getPath());
+        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath());
 
         //LOG.info("Service name: "+ess.getName());
 
@@ -116,10 +108,10 @@ public class EpicsStatusServiceTest extends TestCase {
 
 
         //initialize and check channels are created
-        EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
+        EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath());
 
 
-        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath(), xsd.getPath());
+        EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath());
         ess.initialize();
         Map<String, AlarmChannel<?>> ac = ess.getAlarmChannels();
 

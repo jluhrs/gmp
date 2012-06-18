@@ -4,12 +4,15 @@ import edu.gemini.aspen.gmp.statusservice.generated.Channels;
 import edu.gemini.aspen.gmp.statusservice.generated.DataType;
 import edu.gemini.aspen.gmp.statusservice.generated.SimpleChannelType;
 import org.junit.Test;
-import junit.framework.TestCase;
-import sun.util.LocaleServiceProviderPool;
+import org.xml.sax.SAXException;
 
+import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Class EpicsStatusServiceConfigurationTest
@@ -17,15 +20,12 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 12/28/10
  */
-public class EpicsStatusServiceConfigurationTest extends TestCase{
+public class EpicsStatusServiceConfigurationTest{
     private static final Logger LOG = Logger.getLogger(EpicsStatusServiceConfigurationTest.class.getName());
     public static final String xmlStr;
 
-    public static final String xsdStr;
-
-
     static {
-        BufferedReader in = new BufferedReader(new InputStreamReader(EpicsStatusServiceConfigurationTest.class.getResourceAsStream("../../../../../giapi-epics-status-mapping.xml")));
+        BufferedReader in = new BufferedReader(new InputStreamReader(EpicsStatusServiceConfigurationTest.class.getResourceAsStream("giapi-epics-status-mapping.xml")));
         String xml = "";
         try {
 
@@ -40,41 +40,19 @@ public class EpicsStatusServiceConfigurationTest extends TestCase{
         }
         xmlStr = xml;
 
-        in = new BufferedReader(new InputStreamReader(EpicsStatusServiceConfigurationTest.class.getResourceAsStream("../../../../../giapi-epics-status-mapping.xsd")));
-        String xsd = "";
-        try {
-            String line = in.readLine();
-            while (line != null) {
-                xsd += line;
-                line = in.readLine();
-
-            }
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        xsdStr = xsd;
-
     }
 
     @Test
-    public void testBasic() {
+    public void testBasic() throws JAXBException, SAXException {
         try {
-            File xml = null;
-
-            xml = File.createTempFile("EpicsTest", ".xml");
-
-            File xsd = null;
-            xsd = File.createTempFile("EpicsTest", ".xsd");
+            File xml = File.createTempFile("EpicsTest", ".xml");
 
             FileWriter xmlWrt = new FileWriter(xml);
-            FileWriter xsdWrt = new FileWriter(xsd);
 
             xmlWrt.write(xmlStr);
-            xsdWrt.write(xsdStr);
             xmlWrt.close();
-            xsdWrt.close();
 
-            EpicsStatusServiceConfiguration ep = new EpicsStatusServiceConfiguration(xml.getPath(), xsd.getPath());
+            EpicsStatusServiceConfiguration ep = new EpicsStatusServiceConfiguration(xml.getPath());
             SimpleChannelType ch = new SimpleChannelType();
             ch.setGiapiname("giapinameint");
             ch.setEpicsname("epicsnameint");
