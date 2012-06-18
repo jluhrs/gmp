@@ -96,7 +96,7 @@
     <SimpleChannel>
         <giapiname>gpi:artificialSourceSCDb</giapiname>
         <epicsname>artificialSourceSCDb</epicsname>
-        <type>INT</type>
+        <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
