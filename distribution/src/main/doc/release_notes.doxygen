@@ -1,5 +1,85 @@
 /*! \page release_notes Release Notes
 
+
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.2
+
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-614'>GIAPI-614</a>] -         Default timeout for monitor command of giapi-tester should be infinite.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-615'>GIAPI-615</a>] -         giapi-tester with obsEvents does not wait for events
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-809'>GIAPI-809</a>] -         First status item from giapi-tester is null
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-815'>GIAPI-815</a>] -         Reboot command should be able to handle unknown commands
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-822'>GIAPI-822</a>] -         Sending a command over the EPICS interface does not always work
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-873'>GIAPI-873</a>] -         GDS Default keyword values are always written as strings
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-920'>GIAPI-920</a>] -         Bug on simulated epics channels data types
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-936'>GIAPI-936</a>] -         Sending an APPLY via EPICS crashes some EPICS channels
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-939'>GIAPI-939</a>] -         Only configurations that have changed since the last APPLY should be sent
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-941'>GIAPI-941</a>] -         After executing an observe via EPICS, the applyC records stays BUSY
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-942'>GIAPI-942</a>] -         Sending CLEAR to an APPLY or CAD record should clear the CAR
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-976'>GIAPI-976</a>] -         EpicsActorsFactory needs better channel management
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-980'>GIAPI-980</a>] -         RPM for version 14.1.0 does not run
+</li>
+</ul>
+
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-137'>GIAPI-137</a>] -         Add documentation of how to validate giapi-epics-status-service and cas
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-153'>GIAPI-153</a>] -         Make start script to launch GMP as a daemon
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-178'>GIAPI-178</a>] -         Clean up EPICS Access Service
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-612'>GIAPI-612</a>] -         giapi-tester needs a way to dump whole the statusDB
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-613'>GIAPI-613</a>] -         Ability to send observation events via giapi-tester
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-807'>GIAPI-807</a>] -         Add support for obsevents and timeout together with GiapiTester
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-810'>GIAPI-810</a>] -         The keywords written into a FITS file should follow the order of the configuration file
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-813'>GIAPI-813</a>] -         Document step-by-step how the reboot procedure is carried on
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-816'>GIAPI-816</a>] -         Create detailed instructions on the sudo settings needed to properly reboot GMP
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-938'>GIAPI-938</a>] -         Make sure that the RPM preserves the log files when doing an upgrade
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-974'>GIAPI-974</a>] -         Extend gmp EPICS records to support configuring more than one CAD with configurations
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-975'>GIAPI-975</a>] -         Add new StatusItemTranslator that injects translated items back to the StatusHandlerAggregate, not using JMS
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-986'>GIAPI-986</a>] -         If no default value is assigned for a StatusItem translation, ignore unmapped values
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-987'>GIAPI-987</a>] -         Validate XMLs againsta schema when initializing component StatusItemTranslator
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-988'>GIAPI-988</a>] -         Take schemas for XML validation from bundle in gmp-commands-records, gmp-epics-status-service, gmp-epics-to-status and all other bundles that use jaxb (if any)
+</li>
+</ul>
+
+<h2>        Story
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-783'>GIAPI-783</a>] -         Update jaxb maven plugin to use a recent xjc compiler for modules gmp-command-records and gmp-epic-status-service
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-825'>GIAPI-825</a>] -         Create module to export EPICS channel values as StatusItems
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-977'>GIAPI-977</a>] -         Improve gmp-command-records loggers name
+</li>
+</ul>
+
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.1.1
 
 <h2>        Bug
