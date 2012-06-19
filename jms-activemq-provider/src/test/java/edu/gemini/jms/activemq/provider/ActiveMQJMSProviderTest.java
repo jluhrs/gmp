@@ -115,4 +115,33 @@ public class ActiveMQJMSProviderTest {
 
         assertTrue(started.get());
     }
+
+    @Test
+    public void addJmsArtifactAfterStartWithException() throws InterruptedException {
+        String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+
+        final AtomicBoolean called = new AtomicBoolean(false);
+
+        JmsArtifact jmsArtifact = new JmsArtifact() {
+            @Override
+            public void startJms(JmsProvider provider) throws JMSException {
+                called.set(true);
+                throw new RuntimeException();
+            }
+
+            @Override
+            public void stopJms() {
+            }
+        };
+        assertFalse(called.get());
+        provider.startConnection();
+
+        // The thrown exception should not affect this call
+        provider.bindJmsArtifact(jmsArtifact);
+
+        TimeUnit.SECONDS.sleep(2);
+
+        assertTrue(called.get());
+    }
 }

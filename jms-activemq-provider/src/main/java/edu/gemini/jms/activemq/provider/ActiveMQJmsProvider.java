@@ -81,7 +81,6 @@ public final class ActiveMQJmsProvider implements JmsProvider {
                         previousConnection.close();
                     }
                 } catch (JMSException e) {
-                    e.printStackTrace();
                     LOG.log(Level.SEVERE, "Failure while creating the connection to " + brokerUrl, e);
                 }
             }
@@ -117,7 +116,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
         if (connected.get()) {
             try {
                 jmsArtifact.startJms(this);
-            } catch (JMSException e) {
+            } catch (Throwable e) {
                 LOG.severe("Exception starting JMSArtifact " + e);
             }
         }
@@ -174,7 +173,7 @@ public final class ActiveMQJmsProvider implements JmsProvider {
                     LOG.fine("Starting JMS Artifact" + a);
                     try {
                         a.startJms(ActiveMQJmsProvider.this);
-                    } catch (JMSException e) {
+                    } catch (Throwable e) {
                         LOG.severe("Exception starting JMSArtifact " + e);
                     }
                 }
