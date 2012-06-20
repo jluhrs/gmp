@@ -6,6 +6,7 @@ import org.apache.felix.ipojo.annotations.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -37,7 +38,11 @@ public class StatusHandlerAggregateImpl implements StatusHandlerAggregate {
     @Override
     public <T> void update(StatusItem<T> item) {
         for (StatusHandler handler: _statusHandlers) {
-            handler.update(item);
+            try {
+                handler.update(item);
+            } catch (Exception ex) {
+                LOG.log(Level.SEVERE, "Exception updating a StatusHandler", ex);
+            }
         }
     }
 

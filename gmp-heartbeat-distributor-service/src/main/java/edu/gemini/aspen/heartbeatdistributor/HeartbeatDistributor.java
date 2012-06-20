@@ -47,6 +47,7 @@ public class HeartbeatDistributor implements JmsArtifact {
             }
         }
     }
+
     private JmsHeartbeatConsumer hbConsumer;
 
     /**
@@ -54,18 +55,22 @@ public class HeartbeatDistributor implements JmsArtifact {
      *
      * @param beatNumber beat number to notify.
      */
-    private void notifyConsumers(int beatNumber){
-        for(HeartbeatConsumer consumer:consumers){
-            consumer.beat(beatNumber);
+    private void notifyConsumers(int beatNumber) {
+        for (HeartbeatConsumer consumer : consumers) {
+            try {
+                consumer.beat(beatNumber);
+            } catch (Exception ex) {
+                LOG.log(Level.SEVERE, "Exception updating a HeartbeatConsumer", ex);
+            }
         }
     }
 
     /**
      * Public constructor. To manually create a distributor.
      */
-    public HeartbeatDistributor(){
+    public HeartbeatDistributor() {
         LOG.fine("HeartbeatDistributor Constructor");
-        hbConsumer = new JmsHeartbeatConsumer("HeartbeatDistributor",new HeartbeatListener());
+        hbConsumer = new JmsHeartbeatConsumer("HeartbeatDistributor", new HeartbeatListener());
     }
 
 

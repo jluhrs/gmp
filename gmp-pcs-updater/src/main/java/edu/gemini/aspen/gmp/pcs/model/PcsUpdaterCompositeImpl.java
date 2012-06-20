@@ -8,6 +8,7 @@ import org.apache.felix.ipojo.annotations.*;
 import javax.jms.JMSException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
@@ -49,7 +50,11 @@ public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite, JmsArtifact
 
     public void update(PcsUpdate update) throws PcsUpdaterException {
         for (PcsUpdater updater : _pcsUpdaters) {
-            updater.update(update);
+            try {
+                updater.update(update);
+            } catch (Exception ex) {
+                LOG.log(Level.SEVERE, "Exception updating a PcsUpdater", ex);
+            }
         }
     }
 

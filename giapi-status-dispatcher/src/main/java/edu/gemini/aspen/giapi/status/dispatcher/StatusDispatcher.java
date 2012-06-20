@@ -7,6 +7,7 @@ import org.apache.felix.ipojo.annotations.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,9 +46,13 @@ public class StatusDispatcher implements StatusHandler {
 
     @Override
     public <T> void update(StatusItem<T> item) {
-        for(FilteredStatusHandler handler:_handlers){
-            if(handler.getFilter().match(item)){
-                handler.update(item);
+        for (FilteredStatusHandler handler : _handlers) {
+            if (handler.getFilter().match(item)) {
+                try {
+                    handler.update(item);
+                } catch (Exception ex) {
+                    LOG.log(Level.SEVERE, "Exception updating a FilteredStatusHandler", ex);
+                }
             }
         }
     }
