@@ -79,4 +79,9 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
     } mkString(", ")
   }
 
+  def getTimestamp(label: DataLabel): Option[DateTime] = {
+    obsState.getTimestamp(label)
+  }
+
+
 }

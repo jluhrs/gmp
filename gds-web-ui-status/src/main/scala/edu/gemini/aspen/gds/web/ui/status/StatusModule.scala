@@ -11,9 +11,12 @@ import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin.containers.Panel
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
+import model.{InMemoryLogSource, ObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
 import StatusModule._
 import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
+import org.vaadin.addons.lazyquerycontainer.{LazyQueryContainer, LazyQueryDefinition, BeanQueryFactory}
+import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider, top: Top) extends GDSWebModule {
   val title: String = "Status"
@@ -54,6 +57,15 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     topGrid.add(buildLabel("Last DataSet:"))
     topGrid.add(lastDataLabel)
 
+    val dataContainer = buildDataContainer()
+    val logTable = new Table(dataSource = dataContainer,
+      selectable = true,
+      style = "logs",
+      sizeFull = true,
+      sortAscending = true,
+      sortPropertyId = "timeStamp")
+    topGrid.add(logTable)
+
     accordion.setSizeFull()
     generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
 
@@ -70,7 +82,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
         setColumnExpandRatio(0, 1.0f)
         setColumnExpandRatio(1, 3.0f)
         add(buildLabel("Time to update FITS"))
-        println(entry.times)
         add(new Label(entry.times))
         if (entry.missing.length() > 0) {
           add(buildLabel("Missing Keywords"))
@@ -96,9 +107,22 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     status.setStyleName(propertySources.getStatusStyle)
     processingProp.setValue(propertySources.getProcessing)
     lastDataLabelProp.setValue(propertySources.getLastDataLabel)
+    observationSource.refresh()
 
     accordion.removeAllComponents()
     generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
+  }
+
+
+  private def buildDataContainer() = {
+    val queryFactory = new BeanQueryFactory[ObservationsBeanQuery](classOf[ObservationsBeanQuery])
+    val definition = new ObservationSourceQueryDefinition(observationSource, false, 300)
+
+    definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
+    definition.addProperty("dataLabel", classOf[String], "", true, true)
+    queryFactory.setQueryDefinition(definition)
+
+    new LazyQueryContainer(definition, queryFactory)
   }
 
   private def getLastEntries(dataLabels: Traversable[String]): List[Entry] = {
@@ -110,6 +134,8 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
       }
     } take (nLast) toList
   }
+
+  private val observationSource: InMemoryLogSource = new InMemoryLogSource(propertySources)
 }
 
 protected object StatusModule {
