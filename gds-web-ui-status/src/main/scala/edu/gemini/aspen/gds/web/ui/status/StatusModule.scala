@@ -47,7 +47,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     topGrid.setColumnExpandRatio(0, 1.0f)
     topGrid.setColumnExpandRatio(1, 3.0f)
 
-    topGrid.add(buildLabel("Current Status:"))
+    topGrid.add(buildLabel("Current Health:"))
     topGrid.add(status)
     topGrid.add(buildLabel("DataSets in Process:"))
     topGrid.add(processing)
@@ -69,14 +69,15 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
         setSizeFull()
         setColumnExpandRatio(0, 1.0f)
         setColumnExpandRatio(1, 3.0f)
-        add(buildLabel("Time to update FITS for last DataSet"))
+        add(buildLabel("Time to update FITS"))
+        println(entry.times)
         add(new Label(entry.times))
         if (entry.missing.length() > 0) {
-          add(buildLabel("Missing Keywords from last DataSet"))
+          add(buildLabel("Missing Keywords"))
           add(new Label(entry.missing))
         }
         if (entry.errors.length() > 0) {
-          add(buildLabel("Error Collecting Keywords from last DataSet:"))
+          add(buildLabel("Found errors collecting Keywords:"))
           add(new Label(entry.errors))
         }
       }
