@@ -15,7 +15,6 @@ import edu.gemini.shared.util.immutable.Option;
 import net.jmatrix.eproperties.EProperties;
 import org.xml.sax.SAXException;
 
-import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +39,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
     protected final Top top;
     protected StatusItemTranslatorConfiguration config;
     protected final StatusGetter getter = new StatusGetter("Status Translator initial item loader");
-    protected boolean jmsStarted = false, validated = false;
+    protected volatile boolean jmsStarted = false, validated = false;
 
     public AbstractStatusItemTranslator(Top top, String xmlFileName) {
         this.top = top;
@@ -87,16 +86,16 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
      * Try to fetch items from the StatusDB at startup. Translate those found.
      */
     protected void initItems() {
-        LOG.finer("Start initItems");
+        LOG.fine("Start initItems");
 
         try {
             for (StatusItem<?> item : getter.getAllStatusItems()) {
                 update(item);
             }
-        } catch (JMSException e) {
+        } catch (Throwable e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
-        LOG.finer("End initItems");
+        LOG.fine("End initItems");
     }
 
     private String substituteProperties(String url) {
@@ -160,13 +159,13 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
      * @return a Some<StatusItem<?>> with the translated item, or a None if a problem occured
      */
     protected <T> Option<StatusItem<?>> translate(StatusItem<T> item) {
-        LOG.fine("Translating " + item);
         String newName = names.get(item.getName());
 
         //if there is no translation for this item, return None
         if (translations.get(item.getName()) == null) {
             return None.instance();
         }
+        LOG.fine("Translating " + item);
 
         //translate
         String newVal = translations.get(item.getName()).get(item.getValue().toString());
