@@ -9,10 +9,7 @@ import com.google.common.hash.Hashing
 
 class FitsReader(file: File) {
   protected val LOG = Logger.getLogger(this.getClass.getName)
-  require(file.exists, {
-    LOG.severe("File " + file + " doesn't exist")
-    "File " + file + " doesn't exist"
-  })
+  require(file.exists)
   require(file.isFile, {
     LOG.severe("File " + file + " is not a file")
     "File " + file + " is not a file"
