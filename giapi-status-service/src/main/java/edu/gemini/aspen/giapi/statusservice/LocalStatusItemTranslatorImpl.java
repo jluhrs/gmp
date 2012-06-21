@@ -36,29 +36,25 @@ public class LocalStatusItemTranslatorImpl extends AbstractStatusItemTranslator 
     public void start() throws IOException, JAXBException, SAXException {
         LOG.finer("Start validate");
         super.start();
-        validated=true;
-        if(validated&&jmsStarted){
-            initItems();
-        }
+        initItems();
         LOG.finer("End validate");
     }
 
     @Invalidate
     public void stop() {
         LOG.finer("Start stop");
-        validated=false;
         super.stop();
         LOG.finer("End stop");
     }
 
     @Override
     public <T> void update(StatusItem<T> item) {
-        LOG.fine("Status item received: "+item);
+        LOG.fine("Status item received: " + item);
         Option<StatusItem<?>> itemOpt = translate(item);
 
         //publish translation
         if (!itemOpt.isEmpty()) {
-            LOG.fine("Publishing translated status item: "+itemOpt);
+            LOG.fine("Publishing translated status item: " + itemOpt);
             aggregate.update(itemOpt.getValue());
         }
     }
@@ -67,17 +63,14 @@ public class LocalStatusItemTranslatorImpl extends AbstractStatusItemTranslator 
     public void startJms(JmsProvider provider) throws JMSException {
         LOG.finer("Start startJms");
         getter.startJms(provider);
-        jmsStarted=true;
-        if(validated&&jmsStarted){
-            initItems();
-        }
+        jmsStarted.set(true);
         LOG.finer("End startJms");
     }
 
     @Override
     public void stopJms() {
         LOG.finer("Start stopJms");
-        jmsStarted=false;
+        jmsStarted.set(false);
         getter.stopJms();
         LOG.finer("End stopJms");
     }

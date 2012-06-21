@@ -40,7 +40,6 @@ public class InMemoryStatusItemTranslator extends AbstractStatusItemTranslator i
     public void start() throws IOException, JAXBException, SAXException {
         LOG.info("Start validate");
         super.start();
-        validated=true;
         initItems();
         LOG.info("End validate");
     }
@@ -55,7 +54,6 @@ public class InMemoryStatusItemTranslator extends AbstractStatusItemTranslator i
     @Invalidate
     public void stop() {
         LOG.info("Start stop");
-        validated=false;
         super.stop();
         LOG.info("End stop");
     }

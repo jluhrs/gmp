@@ -15,6 +15,8 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +32,7 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
     private static final Logger LOG = Logger.getLogger(JmsStatusItemTranslatorImpl.class.getName());
     private final Map<String, StatusSetter> setters = new HashMap<String, StatusSetter>();
     private JmsProvider provider;
+    private final AtomicBoolean validateDone = new AtomicBoolean(false);
 
     public JmsStatusItemTranslatorImpl(@Requires Top top,
                                        @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
@@ -47,29 +50,35 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
                             this.getName() + status.getOriginalName(),
                             top.buildStatusItemName(status.getOriginalName())));
         }
-        validated=true;
-        if(validated&&jmsStarted){
-            initSetters();
-            initItems();
-        }
+        validateDone.set(true);
+        initItems();
     }
 
     /**
      * Connect JMS on the StatusSetters
      */
-    private void initSetters(){
-        for (StatusSetter ss : setters.values()) {
-            try {
-                ss.startJms(provider);
-            } catch (JMSException e) {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
+    private void initSetters() {
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                waitFor(validateDone);
+                for (StatusSetter ss : setters.values()) {
+                    try {
+                        ss.startJms(provider);
+                    } catch (JMSException e) {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
+                }
+                jmsStarted.set(true);
             }
-        }
+        });
+
     }
 
     @Invalidate
     public void stop() {
-        validated=false;
+        validateDone.set(false);
         super.stop();
     }
 
@@ -77,16 +86,12 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
     public void startJms(JmsProvider provider) throws JMSException {
         getter.startJms(provider);
         this.provider = provider;
-        jmsStarted=true;
-        if(validated&&jmsStarted){
-            initSetters();
-            initItems();
-        }
+        initSetters();
     }
 
     @Override
     public void stopJms() {
-        jmsStarted=false;
+        jmsStarted.set(false);
         getter.stopJms();
         for (StatusSetter ss : setters.values()) {
             ss.stopJms();

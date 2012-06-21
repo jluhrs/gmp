@@ -19,8 +19,11 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,11 +42,24 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
     protected final Top top;
     protected StatusItemTranslatorConfiguration config;
     protected final StatusGetter getter = new StatusGetter("Status Translator initial item loader");
-    protected volatile boolean jmsStarted = false, validated = false;
+    protected final AtomicBoolean jmsStarted = new AtomicBoolean(false);
 
     public AbstractStatusItemTranslator(Top top, String xmlFileName) {
         this.top = top;
         this.xmlFileName = xmlFileName;
+    }
+
+    static protected void waitFor(AtomicBoolean bool) {
+        long sleepTime = 100;
+        do {
+            if (!bool.get()) {
+                try {
+                    Thread.sleep(sleepTime *= 2);
+                } catch (InterruptedException e) {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
+        } while (!bool.get());
     }
 
     /**
@@ -86,16 +102,33 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
      * Try to fetch items from the StatusDB at startup. Translate those found.
      */
     protected void initItems() {
-        LOG.fine("Start initItems");
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                LOG.fine("Start initItems");
+                try {
+                    waitFor(jmsStarted);//wait until JMS is started
 
-        try {
-            for (StatusItem<?> item : getter.getAllStatusItems()) {
-                update(item);
+                    long sleepTime = 100;
+                    Collection<StatusItem> items = null;
+                    do {
+                        items = getter.getAllStatusItems();
+                        if (items == null) {
+                            LOG.warning("Couldn't get StatusItems from StatusDB, sleeping...");
+                            Thread.sleep(sleepTime *= 2);
+                        }
+                    } while (items == null);//wait until JMS on receiver end is started
+
+                    for (StatusItem<?> item : items) {
+                        update(item);
+                    }
+                } catch (Exception e) {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                }
+                LOG.fine("End initItems");
             }
-        } catch (Throwable e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
-        LOG.fine("End initItems");
+        });
     }
 
     private String substituteProperties(String url) {
