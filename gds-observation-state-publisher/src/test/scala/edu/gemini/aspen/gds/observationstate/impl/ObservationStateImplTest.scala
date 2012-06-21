@@ -101,4 +101,15 @@ class ObservationStateImplTest {
     // Now it is gone
     assertEquals(Set(), obsState.getKeywordsInError("label1").toSet)
   }
+
+  @Test
+  def testTimestamp() {
+    val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
+    obsState.startObservation("label1")
+    obsState.registerMissingKeyword("label1", FitsKeyword("A") :: Nil)
+    obsState.registerMissingKeyword("label1", FitsKeyword("B") :: Nil)
+    assertTrue(obsState.getTimestamp("label1").isDefined)
+    assertTrue(obsState.getTimestamp("label2").isEmpty)
+  }
+
 }

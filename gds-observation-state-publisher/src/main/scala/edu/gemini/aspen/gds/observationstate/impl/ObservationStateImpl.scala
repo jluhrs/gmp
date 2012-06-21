@@ -84,6 +84,8 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     obsInfoMap.getOrElse(label, new ObservationInfo).times
   }
 
+  override def getTimestamp(label: DataLabel): Option[DateTime] = obsInfoMap.get(label) map { o => new DateTime(o.timestamp) }
+
   override def getMissingKeywords(label: DataLabel): Traversable[FitsKeyword] = {
     obsInfoMap.getOrElse(label, new ObservationInfo).missingKeywords
   }

@@ -35,6 +35,11 @@ trait ObservationStateProvider {
   def getTimes(label: DataLabel): Traversable[(AnyRef, Option[Duration])]
 
   /**
+   * Returns timing information for the processing of the observation events for a given DataLabel
+   */
+  def getTimestamp(label: DataLabel): Option[DateTime]
+
+  /**
    * Returns the last DataLabel processed. A DataLabel timestamp is created upon first hearing of an observation,
    * not necessarily when receiving a startObservation or endObservation.
    */

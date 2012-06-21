@@ -13,13 +13,13 @@ import java.util.logging.Logger
 class GDSEventsListener(@Requires registrar: ObservationStateRegistrar) {
   private[this] val LOG = Logger.getLogger(getClass.getName)
 
-  @Subscriber(name="gds2eventsregsitrar", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent", dataType = "edu.gemini.aspen.gds.api.GDSNotification")
-  def gdsEvent(event:GDSNotification) {
+  @Subscriber(name = "gds2eventsregsitrar", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent", dataType = "edu.gemini.aspen.gds.api.GDSNotification")
+  def gdsEvent(event: GDSNotification) {
     event match {
-      case s:GDSStartObservation => registrar.startObservation(s.dataLabel)
-      case e:GDSEndObservation => registrar.endObservation(e.dataLabel)
-      case t:GDSObservationTimes => registrar.registerTimes(t.dataLabel, t.times)
-      case e:GDSObservationError => registrar.registerError(e.dataLabel, e.msg)
+      case s: GDSStartObservation => registrar.startObservation(s.dataLabel)
+      case e: GDSEndObservation => registrar.endObservation(e.dataLabel)
+      case t: GDSObservationTimes => registrar.registerTimes(t.dataLabel, t.times)
+      case e: GDSObservationError => registrar.registerError(e.dataLabel, e.msg)
       case x => LOG.severe("Arrived unknown event type: " + x)
     }
   }
