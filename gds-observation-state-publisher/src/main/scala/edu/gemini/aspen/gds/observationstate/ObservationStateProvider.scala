@@ -17,7 +17,12 @@ trait ObservationStateProvider {
   /**
    * Returns true if the observation has missing or error keywords
    */
-  def isInError(label: DataLabel): Boolean
+  def isInError(label: DataLabel): Option[Boolean]
+
+  /**
+   * Returns true if the observation processing has failed. e.g. file errors
+   */
+  def isFailed(label: DataLabel): Option[Boolean]
 
   /**
    * Returns the list of keywords that couldn't be collected because of an error

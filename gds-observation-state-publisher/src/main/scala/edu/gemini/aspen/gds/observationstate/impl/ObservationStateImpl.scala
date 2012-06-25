@@ -26,6 +26,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     var started = false
     var ended = false
     var inError = false
+    var failed = false
     var timestamp = new Date()
   }
 
@@ -42,7 +43,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   //todo: use cause for something
   override def registerError(label: DataLabel, cause: String) {
-    obsInfoMap.getOrElseUpdate(label, new ObservationInfo).inError = true
+    obsInfoMap.getOrElseUpdate(label, new ObservationInfo).failed = true
   }
 
   override def registerCollectionError(label: DataLabel, errors: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
@@ -68,8 +69,12 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   //-----------------------------------------------------------------------
 
-  override def isInError(label: DataLabel): Boolean = {
-    obsInfoMap.getOrElse(label, new ObservationInfo).inError
+  override def isInError(label: DataLabel): Option[Boolean] = {
+    obsInfoMap.get(label) map {_.inError}
+  }
+
+  override def isFailed(label: DataLabel): Option[Boolean] = {
+    obsInfoMap.get(label) map {_.failed}
   }
 
   override def getLastDataLabel(n: Int): Traversable[DataLabel] = {

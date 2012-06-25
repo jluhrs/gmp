@@ -76,12 +76,22 @@ class ObservationStateImplTest {
 
   @Test
   def testInError() {
-    val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
-    assertFalse(obsState.isInError("label1"))
+    val obsState = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
+    assertEquals(obsState.isInError("label1"), None)
     obsState.startObservation("label1")
-    assertFalse(obsState.isInError("label1"))
+    assertEquals(obsState.isInError("label1"), Some(false))
     obsState.registerCollectionError("label1", List((FitsKeyword("A"), CollectionError.GenericError)))
-    assertTrue(obsState.isInError("label1"))
+    assertEquals(obsState.isInError("label1"), Some(true))
+  }
+
+  @Test
+  def testFailed() {
+    val obsState = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
+    assertEquals(obsState.isFailed("label1"), None)
+    obsState.startObservation("label1")
+    assertEquals(obsState.isFailed("label1"), Some(false))
+    obsState.registerError("label1", "an I/O error")
+    assertEquals(obsState.isFailed("label1"), Some(true))
   }
 
   @Test
