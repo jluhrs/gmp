@@ -43,6 +43,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   //todo: use cause for something
   override def registerError(label: DataLabel, cause: String) {
+    println("register error " + cause)
     obsInfoMap.getOrElseUpdate(label, new ObservationInfo).failed = true
   }
 

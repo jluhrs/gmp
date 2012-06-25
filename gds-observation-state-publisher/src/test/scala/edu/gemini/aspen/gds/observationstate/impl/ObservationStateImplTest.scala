@@ -90,8 +90,10 @@ class ObservationStateImplTest {
     assertEquals(obsState.isFailed("label1"), None)
     obsState.startObservation("label1")
     assertEquals(obsState.isFailed("label1"), Some(false))
+    assertEquals(obsState.isInError("label1"), Some(false))
     obsState.registerError("label1", "an I/O error")
     assertEquals(obsState.isFailed("label1"), Some(true))
+    assertEquals(obsState.isInError("label1"), Some(false))
   }
 
   @Test
