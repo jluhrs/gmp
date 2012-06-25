@@ -34,6 +34,8 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
 
   def isInError(label: DataLabel) = obsState.isInError(label)
 
+  def isFailed(label: DataLabel) = obsState.isFailed(label)
+
   def getLastDataLabel = {
     getLastDataLabels(1).headOption.getOrElse(StatusModule.defaultLastDataLabel)
   }
@@ -91,7 +93,10 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
   }
 
   def getStatus(label: DataLabel): Option[ObservationStatus] = {
-    if (getKeywordsInError(label).nonEmpty) {
+    if (isFailed(label) == Some(true)) {
+      println("in error")
+      Some(Error)
+    } else if (getKeywordsInError(label).nonEmpty) {
       Some(ErrorKeywords)
     } else if (getMissingKeywords(label).nonEmpty) {
       Some(MissingKeywords)

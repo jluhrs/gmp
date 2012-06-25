@@ -50,7 +50,8 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     result match {
       case Successful => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../runo/icons/16/ok.png"))
       case MissingKeywords => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/warning.png"))
-      case ErrorKeywords => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/failed.png"))
+      case ErrorKeywords => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/warning.png"))
+      case Error => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/failed.png"))
       case _ => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../runo/icons/16/ok.png"))
     }
   })
@@ -111,7 +112,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
           add(new Label(entry.errors))
         }
       }
-      val resource = if (propertySources.isInError(entry.dataLabel)) {
+      val resource = if (propertySources.isInError(entry.dataLabel).isDefined) {
         new ThemeResource("../gds/failed.png")
       } else {
         new ThemeResource("../runo/icons/16/ok.png")
@@ -146,7 +147,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
 
   private def getLastEntries(dataLabels: Traversable[String]): List[Entry] = {
     dataLabels map {
-      l => if (propertySources.isInError(l)) {
+      l => if (propertySources.isInError(l).isDefined) {
         new Entry(l, propertySources.getTimes(l), propertySources.getMissingKeywords(l), propertySources.getKeywordsInError(l))
       } else {
         new Entry(l, propertySources.getTimes(l))
