@@ -99,27 +99,6 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
     accordion.setSizeFull()
     //generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
 
-    new Thread(new Runnable() {
-      def run() {
-        while (true) {
-          // Do some "heavy work"
-            TimeUnit.MILLISECONDS.sleep(500) // Sleep for 50 milliseconds
-          //println("onEndObservation")
-          //observationSource.onEndObservation()
-          if (observationSource.observations.nonEmpty) {
-          /*val tableItem = statusTable.getItem(0)
-          tableItem.getItemPropertyIds() foreach {
-            pid => tableItem.getItemProperty(pid).setValue(tableItem.getItemProperty(pid).getValue())
-          }*/
-          statusTable.refreshRowCache()
-          statusTable.requestRepaint()
-            println("UPDAT ETAB")
-          statusTable.setContainerDataSource(statusTable.getContainerDataSource)
-        }
-        }
-      }
-    })
-
     new Panel(sizeFull = true) {
       add(topGrid)
       add(bottomPanel)
@@ -169,6 +148,7 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
       o => lastDataLabelProp.setValue(o.getDataLabel())
     }
     processingProp.setValue(observationSource.pending.mkString(", "))
+    statusTable.setContainerDataSource(statusTable.getContainerDataSource)
   }
 
   private def buildDataContainer() = {
