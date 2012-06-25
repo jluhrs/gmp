@@ -17,7 +17,7 @@ import org.junit.runner.RunWith
 
 @RunWith(classOf[JUnitRunner])
 class StatusModuleTest extends FunSuite with MockitoSugar {
-  test("build panel") {
+  /*test("build panel") {
     val statusDB = mock[StatusDatabaseService]
     when(statusDB.getStatusItem(anyString)) thenAnswer (new Answer[HealthStatus]() {
       def answer(in: InvocationOnMock) = new HealthStatus(in.getArguments.head.toString, Health.BAD)
@@ -34,7 +34,7 @@ class StatusModuleTest extends FunSuite with MockitoSugar {
 
     val app = mock[Application]
     assertNotNull(module.buildTabContent(app))
-  }
+  }*/
 
   test("build label") {
     assertEquals("Some label", StatusModule.buildLabel("Some label").getCaption)

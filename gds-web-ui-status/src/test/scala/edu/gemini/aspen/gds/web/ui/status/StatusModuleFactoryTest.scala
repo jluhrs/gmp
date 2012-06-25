@@ -20,7 +20,7 @@ import org.mockito.invocation.InvocationOnMock
 
 @RunWith(classOf[JUnitRunner])
 class StatusModuleFactoryTest extends FunSuite with MockitoSugar {
-  test("BuildPanel") {
+  /*test("BuildPanel") {
     val statusDB = mock[StatusDatabaseService]
     when(statusDB.getStatusItem(anyString)).thenAnswer(new Answer[StatusItem[_]]() {
       def answer(p1: InvocationOnMock) = new HealthStatus(p1.getArguments.apply(0).toString, Health.BAD)
@@ -37,5 +37,5 @@ class StatusModuleFactoryTest extends FunSuite with MockitoSugar {
     assertNotNull(module)
     val app = mock[Application]
     assertNotNull(module.buildTabContent(app))
-  }
+  }*/
 }

@@ -10,21 +10,26 @@ import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin.containers.Panel
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
-import model.{InMemoryObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
+import model.{ObservationsSource, InMemoryObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
 import StatusModule._
 import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
 import org.vaadin.addons.lazyquerycontainer.{LazyQueryContainer, BeanQueryFactory}
 import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
+import java.lang.InterruptedException
+import java.util.concurrent.TimeUnit
+import scala.collection.JavaConversions._
 
-class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider, top: Top) extends GDSWebModule {
+class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
   val title: String = "Status"
   val order: Int = 0
   val topGrid = new GridLayout(columns = 2, rows = 3, margin = true, spacing = true)
   val nLast = 10
   val accordion = new Accordion()
 
-  val propertySources = new PropertyValuesHelper(statusDB, obsState, top)
+  observationSource.registerListener(() => {
+    refresh()
+  })
 
   //properties
   val statusProp = Property(defaultStatus)
@@ -36,7 +41,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val processing = new Label(property = processingProp)
   val lastDataLabel = new Label(property = lastDataLabelProp)
 
-  val observationSource = new InMemoryObservationsSource(propertySources)
   val dataContainer = buildDataContainer()
   val statusTable = new Table(dataSource = dataContainer,
     selectable = true,
@@ -72,9 +76,9 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   case class Entry(dataLabel: String = "", times: String = "", missing: String = "", errors: String = "")
 
   override def buildTabContent(app: Application): Component = {
-    statusProp.setValue(propertySources.getStatus)
+    /*statusProp.setValue(propertySources.getStatus)
     processingProp.setValue(propertySources.getProcessing)
-    lastDataLabelProp.setValue(propertySources.getLastDataLabel)
+    lastDataLabelProp.setValue(propertySources.getLastDataLabel)*/
 
     topGrid.setSizeFull()
     topGrid.setColumnExpandRatio(0, 1.0f)
@@ -86,11 +90,37 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     topGrid.add(processing)
     topGrid.add(buildLabel("Last DataSet:"))
     topGrid.add(lastDataLabel)
+    val indicator = new ProgressIndicator(0f)
+    topGrid.addComponent(indicator)
+
+    // Set polling frequency to 0.5 seconds.
+    indicator.setPollingInterval(500)
 
     accordion.setSizeFull()
-    generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
+    //generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
 
-    new Panel(sizeFull =true) {
+    new Thread(new Runnable() {
+      def run() {
+        while (true) {
+          // Do some "heavy work"
+            TimeUnit.MILLISECONDS.sleep(500) // Sleep for 50 milliseconds
+          //println("onEndObservation")
+          //observationSource.onEndObservation()
+          if (observationSource.observations.nonEmpty) {
+          /*val tableItem = statusTable.getItem(0)
+          tableItem.getItemPropertyIds() foreach {
+            pid => tableItem.getItemProperty(pid).setValue(tableItem.getItemProperty(pid).getValue())
+          }*/
+          statusTable.refreshRowCache()
+          statusTable.requestRepaint()
+            println("UPDAT ETAB")
+          statusTable.setContainerDataSource(statusTable.getContainerDataSource)
+        }
+        }
+      }
+    })
+
+    new Panel(sizeFull = true) {
       add(topGrid)
       add(bottomPanel)
     }
@@ -113,25 +143,32 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
           add(new Label(entry.errors))
         }
       }
-      val resource = if (propertySources.isInError(entry.dataLabel).isDefined) {
+      /*val resource = if (propertySources.isInError(entry.dataLabel).isDefined) {
         new ThemeResource("../gds/failed.png")
       } else {
         new ThemeResource("../runo/icons/16/ok.png")
-      }
-      accordion.addTab(grid, entry.dataLabel, resource)
+      }*/
+      //accordion.addTab(grid, entry.dataLabel, resource)
     }
     accordion.setVisible(accordion.getComponentCount != 0)
   }
 
   override def refresh(app: Application) {
-    statusProp.setValue(propertySources.getStatus)
+    /*statusProp.setValue(propertySources.getStatus)
     status.setStyleName(propertySources.getStatusStyle)
     processingProp.setValue(propertySources.getProcessing)
-    lastDataLabelProp.setValue(propertySources.getLastDataLabel)
-    observationSource.refresh()
 
     accordion.removeAllComponents()
-    generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
+    generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))*/
+    refresh()
+  }
+
+  private def refresh() {
+    println("Refreshed " + observationSource.pending.mkString(", "))
+    observationSource.observations.headOption foreach {
+      o => lastDataLabelProp.setValue(o.getDataLabel())
+    }
+    processingProp.setValue(observationSource.pending.mkString(", "))
   }
 
   private def buildDataContainer() = {
@@ -147,13 +184,15 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   }
 
   private def getLastEntries(dataLabels: Traversable[String]): List[Entry] = {
-    dataLabels map {
+    /*dataLabels map {
       l => if (propertySources.isInError(l).isDefined) {
         new Entry(l, propertySources.getTimes(l), propertySources.getMissingKeywords(l), propertySources.getKeywordsInError(l))
       } else {
         new Entry(l, propertySources.getTimes(l))
       }
-    } take (nLast) toList
+    } take (nLast) toList*/
+
+    Nil
   }
 
   /**

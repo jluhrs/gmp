@@ -7,6 +7,7 @@ import edu.gemini.aspen.gds.api.CollectionError
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
 import edu.gemini.aspen.gmp.top.Top
+import org.apache.felix.ipojo.annotations.{Provides, Instantiate, Component}
 
 sealed trait ObservationStatus
 case object Successful extends ObservationStatus
@@ -15,6 +16,9 @@ case object ErrorKeywords extends ObservationStatus
 case object Timeout extends ObservationStatus
 case object Error extends ObservationStatus
 
+@Component
+@Instantiate
+//@Provides(specifications = Array[Class[_]](classOf[ObservationsSource]))
 class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: ObservationStateProvider, top: Top) {
   def getStatus = {
     statusDB.getStatusItem(top.buildStatusItemName("gds:health")) match {

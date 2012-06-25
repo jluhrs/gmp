@@ -26,6 +26,7 @@ class ObservationsBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
   }
 
   override def loadBeans(startIndex: Int, count: Int):java.util.List[ObservationBean] = {
+    println("load mean")
     val result = filteredObservations drop (startIndex - 1) take (count)
 
     val sortProperties = sortPropertyIds.headOption.getOrElse("timeStamp").toString
