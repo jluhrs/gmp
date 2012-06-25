@@ -43,7 +43,8 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     style = "logs",
     sizeFull = true,
     sortAscending = true,
-    sortPropertyId = "timeStamp")
+    sortPropertyId = "timeStamp",
+    cellStyleGenerator = styleGenerator)
   val statusProperty = "status"
   statusTable.addGeneratedColumn(statusProperty, (itemId: AnyRef, columnId: AnyRef) => {
     val result = dataContainer.getItem(itemId).getItemProperty("result").getValue
@@ -154,6 +155,15 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
       }
     } take (nLast) toList
   }
+
+  /**
+   * Define a custom cell style based on the content of the cell */
+  private def styleGenerator(itemId: AnyRef, propertyId: AnyRef): String = {
+    STYLES.getOrElse(dataContainer.getItem(itemId).getItemProperty("result").getValue.asInstanceOf[ObservationStatus], "")
+  }
+
+  val STYLES = Map[ObservationStatus, String](MissingKeywords -> "warn", Error -> "error", ErrorKeywords -> "warn")
+
 }
 
 protected object StatusModule {
@@ -166,4 +176,5 @@ protected object StatusModule {
   val defaultErrors = ""
 
   def buildLabel(label: String) = new Label(caption = label, style = "gds-bold")
+
 }

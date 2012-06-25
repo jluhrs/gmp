@@ -94,7 +94,6 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
 
   def getStatus(label: DataLabel): Option[ObservationStatus] = {
     if (isFailed(label) == Some(true)) {
-      println("in error")
       Some(Error)
     } else if (getKeywordsInError(label).nonEmpty) {
       Some(ErrorKeywords)
