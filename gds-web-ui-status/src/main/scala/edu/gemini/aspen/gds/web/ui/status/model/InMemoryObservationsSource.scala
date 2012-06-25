@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import com.google.common.cache.CacheBuilder
 
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.gds.web.ui.status.{Successful, PropertyValuesHelper}
+import edu.gemini.aspen.gds.web.ui.status.{ObservationError, Successful, PropertyValuesHelper}
 import edu.gemini.aspen.gds.api.Conversions._
 import org.apache.felix.ipojo.handlers.event.Subscriber
 import edu.gemini.aspen.gds.api._
@@ -63,6 +63,7 @@ class InMemoryObservationsSource(@Requires statusDB: StatusDatabaseService, @Req
   @Validate
   def initLogListener() {}
 
+
   @Subscriber(name = "gds2eventsregsitrar", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent", dataType = "edu.gemini.aspen.gds.api.GDSNotification")
   def gdsEvent(event: GDSNotification) {
 
@@ -70,7 +71,7 @@ class InMemoryObservationsSource(@Requires statusDB: StatusDatabaseService, @Req
       case s: GDSStartObservation => onStartObservation(s)
       case e: GDSEndObservation => onEndObservation(e)
       case t: GDSObservationTimes => //registrar.registerTimes(t.dataLabel, t.times)
-      case e: GDSObservationError => //registrar.registerError(e.dataLabel, e.msg)
+      case e: GDSObservationError => onObservationError(e.dataLabel, e.msg)
       case x => sys.error("Shouldn't happen")
     }
   }
@@ -98,6 +99,12 @@ class InMemoryObservationsSource(@Requires statusDB: StatusDatabaseService, @Req
 
     doAppend(new ObservationBean(Successful, Some(new DateTime()), e.dataLabel))
 
+    listener foreach (_.apply())
+  }
+
+  def onObservationError(label: DataLabel, s: String) = {
+    pendingObservations.remove(label, true)
+    doAppend(new ObservationBean(ObservationError, Some(new DateTime()), label))
     listener foreach (_.apply())
   }
 

@@ -14,7 +14,7 @@ case object Successful extends ObservationStatus
 case object MissingKeywords extends ObservationStatus
 case object ErrorKeywords extends ObservationStatus
 case object Timeout extends ObservationStatus
-case object Error extends ObservationStatus
+case object ObservationError extends ObservationStatus
 
 @Component
 @Instantiate
@@ -98,7 +98,7 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
 
   def getStatus(label: DataLabel): Option[ObservationStatus] = {
     if (isFailed(label) == Some(true)) {
-      Some(Error)
+      Some(ObservationError)
     } else if (getKeywordsInError(label).nonEmpty) {
       Some(ErrorKeywords)
     } else if (getMissingKeywords(label).nonEmpty) {
