@@ -37,7 +37,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val processing = new Label(property = processingProp)
   val lastDataLabel = new Label(property = lastDataLabelProp)
 
-  val observationSource = new InMemoryLogSource(propertySources)
+  val observationSource = new InMemoryObservationsSource(propertySources)
   val dataContainer = buildDataContainer()
   val statusTable = new Table(dataSource = dataContainer,
     selectable = true,
