@@ -8,6 +8,13 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
 import edu.gemini.aspen.gmp.top.Top
 
+sealed trait ObservationStatus
+case object Successful extends ObservationStatus
+case object MissingKeywords extends ObservationStatus
+case object ErrorKeywords extends ObservationStatus
+case object Timeout extends ObservationStatus
+case object Error extends ObservationStatus
+
 class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: ObservationStateProvider, top: Top) {
   def getStatus = {
     statusDB.getStatusItem(top.buildStatusItemName("gds:health")) match {
@@ -83,5 +90,14 @@ class PropertyValuesHelper(statusDB: StatusDatabaseService, obsState: Observatio
     obsState.getTimestamp(label)
   }
 
+  def getStatus(label: DataLabel): Option[ObservationStatus] = {
+    if (getKeywordsInError(label).nonEmpty) {
+      Some(ErrorKeywords)
+    } else if (getMissingKeywords(label).nonEmpty) {
+      Some(MissingKeywords)
+    } else {
+      Some(Successful)
+    }
+  }
 
 }

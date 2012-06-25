@@ -18,13 +18,13 @@ class InMemoryLogSource(propertySources: PropertyValuesHelper) extends Observati
   def refresh() = {
     observations = propertySources.getLastDataLabels(10) map {
       l => //if (propertySources.isInError(l)) {
-        new ObservationBean(propertySources.getTimestamp(l), l)
+        val result = propertySources.getStatus(l).get
+        new ObservationBean(result, propertySources.getTimestamp(l), l)
       /*} else {
         new Entry(l, propertySources.getTimes(l))
       }*/
     } take (10) toList
 
-    println(observations)
     observations
   }
 

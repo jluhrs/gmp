@@ -24,9 +24,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val topGrid = new GridLayout(columns = 2, rows = 3, margin = true, spacing = true)
   val nLast = 10
   val accordion = new Accordion()
-  val bottomPanel = new Panel("Last " + nLast + " Observations", sizeFull = true) {
-    add(accordion)
-  }
+
   val propertySources = new PropertyValuesHelper(statusDB, obsState, top)
 
   //properties
@@ -38,6 +36,19 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
   val status = new Label(style = "gds-green", property = statusProp)
   val processing = new Label(property = processingProp)
   val lastDataLabel = new Label(property = lastDataLabelProp)
+
+  val observationSource = new InMemoryLogSource(propertySources)
+  val dataContainer = buildDataContainer()
+  val statusTable = new Table(dataSource = dataContainer,
+    selectable = true,
+    style = "logs",
+    sizeFull = true,
+    sortAscending = true,
+    sortPropertyId = "timeStamp")
+  val bottomPanel = new Panel("Last " + nLast + " Observations", sizeFull = true) {
+    add(statusTable)
+    add(accordion)
+  }
 
   case class Entry(dataLabel: String = "", times: String = "", missing: String = "", errors: String = "")
 
@@ -56,15 +67,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     topGrid.add(processing)
     topGrid.add(buildLabel("Last DataSet:"))
     topGrid.add(lastDataLabel)
-
-    val dataContainer = buildDataContainer()
-    val logTable = new Table(dataSource = dataContainer,
-      selectable = true,
-      style = "logs",
-      sizeFull = true,
-      sortAscending = true,
-      sortPropertyId = "timeStamp")
-    topGrid.add(logTable)
 
     accordion.setSizeFull()
     generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
@@ -113,11 +115,11 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
   }
 
-
   private def buildDataContainer() = {
     val queryFactory = new BeanQueryFactory[ObservationsBeanQuery](classOf[ObservationsBeanQuery])
     val definition = new ObservationSourceQueryDefinition(observationSource, false, 300)
 
+    definition.addProperty("result", classOf[ObservationStatus], true, true, true)
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
     definition.addProperty("dataLabel", classOf[String], "", true, true)
     queryFactory.setQueryDefinition(definition)
@@ -134,8 +136,6 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
       }
     } take (nLast) toList
   }
-
-  private val observationSource: InMemoryLogSource = new InMemoryLogSource(propertySources)
 }
 
 protected object StatusModule {
