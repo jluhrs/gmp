@@ -11,7 +11,7 @@ import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin.containers.Panel
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
-import model.{InMemoryLogSource, ObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
+import model.{InMemoryObservationsSource, ObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
 import StatusModule._
 import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property

@@ -14,7 +14,7 @@ import edu.gemini.aspen.gds.api.Conversions._
 /*@Component
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ObservationsSource])*/
-class InMemoryLogSource(propertySources: PropertyValuesHelper) extends ObservationsSource {
+class InMemoryObservationsSource(propertySources: PropertyValuesHelper) extends ObservationsSource {
   def refresh() = {
     observations = propertySources.getLastDataLabels(10) map {
       l => //if (propertySources.isInError(l)) {
