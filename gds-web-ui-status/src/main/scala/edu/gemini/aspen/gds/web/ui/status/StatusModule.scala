@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import com.vaadin.Application
-import com.vaadin.data.util.ObjectProperty
 import com.vaadin.ui.{Accordion, Component}
 import com.vaadin.terminal.ThemeResource
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
@@ -11,11 +10,11 @@ import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin.containers.Panel
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
-import model.{InMemoryObservationsSource, ObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
+import model.{InMemoryObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
 import StatusModule._
 import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
-import org.vaadin.addons.lazyquerycontainer.{LazyQueryContainer, LazyQueryDefinition, BeanQueryFactory}
+import org.vaadin.addons.lazyquerycontainer.{LazyQueryContainer, BeanQueryFactory}
 import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
 
 class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStateProvider, top: Top) extends GDSWebModule {
@@ -45,6 +44,24 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     sizeFull = true,
     sortAscending = true,
     sortPropertyId = "timeStamp")
+  val statusProperty = "status"
+  statusTable.addGeneratedColumn(statusProperty, (itemId: AnyRef, columnId: AnyRef) => {
+    val result = dataContainer.getItem(itemId).getItemProperty("result").getValue
+    result match {
+      case Successful => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../runo/icons/16/ok.png"))
+      case MissingKeywords => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/warning.png"))
+      case ErrorKeywords => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/failed.png"))
+      case _ => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../runo/icons/16/ok.png"))
+    }
+  })
+
+  statusTable.setColumnHeader(statusProperty, "")
+  statusTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
+  statusTable.setColumnWidth(statusProperty, 20)
+
+  val columns = Array[AnyRef]("status", "timeStamp", "dataLabel")
+  statusTable.setVisibleColumns(columns)
+
   val bottomPanel = new Panel("Last " + nLast + " Observations", sizeFull = true) {
     add(statusTable)
     add(accordion)
@@ -119,7 +136,7 @@ class StatusModule(statusDB: StatusDatabaseService, obsState: ObservationStatePr
     val queryFactory = new BeanQueryFactory[ObservationsBeanQuery](classOf[ObservationsBeanQuery])
     val definition = new ObservationSourceQueryDefinition(observationSource, false, 300)
 
-    definition.addProperty("result", classOf[ObservationStatus], true, true, true)
+    definition.addProperty("result", classOf[ObservationStatus], Successful, true, true)
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
     definition.addProperty("dataLabel", classOf[String], "", true, true)
     queryFactory.setQueryDefinition(definition)
