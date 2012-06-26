@@ -13,7 +13,7 @@ import edu.gemini.aspen.gds.api.fits.FitsKeyword
  */
 class FitsKeywordPropertyFactoryTest {
   val factory = new FitsKeywordPropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
   val item = new PropertysetItem
 
   @Test
@@ -38,7 +38,7 @@ class FitsKeywordPropertyFactoryTest {
     // Simulates that the text field has been updated
     textField.setValue("NEWKEY")
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "NEWKEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "NEWKEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 

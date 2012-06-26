@@ -79,6 +79,7 @@ class KeywordsTableModuleTest extends FunSuite with MockitoSugar {
         "Subsystem",
         "Channel",
         "ArrayIndex",
+        "Format",
         "FitsComment"),
       tableColumnsForAnonymous)
 
@@ -95,6 +96,7 @@ class KeywordsTableModuleTest extends FunSuite with MockitoSugar {
         "Subsystem",
         "Channel",
         "ArrayIndex",
+        "Format",
         "FitsComment",
         "DEL"),
       tableColumnsForUser)
@@ -124,6 +126,7 @@ class KeywordsTableModuleTest extends FunSuite with MockitoSugar {
         "Subsystem",
         "Channel",
         "Index",
+        "Format",
         "Comment",
         "DEL"),
       tableColumnHeaders.toList)

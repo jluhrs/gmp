@@ -19,25 +19,25 @@ object FitsType {
   implicit object IntegerType extends FitsType[Int] {
 
     override def collectedValueToHeaderItem(collectedValue: CollectedValue[Int]): HeaderItem[Int] = {
-      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment)
+      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment, collectedValue.format)
     }
   }
 
   implicit object StringType extends FitsType[String] {
     override def collectedValueToHeaderItem(collectedValue: CollectedValue[String]): HeaderItem[String] = {
-      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment)
+      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment, collectedValue.format)
     }
   }
 
   implicit object DoubleType extends FitsType[Double] {
     override def collectedValueToHeaderItem(collectedValue: CollectedValue[Double]): HeaderItem[Double] = {
-      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment)
+      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment, collectedValue.format)
     }
   }
 
   implicit object BooleanType extends FitsType[Boolean] {
     override def collectedValueToHeaderItem(collectedValue: CollectedValue[Boolean]): HeaderItem[Boolean] = {
-      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment)
+      HeaderItem(collectedValue.keyword, collectedValue.value, collectedValue.comment, collectedValue.format)
     }
   }
 

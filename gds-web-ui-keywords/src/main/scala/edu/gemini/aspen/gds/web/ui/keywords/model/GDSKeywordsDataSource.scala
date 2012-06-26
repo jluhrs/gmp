@@ -26,6 +26,7 @@ abstract class GDSKeywordsDataSource(config: List[ConfigItem[_]]) extends Indexe
     classOf[Subsystem] -> new SubsystemPropertyFactory,
     classOf[Channel] -> new ChannelPropertyFactory,
     classOf[ArrayIndex] -> new ArrayIndexPropertyFactory,
+    classOf[Format] -> new FormatPropertyFactory,
     classOf[FitsComment] -> new FitsCommentPropertyFactory
   )
 
@@ -87,5 +88,5 @@ object GDSKeywordsDataSource {
    * Returns a list of the fields of GDSConfiguration we are interested to display/edit
    */
   protected[keywords] def displayedFields =
-    classOf[GDSConfiguration].getDeclaredFields.toList take (11)
+    classOf[GDSConfiguration].getDeclaredFields.toList take (12)
 }

@@ -15,8 +15,8 @@ class KeywordsDatabaseTest extends AssertionsForJUnit {
   val key = "KEYWORD"
   val key2 = "KEYWORD2"
   val value = 0.1
-  val colVal = CollectedValue(key, value, "my comment", 0)
-  val colVal2 = CollectedValue(key2, value, "my comment", 1)
+  val colVal = CollectedValue(key, value, "my comment", 0, None)
+  val colVal2 = CollectedValue(key2, value, "my comment", 1, None)
   val dataLabel = "GS-2011B"
   val dataLabel2 = "GS-2011A"
 

@@ -19,6 +19,7 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
   protected val defaultValue = config.nullValue.value
   protected val dataType = config.dataType
   protected val arrayIndex = config.arrayIndex.value
+  protected val format = config.format.value
 
   override def exceptionHandler = {
     case e: Exception => {
@@ -31,7 +32,7 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
    * Method to convert a value read from a given source to the type requested in the configuration */
   protected def valueToCollectedValue(value: Any): CollectedValue[_] = dataType match {
     // Anything can be converted to a string
-    case DataType("STRING") => CollectedValue(fitsKeyword, value.toString, fitsComment, headerIndex)
+    case DataType("STRING") => CollectedValue(fitsKeyword, value.toString, fitsComment, headerIndex, format)
     // Any number can be converted to a double
     case DataType("DOUBLE") => newDoubleCollectedValue(value)
     // Any number can be converted to a int
@@ -43,11 +44,11 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
   }
 
   private def newDoubleCollectedValue(value: Any):CollectedValue[_] = value match {
-    case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue, fitsComment, headerIndex)
+    case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue, fitsComment, headerIndex, format)
     case _ => newMismatchError
   }
 
-  private def collectedValueFromInt(value: Int):CollectedValue[_] = CollectedValue(fitsKeyword, value, fitsComment, headerIndex)
+  private def collectedValueFromInt(value: Int):CollectedValue[_] = CollectedValue(fitsKeyword, value, fitsComment, headerIndex, format)
 
   private def newIntCollectedValue(value: Any) = value match {
     case x: java.lang.Long => {
@@ -61,10 +62,10 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
   }
 
   private def newBooleanCollectedValue(value: Any) = value match {
-    case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue() != 0, fitsComment, headerIndex)
-    case x: String if x.equalsIgnoreCase("false") || x.equalsIgnoreCase("f") || x.equalsIgnoreCase("0") || x.isEmpty => CollectedValue(fitsKeyword, false, fitsComment, headerIndex)
-    case x: String => CollectedValue(fitsKeyword, true, fitsComment, headerIndex)
-    case x: Boolean => CollectedValue(fitsKeyword, x, fitsComment, headerIndex)
+    case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue() != 0, fitsComment, headerIndex, format)
+    case x: String if x.equalsIgnoreCase("false") || x.equalsIgnoreCase("f") || x.equalsIgnoreCase("0") || x.isEmpty => CollectedValue(fitsKeyword, false, fitsComment, headerIndex, format)
+    case x: String => CollectedValue(fitsKeyword, true, fitsComment, headerIndex, format)
+    case x: Boolean => CollectedValue(fitsKeyword, x, fitsComment, headerIndex, format)
     case _ => newMismatchError
   }
 

@@ -33,5 +33,11 @@ object Conversions {
 
     implicit def intToArrayIndex(value: Int) = new ArrayIndex(value)
 
+    implicit def stringToFormat(value: String) = if(value.isEmpty){
+      new Format(None)
+    }else{
+      new Format(Some(value))
+    }
+
     implicit def stringToFitsComment(value: String) = new FitsComment(value)
 }

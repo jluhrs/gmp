@@ -36,7 +36,7 @@ class FitsWithExtensionsUpdaterTest extends FitsBaseTest {
     verifyKeywordInHeader(updatedExtensionHeader, "AIRMASS")
   }
   test("should update the extension header with several new keywords") {
-    val extensionHeader = Header(1, List(HeaderItem("AIRMASS", 1.0, "Mass of airmass"), HeaderItem("AIREND", 2.0, "Mass of airmass at the end"), HeaderItem("AIRSTART", 3.0, "Mass of airmass at the beggining")))
+    val extensionHeader = Header(1, List(HeaderItem("AIRMASS", 1.0, "Mass of airmass", None), HeaderItem("AIREND", 2.0, "Mass of airmass at the end", None), HeaderItem("AIRSTART", 3.0, "Mass of airmass at the beggining", None)))
 
     updateFitsFile(List(extensionHeader))
 

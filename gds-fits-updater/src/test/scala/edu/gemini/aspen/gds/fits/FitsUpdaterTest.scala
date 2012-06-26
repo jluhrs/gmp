@@ -61,7 +61,7 @@ class FitsUpdaterTest extends FitsBaseTest {
   }
 
   test("should update the primary headers with several new keywords") {
-    val keys = List(HeaderItem("AIRMASS", 1.0, "Mass of airmass"),HeaderItem("AIREND", 2.0, "Mass of airmass at the end"),HeaderItem("AIRSTART", 3.0, "Mass of airmass at the beggining"))
+    val keys = List(HeaderItem("AIRMASS", 1.0, "Mass of airmass", None),HeaderItem("AIREND", 2.0, "Mass of airmass at the end", None),HeaderItem("AIRSTART", 3.0, "Mass of airmass at the beggining", None))
     val primaryHeader = Header(0, keys)
     val headers = primaryHeader :: Nil
 

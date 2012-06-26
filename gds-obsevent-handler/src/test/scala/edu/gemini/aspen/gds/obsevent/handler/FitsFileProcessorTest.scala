@@ -41,29 +41,42 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
     implicit val LOG = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
-    val cv = List(CollectedValue("KEY", "1.0", "comment", 0))
+    val cv = List(CollectedValue("KEY", "1.0", "comment", 0, None))
 
-    assertEquals(List(Header(0, HeaderItem("KEY", "1.0", "comment") :: Nil)), fp.convertToHeaders(cv))
+    assertEquals(List(Header(0, HeaderItem("KEY", "1.0", "comment", None) :: Nil)), fp.convertToHeaders(cv))
 
-    val cv2 = CollectedValue("KEY", "1.0", "comment", 0) :: CollectedValue("KEY2", "1.0", "comment", 0) :: Nil
+    val cv2 = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 0, None) :: Nil
 
-    assertEquals(List(Header(0, HeaderItem("KEY", "1.0", "comment") :: HeaderItem("KEY2", "1.0", "comment") :: Nil)), fp.convertToHeaders(cv2))
+    assertEquals(List(Header(0, HeaderItem("KEY", "1.0", "comment", None) :: HeaderItem("KEY2", "1.0", "comment", None) :: Nil)), fp.convertToHeaders(cv2))
+  }
+
+  test("convertToHeaders with format") {
+    implicit val LOG = mock[Logger]
+    val fp = new FitsFileProcessor(propertyHolder)
+
+    val cv = List(CollectedValue("KEY", "1.0", "comment", 0, Some("%.2f")))
+
+    assertEquals(List(Header(0, HeaderItem("KEY", "1.0", "comment", Some("%.2f")) :: Nil)), fp.convertToHeaders(cv))
+
+    val cv2 = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 0, Some("%.2f")) :: Nil
+
+    assertEquals(List(Header(0, HeaderItem("KEY", "1.0", "comment", None) :: HeaderItem("KEY2", "1.0", "comment", Some("%.2f")) :: Nil)), fp.convertToHeaders(cv2))
   }
 
   test("convertToHeaders with two headers") {
     implicit val LOG = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
-    val cv2 = CollectedValue("KEY", "1.0", "comment", 0) :: CollectedValue("KEY2", "1.0", "comment", 1) :: Nil
+    val cv2 = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 1, None) :: Nil
 
-    assertEquals(Header(0, HeaderItem("KEY", "1.0", "comment") :: Nil) :: Header(1, HeaderItem("KEY2", "1.0", "comment") :: Nil) :: Nil, fp.convertToHeaders(cv2))
+    assertEquals(Header(0, HeaderItem("KEY", "1.0", "comment", None) :: Nil) :: Header(1, HeaderItem("KEY2", "1.0", "comment", None) :: Nil) :: Nil, fp.convertToHeaders(cv2))
   }
 
   test("write to file") {
     implicit val LOG = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
-    val cv = CollectedValue("KEY", "1.0", "comment", 0) :: CollectedValue("KEY2", "1.0", "comment", 1) :: Nil
+    val cv = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 1, None) :: Nil
 
     fp.updateFITSFile(dataLabel, cv) match {
       case Right(x) => // We expect the operation to succeed
@@ -75,7 +88,7 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
     implicit val LOG = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
-    val cv = CollectedValue("KEY", "1.0", "comment", 0) :: CollectedValue("KEY2", "1.0", "comment", 1) :: Nil
+    val cv = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 1, None) :: Nil
 
     fp.updateFITSFile(dataLabel + "nonvalid", cv) match {
       case Right(x) => fail()

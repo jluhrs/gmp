@@ -13,7 +13,7 @@ class ErrorPolicyTest {
   @Test
   def testDefault() {
     val ep = new DefaultErrorPolicy()
-    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0) :: Nil
+    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: Nil
 
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
   }
@@ -21,7 +21,7 @@ class ErrorPolicyTest {
   @Test
   def testComposite() {
     val ep = new CompositeErrorPolicyImpl()
-    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
+    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
 
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
   }
@@ -29,7 +29,7 @@ class ErrorPolicyTest {
   @Test
   def testCompositeDefault() {
     val ep = new CompositeErrorPolicyImpl()
-    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
+    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
 
     ep.bindPolicy(new DefaultErrorPolicy)
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
@@ -38,7 +38,7 @@ class ErrorPolicyTest {
   @Test
   def testCompositeDefaultTwice() {
     val ep = new CompositeErrorPolicyImpl()
-    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
+    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
 
     ep.bindPolicy(new DefaultErrorPolicy)
     ep.bindPolicy(new DefaultErrorPolicy)

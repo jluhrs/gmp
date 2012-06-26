@@ -32,9 +32,9 @@ class PropertiesActorsFactoryTest extends FunSuite {
   }
 
   def buildOneConfiguration(event: String, keyword: String, channel: String) =
-    List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "PROPERTY", channel, 0, "A comment"))
+    List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "PROPERTY", channel, 0, "", "A comment"))
 
   def buildOneNonPropertyConfiguration(event: String, keyword: String, channel: String) =
-    List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "ODB", channel, 0, "A comment"))
+    List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "ODB", channel, 0, "", "A comment"))
 
 }

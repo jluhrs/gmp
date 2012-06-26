@@ -24,7 +24,7 @@ class FitsWriterTest extends FunSuite with FitsSamplesDownloader with FitsSample
   }
 
   // Creates a new header with a single keyword
-  def createHeadersWithAirMass(headerIndex: Int): Header = Header(headerIndex, List(HeaderItem("AIRMASS", 1.0, "Mass of airmass")))
+  def createHeadersWithAirMass(headerIndex: Int): Header = Header(headerIndex, List(HeaderItem("AIRMASS", 1.0, "Mass of airmass", None)))
 
   // Verifies that a header contains all the original keywords plus new keywords
   def verifyKeysInHeader(header: Header, names: List[String], newKeywords: List[String]) {
@@ -161,7 +161,7 @@ class FitsWriterTest extends FunSuite with FitsSamplesDownloader with FitsSample
     assertEquals(gpiNoExtSamplePDUHash, fitsFile.checksumData(0))
 
     // Approximately 300 keywords are added to GPI file in the primary
-    val headers = for (i <- 0 to 300) yield HeaderItem("GPIK" + i, "value" + i, "comment " + i)
+    val headers = for (i <- 0 to 300) yield HeaderItem("GPIK" + i, "value" + i, "comment " + i, None)
     val headerUpdate = Header(0, headers)
     fitsFile.updateHeader(headerUpdate, destFile)
 
@@ -209,7 +209,7 @@ class FitsWriterTest extends FunSuite with FitsSamplesDownloader with FitsSample
     assertEquals(gpiExtSamplePDUHash, new FitsReader(originalFile).checksumData(0))
 
     // Approximately 300 keywords are added to GPI file in the primary
-    val headers = for (i <- 0 to 300) yield HeaderItem("GPIK" + i, "value" + i, "comment " + i)
+    val headers = for (i <- 0 to 300) yield HeaderItem("GPIK" + i, "value" + i, "comment " + i, None)
     val headerUpdate = Header(0, headers)
     fitsFile.updateHeader(headerUpdate, destFile)
 
@@ -266,8 +266,8 @@ class FitsWriterTest extends FunSuite with FitsSamplesDownloader with FitsSample
     val ext1DataHash = hashDataSection(originalFile, fitsFile.header(1).get)
 
     // Approximately 300 keywords are added to GPI file in the primary
-    val headersPDU = for (i <- 0 to 300) yield HeaderItem("GPIK" + i, "value" + i, "comment " + i)
-    val headersEXT1 = for (i <- 0 to 300) yield HeaderItem("GPIK" + i, "value" + i, "comment " + i)
+    val headersPDU = for (i <- 0 to 300) yield HeaderItem("GPIK" + i, "value" + i, "comment " + i, None)
+    val headersEXT1 = for (i <- 0 to 300) yield HeaderItem("GPIK" + i, "value" + i, "comment " + i, None)
     fitsFile.updateHeaders(Header(0, headersPDU) :: Header(1, headersEXT1) :: Nil, destFile)
 
     val updatedFitsFile = new FitsReader(destFile)

@@ -27,7 +27,7 @@ class GDSConfigurationServiceTest extends FunSuite {
   }
 
   protected def checkOriginalContent(config: List[GDSConfiguration]) {
-    assertTrue(config.contains(GDSConfiguration("GPI", "OBS_END_ACQ", "AIRMASS", 0, "DOUBLE", false, "NONE", "EPICS", "ws:massAirmass", 0, "Mean airmass for the observation")))
+    assertTrue(config.contains(GDSConfiguration("GPI", "OBS_END_ACQ", "AIRMASS", 0, "DOUBLE", false, "NONE", "EPICS", "ws:massAirmass", 0, "", "Mean airmass for the observation")))
     //todo: check for the rest of the items
   }
 
@@ -56,7 +56,7 @@ class GDSConfigurationServiceTest extends FunSuite {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
     val serviceNew = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
 
-    val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
+    val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "", "Mean airmass for the observation")
     serviceNew.replaceConfiguration(config :: Nil)
     val readConfig = serviceNew.getConfiguration
     assertEquals(1, readConfig.length)
@@ -67,7 +67,7 @@ class GDSConfigurationServiceTest extends FunSuite {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
     val serviceNew = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
 
-    val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
+    val config = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "", "Mean airmass for the observation")
     serviceNew.addConfiguration(config :: Nil)
     val readConfig = serviceNew.getConfiguration
 
@@ -80,8 +80,8 @@ class GDSConfigurationServiceTest extends FunSuite {
     copyFile(ORIGINAL_CONFIG, TEST_DIR + NEW_CONFIG)
     val serviceNew = new GDSConfigurationServiceImpl(TEST_DIR + NEW_CONFIG)
 
-    val newConfig = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
-    val modConfig = GDSConfiguration("MOD", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "Mean airmass for the observation")
+    val newConfig = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "", "Mean airmass for the observation")
+    val modConfig = GDSConfiguration("MOD", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", "gpi:value", 0, "", "Mean airmass for the observation")
     val readConfig: List[ConfigItem[_]] = serviceNew.getFullConfiguration
     val newElement: ConfigItem[_] = new ConfigItem(newConfig)
     val removedConfig = GDSConfigurationFile.getConfiguration(readConfig).tail.head //2nd element
@@ -122,9 +122,9 @@ class GDSConfigurationServiceTest extends FunSuite {
     val serviceOrig = new GDSConfigurationServiceImpl(TEST_DIR + ORIGINAL_BAD_CONFIG)
 
     assertEquals("""string matching regex `\d+' expected but `?' found""", serviceOrig.errors.get._1)
-    assertEquals(604, serviceOrig.errors.get._2)
-    assertEquals(OffsetPosition(serviceOrig.textContent, 604).column, serviceOrig.errors.get._3.column)
-    assertEquals(OffsetPosition(serviceOrig.textContent, 604).line, serviceOrig.errors.get._3.line)
+    assertEquals(616, serviceOrig.errors.get._2)
+    assertEquals(OffsetPosition(serviceOrig.textContent, 616).column, serviceOrig.errors.get._3.column)
+    assertEquals(OffsetPosition(serviceOrig.textContent, 616).line, serviceOrig.errors.get._3.line)
   }
 
 }

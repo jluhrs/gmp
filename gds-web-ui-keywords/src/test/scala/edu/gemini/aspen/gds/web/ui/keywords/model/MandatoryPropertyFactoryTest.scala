@@ -12,7 +12,7 @@ import com.vaadin.ui.CheckBox
  */
 class MandatoryPropertyFactoryTest {
   val factory = new MandatoryPropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
   val item = new PropertysetItem
   item.addItemProperty("Mandatory", new ObjectProperty[Mandatory](Mandatory(true)))
 
@@ -40,7 +40,7 @@ class MandatoryPropertyFactoryTest {
     // Simulates that the combo box has been updated
     nativeSelect.setValue(false)
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", false, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", false, "null", "SEQEXEC", "KEY", 0, "", "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 

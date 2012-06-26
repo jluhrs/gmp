@@ -12,7 +12,7 @@ trait FitsBaseTest extends FunSuite with BeforeAndAfterEach {
   val destinationFile: File
   val dataLabel: DataLabel
 
-  def createHeadersWithAirMass(headerIndex: Int): List[Header] =  List(Header(headerIndex, List(HeaderItem("AIRMASS", 1.0, "Mass of airmass"))))
+  def createHeadersWithAirMass(headerIndex: Int): List[Header] =  List(Header(headerIndex, List(HeaderItem("AIRMASS", 1.0, "Mass of airmass", None))))
 
   def updateFitsFile(headers: List[Header]) {
     val fitsUpdater = new FitsUpdater(originalFile.getParentFile, destinationFile.getParentFile, dataLabel, headers)

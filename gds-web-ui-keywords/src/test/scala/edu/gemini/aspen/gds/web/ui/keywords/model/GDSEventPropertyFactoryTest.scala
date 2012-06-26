@@ -9,7 +9,7 @@ import com.vaadin.ui.NativeSelect
 
 class GDSEventPropertyFactoryTest {
   val factory = new GDSEventPropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
   val item = new PropertysetItem
   item.addItemProperty("GDSEvent", new ObjectProperty[GDSEvent](GDSEvent("OBS_START_ACQ")))
 
@@ -37,7 +37,7 @@ class GDSEventPropertyFactoryTest {
     // Simulates that the combo box has been updated
     select.setValue("END_ACQ")
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_END_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_END_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 

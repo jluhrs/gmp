@@ -8,7 +8,7 @@ import scala.collection._
 class DummyActorsFactory extends AbstractKeywordActorsFactory {
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
     val dummyActor = new KeywordValueActor {
-      override def collectValues: immutable.List[CollectedValue[_]] = immutable.List(CollectedValue(FitsKeyword("KEYWORD1"), "", "", 0))
+      override def collectValues: immutable.List[CollectedValue[_]] = immutable.List(CollectedValue(FitsKeyword("KEYWORD1"), "", "", 0, None))
     }
     immutable.List(dummyActor)
   }

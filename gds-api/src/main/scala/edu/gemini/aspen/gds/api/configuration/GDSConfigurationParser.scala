@@ -5,6 +5,7 @@ import io.Source
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.data.ObservationEvent
 import fits.FitsKeyword
+import edu.gemini.aspen.gds.api.Conversions._
 
 case class Space(length: Int)
 
@@ -29,6 +30,7 @@ class GDSConfigurationParser extends RegexParsers {
     ~ spaces ~ subsystem
     ~ spaces ~ channelName
     ~ spaces ~ arrayIndex
+    ~ spaces ~ format
     ~ spaces ~ fitscomment) ^^ {
     case s1 ~ instrument
       ~ s2 ~ observationEvent
@@ -40,7 +42,8 @@ class GDSConfigurationParser extends RegexParsers {
       ~ s8 ~ subsystem
       ~ s9 ~ channelName
       ~ s10 ~ arrayIndex
-      ~ s11 ~ fitsComment => GDSConfiguration(instrument, observationEvent, keyword, headerIndex, dataType, mandatory, nullValue, subsystem, channelName, arrayIndex, fitsComment)
+      ~ s11 ~ format
+      ~ s12 ~ fitsComment => GDSConfiguration(instrument, observationEvent, keyword, headerIndex, dataType, mandatory, nullValue, subsystem, channelName, arrayIndex, format, fitsComment)
   }
 
   def instrument = """\w+""".r ^^ {
@@ -81,7 +84,7 @@ class GDSConfigurationParser extends RegexParsers {
 
   // Default value can be anything that does not contain a space
   def defaultValue = """\S+""".r ^^ {
-    x:String => DefaultValue(x)
+    x: String => DefaultValue(x)
   }
 
   def subsystem = (KeywordSource.values map {
@@ -94,7 +97,7 @@ class GDSConfigurationParser extends RegexParsers {
 
   // Default value can be anything that does not contain a space
   def channelName = """[:\w\.\]\[]+""".r ^^ {
-    x:String => Channel(x)
+    x: String => Channel(x)
   }
 
   def arrayIndex = """\d+""".r ^^ {
@@ -109,7 +112,12 @@ class GDSConfigurationParser extends RegexParsers {
     x => FitsComment(x)
   }
 
+  def format = "\"" ~> GDSConfigurationParser.internalFormat <~ "\"" ^^ {
+    x => stringToFormat(x)
+  }
+
   def internalComment = """[^"]*""".r
+
 
   def spaces = opt(whitespace) ^^ {
     case Some(spaces) => Space(spaces.length)
@@ -136,4 +144,10 @@ class GDSConfigurationParser extends RegexParsers {
   def parseText(text: String) = {
     parseAll(lines, text)
   }
+}
+
+object GDSConfigurationParser {
+  //todo: improve internal format, for now we accept anything that doesn't include quotes and does include %
+  def internalFormat = """[^"]*%[^"]*""".r
+
 }

@@ -19,7 +19,7 @@ class EpicsValuesActorTest extends Mockito {
   val nullValue = DefaultValue("NONE")
 
   def buildConfiguration(mandatory: Boolean, arrayIndex: Int) =
-    GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", mandatory, "NONE", "EPICS", channelName, arrayIndex, "Mean airmass for the observation")
+    GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", mandatory, "NONE", "EPICS", channelName, arrayIndex, "", "Mean airmass for the observation")
 
   @Test
   def testReplyToCollect() {
@@ -150,7 +150,7 @@ class EpicsValuesActorTest extends Mockito {
 
   @Test
   def testCollectTypeMismatch {
-    val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation")
+    val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "DOUBLE", true, "NONE", "EPICS", channelName, 0, "", "Mean airmass for the observation")
     val ch = mock[ReadOnlyChannel[String]]
     ch.getFirst returns "a string"
 
@@ -176,7 +176,7 @@ class EpicsValuesActorTest extends Mockito {
 
   @Test
   def testCollectTypeMismatchFromDoubleToInt {
-    val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "INT", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation")
+    val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "INT", true, "NONE", "EPICS", channelName, 0, "", "Mean airmass for the observation")
 
     val ch = mock[ReadOnlyChannel[java.lang.Double]]
     // mock return value cannot be read

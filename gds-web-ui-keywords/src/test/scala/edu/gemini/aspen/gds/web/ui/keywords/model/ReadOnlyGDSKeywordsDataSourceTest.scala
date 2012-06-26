@@ -7,8 +7,8 @@ import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.api.configuration.ConfigItem
 
 class ReadOnlyGDSKeywordsDataSourceTest {
-  val config1 = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
-  val config2 = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY2", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val config1 = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
+  val config2 = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY2", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
 
   @Test
   def testWriteRead {

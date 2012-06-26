@@ -14,23 +14,23 @@ import org.junit.runner.RunWith
  */
 @RunWith(classOf[JUnitRunner])
 class GDSConfigurationParserTest extends FunSuite {
-  val text = """GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "Mean airmass for the observation""""
+  val text = """GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "" "Mean airmass for the observation""""
 
-  val good = Array("GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"Mean airmass for the observation\"",
-    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0     \"Mean airmass for the observation\"",
-    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0     \"Mean airmass #for the observation\"", //# in middle of comment
-    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0     \"\"", //empty comment
-    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NO#NE        EPICS       ws:massAirmass	              0     \"Mean airmass for the observation\"") //#in middle
-  val comments = Array("#", "# ", "#comment", " # comment with leading space", "  # comment with 2 leading spaces", "\t#comment with leading tab")
-  val wrong = Array("GPI OBS_END_AQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"Mean airmass for the observation\"", //wrong obs event
-    "GPI OBS_END_ACQ AIRMASS22 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"Mean airmass for the observation\"", //keyword too long
-    "GPI OBS_END_ACQ AIRMASS A DOUBLE F NONE EPICS ws:massAirmass 0 \"Mean airmass for the observation\"", //header index must be positive integer
-    "GPI OBS_END_ACQ AIRMASS 0 FLOAT F NONE EPICS ws:massAirmass 0 \"Mean airmass for the observation\"", //wrong data type
-    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE y NONE EPICS ws:massAirmass 0 \"Mean airmass for the observation\"", //mandatory must be [FfTt]
-    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE MAGIC ws:massAirmass 0 \"Mean airmass for the observation\"", //unknown subsystem
-    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass -1 \"Mean airmass for the observation\"", //array index must be positive integer
-    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 Mean airmass for the observation", //comment must be surrounded in "
-    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 ", //no comment
+  val good = Array("GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"\" \"Mean airmass for the observation\"",
+    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0    \"\" \"Mean airmass for the observation\"",
+    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0    \"\" \"Mean airmass #for the observation\"", //# in middle of comment
+    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0    \"\" \"\"", //empty comment
+    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NO#NE        EPICS       ws:massAirmass	              0   \"\"  \"Mean airmass for the observation\"") //#in middle
+  val comments = Array("#", "# ", "#comment", " # comment with leading space", "  # comment with 2 leading spaces",  "\t#comment with leading tab")
+  val wrong = Array("GPI OBS_END_AQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"\" \"Mean airmass for the observation\"", //wrong obs event
+    "GPI OBS_END_ACQ AIRMASS22 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"\" \"Mean airmass for the observation\"", //keyword too long
+    "GPI OBS_END_ACQ AIRMASS A DOUBLE F NONE EPICS ws:massAirmass 0 \"\" \"Mean airmass for the observation\"", //header index must be positive integer
+    "GPI OBS_END_ACQ AIRMASS 0 FLOAT F NONE EPICS ws:massAirmass 0 \"\" \"Mean airmass for the observation\"", //wrong data type
+    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE y NONE EPICS ws:massAirmass 0 \"\" \"Mean airmass for the observation\"", //mandatory must be [FfTt]
+    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE MAGIC ws:massAirmass 0 \"\" \"Mean airmass for the observation\"", //unknown subsystem
+    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass -1 \"\" \"Mean airmass for the observation\"", //array index must be positive integer
+    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"\" Mean airmass for the observation", //comment must be surrounded in "
+    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"\" ", //no comment
     "comment with missing #")
   val blank = Array("", " ", "  ", "\t")
 
@@ -79,7 +79,7 @@ class GDSConfigurationParserTest extends FunSuite {
       assertTrue("Error parsing line with following contents: ->|" + line + "|<-", result.successful)
 
       assertFalse(result.isEmpty)
-      assertEquals(Some(GDSConfiguration("GPI", "OBS_END_ACQ", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "Mean airmass for the observation")), result.get(0))
+      assertEquals(Some(GDSConfiguration("GPI", "OBS_END_ACQ", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "", "Mean airmass for the observation")), result.get(0))
     }
   }
 
@@ -103,47 +103,47 @@ class GDSConfigurationParserTest extends FunSuite {
   }
 
   test("parse default with non supported values. Bug GIAPI-871") {
-    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 EPICS ws:massAirmass 0 "Mean airmass for the observation"""")
+    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 EPICS ws:massAirmass 0 "" "Mean airmass for the observation"""")
     assertTrue(result.successful)
 
     assertEquals(DefaultValue("0.0"), result.get(0).get.asInstanceOf[GDSConfiguration].nullValue)
 
     // Test with negative
-    val result2 = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F -0.1 EPICS ws:massAirmass 0 "Mean airmass for the observation"""")
+    val result2 = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F -0.1 EPICS ws:massAirmass 0 "" "Mean airmass for the observation"""")
     assertTrue(result2.successful)
 
     assertEquals(DefaultValue("-0.1"), result2.get(0).get.asInstanceOf[GDSConfiguration].nullValue)
 
     // Test with a dash
-    val result3 = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F HAWAII-R2 EPICS ws:massAirmass 0 "Mean airmass for the observation"""")
+    val result3 = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F HAWAII-R2 EPICS ws:massAirmass 0 "" "Mean airmass for the observation"""")
     assertTrue(result3.successful)
 
     assertEquals(DefaultValue("HAWAII-R2"), result3.get(0).get.asInstanceOf[GDSConfiguration].nullValue)
   }
 
   test("parse channel with a dot. Bug GIAPI-878") {
-    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 STATUS gpi:cc.value1 0 "Mean airmass for the observation"""")
+    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 STATUS gpi:cc.value1 0 "" "Mean airmass for the observation"""")
     assertTrue(result.successful)
 
     assertEquals(Channel("gpi:cc.value1"), result.get(0).get.asInstanceOf[GDSConfiguration].channel)
   }
 
   test("parse channel with square parentheses. Bug GIAPI-963") {
-    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 STATUS gpi:cc.value[1] 0 "Mean airmass for the observation"""")
+    val result = new GDSConfigurationParser().parseText("""GPI OBS_END_ACQ AIRMASS 0 DOUBLE F 0.0 STATUS gpi:cc.value[1] 0 "" "Mean airmass for the observation"""")
     assertTrue(result.successful)
 
     assertEquals(Channel("gpi:cc.value[1]"), result.get(0).get.asInstanceOf[GDSConfiguration].channel)
   }
 
   test("supports external start observation event") {
-    val text = """GPI EXT_START_OBS AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "Mean airmass for the observation""""
+    val text = """GPI EXT_START_OBS AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "" "Mean airmass for the observation""""
     val result = new GDSConfigurationParser().parseText(text)
-    assertEquals(Some(GDSConfiguration("GPI", "EXT_START_OBS", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "Mean airmass for the observation")), result.get(0))
+    assertEquals(Some(GDSConfiguration("GPI", "EXT_START_OBS", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "", "Mean airmass for the observation")), result.get(0))
   }
 
   test("supports external ond observation event") {
-    val text = """GPI EXT_END_OBS AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "Mean airmass for the observation""""
+    val text = """GPI EXT_END_OBS AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "" "Mean airmass for the observation""""
     val result = new GDSConfigurationParser().parseText(text)
-    assertEquals(Some(GDSConfiguration("GPI", "EXT_END_OBS", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "Mean airmass for the observation")), result.get(0))
+    assertEquals(Some(GDSConfiguration("GPI", "EXT_END_OBS", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "", "Mean airmass for the observation")), result.get(0))
   }
 }

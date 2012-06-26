@@ -12,7 +12,7 @@ class ConstantActorTest {
   @Test
   def testActor() {
     val constActor = new ConstantActor(buildConfiguration("KEY1", "val1") :: buildConfiguration("KEY2", "val2") :: Nil)
-    assertEquals(CollectedValue("KEY1", "val1", "COMMENT", 0) :: CollectedValue("KEY2", "val2", "COMMENT", 0) :: Nil, constActor.collectValues())
+    assertEquals(CollectedValue("KEY1", "val1", "COMMENT", 0, None) :: CollectedValue("KEY2", "val2", "COMMENT", 0, None) :: Nil, constActor.collectValues())
   }
 
   @Test
@@ -27,6 +27,7 @@ class ConstantActorTest {
       "CONSTANT",
       "NONE",
       0,
+      "",
       "COMMENT") :: Nil)
     assertEquals(ErrorCollectedValue("KEY1", CollectionError.TypeMismatch, "COMMENT", 0) :: Nil, constActor.collectValues())
   }
@@ -34,7 +35,7 @@ class ConstantActorTest {
   @Test
   def testActorFactory() {
     val factory = new ConstantActorsFactory
-    factory.configure(immutable.List(GDSConfiguration("GPI", "OBS_PREP", "TEST", 0, "DOUBLE", false, "1.0", "CONSTANT", "ws:massAirmass", 0, "my comment")))
+    factory.configure(immutable.List(GDSConfiguration("GPI", "OBS_PREP", "TEST", 0, "DOUBLE", false, "1.0", "CONSTANT", "ws:massAirmass", 0, "", "my comment")))
 
     assertEquals(1, factory.buildActors(ObservationEvent.OBS_START_ACQ, "label").length)
 
@@ -63,6 +64,7 @@ class ConstantActorTest {
       "CONSTANT",
       "NONE",
       0,
+      "",
       "COMMENT")
   }
 }

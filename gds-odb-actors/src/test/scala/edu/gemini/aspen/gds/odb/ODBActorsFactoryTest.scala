@@ -55,9 +55,9 @@ class ODBActorsFactoryTest extends Mockito {
     }
 
     def buildOneConfiguration(event: String, keyword: String, channel: String) =
-        List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "ODB", channel, 0, "A comment"))
+        List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "ODB", channel, 0, "", "A comment"))
 
     def buildOneNonODBConfiguration(event: String, keyword: String, channel: String) =
-        List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "STATUS", channel, 0, "A comment"))
+        List(GDSConfiguration("GPI", event, keyword, 0, "STRING", false, "NONE", "STATUS", channel, 0, "", "A comment"))
 
 }

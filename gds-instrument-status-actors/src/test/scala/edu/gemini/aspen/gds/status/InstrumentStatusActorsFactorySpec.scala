@@ -9,6 +9,7 @@ import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
 import fits.FitsKeyword
+import edu.gemini.aspen.gds.api.Conversions._
 
 @RunWith(classOf[JUnitRunner])
 class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mockito {
@@ -68,6 +69,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
       Subsystem(KeywordSource.STATUS),
       Channel(channel),
       ArrayIndex(0),
+      "",
       FitsComment("A comment"))
   }
 
@@ -83,6 +85,7 @@ class InstrumentStatusActorsFactorySpec extends Spec with ShouldMatchers with Mo
       Subsystem(KeywordSource.EPICS),
       Channel(channel),
       ArrayIndex(0),
+      "",
       FitsComment("A comment"))
   }
 

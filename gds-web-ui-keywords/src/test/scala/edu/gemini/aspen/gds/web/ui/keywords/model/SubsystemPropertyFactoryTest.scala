@@ -5,7 +5,6 @@ import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.Test
 import com.vaadin.data.util.{ObjectProperty, PropertysetItem}
 import com.vaadin.ui.NativeSelect
-import edu.gemini.aspen.giapi.data.ObservationEvent
 import edu.gemini.aspen.gds.api.{KeywordSource, Subsystem, GDSConfiguration}
 
 /**
@@ -13,7 +12,7 @@ import edu.gemini.aspen.gds.api.{KeywordSource, Subsystem, GDSConfiguration}
  */
 class SubsystemPropertyFactoryTest {
   val factory = new SubsystemPropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "EPICS", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "EPICS", "KEY", 0, "", "my comment")
   val item = new PropertysetItem
   item.addItemProperty("Subsystem", new ObjectProperty[Subsystem](Subsystem(KeywordSource.EPICS)))
 
@@ -41,7 +40,7 @@ class SubsystemPropertyFactoryTest {
     // Simulates that the combo box has been updated
     nativeSelect.setValue("SEQEXEC")
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 

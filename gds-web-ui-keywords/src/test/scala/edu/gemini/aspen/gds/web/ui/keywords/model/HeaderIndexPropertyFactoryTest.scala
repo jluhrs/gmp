@@ -12,7 +12,7 @@ import com.vaadin.ui.NativeSelect
  */
 class HeaderIndexPropertyFactoryTest {
   val factory = new HeaderIndexPropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
   val item = new PropertysetItem
   item.addItemProperty("HeaderIndex", new ObjectProperty[HeaderIndex](HeaderIndex(0)))
 
@@ -38,7 +38,7 @@ class HeaderIndexPropertyFactoryTest {
     // Simulates that the text field has been updated
     select.setValue("2")
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 2, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 2, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 

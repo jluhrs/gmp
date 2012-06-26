@@ -38,6 +38,12 @@ case class ArrayIndex(value: Int) {
 
 case class FitsComment(value: String)
 
+case class Format(value: Option[String]) {
+  def getAsString = {
+    value.getOrElse("")
+  }
+}
+
 /**
  * Encapsulates a configuration item of GDS */
 case class GDSConfiguration(instrument: Instrument,
@@ -50,6 +56,7 @@ case class GDSConfiguration(instrument: Instrument,
                             subsystem: Subsystem,
                             channel: Channel,
                             arrayIndex: ArrayIndex,
+                            format: Format,
                             fitsComment: FitsComment) {
   def isMandatory = mandatory.mandatory
 
@@ -72,6 +79,7 @@ case class GDSConfiguration(instrument: Instrument,
       addTabs(subsystem.name.toString, 1) +
       addTabs(channel.name, 3) +
       addTabs(arrayIndex.value.toString, 1) +
+      addTabs("\"" + format.value.getOrElse("") + "\"", 1) +
       "\"" + fitsComment.value + "\""
   }
 }

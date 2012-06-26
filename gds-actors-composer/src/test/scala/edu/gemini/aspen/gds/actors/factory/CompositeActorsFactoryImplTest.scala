@@ -81,7 +81,7 @@ class CompositeActorsFactoryImplTest extends FunSuite with MockitoSugar {
 
     // Now GDSConfigurationService has one configuration item
     reset(service)
-    when(service.getConfiguration).thenReturn(new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment") :: Nil)
+    when(service.getConfiguration).thenReturn(new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment") :: Nil)
 
     // Build actors shouldn't need to be restarted
     val newActors = startObservationFactory.buildActors(ObservationEvent.OBS_START_ACQ, dataLabel)

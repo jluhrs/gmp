@@ -17,11 +17,11 @@ class ConstantActor(configurations: immutable.List[GDSConfiguration]) extends Ke
     try {
       config.dataType match {
         // Anything can be converted to a string
-        case DataType("STRING") => CollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index)
+        case DataType("STRING") => CollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index, config.format.value)
         // Any number can be converted to a double
-        case DataType("DOUBLE") => CollectedValue(config.keyword, config.nullValue.value.toDouble, config.fitsComment.value, config.index.index)
+        case DataType("DOUBLE") => CollectedValue(config.keyword, config.nullValue.value.toDouble, config.fitsComment.value, config.index.index, config.format.value)
         // Any number can be converted to a int
-        case DataType("INT") => CollectedValue(config.keyword, config.nullValue.value.toInt, config.fitsComment.value, config.index.index)
+        case DataType("INT") => CollectedValue(config.keyword, config.nullValue.value.toInt, config.fitsComment.value, config.index.index, config.format.value)
         // this should not happen
         case _ => ErrorCollectedValue(config.keyword, CollectionError.TypeMismatch, config.fitsComment.value, config.index.index)
       }

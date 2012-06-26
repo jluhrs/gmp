@@ -12,7 +12,7 @@ import edu.gemini.aspen.gds.api.{DataType, GDSConfiguration}
  */
 class DataTypePropertyFactoryTest {
   val factory = new DataTypePropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
   val item = new PropertysetItem
   item.addItemProperty("DataType", new ObjectProperty[DataType](DataType("INT")))
 
@@ -40,7 +40,7 @@ class DataTypePropertyFactoryTest {
     // Simulates that the combo box has been updated
     select.setValue("STRING")
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "STRING", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "STRING", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 

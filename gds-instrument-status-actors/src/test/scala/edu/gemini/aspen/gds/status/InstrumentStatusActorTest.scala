@@ -1,8 +1,7 @@
 package edu.gemini.aspen.gds.status
 
-import org.junit.Assert._
 import org.junit.Test
-import edu.gemini.aspen.giapi.data.{DataLabel}
+import edu.gemini.aspen.giapi.data.DataLabel
 import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
@@ -105,6 +104,7 @@ class InstrumentStatusActorTest extends Mockito {
       "STATUS",
       statusItemName,
       0,
+      "",
       "Current global status of the instrument")
 
     val referenceValue = "ok"
@@ -142,6 +142,7 @@ class InstrumentStatusActorTest extends Mockito {
       "STATUS",
       statusItem,
       0,
+      "",
       "Current global status of the instrument")
   }
 }

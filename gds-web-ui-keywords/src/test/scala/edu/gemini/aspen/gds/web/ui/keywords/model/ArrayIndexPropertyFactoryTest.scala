@@ -12,7 +12,7 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.components.TextField
  */
 class ArrayIndexPropertyFactoryTest {
   val factory = new ArrayIndexPropertyFactory
-  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "my comment")
+  val config = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 0, "", "my comment")
   val item = new PropertysetItem
 
   @Test
@@ -37,7 +37,7 @@ class ArrayIndexPropertyFactoryTest {
     // Simulates that the text field has been updated
     select.setValue("2")
 
-    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 2, "my comment")
+    val updatedConfig = new GDSConfiguration("GPI", "OBS_START_ACQ", "KEY", 0, "INT", true, "null", "SEQEXEC", "KEY", 2, "", "my comment")
     assertEquals(updatedConfig, wrapperFunction(config))
   }
 }

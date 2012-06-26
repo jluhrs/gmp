@@ -168,7 +168,7 @@ class ODBValuesActorTest extends Spec with Mockito {
 
   @Test
   def testTypeMismatch() {
-    val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", firstNameFitsKeyword, 0, "DOUBLE", true, "NOT FOUND", "ODB", firstNameChannel, 0, "PI First Name")
+    val configuration = GDSConfiguration("GPI", "OBS_START_ACQ", firstNameFitsKeyword, 0, "DOUBLE", true, "NOT FOUND", "ODB", firstNameChannel, 0, "", "PI First Name")
 
     val result = buildActorAndCollect(List(configuration))
 
@@ -187,7 +187,7 @@ class ODBValuesActorTest extends Spec with Mockito {
 
 
   def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory: Boolean) = {
-    List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "STRING", mandatory, "NOT FOUND", "ODB", channelName, 0, comment))
+    List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "STRING", mandatory, "NOT FOUND", "ODB", channelName, 0, "", comment))
   }
 
   //

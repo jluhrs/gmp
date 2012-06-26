@@ -15,7 +15,7 @@ object CollectionError extends Enumeration {
 
 /**
  * Message indicating the result of a collection event was as error */
-class ErrorCollectedValue(keyword: FitsKeyword, val error: CollectionError.CollectionError, comment: String, index: Int) extends CollectedValue[String](keyword, "", comment, index) {
+class ErrorCollectedValue(keyword: FitsKeyword, val error: CollectionError.CollectionError, comment: String, index: Int) extends CollectedValue[String](keyword, "", comment, index, None) {
     override val isError = true
 
     // Can only equal the same type

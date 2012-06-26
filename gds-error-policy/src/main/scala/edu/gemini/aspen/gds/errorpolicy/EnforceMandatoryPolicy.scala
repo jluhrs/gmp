@@ -20,7 +20,7 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
     LOG.fine("Enforce mandatory keywords for " + dataLabel)
 
     headers ++ constructValuesForMissing(getMissing(headers)) map {
-      case ErrorCollectedValue(keyword, CollectionError.MandatoryRequired, comment, index) => CollectedValue(keyword, "", comment, index)
+      case ErrorCollectedValue(keyword, CollectionError.MandatoryRequired, comment, index) => CollectedValue(keyword, "", comment, index, None)
       case c => c
     }
   }
@@ -38,9 +38,9 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
   private def constructValuesForMissing(configurations: List[GDSConfiguration]): List[CollectedValue[_]] = {
     val list = configurations map {
       case config => if (config.isMandatory) {
-        CollectedValue(config.keyword, "", config.fitsComment.value, config.index.index)
+        CollectedValue(config.keyword, "", config.fitsComment.value, config.index.index, config.format.value)
       } else {
-        new DefaultCollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index)
+        new DefaultCollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index, config.format.value)
       }
     }
     list.asInstanceOf[List[CollectedValue[_]]]

@@ -30,7 +30,7 @@ class FitsReader(file: File) {
       val headerItems = hdu.getHeader.iterator() collect {
         case k: HeaderCard if k.isKeyValuePair => k
       } map {
-        k => HeaderItem(FitsKeyword(k.getKey), k.getValue, k.getComment)
+        k => HeaderItem(FitsKeyword(k.getKey), k.getValue, k.getComment, None)
       }
       Header(index, headerItems.toSeq, hdu.getFileOffset, hdu.getHeader.getSize, hdu.getHeader.getDataSize)
   }

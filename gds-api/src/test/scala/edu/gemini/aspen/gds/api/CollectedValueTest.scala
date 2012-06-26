@@ -12,11 +12,11 @@ class CollectedValueTest {
   @Test
   def testBuilding() {
     // Build with string
-    assertNotNull(CollectedValue("KEYWORD", "strValue", "comment", 0))
+    assertNotNull(CollectedValue("KEYWORD", "strValue", "comment", 0, None))
     // Build with int
-    assertNotNull(CollectedValue("KEYWORD", 1, "comment", 0))
+    assertNotNull(CollectedValue("KEYWORD", 1, "comment", 0, None))
     // Build with double
-    assertNotNull(CollectedValue("KEYWORD", 1.1, "comment", 0))
+    assertNotNull(CollectedValue("KEYWORD", 1.1, "comment", 0, None))
     // Note this cannot compile
     //assertNotNull(CollectedValue("KEYWORD", new Date(), "comment", 0))
   }
@@ -24,7 +24,7 @@ class CollectedValueTest {
   @Test
   def testPatternMatchingString() {
     // Build with string
-    val cv = CollectedValue("KEYWORD", "strValue", "comment", 0)
+    val cv = CollectedValue("KEYWORD", "strValue", "comment", 0, None)
     cv match {
       case CollectedValue(keyword, value, comment, index) => {
         assertEquals(new FitsKeyword("KEYWORD"), keyword)
@@ -39,7 +39,7 @@ class CollectedValueTest {
   @Test
   def testPatternMatchingInteger() {
     // Build with string
-    val cv = CollectedValue("KEYWORD", 99, "comment", 0)
+    val cv = CollectedValue("KEYWORD", 99, "comment", 0, None)
     cv match {
       case CollectedValue(keyword, value, comment, index) => {
         assertEquals(new FitsKeyword("KEYWORD"), keyword)
@@ -54,7 +54,7 @@ class CollectedValueTest {
   @Test
   def testPatternMatchingDouble() {
     // Build with string
-    val cv = CollectedValue("KEYWORD", 1.1, "comment", 0)
+    val cv = CollectedValue("KEYWORD", 1.1, "comment", 0, None)
     cv match {
       case CollectedValue(keyword, value, comment, index) => {
         assertEquals(new FitsKeyword("KEYWORD"), keyword)
@@ -69,7 +69,7 @@ class CollectedValueTest {
   @Test
   def testPatternMatchingInList() {
     // Build with string
-    val cv = CollectedValue("KEYWORD", 1.1, "comment", 0)
+    val cv = CollectedValue("KEYWORD", 1.1, "comment", 0, None)
     val list = immutable.List(cv)
     list match {
       case CollectedValue(keyword, value, comment, index) :: Nil => {

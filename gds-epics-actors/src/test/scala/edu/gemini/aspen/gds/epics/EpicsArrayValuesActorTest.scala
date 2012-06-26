@@ -26,8 +26,8 @@ class EpicsArrayValuesActorTest extends Mockito {
     ch.getAll returns referenceValue
 
     val epicsValueActor = new EpicsArrayValuesActor(ch,
-      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
-        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 1, "Mean airmass for the observation") :: Nil)
+      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "", "Mean airmass for the observation") ::
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 1, "", "Mean airmass for the observation") :: Nil)
 
     // Send an init message
     val result = epicsValueActor !! Collect
@@ -54,8 +54,8 @@ class EpicsArrayValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
 
     val epicsValueActor = new EpicsArrayValuesActor(ch,
-      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
-        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "DOUBLE", true, "NONE", "EPICS", channelName, 1, "Mean airmass for the observation") :: Nil)
+      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "", "Mean airmass for the observation") ::
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "DOUBLE", true, "NONE", "EPICS", channelName, 1, "", "Mean airmass for the observation") :: Nil)
 
 
   }
@@ -66,8 +66,8 @@ class EpicsArrayValuesActorTest extends Mockito {
     val ch = mock[ReadOnlyChannel[String]]
 
     val epicsValueActor = new EpicsArrayValuesActor(ch,
-      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
-        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName + "bla", 1, "Mean airmass for the observation") :: Nil)
+      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "", "Mean airmass for the observation") ::
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName + "bla", 1, "", "Mean airmass for the observation") :: Nil)
 
 
   }
@@ -79,8 +79,8 @@ class EpicsArrayValuesActorTest extends Mockito {
     ch.getAll throws new RuntimeException
 
     val epicsValueActor = new EpicsArrayValuesActor(ch,
-      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
-        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 2, "Mean airmass for the observation") :: Nil)
+      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "", "Mean airmass for the observation") ::
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 2, "", "Mean airmass for the observation") :: Nil)
 
 
     // Send an init message
@@ -110,8 +110,8 @@ class EpicsArrayValuesActorTest extends Mockito {
     ch.getAll returns referenceValue
 
     val epicsValueActor = new EpicsArrayValuesActor(ch,
-      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "Mean airmass for the observation") ::
-        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 2, "Mean airmass for the observation") :: Nil)
+      GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS", 0, "STRING", true, "NONE", "EPICS", channelName, 0, "", "Mean airmass for the observation") ::
+        GDSConfiguration("GPI", "OBS_START_ACQ", "AIRMASS2", 0, "STRING", true, "NONE", "EPICS", channelName, 2, "", "Mean airmass for the observation") :: Nil)
 
     // Send an init message
     val result = epicsValueActor !! Collect

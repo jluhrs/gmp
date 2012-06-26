@@ -10,7 +10,7 @@ class ConfigurableActorsFactory extends AbstractKeywordActorsFactory {
 
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = actorsConfiguration map {
     c => new KeywordValueActor {
-      override def collectValues: immutable.List[CollectedValue[_]] = immutable.List(CollectedValue(c.keyword, "", "", 0))
+      override def collectValues: immutable.List[CollectedValue[_]] = immutable.List(CollectedValue(c.keyword, "", "", 0, None))
     }
   }
 
