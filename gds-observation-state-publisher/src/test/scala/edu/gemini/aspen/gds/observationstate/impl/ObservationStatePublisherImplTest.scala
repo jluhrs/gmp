@@ -34,4 +34,17 @@ class ObservationStatePublisherImplTest extends FunSuite {
     //check that it didn't get called again after unbinding
     verify(consumer, times(1)).receiveEndObservation("testlabel", Nil, Nil)
   }
+
+  test("publish observation error") {
+    val obsStatePub = new ObservationStatePublisherImpl
+    val consumer = mock(classOf[ObservationStateConsumer])
+    obsStatePub.bindConsumer(consumer)
+    obsStatePub.publishObservationError("testlabel", "file not found")
+    verify(consumer, times(1)).receiveObservationError("testlabel", "file not found")
+    obsStatePub.unbindConsumer(consumer)
+    obsStatePub.publishObservationError("testlabel", "file not found")
+
+    //check that it didn't get called again after unbinding
+    verify(consumer, times(1)).receiveObservationError("testlabel", "file not found")
+  }
 }
