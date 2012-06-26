@@ -9,7 +9,7 @@ import org.joda.time.format.ISODateTimeFormat
 /**
  * This class is used by the LazyQueryContainer to read beans representing log values to display on the screen
  * The BeanQuery in this case is read only */
-case class ObservationBean(@BeanProperty val result:ObservationStatus, timeStamp0: Option[DateTime], @BeanProperty val dataLabel: String) {
+case class ObservationBean(@BeanProperty val result:ObservationStatus, timeStamp0: Option[DateTime], @BeanProperty val dataLabel: String, @BeanProperty errorMsg:String = "") {
 
   /**Expose properties as JavaBean properties */
   @BeanProperty val timeStamp = ObservationBean.formatTimeStamp(timeStamp0.getOrElse(new DateTime()))

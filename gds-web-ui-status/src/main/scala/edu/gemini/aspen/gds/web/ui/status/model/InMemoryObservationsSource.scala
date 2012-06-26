@@ -106,7 +106,7 @@ class InMemoryObservationsSource extends ObservationsSource with ObservationStat
   def receiveObservationError(label: DataLabel, message: String) {
     pendingObservations.remove(label, true)
 
-    doAppend(new ObservationBean(ObservationError, Some(new DateTime()), label))
+    doAppend(new ObservationBean(ObservationError, Some(new DateTime()), label, message))
 
     listener foreach (_.apply())
   }

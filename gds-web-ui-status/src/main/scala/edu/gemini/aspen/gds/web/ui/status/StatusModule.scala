@@ -66,8 +66,7 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
   statusTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
   statusTable.setColumnWidth(statusProperty, 20)
 
-  val columns = Array[AnyRef]("status", "timeStamp", "dataLabel")
-  statusTable.setVisibleColumns(columns)
+  val columns = Array[AnyRef]("status", "timeStamp", "dataLabel", "errorMsg")
 
   val bottomPanel = new Panel("Last " + nLast + " Observations", sizeFull = true) {
     add(statusTable)
@@ -99,6 +98,8 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
 
     accordion.setSizeFull()
     //generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
+
+    refresh()
 
     new Panel(sizeFull = true) {
       add(topGrid)
@@ -161,6 +162,7 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
     definition.addProperty("result", classOf[ObservationStatus], Successful, true, true)
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
     definition.addProperty("dataLabel", classOf[String], "", true, true)
+    definition.addProperty("errorMsg", classOf[String], "", true, true)
     queryFactory.setQueryDefinition(definition)
 
     new LazyQueryContainer(definition, queryFactory)
