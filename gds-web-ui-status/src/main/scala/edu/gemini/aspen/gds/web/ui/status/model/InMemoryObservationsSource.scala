@@ -15,9 +15,10 @@ import edu.gemini.aspen.gds.api.GDSStartObservation
 import edu.gemini.aspen.gds.api.GDSObservationTimes
 import edu.gemini.aspen.gds.api.GDSEndObservation
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
-import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
+import edu.gemini.aspen.gds.observationstate.{ObservationStateConsumer, ObservationStateProvider}
 import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.giapi.data.DataLabel
+import fits.FitsKeyword
 import org.joda.time.DateTime
 
 /**
@@ -35,8 +36,8 @@ trait ObservationsSource {
  */
 @Component
 @Instantiate
-@Provides(specifications = Array[Class[_]](classOf[ObservationsSource]))
-class InMemoryObservationsSource(@Requires statusDB: StatusDatabaseService, @Requires obsState: ObservationStateProvider, @Requires top: Top) extends ObservationsSource {
+@Provides(specifications = Array[Class[_]](classOf[ObservationsSource], classOf[ObservationStateConsumer]))
+class InMemoryObservationsSource(@Requires statusDB: StatusDatabaseService, @Requires obsState: ObservationStateProvider, @Requires top: Top) extends ObservationsSource with ObservationStateConsumer {
   val propertySources = new PropertyValuesHelper(statusDB, obsState, top)
   var listener:Option[() => Unit] = None
 
@@ -56,51 +57,17 @@ class InMemoryObservationsSource(@Requires statusDB: StatusDatabaseService, @Req
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .maximumSize(MAXSIZE).build[DataLabel, java.lang.Boolean]().asMap()
 
-  def observations = observationBeansMap.values
+  def observations = observationBeansMap.values.toList.sortBy {_.timeStamp0.getOrElse(new DateTime()).getMillis} reverse
 
   def pending =  pendingObservations.keys
 
   @Validate
   def initLogListener() {}
 
-
-  @Subscriber(name = "gds2eventsregsitrar", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent", dataType = "edu.gemini.aspen.gds.api.GDSNotification")
-  def gdsEvent(event: GDSNotification) {
-
-    event match {
-      case s: GDSStartObservation => onStartObservation(s)
-      case e: GDSEndObservation => onEndObservation(e)
-      case t: GDSObservationTimes => //registrar.registerTimes(t.dataLabel, t.times)
-      case e: GDSObservationError => onObservationError(e.dataLabel, e.msg)
-      case x => sys.error("Shouldn't happen")
-    }
-  }
-
   def registerListener(f:() => Unit) {
     listener = Some(f)
   }
 
-  def onStartObservation(s: GDSStartObservation) {
-    pendingObservations += s.dataLabel -> true
-
-    listener foreach (_.apply())
-  }
-
-  private def onEndObservation(e: GDSEndObservation) = {
-    /*observations = propertySources.getLastDataLabels(10) map {
-      l => //if (propertySources.isInError(l)) {
-        val result = propertySources.getStatus(l).get
-        new ObservationBean(result, propertySources.getTimestamp(l), l)
-      /*} else {
-        new Entry(l, propertySources.getTimes(l))
-      }*/
-    } take (10) toList*/
-    pendingObservations.remove(e.dataLabel, true)
-
-    doAppend(new ObservationBean(Successful, Some(new DateTime()), e.dataLabel))
-
-    listener foreach (_.apply())
-  }
 
   def onObservationError(label: DataLabel, s: String) = {
     pendingObservations.remove(label, true)
@@ -112,5 +79,36 @@ class InMemoryObservationsSource(@Requires statusDB: StatusDatabaseService, @Req
   def doAppend(observation: ObservationBean) {
     val i = index.incrementAndGet()
     observationBeansMap += java.lang.Integer.valueOf(i) -> observation
+  }
+
+  /**
+   * Will be called when when OBS_PREP obs event arrives
+   */
+  def receiveStartObservation(label: DataLabel) {
+    pendingObservations += label -> true
+
+    listener foreach (_.apply())
+  }
+
+  /**
+   * Will be called when OBS_WRITE_DSET_END obs event arrives, and/or? the FITS file has been updated
+   */
+  def receiveEndObservation(label: DataLabel, missingKeywords: Traversable[FitsKeyword], errorKeywords: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
+    pendingObservations.remove(label, true)
+
+    doAppend(new ObservationBean(Successful, Some(new DateTime()), label))
+
+    listener foreach (_.apply())
+  }
+
+  /**
+   * Will be called when an observation end in an error
+   */
+  def receiveObservationError(label: DataLabel, message: String) {
+    pendingObservations.remove(label, true)
+
+    doAppend(new ObservationBean(ObservationError, Some(new DateTime()), label))
+
+    listener foreach (_.apply())
   }
 }

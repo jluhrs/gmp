@@ -148,7 +148,9 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
       o => lastDataLabelProp.setValue(o.getDataLabel())
     }
     processingProp.setValue(observationSource.pending.mkString(", "))
+    statusTable.refreshRowCache()
     statusTable.setContainerDataSource(statusTable.getContainerDataSource)
+    statusTable.setVisibleColumns(columns)
   }
 
   private def buildDataContainer() = {
