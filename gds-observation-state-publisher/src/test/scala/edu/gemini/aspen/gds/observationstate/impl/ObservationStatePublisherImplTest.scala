@@ -21,4 +21,17 @@ class ObservationStatePublisherImplTest extends FunSuite {
     //check that it didn't get called again after unbinding
     verify(consumer, times(1)).receiveStartObservation("testlabel")
   }
+
+  test("publish end observation") {
+    val obsStatePub = new ObservationStatePublisherImpl
+    val consumer = mock(classOf[ObservationStateConsumer])
+    obsStatePub.bindConsumer(consumer)
+    obsStatePub.publishEndObservation("testlabel", Nil, Nil)
+    verify(consumer, times(1)).receiveEndObservation("testlabel", Nil, Nil)
+    obsStatePub.unbindConsumer(consumer)
+    obsStatePub.publishEndObservation("testlabel", Nil, Nil)
+
+    //check that it didn't get called again after unbinding
+    verify(consumer, times(1)).receiveEndObservation("testlabel", Nil, Nil)
+  }
 }
