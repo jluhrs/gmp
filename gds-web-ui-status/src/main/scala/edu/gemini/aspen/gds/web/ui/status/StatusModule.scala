@@ -19,6 +19,7 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
 import java.lang.InterruptedException
 import java.util.concurrent.TimeUnit
 import scala.collection.JavaConversions._
+import com.github.wolfie.refresher.Refresher
 
 class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
   val title: String = "Status"
@@ -90,11 +91,11 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
     topGrid.add(processing)
     topGrid.add(buildLabel("Last DataSet:"))
     topGrid.add(lastDataLabel)
-    val indicator = new ProgressIndicator(0f)
-    topGrid.addComponent(indicator)
+    val refresher = new Refresher
+    topGrid.addComponent(refresher)
 
     // Set polling frequency to 0.5 seconds.
-    indicator.setPollingInterval(500)
+    //indicator.setPollingInterval(500)
 
     accordion.setSizeFull()
     //generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))

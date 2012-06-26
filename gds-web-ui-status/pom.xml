@@ -53,6 +53,10 @@
             <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
             <artifactId>vaadin-lazyquerycontainer</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>refresher</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
