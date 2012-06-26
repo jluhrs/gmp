@@ -37,8 +37,7 @@ trait ObservationsSource {
 @Component
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ObservationsSource], classOf[ObservationStateConsumer]))
-class InMemoryObservationsSource(@Requires statusDB: StatusDatabaseService, @Requires obsState: ObservationStateProvider, @Requires top: Top) extends ObservationsSource with ObservationStateConsumer {
-  val propertySources = new PropertyValuesHelper(statusDB, obsState, top)
+class InMemoryObservationsSource extends ObservationsSource with ObservationStateConsumer {
   var listener:Option[() => Unit] = None
 
   val MAXSIZE = 10000
