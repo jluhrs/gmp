@@ -144,7 +144,7 @@
             <artifactId>vaadin</artifactId>
         </dependency>
 
-        <!-- Unfortunately we need to add in here widgetsets used by modules -->
+        <!-- Unfortunately we need to add in here widgetsets used by other gds-web modules -->
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
             <artifactId>aceeditor</artifactId>
@@ -152,6 +152,10 @@
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
             <artifactId>drawer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+            <artifactId>refresher</artifactId>
         </dependency>
     </dependencies>
 

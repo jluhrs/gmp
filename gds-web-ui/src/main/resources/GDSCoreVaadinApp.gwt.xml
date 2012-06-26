@@ -22,4 +22,7 @@
     <inherits name="org.vaadin.codeeditor.gwt.AceEditorWidgetset" />
 
     <inherits name="org.vaadin.henrik.drawer.widgetset.DrawerApplicationWidgetset" />
+
+    <inherits name="com.github.wolfie.refresher.RefresherApplicationWidgetset" />
+
 </module>
