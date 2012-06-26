@@ -148,6 +148,6 @@ class GDSConfigurationParser extends RegexParsers {
 
 object GDSConfigurationParser {
   //todo: improve internal format, for now we accept anything that doesn't include quotes and does include %
-  def internalFormat = """[^"]*%[^"]*""".r
+  def internalFormat = """([^"]*%[^"]*)|()""".r
 
 }

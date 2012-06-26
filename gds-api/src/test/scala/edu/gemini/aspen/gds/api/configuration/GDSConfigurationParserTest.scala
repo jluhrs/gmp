@@ -16,8 +16,8 @@ import org.junit.runner.RunWith
 class GDSConfigurationParserTest extends FunSuite {
   val text = """GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 "" "Mean airmass for the observation""""
 
-  val good = Array("GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"\" \"Mean airmass for the observation\"",
-    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0    \"\" \"Mean airmass for the observation\"",
+  val good = Array("GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"%20.13G\" \"Mean airmass for the observation\"",
+    "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0    \"Bla: %f\" \"Mean airmass for the observation\"",
     "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0    \"\" \"Mean airmass #for the observation\"", //# in middle of comment
     "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NONE        EPICS       ws:massAirmass	              0    \"\" \"\"", //empty comment
     "      GPI          OBS_END_ACQ      AIRMASS       0    DOUBLE          F            NO#NE        EPICS       ws:massAirmass	              0   \"\"  \"Mean airmass for the observation\"") //#in middle
@@ -29,6 +29,7 @@ class GDSConfigurationParserTest extends FunSuite {
     "GPI OBS_END_ACQ AIRMASS 0 DOUBLE y NONE EPICS ws:massAirmass 0 \"\" \"Mean airmass for the observation\"", //mandatory must be [FfTt]
     "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE MAGIC ws:massAirmass 0 \"\" \"Mean airmass for the observation\"", //unknown subsystem
     "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass -1 \"\" \"Mean airmass for the observation\"", //array index must be positive integer
+    "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"bla\" \"Mean airmass for the observation\"", //format is incorrect
     "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"\" Mean airmass for the observation", //comment must be surrounded in "
     "GPI OBS_END_ACQ AIRMASS 0 DOUBLE F NONE EPICS ws:massAirmass 0 \"\" ", //no comment
     "comment with missing #")
