@@ -866,6 +866,11 @@
                 <artifactId>drawer</artifactId>
                 <version>1.1.10</version>
             </dependency>
+            <dependency>
+                <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                <artifactId>refresher</artifactId>
+                <version>1.1.1</version>
+            </dependency>
 
             <!-- XMLRPC Server dependencies -->
             <dependency>
