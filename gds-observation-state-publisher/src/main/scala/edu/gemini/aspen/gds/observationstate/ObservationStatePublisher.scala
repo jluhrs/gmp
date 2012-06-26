@@ -18,8 +18,9 @@ trait ObservationStatePublisher {
      * Call receiveEndObservation on all registered ObservationStateConsumers
      */
     def publishEndObservation(label: DataLabel, missingKeywords: Traversable[FitsKeyword], errorKeywords: Traversable[(FitsKeyword, CollectionError.CollectionError)]): Unit
+
+    /**
+     * Call receiveObservationError on all registered ObservationStateConsumers
+     */
+    def publishObservationError(label: DataLabel, msg:String): Unit
 }
-
-
-
-

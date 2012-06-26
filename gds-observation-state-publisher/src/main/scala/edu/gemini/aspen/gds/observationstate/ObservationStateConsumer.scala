@@ -17,4 +17,9 @@ trait ObservationStateConsumer {
      * Will be called when OBS_WRITE_DSET_END obs event arrives, and/or? the FITS file has been updated
      */
     def receiveEndObservation(label: DataLabel, missingKeywords: Traversable[FitsKeyword], errorKeywords: Traversable[(FitsKeyword, CollectionError.CollectionError)]): Unit
+
+    /**
+     * Will be called when an observation end in an error
+     */
+    def receiveObservationError(label: DataLabel, message:String): Unit
 }

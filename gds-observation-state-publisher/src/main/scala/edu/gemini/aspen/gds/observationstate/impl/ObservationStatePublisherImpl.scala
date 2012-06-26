@@ -14,27 +14,34 @@ import edu.gemini.aspen.gds.api.fits.FitsKeyword
 @Instantiate
 @Provides(specifications = Array(classOf[ObservationStatePublisher]))
 class ObservationStatePublisherImpl extends ObservationStatePublisher {
-    val registeredConsumers: Set[ObservationStateConsumer] = new HashSet[ObservationStateConsumer] with SynchronizedSet[ObservationStateConsumer]
+  val registeredConsumers: Set[ObservationStateConsumer] = new HashSet[ObservationStateConsumer] with SynchronizedSet[ObservationStateConsumer]
 
-    def publishStartObservation(label: DataLabel) {
-        for (consumer <- registeredConsumers) {
-            consumer.receiveStartObservation(label)
-        }
+  def publishStartObservation(label: DataLabel) {
+    for (consumer <- registeredConsumers) {
+      consumer.receiveStartObservation(label)
     }
+  }
 
-    def publishEndObservation(label: DataLabel, missingKeywords: Traversable[FitsKeyword], errorKeywords: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
-        for (consumer <- registeredConsumers) {
-            consumer.receiveEndObservation(label, missingKeywords, errorKeywords)
-        }
+  def publishEndObservation(label: DataLabel, missingKeywords: Traversable[FitsKeyword], errorKeywords: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
+    for (consumer <- registeredConsumers) {
+      consumer.receiveEndObservation(label, missingKeywords, errorKeywords)
     }
+  }
 
-    @Bind(optional = true, aggregate = true)
-    def bindConsumer(consumer: ObservationStateConsumer) {
-        registeredConsumers += consumer
+  def publishObservationError(label: DataLabel, msg: String) {
+    registeredConsumers foreach {
+      _.receiveObservationError(label, msg)
     }
+  }
 
-    @Unbind(optional = true, aggregate = true)
-    def unbindConsumer(consumer: ObservationStateConsumer) {
-        registeredConsumers -= consumer
-    }
+  @Bind(optional = true, aggregate = true)
+  def bindConsumer(consumer: ObservationStateConsumer) {
+    registeredConsumers += consumer
+  }
+
+  @Unbind(optional = true, aggregate = true)
+  def unbindConsumer(consumer: ObservationStateConsumer) {
+    registeredConsumers -= consumer
+  }
+
 }
