@@ -40,7 +40,7 @@ class ObservationStatePublisherImplTest extends FunSuite {
     val obsStatePub = new ObservationStatePublisherImpl
     val consumer = mock(classOf[ObservationStateConsumer])
     obsStatePub.bindConsumer(consumer)
-    val info = new ObservationInfo("testlabel", ObservationError, errorMsg = "some error")
+    val info = new ObservationInfo("testlabel", ObservationError, errorMsg = Some("some error"))
     obsStatePub.publishObservationError(info)
     verify(consumer, times(1)).receiveObservationError(info)
     obsStatePub.unbindConsumer(consumer)

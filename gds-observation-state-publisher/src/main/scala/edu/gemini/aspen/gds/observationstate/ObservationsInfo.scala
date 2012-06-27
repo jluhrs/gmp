@@ -14,4 +14,4 @@ case object ObservationError extends ObservationStatus
 /**
  * This class is used to report the final state of an observation
  */
-case class ObservationInfo(@BeanProperty val dataLabel: DataLabel, @BeanProperty val result: ObservationStatus, @BeanProperty val timeStamp: DateTime =  new DateTime(), @BeanProperty errorMsg: String = "")
+case class ObservationInfo(@BeanProperty val dataLabel: DataLabel, @BeanProperty val result: ObservationStatus, @BeanProperty writeTime:Option[Long] = None, @BeanProperty val timeStamp: DateTime =  new DateTime(), @BeanProperty errorMsg: Option[String] = None)
