@@ -81,11 +81,11 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
     }
   })
 
-  statusTable.setColumnHeader(statusProperty, "")
+  setColumnTitles()
   statusTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
   statusTable.setColumnWidth(statusProperty, 20)
 
-  val columns = Array[AnyRef]("status", "timeStamp", "dataLabel", "errorMsg", "writeTime")
+  val columns = Array[AnyRef]("status", "timeStamp", "dataLabel", "writeTime", "errorMsg")
 
   val bottomPanel = new Panel("Last " + nLast + " Observations", sizeFull = true) {
     add(statusTable)
@@ -164,7 +164,6 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   }
 
   private def refresh() {
-    println("Refreshed " + observationSource.pending.mkString(", "))
     observationSource.observations.headOption foreach {
       o => lastDataLabelProp.setValue(o.getDataLabel())
     }
@@ -203,10 +202,16 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   /**
    * Define a custom cell style based on the content of the cell */
   private def styleGenerator(itemId: AnyRef, propertyId: AnyRef): String = {
-    STYLES.getOrElse(dataContainer.getItem(itemId).getItemProperty("result").getValue.asInstanceOf[ObservationStatus], "")
+    StatusModule.STYLES.getOrElse(dataContainer.getItem(itemId).getItemProperty("result").getValue.asInstanceOf[ObservationStatus], "")
   }
 
-  val STYLES = Map[ObservationStatus, String](MissingKeywords -> "warn", ObservationError -> "error", ErrorKeywords -> "warn")
+  /**
+   * Define a custom cell style based on the content of the cell */
+  private def setColumnTitles() {
+    StatusModule.COLUMNS foreach {
+      case (c, t) => statusTable.setColumnHeader(c, t)
+    }
+  }
 
 }
 
@@ -218,6 +223,9 @@ protected object StatusModule {
   val defaultTimes = ""
   val defaultMissing = ""
   val defaultErrors = ""
+
+  val STYLES = Map[ObservationStatus, String](MissingKeywords -> "warn", ObservationError -> "error", ErrorKeywords -> "warn")
+  val COLUMNS = Map("status" -> "", "timeStamp" -> "Time ", "dataLabel" -> "Data Label", "errorMsg" -> "Error message", "writeTime" -> "Time to write")
 
   def buildLabel(label: String) = new Label(caption = label, style = "gds-bold")
 
