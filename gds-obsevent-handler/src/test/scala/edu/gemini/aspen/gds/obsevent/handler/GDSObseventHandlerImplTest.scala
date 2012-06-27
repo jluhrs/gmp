@@ -35,7 +35,6 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
   }
 
   test("verify all events") {
-
     for (evt <- ObservationEvent.values()) {
       when(actorsFactory.buildActors(evt, dataLabel)).thenReturn(List[KeywordValueActor]())
 

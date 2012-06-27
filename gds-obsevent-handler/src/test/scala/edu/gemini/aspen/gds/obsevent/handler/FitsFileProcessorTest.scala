@@ -84,15 +84,32 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
     }
   }
 
-  test("write to file with an error") {
+
+  test("read an non-existing file") {
     implicit val LOG = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
     val cv = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 1, None) :: Nil
 
-    fp.updateFITSFile(dataLabel + "nonvalid", cv) match {
+    fp.updateFITSFile(dataLabel + ".nonvalid", cv) match {
       case Right(x) => fail()
-      case Left(x) => // We exect an error
+      case Left(x) => // We expect an error in this case
+    }
+  }
+
+  test("write to a non valid destination") {
+    implicit val LOG = mock[Logger]
+    val propertyHolder = mock[PropertyHolder]
+    when(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")).thenReturn(tempDir)
+    when(propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")).thenReturn("<")
+
+    val fp = new FitsFileProcessor(propertyHolder)
+
+    val cv = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 1, None) :: Nil
+
+    fp.updateFITSFile(dataLabel, cv) match {
+      case Right(x) => fail()
+      case Left(x) => // We expect an error in this case
     }
   }
 

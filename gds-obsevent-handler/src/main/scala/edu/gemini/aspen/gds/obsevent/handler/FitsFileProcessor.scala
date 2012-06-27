@@ -42,9 +42,17 @@ class FitsFileProcessor(propertyHolder: PropertyHolder)(implicit LOG: Logger) {
     val destPath = propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")
 
     try {
-      val fu = new FitsUpdater(new File(srcPath), new File(destPath), dataLabel, headers.toList)
-      fu.updateFitsHeaders()
-      Right("Writing updated FITS file at " + dataLabel.toString + " took " + stopwatch.stop().elapsedMillis() + " [ms]")
+      val srcDir = new File(srcPath, dataLabel.toString)
+      val destDir = new File(destPath)
+      if (!srcDir.exists()) {
+        Left("Source file %s not found".format(srcDir))
+      } else if (!destDir.exists()) {
+        Left("Destination dir %s not found".format(destDir))
+      } else {
+        val fu = new FitsUpdater(new File(srcPath), new File(destPath), dataLabel, headers.toList)
+        fu.updateFitsHeaders()
+        Right("Writing updated FITS file at " + dataLabel.toString + " took " + stopwatch.stop().elapsedMillis() + " [ms]")
+      }
     } catch {
       case ex =>
         LOG.log(Level.SEVERE, ex.getMessage, ex)

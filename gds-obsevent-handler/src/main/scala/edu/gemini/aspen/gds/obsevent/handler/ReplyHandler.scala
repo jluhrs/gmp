@@ -139,10 +139,10 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
           publisher.sendData(GDSEndObservation(dataLabel))
         case Left(errorMsg:String) =>
           LOG.severe(errorMsg)
-          publisher.sendData(GDSObservationError(dataLabel, "Problem writing FITS file"))
+          publisher.sendData(GDSObservationError(dataLabel, errorMsg))
       }
     } catch {
-      case ex: FileNotFoundException => LOG.log(Level.SEVERE, ex.getMessage, ex)
+      case ex: FileNotFoundException => LOG.log(Level.SEVERE, ex.getMessage)
     }
 
     endAcqRequestReply(obsEvent, dataLabel)
