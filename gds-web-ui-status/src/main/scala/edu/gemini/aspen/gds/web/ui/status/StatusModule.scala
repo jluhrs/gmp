@@ -17,8 +17,9 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
 import scala.collection.JavaConversions._
 import com.github.wolfie.refresher.Refresher
 import edu.gemini.aspen.gds.observationstate.ObservationInfo
+import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
 
-class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
+class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   val title: String = "Status"
   val order: Int = 0
   val topGrid = new GridLayout(columns = 2, rows = 3, margin = true, spacing = true)
@@ -46,7 +47,23 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
     sizeFull = true,
     sortAscending = true,
     sortPropertyId = "timeStamp",
-    cellStyleGenerator = styleGenerator)
+    cellStyleGenerator = styleGenerator) {
+
+    override def formatPropertyValue(rowId: AnyRef, colId: AnyRef, property: com.vaadin.data.Property): String = {
+      val v = property.getValue()
+      colId match {
+        case "errorMsg" => v match {
+          case Some(s: String) => s
+          case _ => ""
+        }
+        case "writeTime" => v match {
+          case Some(t: Long) => "%d [ms]".format(t)
+          case _ => ""
+        }
+        case _ => super.formatPropertyValue(rowId, colId, property)
+      }
+    }
+  }
   val statusProperty = "status"
   statusTable.addGeneratedColumn(statusProperty, (itemId: AnyRef, columnId: AnyRef) => {
     val result = dataContainer.getItem(itemId).getItemProperty("result").getValue
@@ -63,7 +80,7 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
   statusTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
   statusTable.setColumnWidth(statusProperty, 20)
 
-  val columns = Array[AnyRef]("status", "timeStamp", "dataLabel", "errorMsg")
+  val columns = Array[AnyRef]("status", "timeStamp", "dataLabel", "errorMsg", "writeTime")
 
   val bottomPanel = new Panel("Last " + nLast + " Observations", sizeFull = true) {
     add(statusTable)
@@ -160,6 +177,7 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
     definition.addProperty("dataLabel", classOf[String], "", true, true)
     definition.addProperty("errorMsg", classOf[String], "", true, true)
+    definition.addProperty("writeTime", classOf[String], "", true, true)
     queryFactory.setQueryDefinition(definition)
 
     new LazyQueryContainer(definition, queryFactory)

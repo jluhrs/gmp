@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import com.google.common.cache.CacheBuilder
 
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gds.observationstate.{ObservationInfo, ObservationStateConsumer}
 import edu.gemini.aspen.giapi.data.DataLabel
 
