@@ -17,7 +17,7 @@ class GDSEventsListener(@Requires registrar: ObservationStateRegistrar) {
   def gdsEvent(event: GDSNotification) {
     event match {
       case s: GDSStartObservation => registrar.startObservation(s.dataLabel)
-      case e: GDSEndObservation => registrar.endObservation(e.dataLabel)
+      case e: GDSEndObservation => registrar.endObservation(e.dataLabel, e.writeTime)
       case t: GDSObservationTimes => registrar.registerTimes(t.dataLabel, t.times)
       case e: GDSObservationError => registrar.registerError(e.dataLabel, e.msg)
       case x => LOG.severe("Arrived unknown event type: " + x)

@@ -34,7 +34,7 @@ class FitsFileProcessor(propertyHolder: PropertyHolder)(implicit LOG: Logger) {
 
   /**
    * Coreographs the process of writing and update fits file sending the required information for book keeping */
-  def updateFITSFile(dataLabel: DataLabel, processedList: List[CollectedValue[_]]): Either[String, String] = {
+  def updateFITSFile(dataLabel: DataLabel, processedList: List[CollectedValue[_]]): Either[String, (String, Long)] = {
     val headers = convertToHeaders(processedList)
 
     val stopwatch = new Stopwatch().start()
@@ -51,7 +51,7 @@ class FitsFileProcessor(propertyHolder: PropertyHolder)(implicit LOG: Logger) {
       } else {
         val fu = new FitsUpdater(new File(srcPath), new File(destPath), dataLabel, headers.toList)
         fu.updateFitsHeaders()
-        Right("Writing updated FITS file at " + dataLabel.toString + " took " + stopwatch.stop().elapsedMillis() + " [ms]")
+        Right(("Writing updated FITS file at " + dataLabel.toString + " took " + stopwatch.stop().elapsedMillis() + " [ms]", stopwatch.elapsedMillis()))
       }
     } catch {
       case ex =>

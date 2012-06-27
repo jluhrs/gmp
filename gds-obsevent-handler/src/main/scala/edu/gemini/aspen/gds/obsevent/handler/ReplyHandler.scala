@@ -133,10 +133,10 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
       val processedList = errorPolicy.applyPolicy(dataLabel, list)
 
       fileProcessor.updateFITSFile(dataLabel, processedList) match {
-        case Right(msg:String) =>
+        case Right((msg:String, writeTime:Long)) =>
           LOG.info(msg)
           publisher.sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable))
-          publisher.sendData(GDSEndObservation(dataLabel))
+          publisher.sendData(GDSEndObservation(dataLabel, writeTime))
         case Left(errorMsg:String) =>
           LOG.severe(errorMsg)
           publisher.sendData(GDSObservationError(dataLabel, errorMsg))

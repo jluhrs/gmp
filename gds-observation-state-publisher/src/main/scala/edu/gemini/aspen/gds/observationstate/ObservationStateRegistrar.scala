@@ -17,7 +17,7 @@ trait ObservationStateRegistrar {
   /**
    * Register the end of an observation(OBS_END_DSET_WRITE received and/or FITS file updated)
    */
-  def endObservation(label: DataLabel): Unit
+  def endObservation(label: DataLabel, writeTime:Long): Unit
 
   /**
    * Register the timing info for processing the different obs events

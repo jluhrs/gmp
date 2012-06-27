@@ -18,6 +18,7 @@ import scala.collection.JavaConversions._
 import com.github.wolfie.refresher.Refresher
 import edu.gemini.aspen.gds.observationstate.ObservationInfo
 import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
+import org.joda.time.DateTime
 
 class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   val title: String = "Status"
@@ -58,6 +59,10 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
         }
         case "writeTime" => v match {
           case Some(t: Long) => "%d [ms]".format(t)
+          case _ => ""
+        }
+        case "timeStamp" => v match {
+          case d:DateTime => d.toString
           case _ => ""
         }
         case _ => super.formatPropertyValue(rowId, colId, property)

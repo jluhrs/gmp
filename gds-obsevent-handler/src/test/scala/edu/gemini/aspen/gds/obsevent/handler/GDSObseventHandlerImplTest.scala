@@ -46,10 +46,10 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
       verify(actorsFactory).buildActors(evt, dataLabel)
     }
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
-    sleep(500)
-    verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
+    sleep(600)
     // use refEq to skip comparing the "times" field
     verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
+    verify(mockPublisher).sendData(refEq(GDSEndObservation(dataLabel, 40L), "writeTime"))
   }
 
   test("with a missing event") {
@@ -61,10 +61,10 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     }
     sleep(300)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
-    verify(mockPublisher, times(0)).sendData(GDSEndObservation(dataLabel))
+    verify(mockPublisher, times(0)).sendData(refEq(GDSEndObservation(dataLabel, 40L), "writeTime"))
     sleep(6500)
-    verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
     verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
+    verify(mockPublisher).sendData(refEq(GDSEndObservation(dataLabel, 200L), "writeTime"))
   }
 
   test("with slow event") {
@@ -77,11 +77,11 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     }
     sleep(300)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
-    verify(mockPublisher, times(0)).sendData(GDSEndObservation(dataLabel))
+    verify(mockPublisher, times(0)).sendData(refEq(GDSEndObservation(dataLabel, 200L), "writeTime"))
     sleep(500)
     observationHandler.onObservationEvent(ObservationEvent.OBS_START_ACQ, dataLabel)
     sleep(1500)
-    verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
+    verify(mockPublisher).sendData(refEq(GDSEndObservation(dataLabel, 200L), "writeTime"))
     verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
   }
 
@@ -96,7 +96,7 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     sleep(300)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
     sleep(1500)
-    verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
+    verify(mockPublisher).sendData(refEq(GDSEndObservation(dataLabel, 200L), "writeTime"))
     verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
   }
 
@@ -113,7 +113,7 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     sleep(500)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
     sleep(500)
-    verify(mockPublisher, times(0)).sendData(GDSEndObservation(dataLabel))
+    verify(mockPublisher, times(0)).sendData(refEq(GDSEndObservation(dataLabel, 200L), "writeTime"))
   }
 
   test("with start transaction and end transaction") {
@@ -130,12 +130,12 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     sleep(500)
     verify(mockPublisher).sendData(GDSStartObservation(dataLabel))
     sleep(500)
-    verify(mockPublisher, times(0)).sendData(GDSEndObservation(dataLabel))
+    verify(mockPublisher, times(0)).sendData(refEq(GDSEndObservation(dataLabel, 200L), "writeTime"))
 
     // Simulate an end obs arriving
     observationHandler.onObservationEvent(ObservationEvent.EXT_END_OBS, dataLabel)
     sleep(500)
-    verify(mockPublisher).sendData(GDSEndObservation(dataLabel))
+    verify(mockPublisher).sendData(refEq(GDSEndObservation(dataLabel, 200L), "writeTime"))
     verify(mockPublisher).sendData(refEq(new GDSObservationTimes(dataLabel, Nil), "times"))
   }
 
@@ -152,7 +152,7 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     sleep(500)
     verify(mockPublisher).sendData(GDSStartObservation(dummyDataLabel))
     sleep(2500)
-    verify(mockPublisher, times(0)).sendData(GDSEndObservation(dummyDataLabel))
+    verify(mockPublisher, times(0)).sendData(refEq(GDSEndObservation(dataLabel, 200L), "writeTime"))
     verify(mockPublisher).sendData(refEq(GDSObservationError(dummyDataLabel, ""), "msg"))
   }
 

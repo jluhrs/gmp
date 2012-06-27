@@ -27,8 +27,8 @@ class GDSEventsListenerTest extends FunSuite with MockitoSugar {
     val registrar = mock[ObservationStateRegistrar]
     val listener = new GDSEventsListener(registrar)
 
-    listener.gdsEvent(GDSEndObservation(dataLabel))
-    verify(registrar).endObservation(dataLabel)
+    listener.gdsEvent(GDSEndObservation(dataLabel, 200L))
+    verify(registrar).endObservation(dataLabel, 200L)
   }
 
   test("register times") {
