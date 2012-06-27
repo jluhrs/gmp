@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.observationstate.impl
 
-import edu.gemini.aspen.gds.observationstate.ObservationStateConsumer
+import edu.gemini.aspen.gds.observationstate.{ObservationError, Successful, ObservationInfo, ObservationStateConsumer}
 import org.mockito.Mockito._
 import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.runner.RunWith
@@ -26,25 +26,27 @@ class ObservationStatePublisherImplTest extends FunSuite {
     val obsStatePub = new ObservationStatePublisherImpl
     val consumer = mock(classOf[ObservationStateConsumer])
     obsStatePub.bindConsumer(consumer)
-    obsStatePub.publishEndObservation("testlabel", Nil, Nil)
-    verify(consumer, times(1)).receiveEndObservation("testlabel", Nil, Nil)
+    val info = new ObservationInfo("testlabel", Successful)
+    obsStatePub.publishEndObservation(info)
+    verify(consumer, times(1)).receiveEndObservation(info)
     obsStatePub.unbindConsumer(consumer)
-    obsStatePub.publishEndObservation("testlabel", Nil, Nil)
+    obsStatePub.publishEndObservation(info)
 
     //check that it didn't get called again after unbinding
-    verify(consumer, times(1)).receiveEndObservation("testlabel", Nil, Nil)
+    verify(consumer, times(1)).receiveEndObservation(info)
   }
 
   test("publish observation error") {
     val obsStatePub = new ObservationStatePublisherImpl
     val consumer = mock(classOf[ObservationStateConsumer])
     obsStatePub.bindConsumer(consumer)
-    obsStatePub.publishObservationError("testlabel", "file not found")
-    verify(consumer, times(1)).receiveObservationError("testlabel", "file not found")
+    val info = new ObservationInfo("testlabel", ObservationError, errorMsg = "some error")
+    obsStatePub.publishObservationError(info)
+    verify(consumer, times(1)).receiveObservationError(info)
     obsStatePub.unbindConsumer(consumer)
-    obsStatePub.publishObservationError("testlabel", "file not found")
+    obsStatePub.publishObservationError(info)
 
     //check that it didn't get called again after unbinding
-    verify(consumer, times(1)).receiveObservationError("testlabel", "file not found")
+    verify(consumer, times(1)).receiveObservationError(info)
   }
 }

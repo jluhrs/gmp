@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.observationstate.impl
 
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectionError
-import edu.gemini.aspen.gds.observationstate.{ObservationStateConsumer, ObservationStatePublisher}
+import edu.gemini.aspen.gds.observationstate.{ObservationInfo, ObservationStateConsumer, ObservationStatePublisher}
 import org.apache.felix.ipojo.annotations._
 import collection.mutable.{SynchronizedSet, HashSet, Set}
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
@@ -22,15 +22,15 @@ class ObservationStatePublisherImpl extends ObservationStatePublisher {
     }
   }
 
-  def publishEndObservation(label: DataLabel, missingKeywords: Traversable[FitsKeyword], errorKeywords: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
-    for (consumer <- registeredConsumers) {
-      consumer.receiveEndObservation(label, missingKeywords, errorKeywords)
+  override def publishEndObservation(observationInfo: ObservationInfo) {
+    registeredConsumers foreach {
+      _.receiveEndObservation(observationInfo)
     }
   }
 
-  def publishObservationError(label: DataLabel, msg: String) {
+  override def publishObservationError(observationInfo: ObservationInfo) {
     registeredConsumers foreach {
-      _.receiveObservationError(label, msg)
+      _.receiveObservationError(observationInfo)
     }
   }
 

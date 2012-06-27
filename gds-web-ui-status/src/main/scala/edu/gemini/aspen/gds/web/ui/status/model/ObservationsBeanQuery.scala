@@ -5,6 +5,7 @@ import java.util.logging.Logger
 import java.lang.UnsupportedOperationException
 import org.vaadin.addons.lazyquerycontainer._
 import scala.collection.JavaConversions._
+import edu.gemini.aspen.gds.observationstate.ObservationInfo
 
 /**
  * Placeholder class needed to let LoggingEventBeanQuery access logSource */
@@ -13,7 +14,7 @@ class ObservationSourceQueryDefinition(val obsSource: ObservationsSource, compos
 /**
  * This class is used by the LazyQueryContainer to read beans representing log values to display on the screen
  * The BeanQuery in this case is read only */
-class ObservationsBeanQuery(queryDefinition0: QueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[ObservationBean](queryDefinition0, queryConfiguration, sortPropertyIds, sortStates) {
+class ObservationsBeanQuery(queryDefinition0: QueryDefinition, queryConfiguration: java.util.Map[String, Object], sortPropertyIds: Array[Object], sortStates: Array[Boolean]) extends AbstractBeanQuery[ObservationInfo](queryDefinition0, queryConfiguration, sortPropertyIds, sortStates) {
   val LOG = Logger.getLogger(this.getClass.getName)
 
   val observationsSource: ObservationSourceQueryDefinition = queryDefinition0 match {
@@ -21,12 +22,11 @@ class ObservationsBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
     case _ => sys.error("Should not happen")
   }
 
-  override def saveBeans(p1: List[ObservationBean], p2: List[ObservationBean], p3: List[ObservationBean]) {
+  override def saveBeans(p1: List[ObservationInfo], p2: List[ObservationInfo], p3: List[ObservationInfo]) {
     throw new UnsupportedOperationException()
   }
 
-  override def loadBeans(startIndex: Int, count: Int):java.util.List[ObservationBean] = {
-    println("load mean")
+  override def loadBeans(startIndex: Int, count: Int):java.util.List[ObservationInfo] = {
     val result = filteredObservations drop (startIndex - 1) take (count)
 
     val sortProperties = sortPropertyIds.headOption.getOrElse("timeStamp").toString

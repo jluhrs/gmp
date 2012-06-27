@@ -7,24 +7,14 @@ import java.util.concurrent.atomic.AtomicInteger
 import com.google.common.cache.CacheBuilder
 
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.gds.web.ui.status.{ObservationError, Successful, PropertyValuesHelper}
-import edu.gemini.aspen.gds.api.Conversions._
-import org.apache.felix.ipojo.handlers.event.Subscriber
 import edu.gemini.aspen.gds.api._
-import edu.gemini.aspen.gds.api.GDSStartObservation
-import edu.gemini.aspen.gds.api.GDSObservationTimes
-import edu.gemini.aspen.gds.api.GDSEndObservation
-import edu.gemini.aspen.giapi.status.StatusDatabaseService
-import edu.gemini.aspen.gds.observationstate.{ObservationStateConsumer, ObservationStateProvider}
-import edu.gemini.aspen.gmp.top.Top
+import edu.gemini.aspen.gds.observationstate.{ObservationInfo, ObservationStateConsumer}
 import edu.gemini.aspen.giapi.data.DataLabel
-import fits.FitsKeyword
-import org.joda.time.DateTime
 
 /**
  * Interface for the OSGiService */
 trait ObservationsSource {
-  def observations: Iterable[ObservationBean]
+  def observations: Iterable[ObservationInfo]
 
   def pending: Iterable[DataLabel]
 
@@ -48,15 +38,15 @@ class InMemoryObservationsSource extends ObservationsSource with ObservationStat
   // We index with an artificial value to avoid collisions with timestamps
   val index = new AtomicInteger(0)
 
-  val observationBeansMap: ConcurrentMap[java.lang.Integer, ObservationBean] = CacheBuilder.newBuilder()
+  val observationBeansMap: ConcurrentMap[java.lang.Integer, ObservationInfo] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
-    .maximumSize(MAXSIZE).build[java.lang.Integer, ObservationBean]().asMap()
+    .maximumSize(MAXSIZE).build[java.lang.Integer, ObservationInfo]().asMap()
 
   val pendingObservations: ConcurrentMap[DataLabel, java.lang.Boolean] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .maximumSize(MAXSIZE).build[DataLabel, java.lang.Boolean]().asMap()
 
-  def observations = observationBeansMap.values.toList.sortBy {_.timeStamp0.getOrElse(new DateTime()).getMillis} reverse
+  def observations = observationBeansMap.values.toList.sortBy {_.timeStamp.getMillis} reverse
 
   def pending =  pendingObservations.keys
 
@@ -67,15 +57,7 @@ class InMemoryObservationsSource extends ObservationsSource with ObservationStat
     listener = Some(f)
   }
 
-
-  def onObservationError(label: DataLabel, s: String) = {
-    pendingObservations.remove(label, true)
-    doAppend(new ObservationBean(ObservationError, Some(new DateTime()), label))
-    listener foreach (_.apply())
-  }
-
-
-  def doAppend(observation: ObservationBean) {
+  def doAppend(observation: ObservationInfo) {
     val i = index.incrementAndGet()
     observationBeansMap += java.lang.Integer.valueOf(i) -> observation
   }
@@ -83,7 +65,7 @@ class InMemoryObservationsSource extends ObservationsSource with ObservationStat
   /**
    * Will be called when when OBS_PREP obs event arrives
    */
-  def receiveStartObservation(label: DataLabel) {
+  override def receiveStartObservation(label: DataLabel) {
     pendingObservations += label -> true
 
     listener foreach (_.apply())
@@ -92,10 +74,10 @@ class InMemoryObservationsSource extends ObservationsSource with ObservationStat
   /**
    * Will be called when OBS_WRITE_DSET_END obs event arrives, and/or? the FITS file has been updated
    */
-  def receiveEndObservation(label: DataLabel, missingKeywords: Traversable[FitsKeyword], errorKeywords: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
-    pendingObservations.remove(label, true)
+  override def receiveEndObservation(observationInfo:ObservationInfo) {
+    pendingObservations.remove(observationInfo.dataLabel, true)
 
-    doAppend(new ObservationBean(Successful, Some(new DateTime()), label))
+    doAppend(observationInfo)
 
     listener foreach (_.apply())
   }
@@ -103,10 +85,10 @@ class InMemoryObservationsSource extends ObservationsSource with ObservationStat
   /**
    * Will be called when an observation end in an error
    */
-  def receiveObservationError(label: DataLabel, message: String) {
-    pendingObservations.remove(label, true)
+  override def receiveObservationError(observationInfo:ObservationInfo) {
+    pendingObservations.remove(observationInfo.dataLabel, true)
 
-    doAppend(new ObservationBean(ObservationError, Some(new DateTime()), label, message))
+    doAppend(observationInfo)
 
     listener foreach (_.apply())
   }

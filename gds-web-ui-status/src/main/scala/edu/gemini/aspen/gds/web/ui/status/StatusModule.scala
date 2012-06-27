@@ -4,22 +4,19 @@ import com.vaadin.Application
 import com.vaadin.ui.{Accordion, Component}
 import com.vaadin.terminal.ThemeResource
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
-import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
-import edu.gemini.aspen.giapi.status.StatusDatabaseService
+import edu.gemini.aspen.gds.observationstate._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin.containers.Panel
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
-import model.{ObservationsSource, InMemoryObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
+import model.{ObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
 import StatusModule._
-import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
 import org.vaadin.addons.lazyquerycontainer.{LazyQueryContainer, BeanQueryFactory}
 import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
-import java.lang.InterruptedException
-import java.util.concurrent.TimeUnit
 import scala.collection.JavaConversions._
 import com.github.wolfie.refresher.Refresher
+import edu.gemini.aspen.gds.observationstate.ObservationInfo
 
 class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
   val title: String = "Status"
@@ -159,7 +156,7 @@ class StatusModule(observationSource:ObservationsSource) extends GDSWebModule {
     val queryFactory = new BeanQueryFactory[ObservationsBeanQuery](classOf[ObservationsBeanQuery])
     val definition = new ObservationSourceQueryDefinition(observationSource, false, 300)
 
-    definition.addProperty("result", classOf[ObservationStatus], Successful, true, true)
+    definition.addProperty("result", classOf[ObservationInfo], Successful, true, true)
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
     definition.addProperty("dataLabel", classOf[String], "", true, true)
     definition.addProperty("errorMsg", classOf[String], "", true, true)
