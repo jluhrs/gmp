@@ -3,6 +3,7 @@ package edu.gemini.aspen.gmp.tcs.model;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
+import edu.gemini.epics.api.ChannelAlarmListener;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
@@ -64,6 +65,16 @@ public class EpicsReaderMock implements EpicsReader {
 
         @Override
         public void unRegisterListener(ChannelListener channelListener) throws CAException {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void registerListener(ChannelAlarmListener channelAlarmListener) throws CAException {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void unRegisterListener(ChannelAlarmListener channelAlarmListener) throws CAException {
             throw new UnsupportedOperationException();
         }
 

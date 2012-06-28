@@ -58,6 +58,10 @@ public interface ReadOnlyChannel<T> {
 
     void unRegisterListener(ChannelListener<T> listener) throws CAException;
 
+    void registerListener(ChannelAlarmListener<T> listener) throws CAException;
+
+    void unRegisterListener(ChannelAlarmListener<T> listener) throws CAException;
+
     /**
      * Indicates whether the channel is valid/connected
      */

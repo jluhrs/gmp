@@ -4,13 +4,17 @@ import com.cosylab.epics.caj.cas.ProcessVariableEventDispatcher;
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.ServerChannel;
-import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.cas.epics.AlarmMemoryProcessVariable;
+import edu.gemini.epics.api.ChannelAlarmListener;
+import edu.gemini.epics.api.ChannelListener;
+import edu.gemini.epics.api.EpicsListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
 import gov.aps.jca.cas.ProcessVariableEventCallback;
-import gov.aps.jca.dbr.*;
+import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.dbr.Severity;
+import gov.aps.jca.dbr.Status;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +28,7 @@ import java.util.Map;
  */
 abstract class AbstractChannel<T> implements ServerChannel<T> {
     private AlarmMemoryProcessVariable pv;
-    private final Map<ChannelListener<T>, ProcessVariableEventCallback> eventCallbacks = new HashMap<ChannelListener<T>, ProcessVariableEventCallback>();
+    private final Map<EpicsListener<T>, ProcessVariableEventCallback> eventCallbacks = new HashMap<EpicsListener<T>, ProcessVariableEventCallback>();
     boolean registered = false;
 
     @Override
@@ -167,6 +171,19 @@ abstract class AbstractChannel<T> implements ServerChannel<T> {
     public void unRegisterListener(ChannelListener<T> listener) {
         ((ProcessVariableEventDispatcher) pv.getEventCallback()).unregisterEventListener(eventCallbacks.get(listener));
         eventCallbacks.remove(listener);
+    }
+
+    @Override
+    public void registerListener(ChannelAlarmListener<T> tChannelAlarmListener) throws CAException {
+        ProcessVariableEventCallback ec = new ProcessVariableEventAlarmListener(this, tChannelAlarmListener);
+        eventCallbacks.put(tChannelAlarmListener, ec);
+        ((ProcessVariableEventDispatcher) pv.getEventCallback()).registerEventListener(ec);
+    }
+
+    @Override
+    public void unRegisterListener(ChannelAlarmListener<T> tChannelAlarmListener) throws CAException {
+        ((ProcessVariableEventDispatcher) pv.getEventCallback()).unregisterEventListener(eventCallbacks.get(tChannelAlarmListener));
+        eventCallbacks.remove(tChannelAlarmListener);
     }
 
     @Override

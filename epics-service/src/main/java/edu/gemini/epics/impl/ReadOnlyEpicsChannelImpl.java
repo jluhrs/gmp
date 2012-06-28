@@ -2,16 +2,17 @@ package edu.gemini.epics.impl;
 
 import com.cosylab.epics.caj.CAJChannel;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
+import edu.gemini.epics.api.ChannelAlarmListener;
 import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.epics.api.DbrUtil;
+import edu.gemini.epics.api.EpicsListener;
 import edu.gemini.shared.util.immutable.Pair;
 import edu.gemini.shared.util.immutable.Tuple2;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Monitor;
 import gov.aps.jca.TimeoutException;
-import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.dbr.DBRType;
+import gov.aps.jca.dbr.*;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 
@@ -27,7 +28,7 @@ import java.util.Map;
  */
 public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T> {
     protected final CAJChannel channel;
-    private final Map<ChannelListener<?>, Tuple2<Monitor, MonitorListener>> listeners = new HashMap<ChannelListener<?>, Tuple2<Monitor, MonitorListener>>();
+    private final Map<EpicsListener<?>, Tuple2<Monitor, MonitorListener>> listeners = new HashMap<EpicsListener<?>, Tuple2<Monitor, MonitorListener>>();
 
     public ReadOnlyEpicsChannelImpl(CAJChannel channel) {
         this.channel = channel;
@@ -71,6 +72,32 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
         if (listeners.containsKey(tChannelListener)) {
             Monitor mon = listeners.get(tChannelListener)._1();
             MonitorListener ml = listeners.get(tChannelListener)._2();
+            mon.removeMonitorListener(ml);
+            if (mon.getMonitorListeners().length == 0) {
+                mon.clear();
+            }
+        }
+    }
+
+    @Override
+    public void registerListener(final ChannelAlarmListener<T> tChannelAlarmListener) throws CAException {
+        MonitorListener ml = new MonitorListener() {
+            @Override
+            public void monitorChanged(MonitorEvent ev) {
+                tChannelAlarmListener.valueChanged(channel.getName(),
+                        (List<T>) DbrUtil.extractValues(ev.getDBR()),
+                        ev.getDBR().isSTS() ? ((STS) ev.getDBR()).getStatus() : Status.NO_ALARM,
+                        ev.getDBR().isSTS() ? ((STS) ev.getDBR()).getSeverity() : Severity.NO_ALARM);
+            }
+        };
+        listeners.put(tChannelAlarmListener, new Pair<Monitor, MonitorListener>(channel.addMonitor(Monitor.VALUE, ml), ml));
+    }
+
+    @Override
+    public void unRegisterListener(ChannelAlarmListener<T> tChannelAlarmListener) throws CAException {
+        if (listeners.containsKey(tChannelAlarmListener)) {
+            Monitor mon = listeners.get(tChannelAlarmListener)._1();
+            MonitorListener ml = listeners.get(tChannelAlarmListener)._2();
             mon.removeMonitorListener(ml);
             if (mon.getMonitorListeners().length == 0) {
                 mon.clear();

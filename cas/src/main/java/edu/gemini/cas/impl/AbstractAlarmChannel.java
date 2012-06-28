@@ -2,6 +2,7 @@ package edu.gemini.cas.impl;
 
 import com.cosylab.epics.caj.cas.util.DefaultServerImpl;
 import edu.gemini.cas.AlarmChannel;
+import edu.gemini.epics.api.ChannelAlarmListener;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.DBR;
@@ -46,6 +47,16 @@ class AbstractAlarmChannel<T> implements AlarmChannel<T> {
     @Override
     public void unRegisterListener(ChannelListener<T> listener) {
         ch.unRegisterListener(listener);
+    }
+
+    @Override
+    public void registerListener(ChannelAlarmListener<T> tChannelAlarmListener) throws CAException {
+        ch.registerListener(tChannelAlarmListener);
+    }
+
+    @Override
+    public void unRegisterListener(ChannelAlarmListener<T> tChannelAlarmListener) throws CAException {
+        ch.unRegisterListener(tChannelAlarmListener);
     }
 
     @Override
