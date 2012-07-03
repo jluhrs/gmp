@@ -121,7 +121,6 @@ public class EpicsToStatusComponent {
                                 }
                             }
                         });
-                        //TODO: implement proper alarm handling, currently an AlarmStatusItem is created, but the alarm is always OFF
                     } else if (item instanceof AlarmChannelType) {
                         ch.registerListener(new ChannelAlarmListener() {
                             @Override

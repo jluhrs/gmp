@@ -2,9 +2,13 @@ package edu.gemini.cas;
 
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
+import edu.gemini.epics.api.ChannelAlarmListener;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.STS;
+import gov.aps.jca.dbr.Severity;
+import gov.aps.jca.dbr.Status;
 import org.junit.Test;
 
 import java.util.List;
@@ -35,6 +39,20 @@ public class ChannelListenerTest {
         }
     }
 
+    private class TestChannelAlarmListener extends CountDownLatch implements ChannelAlarmListener<Double> {
+        final Logger LOG = Logger.getLogger(ChannelListenerTest.class.getName());
+
+        public TestChannelAlarmListener(int latchCount) {
+            super(latchCount);
+        }
+
+        @Override
+        public void valueChanged(String channelName, List<Double> values, Status status, Severity severity) {
+            LOG.info("Received: " + values.get(0) + ", status: " + status + ", severity: " + severity);
+            countDown();
+        }
+    }
+
     @Test
     public void test() throws CAException, InterruptedException, TimeoutException {
 
@@ -46,6 +64,25 @@ public class ChannelListenerTest {
         ch.setValue(2.0);
         assertTrue(chListener.await(1, TimeUnit.SECONDS));
         assertEquals(new Double(2.0), new Double(((double[]) ch.getDBR().getValue())[0]));
+        cas.stop();
+
+    }
+
+    @Test
+    public void testAlarm() throws CAException, InterruptedException, TimeoutException {
+
+        ChannelAccessServerImpl cas = new ChannelAccessServerImpl();
+        cas.start();
+        AlarmChannel<Double> ch = cas.createAlarmChannel("test", 1.0);
+        TestChannelAlarmListener chListener = new TestChannelAlarmListener(1);
+        ch.registerListener(chListener);
+
+        ch.setAlarm(Status.HIGH_ALARM, Severity.MAJOR_ALARM, "test alarm");
+
+        assertTrue(chListener.await(1, TimeUnit.SECONDS));
+        assertEquals(new Double(1.0), new Double(((double[]) ch.getDBR().getValue())[0]));
+        assertEquals(Status.HIGH_ALARM, ((STS) ch.getDBR()).getStatus());
+        assertEquals(Severity.MAJOR_ALARM, ((STS) ch.getDBR()).getSeverity());
         cas.stop();
 
     }
