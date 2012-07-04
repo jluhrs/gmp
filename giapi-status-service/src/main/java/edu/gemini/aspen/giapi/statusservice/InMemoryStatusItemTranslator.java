@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.status.StatusDatabaseService;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.shared.util.immutable.Option;
 import org.apache.felix.ipojo.annotations.*;
 import org.xml.sax.SAXException;
 
@@ -26,9 +25,9 @@ public class InMemoryStatusItemTranslator extends AbstractStatusItemTranslator i
     private final StatusDatabaseService statusDatabase;
 
     public InMemoryStatusItemTranslator(@Requires Top top,
-            @Requires StatusHandlerAggregate aggregate,
-            @Requires StatusDatabaseService statusDatabase,
-            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
+                                        @Requires StatusHandlerAggregate aggregate,
+                                        @Requires StatusDatabaseService statusDatabase,
+                                        @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
         super(top, xmlFileName);
         Preconditions.checkArgument(aggregate != null);
         Preconditions.checkArgument(statusDatabase != null);
@@ -46,7 +45,7 @@ public class InMemoryStatusItemTranslator extends AbstractStatusItemTranslator i
 
     @Override
     protected void initItems() {
-        for(StatusItem<?> item: statusDatabase.getAll()) {
+        for (StatusItem<?> item : statusDatabase.getAll()) {
             update(item);
         }
     }
@@ -60,13 +59,10 @@ public class InMemoryStatusItemTranslator extends AbstractStatusItemTranslator i
 
     @Override
     public <T> void update(StatusItem<T> item) {
-        LOG.info("Status item received: "+item);
-        Option<StatusItem<?>> itemOpt = translate(item);
-
-        //publish translation
-        if (!itemOpt.isEmpty()) {
-            LOG.info("Publishing translated status item: "+itemOpt);
-            aggregate.update(itemOpt.getValue());
+        LOG.info("Status item received: " + item);
+        for (StatusItem<?> newItem : translate(item)) {
+            LOG.info("Publishing translated status item: " + newItem);
+            aggregate.update(newItem);
         }
     }
 }

@@ -33,4 +33,68 @@
             </Map>
         </Maps>
     </Status>
+    <Status originalName="twice" originalType="INT" translatedName="first" translatedType="HEALTH">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status originalName="twice" originalType="INT" translatedName="second" translatedType="HEALTH">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status originalName="original1" originalType="INT" translatedName="target" translatedType="HEALTH">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status originalName="original2" originalType="INT" translatedName="target" translatedType="HEALTH">
+        <Maps>
+            <Map>
+                <from>2</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>

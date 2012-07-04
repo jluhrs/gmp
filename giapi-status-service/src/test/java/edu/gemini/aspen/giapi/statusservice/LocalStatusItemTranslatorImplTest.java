@@ -6,17 +6,16 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.aspen.gmp.top.TopImpl;
-import edu.gemini.shared.util.immutable.None;
-import edu.gemini.shared.util.immutable.Option;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Class LocalStatusItemTranslatorImplTest
@@ -52,10 +51,10 @@ public class LocalStatusItemTranslatorImplTest {
 
         //map translation
         StatusItem good =new HealthStatus(top.buildStatusItemName("new"), Health.GOOD);
-        Option<StatusItem<?>> translated = translator.translate(new BasicStatus<Object>(top.buildStatusItemName("old"), 0));
-        assertNotSame(None.instance(),translated);
-        assertEquals(good.getName(),translated.getValue().getName());
-        assertEquals(good.getValue(),translated.getValue().getValue());
+        List<StatusItem<?>> translated = translator.translate(new BasicStatus<Object>(top.buildStatusItemName("old"), 0));
+        assertEquals(1,translated.size());
+        assertEquals(good.getName(),translated.get(0).getName());
+        assertEquals(good.getValue(),translated.get(0).getValue());
     }
 
     @Test
@@ -67,10 +66,10 @@ public class LocalStatusItemTranslatorImplTest {
 
         //default
         StatusItem bad =new HealthStatus(top.buildStatusItemName("new"), Health.BAD);
-        Option<StatusItem<?>> translated = translator.translate(new BasicStatus<Object>(top.buildStatusItemName("old"), 3));
-        assertNotSame(None.instance(),translated);
-        assertEquals(bad.getName(), translated.getValue().getName());
-        assertEquals(bad.getValue(),translated.getValue().getValue());
+        List<StatusItem<?>> translated = translator.translate(new BasicStatus<Object>(top.buildStatusItemName("old"), 3));
+        assertEquals(1, translated.size());
+        assertEquals(bad.getName(), translated.get(0).getName());
+        assertEquals(bad.getValue(),translated.get(0).getValue());
 
     }
 
@@ -81,7 +80,7 @@ public class LocalStatusItemTranslatorImplTest {
         LocalStatusItemTranslatorImpl translator = new LocalStatusItemTranslatorImpl(top, null, file);
         translator.start();
 
-        assertEquals(None.instance(),translator.translate(new BasicStatus<Object>(top.buildStatusItemName("inexistant translation"), 0)));
+        assertTrue(translator.translate(new BasicStatus<Object>(top.buildStatusItemName("inexistant translation"), 0)).isEmpty());
 
     }
 
@@ -92,7 +91,7 @@ public class LocalStatusItemTranslatorImplTest {
         LocalStatusItemTranslatorImpl translator = new LocalStatusItemTranslatorImpl(top, null, file);
         translator.start();
 
-        assertEquals(None.instance(),translator.translate(new BasicStatus<Object>(top.buildStatusItemName("oldnodefault"), 3)));
+        assertTrue(translator.translate(new BasicStatus<Object>(top.buildStatusItemName("oldnodefault"), 3)).isEmpty());
 
     }
 }

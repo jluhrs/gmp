@@ -1,5 +1,7 @@
 package edu.gemini.aspen.giapi.statusservice;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
@@ -9,9 +11,9 @@ import edu.gemini.aspen.giapi.statusservice.generated.MapType;
 import edu.gemini.aspen.giapi.statusservice.generated.StatusType;
 import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
 import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.shared.util.immutable.ImOption;
 import edu.gemini.shared.util.immutable.None;
 import edu.gemini.shared.util.immutable.Option;
+import edu.gemini.shared.util.immutable.Some;
 import net.jmatrix.eproperties.EProperties;
 import org.xml.sax.SAXException;
 
@@ -19,9 +21,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
@@ -33,10 +33,63 @@ import java.util.logging.Logger;
 abstract public class AbstractStatusItemTranslator implements StatusItemTranslator {
     private static final Logger LOG = Logger.getLogger(AbstractStatusItemTranslator.class.getName());
     private static final String CONF_DIR_PROPERTY = "statusTranslatorFile";
-    private final Map<String, String> names = new HashMap<String, String>();
-    private final Map<String, DataType> types = new HashMap<String, DataType>();
-    private final Map<String, Map<String, String>> translations = new HashMap<String, Map<String, String>>();
-    private final Map<String, String> defaults = new HashMap<String, String>();
+
+
+    /**
+     * This class is needed to allow for translations of one StatusItem mapping to multiple ones,
+     * as well as several different items mapping to a single one.
+     */
+    private static class Key {
+        private String original;
+        private String translated;
+
+        static Key create(String original, String translated) {
+            return new Key(original, translated);
+        }
+
+        private Key(String original, String translated) {
+            this.original = original;
+            this.translated = translated;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Key key = (Key) o;
+
+            if (!original.equals(key.original)) return false;
+            if (!translated.equals(key.translated)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = original.hashCode();
+            result = 31 * result + translated.hashCode();
+            return result;
+        }
+    }
+
+    /**
+     * Maps original StatusItem name to 1 or more translated names
+     */
+    private final Multimap<String, String> names = HashMultimap.create();
+    /**
+     * Maps the name of the translation to its type
+     */
+    private final Map<Key, DataType> types = new HashMap<Key, DataType>();
+    /**
+     * Maps the name of a translation to the actual translations
+     */
+    private final Map<Key, Map<String, String>> translations = new HashMap<Key, Map<String, String>>();
+    /**
+     * Maps the name of a translation to its default values
+     */
+    private final Map<Key, String> defaults = new HashMap<Key, String>();
+
     private final String xmlFileName;
     private final String name = "StatusItemTranslator: " + this;
     protected final Top top;
@@ -85,15 +138,15 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
             for (MapType map : status.getMaps().getMap()) {
                 tr.put(map.getFrom(), map.getTo());
             }
-            translations.put(top.buildStatusItemName(status.getOriginalName()), tr);
+            translations.put(Key.create(top.buildStatusItemName(status.getOriginalName()), top.buildStatusItemName(status.getTranslatedName())), tr);
             if (status.getDefault() != null) {
-                defaults.put(top.buildStatusItemName(status.getOriginalName()), status.getDefault());
+                defaults.put(Key.create(top.buildStatusItemName(status.getOriginalName()), top.buildStatusItemName(status.getTranslatedName())), status.getDefault());
             }
         }
 
         //store types and names
         for (StatusType status : config.getStatuses()) {
-            types.put(top.buildStatusItemName(status.getOriginalName()), status.getTranslatedType());
+            types.put(Key.create(top.buildStatusItemName(status.getOriginalName()), top.buildStatusItemName(status.getTranslatedName())), status.getTranslatedType());
             names.put(top.buildStatusItemName(status.getOriginalName()), top.buildStatusItemName(status.getTranslatedName()));
         }
     }
@@ -155,7 +208,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
      * @param newVal  value of the item
      * @return a Some<StatusItem<?>> if everything is correct, otherwise a None.
      */
-    private Option/*<StatusItem<?>>*/ createStatus(DataType type, String newName, String newVal) {
+    private Option<StatusItem<?>> createStatus(DataType type, String newName, String newVal) {
         StatusItem<?> newItem = null;
         try {
             switch (type) {
@@ -180,8 +233,11 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
         } catch (NullPointerException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
-
-        return ImOption.apply(newItem);
+        if (newItem == null) {
+            return None.instance();
+        } else {
+            return new Some(newItem);
+        }
     }
 
     /**
@@ -191,29 +247,29 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
      * @param <T>
      * @return a Some<StatusItem<?>> with the translated item, or a None if a problem occured
      */
-    protected <T> Option<StatusItem<?>> translate(StatusItem<T> item) {
-        String newName = names.get(item.getName());
+    protected <T> List<StatusItem<?>> translate(StatusItem<T> item) {
+        List<StatusItem<?>> list = new ArrayList<StatusItem<?>>();
+        for (String newName : names.get(item.getName())) {
+            LOG.fine("Translating " + item);
 
-        //if there is no translation for this item, return None
-        if (translations.get(item.getName()) == null) {
-            return None.instance();
-        }
-        LOG.fine("Translating " + item);
+            //translate
+            String newVal = translations.get(Key.create(item.getName(),newName)).get(item.getValue().toString());
 
-        //translate
-        String newVal = translations.get(item.getName()).get(item.getValue().toString());
-
-        //no translation, return default
-        if (newVal == null) {
-            if (defaults.get(item.getName()) != null) {
-                return createStatus(types.get(item.getName()), newName, defaults.get(item.getName()));
+            //no translation, return default
+            if (newVal == null) {
+                if (defaults.get(Key.create(item.getName(),newName)) != null) {
+                    for (StatusItem<?> newItem : createStatus(types.get(Key.create(item.getName(),newName)), newName, defaults.get(Key.create(item.getName(),newName)))) {
+                        list.add(newItem);
+                    }
+                }
             } else {
-                //no default, ignore
-                return None.instance();
+
+                //return proper translation
+                for (StatusItem<?> newItem : createStatus(types.get(Key.create(item.getName(),newName)), newName, newVal)) {
+                    list.add(newItem);
+                }
             }
         }
-
-        //return proper translation
-        return createStatus(types.get(item.getName()), newName, newVal);
+        return list;
     }
 }

@@ -6,7 +6,6 @@ import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.shared.util.immutable.Option;
 import org.apache.felix.ipojo.annotations.*;
 import org.xml.sax.SAXException;
 
@@ -100,12 +99,10 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
 
     @Override
     public <T> void update(StatusItem<T> item) {
-        Option<StatusItem<?>> itemOpt = translate(item);
-
         //publish translation
-        if (!itemOpt.isEmpty()) {
+        for (StatusItem<?> newItem : translate(item)) {
             try {
-                setters.get(item.getName()).setStatusItem(itemOpt.getValue());
+                setters.get(item.getName()).setStatusItem(newItem);
             } catch (JMSException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }

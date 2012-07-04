@@ -22,7 +22,7 @@ public class StatusItemTranslatorConfigurationTest {
     public void testSimpleConfiguration() throws JAXBException, SAXException {
         StatusItemTranslatorConfiguration configuration = new StatusItemTranslatorConfiguration(getClass().getResourceAsStream("status-translator.xml"));
         List<StatusType> statuses = configuration.getStatuses();
-        assertEquals(2, statuses.size());
+        assertEquals(6, statuses.size());
         assertEquals("old", statuses.get(0).getOriginalName());
         assertEquals("new", statuses.get(0).getTranslatedName());
         assertEquals(DataType.INT, statuses.get(0).getOriginalType());

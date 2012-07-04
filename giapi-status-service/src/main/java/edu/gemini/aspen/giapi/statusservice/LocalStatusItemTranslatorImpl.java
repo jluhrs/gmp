@@ -4,7 +4,6 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.shared.util.immutable.Option;
 import org.apache.felix.ipojo.annotations.*;
 import org.xml.sax.SAXException;
 
@@ -50,12 +49,10 @@ public class LocalStatusItemTranslatorImpl extends AbstractStatusItemTranslator 
     @Override
     public <T> void update(StatusItem<T> item) {
         LOG.fine("Status item received: " + item);
-        Option<StatusItem<?>> itemOpt = translate(item);
-
         //publish translation
-        if (!itemOpt.isEmpty()) {
-            LOG.fine("Publishing translated status item: " + itemOpt);
-            aggregate.update(itemOpt.getValue());
+        for (StatusItem<?> newItem : translate(item)) {
+            LOG.fine("Publishing translated status item: " + newItem);
+            aggregate.update(newItem);
         }
     }
 
