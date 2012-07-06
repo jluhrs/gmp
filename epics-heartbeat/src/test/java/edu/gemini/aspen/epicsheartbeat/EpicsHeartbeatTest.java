@@ -1,5 +1,6 @@
 package edu.gemini.aspen.epicsheartbeat;
 
+import edu.gemini.aspen.giapi.util.jms.status.StatusSetterComponent;
 import edu.gemini.aspen.gmp.heartbeat.Heartbeat;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.aspen.gmp.top.TopImpl;
@@ -28,6 +29,7 @@ public class EpicsHeartbeatTest {
     Heartbeat hb;
     ChannelAccessServerImpl cas;
     Top top;
+    StatusSetterComponent ss;
 
     static {
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
@@ -48,8 +50,9 @@ public class EpicsHeartbeatTest {
         cas.start();
 
         top = new TopImpl("gpitest","gpitest");
-
-        hb = new Heartbeat(top);
+        ss = new StatusSetterComponent();
+        ss.startJms(provider);
+        hb = new Heartbeat(top,ss);
         hb.startJms(provider);
 
         hbDist = new HeartbeatDistributor();
@@ -60,6 +63,7 @@ public class EpicsHeartbeatTest {
     @After
     public void tearDown() throws Exception {
         hbDist.stopJms();
+        ss.stopJms();
         hb.stopJms();
         cas.stop();
         broker.stop();
