@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.heartbeat;
 
+import edu.gemini.aspen.giapi.util.jms.status.StatusSetterComponent;
 import edu.gemini.aspen.gmp.heartbeat.jms.JmsHeartbeatConsumer;
 import edu.gemini.aspen.gmp.top.TopImpl;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
@@ -22,8 +23,8 @@ import static org.junit.Assert.assertEquals;
  * @author Nicolas A. Barriga
  *         Date: 12/29/10
  */
-public class HeartbeatTest{
-    private int last=0;
+public class HeartbeatTest {
+    private int last = 0;
 
     private class HeartbeatListener implements MessageListener {
         private final Logger LOG = Logger.getLogger(HeartbeatListener.class.getName());
@@ -44,7 +45,7 @@ public class HeartbeatTest{
         }
     }
 
-    private HeartbeatListener hbl=new HeartbeatListener();
+    private HeartbeatListener hbl = new HeartbeatListener();
 
     @Test
     public void testBasic() throws Exception {
@@ -55,7 +56,9 @@ public class HeartbeatTest{
         broker.setUseJmx(false);
         broker.start();
         JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
-        Heartbeat hb = new Heartbeat(new TopImpl("gpisim","gpisim"));
+        StatusSetterComponent ss = new StatusSetterComponent();
+        ss.startJms(provider);
+        Heartbeat hb = new Heartbeat(new TopImpl("gpisim", "gpisim"), ss);
         JmsHeartbeatConsumer hbc = new JmsHeartbeatConsumer("Test HeartBeat Consumer", hbl);
         hbc.start(provider);
         hb.startJms(provider);
@@ -69,14 +72,15 @@ public class HeartbeatTest{
 
     /**
      * Main method that prints to stdout any heartbeats it receives
+     *
      * @param args
      * @throws Exception
      */
-    public static void main(String args[]) throws Exception{
+    public static void main(String args[]) throws Exception {
         long secs = 3;
-        HeartbeatTest test= new HeartbeatTest();
+        HeartbeatTest test = new HeartbeatTest();
 
-        JmsHeartbeatConsumer hbc = new JmsHeartbeatConsumer("Test HeartBeat Consumer",test.hbl);
+        JmsHeartbeatConsumer hbc = new JmsHeartbeatConsumer("Test HeartBeat Consumer", test.hbl);
         hbc.start(new ActiveMQJmsProvider("tcp://localhost:61616"));
 
         Thread.sleep(secs * 1000);

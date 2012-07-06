@@ -2,7 +2,7 @@ package edu.gemini.aspen.gmp.heartbeat;
 
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
+import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.jms.api.*;
 import org.apache.felix.ipojo.annotations.Component;
@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 public class Heartbeat implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Heartbeat.class.getName());
     private final String heartbeatName = "gmp:heartbeat";
-    private final StatusSetter heartbeatSetter;
+    private final IStatusSetter heartbeatSetter;
     private final Top top;
 
     private class HeartbeatMessageProducer extends BaseMessageProducer implements Runnable {
@@ -48,7 +48,7 @@ public class Heartbeat implements JmsArtifact {
                 m.writeInt(counter++);
                 if (counter >= Integer.MAX_VALUE) counter = 0;
                 _producer.send(m);
-                heartbeatSetter.setStatusItem(new BasicStatus<Integer>(top.buildStatusItemName(heartbeatName),counter));
+                heartbeatSetter.setStatusItem(new BasicStatus<Integer>(top.buildStatusItemName(heartbeatName), counter));
             } catch (JMSException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
@@ -59,18 +59,17 @@ public class Heartbeat implements JmsArtifact {
     private ScheduledThreadPoolExecutor executor;
     private ScheduledFuture future;
 
-    public Heartbeat(@Requires Top top) {
+    public Heartbeat(@Requires Top top, @Requires IStatusSetter heartbeatSetter) {
         LOG.info("Heartbeat Constructor");
-        this.top=top;
+        this.top = top;
         producer = new HeartbeatMessageProducer();
-        heartbeatSetter= new StatusSetter("GMP Heartbeat", top.buildStatusItemName(heartbeatName));
+        this.heartbeatSetter = heartbeatSetter;
     }
 
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
         try {
             producer.startJms(provider);
-            heartbeatSetter.startJms(provider);
         } catch (JMSException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -90,6 +89,5 @@ public class Heartbeat implements JmsArtifact {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         producer.stopJms();
-        heartbeatSetter.stopJms();
     }
 }
