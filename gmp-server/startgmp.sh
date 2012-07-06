@@ -1,2 +1,0 @@
-#!/bin/sh
-pax-run.sh --keepOriginalUrls --vmo="-Dorg.osgi.service.http.port=8888 -Dosgi.shell.telnet.port=15001 -Djini.lus.import.hosts=sbfswgdev01.cl.gemini.edu -Dconf.base=../src/main/etc/conf -Dlogs.dir=logs -Xverify:none -Dorg.osgi.framework.system.packages.extra=sun.misc,sun.security.action,sun.rmi.runtime,edu.gemini.rmi.server -Djini.lus.import.groups=swg-test" --repositories=http://build.cl.gemini.edu:8081/artifactory/repo1@id=main,http://build.cl.gemini.edu:8081/artifactory/ext-releases-local@id=ext scan-composite:file:$PWD/src/main/etc/conf/module.properties
