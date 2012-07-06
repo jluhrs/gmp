@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 public class Heartbeat implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Heartbeat.class.getName());
     private final String heartbeatName = "gmp:heartbeat";
-    private final StatusSetter heartbeatSetter = new StatusSetter("GMP Heartbeat", heartbeatName);
+    private final StatusSetter heartbeatSetter;
     private final Top top;
 
     private class HeartbeatMessageProducer extends BaseMessageProducer implements Runnable {
@@ -63,6 +63,7 @@ public class Heartbeat implements JmsArtifact {
         LOG.info("Heartbeat Constructor");
         this.top=top;
         producer = new HeartbeatMessageProducer();
+        heartbeatSetter= new StatusSetter("GMP Heartbeat", top.buildStatusItemName(heartbeatName));
     }
 
     @Override
