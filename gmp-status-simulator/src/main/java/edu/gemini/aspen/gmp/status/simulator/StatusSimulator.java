@@ -7,6 +7,7 @@ import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.aspen.gmp.status.simulator.generated.StatusType;
 import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactory;
 import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactoryBuilder;
+import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
@@ -22,7 +23,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -38,12 +38,14 @@ public class StatusSimulator implements JmsArtifact {
     private final List<ScheduledFuture<?>> _tasks = Lists.newArrayList();
     private final AtomicBoolean simulating = new AtomicBoolean(false);
 
-    public StatusSimulator(@Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true) String configFile) throws JAXBException, FileNotFoundException {
+    public StatusSimulator(@Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true) String configFile,
+                           @Requires Top top) throws JAXBException, FileNotFoundException {
         LOG.info("Simulating using configuration at " + configFile);
         SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration(new FileInputStream(configFile));
         List<StatusType> statuses = simulatorConfiguration.getStatuses();
         Map<SimulatedStatus, StatusSetter> simulatorsMap = Maps.newHashMap();
         for (StatusType s : statuses) {
+            s.setName(top.buildStatusItemName(s.getName()));
             StatusSetter statusSetter = new StatusSetter("StatusSimulator-" + s.getName(), s.getName());
             SimulatedStatus simulatedStatus = buildSimulatedStatus(s);
             simulatorsMap.put(simulatedStatus, statusSetter);

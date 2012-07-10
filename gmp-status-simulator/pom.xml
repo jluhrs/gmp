@@ -51,6 +51,10 @@
             <artifactId>giapi</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-top</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
         </dependency>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <simulatedstatus>
     <status>
-        <name>test:gpi:ao.strehl</name>
+        <name>gpi:ao.strehl</name>
         <type>double</type>
         <size>10</size>
         <updateRate>100</updateRate>
@@ -12,7 +12,7 @@
         </parameters>
     </status>
     <status>
-        <name>test:gpi:ao.r0</name>
+        <name>gpi:ao.r0</name>
         <type>double</type>
         <size>20</size>
         <updateRate>200</updateRate>
@@ -25,7 +25,7 @@
         </parameters>
     </status>
     <status>
-        <name>test:gpi:aoWfsFilter</name>
+        <name>gpi:aoWfsFilter</name>
         <type>string</type>
         <updateRate>1000</updateRate>
         <mode>enumeration</mode>

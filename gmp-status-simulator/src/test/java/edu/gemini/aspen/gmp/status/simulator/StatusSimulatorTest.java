@@ -1,9 +1,11 @@
 package edu.gemini.aspen.gmp.status.simulator;
 
+import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 
 import javax.jms.*;
 import javax.xml.bind.JAXBException;
@@ -23,19 +25,21 @@ public class StatusSimulatorTest {
     protected MessageConsumer consumer;
     protected BytesMessage bytesMessage;
     private String file;
+    private Top top;
 
     @Before
     public void loadFile() {
         file = StatusSimulator.class.getResource("status-simulator.xml").getFile();
-    }
+        top= mock(Top.class);
+        when(top.buildStatusItemName(Mockito.anyString())).thenReturn("test");}
 
     @Test
     public void testCreation() throws InterruptedException, JAXBException, FileNotFoundException, JMSException {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
-
-        component = new StatusSimulator(file);
+        component = new StatusSimulator(file,top);
         assertNotNull(component);
+        verify(top, times(3)).buildStatusItemName(anyString());
     }
 
     @Test
@@ -43,7 +47,7 @@ public class StatusSimulatorTest {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator(file);
+        component = new StatusSimulator(file, top);
         component.startJms(provider);
 
         TimeUnit.MILLISECONDS.sleep(300);
@@ -56,7 +60,7 @@ public class StatusSimulatorTest {
         provider = mock(JmsProvider.class);
         mockSessionProducerAndConsumer();
 
-        component = new StatusSimulator(file);
+        component = new StatusSimulator(file, top);
         component.startJms(provider);
         TimeUnit.MILLISECONDS.sleep(300);
 

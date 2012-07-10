@@ -23,7 +23,7 @@ public class SimulatorConfigurationTest {
         List<StatusType> statuses = configuration.getStatuses();
         boolean verified = false;
         for (StatusType s:statuses) {
-            if (s.getName().equals("test:gpi:ao.strehl")) {
+            if (s.getName().equals("gpi:ao.strehl")) {
                 assertEquals("random", s.getMode());
                 assertEquals(0, s.getParameters().getMin().intValue());
                 assertEquals(10.0, s.getParameters().getMax().doubleValue(), 0);
@@ -39,7 +39,7 @@ public class SimulatorConfigurationTest {
         List<StatusType> statuses = configuration.getStatuses();
         boolean verified = false;
         for (StatusType s:statuses) {
-            if (s.getName().equals("test:gpi:ao.r0")) {
+            if (s.getName().equals("gpi:ao.r0")) {
                 assertEquals("asymptotic-with-noise", s.getMode());
                 assertEquals(0, s.getParameters().getMin().intValue());
                 assertEquals(10.0, s.getParameters().getMax().doubleValue(), 0);
@@ -57,7 +57,7 @@ public class SimulatorConfigurationTest {
         List<StatusType> statuses = configuration.getStatuses();
         boolean verified = false;
         for (StatusType s:statuses) {
-            if (s.getName().equals("test:gpi:aoWfsFilter")) {
+            if (s.getName().equals("gpi:aoWfsFilter")) {
                 assertEquals("enumeration", s.getMode());
                 assertEquals("Y", s.getEnumeration().getValue().get(0));
                 verified = true;
