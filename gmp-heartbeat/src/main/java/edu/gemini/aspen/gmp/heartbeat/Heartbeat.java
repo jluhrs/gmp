@@ -32,6 +32,7 @@ public class Heartbeat implements JmsArtifact {
     private final IStatusSetter heartbeatSetter;
     private final Top top;
     private final String heartbeatName;
+    private final boolean sendJms;
 
     private class HeartbeatMessageProducer extends BaseMessageProducer implements Runnable {
         public HeartbeatMessageProducer() {
@@ -43,10 +44,12 @@ public class Heartbeat implements JmsArtifact {
         @Override
         public synchronized void run() {
             try {
-                BytesMessage m = _session.createBytesMessage();
-                m.writeInt(counter++);
-                if (counter >= Integer.MAX_VALUE) counter = 0;
-                _producer.send(m);
+                if (sendJms) {
+                    BytesMessage m = _session.createBytesMessage();
+                    m.writeInt(counter++);
+                    if (counter >= Integer.MAX_VALUE) counter = 0;
+                    _producer.send(m);
+                }
                 heartbeatSetter.setStatusItem(new BasicStatus<Integer>(top.buildStatusItemName(heartbeatName), counter));
             } catch (JMSException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
@@ -59,21 +62,25 @@ public class Heartbeat implements JmsArtifact {
     private ScheduledFuture future;
 
     public Heartbeat(@Property(name = "heartbeatName", value = "INVALID", mandatory = true) String heartbeatName,
+                     @Property(name = "sendJms", value = "INVALID", mandatory = true) boolean sendJms,
                      @Requires Top top,
                      @Requires IStatusSetter heartbeatSetter) {
         LOG.info("Heartbeat Constructor");
         this.top = top;
         this.heartbeatName = heartbeatName;
+        this.sendJms = sendJms;
         producer = new HeartbeatMessageProducer();
         this.heartbeatSetter = heartbeatSetter;
     }
 
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
-        try {
-            producer.startJms(provider);
-        } catch (JMSException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        if (sendJms) {
+            try {
+                producer.startJms(provider);
+            } catch (JMSException ex) {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
         }
         executor = new ScheduledThreadPoolExecutor(1);
         executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
@@ -90,6 +97,8 @@ public class Heartbeat implements JmsArtifact {
         } catch (InterruptedException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        producer.stopJms();
+        if (sendJms) {
+            producer.stopJms();
+        }
     }
 }
