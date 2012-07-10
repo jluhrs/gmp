@@ -52,7 +52,7 @@ public class EpicsHeartbeatTest {
         top = new TopImpl("gpitest","gpitest");
         ss = new StatusSetterComponent();
         ss.startJms(provider);
-        hb = new Heartbeat(top,ss);
+        hb = new Heartbeat("gmp:heartbeat",true,top,ss);
         hb.startJms(provider);
 
         hbDist = new HeartbeatDistributor();
