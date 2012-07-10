@@ -58,7 +58,7 @@ public class HeartbeatTest {
         JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
         StatusSetterComponent ss = new StatusSetterComponent();
         ss.startJms(provider);
-        Heartbeat hb = new Heartbeat(new TopImpl("gpisim", "gpisim"), ss);
+        Heartbeat hb = new Heartbeat("gmp:heartbeat", new TopImpl("gpisim", "gpisim"), ss);
         JmsHeartbeatConsumer hbc = new JmsHeartbeatConsumer("Test HeartBeat Consumer", hbl);
         hbc.start(provider);
         hb.startJms(provider);

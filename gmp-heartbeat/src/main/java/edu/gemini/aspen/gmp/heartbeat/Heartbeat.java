@@ -6,7 +6,7 @@ import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.jms.api.*;
 import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
 
@@ -26,17 +26,16 @@ import java.util.logging.Logger;
  *         Date: 12/29/10
  */
 @Component
-@Instantiate
 @Provides
 public class Heartbeat implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Heartbeat.class.getName());
-    private final String heartbeatName = "gmp:heartbeat";
     private final IStatusSetter heartbeatSetter;
     private final Top top;
+    private final String heartbeatName;
 
     private class HeartbeatMessageProducer extends BaseMessageProducer implements Runnable {
         public HeartbeatMessageProducer() {
-            super("Heartbeat", new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC));
+            super(heartbeatName, new DestinationData(JmsKeys.GMP_HEARTBEAT_DESTINATION, DestinationType.TOPIC));
         }
 
         private int counter = 0;
@@ -59,9 +58,12 @@ public class Heartbeat implements JmsArtifact {
     private ScheduledThreadPoolExecutor executor;
     private ScheduledFuture future;
 
-    public Heartbeat(@Requires Top top, @Requires IStatusSetter heartbeatSetter) {
+    public Heartbeat(@Property(name = "heartbeatName", value = "INVALID", mandatory = true) String heartbeatName,
+                     @Requires Top top,
+                     @Requires IStatusSetter heartbeatSetter) {
         LOG.info("Heartbeat Constructor");
         this.top = top;
+        this.heartbeatName = heartbeatName;
         producer = new HeartbeatMessageProducer();
         this.heartbeatSetter = heartbeatSetter;
     }
