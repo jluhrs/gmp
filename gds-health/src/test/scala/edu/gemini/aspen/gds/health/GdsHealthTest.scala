@@ -15,6 +15,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import edu.gemini.aspen.giapi.util.jms.status.StatusSetterComponent
 
 @RunWith(classOf[JUnitRunner])
 class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
@@ -24,6 +25,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   val agg = new StatusHandlerAggregateImpl
   val provider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false&broker.persistent=false")
   val top = mock[Top]
+  var setter: StatusSetterComponent = _
 
   // Remove non actor based sources and add 2 for GDSObseventHandlerImpl and HeaderReceiver
   val expectedUpdates = (KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT).size + 2
@@ -53,18 +55,20 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     provider.startConnection()
     statusservice = new StatusService(agg, "Status Service " + testCounter.incrementAndGet(), ">")
     statusservice.startJms(provider)
+    setter = new StatusSetterComponent
+    setter.startJms(provider)
 
     when(top.buildStatusItemName(anyString)).thenReturn(healthName)
   }
 
   after {
+    setter.stopJms()
     statusservice.stopJms()
   }
 
   test("Bad Health") {
-    val gdsHealth = new GdsHealth(top)
+    val gdsHealth = new GdsHealth(top, setter)
     gdsHealth.validate()
-    gdsHealth.startJms(provider)
 
     val handler = new TestHandler(1)
     agg.bindStatusHandler(handler)
@@ -74,13 +78,11 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)
     agg.unbindStatusHandler(handler)
 
-    gdsHealth.stopJms()
   }
 
   test("Warning Health") {
-    val gdsHealth = new GdsHealth(top)
+    val gdsHealth = new GdsHealth(top, setter)
     gdsHealth.validate()
-    gdsHealth.startJms(provider)
 
     val handler = new TestHandler(2)
     agg.bindStatusHandler(handler)
@@ -90,11 +92,9 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     assertEquals(2, handler.counter.get())
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
     agg.unbindStatusHandler(handler)
-
-    gdsHealth.stopJms()
   }
 
-  def bindAllHealthSources(gdsHealth:GdsHealth) {
+  def bindAllHealthSources(gdsHealth: GdsHealth) {
     gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandlerImpl])
     val fact = mock[KeywordActorsFactory]
     for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT)) {
@@ -107,9 +107,8 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   }
 
   test("Good Health") {
-    val gdsHealth = new GdsHealth(top)
+    val gdsHealth = new GdsHealth(top, setter)
     gdsHealth.validate()
-    gdsHealth.startJms(provider)
 
     val handler = new TestHandler(expectedUpdates + 1)
     agg.bindStatusHandler(handler)
@@ -119,13 +118,11 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.GOOD)
     agg.unbindStatusHandler(handler)
 
-    gdsHealth.stopJms()
   }
 
   test("Unbind some elements to warning") {
-    val gdsHealth = new GdsHealth(top)
+    val gdsHealth = new GdsHealth(top, setter)
     gdsHealth.validate()
-    gdsHealth.startJms(provider)
 
     val startHandler = new TestHandler(expectedUpdates - 1)
     agg.bindStatusHandler(startHandler)
@@ -141,14 +138,11 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
     agg.unbindStatusHandler(handler)
 
-    gdsHealth.stopJms()
-
   }
 
   test("Unbind some elements to bad") {
-    val gdsHealth = new GdsHealth(top)
+    val gdsHealth = new GdsHealth(top, setter)
     gdsHealth.validate()
-    gdsHealth.startJms(provider)
 
     val startHandler = new TestHandler(expectedUpdates)
     agg.bindStatusHandler(startHandler)
@@ -172,7 +166,6 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)
     agg.unbindStatusHandler(handler)
 
-    gdsHealth.stopJms()
   }
 
 }

@@ -4,32 +4,24 @@ import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.status.Health
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter
+import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 
-import scala.actors.Actor._
 import actors.Actor
-import edu.gemini.jms.api.{JmsArtifact, JmsProvider}
 import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 
 case object UpdateHealth
-
-case class StartJms(provider: JmsProvider)
-
-case object StopJms
 
 /**
  * OSGi component providing health information for the GDS
  */
 @Component
 @Instantiate
-@Provides(specifications = Array[Class[_]](classOf[JmsArtifact]))
-class GdsHealth(@Requires top: Top) extends JmsArtifact {
+class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
   implicit private val LOG = Logger.getLogger(this.getClass.getName)
 
   private val healthName = top.buildStatusItemName("gds:health")
-  private val healthSetter = new StatusSetter("GDS Health", healthName)
 
   private val healthState = new HealthState
   private val stateActor = new StateActor()
@@ -37,22 +29,12 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
 
   @Validate
   def validate() {
-    // Required by iPojo
+    updateHealth()
   }
 
   private def updateHealth() {
     LOG.info("Updating Health to " + healthState.getHealth + " on " + healthName)
     stateActor ! UpdateHealth
-  }
-
-  override def startJms(provider: JmsProvider) {
-    LOG.info("Validating GDS Health")
-    stateActor ! StartJms(provider)
-  }
-
-  override def stopJms() {
-    LOG.info("Invalidating GDS Health")
-    stateActor ! StopJms
   }
 
   @Bind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
@@ -98,28 +80,18 @@ class GdsHealth(@Requires top: Top) extends JmsArtifact {
   }
 
   class StateActor extends Actor {
-    private var validated = false
 
     override def act() {
       loop {
         react {
           case UpdateHealth =>
-            if (validated) {
-              healthSetter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
-            }
-          case StartJms(provider) =>
-            healthSetter.startJms(provider)
-            validated = true
-            self ! UpdateHealth
-          case StopJms =>
-            validated = false
-            healthSetter.stopJms()
+            setter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
         }
       }
     }
   }
 
-  private class HealthState(implicit val LOG:Logger) {
+  private class HealthState(implicit val LOG: Logger) {
 
     private val actors = new Array[Boolean](6) //Booleans are initialized to false
 
