@@ -27,11 +27,15 @@ public class StatusSetter extends BaseMessageProducer implements IStatusSetter {
     @Override
     public void setStatusItem(StatusItem statusItem) throws JMSException {
 
-        //request the value
-        Message m = MessageBuilder.buildStatusItemMessage(_session, statusItem);
+        if (isConnected()) {
+            //request the value
+            Message m = MessageBuilder.buildStatusItemMessage(_session, statusItem);
 
-        //sendStatusItem the message
-        _producer.send(m);
+            //sendStatusItem the message
+            _producer.send(m);
+        } else {
+            LOG.warning("Trying to send a StatusItem update before starting Jms. This item will be lost: " + statusItem);
+        }
 
     }
 
