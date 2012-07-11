@@ -44,10 +44,10 @@ public class Heartbeat implements JmsArtifact {
         @Override
         public synchronized void run() {
             try {
+                if (++counter >= Integer.MAX_VALUE) counter = 0;
                 if (sendJms) {
                     BytesMessage m = _session.createBytesMessage();
-                    m.writeInt(counter++);
-                    if (counter >= Integer.MAX_VALUE) counter = 0;
+                    m.writeInt(counter);
                     _producer.send(m);
                 }
                 heartbeatSetter.setStatusItem(new BasicStatus<Integer>(top.buildStatusItemName(heartbeatName), counter));
