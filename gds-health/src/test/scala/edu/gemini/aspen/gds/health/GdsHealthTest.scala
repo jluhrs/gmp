@@ -20,6 +20,9 @@ import edu.gemini.aspen.giapi.util.jms.status.StatusSetterComponent
 @RunWith(classOf[JUnitRunner])
 class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   val healthName = "gpitest:gds:health"
+  val origHealthName = "gds:health"
+  val healthMessageName = "gpitest:gds:health:message"
+  val origHealthMessageName = "gds:health:message"
   val testCounter = new AtomicInteger(0)
 
   val agg = new StatusHandlerAggregateImpl
@@ -37,16 +40,19 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
     val counter = new AtomicInteger(0)
     val latch = new CountDownLatch(retries)
-    var lastStatusItem: StatusItem[_] = _
+    var lastHealthStatusItem: StatusItem[_] = _
 
     override def update[T](item: StatusItem[T]) {
-      lastStatusItem = item
-      counter.incrementAndGet()
-      latch.countDown()
+      if (item.getName.equals(healthName)) {
+        lastHealthStatusItem = item
+
+        counter.incrementAndGet()
+        latch.countDown()
+      }
     }
 
     def waitForCompletion() {
-      assertTrue(latch.await(10, TimeUnit.SECONDS))
+      assertTrue(latch.await(5, TimeUnit.SECONDS))
     }
 
   }
@@ -58,7 +64,8 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     setter = new StatusSetterComponent
     setter.startJms(provider)
 
-    when(top.buildStatusItemName(anyString)).thenReturn(healthName)
+    when(top.buildStatusItemName(same(origHealthName))).thenReturn(healthName)
+    when(top.buildStatusItemName(same(origHealthMessageName))).thenReturn(healthMessageName)
   }
 
   after {
@@ -75,7 +82,8 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
     handler.waitForCompletion()
     assertEquals(1, handler.counter.get())
-    assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)
+    assertEquals(healthName, handler.lastHealthStatusItem.getName)
+    assertEquals(Health.BAD, handler.lastHealthStatusItem.getValue)
     agg.unbindStatusHandler(handler)
 
   }
@@ -90,7 +98,8 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandlerImpl])
     handler.waitForCompletion()
     assertEquals(2, handler.counter.get())
-    assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
+    assertEquals(healthName, handler.lastHealthStatusItem.getName)
+    assertEquals(Health.WARNING, handler.lastHealthStatusItem.getValue)
     agg.unbindStatusHandler(handler)
   }
 
@@ -115,7 +124,8 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
     bindAllHealthSources(gdsHealth)
     handler.waitForCompletion()
-    assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.GOOD)
+    assertEquals(healthName, handler.lastHealthStatusItem.getName)
+    assertEquals(Health.GOOD, handler.lastHealthStatusItem.getValue)
     agg.unbindStatusHandler(handler)
 
   }
@@ -135,7 +145,8 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
     gdsHealth.unbindHeaderReceiver()
     handler.waitForCompletion()
-    assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.WARNING)
+    assertEquals(healthName, handler.lastHealthStatusItem.getName)
+    assertEquals(Health.WARNING, handler.lastHealthStatusItem.getValue)
     agg.unbindStatusHandler(handler)
 
   }
@@ -163,7 +174,8 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     gdsHealth.unbindGDSObseventHandler(mock[GDSObseventHandlerImpl])
     handler.waitForCompletion()
     assertEquals(1, handler.counter.get())
-    assertTrue(handler.lastStatusItem.getName == healthName && handler.lastStatusItem.getValue == Health.BAD)
+    assertEquals(healthName, handler.lastHealthStatusItem.getName)
+    assertEquals(Health.BAD, handler.lastHealthStatusItem.getValue)
     agg.unbindStatusHandler(handler)
 
   }

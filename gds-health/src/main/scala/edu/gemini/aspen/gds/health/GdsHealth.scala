@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.health
 
 import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
-import edu.gemini.aspen.giapi.status.impl.HealthStatus
+import edu.gemini.aspen.giapi.status.impl.{BasicStatus, HealthStatus}
 import edu.gemini.aspen.giapi.status.Health
 import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
@@ -22,6 +22,7 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
   implicit private val LOG = Logger.getLogger(this.getClass.getName)
 
   private val healthName = top.buildStatusItemName("gds:health")
+  private val healthMessageName = top.buildStatusItemName("gds:health:message")
 
   private val healthState = new HealthState
   private val stateActor = new StateActor()
@@ -86,6 +87,8 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
         react {
           case UpdateHealth =>
             setter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
+            setter.setStatusItem(new BasicStatus[String](healthMessageName, healthState.getMessage))
+            LOG.fine(healthState.getMessage)
         }
       }
     }
@@ -129,10 +132,6 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
     }
 
     def getHealth = {
-      val actorsStr = actors.zipWithIndex.map {
-        case (a, i) => "%s -> %b".format(KeywordSource(i), a)
-      }
-      LOG.fine("HeaderReceiver: " + headerRec + ", ObservationEventHandler: " + obsEvtHndl + ", Actor factories: " + actorsStr.mkString(", "))
       if (obsEvtHndl) {
         if (actors.reduceLeft({
           _ && _
@@ -143,6 +142,22 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
         }
       } else {
         Health.BAD
+      }
+    }
+
+    def getMessage = {
+      getHealth match {
+        case Health.GOOD => ""
+        case _ => "Missing components: " +
+          (if (!headerRec) "HeaderReceiver, " else "") +
+          (if (!obsEvtHndl) "ObservationEventHandler, " else "") +
+          (actors.indices collect {
+            case x if actors(x) == false => KeywordSource(x).toString
+          } reduceLeftOption ({
+            _ + ", " + _
+          }) map {
+            case x => "Actor factories: " + x
+          } getOrElse "")
       }
     }
   }
