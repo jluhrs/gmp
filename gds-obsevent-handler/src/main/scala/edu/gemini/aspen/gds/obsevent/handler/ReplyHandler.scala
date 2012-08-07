@@ -136,7 +136,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
         case Right((msg:String, writeTime:Long)) =>
           LOG.info(msg)
           publisher.sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable))
-          publisher.sendData(GDSEndObservation(dataLabel, writeTime))
+          publisher.sendData(GDSEndObservation(dataLabel, writeTime, list))
         case Left(errorMsg:String) =>
           LOG.severe(errorMsg)
           publisher.sendData(GDSObservationError(dataLabel, errorMsg))

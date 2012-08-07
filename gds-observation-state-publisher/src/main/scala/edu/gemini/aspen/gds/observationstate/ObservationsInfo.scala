@@ -3,6 +3,7 @@ package edu.gemini.aspen.gds.observationstate
 import reflect.BeanProperty
 import org.joda.time.DateTime
 import edu.gemini.aspen.giapi.data.DataLabel
+import edu.gemini.aspen.gds.api.CollectedValue
 
 sealed trait ObservationStatus
 case object Successful extends ObservationStatus
@@ -14,4 +15,4 @@ case object ObservationError extends ObservationStatus
 /**
  * This class is used to report the final state of an observation
  */
-case class ObservationInfo(@BeanProperty val dataLabel: DataLabel, @BeanProperty val result: ObservationStatus, @BeanProperty writeTime:Option[Long] = None, @BeanProperty val timeStamp: DateTime =  new DateTime(), @BeanProperty errorMsg: Option[String] = None)
+case class ObservationInfo(@BeanProperty val dataLabel: DataLabel, @BeanProperty val result: ObservationStatus, @BeanProperty writeTime:Option[Long] = None, @BeanProperty val timeStamp: DateTime =  new DateTime(), @BeanProperty collectedValues: Traversable[CollectedValue[_]] = Traversable.empty, @BeanProperty errorMsg: Option[String] = None)

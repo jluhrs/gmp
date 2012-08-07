@@ -23,7 +23,7 @@ class ObservationStateImplTest {
     assertEquals(obsState.getObservationsInProgress.size, 1)
 
     obsState.startObservation("label2")
-    obsState.endObservation("label2", 200L)
+    obsState.endObservation("label2", 200L, Nil)
     assertEquals(new DataLabel("label1"), obsState.getObservationsInProgress.head)
     assertEquals(obsState.getObservationsInProgress.size, 1)
   }
@@ -33,10 +33,10 @@ class ObservationStateImplTest {
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
     obsState.startObservation("label1")
     obsState.startObservation("label2")
-    obsState.endObservation("label2", 200L)
+    obsState.endObservation("label2", 200L, Nil)
     assertEquals(Some(new DataLabel("label2")), obsState.getLastDataLabel)
 
-    obsState.endObservation("label1", 200L)
+    obsState.endObservation("label1", 200L, Nil)
     assertEquals(Some(new DataLabel("label2")), obsState.getLastDataLabel)
   }
 
@@ -45,14 +45,14 @@ class ObservationStateImplTest {
     val obsState: ObservationStateImpl = new ObservationStateImpl(mock(classOf[ObservationStatePublisher]))
     obsState.startObservation("label1")
     obsState.startObservation("label2")
-    obsState.endObservation("label2", 200L)
+    obsState.endObservation("label2", 200L, Nil)
     assertEquals(new DataLabel("label2") :: new DataLabel("label1") :: Nil, obsState.getLastDataLabel(2))
 
-    obsState.endObservation("label1", 200L)
+    obsState.endObservation("label1", 200L, Nil)
     assertEquals(new DataLabel("label2") :: new DataLabel("label1") :: Nil, obsState.getLastDataLabel(2))
 
     obsState.startObservation("label3")
-    obsState.endObservation("label3", 200L)
+    obsState.endObservation("label3", 200L, Nil)
     assertEquals(new DataLabel("label3") :: new DataLabel("label2") :: Nil, obsState.getLastDataLabel(2))
   }
 

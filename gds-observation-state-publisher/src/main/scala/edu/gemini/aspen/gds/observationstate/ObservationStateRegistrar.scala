@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.observationstate
 
 import org.scala_tools.time.Imports._
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.api.CollectionError
+import edu.gemini.aspen.gds.api.{CollectedValue, CollectionError}
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 /**
@@ -17,7 +17,7 @@ trait ObservationStateRegistrar {
   /**
    * Register the end of an observation(OBS_END_DSET_WRITE received and/or FITS file updated)
    */
-  def endObservation(label: DataLabel, writeTime:Long): Unit
+  def endObservation(label: DataLabel, writeTime: Long, collectedValues: Traversable[CollectedValue[_]]): Unit
 
   /**
    * Register the timing info for processing the different obs events

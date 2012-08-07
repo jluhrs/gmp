@@ -6,7 +6,7 @@ import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.observationstate._
 import java.util.concurrent.TimeUnit._
 import scala.collection.JavaConversions._
-import edu.gemini.aspen.gds.api.CollectionError
+import edu.gemini.aspen.gds.api.{CollectedValue, CollectionError}
 import collection.mutable.{SynchronizedSet, HashSet, Set, ConcurrentMap}
 import java.util.Date
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
@@ -59,10 +59,10 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     obsInfoMap.getOrElseUpdate(label, new ObservationState).times ++= times
   }
 
-  override def endObservation(label: DataLabel, writeTime:Long) {
+  override def endObservation(label: DataLabel, writeTime:Long, collectedValues: Traversable[CollectedValue[_]]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationState).ended = true
     //obsStatePubl.publishEndObservation(label, getMissingKeywords(label), getKeywordsInError(label))
-    obsStatePubl.publishEndObservation(new ObservationInfo(label, Successful, writeTime = Some(writeTime)))
+    obsStatePubl.publishEndObservation(new ObservationInfo(label, Successful, writeTime = Some(writeTime), collectedValues = collectedValues))
   }
 
   override def startObservation(label: DataLabel) {
