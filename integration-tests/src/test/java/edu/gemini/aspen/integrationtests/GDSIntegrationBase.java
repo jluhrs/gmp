@@ -42,6 +42,12 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         removeTestFile(INITIAL_FITS_DIR + INITIAL_FITS_FILE);
     }
 
+    @Before
+    public void createDirs() {
+        new File(INITIAL_FITS_DIR).mkdirs();
+        new File(FINAL_FITS_DIR).mkdirs();
+    }
+
     @Configuration
     public static Option[] gdsBundles() {
         return options(
