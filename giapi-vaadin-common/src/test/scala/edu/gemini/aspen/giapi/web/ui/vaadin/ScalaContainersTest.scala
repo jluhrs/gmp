@@ -24,4 +24,13 @@ class ScalaContainersTest extends FunSuite {
     assertFalse(w.isModal)
   }
 
+  test("horizontal split construction") {
+    val hs = new HorizontalSplitPanel()
+    assertTrue(hs.getComponents().isEmpty)
+  }
+
+  test("vertical split construction") {
+    val vs = new VerticalSplitPanel()
+    assertTrue(vs.getComponents().isEmpty)
+  }
 }
