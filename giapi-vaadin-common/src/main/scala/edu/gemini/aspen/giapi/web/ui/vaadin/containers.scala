@@ -63,12 +63,13 @@ class Window(caption: String = null, width: String = null, height: String = null
 
   def getComponents(): TraversableOnce[Component] = getComponentIterator.asScala.toSeq
 }
-class HorizontalSplitPanel(width: String = 100 percent, height: String = 100 percent, caption: String = null, style: String = null)
+class HorizontalSplitPanel(width: String = 100 percent, height: String = 100 percent, caption: String = null, style: String = null, sizeFull:Boolean = true)
   extends com.vaadin.ui.HorizontalSplitPanel() {
   setWidth(width)
   setHeight(height)
   setCaption(caption)
   setStyleName(style)
+  if (sizeFull) setSizeFull()
 
   def add[C <: com.vaadin.ui.Component](component: C = null): C = {
     addComponent(component)
@@ -78,12 +79,13 @@ class HorizontalSplitPanel(width: String = 100 percent, height: String = 100 per
   def getComponents(): TraversableOnce[Component] = getComponentIterator.asScala.toSeq
 }
 
-class VerticalSplitPanel(width: String = 100 percent, height: String = 100 percent, caption: String = null, style: String = null)
+class VerticalSplitPanel(width: String = 100 percent, height: String = 100 percent, caption: String = null, style: String = null, sizeFull:Boolean = true)
   extends com.vaadin.ui.VerticalSplitPanel() {
   setWidth(width)
   setHeight(height)
   setCaption(caption)
   setStyleName(style)
+  if (sizeFull) setSizeFull()
 
   def add[C <: com.vaadin.ui.Component](component: C = null): C = {
     addComponent(component)
