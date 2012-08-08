@@ -61,7 +61,6 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def endObservation(label: DataLabel, writeTime:Long, collectedValues: Traversable[CollectedValue[_]]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationState).ended = true
-    //obsStatePubl.publishEndObservation(label, getMissingKeywords(label), getKeywordsInError(label))
     obsStatePubl.publishEndObservation(new ObservationInfo(label, Successful, writeTime = Some(writeTime), collectedValues = collectedValues))
   }
 
