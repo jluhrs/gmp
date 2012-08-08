@@ -1,46 +1,58 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import com.vaadin.Application
-import com.vaadin.ui.{Accordion, Component}
-import com.vaadin.terminal.ThemeResource
+import com.vaadin.ui.Component
+import com.vaadin.terminal.{Sizeable, ThemeResource}
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModule
 import edu.gemini.aspen.gds.observationstate._
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
-import edu.gemini.aspen.giapi.web.ui.vaadin.containers.Panel
+import edu.gemini.aspen.giapi.web.ui.vaadin.containers.{VerticalSplitPanel, HorizontalSplitPanel, Panel}
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
 import model.{ObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
 import StatusModule._
-import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
+import edu.gemini.aspen.giapi.web.ui.vaadin.data.{Container, Property}
 import org.vaadin.addons.lazyquerycontainer.{LazyQueryContainer, BeanQueryFactory}
 import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
 import scala.collection.JavaConversions._
 import com.github.wolfie.refresher.Refresher
 import edu.gemini.aspen.gds.observationstate.ObservationInfo
-import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
 import org.joda.time.DateTime
+import com.vaadin.data.util.IndexedContainer
+import edu.gemini.aspen.gds.api.{CollectionError, ErrorCollectedValue, CollectedValue}
 
 class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   val title: String = "Status"
   val order: Int = 0
-  val topGrid = new GridLayout(columns = 2, rows = 3, margin = true, spacing = true)
   val nLast = 10
-  val accordion = new Accordion()
-
-  observationSource.registerListener(() => {
-    refresh()
-  })
 
   //properties
   val statusProp = Property(defaultStatus)
   val processingProp = Property(defaultProcessing)
   val lastDataLabelProp = Property(defaultLastDataLabel)
+  val statusProperty = "status"
 
   //labels
   val status = new Label(style = "gds-green", property = statusProp)
   val processing = new Label(property = processingProp)
   val lastDataLabel = new Label(property = lastDataLabelProp)
 
+  // Grid for the elements on the top of the page
+  val topGrid = new GridLayout(columns = 2, rows = 3, margin = true, spacing = true) {
+    setSizeFull()
+    setColumnExpandRatio(0, 1.0f)
+    setColumnExpandRatio(1, 3.0f)
+
+    add(buildLabel("Current Health:"))
+    add(status)
+    add(buildLabel("DataSets in Process:"))
+    add(processing)
+    add(buildLabel("Last DataSet:"))
+    add(lastDataLabel)
+    addComponent(new Refresher)
+  }
+
+  // Observations table
   val dataContainer = buildDataContainer()
   val statusTable = new Table(dataSource = dataContainer,
     selectable = true,
@@ -69,7 +81,7 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
       }
     }
   }
-  val statusProperty = "status"
+  // Generated column for the status icon
   statusTable.addGeneratedColumn(statusProperty, (itemId: AnyRef, columnId: AnyRef) => {
     val result = dataContainer.getItem(itemId).getItemProperty("result").getValue
     result match {
@@ -84,82 +96,65 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   setColumnTitles()
   statusTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
   statusTable.setColumnWidth(statusProperty, 20)
+  statusTable.setColumnWidth("keyword", 200)
 
-  val columns = Array[AnyRef]("status", "timeStamp", "dataLabel", "writeTime", "errorMsg")
+  val keywordsTable = new Table(sizeFull = true, style = "logs",
+    cellStyleGenerator = keywordsStyleGenerator)
+  keywordsTable.addContainerProperty("status", classOf[java.lang.String], "")
+  keywordsTable.addContainerProperty("keyword", classOf[java.lang.String], "")
+  keywordsTable.addContainerProperty("value", classOf[java.lang.String], "")
+  keywordsTable.addGeneratedColumn(statusProperty, (itemId: AnyRef, columnId: AnyRef) => {
+    val result = keywordsTable.getItem(itemId).getItemProperty("cv").getValue
+    result match {
+      case x:ErrorCollectedValue => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/failed.png"))
+      case x => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../runo/icons/16/ok.png"))
+    }
+  })
+  keywordsTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
+  keywordsTable.setColumnWidth(statusProperty, 20)
 
-  val bottomPanel = new Panel("Last " + nLast + " Observations", sizeFull = true) {
-    add(statusTable)
-    add(accordion)
+  keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS)
+
+  def displayKeywords(itemId: AnyRef) = {
+    statusTable.getItem(itemId).getItemProperty("collectedValues").getValue match {
+      case l: List[CollectedValue[_]] => val items = l.zipWithIndex.map {
+        case (c, i) => (i, Seq("cv" -> c, "keyword" -> c.keyword.key, "value" -> c.value))
+      }
+      keywordsTable.setContainerDataSource(Container(items:_*))
+      keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS)
+      case x =>
+    }
+  }
+
+  statusTable.addItemClickListener(e => {
+    displayKeywords(e.getItemId)
+  })
+
+  val bottomPanel = new Panel(sizeFull = true) {
+    add(new VerticalLayout(caption="Observations", sizeFull = true) {
+      add(statusTable)
+    })
+    add(new VerticalLayout(caption="Keywords", sizeFull = true) {
+      add(keywordsTable)
+    })
   }
 
   case class Entry(dataLabel: String = "", times: String = "", missing: String = "", errors: String = "")
 
+  /*val bottomPanel = new Panel("Last " + nLast + " Observations", height = "300px") {
+    add(horizontalSplitPanel)
+  }*/
+
   override def buildTabContent(app: Application): Component = {
-    /*statusProp.setValue(propertySources.getStatus)
-    processingProp.setValue(propertySources.getProcessing)
-    lastDataLabelProp.setValue(propertySources.getLastDataLabel)*/
-
-    topGrid.setSizeFull()
-    topGrid.setColumnExpandRatio(0, 1.0f)
-    topGrid.setColumnExpandRatio(1, 3.0f)
-
-    topGrid.add(buildLabel("Current Health:"))
-    topGrid.add(status)
-    topGrid.add(buildLabel("DataSets in Process:"))
-    topGrid.add(processing)
-    topGrid.add(buildLabel("Last DataSet:"))
-    topGrid.add(lastDataLabel)
-    val refresher = new Refresher
-    topGrid.addComponent(refresher)
-
-    // Set polling frequency to 0.5 seconds.
-    //indicator.setPollingInterval(500)
-
-    accordion.setSizeFull()
-    //generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))
-
     refresh()
 
-    new Panel(sizeFull = true) {
-      add(topGrid)
-      add(bottomPanel)
+    new VerticalLayout(sizeFull = true) {
+      add(topGrid, ratio = 0.2f)
+      add(bottomPanel, ratio =1.0f)
     }
-  }
-
-  private def generateAccordion(app: Application, lastEntries: List[Entry]) {
-    for (entry: Entry <- lastEntries) {
-      val grid = new GridLayout(columns = 2, rows = 3, margin = true, spacing = true) {
-        setSizeFull()
-        setColumnExpandRatio(0, 1.0f)
-        setColumnExpandRatio(1, 3.0f)
-        add(buildLabel("Time to update FITS"))
-        add(new Label(entry.times))
-        if (entry.missing.length() > 0) {
-          add(buildLabel("Missing Keywords"))
-          add(new Label(entry.missing))
-        }
-        if (entry.errors.length() > 0) {
-          add(buildLabel("Found errors collecting Keywords:"))
-          add(new Label(entry.errors))
-        }
-      }
-      /*val resource = if (propertySources.isInError(entry.dataLabel).isDefined) {
-        new ThemeResource("../gds/failed.png")
-      } else {
-        new ThemeResource("../runo/icons/16/ok.png")
-      }*/
-      //accordion.addTab(grid, entry.dataLabel, resource)
-    }
-    accordion.setVisible(accordion.getComponentCount != 0)
   }
 
   override def refresh(app: Application) {
-    /*statusProp.setValue(propertySources.getStatus)
-    status.setStyleName(propertySources.getStatusStyle)
-    processingProp.setValue(propertySources.getProcessing)
-
-    accordion.removeAllComponents()
-    generateAccordion(app, getLastEntries(propertySources.getLastDataLabels(nLast)))*/
     refresh()
   }
 
@@ -170,7 +165,7 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
     processingProp.setValue(observationSource.pending.mkString(", "))
     statusTable.refreshRowCache()
     statusTable.setContainerDataSource(statusTable.getContainerDataSource)
-    statusTable.setVisibleColumns(columns)
+    statusTable.setVisibleColumns(StatusModule.OBSERVATION_COLUMNS)
   }
 
   private def buildDataContainer() = {
@@ -187,31 +182,32 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
     new LazyQueryContainer(definition, queryFactory)
   }
 
-  private def getLastEntries(dataLabels: Traversable[String]): List[Entry] = {
-    /*dataLabels map {
-      l => if (propertySources.isInError(l).isDefined) {
-        new Entry(l, propertySources.getTimes(l), propertySources.getMissingKeywords(l), propertySources.getKeywordsInError(l))
-      } else {
-        new Entry(l, propertySources.getTimes(l))
-      }
-    } take (nLast) toList*/
-
-    Nil
+  /**
+   * Define a custom cell style based on the content of the cell */
+  private def styleGenerator(itemId: AnyRef, propertyId: AnyRef): String = {
+    StatusModule.OBSERVATION_STYLES.getOrElse(dataContainer.getItem(itemId).getItemProperty("result").getValue.asInstanceOf[ObservationStatus], "")
   }
 
   /**
    * Define a custom cell style based on the content of the cell */
-  private def styleGenerator(itemId: AnyRef, propertyId: AnyRef): String = {
-    StatusModule.STYLES.getOrElse(dataContainer.getItem(itemId).getItemProperty("result").getValue.asInstanceOf[ObservationStatus], "")
+  private def keywordsStyleGenerator(itemId: AnyRef, propertyId: AnyRef): String = {
+    keywordsTable.getItem(itemId).getItemProperty("cv").getValue match {
+      case x:ErrorCollectedValue => "error"
+      case x => ""
+    }
   }
 
   /**
    * Define a custom cell style based on the content of the cell */
   private def setColumnTitles() {
-    StatusModule.COLUMNS foreach {
+    StatusModule.OBSERVATION_COLUMN_NAMES foreach {
       case (c, t) => statusTable.setColumnHeader(c, t)
     }
   }
+
+  observationSource.registerListener(() => {
+    refresh()
+  })
 
 }
 
@@ -224,8 +220,12 @@ protected object StatusModule {
   val defaultMissing = ""
   val defaultErrors = ""
 
-  val STYLES = Map[ObservationStatus, String](MissingKeywords -> "warn", ObservationError -> "error", ErrorKeywords -> "warn")
-  val COLUMNS = Map("status" -> "", "timeStamp" -> "Time ", "dataLabel" -> "Data Label", "errorMsg" -> "Error message", "writeTime" -> "Time to write")
+  val OBSERVATION_STYLES = Map[ObservationStatus, String](MissingKeywords -> "warn", ObservationError -> "error", ErrorKeywords -> "warn")
+  val OBSERVATION_COLUMN_NAMES = Map("status" -> "", "timeStamp" -> "Time ", "dataLabel" -> "Data Label", "errorMsg" -> "Error message", "writeTime" -> "Time to write")
+  val OBSERVATION_COLUMNS = Array[AnyRef]("status", "timeStamp", "dataLabel", "writeTime", "errorMsg")
+
+  val KEYWORD_STYLES = Map[CollectionError.Value, String](CollectionError.GenericError -> "error")
+  val KEYWORD_COLUMNS = Array[AnyRef]("status", "keyword", "value")
 
   def buildLabel(label: String) = new Label(caption = label, style = "gds-bold")
 
