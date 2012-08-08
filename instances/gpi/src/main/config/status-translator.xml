@@ -236,4 +236,80 @@
             </Map>
         </Maps>
     </Status>
+    <Status default="UNKNOWN" originalName="adcDeploy" originalType="INT" translatedName="adcDeploy.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>IN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>OUT</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="GPI_DEPLOY_INVALID" originalName="artificialSourceDeploy" originalType="INT" translatedName="artificialSourceDeploy.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>GPI_DEPLOY_IN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>GPI_DEPLOY_OUT</to>
+            </Map>
+            <Map>
+                <from>-1</from>
+                <to>GPI_DEPLOY_INVALID</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>GPI_DEPLOY_OVERRIDE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="GPI_SRC_UNKNOWN" originalName="artificialSourceIR" originalType="INT" translatedName="artificialSourceIR.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>GPI_SRC_ON</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>GPI_SRC_OFF</to>
+            </Map>
+            <Map>
+                <from>-2</from>
+                <to>GPI_SRC_UNKNOWN</to>
+            </Map>
+            <Map>
+                <from>-1</from>
+                <to>GPI_SRC_ERROR</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="GPI_SRC_UNKNOWN" originalName="artificialSourceVIS" originalType="INT" translatedName="artificialSourceVIS.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>GPI_SRC_ON</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>GPI_SRC_OFF</to>
+            </Map>
+            <Map>
+                <from>-2</from>
+                <to>GPI_SRC_UNKNOWN</to>
+            </Map>
+            <Map>
+                <from>-1</from>
+                <to>GPI_SRC_ERROR</to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>
