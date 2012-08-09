@@ -312,4 +312,137 @@
             </Map>
         </Maps>
     </Status>
+    <Status default="GPI_SRC_UNKNOWN" originalName="artificialSourceSC" originalType="INT" translatedName="artificialSourceSC.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>GPI_SRC_ON</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>GPI_SRC_OFF</to>
+            </Map>
+            <Map>
+                <from>-2</from>
+                <to>GPI_SRC_UNKNOWN</to>
+            </Map>
+            <Map>
+                <from>-1</from>
+                <to>GPI_SRC_ERROR</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="GPI_SRC_UNKNOWN" originalName="calSphereDeploy" originalType="INT" translatedName="calSphereDeploy.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>GPI_SRC_ON</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>GPI_SRC_OFF</to>
+            </Map>
+            <Map>
+                <from>-2</from>
+                <to>GPI_SRC_UNKNOWN</to>
+            </Map>
+            <Map>
+                <from>-1</from>
+                <to>GPI_SRC_ERROR</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status originalName="referenceShutter" originalType="INT" translatedName="referenceShutter.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>OPEN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>CLOSED</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status originalName="scienceShutter" originalType="INT" translatedName="scienceShutter.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>OPEN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>CLOSED</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status originalName="calEntranceShutter" originalType="INT" translatedName="calEntranceShutter.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>OPEN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>CLOSED</to>
+            </Map>
+        </Maps>
+    </Status>
+        <Status originalName="calExitShutter" originalType="INT" translatedName="calExitShutter.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>OPEN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>CLOSED</to>
+            </Map>
+        </Maps>
+    </Status>
+     <Status originalName="omssEntranceShutter" originalType="INT" translatedName="omssEntranceShutter.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>OPEN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>CLOSED</to>
+            </Map>
+        </Maps>
+    </Status>
+     <Status originalName="polarModulatorDeploy" originalType="INT" translatedName="polarModulatorDeploy.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>IN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>OUT</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status originalName="simulationLevel" originalType="INT" translatedName="simulationLevel.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>1</from>
+                <to>IN</to>
+            </Map>
+            <Map>
+                <from>0</from>
+                <to>OUT</to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>
