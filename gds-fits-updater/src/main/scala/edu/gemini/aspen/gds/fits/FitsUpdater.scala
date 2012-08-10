@@ -6,6 +6,7 @@ import collection.JavaConversions._
 import actors.Reactor
 import java.util.logging.{Level, Logger}
 import edu.gemini.aspen.gds.api.fits.Header
+import com.google.common.io.Files
 
 case class Update(namingFunction: DataLabel => String = label => FitsUpdater.toFitsFileName(label))
 
@@ -61,10 +62,11 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
    * Updates the headers in the destination file, adding to the current set of
    * headers the ones passed in the constructor
    *
-   * @param namingFunction, it is a an optional method to key the new file. It is a relative key, not absolute. For example: {label => "N-" + label.getName + ".fits"}
+   * @param outputNamingFunction, it is a an optional method to key the new file. It is a relative key, not absolute. For example: {label => "N-" + label.getName + ".fits"}
    */
   def updateFitsHeaders(inputNamingFunction: DataLabel => String = FitsUpdater.toFitsFileName, outputNamingFunction: DataLabel => String = FitsUpdater.toFitsFileName) {
     val originalFile = new File(fromDirectory, inputNamingFunction(dataLabel))
+    val tempFile = File.createTempFile("tmp", "_fits", toDirectory)
     val destinationFile = new File(toDirectory, outputNamingFunction(dataLabel))
     LOG.info("Updating file " + originalFile + " to " + destinationFile)
 
@@ -73,7 +75,10 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
     }
 
     val writer = new FitsWriter(originalFile)
-    writer.updateHeaders(updatedHeaders, destinationFile)
+    writer.updateHeaders(updatedHeaders, tempFile)
+    // Make sure the dirs exist
+    Files.createParentDirs(destinationFile)
+    Files.move(tempFile, destinationFile)
   }
 
 }
