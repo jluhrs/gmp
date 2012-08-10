@@ -9,6 +9,7 @@ import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin.containers.{VerticalSplitPanel, HorizontalSplitPanel, Panel}
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts._
+import edu.gemini.aspen.giapi.web.ui.vaadin._
 import model.{ObservationsSource, ObservationSourceQueryDefinition, ObservationsBeanQuery}
 import StatusModule._
 import edu.gemini.aspen.giapi.web.ui.vaadin.data.{Container, Property}
@@ -38,18 +39,16 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   val lastDataLabel = new Label(property = lastDataLabelProp)
 
   // Grid for the elements on the top of the page
-  val topGrid = new GridLayout(columns = 2, rows = 3, margin = true, spacing = true) {
-    setSizeFull()
+  val topGrid = new GridLayout(columns = 2, rows = 3, height = 100 px, width = 100 pct) {
     setColumnExpandRatio(0, 1.0f)
     setColumnExpandRatio(1, 3.0f)
 
-    add(buildLabel("Current Health:"))
-    add(status)
-    add(buildLabel("DataSets in Process:"))
-    add(processing)
-    add(buildLabel("Last DataSet:"))
-    add(lastDataLabel)
-    addComponent(new Refresher)
+    add(buildLabel("Current Health:"), 0, 0)
+    add(status, 1, 0)
+    add(buildLabel("DataSets in Process:"), 0, 1)
+    add(processing, 1, 1)
+    add(buildLabel("Last DataSet:"), 0, 2)
+    add(lastDataLabel, 1, 2)
   }
 
   // Observations table
@@ -74,7 +73,7 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
           case _ => ""
         }
         case "timeStamp" => v match {
-          case d:DateTime => d.toString
+          case d: DateTime => d.toString
           case _ => ""
         }
         case _ => super.formatPropertyValue(rowId, colId, property)
@@ -97,61 +96,55 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   statusTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
   statusTable.setColumnWidth(statusProperty, 20)
   statusTable.setColumnWidth("keyword", 200)
+  statusTable.addItemClickListener(e => {
+    displayKeywords(e.getItemId)
+  })
 
   val keywordsTable = new Table(sizeFull = true, style = "logs",
-    cellStyleGenerator = keywordsStyleGenerator)
+    cellStyleGenerator = keywordsStyleGenerator, selectable = true)
   keywordsTable.addContainerProperty("status", classOf[java.lang.String], "")
   keywordsTable.addContainerProperty("keyword", classOf[java.lang.String], "")
   keywordsTable.addContainerProperty("value", classOf[java.lang.String], "")
   keywordsTable.addGeneratedColumn(statusProperty, (itemId: AnyRef, columnId: AnyRef) => {
     val result = keywordsTable.getItem(itemId).getItemProperty("cv").getValue
     result match {
-      case x:ErrorCollectedValue => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/failed.png"))
+      case x: ErrorCollectedValue => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../gds/failed.png"))
       case x => new Embedded(objectType = com.vaadin.ui.Embedded.TYPE_IMAGE, source = new ThemeResource("../runo/icons/16/ok.png"))
     }
   })
   keywordsTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
   keywordsTable.setColumnWidth(statusProperty, 20)
-
   keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS)
+  setKeywordColumnTitles()
 
   def displayKeywords(itemId: AnyRef) = {
     statusTable.getItem(itemId).getItemProperty("collectedValues").getValue match {
       case l: List[CollectedValue[_]] => val items = l.zipWithIndex.map {
         case (c, i) => (i, Seq("cv" -> c, "keyword" -> c.keyword.key, "value" -> c.value))
       }
-      keywordsTable.setContainerDataSource(Container(items:_*))
+      keywordsTable.setContainerDataSource(Container(items: _*))
       keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS)
       case x =>
     }
   }
 
-  statusTable.addItemClickListener(e => {
-    displayKeywords(e.getItemId)
-  })
-
   val bottomPanel = new Panel(sizeFull = true) {
-    add(new VerticalLayout(caption="Observations", sizeFull = true) {
+    add(topGrid)
+    add(new VerticalLayout(caption = "Observations", sizeFull = true) {
       add(statusTable)
     })
-    add(new VerticalLayout(caption="Keywords", sizeFull = true) {
+    add(new VerticalLayout(caption = "Keywords", sizeFull = true) {
       add(keywordsTable)
     })
+    addComponent(new Refresher)
   }
 
   case class Entry(dataLabel: String = "", times: String = "", missing: String = "", errors: String = "")
 
-  /*val bottomPanel = new Panel("Last " + nLast + " Observations", height = "300px") {
-    add(horizontalSplitPanel)
-  }*/
-
   override def buildTabContent(app: Application): Component = {
     refresh()
 
-    new VerticalLayout(sizeFull = true) {
-      add(topGrid, ratio = 0.2f)
-      add(bottomPanel, ratio =1.0f)
-    }
+    bottomPanel
   }
 
   override def refresh(app: Application) {
@@ -192,16 +185,24 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
    * Define a custom cell style based on the content of the cell */
   private def keywordsStyleGenerator(itemId: AnyRef, propertyId: AnyRef): String = {
     keywordsTable.getItem(itemId).getItemProperty("cv").getValue match {
-      case x:ErrorCollectedValue => "error"
+      case x: ErrorCollectedValue => "error"
       case x => ""
     }
   }
 
   /**
-   * Define a custom cell style based on the content of the cell */
+   * Define the headers for the observations table */
   private def setColumnTitles() {
     StatusModule.OBSERVATION_COLUMN_NAMES foreach {
       case (c, t) => statusTable.setColumnHeader(c, t)
+    }
+  }
+
+  /**
+   * Define the headers for the keywords table */
+  private def setKeywordColumnTitles() {
+    StatusModule.KEYWORD_COLUMN_NAMES foreach {
+      case (c, t) => keywordsTable.setColumnHeader(c, t)
     }
   }
 
@@ -214,8 +215,8 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
 protected object StatusModule {
   //default values
   val defaultStatus = "UNKNOWN"
-  val defaultProcessing = ""
-  val defaultLastDataLabel = ""
+  val defaultProcessing = "-"
+  val defaultLastDataLabel = "-"
   val defaultTimes = ""
   val defaultMissing = ""
   val defaultErrors = ""
@@ -225,6 +226,7 @@ protected object StatusModule {
   val OBSERVATION_COLUMNS = Array[AnyRef]("status", "timeStamp", "dataLabel", "writeTime", "errorMsg")
 
   val KEYWORD_STYLES = Map[CollectionError.Value, String](CollectionError.GenericError -> "error")
+  val KEYWORD_COLUMN_NAMES = Map("status" -> "", "keyword" -> "Keyword", "value" -> "Value")
   val KEYWORD_COLUMNS = Array[AnyRef]("status", "keyword", "value")
 
   def buildLabel(label: String) = new Label(caption = label, style = "gds-bold")
