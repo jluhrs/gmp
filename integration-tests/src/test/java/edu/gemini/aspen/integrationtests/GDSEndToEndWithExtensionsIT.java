@@ -1,7 +1,7 @@
 package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
-import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
+import edu.gemini.aspen.gds.api.CompositePostProcessingPolicy;
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
@@ -71,7 +71,7 @@ public class GDSEndToEndWithExtensionsIT extends GDSIntegrationBase {
         TimeUnit.MILLISECONDS.sleep(2000);
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
-        assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(CompositePostProcessingPolicy.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));

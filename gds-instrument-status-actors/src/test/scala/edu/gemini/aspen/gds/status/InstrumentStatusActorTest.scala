@@ -45,7 +45,7 @@ class InstrumentStatusActorTest extends Mockito {
     there was one(statusDB).getStatusItem(statusItemName)
   }
 
-  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testReplyToCollectIfStatusUnknown {
@@ -68,7 +68,7 @@ class InstrumentStatusActorTest extends Mockito {
     there was one(statusDB).getStatusItem(statusItemName)
   }
 
-  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testErrorMandatoryItemAndStatusUnknown {

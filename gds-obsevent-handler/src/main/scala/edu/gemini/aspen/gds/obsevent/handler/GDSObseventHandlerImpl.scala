@@ -25,7 +25,7 @@ trait GDSObseventHandler
 class GDSObseventHandlerImpl(
                           @Requires actorsFactory: CompositeActorsFactory,
                           @Requires keywordsDatabase: KeywordsDatabase,
-                          @Requires errorPolicy: CompositeErrorPolicy,
+                          @Requires errorPolicy: CompositePostProcessingPolicy,
                           @Requires propertyHolder: PropertyHolder) extends GDSObseventHandler {
 
   @Publishes(name="gdsrelay", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent")

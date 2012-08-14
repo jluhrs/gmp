@@ -7,7 +7,7 @@ import scala.collection._
 /**
  * Defines an error policy
  */
-trait ErrorPolicy {
+trait PostProcessingPolicy {
   /**
    * Lower priority policies are applied first (0 - 10)
    */
@@ -27,7 +27,7 @@ trait ErrorPolicy {
 /**
  * The default error policy
  */
-class DefaultErrorPolicy extends ErrorPolicy {
+class DefaultPostProcessingPolicy extends PostProcessingPolicy {
   protected val LOG = Logger.getLogger(this.getClass.getName)
 
   // Let all the original headers to be applied

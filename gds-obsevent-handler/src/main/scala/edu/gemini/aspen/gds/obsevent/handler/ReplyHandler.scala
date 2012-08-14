@@ -16,7 +16,7 @@ import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 
 class ReplyHandler(actorsFactory: CompositeActorsFactory,
   keywordsDatabase: KeywordsDatabase,
-  errorPolicy: ErrorPolicy,
+  errorPolicy: PostProcessingPolicy,
   propertyHolder: PropertyHolder,
   publisher: Publisher) extends Actor {
   private implicit val LOG = Logger.getLogger(this.getClass.getName)

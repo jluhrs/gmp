@@ -30,7 +30,7 @@ class GDSObseventHandlerImplTest extends FunSuite with OneInstancePerTest with B
     dummyFile.createNewFile()
   }
 
-  private val observationHandler = new GDSObseventHandlerImpl(actorsFactory, keywordsDatabase, new CompositeErrorPolicyImpl(), propertyHolder) {
+  private val observationHandler = new GDSObseventHandlerImpl(actorsFactory, keywordsDatabase, new CompositePostProcessingPolicyImpl(), propertyHolder) {
     publisher = mockPublisher
   }
 

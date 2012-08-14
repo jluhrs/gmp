@@ -4,7 +4,7 @@ import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Comp
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{KeywordSource, ErrorCollectedValue, CollectedValue, ErrorPolicy}
+import edu.gemini.aspen.gds.api.{KeywordSource, ErrorCollectedValue, CollectedValue, PostProcessingPolicy}
 import java.util.logging.Logger
 
 /**

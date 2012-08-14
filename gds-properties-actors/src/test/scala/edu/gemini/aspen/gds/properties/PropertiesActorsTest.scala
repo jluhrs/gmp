@@ -33,7 +33,7 @@ class PropertiesActorsTest extends FunSuite with BeforeAndAfter {
   test("Not Mandatory, Not Found Value") {
     val propertyActor = new PropertiesValuesActor(GDSConfiguration("GPI", "OBS_START_ACQ", "JAVAVER", 0, "DOUBLE", false, "DEFAULT", "PROPERTY", "unknownproperty.name", 0, "", "my comment"))
 
-    // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+    // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
     // it doesn't matter at this point if the item is mandatory or not
     assertEquals(Nil, propertyActor.collectValues)
   }
@@ -44,7 +44,7 @@ class PropertiesActorsTest extends FunSuite with BeforeAndAfter {
   test("Mandatory Not Found Value") {
     val propertyActor = new PropertiesValuesActor(GDSConfiguration("GPI", "OBS_START_ACQ", "JAVAVER", 0, "DOUBLE", true, "DEFAULT", "PROPERTY", "unknownproperty.name", 0, "", "my comment"))
 
-    // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+    // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
     // it doesn't matter at this point if the item is mandatory or not
     assertEquals(Nil, propertyActor.collectValues)
   }

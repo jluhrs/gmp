@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.errorpolicy
 import edu.gemini.aspen.giapi.data.DataLabel
 import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{Subsystem, KeywordSource, GDSConfiguration, DefaultCollectedValue, ErrorPolicy, CollectionError, ErrorCollectedValue, CollectedValue, DefaultErrorPolicy}
+import edu.gemini.aspen.gds.api.{Subsystem, KeywordSource, GDSConfiguration, DefaultCollectedValue, PostProcessingPolicy, CollectionError, ErrorCollectedValue, CollectedValue, DefaultPostProcessingPolicy}
 
 /**
  * This policy adds missing items(i.e. that are in the configuration but not among the CollectedValues) and then

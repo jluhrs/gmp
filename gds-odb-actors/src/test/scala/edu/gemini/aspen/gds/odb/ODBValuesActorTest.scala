@@ -60,7 +60,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     there was databaseService.lookupProgramByID(programID)
   }
 
-  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testFlagUnknownChannels() {
@@ -110,7 +110,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     there was databaseService.lookupProgramByID(programID)
   }
 
-  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testMandatoryItemNotFound() {
@@ -129,7 +129,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     there was databaseService.lookupProgramByID(programID)
   }
 
-  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testNonMandatoryItemNotFound() {
@@ -148,7 +148,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     there was databaseService.lookupProgramByID(programID)
   }
 
-  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testProgramNotFound() {

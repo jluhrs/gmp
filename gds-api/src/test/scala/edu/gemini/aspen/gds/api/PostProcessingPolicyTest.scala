@@ -7,12 +7,12 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 
-class ErrorPolicyTest {
+class PostProcessingPolicyTest {
   val dataLabel = new DataLabel("some key")
 
   @Test
   def testDefault() {
-    val ep = new DefaultErrorPolicy()
+    val ep = new DefaultPostProcessingPolicy()
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: Nil
 
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
@@ -20,7 +20,7 @@ class ErrorPolicyTest {
 
   @Test
   def testComposite() {
-    val ep = new CompositeErrorPolicyImpl()
+    val ep = new CompositePostProcessingPolicyImpl()
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
 
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
@@ -28,32 +28,32 @@ class ErrorPolicyTest {
 
   @Test
   def testCompositeDefault() {
-    val ep = new CompositeErrorPolicyImpl()
+    val ep = new CompositePostProcessingPolicyImpl()
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
 
-    ep.bindPolicy(new DefaultErrorPolicy)
+    ep.bindPolicy(new DefaultPostProcessingPolicy)
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
   }
 
   @Test
   def testCompositeDefaultTwice() {
-    val ep = new CompositeErrorPolicyImpl()
+    val ep = new CompositePostProcessingPolicyImpl()
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
 
-    ep.bindPolicy(new DefaultErrorPolicy)
-    ep.bindPolicy(new DefaultErrorPolicy)
+    ep.bindPolicy(new DefaultPostProcessingPolicy)
+    ep.bindPolicy(new DefaultPostProcessingPolicy)
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
   }
 
   @Test
   def testOrder() {
-    val errPol1 = mock(classOf[ErrorPolicy])
+    val errPol1 = mock(classOf[PostProcessingPolicy])
     when(errPol1.priority).thenReturn(7)
 
-    val errPol2 = mock(classOf[ErrorPolicy])
+    val errPol2 = mock(classOf[PostProcessingPolicy])
     when(errPol2.priority).thenReturn(6)
 
-    val ep = new CompositeErrorPolicyImpl()
+    val ep = new CompositePostProcessingPolicyImpl()
     ep.bindPolicy(errPol1)
     ep.bindPolicy(errPol2)
     ep.applyPolicy(dataLabel, Nil)

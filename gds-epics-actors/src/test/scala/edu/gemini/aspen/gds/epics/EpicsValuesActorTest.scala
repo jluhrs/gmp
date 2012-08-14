@@ -72,7 +72,7 @@ class EpicsValuesActorTest extends Mockito {
     there was one(ch).getAll
   }
 
-  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testCollectingADefaultValue {
@@ -97,7 +97,7 @@ class EpicsValuesActorTest extends Mockito {
 
   }
 
-  // should not return anything if the value cannot be read. The default will be added by an ErrorPolicy
+  // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testCollectError {

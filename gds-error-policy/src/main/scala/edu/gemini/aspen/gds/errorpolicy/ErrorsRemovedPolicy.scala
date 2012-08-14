@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.errorpolicy
 
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.api.{ErrorPolicy, ErrorCollectedValue, CollectedValue, DefaultErrorPolicy}
+import edu.gemini.aspen.gds.api.{PostProcessingPolicy, ErrorCollectedValue, CollectedValue, DefaultPostProcessingPolicy}
 import org.apache.felix.ipojo.annotations.{Instantiate, Provides, Component}
 
 /**

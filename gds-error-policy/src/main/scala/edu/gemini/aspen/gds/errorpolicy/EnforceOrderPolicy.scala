@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.errorpolicy
 import edu.gemini.aspen.giapi.data.DataLabel
 import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{GDSConfiguration, ErrorPolicy, CollectedValue, DefaultErrorPolicy}
+import edu.gemini.aspen.gds.api.{GDSConfiguration, PostProcessingPolicy, CollectedValue, DefaultPostProcessingPolicy}
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 /**

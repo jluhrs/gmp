@@ -1,6 +1,6 @@
 package edu.gemini.aspen.integrationtests;
 
-import edu.gemini.aspen.gds.api.CompositeErrorPolicy;
+import edu.gemini.aspen.gds.api.CompositePostProcessingPolicy;
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
@@ -52,7 +52,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
         TimeUnit.MILLISECONDS.sleep(800);
 
         assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));
-        assertNotNull(context.getService(context.getServiceReference(CompositeErrorPolicy.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(CompositePostProcessingPolicy.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
