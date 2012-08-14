@@ -9,20 +9,20 @@ import java.util.logging.Logger
 
 /**
  * This policy checks for errors and missing values and adds them to the ObservationStateRegistrar.
- * It should be the first policy applied.
+ * It should be run after EnforceMandatory policy and before ErrorsRemoved policy applied.
  */
 @Component
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
 class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires obsState: ObservationStateRegistrar) extends ErrorPolicy {
   protected val LOG = Logger.getLogger(this.getClass.getName)
-  override val priority = 0
+  override val priority = 5
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
     LOG.fine("Inspect headers looking for missing value")
 
     checkErrors(dataLabel, headers)
-    checkMissing(dataLabel, headers)
+    //checkMissing(dataLabel, headers)
     headers
   }
 
