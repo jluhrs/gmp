@@ -445,4 +445,56 @@
             </Map>
         </Maps>
     </Status>
+    <Status default="UNKNOWN" originalName="aoReadingCalData" originalType="INT" translatedName="aoReadingCalData.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="aoLoopRunning" originalType="INT" translatedName="aoLoopRunning.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="ao:optimization" originalType="INT" translatedName="ao:optimization.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>NO</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>YES</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="ao:m2Offloading" originalType="INT" translatedName="ao:m2Offloading.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>NO</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>YES</to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>
