@@ -8,7 +8,7 @@ import org.apache.felix.ipojo.annotations.{Instantiate, Provides, Component}
  * This policy removes ErrorCollectedValues. It should probably be the last policy applied.
  */
 @Component
-@Instantiate
+//@Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
 class ErrorsRemovedPolicy extends DefaultErrorPolicy {
   override val priority = 10

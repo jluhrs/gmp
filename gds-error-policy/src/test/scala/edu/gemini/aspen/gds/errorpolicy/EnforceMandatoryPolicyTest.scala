@@ -36,13 +36,23 @@ class EnforceMandatoryPolicyTest extends FunSuite with MockitoSugar {
     assertEquals(filteredValues, ep.applyPolicy(dataLabel, collectedValues))
   }
 
-  test("with missing") {
+  test("with one mandatory item missing") {
     val config = mock[GDSConfigurationService]
-    when(config.getConfiguration).thenReturn(GDSConfiguration("GPI", "OBS_START_ACQ", "KEY2", 0, "STRING", true, "default", "EPICS", "gpi:value", 0, "", "comment") :: GDSConfiguration("GPI", "OBS_START_ACQ", "KEY3", 0, "STRING", false, "default", "EPICS", "gpi:value", 0, "", "comment") :: Nil)
+    when(config.getConfiguration).thenReturn(GDSConfiguration("GPI", "OBS_START_ACQ", "KEY3", 0, "STRING", true, "default", "EPICS", "gpi:value", 0, "", "comment") :: Nil)
 
     val ep = new EnforceMandatoryPolicy(config)
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: Nil
-    val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: DefaultCollectedValue("KEY3", "default", "comment", 0, None) :: Nil
+    val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY3", CollectionError.MandatoryRequired, "comment", 0) :: Nil
+
+    assertEquals(filteredValues, ep.applyPolicy(dataLabel, collectedValues))
+  }
+  test("with one non mandatory item missing") {
+    val config = mock[GDSConfigurationService]
+    when(config.getConfiguration).thenReturn(GDSConfiguration("GPI", "OBS_START_ACQ", "KEY3", 0, "STRING", false, "default", "EPICS", "gpi:value", 0, "", "comment") :: Nil)
+
+    val ep = new EnforceMandatoryPolicy(config)
+    val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: Nil
+    val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY3", CollectionError.ItemNotFound, "comment", 0) :: Nil
 
     assertEquals(filteredValues, ep.applyPolicy(dataLabel, collectedValues))
   }

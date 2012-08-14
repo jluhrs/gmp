@@ -11,7 +11,7 @@ import edu.gemini.aspen.gds.api.{Subsystem, KeywordSource, GDSConfiguration, Def
  * CollectedValue with an empty string as a value, so that it gets written to the file.
  */
 @Component
-//@Instantiate
+@Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
 class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) extends DefaultErrorPolicy {
   override val priority = 2
@@ -33,7 +33,8 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
   }
 
   private def constructValuesForMissing(configurations: List[GDSConfiguration]): List[CollectedValue[_]] = configurations collect {
-    case config if (!config.isMandatory) => new DefaultCollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index, config.format.value)
+    case config if !config.isMandatory => new ErrorCollectedValue(config.keyword, CollectionError.ItemNotFound, config.fitsComment.value, config.index.index)
+    case config if config.isMandatory => new ErrorCollectedValue(config.keyword, CollectionError.MandatoryRequired, config.fitsComment.value, config.index.index)
   }
 
   override def toString = this.getClass.getSimpleName
