@@ -22,7 +22,7 @@ class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires 
     LOG.fine("Inspect headers looking for missing value")
 
     checkErrors(dataLabel, headers)
-    //checkMissing(dataLabel, headers)
+    checkMissing(dataLabel, headers)
     headers
   }
 
