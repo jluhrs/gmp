@@ -13,7 +13,7 @@ import edu.gemini.aspen.gds.api.fits.FitsKeyword
 @Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
 class EnforceOrderPolicy(@Requires configService: GDSConfigurationService) extends DefaultErrorPolicy {
-  override val priority = 10
+  override val priority = 8
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
     LOG.fine("Enforce order of keywords for " + dataLabel)

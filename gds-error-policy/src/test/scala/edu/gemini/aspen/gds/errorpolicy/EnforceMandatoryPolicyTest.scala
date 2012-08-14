@@ -31,7 +31,7 @@ class EnforceMandatoryPolicyTest extends FunSuite with MockitoSugar {
 
     val ep = new EnforceMandatoryPolicy(config)
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.MandatoryRequired, "comment", 0) :: Nil
-    val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: CollectedValue("KEY2", "", "comment", 0, None) :: Nil
+    val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.MandatoryRequired, "comment", 0) :: Nil
 
     assertEquals(filteredValues, ep.applyPolicy(dataLabel, collectedValues))
   }
@@ -42,7 +42,7 @@ class EnforceMandatoryPolicyTest extends FunSuite with MockitoSugar {
 
     val ep = new EnforceMandatoryPolicy(config)
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: Nil
-    val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: CollectedValue("KEY2", "", "comment", 0, None) :: DefaultCollectedValue("KEY3", "default", "comment", 0, None) :: Nil
+    val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: DefaultCollectedValue("KEY3", "default", "comment", 0, None) :: Nil
 
     assertEquals(filteredValues, ep.applyPolicy(dataLabel, collectedValues))
   }

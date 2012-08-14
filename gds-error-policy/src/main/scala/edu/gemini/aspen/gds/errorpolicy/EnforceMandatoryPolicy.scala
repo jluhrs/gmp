@@ -11,7 +11,7 @@ import edu.gemini.aspen.gds.api.{Subsystem, KeywordSource, GDSConfiguration, Def
  * CollectedValue with an empty string as a value, so that it gets written to the file.
  */
 @Component
-@Instantiate
+//@Instantiate
 @Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
 class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) extends DefaultErrorPolicy {
   override val priority = 2
@@ -19,10 +19,7 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
     LOG.fine("Enforce mandatory keywords for " + dataLabel)
 
-    headers ++ constructValuesForMissing(getMissing(headers)) map {
-      case ErrorCollectedValue(keyword, CollectionError.MandatoryRequired, comment, index) => CollectedValue(keyword, "", comment, index, None)
-      case c => c
-    }
+    headers ++ constructValuesForMissing(getMissing(headers))
   }
 
   private def getMissing(headers: List[CollectedValue[_]]): List[GDSConfiguration] = {
@@ -35,15 +32,8 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
     }
   }
 
-  private def constructValuesForMissing(configurations: List[GDSConfiguration]): List[CollectedValue[_]] = {
-    val list = configurations map {
-      case config => if (config.isMandatory) {
-        CollectedValue(config.keyword, "", config.fitsComment.value, config.index.index, config.format.value)
-      } else {
-        new DefaultCollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index, config.format.value)
-      }
-    }
-    list.asInstanceOf[List[CollectedValue[_]]]
+  private def constructValuesForMissing(configurations: List[GDSConfiguration]): List[CollectedValue[_]] = configurations collect {
+    case config if (!config.isMandatory) => new DefaultCollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index, config.format.value)
   }
 
   override def toString = this.getClass.getSimpleName
