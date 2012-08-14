@@ -33,6 +33,23 @@ class ConstantActorTest {
   }
 
   @Test
+  def testActorOfBooleanType() {
+    val constActor = new ConstantActor(GDSConfiguration("GPI",
+      "OBS_START_ACQ",
+      "KEY1",
+      0,
+      "BOOLEAN",
+      false,
+      "true",
+      "CONSTANT",
+      "NONE",
+      0,
+      "",
+      "COMMENT") :: Nil)
+    assertEquals(CollectedValue("KEY1", true, "COMMENT", 0, None) :: Nil, constActor.collectValues())
+  }
+
+  @Test
   def testActorFactory() {
     val factory = new ConstantActorsFactory
     factory.configure(immutable.List(GDSConfiguration("GPI", "OBS_PREP", "TEST", 0, "DOUBLE", false, "1.0", "CONSTANT", "ws:massAirmass", 0, "", "my comment")))
