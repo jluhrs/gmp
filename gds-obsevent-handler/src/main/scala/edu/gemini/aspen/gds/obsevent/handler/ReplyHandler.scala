@@ -128,7 +128,6 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
     bookKeeper.clean(dataLabel)
 
     try {
-      //if the option is None, use an empty List
       val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[List[CollectedValue[_]]]
       val processedList = errorPolicy.applyPolicy(dataLabel, list)
 
