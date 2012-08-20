@@ -4,7 +4,7 @@ import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Comp
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{KeywordSource, ErrorCollectedValue, CollectedValue, PostProcessingPolicy}
+import edu.gemini.aspen.gds.api._
 import java.util.logging.Logger
 
 /**
@@ -13,9 +13,9 @@ import java.util.logging.Logger
  */
 @Component
 @Instantiate
-@Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
-class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires obsState: ObservationStateRegistrar) extends ErrorPolicy {
-  protected val LOG = Logger.getLogger(this.getClass.getName)
+@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
+class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires obsState: ObservationStateRegistrar) extends DefaultPostProcessingPolicy {
+  protected override val LOG = Logger.getLogger(this.getClass.getName)
   override val priority = 5
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
