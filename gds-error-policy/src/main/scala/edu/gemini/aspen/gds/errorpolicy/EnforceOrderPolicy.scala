@@ -11,8 +11,8 @@ import edu.gemini.aspen.gds.api.fits.FitsKeyword
  */
 @Component
 @Instantiate
-@Provides(specifications = Array[Class[_]](classOf[ErrorPolicy]))
-class EnforceOrderPolicy(@Requires configService: GDSConfigurationService) extends DefaultErrorPolicy {
+@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
+class EnforceOrderPolicy(@Requires configService: GDSConfigurationService) extends DefaultPostProcessingPolicy {
   override val priority = 8
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
