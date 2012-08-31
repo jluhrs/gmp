@@ -1,9 +1,7 @@
 package edu.gemini.aspen.integrationtests;
 
-import com.google.common.collect.Sets;
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
 import edu.gemini.aspen.gds.api.CompositePostProcessingPolicy;
-import edu.gemini.aspen.gds.api.PostProcessingPolicy;
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
 import edu.gemini.aspen.gds.api.fits.HeaderItem;
 import edu.gemini.aspen.gds.fits.FitsReader;
@@ -19,8 +17,6 @@ import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,19 +76,6 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
 
         TimeUnit.MILLISECONDS.sleep(400);
 
-        //verify that the error policies are loaded
-        Set<String> errorPolicies = Sets.newHashSet();
-        try {
-            for (ServiceReference ref : context.getServiceReferences(PostProcessingPolicy.class.getName(), null)) {
-                errorPolicies.add(context.getService(ref).getClass().getName());
-            }
-        } catch (InvalidSyntaxException ex) {
-            fail();
-        }
-        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.errorpolicy.ErrorsRemovedPolicy"));
-        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.errorpolicy.EnforceMandatoryPolicy"));
-        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.observationstate.impl.InspectPolicy"));
-
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
@@ -118,7 +101,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
         assertTrue(afterProcessingKeywords.contains("EPIC2"));
 
         FitsReader reader = new FitsReader(finalFile);
-        List<HeaderItem<?>> headerItems = (List<HeaderItem<?>>)seqAsJavaList(reader.header(0).get().keywords());
+        List<HeaderItem<?>> headerItems = seqAsJavaList(reader.header(0).get().keywords());
         for (HeaderItem<?> h:headerItems) {
             if (h.keywordName().equals("EPIC")) {
                 assertEquals("default", h.value().toString());//non mandatory item should have default value if not found
