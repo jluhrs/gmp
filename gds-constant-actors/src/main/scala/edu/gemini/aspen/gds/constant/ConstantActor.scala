@@ -16,8 +16,8 @@ class ConstantActor(configurations: immutable.List[GDSConfiguration]) extends Ke
   private def getCollectedValue(config: GDSConfiguration): CollectedValue[_] = {
     try {
       config.dataType match {
-        // Anything can be converted to a string
-        case DataType("STRING") => CollectedValue(config.keyword, config.nullValue.value, config.fitsComment.value, config.index.index, config.format.value)
+        // Anything can be converted to a string but we remove start and end quotes
+        case DataType("STRING") => CollectedValue(config.keyword, config.nullValue.value.replaceAll("""(^')|(^")|('$)|("$)""",""), config.fitsComment.value, config.index.index, config.format.value)
         // Any number can be converted to a double
         case DataType("DOUBLE") => CollectedValue(config.keyword, config.nullValue.value.toDouble, config.fitsComment.value, config.index.index, config.format.value)
         // Any number can be converted to a int

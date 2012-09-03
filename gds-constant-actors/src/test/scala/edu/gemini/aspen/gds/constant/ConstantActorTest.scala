@@ -16,6 +16,35 @@ class ConstantActorTest {
   }
 
   @Test
+  def testQuoteRemoval() {
+    val constActor = new ConstantActor(GDSConfiguration("GPI",
+        "OBS_START_ACQ",
+        "KEY1",
+        0,
+        "STRING",
+        false,
+        "\"val1\"",
+        "CONSTANT",
+        "NONE",
+        0,
+        "",
+      "COMMENT") :: GDSConfiguration("GPI",
+        "OBS_START_ACQ",
+        "KEY2",
+        0,
+        "STRING",
+        false,
+        """'val2'""",
+        "CONSTANT",
+        "NONE",
+        0,
+        "",
+        "COMMENT")
+      :: Nil)
+    assertEquals(CollectedValue("KEY1", "val1", "COMMENT", 0, None) :: CollectedValue("KEY2", "val2", "COMMENT", 0, None) :: Nil, constActor.collectValues())
+  }
+
+  @Test
   def testActorWrongType() {
     val constActor = new ConstantActor(GDSConfiguration("GPI",
       "OBS_START_ACQ",
