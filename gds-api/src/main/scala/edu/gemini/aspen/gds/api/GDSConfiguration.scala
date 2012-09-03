@@ -22,9 +22,7 @@ case class DataType(name: String) {
 case class Mandatory(mandatory: Boolean)
 
 // This value will be used if not mandatory and the value is not found
-case class DefaultValue(value: String) {
-  require(value.nonEmpty)
-}
+case class DefaultValue(value: String)
 
 case class Subsystem(name: KeywordSource.Value)
 

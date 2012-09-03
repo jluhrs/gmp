@@ -26,7 +26,7 @@ class GDSConfigurationParser extends RegexParsers {
     ~ spaces ~ headerIndex
     ~ spaces ~ datatype
     ~ spaces ~ mandatory
-    ~ spaces ~ defaultValue
+    ~ spaces ~ (defaultValueNonQuotes | defaultValueInQuotes)
     ~ spaces ~ subsystem
     ~ spaces ~ channelName
     ~ spaces ~ arrayIndex
@@ -82,8 +82,14 @@ class GDSConfigurationParser extends RegexParsers {
     case "t" => Mandatory(true)
   }
 
-  // Default value can be anything that does not contain a space
-  def defaultValue = """\S+""".r ^^ {
+  // Default value can be anything that does not contain spaces or is is quotes
+  def defaultValue = defaultValueInQuotes | defaultValueNonQuotes
+
+  def defaultValueNonQuotes = """[^'"\s]+""".r ^^ {
+    x: String => DefaultValue(x)
+  }
+
+  def defaultValueInQuotes = "\"" ~> internalComment <~ "\"" ^^ {
     x: String => DefaultValue(x)
   }
 

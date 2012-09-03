@@ -147,4 +147,16 @@ class GDSConfigurationParserTest extends FunSuite {
     val result = new GDSConfigurationParser().parseText(text)
     assertEquals(Some(GDSConfiguration("GPI", "EXT_END_OBS", "AIRMASS", 0, "DOUBLE", false, "NONE", KeywordSource.EPICS.toString, "ws:massAirmass", 0, "", "Mean airmass for the observation")), result.get(0))
   }
+
+  test("supports constant values in quotes") {
+    val text = """GPI EXT_END_OBS AIRMASS 0 DOUBLE F "A CONSTANT VALUE" CONSTANT none 0 "" "Constant value""""
+    val result = new GDSConfigurationParser().parseText(text)
+    assertEquals(Some(GDSConfiguration("GPI", "EXT_END_OBS", "AIRMASS", 0, "DOUBLE", false, "A CONSTANT VALUE", KeywordSource.CONSTANT.toString, "none", 0, "", "Constant value")), result.get(0))
+  }
+
+  test("supports constant values with one char") {
+    val text = """GPI EXT_END_OBS AIRMASS 0 BOOLEAN F T CONSTANT none 0 "" "Constant value""""
+    val result = new GDSConfigurationParser().parseText(text)
+    assertEquals(Some(GDSConfiguration("GPI", "EXT_END_OBS", "AIRMASS", 0, "BOOLEAN", false, "T", KeywordSource.CONSTANT.toString, "none", 0, "", "Constant value")), result.get(0))
+  }
 }
