@@ -119,14 +119,15 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
 
   def displayKeywords(itemId: AnyRef) = {
     statusTable.getItem(itemId).getItemProperty("collectedValues").getValue match {
-      case l: List[CollectedValue[_]] => val items = l.zipWithIndex.map {
-          case (c, i) => (i, Seq("cv" -> c, "keyword" -> c.keyword.key, "value" -> c.value))
+      case l: List[CollectedValue[_]] => val items = l.zipWithIndex.collect {
+        case (c:ErrorCollectedValue, i) => (i, Seq("cv" -> c, "keyword" -> c.keyword.key, "value" -> "-"))
+        case (c:CollectedValue[_], i) => (i, Seq("cv" -> c, "keyword" -> c.keyword.key, "value" -> c.value.toString))
         }
       if (items.nonEmpty) {
         keywordsTable.setContainerDataSource(Container(items: _*))
         keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS)
       }
-      case x =>
+      case _ =>
     }
   }
 
