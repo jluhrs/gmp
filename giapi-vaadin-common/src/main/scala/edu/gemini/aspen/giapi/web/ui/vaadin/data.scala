@@ -19,12 +19,12 @@ package object data {
   }
 
   object Container {
-    def apply(items: Tuple2[Any, Seq[Tuple2[Any, Any]]]*) = {
+    def apply[A, B, C](items: Tuple2[A, Seq[Tuple2[B, C]]]*)(implicit m: Manifest[C]) = {
       val container = new com.vaadin.data.util.IndexedContainer
       for (item <- items) {
         val containerItem = container.addItem(item._1)
         for (property <- item._2) {
-          container.addContainerProperty(property._1, property._2.getClass, null)
+          container.addContainerProperty(property._1, m.erasure, null)
           containerItem.getItemProperty(property._1).setValue(property._2)
         }
       }
