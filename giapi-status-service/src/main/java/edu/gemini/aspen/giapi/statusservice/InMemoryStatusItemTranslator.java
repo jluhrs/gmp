@@ -60,7 +60,7 @@ public class InMemoryStatusItemTranslator extends AbstractStatusItemTranslator i
     @Override
     public <T> void update(StatusItem<T> item) {
         for (StatusItem<?> newItem : translate(item)) {
-            LOG.info("Publishing translated status item: " + newItem);
+            LOG.finer("Publishing translated status item: " + newItem);
             aggregate.update(newItem);
         }
     }
