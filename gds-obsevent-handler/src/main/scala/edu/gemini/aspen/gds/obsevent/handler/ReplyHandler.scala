@@ -130,12 +130,13 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
     try {
       val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[List[CollectedValue[_]]]
       val processedList = errorPolicy.applyPolicy(dataLabel, list)
+      val cleanedList = processedList.filterNot(_.isError)
 
-      fileProcessor.updateFITSFile(dataLabel, processedList) match {
+      fileProcessor.updateFITSFile(dataLabel, cleanedList) match {
         case Right((msg:String, writeTime:Long)) =>
           LOG.info(msg)
           publisher.sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable))
-          publisher.sendData(GDSEndObservation(dataLabel, writeTime, list))
+          publisher.sendData(GDSEndObservation(dataLabel, writeTime, processedList))
         case Left(errorMsg:String) =>
           LOG.severe(errorMsg)
           publisher.sendData(GDSObservationError(dataLabel, errorMsg))

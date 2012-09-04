@@ -43,7 +43,7 @@ class FitsFileProcessor(val propertyHolder: PropertyHolder)(implicit LOG: Logger
   }
 
   /**
-   * Coreographs the process of writing and update fits file sending the required information for book keeping */
+   * Choreographs the process of writing and update fits file sending the required information for book keeping */
   def updateFITSFile(dataLabel: DataLabel, processedList: List[CollectedValue[_]]): Either[String, (String, Long)] = {
     val headers = convertToHeaders(processedList)
 
