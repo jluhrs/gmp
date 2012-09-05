@@ -849,12 +849,7 @@
             <dependency>
                 <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
                 <artifactId>vaadin-lazyquerycontainer</artifactId>
-                <version>1.2.9</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-                <artifactId>pagedtable</artifactId>
-                <version>0.6.2</version>
+                <version>1.2.11</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>

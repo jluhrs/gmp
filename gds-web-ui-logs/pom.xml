@@ -41,10 +41,10 @@
             <artifactId>jsr305</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
             <artifactId>pagedtable</artifactId>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
             <artifactId>vaadin-lazyquerycontainer</artifactId>
