@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.mockito.stubbing.Answer
 import org.mockito.invocation.InvocationOnMock
-import org.vaadin.codeeditor.AceMarkerEditor
+import org.vaadin.aceeditor.AceMarkerEditor
 
 /**
  * Construction tests

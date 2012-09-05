@@ -5,7 +5,6 @@ import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.giapi.web.ui.vaadin.components._
 import edu.gemini.aspen.giapi.web.ui.vaadin._
 import model.{GDSKeywordsDataSource, WritableGDSKeywordsDataSource, ReadOnlyGDSKeywordsDataSource}
-import com.vaadin.ui.Table.ColumnGenerator
 import com.vaadin.terminal.ThemeResource
 import com.vaadin.Application
 import org.vaadin.dialogs.ConfirmDialog
@@ -13,9 +12,9 @@ import com.vaadin.ui.Window.Notification
 import com.vaadin.ui.Alignment
 import edu.gemini.aspen.giapi.web.ui.vaadin.layouts.{HorizontalLayout, VerticalLayout}
 import com.vaadin.ui.{Button => VaadinButton}
-import org.vaadin.codeeditor.AceMarkerEditor
-import org.vaadin.codeeditor.gwt.ace.AceMode
-import org.vaadin.codeeditor.gwt.shared.Marker
+import org.vaadin.aceeditor.AceMarkerEditor
+import org.vaadin.aceeditor.gwt.ace.AceMode
+import org.vaadin.aceeditor.gwt.shared.Marker
 import edu.gemini.aspen.giapi.web.ui.vaadin.selects.Table
 
 /**
