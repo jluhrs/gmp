@@ -19,7 +19,7 @@
     <inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet" />
 
     <!-- Unfortunately we need to add in here widgetsets used by modules -->
-    <inherits name="org.vaadin.codeeditor.gwt.AceEditorWidgetset" />
+    <inherits name="org.vaadin.aceeditor.gwt.AceEditorWidgetSet" />
 
     <inherits name="org.vaadin.henrik.drawer.widgetset.DrawerApplicationWidgetset" />
 
