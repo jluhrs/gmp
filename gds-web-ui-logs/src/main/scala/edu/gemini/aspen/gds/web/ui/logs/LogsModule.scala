@@ -28,7 +28,7 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
     selectable = true,
     style = "logs",
     sizeFull = true,
-    sortAscending = true,
+    sortAscending = false,
     sortPropertyId = "timeStamp",
     cellStyleGenerator = styleGenerator)
   val levelCombo = new NativeSelect(nullSelectionAllowed = false, action = changeLevel, immediate = true)
@@ -58,7 +58,7 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
 
     definition.addProperty("timeStamp", classOf[java.lang.Long], 0L, true, true)
     definition.addProperty("level", classOf[String], "", true, true)
-    definition.addProperty("loggerName", classOf[String], "", true, true)
+    //definition.addProperty("loggerName", classOf[String], "", true, true)
     definition.addProperty("message", classOf[String], "", true, true)
     queryFactory.setQueryDefinition(definition)
 
