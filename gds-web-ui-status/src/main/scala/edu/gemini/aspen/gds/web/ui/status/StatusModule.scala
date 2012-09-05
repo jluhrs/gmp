@@ -188,6 +188,7 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
    * Define a custom cell style based on the content of the cell */
   private def keywordsStyleGenerator(itemId: AnyRef, propertyId: AnyRef): String = {
     keywordsTable.getItem(itemId).getItemProperty("cv").getValue match {
+      case x: ErrorCollectedValue if x.error == CollectionError.ItemNotFound => "warn"
       case x: ErrorCollectedValue => "error"
       case x => ""
     }
