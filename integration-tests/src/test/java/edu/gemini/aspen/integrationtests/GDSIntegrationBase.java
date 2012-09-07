@@ -21,9 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
+import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static scala.collection.JavaConversions.seqAsJavaList;
 
@@ -52,6 +50,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     public static Option[] gdsBundles() {
         return options(
                 vmOption("-Xverify:none "),
+                systemProperty("org.osgi.service.http.port").value("9999"),
                 mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
                 mavenBundle().artifactId("fits").groupId("edu.gemini.external.osgi.nom.tam").versionAsInProject(),
                 mavenBundle().artifactId("scala-library").groupId("com.weiglewilczek.scala-lang-osgi").versionAsInProject(),
@@ -71,11 +70,12 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("shared-test").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("shared-util").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-jetty-bundle").groupId("org.ops4j.pax.web").versionAsInProject(),
+                mavenBundle().artifactId("pax-web-extender-whiteboard").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-spi").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("ecj").groupId("edu.gemini.external.osgi.org.eclipse.jdt.core.compiler").versionAsInProject(),
                 wrappedBundle(mavenBundle().artifactId("casdb").groupId("edu.gemini.cas").versionAsInProject()).overwriteManifest(WrappedUrlProvisionOption.OverwriteMode.FULL),
-                        mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").versionAsInProject()
-                );
+                mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").versionAsInProject()
+         );
     }
 
     @Override

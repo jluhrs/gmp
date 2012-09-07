@@ -1,6 +1,7 @@
 package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.aspen.gds.api.CompositePostProcessingPolicy;
+import edu.gemini.aspen.gds.api.KeywordActorsFactory;
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
@@ -28,22 +29,25 @@ public class GDSWithODBIT extends GDSIntegrationBase {
     @Configuration
     public static Option[] gdsODBBundles() {
         return options(
-                systemProperty("jini.lus.import.hosts").value("sbfswgdev01.cl.gemini.edu"),
+                systemProperty("jini.lus.import.hosts").value("gsodbtest.cl.gemini.edu"),
+                systemProperty("jini.lus.import.groups").value("test"),
                 systemProperty("org.osgi.framework.system.packages.extra").value("sun.misc,sun.security.action,sun.rmi.runtime,edu.gemini.rmi.server"),
                 systemProperty("org.osgi.framework.bootdelegation").value("java.rmi.server"),
-                systemProperty("jini.lus.import.groups").value("swg-test"),
-                systemProperty("org.osgi.service.http.port").value("8888"),
-                mavenBundle().artifactId("jini-driver").groupId("gemini-nocs").versionAsInProject(),
+                mavenBundle().artifactId("pax-web-jetty-bundle").groupId("org.ops4j.pax.web").versionAsInProject(),
+                mavenBundle().artifactId("pax-web-extender-whiteboard").groupId("org.ops4j.pax.web").versionAsInProject(),
+                mavenBundle().artifactId("pax-web-spi").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("spdb-activator").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("rr").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("gds-odb-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-error-policy").groupId("edu.gemini.aspen.gds").versionAsInProject()//this is now needed always, to add missing keywords
+                mavenBundle().artifactId("gds-error-policy").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("jini-driver").groupId("gemini-nocs").versionAsInProject()
         );
     }
 
     @Test
     public void bundleExistence() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(400);
+        assertNotNull(getBundle("edu.gemini.jini.jini-driver"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.odb"));
     }
 
@@ -55,6 +59,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
         assertNotNull(context.getService(context.getServiceReference(CompositePostProcessingPolicy.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(KeywordActorsFactory.class.getName())));
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);
 
