@@ -102,7 +102,7 @@
     <SimpleChannel>
         <giapiname>gpi:calSphereSCDB</giapiname>
         <epicsname>calSphereSCDB</epicsname>
-        <type>INT</type>
+        <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
