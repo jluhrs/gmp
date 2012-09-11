@@ -36,10 +36,10 @@ mapped to functions that extract data items from the Program
 The bundle uses the common configuration format and use items of the subsystem ODB like:
 
 \verbatim
-#   Instrument    Event         Keyword Name      FITS      Data       Gemini           Null      Subsystem       Subsystem                 Array     Comment
+#   Instrument    Event         Keyword Name      FITS      Data       Gemini           Null      Subsystem       Subsystem                 Array   Format   Comment
 #     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
-#  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------   -----------------
-    GPI          OBS_PREP         PIFSTNAM         0        DOUBLE          F            NONE        ODB         odb:piFirstName             NULL     "PI's first name"
+#  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   ------- -------- -----------------
+    GPI          OBS_PREP         PIFSTNAM         0        DOUBLE          F            NONE        ODB         odb:piFirstName             NULL     ""     "PI's first name"
 \endverbatim
 
 As mentioned before the channel is a value mapped internally to a value in the program.

@@ -193,11 +193,11 @@ The names of the sources are used in the Configuration file as shown in the next
 
  \verbatim
  #
- #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Null      Source          Source                    Array     Comment
+ #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Null      Source          Source                    Array    Format    Comment
  #     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
- #  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------   -----------------
+ #  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------  --------  -----------------
  #
-    GPI          OBS_END_ACQ      AIRMASS          0        DOUBLE          F            NONE        EPICS       ws:massAirmass              NULL     "Mean airmass for the observation"
+    GPI          OBS_END_ACQ      AIRMASS          0        DOUBLE          F            NONE        EPICS       ws:massAirmass              NULL      "%.2f"  "Mean airmass for the observation"
  ...
  \endverbatim
 
@@ -241,7 +241,7 @@ The names of the sources are used in the Configuration file as shown in the next
     </tr>
     <tr>
         <td>Null Value</td>
-        <td>Value to write in case the actual value can't be retrieved</td>
+        <td>Default expected value, it is used only for the CONSTANT type of keywords</td>
         <td>Any alphanumeric string</td>
     </tr>
     <tr>
@@ -258,6 +258,11 @@ The names of the sources are used in the Configuration file as shown in the next
         <td>Array Index</td>
         <td>If the channel is an array, which element to retrieve. Put 0 if channel is not an array.</td>
         <td>0, 1, 2...</td>
+    </tr>
+    <tr>
+        <td>Format</td>
+        <td>Option formatting string following the Java-based printf style. (See http://docs.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html)</td>
+        <td>%s, %.2d, etc</td>
     </tr>
     <tr>
         <td>Comment</td>
@@ -357,7 +362,7 @@ That only means that the browser window was inactive for too long. Just refresh 
 
  - If you don't have an ODB database running on your network this will produce exceptions on the log like:
 
- net.jini.discovery.LookupLocatorDiscovery -  exception occured during unicast discovery to unknown.cl.gemini.edu:4160 with constraints InvocationConstraints[reqs: {}, prefs: {}]
+ net.jini.discovery.LookupLocatorDiscovery -  exception occurred during unicast discovery to unknown.cl.gemini.edu:4160 with constraints InvocationConstraints[reqs: {}, prefs: {}]
     java.net.UnknownHostException: unknown.cl.gemini.edu
         at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:195)
         at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:366)

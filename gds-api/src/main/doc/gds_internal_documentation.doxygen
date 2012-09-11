@@ -12,7 +12,7 @@ The GDS is comprised of the following bundles:
 - \subpage gds-config-validator
 - \subpage gds-constant-actors
 - \subpage gds-epics-actors
-- \subpage gds-error-policy
+- \subpage gds-postprocessing-policy
 - \subpage gds-fits-checker
 - \subpage gds-fits-updater
 - \subpage gds-health
@@ -61,7 +61,7 @@ generated), when labels are generated. Furthermore, data can be sent with arbitr
 
 So, there are three main alternatives for instruments using the GDS:
 - Continue with the seqexec request datalabels to the DHS, and then not sending any data to the DHS, but to the GDS. The
-major disadvantage is a dependance on the DHS for GIAPI based instruments.
+major disadvantage is a dependence on the DHS for GIAPI based instruments.
 - Extract the datalabel generation from the DHS to an external service that the DHS can query for most instruments, and
 the seqexec can query for GIAPI based instruments. The major disadvantage is the risk of modifying a complex piece of
 software like the DHS. For consistency and simplicity, if this option is taken, the communication with the new external

@@ -61,7 +61,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
     }
 
     // Start collecting
-    val dataFutures = measureDuration("Sending collection request for " + obsEvent) {
+    val dataFutures = measureDuration("Sending collection request for %s to %d actors".format(obsEvent, actors.size)) {
       for (dataActor <- actors) yield
         dataActor !! Collect
     }

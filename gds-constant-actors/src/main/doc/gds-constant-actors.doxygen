@@ -6,10 +6,10 @@
  
   \section gds-constant-actors_config The bundle uses the common configuration format and use items of the CONSTANT source like:
   \verbatim
-  #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Default    Source         Source                    Array     Comment
-  #     Name                        in FITS         Header    Type       Mandatory        Value                     channel                   Index
-  #  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   -------------------------   -------   -----------------
-      GPI          OBS_PREP      OBSERVATORY 0        STRING          F            Default_value      CONSTANT     none     GEMINI     "Name of the Observatory"
+  #   Instrument    Event         Keyword Name      FITS      Data       Gemini           Default    Source         Source     Array   Format    Comment
+  #     Name                        in FITS         Header    Type       Mandatory        Value                     channel    Index
+  #  -----------  -------------  ---------------   -------   -------   ---------------   -------   -----------   ------------ ------- --------  -----------------
+      GPI          OBS_PREP      OBSERVATORY          0      STRING          F            GEMINI     CONSTANT       none       0        ""      "Name of the Observatory"
   \endverbatim
  
   Where the Default Value will be stored at the keyword "as is". Though the Source Channel is not used some value needs to be provided, "none" is recommended
