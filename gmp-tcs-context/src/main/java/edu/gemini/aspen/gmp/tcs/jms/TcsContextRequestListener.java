@@ -63,7 +63,7 @@ public class TcsContextRequestListener implements MessageListener {
         try {
             sendContextIfAllowed(message);
         } catch (JMSException e) {
-            LOG.warning("Problems sending TCS Context back");
+            LOG.log(Level.WARNING, "Problems sending TCS Context back", e);
         } catch (TcsContextException e) {
             LOG.log(Level.WARNING, "Problem obtaining TCS Context", e);
         }
