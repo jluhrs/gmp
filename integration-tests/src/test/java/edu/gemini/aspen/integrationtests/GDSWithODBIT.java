@@ -86,7 +86,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
     private void postProgramIDToDataLabelLink() {
         ProgramIdDatabase programIdDatabase = (ProgramIdDatabase) context.getService(context.getServiceReference(ProgramIdDatabase.class.getName()));
         assertNotNull(programIdDatabase);
-        DataLabel dataLabel = new DataLabel("S20110427-01");
+        DataLabel dataLabel = new DataLabel("sample1.fits");
         programIdDatabase.store(dataLabel, "GS-2006B-Q-57");
     }
 
