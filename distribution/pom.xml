@@ -451,7 +451,7 @@
                     <artifactId>vaadin</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                    <groupId>edu.gemini.external.osgi.org.vaadin.addon</groupId>
                     <artifactId>confirmdialog</artifactId>
                 </dependency>
                 <dependency>
@@ -459,11 +459,7 @@
                     <artifactId>vaadin-lazyquerycontainer</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-                    <artifactId>pagedtable</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
+                    <groupId>edu.gemini.external.osgi.org.vaadin</groupId>
                     <artifactId>aceeditor</artifactId>
                 </dependency>
                 <dependency>
