@@ -15,10 +15,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gds</groupId>
-    <artifactId>gds-error-policy</artifactId>
+    <artifactId>gds-postprocessing-policy</artifactId>
     <version>0.2.0-SNAPSHOT</version>
 
-    <name>GDS Error Policy</name>
+    <name>GDS Post Processing Policies</name>
     <description>The module deifnes a set of modules that con implement different error policies to be used after an observation is completed</description>
 
     <packaging>bundle</packaging>
