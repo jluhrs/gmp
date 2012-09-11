@@ -47,7 +47,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
                 mavenBundle().artifactId("spdb-activator").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("rr").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("gds-odb-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("gds-error-policy").groupId("edu.gemini.aspen.gds").versionAsInProject(),
+                mavenBundle().artifactId("gds-postprocessing-policy").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 waitForFrameworkStartup()
         );
     }
