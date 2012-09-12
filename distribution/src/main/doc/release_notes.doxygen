@@ -1,5 +1,39 @@
 /*! \page release_notes Release Notes
 
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3
+
+<h2>        Story
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1008'>GIAPI-1008</a>] -         Defaults values should never be written to the FITS file
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1006'>GIAPI-1006</a>] -         GDS FITS files should be written atomically
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-872'>GIAPI-872</a>] -         GDS configuration should support a format parameter
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-874'>GIAPI-874</a>] -         GDS GUI should show when the config has an error
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-877'>GIAPI-877</a>] -         GDS Should support setting a keyword as null
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-964'>GIAPI-964</a>] -         Add filters to GDS Log web ui
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-993'>GIAPI-993</a>] -         Create a list of the last observations on the web ui status
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-996'>GIAPI-996</a>] -         Upgrade to vaadin 6.8
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1007'>GIAPI-1007</a>] -         On the GDS Status page show the reason why keyword collection has failed
+</li>
+</ul>
+
+
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-883'>GIAPI-883</a>] -         If heartbeat messages are not being read, they should be removed. The producer should never be throttled.
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-998'>GIAPI-998</a>] -         StatusItemTranslator should support multiple translations per original StatusItem
+</li>
+</ul>
 
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.2
 
