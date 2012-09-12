@@ -3,8 +3,6 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
 import edu.gemini.aspen.gds.api.CompositePostProcessingPolicy;
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
-import edu.gemini.aspen.gds.api.fits.HeaderItem;
-import edu.gemini.aspen.gds.fits.FitsReader;
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStateProvider;
@@ -21,13 +19,11 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
-import static scala.collection.JavaConversions.seqAsJavaList;
 
 @RunWith(JUnit4TestRunner.class)
 public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
@@ -35,10 +31,10 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
     @Configuration
     public static Option[] gdsODBBundles() {
         return options(
-                systemProperty("jini.lus.import.hosts").value("sbfswgdev01.cl.gemini.edu"),
+                systemProperty("jini.lus.import.hosts").value("gsodbtest.cl.gemini.edu"),
                 systemProperty("org.osgi.framework.system.packages.extra").value("sun.misc,sun.security.action,sun.rmi.runtime,edu.gemini.rmi.server"),
                 systemProperty("org.osgi.framework.bootdelegation").value("java.rmi.server"),
-                systemProperty("jini.lus.import.groups").value("swg-test"),
+                systemProperty("jini.lus.import.groups").value("test"),
                 systemProperty("org.osgi.service.http.port").value("8888"),
                 mavenBundle().artifactId("pax-web-jetty-bundle").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-spi").groupId("org.ops4j.pax.web").versionAsInProject(),
@@ -61,6 +57,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
     public void bundleExistence() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(400);
         assertNotNull(getBundle("edu.gemini.aspen.gds.odb"));
+        assertNotNull(getBundle("edu.gemini.jini.jini-driver"));
     }
 
     @Test
@@ -97,19 +94,8 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
 
         assertTrue(afterProcessingKeywords.containsAll(originalKeywords));
         assertTrue(afterProcessingKeywords.contains("PIFSTNAM"));
-        assertTrue(afterProcessingKeywords.contains("EPIC"));
-        assertTrue(afterProcessingKeywords.contains("EPIC2"));
-
-        FitsReader reader = new FitsReader(finalFile);
-        List<HeaderItem<?>> headerItems = seqAsJavaList(reader.header(0).get().keywords());
-        for (HeaderItem<?> h:headerItems) {
-            if (h.keywordName().equals("EPIC")) {
-                assertEquals("default", h.value().toString());//non mandatory item should have default value if not found
-            }
-            if (h.keywordName().equals("EPIC2")) {
-                assertEquals("", h.value().toString()); //mandatory item should be present but empty if not found
-            }
-        }
+        assertFalse(afterProcessingKeywords.contains("EPIC"));
+        assertFalse(afterProcessingKeywords.contains("EPIC2"));
     }
 
     private void postProgramIDToDataLabelLink() {
