@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.heartbeat;
+package edu.gemini.aspen.gmp.health;
 
 import org.junit.Test;
 

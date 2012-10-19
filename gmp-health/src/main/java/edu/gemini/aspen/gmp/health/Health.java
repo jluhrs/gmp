@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.heartbeat;
+package edu.gemini.aspen.gmp.health;
 
 import edu.gemini.aspen.gmp.top.Top;
 import org.apache.felix.ipojo.annotations.Component;
