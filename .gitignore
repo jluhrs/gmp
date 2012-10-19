@@ -1,0 +1,2017 @@
+
+# /
+/*.iml
+/target
+/*.ipr
+/*.fits
+/*.iws
+/runner
+
+# /cas/
+/cas/*.iml
+/cas/target
+
+# /cas/history/
+/cas/history/*.iml
+/cas/history/target
+
+# /cas/src/
+/cas/src/*.iml
+/cas/src/target
+
+# /cas/src/main/
+/cas/src/main/*.iml
+/cas/src/main/target
+
+# /cas/src/main/doc/
+/cas/src/main/doc/*.iml
+/cas/src/main/doc/target
+
+# /cas/src/main/java/
+/cas/src/main/java/*.iml
+/cas/src/main/java/target
+
+# /cas/src/main/java/edu/
+/cas/src/main/java/edu/*.iml
+/cas/src/main/java/edu/target
+
+# /cas/src/main/java/edu/gemini/
+/cas/src/main/java/edu/gemini/*.iml
+/cas/src/main/java/edu/gemini/target
+
+# /cas/src/main/java/edu/gemini/cas/
+/cas/src/main/java/edu/gemini/cas/*.iml
+/cas/src/main/java/edu/gemini/cas/target
+
+# /cas/src/main/java/edu/gemini/cas/epics/
+/cas/src/main/java/edu/gemini/cas/epics/*.iml
+/cas/src/main/java/edu/gemini/cas/epics/target
+
+# /cas/src/test/
+/cas/src/test/*.iml
+/cas/src/test/target
+
+# /cas/src/test/java/
+/cas/src/test/java/*.iml
+/cas/src/test/java/target
+
+# /cas/src/test/java/edu/
+/cas/src/test/java/edu/*.iml
+/cas/src/test/java/edu/target
+
+# /cas/src/test/java/edu/gemini/
+/cas/src/test/java/edu/gemini/*.iml
+/cas/src/test/java/edu/gemini/target
+
+# /cas/src/test/java/edu/gemini/cas/
+/cas/src/test/java/edu/gemini/cas/*.iml
+/cas/src/test/java/edu/gemini/cas/target
+
+# /casdb/
+/casdb/target
+/casdb/*.iml
+
+# /distribution/
+/distribution/target
+/distribution/*.iml
+/distribution/debug.txt
+
+# /distribution/src/main/etc/bin/
+/distribution/src/main/etc/bin/*.iml
+/distribution/src/main/etc/bin/target
+
+# /doc/
+/doc/*.iml
+/doc/target
+
+# /epics-api/
+/epics-api/*.iml
+/epics-api/target
+
+# /epics-heartbeat/
+/epics-heartbeat/*.iml
+/epics-heartbeat/target
+/epics-heartbeat/activemq-data
+
+# /epics-service/
+/epics-service/*.iml
+/epics-service/target
+
+# /epics-service/history/
+/epics-service/history/*.iml
+/epics-service/history/target
+
+# /epics-service/src/
+/epics-service/src/*.iml
+/epics-service/src/target
+
+# /epics-service/src/main/
+/epics-service/src/main/*.iml
+/epics-service/src/main/target
+
+# /epics-service/src/main/java/
+/epics-service/src/main/java/*.iml
+/epics-service/src/main/java/target
+
+# /epics-service/src/main/java/edu/
+/epics-service/src/main/java/edu/*.iml
+/epics-service/src/main/java/edu/target
+
+# /epics-service/src/main/java/edu/gemini/
+/epics-service/src/main/java/edu/gemini/*.iml
+/epics-service/src/main/java/edu/gemini/target
+
+# /epics-service/src/main/java/edu/gemini/epics/
+/epics-service/src/main/java/edu/gemini/epics/*.iml
+/epics-service/src/main/java/edu/gemini/epics/target
+
+# /epics-service/src/main/java/edu/gemini/epics/impl/
+/epics-service/src/main/java/edu/gemini/epics/impl/*.iml
+/epics-service/src/main/java/edu/gemini/epics/impl/target
+
+# /gds-actors-composer/
+/gds-actors-composer/target
+/gds-actors-composer/*.iml
+
+# /gds-api/
+/gds-api/*.iml
+/gds-api/target
+
+# /gds-config-validator/
+/gds-config-validator/target
+/gds-config-validator/*.iml
+
+# /gds-constant-actors/
+/gds-constant-actors/target
+/gds-constant-actors/*.iml
+
+# /gds-datalabel-provider/
+/gds-datalabel-provider/target
+/gds-datalabel-provider/*.iml
+
+# /gds-epics-actors/
+/gds-epics-actors/target
+/gds-epics-actors/*.iml
+
+# /gds-fits-checker/
+/gds-fits-checker/target
+/gds-fits-checker/*.iml
+
+# /gds-fits-updater/
+/gds-fits-updater/*.iml
+/gds-fits-updater/target
+/gds-fits-updater/*.fits
+
+# /gds-health/
+/gds-health/target
+/gds-health/*.iml
+/gds-health/activemq-data
+
+# /gds-instrument-status-actors/
+/gds-instrument-status-actors/target
+/gds-instrument-status-actors/*.iml
+
+# /gds-keywords-database/
+/gds-keywords-database/*.iml
+/gds-keywords-database/target
+
+# /gds-observation-state-publisher/
+/gds-observation-state-publisher/target
+/gds-observation-state-publisher/*.iml
+
+# /gds-obsevent-handler/
+/gds-obsevent-handler/*.iml
+/gds-obsevent-handler/target
+
+# /gds-odb-actors/
+/gds-odb-actors/*.iml
+/gds-odb-actors/target
+
+# /gds-performance-monitoring/
+/gds-performance-monitoring/target
+/gds-performance-monitoring/*.iml
+
+# /gds-postprocessing-policy/
+/gds-postprocessing-policy/target
+/gds-postprocessing-policy/*.iml
+
+# /gds-properties-actors/
+/gds-properties-actors/target
+/gds-properties-actors/*.iml
+
+# /gds-seqexec-actors/
+/gds-seqexec-actors/target
+/gds-seqexec-actors/*.iml
+
+# /gds-static-header-receiver/
+/gds-static-header-receiver/*.iml
+/gds-static-header-receiver/target
+
+# /gds-web-ui/
+/gds-web-ui/target
+/gds-web-ui/*.iml
+
+# /gds-web-ui-configuration/
+/gds-web-ui-configuration/target
+/gds-web-ui-configuration/*.iml
+
+# /gds-web-ui-keywords/
+/gds-web-ui-keywords/target
+/gds-web-ui-keywords/*.iml
+
+# /gds-web-ui-logs/
+/gds-web-ui-logs/target
+/gds-web-ui-logs/*.iml
+
+# /gds-web-ui-status/
+/gds-web-ui-status/target
+/gds-web-ui-status/*.iml
+
+# /giapi/
+/giapi/*.iml
+/giapi/target
+
+# /giapi/history/
+/giapi/history/*.iml
+/giapi/history/target
+
+# /giapi/src/
+/giapi/src/*.iml
+/giapi/src/target
+
+# /giapi/src/main/
+/giapi/src/main/*.iml
+/giapi/src/main/target
+
+# /giapi/src/main/java/
+/giapi/src/main/java/*.iml
+/giapi/src/main/java/target
+
+# /giapi/src/main/java/edu/
+/giapi/src/main/java/edu/*.iml
+/giapi/src/main/java/edu/target
+
+# /giapi/src/main/java/edu/gemini/
+/giapi/src/main/java/edu/gemini/*.iml
+/giapi/src/main/java/edu/gemini/target
+
+# /giapi/src/main/java/edu/gemini/aspen/
+/giapi/src/main/java/edu/gemini/aspen/*.iml
+/giapi/src/main/java/edu/gemini/aspen/target
+
+# /giapi/src/main/java/edu/gemini/aspen/giapi/
+/giapi/src/main/java/edu/gemini/aspen/giapi/*.iml
+/giapi/src/main/java/edu/gemini/aspen/giapi/target
+
+# /giapi/src/main/java/edu/gemini/aspen/giapi/commands/
+/giapi/src/main/java/edu/gemini/aspen/giapi/commands/*.iml
+/giapi/src/main/java/edu/gemini/aspen/giapi/commands/target
+
+# /giapi/src/main/java/edu/gemini/aspen/giapi/data/
+/giapi/src/main/java/edu/gemini/aspen/giapi/data/*.iml
+/giapi/src/main/java/edu/gemini/aspen/giapi/data/target
+
+# /giapi/src/main/java/edu/gemini/aspen/giapi/status/
+/giapi/src/main/java/edu/gemini/aspen/giapi/status/*.iml
+/giapi/src/main/java/edu/gemini/aspen/giapi/status/target
+
+# /giapi/src/main/java/edu/gemini/aspen/giapi/status/beans/
+/giapi/src/main/java/edu/gemini/aspen/giapi/status/beans/*.iml
+/giapi/src/main/java/edu/gemini/aspen/giapi/status/beans/target
+
+# /giapi/src/main/java/edu/gemini/aspen/giapi/status/impl/
+/giapi/src/main/java/edu/gemini/aspen/giapi/status/impl/*.iml
+/giapi/src/main/java/edu/gemini/aspen/giapi/status/impl/target
+
+# /giapi/src/main/java/edu/gemini/aspen/giapi/status/mappers/
+/giapi/src/main/java/edu/gemini/aspen/giapi/status/mappers/*.iml
+/giapi/src/main/java/edu/gemini/aspen/giapi/status/mappers/target
+
+# /giapi/src/test/
+/giapi/src/test/*.iml
+/giapi/src/test/target
+
+# /giapi/src/test/java/
+/giapi/src/test/java/*.iml
+/giapi/src/test/java/target
+
+# /giapi/src/test/java/edu/
+/giapi/src/test/java/edu/*.iml
+/giapi/src/test/java/edu/target
+
+# /giapi/src/test/java/edu/gemini/
+/giapi/src/test/java/edu/gemini/*.iml
+/giapi/src/test/java/edu/gemini/target
+
+# /giapi/src/test/java/edu/gemini/aspen/
+/giapi/src/test/java/edu/gemini/aspen/*.iml
+/giapi/src/test/java/edu/gemini/aspen/target
+
+# /giapi/src/test/java/edu/gemini/aspen/giapi/
+/giapi/src/test/java/edu/gemini/aspen/giapi/*.iml
+/giapi/src/test/java/edu/gemini/aspen/giapi/target
+
+# /giapi/src/test/java/edu/gemini/aspen/giapi/commands/
+/giapi/src/test/java/edu/gemini/aspen/giapi/commands/*.iml
+/giapi/src/test/java/edu/gemini/aspen/giapi/commands/target
+
+# /giapi/src/test/java/edu/gemini/aspen/giapi/data/
+/giapi/src/test/java/edu/gemini/aspen/giapi/data/*.iml
+/giapi/src/test/java/edu/gemini/aspen/giapi/data/target
+
+# /giapi-fileevent-handler/
+/giapi-fileevent-handler/*.iml
+/giapi-fileevent-handler/target
+
+# /giapi-fileevent-handler/history/
+/giapi-fileevent-handler/history/*.iml
+/giapi-fileevent-handler/history/target
+
+# /giapi-fileevent-handler/src/
+/giapi-fileevent-handler/src/*.iml
+/giapi-fileevent-handler/src/target
+
+# /giapi-fileevent-handler/src/main/
+/giapi-fileevent-handler/src/main/*.iml
+/giapi-fileevent-handler/src/main/target
+
+# /giapi-fileevent-handler/src/main/java/
+/giapi-fileevent-handler/src/main/java/*.iml
+/giapi-fileevent-handler/src/main/java/target
+
+# /giapi-fileevent-handler/src/main/java/edu/
+/giapi-fileevent-handler/src/main/java/edu/*.iml
+/giapi-fileevent-handler/src/main/java/edu/target
+
+# /giapi-fileevent-handler/src/main/java/edu/gemini/
+/giapi-fileevent-handler/src/main/java/edu/gemini/*.iml
+/giapi-fileevent-handler/src/main/java/edu/gemini/target
+
+# /giapi-fileevent-handler/src/main/java/edu/gemini/giapi/
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/*.iml
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/target
+
+# /giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/*.iml
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/target
+
+# /giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/*.iml
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/target
+
+# /giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/handler/
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/handler/*.iml
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/handler/target
+
+# /giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/handler/osgi/
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/handler/osgi/*.iml
+/giapi-fileevent-handler/src/main/java/edu/gemini/giapi/data/fileevent/handler/osgi/target
+
+# /giapi-fileevents/
+/giapi-fileevents/*.iml
+/giapi-fileevents/target
+
+# /giapi-fileevents/history/
+/giapi-fileevents/history/*.iml
+/giapi-fileevents/history/target
+
+# /giapi-fileevents/src/
+/giapi-fileevents/src/*.iml
+/giapi-fileevents/src/target
+
+# /giapi-fileevents/src/main/
+/giapi-fileevents/src/main/*.iml
+/giapi-fileevents/src/main/target
+
+# /giapi-fileevents/src/main/java/
+/giapi-fileevents/src/main/java/*.iml
+/giapi-fileevents/src/main/java/target
+
+# /giapi-fileevents/src/main/java/edu/
+/giapi-fileevents/src/main/java/edu/*.iml
+/giapi-fileevents/src/main/java/edu/target
+
+# /giapi-fileevents/src/main/java/edu/gemini/
+/giapi-fileevents/src/main/java/edu/gemini/*.iml
+/giapi-fileevents/src/main/java/edu/gemini/target
+
+# /giapi-fileevents/src/main/java/edu/gemini/aspen/
+/giapi-fileevents/src/main/java/edu/gemini/aspen/*.iml
+/giapi-fileevents/src/main/java/edu/gemini/aspen/target
+
+# /giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/*.iml
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/target
+
+# /giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/*.iml
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/target
+
+# /giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/*.iml
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/target
+
+# /giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/jms/
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/jms/*.iml
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/jms/target
+
+# /giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/osgi/
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/osgi/*.iml
+/giapi-fileevents/src/main/java/edu/gemini/aspen/giapi/data/fileevents/osgi/target
+
+# /giapi-fileevents/src/test/
+/giapi-fileevents/src/test/*.iml
+/giapi-fileevents/src/test/target
+
+# /giapi-fileevents/src/test/java/
+/giapi-fileevents/src/test/java/*.iml
+/giapi-fileevents/src/test/java/target
+
+# /giapi-fileevents/src/test/java/edu/
+/giapi-fileevents/src/test/java/edu/*.iml
+/giapi-fileevents/src/test/java/edu/target
+
+# /giapi-fileevents/src/test/java/edu/gemini/
+/giapi-fileevents/src/test/java/edu/gemini/*.iml
+/giapi-fileevents/src/test/java/edu/gemini/target
+
+# /giapi-fileevents/src/test/java/edu/gemini/aspen/
+/giapi-fileevents/src/test/java/edu/gemini/aspen/*.iml
+/giapi-fileevents/src/test/java/edu/gemini/aspen/target
+
+# /giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/
+/giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/*.iml
+/giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/target
+
+# /giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/
+/giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/*.iml
+/giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/target
+
+# /giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/fileevents/
+/giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/fileevents/*.iml
+/giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/fileevents/target
+
+# /giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/fileevents/jms/
+/giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/fileevents/jms/*.iml
+/giapi-fileevents/src/test/java/edu/gemini/aspen/giapi/data/fileevents/jms/target
+
+# /giapi-jms-util/
+/giapi-jms-util/*.iml
+/giapi-jms-util/target
+
+# /giapi-jms-util/history/
+/giapi-jms-util/history/*.iml
+/giapi-jms-util/history/target
+
+# /giapi-jms-util/src/
+/giapi-jms-util/src/*.iml
+/giapi-jms-util/src/target
+
+# /giapi-jms-util/src/main/
+/giapi-jms-util/src/main/*.iml
+/giapi-jms-util/src/main/target
+
+# /giapi-jms-util/src/main/java/
+/giapi-jms-util/src/main/java/*.iml
+/giapi-jms-util/src/main/java/target
+
+# /giapi-jms-util/src/main/java/edu/
+/giapi-jms-util/src/main/java/edu/*.iml
+/giapi-jms-util/src/main/java/edu/target
+
+# /giapi-jms-util/src/main/java/edu/gemini/
+/giapi-jms-util/src/main/java/edu/gemini/*.iml
+/giapi-jms-util/src/main/java/edu/gemini/target
+
+# /giapi-jms-util/src/main/java/edu/gemini/aspen/
+/giapi-jms-util/src/main/java/edu/gemini/aspen/*.iml
+/giapi-jms-util/src/main/java/edu/gemini/aspen/target
+
+# /giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/
+/giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/*.iml
+/giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/target
+
+# /giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/
+/giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/*.iml
+/giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/target
+
+# /giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/jms/
+/giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/jms/*.iml
+/giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/jms/target
+
+# /giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/jms/status/
+/giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/jms/status/*.iml
+/giapi-jms-util/src/main/java/edu/gemini/aspen/giapi/util/jms/status/target
+
+# /giapi-jms-util/src/test/
+/giapi-jms-util/src/test/*.iml
+/giapi-jms-util/src/test/target
+
+# /giapi-jms-util/src/test/java/
+/giapi-jms-util/src/test/java/*.iml
+/giapi-jms-util/src/test/java/target
+
+# /giapi-jms-util/src/test/java/edu/
+/giapi-jms-util/src/test/java/edu/*.iml
+/giapi-jms-util/src/test/java/edu/target
+
+# /giapi-jms-util/src/test/java/edu/gemini/
+/giapi-jms-util/src/test/java/edu/gemini/*.iml
+/giapi-jms-util/src/test/java/edu/gemini/target
+
+# /giapi-jms-util/src/test/java/edu/gemini/aspen/
+/giapi-jms-util/src/test/java/edu/gemini/aspen/*.iml
+/giapi-jms-util/src/test/java/edu/gemini/aspen/target
+
+# /giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/
+/giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/*.iml
+/giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/target
+
+# /giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/util/
+/giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/util/*.iml
+/giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/util/target
+
+# /giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/util/jms/
+/giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/util/jms/*.iml
+/giapi-jms-util/src/test/java/edu/gemini/aspen/giapi/util/jms/target
+
+# /giapi-obsevents/
+/giapi-obsevents/*.iml
+/giapi-obsevents/target
+
+# /giapi-obsevents/history/
+/giapi-obsevents/history/*.iml
+/giapi-obsevents/history/target
+
+# /giapi-obsevents/src/
+/giapi-obsevents/src/*.iml
+/giapi-obsevents/src/target
+
+# /giapi-obsevents/src/main/
+/giapi-obsevents/src/main/*.iml
+/giapi-obsevents/src/main/target
+
+# /giapi-obsevents/src/main/java/
+/giapi-obsevents/src/main/java/*.iml
+/giapi-obsevents/src/main/java/target
+
+# /giapi-obsevents/src/main/java/edu/
+/giapi-obsevents/src/main/java/edu/*.iml
+/giapi-obsevents/src/main/java/edu/target
+
+# /giapi-obsevents/src/main/java/edu/gemini/
+/giapi-obsevents/src/main/java/edu/gemini/*.iml
+/giapi-obsevents/src/main/java/edu/gemini/target
+
+# /giapi-obsevents/src/main/java/edu/gemini/aspen/
+/giapi-obsevents/src/main/java/edu/gemini/aspen/*.iml
+/giapi-obsevents/src/main/java/edu/gemini/aspen/target
+
+# /giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/*.iml
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/target
+
+# /giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/*.iml
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/target
+
+# /giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/*.iml
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/target
+
+# /giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/jms/
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/jms/*.iml
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/jms/target
+
+# /giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/osgi/
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/osgi/*.iml
+/giapi-obsevents/src/main/java/edu/gemini/aspen/giapi/data/obsevents/osgi/target
+
+# /giapi-obsevents/src/test/
+/giapi-obsevents/src/test/*.iml
+/giapi-obsevents/src/test/target
+
+# /giapi-obsevents/src/test/java/
+/giapi-obsevents/src/test/java/*.iml
+/giapi-obsevents/src/test/java/target
+
+# /giapi-obsevents/src/test/java/edu/
+/giapi-obsevents/src/test/java/edu/*.iml
+/giapi-obsevents/src/test/java/edu/target
+
+# /giapi-obsevents/src/test/java/edu/gemini/
+/giapi-obsevents/src/test/java/edu/gemini/*.iml
+/giapi-obsevents/src/test/java/edu/gemini/target
+
+# /giapi-obsevents/src/test/java/edu/gemini/aspen/
+/giapi-obsevents/src/test/java/edu/gemini/aspen/*.iml
+/giapi-obsevents/src/test/java/edu/gemini/aspen/target
+
+# /giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/
+/giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/*.iml
+/giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/target
+
+# /giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/
+/giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/*.iml
+/giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/target
+
+# /giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/obsevents/
+/giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/obsevents/*.iml
+/giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/obsevents/target
+
+# /giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/obsevents/jms/
+/giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/obsevents/jms/*.iml
+/giapi-obsevents/src/test/java/edu/gemini/aspen/giapi/data/obsevents/jms/target
+
+# /giapi-status-dispatcher/
+/giapi-status-dispatcher/*.iml
+/giapi-status-dispatcher/target
+/giapi-status-dispatcher/activemq-data
+
+# /giapi-status-dispatcher/history/
+/giapi-status-dispatcher/history/*.iml
+/giapi-status-dispatcher/history/target
+
+# /giapi-status-dispatcher/src/
+/giapi-status-dispatcher/src/*.iml
+/giapi-status-dispatcher/src/target
+
+# /giapi-status-dispatcher/src/main/
+/giapi-status-dispatcher/src/main/*.iml
+/giapi-status-dispatcher/src/main/target
+
+# /giapi-status-dispatcher/src/main/java/
+/giapi-status-dispatcher/src/main/java/*.iml
+/giapi-status-dispatcher/src/main/java/target
+
+# /giapi-status-dispatcher/src/main/java/edu/
+/giapi-status-dispatcher/src/main/java/edu/*.iml
+/giapi-status-dispatcher/src/main/java/edu/target
+
+# /giapi-status-dispatcher/src/main/java/edu/gemini/
+/giapi-status-dispatcher/src/main/java/edu/gemini/*.iml
+/giapi-status-dispatcher/src/main/java/edu/gemini/target
+
+# /giapi-status-dispatcher/src/main/java/edu/gemini/aspen/
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/*.iml
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/target
+
+# /giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/*.iml
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/target
+
+# /giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/*.iml
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/target
+
+# /giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/dispatcher/
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/dispatcher/*.iml
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/dispatcher/target
+
+# /giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/dispatcher/handlers/
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/dispatcher/handlers/*.iml
+/giapi-status-dispatcher/src/main/java/edu/gemini/aspen/giapi/status/dispatcher/handlers/target
+
+# /giapi-status-dispatcher/src/test/
+/giapi-status-dispatcher/src/test/*.iml
+/giapi-status-dispatcher/src/test/target
+
+# /giapi-status-dispatcher/src/test/java/
+/giapi-status-dispatcher/src/test/java/*.iml
+/giapi-status-dispatcher/src/test/java/target
+
+# /giapi-status-dispatcher/src/test/java/edu/
+/giapi-status-dispatcher/src/test/java/edu/*.iml
+/giapi-status-dispatcher/src/test/java/edu/target
+
+# /giapi-status-dispatcher/src/test/java/edu/gemini/
+/giapi-status-dispatcher/src/test/java/edu/gemini/*.iml
+/giapi-status-dispatcher/src/test/java/edu/gemini/target
+
+# /giapi-status-dispatcher/src/test/java/edu/gemini/aspen/
+/giapi-status-dispatcher/src/test/java/edu/gemini/aspen/*.iml
+/giapi-status-dispatcher/src/test/java/edu/gemini/aspen/target
+
+# /giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/
+/giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/*.iml
+/giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/target
+
+# /giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/status/
+/giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/status/*.iml
+/giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/status/target
+
+# /giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/status/dispatcher/
+/giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/status/dispatcher/*.iml
+/giapi-status-dispatcher/src/test/java/edu/gemini/aspen/giapi/status/dispatcher/target
+
+# /giapi-status-service/
+/giapi-status-service/*.iml
+/giapi-status-service/target
+/giapi-status-service/runner
+
+# /giapi-status-service/history/
+/giapi-status-service/history/*.iml
+/giapi-status-service/history/target
+
+# /giapi-status-service/src/
+/giapi-status-service/src/*.iml
+/giapi-status-service/src/target
+
+# /giapi-status-service/src/main/
+/giapi-status-service/src/main/*.iml
+/giapi-status-service/src/main/target
+
+# /giapi-status-service/src/main/java/
+/giapi-status-service/src/main/java/*.iml
+/giapi-status-service/src/main/java/target
+
+# /giapi-status-service/src/main/java/edu/
+/giapi-status-service/src/main/java/edu/*.iml
+/giapi-status-service/src/main/java/edu/target
+
+# /giapi-status-service/src/main/java/edu/gemini/
+/giapi-status-service/src/main/java/edu/gemini/*.iml
+/giapi-status-service/src/main/java/edu/gemini/target
+
+# /giapi-status-service/src/main/java/edu/gemini/aspen/
+/giapi-status-service/src/main/java/edu/gemini/aspen/*.iml
+/giapi-status-service/src/main/java/edu/gemini/aspen/target
+
+# /giapi-status-service/src/main/java/edu/gemini/aspen/giapi/
+/giapi-status-service/src/main/java/edu/gemini/aspen/giapi/*.iml
+/giapi-status-service/src/main/java/edu/gemini/aspen/giapi/target
+
+# /giapi-status-service/src/main/java/edu/gemini/aspen/giapi/statusservice/
+/giapi-status-service/src/main/java/edu/gemini/aspen/giapi/statusservice/*.iml
+/giapi-status-service/src/main/java/edu/gemini/aspen/giapi/statusservice/target
+/giapi-status-service/src/main/java/edu/gemini/aspen/giapi/statusservice/generated
+
+# /giapi-status-service/src/main/java/edu/gemini/aspen/giapi/statusservice/jms/
+/giapi-status-service/src/main/java/edu/gemini/aspen/giapi/statusservice/jms/*.iml
+/giapi-status-service/src/main/java/edu/gemini/aspen/giapi/statusservice/jms/target
+
+# /giapi-status-service/src/main/resources/
+/giapi-status-service/src/main/resources/*.iml
+/giapi-status-service/src/main/resources/target
+
+# /giapi-status-service/src/main/resources/OSGI-INF/
+/giapi-status-service/src/main/resources/OSGI-INF/*.iml
+/giapi-status-service/src/main/resources/OSGI-INF/target
+
+# /giapi-status-service/src/main/resources/OSGI-INF/metatype/
+/giapi-status-service/src/main/resources/OSGI-INF/metatype/*.iml
+/giapi-status-service/src/main/resources/OSGI-INF/metatype/target
+
+# /giapi-status-service/src/test/
+/giapi-status-service/src/test/*.iml
+/giapi-status-service/src/test/target
+
+# /giapi-status-service/src/test/java/
+/giapi-status-service/src/test/java/*.iml
+/giapi-status-service/src/test/java/target
+
+# /giapi-status-service/src/test/java/edu/
+/giapi-status-service/src/test/java/edu/*.iml
+/giapi-status-service/src/test/java/edu/target
+
+# /giapi-status-service/src/test/java/edu/gemini/
+/giapi-status-service/src/test/java/edu/gemini/*.iml
+/giapi-status-service/src/test/java/edu/gemini/target
+
+# /giapi-status-service/src/test/java/edu/gemini/aspen/
+/giapi-status-service/src/test/java/edu/gemini/aspen/*.iml
+/giapi-status-service/src/test/java/edu/gemini/aspen/target
+
+# /giapi-status-service/src/test/java/edu/gemini/aspen/giapi/
+/giapi-status-service/src/test/java/edu/gemini/aspen/giapi/*.iml
+/giapi-status-service/src/test/java/edu/gemini/aspen/giapi/target
+
+# /giapi-status-service/src/test/java/edu/gemini/aspen/giapi/statusservice/
+/giapi-status-service/src/test/java/edu/gemini/aspen/giapi/statusservice/*.iml
+/giapi-status-service/src/test/java/edu/gemini/aspen/giapi/statusservice/target
+
+# /giapi-status-service/src/test/java/edu/gemini/aspen/giapi/statusservice/jms/
+/giapi-status-service/src/test/java/edu/gemini/aspen/giapi/statusservice/jms/*.iml
+/giapi-status-service/src/test/java/edu/gemini/aspen/giapi/statusservice/jms/target
+
+# /giapi-test-support/
+/giapi-test-support/*.iml
+/giapi-test-support/target
+
+# /giapi-tester/
+/giapi-tester/*.iml
+/giapi-tester/target
+
+# /giapi-tester/history/
+/giapi-tester/history/*.iml
+/giapi-tester/history/target
+
+# /giapi-tester/src/
+/giapi-tester/src/*.iml
+/giapi-tester/src/target
+
+# /giapi-tester/src/main/
+/giapi-tester/src/main/*.iml
+/giapi-tester/src/main/target
+
+# /giapi-tester/src/main/java/
+/giapi-tester/src/main/java/*.iml
+/giapi-tester/src/main/java/target
+
+# /giapi-tester/src/main/java/edu/
+/giapi-tester/src/main/java/edu/*.iml
+/giapi-tester/src/main/java/edu/target
+
+# /giapi-tester/src/main/java/edu/gemini/
+/giapi-tester/src/main/java/edu/gemini/*.iml
+/giapi-tester/src/main/java/edu/gemini/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/
+/giapi-tester/src/main/java/edu/gemini/giapi/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/arguments/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/arguments/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/arguments/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/commands/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/commands/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/commands/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/fileevents/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/fileevents/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/fileevents/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/help/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/help/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/help/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/jms/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/jms/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/jms/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/obsevents/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/obsevents/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/obsevents/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/parser/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/parser/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/parser/target
+
+# /giapi-tester/src/main/java/edu/gemini/giapi/tool/status/
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/status/*.iml
+/giapi-tester/src/main/java/edu/gemini/giapi/tool/status/target
+
+# /giapi-tester/src/main/resources/
+/giapi-tester/src/main/resources/*.iml
+/giapi-tester/src/main/resources/target
+
+# /giapi-tester/src/main/resources/edu/
+/giapi-tester/src/main/resources/edu/*.iml
+/giapi-tester/src/main/resources/edu/target
+
+# /giapi-tester/src/main/resources/edu/gemini/
+/giapi-tester/src/main/resources/edu/gemini/*.iml
+/giapi-tester/src/main/resources/edu/gemini/target
+
+# /giapi-tester/src/main/resources/edu/gemini/giapi/
+/giapi-tester/src/main/resources/edu/gemini/giapi/*.iml
+/giapi-tester/src/main/resources/edu/gemini/giapi/target
+
+# /giapi-tester/src/main/resources/edu/gemini/giapi/tool/
+/giapi-tester/src/main/resources/edu/gemini/giapi/tool/*.iml
+/giapi-tester/src/main/resources/edu/gemini/giapi/tool/target
+
+# /giapi-tester/src/main/resources/edu/gemini/giapi/tool/help/
+/giapi-tester/src/main/resources/edu/gemini/giapi/tool/help/*.iml
+/giapi-tester/src/main/resources/edu/gemini/giapi/tool/help/target
+
+# /giapi-vaadin-common/
+/giapi-vaadin-common/*.iml
+/giapi-vaadin-common/target
+
+# /gmp-command-handlers/
+/gmp-command-handlers/target
+/gmp-command-handlers/*.iml
+
+# /gmp-commands/
+/gmp-commands/*.iml
+/gmp-commands/target
+
+# /gmp-commands/history/
+/gmp-commands/history/*.iml
+/gmp-commands/history/target
+
+# /gmp-commands/src/
+/gmp-commands/src/*.iml
+/gmp-commands/src/target
+
+# /gmp-commands/src/main/
+/gmp-commands/src/main/*.iml
+/gmp-commands/src/main/target
+
+# /gmp-commands/src/main/java/
+/gmp-commands/src/main/java/*.iml
+/gmp-commands/src/main/java/target
+
+# /gmp-commands/src/main/java/edu/
+/gmp-commands/src/main/java/edu/*.iml
+/gmp-commands/src/main/java/edu/target
+
+# /gmp-commands/src/main/java/edu/gemini/
+/gmp-commands/src/main/java/edu/gemini/*.iml
+/gmp-commands/src/main/java/edu/gemini/target
+
+# /gmp-commands/src/main/java/edu/gemini/aspen/
+/gmp-commands/src/main/java/edu/gemini/aspen/*.iml
+/gmp-commands/src/main/java/edu/gemini/aspen/target
+
+# /gmp-commands/src/main/java/edu/gemini/aspen/gmp/
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/*.iml
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/target
+
+# /gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/*.iml
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/target
+
+# /gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/executors/
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/executors/*.iml
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/executors/target
+
+# /gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/impl/
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/impl/*.iml
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/impl/target
+
+# /gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/reboot/
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/reboot/*.iml
+/gmp-commands/src/main/java/edu/gemini/aspen/gmp/commands/model/reboot/target
+
+# /gmp-commands/src/test/
+/gmp-commands/src/test/*.iml
+/gmp-commands/src/test/target
+
+# /gmp-commands/src/test/java/
+/gmp-commands/src/test/java/*.iml
+/gmp-commands/src/test/java/target
+
+# /gmp-commands/src/test/java/edu/
+/gmp-commands/src/test/java/edu/*.iml
+/gmp-commands/src/test/java/edu/target
+
+# /gmp-commands/src/test/java/edu/gemini/
+/gmp-commands/src/test/java/edu/gemini/*.iml
+/gmp-commands/src/test/java/edu/gemini/target
+
+# /gmp-commands/src/test/java/edu/gemini/aspen/
+/gmp-commands/src/test/java/edu/gemini/aspen/*.iml
+/gmp-commands/src/test/java/edu/gemini/aspen/target
+
+# /gmp-commands/src/test/java/edu/gemini/aspen/gmp/
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/*.iml
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/target
+
+# /gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/*.iml
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/target
+
+# /gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/*.iml
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/target
+
+# /gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/executors/
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/executors/*.iml
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/executors/target
+
+# /gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/impl/
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/impl/*.iml
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/model/impl/target
+
+# /gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/test/
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/test/*.iml
+/gmp-commands/src/test/java/edu/gemini/aspen/gmp/commands/test/target
+
+# /gmp-commands-jms-bridge/
+/gmp-commands-jms-bridge/*.iml
+/gmp-commands-jms-bridge/target
+
+# /gmp-commands-jms-client/
+/gmp-commands-jms-client/*.iml
+/gmp-commands-jms-client/target
+
+# /gmp-commands-records/
+/gmp-commands-records/*.iml
+/gmp-commands-records/target
+
+# /gmp-commands-records/src/main/java/edu/gemini/aspen/gmp/commands/records/
+/gmp-commands-records/src/main/java/edu/gemini/aspen/gmp/commands/records/generated
+
+# /gmp-epics-access/
+/gmp-epics-access/*.iml
+/gmp-epics-access/target
+
+# /gmp-epics-access/history/
+/gmp-epics-access/history/*.iml
+/gmp-epics-access/history/target
+
+# /gmp-epics-access/src/
+/gmp-epics-access/src/*.iml
+/gmp-epics-access/src/target
+
+# /gmp-epics-access/src/main/
+/gmp-epics-access/src/main/*.iml
+/gmp-epics-access/src/main/target
+
+# /gmp-epics-access/src/main/java/
+/gmp-epics-access/src/main/java/*.iml
+/gmp-epics-access/src/main/java/target
+
+# /gmp-epics-access/src/main/java/edu/
+/gmp-epics-access/src/main/java/edu/*.iml
+/gmp-epics-access/src/main/java/edu/target
+
+# /gmp-epics-access/src/main/java/edu/gemini/
+/gmp-epics-access/src/main/java/edu/gemini/*.iml
+/gmp-epics-access/src/main/java/edu/gemini/target
+
+# /gmp-epics-access/src/main/java/edu/gemini/aspen/
+/gmp-epics-access/src/main/java/edu/gemini/aspen/*.iml
+/gmp-epics-access/src/main/java/edu/gemini/aspen/target
+
+# /gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/
+/gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/
+/gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/*.iml
+/gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/target
+
+# /gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/impl/
+/gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/impl/*.iml
+/gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/impl/target
+
+# /gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/jms/
+/gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/jms/*.iml
+/gmp-epics-access/src/main/java/edu/gemini/aspen/gmp/epics/jms/target
+
+# /gmp-epics-simulator/
+/gmp-epics-simulator/*.iml
+/gmp-epics-simulator/target
+
+# /gmp-epics-simulator/history/
+/gmp-epics-simulator/history/*.iml
+/gmp-epics-simulator/history/target
+
+# /gmp-epics-simulator/src/
+/gmp-epics-simulator/src/*.iml
+/gmp-epics-simulator/src/target
+
+# /gmp-epics-simulator/src/main/
+/gmp-epics-simulator/src/main/*.iml
+/gmp-epics-simulator/src/main/target
+
+# /gmp-epics-simulator/src/main/etc/
+/gmp-epics-simulator/src/main/etc/*.iml
+/gmp-epics-simulator/src/main/etc/target
+
+# /gmp-epics-simulator/src/main/java/
+/gmp-epics-simulator/src/main/java/*.iml
+/gmp-epics-simulator/src/main/java/target
+
+# /gmp-epics-simulator/src/main/java/edu/
+/gmp-epics-simulator/src/main/java/edu/*.iml
+/gmp-epics-simulator/src/main/java/edu/target
+
+# /gmp-epics-simulator/src/main/java/edu/gemini/
+/gmp-epics-simulator/src/main/java/edu/gemini/*.iml
+/gmp-epics-simulator/src/main/java/edu/gemini/target
+
+# /gmp-epics-simulator/src/main/java/edu/gemini/aspen/
+/gmp-epics-simulator/src/main/java/edu/gemini/aspen/*.iml
+/gmp-epics-simulator/src/main/java/edu/gemini/aspen/target
+
+# /gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/
+/gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/epics/
+/gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/epics/*.iml
+/gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/epics/target
+
+# /gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/epics/simulator/
+/gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/epics/simulator/*.iml
+/gmp-epics-simulator/src/main/java/edu/gemini/aspen/gmp/epics/simulator/target
+
+# /gmp-epics-status-service/
+/gmp-epics-status-service/*.iml
+/gmp-epics-status-service/target
+
+# /gmp-epics-status-service/history/
+/gmp-epics-status-service/history/*.iml
+/gmp-epics-status-service/history/target
+
+# /gmp-epics-status-service/src/
+/gmp-epics-status-service/src/*.iml
+/gmp-epics-status-service/src/target
+
+# /gmp-epics-status-service/src/main/
+/gmp-epics-status-service/src/main/*.iml
+/gmp-epics-status-service/src/main/target
+
+# /gmp-epics-status-service/src/main/doc/
+/gmp-epics-status-service/src/main/doc/*.iml
+/gmp-epics-status-service/src/main/doc/target
+
+# /gmp-epics-status-service/src/main/java/
+/gmp-epics-status-service/src/main/java/*.iml
+/gmp-epics-status-service/src/main/java/target
+
+# /gmp-epics-status-service/src/main/java/edu/
+/gmp-epics-status-service/src/main/java/edu/*.iml
+/gmp-epics-status-service/src/main/java/edu/target
+
+# /gmp-epics-status-service/src/main/java/edu/gemini/
+/gmp-epics-status-service/src/main/java/edu/gemini/*.iml
+/gmp-epics-status-service/src/main/java/edu/gemini/target
+
+# /gmp-epics-status-service/src/main/java/edu/gemini/aspen/
+/gmp-epics-status-service/src/main/java/edu/gemini/aspen/*.iml
+/gmp-epics-status-service/src/main/java/edu/gemini/aspen/target
+
+# /gmp-epics-status-service/src/main/java/edu/gemini/aspen/gmp/
+/gmp-epics-status-service/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-epics-status-service/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-epics-status-service/src/main/java/edu/gemini/aspen/gmp/statusservice/
+/gmp-epics-status-service/src/main/java/edu/gemini/aspen/gmp/statusservice/*.iml
+/gmp-epics-status-service/src/main/java/edu/gemini/aspen/gmp/statusservice/target
+/gmp-epics-status-service/src/main/java/edu/gemini/aspen/gmp/statusservice/generated
+
+# /gmp-epics-status-service/src/main/resources/
+/gmp-epics-status-service/src/main/resources/*.iml
+/gmp-epics-status-service/src/main/resources/target
+
+# /gmp-epics-status-service/src/test/
+/gmp-epics-status-service/src/test/*.iml
+/gmp-epics-status-service/src/test/target
+
+# /gmp-epics-status-service/src/test/java/
+/gmp-epics-status-service/src/test/java/*.iml
+/gmp-epics-status-service/src/test/java/target
+
+# /gmp-epics-status-service/src/test/java/edu/
+/gmp-epics-status-service/src/test/java/edu/*.iml
+/gmp-epics-status-service/src/test/java/edu/target
+
+# /gmp-epics-status-service/src/test/java/edu/gemini/
+/gmp-epics-status-service/src/test/java/edu/gemini/*.iml
+/gmp-epics-status-service/src/test/java/edu/gemini/target
+
+# /gmp-epics-status-service/src/test/java/edu/gemini/aspen/
+/gmp-epics-status-service/src/test/java/edu/gemini/aspen/*.iml
+/gmp-epics-status-service/src/test/java/edu/gemini/aspen/target
+
+# /gmp-epics-status-service/src/test/java/edu/gemini/aspen/gmp/
+/gmp-epics-status-service/src/test/java/edu/gemini/aspen/gmp/*.iml
+/gmp-epics-status-service/src/test/java/edu/gemini/aspen/gmp/target
+
+# /gmp-epics-status-service/src/test/java/edu/gemini/aspen/gmp/statusservice/
+/gmp-epics-status-service/src/test/java/edu/gemini/aspen/gmp/statusservice/*.iml
+/gmp-epics-status-service/src/test/java/edu/gemini/aspen/gmp/statusservice/target
+
+# /gmp-epics-to-status/
+/gmp-epics-to-status/activemq-data
+/gmp-epics-to-status/*.iml
+/gmp-epics-to-status/target
+
+# /gmp-epics-to-status/src/main/java/edu/gemini/aspen/gmp/epicstostatus/
+/gmp-epics-to-status/src/main/java/edu/gemini/aspen/gmp/epicstostatus/generated
+
+# /gmp-heartbeat/
+/gmp-heartbeat/*.iml
+/gmp-heartbeat/activemq-data
+/gmp-heartbeat/target
+
+# /gmp-heartbeat/history/
+/gmp-heartbeat/history/*.iml
+/gmp-heartbeat/history/target
+
+# /gmp-heartbeat/src/
+/gmp-heartbeat/src/*.iml
+/gmp-heartbeat/src/target
+
+# /gmp-heartbeat/src/main/
+/gmp-heartbeat/src/main/*.iml
+/gmp-heartbeat/src/main/target
+
+# /gmp-heartbeat/src/main/java/
+/gmp-heartbeat/src/main/java/*.iml
+/gmp-heartbeat/src/main/java/target
+
+# /gmp-heartbeat/src/main/java/edu/
+/gmp-heartbeat/src/main/java/edu/*.iml
+/gmp-heartbeat/src/main/java/edu/target
+
+# /gmp-heartbeat/src/main/java/edu/gemini/
+/gmp-heartbeat/src/main/java/edu/gemini/*.iml
+/gmp-heartbeat/src/main/java/edu/gemini/target
+
+# /gmp-heartbeat/src/main/java/edu/gemini/aspen/
+/gmp-heartbeat/src/main/java/edu/gemini/aspen/*.iml
+/gmp-heartbeat/src/main/java/edu/gemini/aspen/target
+
+# /gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/
+/gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/heartbeat/
+/gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/heartbeat/*.iml
+/gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/heartbeat/target
+
+# /gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/heartbeat/jms/
+/gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/heartbeat/jms/*.iml
+/gmp-heartbeat/src/main/java/edu/gemini/aspen/gmp/heartbeat/jms/target
+
+# /gmp-heartbeat/src/test/
+/gmp-heartbeat/src/test/*.iml
+/gmp-heartbeat/src/test/target
+
+# /gmp-heartbeat/src/test/java/
+/gmp-heartbeat/src/test/java/*.iml
+/gmp-heartbeat/src/test/java/target
+
+# /gmp-heartbeat/src/test/java/edu/
+/gmp-heartbeat/src/test/java/edu/*.iml
+/gmp-heartbeat/src/test/java/edu/target
+
+# /gmp-heartbeat/src/test/java/edu/gemini/
+/gmp-heartbeat/src/test/java/edu/gemini/*.iml
+/gmp-heartbeat/src/test/java/edu/gemini/target
+
+# /gmp-heartbeat/src/test/java/edu/gemini/aspen/
+/gmp-heartbeat/src/test/java/edu/gemini/aspen/*.iml
+/gmp-heartbeat/src/test/java/edu/gemini/aspen/target
+
+# /gmp-heartbeat/src/test/java/edu/gemini/aspen/gmp/
+/gmp-heartbeat/src/test/java/edu/gemini/aspen/gmp/*.iml
+/gmp-heartbeat/src/test/java/edu/gemini/aspen/gmp/target
+
+# /gmp-heartbeat/src/test/java/edu/gemini/aspen/gmp/heartbeat/
+/gmp-heartbeat/src/test/java/edu/gemini/aspen/gmp/heartbeat/*.iml
+/gmp-heartbeat/src/test/java/edu/gemini/aspen/gmp/heartbeat/target
+
+# /gmp-heartbeat-distributor-service/
+/gmp-heartbeat-distributor-service/*.iml
+/gmp-heartbeat-distributor-service/target
+/gmp-heartbeat-distributor-service/activemq-data
+
+# /gmp-logging/
+/gmp-logging/*.iml
+/gmp-logging/target
+
+# /gmp-logging/history/
+/gmp-logging/history/*.iml
+/gmp-logging/history/target
+
+# /gmp-logging/src/
+/gmp-logging/src/*.iml
+/gmp-logging/src/target
+
+# /gmp-logging/src/main/
+/gmp-logging/src/main/*.iml
+/gmp-logging/src/main/target
+
+# /gmp-logging/src/main/java/
+/gmp-logging/src/main/java/*.iml
+/gmp-logging/src/main/java/target
+
+# /gmp-logging/src/main/java/edu/
+/gmp-logging/src/main/java/edu/*.iml
+/gmp-logging/src/main/java/edu/target
+
+# /gmp-logging/src/main/java/edu/gemini/
+/gmp-logging/src/main/java/edu/gemini/*.iml
+/gmp-logging/src/main/java/edu/gemini/target
+
+# /gmp-logging/src/main/java/edu/gemini/aspen/
+/gmp-logging/src/main/java/edu/gemini/aspen/*.iml
+/gmp-logging/src/main/java/edu/gemini/aspen/target
+
+# /gmp-logging/src/main/java/edu/gemini/aspen/gmp/
+/gmp-logging/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-logging/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-logging/src/main/java/edu/gemini/aspen/gmp/logging/
+/gmp-logging/src/main/java/edu/gemini/aspen/gmp/logging/*.iml
+/gmp-logging/src/main/java/edu/gemini/aspen/gmp/logging/target
+
+# /gmp-logging/src/main/java/edu/gemini/aspen/gmp/logging/jms/
+/gmp-logging/src/main/java/edu/gemini/aspen/gmp/logging/jms/*.iml
+/gmp-logging/src/main/java/edu/gemini/aspen/gmp/logging/jms/target
+
+# /gmp-logging/src/test/
+/gmp-logging/src/test/*.iml
+/gmp-logging/src/test/target
+
+# /gmp-logging/src/test/java/
+/gmp-logging/src/test/java/*.iml
+/gmp-logging/src/test/java/target
+
+# /gmp-logging/src/test/java/edu/
+/gmp-logging/src/test/java/edu/*.iml
+/gmp-logging/src/test/java/edu/target
+
+# /gmp-logging/src/test/java/edu/gemini/
+/gmp-logging/src/test/java/edu/gemini/*.iml
+/gmp-logging/src/test/java/edu/gemini/target
+
+# /gmp-logging/src/test/java/edu/gemini/aspen/
+/gmp-logging/src/test/java/edu/gemini/aspen/*.iml
+/gmp-logging/src/test/java/edu/gemini/aspen/target
+
+# /gmp-logging/src/test/java/edu/gemini/aspen/gmp/
+/gmp-logging/src/test/java/edu/gemini/aspen/gmp/*.iml
+/gmp-logging/src/test/java/edu/gemini/aspen/gmp/target
+
+# /gmp-logging/src/test/java/edu/gemini/aspen/gmp/logging/
+/gmp-logging/src/test/java/edu/gemini/aspen/gmp/logging/*.iml
+/gmp-logging/src/test/java/edu/gemini/aspen/gmp/logging/target
+
+# /gmp-logging/src/test/java/edu/gemini/aspen/gmp/logging/jms/
+/gmp-logging/src/test/java/edu/gemini/aspen/gmp/logging/jms/*.iml
+/gmp-logging/src/test/java/edu/gemini/aspen/gmp/logging/jms/target
+
+# /gmp-pcs-updater/
+/gmp-pcs-updater/*.iml
+/gmp-pcs-updater/target
+
+# /gmp-pcs-updater/history/
+/gmp-pcs-updater/history/*.iml
+/gmp-pcs-updater/history/target
+
+# /gmp-pcs-updater/src/
+/gmp-pcs-updater/src/*.iml
+/gmp-pcs-updater/src/target
+
+# /gmp-pcs-updater/src/main/
+/gmp-pcs-updater/src/main/*.iml
+/gmp-pcs-updater/src/main/target
+
+# /gmp-pcs-updater/src/main/java/
+/gmp-pcs-updater/src/main/java/*.iml
+/gmp-pcs-updater/src/main/java/target
+
+# /gmp-pcs-updater/src/main/java/edu/
+/gmp-pcs-updater/src/main/java/edu/*.iml
+/gmp-pcs-updater/src/main/java/edu/target
+
+# /gmp-pcs-updater/src/main/java/edu/gemini/
+/gmp-pcs-updater/src/main/java/edu/gemini/*.iml
+/gmp-pcs-updater/src/main/java/edu/gemini/target
+
+# /gmp-pcs-updater/src/main/java/edu/gemini/aspen/
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/*.iml
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/target
+
+# /gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/*.iml
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/target
+
+# /gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/jms/
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/jms/*.iml
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/jms/target
+
+# /gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/model/
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/model/*.iml
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/model/target
+
+# /gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/model/updaters/
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/model/updaters/*.iml
+/gmp-pcs-updater/src/main/java/edu/gemini/aspen/gmp/pcs/model/updaters/target
+
+# /gmp-pcs-updater/src/test/
+/gmp-pcs-updater/src/test/*.iml
+/gmp-pcs-updater/src/test/target
+
+# /gmp-pcs-updater/src/test/java/
+/gmp-pcs-updater/src/test/java/*.iml
+/gmp-pcs-updater/src/test/java/target
+
+# /gmp-pcs-updater/src/test/java/edu/
+/gmp-pcs-updater/src/test/java/edu/*.iml
+/gmp-pcs-updater/src/test/java/edu/target
+
+# /gmp-pcs-updater/src/test/java/edu/gemini/
+/gmp-pcs-updater/src/test/java/edu/gemini/*.iml
+/gmp-pcs-updater/src/test/java/edu/gemini/target
+
+# /gmp-pcs-updater/src/test/java/edu/gemini/aspen/
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/*.iml
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/target
+
+# /gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/*.iml
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/target
+
+# /gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/*.iml
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/target
+
+# /gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/jms/
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/jms/*.iml
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/jms/target
+
+# /gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/model/
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/model/*.iml
+/gmp-pcs-updater/src/test/java/edu/gemini/aspen/gmp/pcs/model/target
+
+# /gmp-services/
+/gmp-services/*.iml
+/gmp-services/target
+
+# /gmp-services/history/
+/gmp-services/history/*.iml
+/gmp-services/history/target
+
+# /gmp-services/src/
+/gmp-services/src/*.iml
+/gmp-services/src/target
+
+# /gmp-services/src/main/
+/gmp-services/src/main/*.iml
+/gmp-services/src/main/target
+
+# /gmp-services/src/main/java/
+/gmp-services/src/main/java/*.iml
+/gmp-services/src/main/java/target
+
+# /gmp-services/src/main/java/edu/
+/gmp-services/src/main/java/edu/*.iml
+/gmp-services/src/main/java/edu/target
+
+# /gmp-services/src/main/java/edu/gemini/
+/gmp-services/src/main/java/edu/gemini/*.iml
+/gmp-services/src/main/java/edu/gemini/target
+
+# /gmp-services/src/main/java/edu/gemini/aspen/
+/gmp-services/src/main/java/edu/gemini/aspen/*.iml
+/gmp-services/src/main/java/edu/gemini/aspen/target
+
+# /gmp-services/src/main/java/edu/gemini/aspen/gmp/
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-services/src/main/java/edu/gemini/aspen/gmp/services/
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/services/*.iml
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/services/target
+
+# /gmp-services/src/main/java/edu/gemini/aspen/gmp/services/core/
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/services/core/*.iml
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/services/core/target
+
+# /gmp-services/src/main/java/edu/gemini/aspen/gmp/services/jms/
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/services/jms/*.iml
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/services/jms/target
+
+# /gmp-services/src/main/java/edu/gemini/aspen/gmp/services/properties/
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/services/properties/*.iml
+/gmp-services/src/main/java/edu/gemini/aspen/gmp/services/properties/target
+
+# /gmp-services/src/test/
+/gmp-services/src/test/*.iml
+/gmp-services/src/test/target
+
+# /gmp-status-gateway/
+/gmp-status-gateway/*.iml
+/gmp-status-gateway/target
+
+# /gmp-status-gateway/history/
+/gmp-status-gateway/history/*.iml
+/gmp-status-gateway/history/target
+
+# /gmp-status-gateway/src/
+/gmp-status-gateway/src/*.iml
+/gmp-status-gateway/src/target
+
+# /gmp-status-gateway/src/main/
+/gmp-status-gateway/src/main/*.iml
+/gmp-status-gateway/src/main/target
+
+# /gmp-status-gateway/src/main/java/
+/gmp-status-gateway/src/main/java/*.iml
+/gmp-status-gateway/src/main/java/target
+
+# /gmp-status-gateway/src/main/java/edu/
+/gmp-status-gateway/src/main/java/edu/*.iml
+/gmp-status-gateway/src/main/java/edu/target
+
+# /gmp-status-gateway/src/main/java/edu/gemini/
+/gmp-status-gateway/src/main/java/edu/gemini/*.iml
+/gmp-status-gateway/src/main/java/edu/gemini/target
+
+# /gmp-status-gateway/src/main/java/edu/gemini/aspen/
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/*.iml
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/target
+
+# /gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/*.iml
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/target
+
+# /gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/jms/
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/jms/*.iml
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/jms/target
+
+# /gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/osgi/
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/osgi/*.iml
+/gmp-status-gateway/src/main/java/edu/gemini/aspen/gmp/statusgw/osgi/target
+
+# /gmp-status-simulator/
+/gmp-status-simulator/target
+/gmp-status-simulator/*.iml
+
+# /gmp-status-simulator/src/main/java/edu/gemini/aspen/gmp/status/simulator/
+/gmp-status-simulator/src/main/java/edu/gemini/aspen/gmp/status/simulator/generated
+
+# /gmp-statusdb/
+/gmp-statusdb/*.iml
+/gmp-statusdb/target
+
+# /gmp-statusdb/history/
+/gmp-statusdb/history/*.iml
+/gmp-statusdb/history/target
+
+# /gmp-statusdb/src/
+/gmp-statusdb/src/*.iml
+/gmp-statusdb/src/target
+
+# /gmp-statusdb/src/main/
+/gmp-statusdb/src/main/*.iml
+/gmp-statusdb/src/main/target
+
+# /gmp-statusdb/src/main/java/
+/gmp-statusdb/src/main/java/*.iml
+/gmp-statusdb/src/main/java/target
+
+# /gmp-statusdb/src/main/java/edu/
+/gmp-statusdb/src/main/java/edu/*.iml
+/gmp-statusdb/src/main/java/edu/target
+
+# /gmp-statusdb/src/main/java/edu/gemini/
+/gmp-statusdb/src/main/java/edu/gemini/*.iml
+/gmp-statusdb/src/main/java/edu/gemini/target
+
+# /gmp-statusdb/src/main/java/edu/gemini/aspen/
+/gmp-statusdb/src/main/java/edu/gemini/aspen/*.iml
+/gmp-statusdb/src/main/java/edu/gemini/aspen/target
+
+# /gmp-statusdb/src/main/java/edu/gemini/aspen/gmp/
+/gmp-statusdb/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-statusdb/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-statusdb/src/main/java/edu/gemini/aspen/gmp/statusdb/
+/gmp-statusdb/src/main/java/edu/gemini/aspen/gmp/statusdb/*.iml
+/gmp-statusdb/src/main/java/edu/gemini/aspen/gmp/statusdb/target
+
+# /gmp-statusdb/src/test/
+/gmp-statusdb/src/test/*.iml
+/gmp-statusdb/src/test/target
+
+# /gmp-statusdb/src/test/java/
+/gmp-statusdb/src/test/java/*.iml
+/gmp-statusdb/src/test/java/target
+
+# /gmp-statusdb/src/test/java/edu/
+/gmp-statusdb/src/test/java/edu/*.iml
+/gmp-statusdb/src/test/java/edu/target
+
+# /gmp-statusdb/src/test/java/edu/gemini/
+/gmp-statusdb/src/test/java/edu/gemini/*.iml
+/gmp-statusdb/src/test/java/edu/gemini/target
+
+# /gmp-statusdb/src/test/java/edu/gemini/aspen/
+/gmp-statusdb/src/test/java/edu/gemini/aspen/*.iml
+/gmp-statusdb/src/test/java/edu/gemini/aspen/target
+
+# /gmp-statusdb/src/test/java/edu/gemini/aspen/gmp/
+/gmp-statusdb/src/test/java/edu/gemini/aspen/gmp/*.iml
+/gmp-statusdb/src/test/java/edu/gemini/aspen/gmp/target
+
+# /gmp-statusdb/src/test/java/edu/gemini/aspen/gmp/statusdb/
+/gmp-statusdb/src/test/java/edu/gemini/aspen/gmp/statusdb/*.iml
+/gmp-statusdb/src/test/java/edu/gemini/aspen/gmp/statusdb/target
+
+# /gmp-tcs-context/
+/gmp-tcs-context/*.iml
+/gmp-tcs-context/target
+
+# /gmp-tcs-context/history/
+/gmp-tcs-context/history/*.iml
+/gmp-tcs-context/history/target
+
+# /gmp-tcs-context/src/
+/gmp-tcs-context/src/*.iml
+/gmp-tcs-context/src/target
+
+# /gmp-tcs-context/src/main/
+/gmp-tcs-context/src/main/*.iml
+/gmp-tcs-context/src/main/target
+
+# /gmp-tcs-context/src/main/java/
+/gmp-tcs-context/src/main/java/*.iml
+/gmp-tcs-context/src/main/java/target
+
+# /gmp-tcs-context/src/main/java/edu/
+/gmp-tcs-context/src/main/java/edu/*.iml
+/gmp-tcs-context/src/main/java/edu/target
+
+# /gmp-tcs-context/src/main/java/edu/gemini/
+/gmp-tcs-context/src/main/java/edu/gemini/*.iml
+/gmp-tcs-context/src/main/java/edu/gemini/target
+
+# /gmp-tcs-context/src/main/java/edu/gemini/aspen/
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/*.iml
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/target
+
+# /gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/*.iml
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/target
+
+# /gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/*.iml
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/target
+
+# /gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/jms/
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/jms/*.iml
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/jms/target
+
+# /gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/model/
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/model/*.iml
+/gmp-tcs-context/src/main/java/edu/gemini/aspen/gmp/tcs/model/target
+
+# /gmp-tcs-context/src/test/
+/gmp-tcs-context/src/test/*.iml
+/gmp-tcs-context/src/test/target
+
+# /gmp-tcs-context/src/test/java/
+/gmp-tcs-context/src/test/java/*.iml
+/gmp-tcs-context/src/test/java/target
+
+# /gmp-tcs-context/src/test/java/edu/
+/gmp-tcs-context/src/test/java/edu/*.iml
+/gmp-tcs-context/src/test/java/edu/target
+
+# /gmp-tcs-context/src/test/java/edu/gemini/
+/gmp-tcs-context/src/test/java/edu/gemini/*.iml
+/gmp-tcs-context/src/test/java/edu/gemini/target
+
+# /gmp-tcs-context/src/test/java/edu/gemini/aspen/
+/gmp-tcs-context/src/test/java/edu/gemini/aspen/*.iml
+/gmp-tcs-context/src/test/java/edu/gemini/aspen/target
+
+# /gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/
+/gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/*.iml
+/gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/target
+
+# /gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/tcs/
+/gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/tcs/*.iml
+/gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/tcs/target
+
+# /gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/tcs/model/
+/gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/tcs/model/*.iml
+/gmp-tcs-context/src/test/java/edu/gemini/aspen/gmp/tcs/model/target
+
+# /gmp-tcs-context/src/test/resources/
+/gmp-tcs-context/src/test/resources/*.iml
+/gmp-tcs-context/src/test/resources/target
+
+# /gmp-tcs-context/src/test/resources/edu/
+/gmp-tcs-context/src/test/resources/edu/*.iml
+/gmp-tcs-context/src/test/resources/edu/target
+
+# /gmp-tcs-context/src/test/resources/edu/gemini/
+/gmp-tcs-context/src/test/resources/edu/gemini/*.iml
+/gmp-tcs-context/src/test/resources/edu/gemini/target
+
+# /gmp-tcs-context/src/test/resources/edu/gemini/aspen/
+/gmp-tcs-context/src/test/resources/edu/gemini/aspen/*.iml
+/gmp-tcs-context/src/test/resources/edu/gemini/aspen/target
+
+# /gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/
+/gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/*.iml
+/gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/target
+
+# /gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/tcs/
+/gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/tcs/*.iml
+/gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/tcs/target
+
+# /gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/tcs/model/
+/gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/tcs/model/*.iml
+/gmp-tcs-context/src/test/resources/edu/gemini/aspen/gmp/tcs/model/target
+
+# /gmp-top/
+/gmp-top/*.iml
+/gmp-top/target
+
+# /gmp-tui/
+/gmp-tui/target
+/gmp-tui/*.iml
+
+# /gmp-web-ui-console/
+/gmp-web-ui-console/*.iml
+/gmp-web-ui-console/target
+
+# /gmp-web-ui-properties/
+/gmp-web-ui-properties/target
+/gmp-web-ui-properties/*.iml
+
+# /gmp-web-ui-status/
+/gmp-web-ui-status/target
+/gmp-web-ui-status/*.iml
+
+# /gmp-webconsole-branding/
+/gmp-webconsole-branding/*.iml
+/gmp-webconsole-branding/target
+
+# /gmp-webconsole-branding/src/
+/gmp-webconsole-branding/src/*.iml
+/gmp-webconsole-branding/src/target
+
+# /gmp-webconsole-branding/src/main/
+/gmp-webconsole-branding/src/main/*.iml
+/gmp-webconsole-branding/src/main/target
+
+# /gmp-webconsole-branding/src/main/resources/
+/gmp-webconsole-branding/src/main/resources/*.iml
+/gmp-webconsole-branding/src/main/resources/target
+
+# /gmp-webconsole-branding/src/main/resources/META-INF/
+/gmp-webconsole-branding/src/main/resources/META-INF/*.iml
+/gmp-webconsole-branding/src/main/resources/META-INF/target
+
+# /gmp-webconsole-branding/src/main/resources/img/
+/gmp-webconsole-branding/src/main/resources/img/*.iml
+/gmp-webconsole-branding/src/main/resources/img/target
+
+# /gmp-webconsole-branding/src/main/resources/res/
+/gmp-webconsole-branding/src/main/resources/res/*.iml
+/gmp-webconsole-branding/src/main/resources/res/target
+
+# /gmp-webconsole-branding/src/main/resources/res/img/
+/gmp-webconsole-branding/src/main/resources/res/img/*.iml
+/gmp-webconsole-branding/src/main/resources/res/img/target
+
+# /gmp-webconsole-docs/
+/gmp-webconsole-docs/*.iml
+/gmp-webconsole-docs/target
+
+# /gpi-bean/
+/gpi-bean/*.iml
+/gpi-bean/target
+
+# /gpi-bean/history/
+/gpi-bean/history/*.iml
+/gpi-bean/history/target
+
+# /gpi-bean/src/
+/gpi-bean/src/*.iml
+/gpi-bean/src/target
+
+# /gpi-bean/src/main/
+/gpi-bean/src/main/*.iml
+/gpi-bean/src/main/target
+
+# /gpi-bean/src/main/java/
+/gpi-bean/src/main/java/*.iml
+/gpi-bean/src/main/java/target
+
+# /gpi-bean/src/main/java/edu/
+/gpi-bean/src/main/java/edu/*.iml
+/gpi-bean/src/main/java/edu/target
+
+# /gpi-bean/src/main/java/edu/gemini/
+/gpi-bean/src/main/java/edu/gemini/*.iml
+/gpi-bean/src/main/java/edu/gemini/target
+
+# /gpi-bean/src/main/java/edu/gemini/aspen/
+/gpi-bean/src/main/java/edu/gemini/aspen/*.iml
+/gpi-bean/src/main/java/edu/gemini/aspen/target
+
+# /gpi-bean/src/main/java/edu/gemini/aspen/gpi/
+/gpi-bean/src/main/java/edu/gemini/aspen/gpi/*.iml
+/gpi-bean/src/main/java/edu/gemini/aspen/gpi/target
+
+# /gpi-bean/src/main/java/edu/gemini/aspen/gpi/gui/
+/gpi-bean/src/main/java/edu/gemini/aspen/gpi/gui/*.iml
+/gpi-bean/src/main/java/edu/gemini/aspen/gpi/gui/target
+
+# /gpi-bean/src/main/java/edu/gemini/aspen/gpi/osgi/
+/gpi-bean/src/main/java/edu/gemini/aspen/gpi/osgi/*.iml
+/gpi-bean/src/main/java/edu/gemini/aspen/gpi/osgi/target
+
+# /history/
+/history/*.iml
+/history/target
+
+# /integration-tests/
+/integration-tests/*.iml
+/integration-tests/target
+/integration-tests/runner
+
+# /jms-activemq-broker/
+/jms-activemq-broker/*.iml
+/jms-activemq-broker/target
+/jms-activemq-broker/activemq-data
+
+# /jms-activemq-broker/history/
+/jms-activemq-broker/history/*.iml
+/jms-activemq-broker/history/target
+
+# /jms-activemq-broker/src/
+/jms-activemq-broker/src/*.iml
+/jms-activemq-broker/src/target
+
+# /jms-activemq-broker/src/main/
+/jms-activemq-broker/src/main/*.iml
+/jms-activemq-broker/src/main/target
+
+# /jms-activemq-broker/src/main/java/
+/jms-activemq-broker/src/main/java/*.iml
+/jms-activemq-broker/src/main/java/target
+
+# /jms-activemq-broker/src/main/java/edu/
+/jms-activemq-broker/src/main/java/edu/*.iml
+/jms-activemq-broker/src/main/java/edu/target
+
+# /jms-activemq-broker/src/main/java/edu/gemini/
+/jms-activemq-broker/src/main/java/edu/gemini/*.iml
+/jms-activemq-broker/src/main/java/edu/gemini/target
+
+# /jms-activemq-broker/src/main/java/edu/gemini/jms/
+/jms-activemq-broker/src/main/java/edu/gemini/jms/*.iml
+/jms-activemq-broker/src/main/java/edu/gemini/jms/target
+
+# /jms-activemq-broker/src/main/java/edu/gemini/jms/activemq/
+/jms-activemq-broker/src/main/java/edu/gemini/jms/activemq/*.iml
+/jms-activemq-broker/src/main/java/edu/gemini/jms/activemq/target
+
+# /jms-activemq-broker/src/main/java/edu/gemini/jms/activemq/broker/
+/jms-activemq-broker/src/main/java/edu/gemini/jms/activemq/broker/*.iml
+/jms-activemq-broker/src/main/java/edu/gemini/jms/activemq/broker/target
+
+# /jms-activemq-broker/src/main/resources/
+/jms-activemq-broker/src/main/resources/*.iml
+/jms-activemq-broker/src/main/resources/target
+
+# /jms-activemq-broker/src/main/resources/OSGI-INF/
+/jms-activemq-broker/src/main/resources/OSGI-INF/*.iml
+/jms-activemq-broker/src/main/resources/OSGI-INF/target
+
+# /jms-activemq-broker/src/main/resources/OSGI-INF/metatype/
+/jms-activemq-broker/src/main/resources/OSGI-INF/metatype/*.iml
+/jms-activemq-broker/src/main/resources/OSGI-INF/metatype/target
+
+# /jms-activemq-broker/src/test/
+/jms-activemq-broker/src/test/*.iml
+/jms-activemq-broker/src/test/target
+
+# /jms-activemq-broker/src/test/java/
+/jms-activemq-broker/src/test/java/*.iml
+/jms-activemq-broker/src/test/java/target
+
+# /jms-activemq-broker/src/test/java/edu/
+/jms-activemq-broker/src/test/java/edu/*.iml
+/jms-activemq-broker/src/test/java/edu/target
+
+# /jms-activemq-broker/src/test/java/edu/gemini/
+/jms-activemq-broker/src/test/java/edu/gemini/*.iml
+/jms-activemq-broker/src/test/java/edu/gemini/target
+
+# /jms-activemq-broker/src/test/java/edu/gemini/jms/
+/jms-activemq-broker/src/test/java/edu/gemini/jms/*.iml
+/jms-activemq-broker/src/test/java/edu/gemini/jms/target
+
+# /jms-activemq-broker/src/test/java/edu/gemini/jms/activemq/
+/jms-activemq-broker/src/test/java/edu/gemini/jms/activemq/*.iml
+/jms-activemq-broker/src/test/java/edu/gemini/jms/activemq/target
+
+# /jms-activemq-broker/src/test/java/edu/gemini/jms/activemq/broker/
+/jms-activemq-broker/src/test/java/edu/gemini/jms/activemq/broker/*.iml
+/jms-activemq-broker/src/test/java/edu/gemini/jms/activemq/broker/target
+
+# /jms-activemq-provider/
+/jms-activemq-provider/*.iml
+/jms-activemq-provider/target
+/jms-activemq-provider/activemq-data
+
+# /jms-activemq-provider/history/
+/jms-activemq-provider/history/*.iml
+/jms-activemq-provider/history/target
+
+# /jms-activemq-provider/src/
+/jms-activemq-provider/src/*.iml
+/jms-activemq-provider/src/target
+
+# /jms-activemq-provider/src/main/
+/jms-activemq-provider/src/main/*.iml
+/jms-activemq-provider/src/main/target
+
+# /jms-activemq-provider/src/main/java/
+/jms-activemq-provider/src/main/java/*.iml
+/jms-activemq-provider/src/main/java/target
+
+# /jms-activemq-provider/src/main/java/edu/
+/jms-activemq-provider/src/main/java/edu/*.iml
+/jms-activemq-provider/src/main/java/edu/target
+
+# /jms-activemq-provider/src/main/java/edu/gemini/
+/jms-activemq-provider/src/main/java/edu/gemini/*.iml
+/jms-activemq-provider/src/main/java/edu/gemini/target
+
+# /jms-activemq-provider/src/main/java/edu/gemini/jms/
+/jms-activemq-provider/src/main/java/edu/gemini/jms/*.iml
+/jms-activemq-provider/src/main/java/edu/gemini/jms/target
+
+# /jms-activemq-provider/src/main/java/edu/gemini/jms/activemq/
+/jms-activemq-provider/src/main/java/edu/gemini/jms/activemq/*.iml
+/jms-activemq-provider/src/main/java/edu/gemini/jms/activemq/target
+
+# /jms-activemq-provider/src/main/java/edu/gemini/jms/activemq/provider/
+/jms-activemq-provider/src/main/java/edu/gemini/jms/activemq/provider/*.iml
+/jms-activemq-provider/src/main/java/edu/gemini/jms/activemq/provider/target
+
+# /jms-api/
+/jms-api/*.iml
+/jms-api/target
+
+# /jms-api/history/
+/jms-api/history/*.iml
+/jms-api/history/target
+
+# /jms-api/src/
+/jms-api/src/*.iml
+/jms-api/src/target
+
+# /jms-api/src/main/
+/jms-api/src/main/*.iml
+/jms-api/src/main/target
+
+# /jms-api/src/main/java/
+/jms-api/src/main/java/*.iml
+/jms-api/src/main/java/target
+
+# /jms-api/src/main/java/edu/
+/jms-api/src/main/java/edu/*.iml
+/jms-api/src/main/java/edu/target
+
+# /jms-api/src/main/java/edu/gemini/
+/jms-api/src/main/java/edu/gemini/*.iml
+/jms-api/src/main/java/edu/gemini/target
+
+# /jms-api/src/main/java/edu/gemini/jms/
+/jms-api/src/main/java/edu/gemini/jms/*.iml
+/jms-api/src/main/java/edu/gemini/jms/target
+
+# /jms-api/src/main/java/edu/gemini/jms/api/
+/jms-api/src/main/java/edu/gemini/jms/api/*.iml
+/jms-api/src/main/java/edu/gemini/jms/api/target
+
+# /jms-api/src/main/java/edu/gemini/jms/api/osgi/
+/jms-api/src/main/java/edu/gemini/jms/api/osgi/*.iml
+/jms-api/src/main/java/edu/gemini/jms/api/osgi/target
+
+# /poms/
+/poms/*.iml
+/poms/target
+
+# /poms/compiled/
+/poms/compiled/*.iml
+/poms/compiled/target
+
+# /poms/scala/
+/poms/scala/*.iml
+/poms/scala/target
+
+# /src/main/config/
+/src/main/config/*.iml
+/src/main/config/target
+
+# /src/main/config/services/
+/src/main/config/services/*.iml
+/src/main/config/services/target
+
+.idea
