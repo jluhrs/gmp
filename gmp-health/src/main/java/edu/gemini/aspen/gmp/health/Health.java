@@ -49,7 +49,7 @@ public class Health {
         setupHealthValue();
     }
 
-    private void setupHealthValue() {
+    protected void setupHealthValue() {
         try {
             edu.gemini.aspen.giapi.status.Health health = edu.gemini.aspen.giapi.status.Health.GOOD;
             if (bundlesDatabase.getPercentageActive().get() < 1.0) {
