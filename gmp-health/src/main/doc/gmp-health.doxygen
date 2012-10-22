@@ -1,20 +1,17 @@
 /*!
-  \page gmp_heartbeat GMP Heartbeat
+  \page gmp_health GMP Health
 
-  This bundle provides a heartbeat sent periodically via JMS.
+  This bundle provides a health of GMP. Health is decided based on whether all bundles are active.
 
-  \section gmp_heartbeat_provides_sec Provided Services
-  The \ref edu.gemini.aspen.gmp.heartbeat.Health "Heartbeat" class sends a JMS message with an integer
-  increasing every second, from 0 to Integer.MAX_VALUE, and then starting at 0 again. Also provided is the
-  \ref edu.gemini.aspen.gmp.heartbeat.jms.JmsHeartbeatConsumer "JmsHeartbeatConsumer" convenience class to help implement
-  classes that need to listen for the heartbeat.
+  \section gmp_health_provides_sec Provided Services
+  The \ref edu.gemini.aspen.gmp.health.Health "Health" class does not provide any services.
 
+  \section gmp_health_requires_sec Required Services
+  This bundle requires the services \ref edu.gemini.aspen.gmp.top.Top "Top" service, and the
+  \ref edu.gemini.aspen.giapi.util.jms.status.IStatusSetter "StatusSetter" service
 
-  \section gmp_heartbeat_requires_sec Required Services
-  This bundle requires the service \ref edu.gemini.jms.api.JmsProvider "JmsProvider" OSGI service, provided by, for
-  example, the \ref jms_activemq_provider bundle.
-
-  \section gmp_heartbeat_configuration_sec Configuration
-  This bundle has no configuration options.
+  \section gmp_health_configuration_sec Configuration
+  This bundle can be configured to set the health status name. See
+  \ref edu.gemini.aspen.gmp.health.Health-default.cfg
 
  */

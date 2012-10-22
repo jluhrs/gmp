@@ -13,6 +13,7 @@
  * - \subpage gmp-epics-access
  * - \subpage gmp-services
  * - \subpage gmp_heartbeat
+ * - \subpage gmp_health
  * - \subpage heartbeat_distributor_service
  * - \subpage epics_heartbeat
  * - \subpage jms_activemq_broker
