@@ -29,6 +29,8 @@ public class Health {
     private final ScheduledFuture future;
     private final HealthChecker checker = new HealthChecker();
 
+    private edu.gemini.aspen.giapi.status.Health health = edu.gemini.aspen.giapi.status.Health.WARNING;
+
     public Health(@Property(name = "healthName", value = "INVALID", mandatory = true) String healthStatusName,
             @Requires Top top, @Requires IStatusSetter statusSetter, @Requires BundlesDatabase bundlesDatabase) {
         LOG.info("Health Constructor");
@@ -53,7 +55,10 @@ public class Health {
             if (bundlesDatabase.getPercentageActive().get() < 1.0) {
                 health = edu.gemini.aspen.giapi.status.Health.WARNING;
             }
-            statusSetter.setStatusItem(new HealthStatus(top.buildStatusItemName(healthStatusName), health));
+            if (!this.health.equals(health)) {
+                this.health = health;
+                statusSetter.setStatusItem(new HealthStatus(top.buildStatusItemName(healthStatusName), health));
+            }
         } catch (JMSException e) {
             LOG.log(Level.SEVERE, "Error setting up health", e);
         }
