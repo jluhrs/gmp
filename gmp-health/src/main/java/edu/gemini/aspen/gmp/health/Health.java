@@ -6,6 +6,9 @@ import edu.gemini.aspen.gmp.top.Top;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +25,10 @@ public class Health {
     private final String healthStatusName;
     private final BundlesDatabase bundlesDatabase;
 
+    private final ScheduledThreadPoolExecutor executor;
+    private final ScheduledFuture future;
+    private final HealthChecker checker = new HealthChecker();
+
     public Health(@Property(name = "healthName", value = "INVALID", mandatory = true) String healthStatusName,
             @Requires Top top, @Requires IStatusSetter statusSetter, @Requires BundlesDatabase bundlesDatabase) {
         LOG.info("Health Constructor");
@@ -29,10 +36,18 @@ public class Health {
         this.statusSetter = statusSetter;
         this.healthStatusName = healthStatusName;
         this.bundlesDatabase = bundlesDatabase;
+        executor = new ScheduledThreadPoolExecutor(1);
+        executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
+        future = executor.scheduleAtFixedRate(checker, 0, 1000, TimeUnit.MILLISECONDS);
+
     }
 
     @Validate
     public void start() {
+        setupHealthValue();
+    }
+
+    private void setupHealthValue() {
         try {
             edu.gemini.aspen.giapi.status.Health health = edu.gemini.aspen.giapi.status.Health.GOOD;
             if (bundlesDatabase.getPercentageActive().get() < 1.0) {
@@ -44,4 +59,23 @@ public class Health {
         }
     }
 
+    @Invalidate
+    public void stop() {
+        LOG.info("Health InValidate");
+        future.cancel(false);
+        executor.shutdown();
+        try {
+            executor.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    private class HealthChecker implements Runnable {
+
+        @Override
+        public void run() {
+            setupHealthValue();
+        }
+    }
 }

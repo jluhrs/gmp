@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.health.impl;
 
-import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.AtomicDouble;
@@ -13,8 +13,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
-
-import java.util.Collection;
 
 @Component
 @Instantiate
@@ -36,13 +34,13 @@ public class BundlesDatabaseImpl implements BundlesDatabase {
 
     private void calculateActiveBundles() {
         ImmutableList<Bundle> bundles = ImmutableList.copyOf(this.context.getBundles());
-        Collection<Boolean> activeBooleans = Collections2.transform(bundles, new Function<Bundle, Boolean>() {
+        ImmutableList<Bundle> activeBundles = ImmutableList.copyOf(Collections2.filter(bundles, new Predicate<Bundle>() {
             @Override
-            public Boolean apply(@Nullable Bundle bundle) {
-                return bundle.getState() == Bundle.ACTIVE;
+            public boolean apply(@Nullable Bundle bundle) {
+                return bundle.getState() == Bundle.ACTIVE || bundle.getHeaders().get("Fragment-Host") != null;
             }
-        });
-        percentageActive.set(((double)activeBooleans.size())/bundles.size());
+        }));
+        percentageActive.set(((double) activeBundles.size()) / bundles.size());
     }
 
     @Override
