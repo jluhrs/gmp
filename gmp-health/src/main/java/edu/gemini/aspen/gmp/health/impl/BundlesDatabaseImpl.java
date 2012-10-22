@@ -8,6 +8,7 @@ import com.sun.istack.internal.Nullable;
 import edu.gemini.aspen.gmp.health.BundlesDatabase;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -17,6 +18,7 @@ import java.util.Collection;
 
 @Component
 @Instantiate
+@Provides
 public class BundlesDatabaseImpl implements BundlesDatabase {
     private final BundleContext context;
     private final AtomicDouble percentageActive = new AtomicDouble(1);
@@ -26,7 +28,7 @@ public class BundlesDatabaseImpl implements BundlesDatabase {
         context.addBundleListener(new BundleListener() {
             @Override
             public void bundleChanged(BundleEvent bundleEvent) {
-                System.out.println("ev " + bundleEvent);
+                calculateActiveBundles();
             }
         });
         calculateActiveBundles();

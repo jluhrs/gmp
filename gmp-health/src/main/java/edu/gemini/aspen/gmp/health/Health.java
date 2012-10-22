@@ -20,20 +20,25 @@ public class Health {
     private final IStatusSetter statusSetter;
     private final Top top;
     private final String healthStatusName;
-
+    private final BundlesDatabase bundlesDatabase;
 
     public Health(@Property(name = "healthName", value = "INVALID", mandatory = true) String healthStatusName,
-            @Requires Top top, @Requires IStatusSetter statusSetter) {
+            @Requires Top top, @Requires IStatusSetter statusSetter, @Requires BundlesDatabase bundlesDatabase) {
         LOG.info("Health Constructor");
         this.top = top;
         this.statusSetter = statusSetter;
         this.healthStatusName = healthStatusName;
+        this.bundlesDatabase = bundlesDatabase;
     }
 
     @Validate
     public void start() {
         try {
-            statusSetter.setStatusItem(new HealthStatus(top.buildStatusItemName(healthStatusName), edu.gemini.aspen.giapi.status.Health.GOOD));
+            edu.gemini.aspen.giapi.status.Health health = edu.gemini.aspen.giapi.status.Health.GOOD;
+            if (bundlesDatabase.getPercentageActive().get() < 1.0) {
+                health = edu.gemini.aspen.giapi.status.Health.WARNING;
+            }
+            statusSetter.setStatusItem(new HealthStatus(top.buildStatusItemName(healthStatusName), health));
         } catch (JMSException e) {
             LOG.log(Level.SEVERE, "Error setting up health", e);
         }
