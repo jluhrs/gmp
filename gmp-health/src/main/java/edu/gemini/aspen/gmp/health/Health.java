@@ -17,23 +17,23 @@ import java.util.logging.Logger;
 @Provides
 public class Health {
     private static final Logger LOG = Logger.getLogger(Health.class.getName());
-    private final IStatusSetter heartbeatSetter;
+    private final IStatusSetter statusSetter;
     private final Top top;
     private final String healthStatusName;
 
+
     public Health(@Property(name = "healthName", value = "INVALID", mandatory = true) String healthStatusName,
-            @Requires Top top, @Requires IStatusSetter heartbeatSetter) {
+            @Requires Top top, @Requires IStatusSetter statusSetter) {
         LOG.info("Health Constructor");
         this.top = top;
-        this.heartbeatSetter = heartbeatSetter;
+        this.statusSetter = statusSetter;
         this.healthStatusName = healthStatusName;
     }
 
     @Validate
     public void start() {
-        System.out.println("Validate");
         try {
-            heartbeatSetter.setStatusItem(new HealthStatus(top.buildStatusItemName(healthStatusName), edu.gemini.aspen.giapi.status.Health.GOOD));
+            statusSetter.setStatusItem(new HealthStatus(top.buildStatusItemName(healthStatusName), edu.gemini.aspen.giapi.status.Health.GOOD));
         } catch (JMSException e) {
             LOG.log(Level.SEVERE, "Error setting up health", e);
         }
