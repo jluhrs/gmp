@@ -18,42 +18,6 @@
 
 <channels>
     <channel>
-        <name>tcs:sad:currentZd.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>15</updateRate>
-    </channel>
-    <channel>
-        <name>tcs:sad:currentEl.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>16</updateRate>
-    </channel>
-    <channel>
-        <name>tcs:sad:currentRma.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>17</updateRate>
-    </channel>
-    <channel>
-        <name>tcs:sad:currentAirPressure.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>18</updateRate>
-    </channel>
-    <channel>
-        <name>tcs:sad:currentExternalTemp.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>19</updateRate>
-    </channel>
-    <channel>
-        <name>tcs:sad:currentRH.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>5</updateRate>
-    </channel>
-    <channel>
         <name>tcs:sad:sourceATrackFrame.VAL</name>
         <type>double</type>
         <size>1</size>
