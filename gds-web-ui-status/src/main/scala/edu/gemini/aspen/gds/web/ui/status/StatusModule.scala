@@ -21,6 +21,7 @@ import edu.gemini.aspen.gds.observationstate.ObservationInfo
 import org.joda.time.DateTime
 import com.vaadin.data.util.IndexedContainer
 import edu.gemini.aspen.gds.api.{CollectionError, ErrorCollectedValue, CollectedValue}
+import edu.gemini.aspen.giapi.status.{Health, HealthStatusItem, StatusItem}
 
 class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   val title: String = "Status"
@@ -162,6 +163,15 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
     statusTable.refreshRowCache()
     statusTable.setContainerDataSource(statusTable.getContainerDataSource)
     statusTable.setVisibleColumns(StatusModule.OBSERVATION_COLUMNS)
+  }
+
+  def updateHealth(item: StatusItem[_]) {
+    statusProp.setValue(item.getValue)
+    item match {
+      case h:HealthStatusItem if h.getHealth == Health.GOOD => status.setStyleName("gds-green")
+      case h:HealthStatusItem if h.getHealth == Health.BAD  => status.setStyleName("gds-red")
+      case _                                                => status.setStyleName("gds-bold")
+    }
   }
 
   private def buildDataContainer() = {

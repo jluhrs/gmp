@@ -25,6 +25,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi-status-dispatcher</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-api</artifactId>
         </dependency>
