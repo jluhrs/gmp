@@ -8,7 +8,7 @@ import edu.gemini.giapi.tool.parser.Util;
  */
 public class ShowMillisecondsArgument extends AbstractArgument {
 
-    private boolean _expectedValue = false;
+    private boolean _expectedValue = true;
 
     public ShowMillisecondsArgument() {
         super("millis");
@@ -23,7 +23,7 @@ public class ShowMillisecondsArgument extends AbstractArgument {
     }
 
     public String getInvalidArgumentMsg() {
-        return "What is the expected value? Try -expected <expected-value>";
+        return "Do you want to display millis? Try -millis";
     }
 
     public Boolean getExpectedValue() {

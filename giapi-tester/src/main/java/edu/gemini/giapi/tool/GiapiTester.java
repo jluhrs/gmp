@@ -51,6 +51,7 @@ public class GiapiTester {
         parser.registerArgument(new MonitorFileEventsArgument());
         parser.registerArgument(new DataLabelArgument());
         parser.registerArgument(new ExpectedValueArgument());
+        parser.registerArgument(new ShowMillisecondsArgument());
 
         //possible operations
         parser.registerOperation(new HelpOperation());

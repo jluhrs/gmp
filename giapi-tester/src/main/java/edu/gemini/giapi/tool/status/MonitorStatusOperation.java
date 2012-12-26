@@ -6,10 +6,7 @@ import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
-import edu.gemini.giapi.tool.arguments.ExpectedValueArgument;
-import edu.gemini.giapi.tool.arguments.HostArgument;
-import edu.gemini.giapi.tool.arguments.MonitorStatusArgument;
-import edu.gemini.giapi.tool.arguments.TimeoutArgument;
+import edu.gemini.giapi.tool.arguments.*;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.parser.Operation;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
@@ -34,6 +31,8 @@ public class MonitorStatusOperation implements Operation {
 
     private long _timeout = -1;
 
+    private boolean _showMillis = false;
+
     private String _expectedValue;
 
     private class StatusMonitor implements StatusHandler {
@@ -51,7 +50,11 @@ public class MonitorStatusOperation implements Operation {
 
         @Override
         public <T> void update(StatusItem<T> item) {
-            System.out.println("Status value: " + item);
+            if (!_showMillis) {
+                System.out.println("Status value: " + item);
+            } else {
+                System.out.println("Timestamp: " + item.getTimestamp().getTime() + ", Status value: " + item);
+            }
             lastItem = item;
             // If value is found exit immediately
             if (matchesExpectedValue(expectedValue)) {
@@ -77,6 +80,9 @@ public class MonitorStatusOperation implements Operation {
         }
         if (arg instanceof ExpectedValueArgument) {
             _expectedValue = ((ExpectedValueArgument) arg).getExpectedValue();
+        }
+        if (arg instanceof ShowMillisecondsArgument) {
+            _showMillis = ((ShowMillisecondsArgument) arg).getExpectedValue();
         }
     }
 

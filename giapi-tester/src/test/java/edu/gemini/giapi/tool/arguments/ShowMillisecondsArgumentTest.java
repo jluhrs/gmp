@@ -12,7 +12,7 @@ public class ShowMillisecondsArgumentTest {
 
         assertFalse(argument.requireParameter());
         assertEquals("millis", argument.getKey());
-        assertEquals(false, argument.getExpectedValue());
+        assertEquals(true, argument.getExpectedValue());
         argument.parseParameter("anything");
         assertEquals(true, argument.getExpectedValue());
     }
