@@ -61,6 +61,10 @@ DESCRIPTION
      -monitor <status-name>
         Starts a monitor for a status item with the given name.
 
+     -millis
+        Used with the monitor operation to display the time in milliseconds
+        since the unix epoch
+
      -get <status-name>
         Gets the most recent value for the status item specified.
 
