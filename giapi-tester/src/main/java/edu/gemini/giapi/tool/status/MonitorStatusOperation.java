@@ -125,7 +125,6 @@ public class MonitorStatusOperation implements Operation {
 
             if (_timeout > 0) {//wait the timeout
                 ScheduledFuture<Void> timeoutFuture = startTimeoutThread();
-                service.startJms(provider);
                 waitForTimeout(timeoutFuture);
             } else if (_timeout == 0) {//exit now
                 //do nothing
@@ -133,9 +132,12 @@ public class MonitorStatusOperation implements Operation {
                 service.initialize();
                 Thread.sleep(Long.MAX_VALUE);
             }
+        } catch (TimeoutException e) {
+            // Ignore. just exit
         } catch (JMSException e) {
             LOG.log(Level.WARNING,"Problem on GIAPI tester",e);
         }
+        service.stopJms();
 
         return 0;
     }
