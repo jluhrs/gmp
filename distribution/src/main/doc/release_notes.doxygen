@@ -1,7 +1,34 @@
 /*! \page release_notes Release Notes
 
+
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3.2
+
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1013'>GIAPI-1013</a>] -         Update GDS configuration to SRD 28
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1014'>GIAPI-1014</a>] -         Support displaying the message arrival time in milliseconds when using giapi-tester monitor
+</li>
+</ul>
+
+
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3.1
-        
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1012'>GIAPI-1012</a>] -         GDS Health marked as unknown
+</li>
+</ul>
+
+<h2>        Story
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1011'>GIAPI-1011</a>] -         Update GDS configuration for SRD version 0.26
+</li>
+</ul>
+
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3
 
 <h2>        Story
