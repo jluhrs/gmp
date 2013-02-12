@@ -78,6 +78,7 @@ object GDSConfigValidator {
             val results = result.get map {
               case Some(x: GDSConfiguration) => x.formatForConfigFile
               case Some(x: Comment) => x.comment
+              case Some(_) => sys.error("Should not happen")
               case None => "\n"
             }
             for (res <- results) {

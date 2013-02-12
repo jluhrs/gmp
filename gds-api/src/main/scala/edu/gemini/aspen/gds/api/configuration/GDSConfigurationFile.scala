@@ -40,6 +40,7 @@ object GDSConfigurationFile {
     results map {
       case Some(x: GDSConfiguration) => new ConfigItem(x)
       case Some(x: Comment) => new ConfigItem(x)
+      case Some(x) => sys.error("Should not happen")
       case None => new ConfigItem(new BlankLine())
     }
   }

@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gds.api
 
 import fits.{FitsKeyword, HeaderItem}
-import scala.language.implicitConversions
 
 /**
  * Message indicating the resulting values */
@@ -24,7 +23,7 @@ class CollectedValue[T] protected(val keyword: FitsKeyword, val value: T, val co
 /**
  * Companion object used to place implicit conversions, apply and unapply */
 object CollectedValue {
-  implicit def collectedValueToHeaderItem[T](collectedValue: CollectedValue[T])(implicit _type: FitsType[T]): HeaderItem[T] = {
+  implicit class collectedValueToHeaderItem[T](collectedValue: CollectedValue[T])(implicit _type: FitsType[T]) extends HeaderItem[T](collectedValue.keyword, collectedValue.value, collectedValue.comment, collectedValue.format) {
     _type.collectedValueToHeaderItem(collectedValue)
   }
 
