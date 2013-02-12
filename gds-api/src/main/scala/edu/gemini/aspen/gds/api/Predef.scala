@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gds.api
 
 import java.io.{IOException, File, FileInputStream, FileOutputStream}
+import scala.language.reflectiveCalls
 
 /**
  * Set of common utility methods

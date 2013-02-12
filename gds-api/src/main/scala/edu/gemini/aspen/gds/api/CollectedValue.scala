@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gds.api
 
 import fits.{FitsKeyword, HeaderItem}
+import scala.language.implicitConversions
 
 /**
  * Message indicating the resulting values */

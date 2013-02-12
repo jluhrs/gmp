@@ -20,8 +20,8 @@
         <dependencies>
             <dependency>
                 <groupId>org.specs2</groupId>
-                <artifactId>specs2_2.9.1</artifactId>
-                <version>1.6.1</version>
+                <artifactId>specs2_2.10</artifactId>
+                <version>1.13</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -30,7 +30,7 @@
     <dependencies>
         <dependency>
             <groupId>org.specs2</groupId>
-            <artifactId>specs2_2.9.1</artifactId>
+            <artifactId>specs2_2.10</artifactId>
         </dependency>
     </dependencies>
 
@@ -73,6 +73,7 @@
                     <args>
                         <arg>-unchecked</arg>
                         <arg>-deprecation</arg>
+                        <arg>-feature</arg>
                         <arg>-explaintypes</arg>
                     </args>
                 </configuration>

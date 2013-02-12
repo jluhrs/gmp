@@ -39,7 +39,7 @@ class InstrumentKeywordsChecker(@Requires configService: GDSConfigurationService
     val readerOpt: Option[FitsReader] = try {
       Some(new FitsReader(file))
     } catch {
-      case _ => None
+      case _:Exception => None
     }
 
     val configKeywords: Map[Int, Set[GDSConfiguration]] = config.filter{
@@ -48,9 +48,7 @@ class InstrumentKeywordsChecker(@Requires configService: GDSConfigurationService
 
     configKeywords foreach {
       case (index: Int, value: Set[_]) => {
-        val keysInFile = readerOpt flatten {
-          r => r.keys(index)
-        }
+        val keysInFile = readerOpt.map(_.keys(index)).getOrElse(List.empty)
         val keysInConfig = value map {
           case c:GDSConfiguration => c.keyword
         }

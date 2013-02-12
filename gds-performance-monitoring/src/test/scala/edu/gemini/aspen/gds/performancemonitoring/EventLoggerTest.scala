@@ -81,18 +81,12 @@ class EventLoggerTest extends AssertionsForJUnit {
 
   @Test
   def testCheck() {
-    el.check("set", "hola", 600) match {
-      case x: Boolean => assert(x)
-      case _ => fail()
-    }
+    assert(el.check("set", "hola", 600))
   }
 
   @Test
   def testCheckEmpty() {
-    el.check("set", "chao", 600) match {
-      case x: Boolean => assert(!x)
-      case _ => fail()
-    }
+    assert(!el.check("set", "chao", 600))
   }
 
 }
