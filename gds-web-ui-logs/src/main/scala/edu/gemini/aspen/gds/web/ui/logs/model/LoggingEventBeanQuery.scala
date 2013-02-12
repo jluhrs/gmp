@@ -29,7 +29,7 @@ class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
   }
 
   override def loadBeans(startIndex: Int, count: Int) = {
-    val result = filteredLogs drop(startIndex - 1) take(count) toList
+    val result = filteredLogs.drop(startIndex - 1).take(count).toList
 
     val sortProperties = sortPropertyIds.headOption.getOrElse("timeStamp").toString
     val ascending = sortStates.headOption.getOrElse(true)
@@ -39,7 +39,7 @@ class LoggingEventBeanQuery(queryDefinition0: QueryDefinition, queryConfiguratio
     if (ascending) {
       sortedLog
     } else {
-      sortedLog reverse
+      sortedLog.reverse
     }
   }
 

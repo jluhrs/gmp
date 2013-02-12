@@ -50,7 +50,7 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
           try {
             updateFitsHeaders(outputNamingFunction = namingFunction)
           } catch {
-            case ex =>
+            case ex:Exception =>
               LOG.log(Level.WARNING, ex.getMessage, ex)
           }
         }
@@ -70,7 +70,7 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
     val destinationFile = new File(toDirectory, outputNamingFunction(dataLabel))
     LOG.info("Updating file " + originalFile + " to " + destinationFile)
 
-    val updatedHeaders = headers sortBy {
+    val updatedHeaders = headers.sortBy {
       _.index
     }
 

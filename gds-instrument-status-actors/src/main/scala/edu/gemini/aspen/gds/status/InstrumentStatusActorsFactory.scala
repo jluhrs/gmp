@@ -13,7 +13,7 @@ import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, Ke
 @Provides(specifications = Array[Class[_]](classOf[KeywordActorsFactory]))
 class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) extends AbstractKeywordActorsFactory {
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
-    configurationsForEvent(obsEvent) map {
+    configurationsForEvent(obsEvent).map {
       new InstrumentStatusActor(statusDB, _)
     }
   }
@@ -24,7 +24,7 @@ class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) e
    * Filters out only the configuration events relevant for a given observation event
    */
   private def configurationsForEvent(e: ObservationEvent) = {
-    actorsConfiguration filter {
+    actorsConfiguration.filter {
       _.event.name == e.toString
     }
   }

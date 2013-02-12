@@ -1,7 +1,7 @@
 package edu.gemini.aspen.gds.web.ui.logs
 
 import model.LogEventWrapper
-import scala.collection.mutable.ConcurrentMap
+import scala.collection.concurrent._
 import scala.collection.JavaConversions._
 import java.util.concurrent.TimeUnit._
 import java.util.concurrent.atomic.AtomicInteger
@@ -25,7 +25,7 @@ class InMemoryLogSource extends PaxAppender with LogSource {
 
   // We index with an artificial value to avoid collisions with timestamps
   val index = new AtomicInteger(0)
-  val logEventsMap: ConcurrentMap[java.lang.Integer, LogEventWrapper] = CacheBuilder.newBuilder()
+  val logEventsMap: Map[java.lang.Integer, LogEventWrapper] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .maximumSize(MAXSIZE)
     .build[java.lang.Integer, LogEventWrapper]().asMap
@@ -38,5 +38,5 @@ class InMemoryLogSource extends PaxAppender with LogSource {
     logEventsMap += java.lang.Integer.valueOf(i) -> new LogEventWrapper(event)
   }
 
-  override def logEvents = logEventsMap.values.toList.sortBy {_.timeStamp0} reverse
+  override def logEvents = logEventsMap.values.toList.sortBy {_.timeStamp0}.reverse
 }

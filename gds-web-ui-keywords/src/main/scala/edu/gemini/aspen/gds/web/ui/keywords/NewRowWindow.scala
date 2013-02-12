@@ -29,7 +29,7 @@ class NewRowWindow(dataSource: GDSKeywordsDataSource) extends Window("Add new ro
   setName("Add new row")
   setModal(true)
   setResizable(false)
-  setWidth(400 px)
+  setWidth(400.px)
 
   val layout = new FormLayout
   layout.setMargin(true)

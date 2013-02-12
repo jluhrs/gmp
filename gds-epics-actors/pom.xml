@@ -36,6 +36,10 @@
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-actors</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

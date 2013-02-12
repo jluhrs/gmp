@@ -22,9 +22,9 @@ class FitsWriterDataTypesTest extends FunSuite with BeforeAndAfterEach {
   def createHeadersWithKeywordAndFormat[T](value: T, format:String)(implicit _type: FitsType[T]): Header = Header(0, List(HeaderItem("KEY", value, "comment", Some(format))))
 
   // Verifies that a header contains all the original keywords plus new keywords
-  def toMap(header: Header) = header.keywords map {
+  def toMap(header: Header) = header.keywords.map {
     k => k.keywordName.key -> k.value
-  } toMap
+  }.toMap
 
   test("update keyword with string item") {
     val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)

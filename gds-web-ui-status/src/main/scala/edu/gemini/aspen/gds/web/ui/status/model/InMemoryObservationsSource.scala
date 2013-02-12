@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gds.web.ui.status.model
 
-import scala.collection.mutable.ConcurrentMap
+import scala.collection.concurrent._
 import scala.collection.JavaConversions._
 import java.util.concurrent.TimeUnit._
 import java.util.concurrent.atomic.AtomicInteger
@@ -37,15 +37,15 @@ class InMemoryObservationsSource extends ObservationsSource with ObservationStat
   // We index with an artificial value to avoid collisions with timestamps
   val index = new AtomicInteger(0)
 
-  val observationBeansMap: ConcurrentMap[java.lang.Integer, ObservationInfo] = CacheBuilder.newBuilder()
+  val observationBeansMap: Map[java.lang.Integer, ObservationInfo] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .maximumSize(MAXSIZE).build[java.lang.Integer, ObservationInfo]().asMap()
 
-  val pendingObservations: ConcurrentMap[DataLabel, java.lang.Boolean] = CacheBuilder.newBuilder()
+  val pendingObservations: Map[DataLabel, java.lang.Boolean] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .maximumSize(MAXSIZE).build[DataLabel, java.lang.Boolean]().asMap()
 
-  def observations = observationBeansMap.values.toList.sortBy {_.timeStamp.getMillis} reverse
+  def observations = observationBeansMap.values.toList.sortBy {_.timeStamp.getMillis}.reverse
 
   def pending =  pendingObservations.keys
 

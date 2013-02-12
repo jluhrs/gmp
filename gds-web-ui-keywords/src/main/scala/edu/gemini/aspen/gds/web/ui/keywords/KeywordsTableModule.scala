@@ -41,13 +41,13 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
 
 
   def visibleColumns(user: Option[String]): Array[AnyRef] = {
-    val prop = user map {
+    val prop = user.map {
       _ => deleteProperty
-    } toList
+    }.toList
 
     val cols = dataSource.propertyIds
     val p = cols ++ prop
-    (p toArray).asInstanceOf[Array[AnyRef]]
+    (p.toArray).asInstanceOf[Array[AnyRef]]
   }
 
   protected[keywords] def buildDataSource(user: Option[String]): GDSKeywordsDataSource = user match {
@@ -146,7 +146,7 @@ class KeywordsTableModule(configService: GDSConfigurationService) extends GDSWeb
     newRowButton.setVisible(visible)
     saveButton.setVisible(visible)
 
-    val layout = new HorizontalLayout(style = "keywords-control", margin = false, width = 100 percent) {
+    val layout = new HorizontalLayout(style = "keywords-control", margin = false, width = 100.percent) {
       add(label, ratio = 1f, alignment = Alignment.MIDDLE_LEFT)
       add(newRowButton, alignment = Alignment.MIDDLE_RIGHT)
       add(saveButton, alignment = Alignment.MIDDLE_RIGHT)

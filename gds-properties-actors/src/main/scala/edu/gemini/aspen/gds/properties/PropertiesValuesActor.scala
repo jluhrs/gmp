@@ -8,9 +8,9 @@ import edu.gemini.aspen.gds.api._
  */
 class PropertiesValuesActor(configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
   override def collectValues(): List[CollectedValue[_]] = {
-    Option(System.getProperty(configuration.channel.name)) map {
+    Option(System.getProperty(configuration.channel.name)).map {
       _ => valueToCollectedValue(System.getProperty(configuration.channel.name))
-    } toList
+    }.toList
   }
 
 }

@@ -58,7 +58,7 @@ class CollectedValueTest {
     cv match {
       case CollectedValue(keyword, value, comment, index) => {
         assertEquals(new FitsKeyword("KEYWORD"), keyword)
-        assertEquals(1.1, value)
+        assertEquals(1.1, value, 0)
         assertEquals("comment", comment)
         assertEquals(0, index)
       }
@@ -74,7 +74,7 @@ class CollectedValueTest {
     list match {
       case CollectedValue(keyword, value, comment, index) :: Nil => {
         assertEquals(new FitsKeyword("KEYWORD"), keyword)
-        assertEquals(1.1, value)
+        assertEquals(1.1, value, 0)
         assertEquals("comment", comment)
         assertEquals(0, index)
       }

@@ -5,8 +5,9 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.observationstate._
 import java.util.concurrent.TimeUnit._
 import scala.collection.JavaConversions._
+import scala.collection.concurrent._
 import edu.gemini.aspen.gds.api.{CollectedValue, CollectionError}
-import collection.mutable.{SynchronizedSet, HashSet, Set, ConcurrentMap}
+import collection.mutable.{SynchronizedSet, HashSet, Set}
 import java.util.Date
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
 import com.google.common.cache.CacheBuilder
@@ -31,7 +32,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
     var timestamp = new Date()
   }
 
-  val obsInfoMap: ConcurrentMap[DataLabel, ObservationState] = CacheBuilder.newBuilder()
+  val obsInfoMap: Map[DataLabel, ObservationState] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .build[DataLabel, ObservationState]().asMap()
 
@@ -102,9 +103,9 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
   }
 
   override def getObservationsInProgress: Traversable[DataLabel] = {
-    obsInfoMap filter {
+    obsInfoMap.filter {
       case (key, value) => (value.started && !value.ended)
-    } keySet
+    }.keySet
   }
 
   override def getLastDataLabel: Option[DataLabel] = {

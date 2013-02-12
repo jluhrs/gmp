@@ -30,7 +30,7 @@ class ConstantActor(configurations: immutable.List[GDSConfiguration]) extends Ke
     } catch {
       //The string was not parseable as a number
       case ex: NumberFormatException => ErrorCollectedValue(config.keyword, CollectionError.TypeMismatch, config.fitsComment.value, config.index.index)
-      case _ => ErrorCollectedValue(config.keyword, CollectionError.GenericError, config.fitsComment.value, config.index.index)
+      case _:Exception => ErrorCollectedValue(config.keyword, CollectionError.GenericError, config.fitsComment.value, config.index.index)
     }
   }
 

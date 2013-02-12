@@ -18,7 +18,7 @@ class FormatPropertyFactory extends PropertyItemWrapperFactory(classOf[Format], 
   override def buildPropertyControlAndWrapper(config: GDSConfiguration) = {
     val textField = new TextField(caption = "Format",
       value = config.format.value.getOrElse(""),
-      width = 30 px,
+      width = 30.px,
       required = true,
       immediate = false,
       maxLength = 3,

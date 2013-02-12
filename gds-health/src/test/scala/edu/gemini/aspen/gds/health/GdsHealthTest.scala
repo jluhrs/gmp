@@ -7,7 +7,7 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
-import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandlerImpl
+import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import actors.threadpool.AtomicInteger
 import edu.gemini.aspen.gmp.top.Top
@@ -95,7 +95,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     val handler = new TestHandler(2)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandlerImpl])
+    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandler])
     handler.waitForCompletion()
     assertEquals(2, handler.counter.get())
     assertEquals(healthName, handler.lastHealthStatusItem.getName)
@@ -104,7 +104,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   }
 
   def bindAllHealthSources(gdsHealth: GdsHealth) {
-    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandlerImpl])
+    gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandler])
     val fact = mock[KeywordActorsFactory]
     for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT)) {
       println("Bind source " + source)
@@ -171,7 +171,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     val handler = new TestHandler(1)
     agg.bindStatusHandler(handler)
 
-    gdsHealth.unbindGDSObseventHandler(mock[GDSObseventHandlerImpl])
+    gdsHealth.unbindGDSObseventHandler(mock[GDSObseventHandler])
     handler.waitForCompletion()
     assertEquals(1, handler.counter.get())
     assertEquals(healthName, handler.lastHealthStatusItem.getName)

@@ -35,7 +35,7 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
       c => new EpicsArrayValuesActor(channels(c.head.channel), c)
     }
 
-    singleActors ++ arrayActors toList
+    (singleActors ++ arrayActors).toList
   }
 
   override def configure(configuration: immutable.List[GDSConfiguration]) {
@@ -46,7 +46,7 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
     val addedElements = newConfig -- oldConfig
     val removedElements = oldConfig -- newConfig
 
-    addedElements foreach {
+    addedElements.foreach {
       c => {
         try {
           channels.put(c.channel, epicsReader.getChannelAsync(c.channel.name))
@@ -58,10 +58,10 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
       }
     }
 
-    removedElements foreach {
+    removedElements.foreach {
       c => {
         try {
-          channels.remove(c.channel) foreach  {_.destroy()}
+          channels.remove(c.channel).foreach  {_.destroy()}
         } catch {
           case ex: CAException => {
             LOG.severe(ex.getMessage)
@@ -75,7 +75,7 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
 
   @Invalidate
   def unbindAllChannels() {
-    channels.values foreach {
+    channels.values.foreach {
       _.destroy()
     }
     channels.clear()

@@ -10,10 +10,9 @@ import java.security.MessageDigest
 private class SHA1Encoder extends Encoder {
   val sha = MessageDigest.getInstance("SHA1")
   def encode(value: String) = {
-    val d = sha.digest(value.getBytes)
     // Return in hex
-    d.map {
-      "%02x".format(_)
+    sha.digest(value.getBytes).toSeq.map { b:Byte =>
+      "%02x".format(b)
     }.mkString
   }
 }

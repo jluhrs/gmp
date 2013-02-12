@@ -41,6 +41,10 @@
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-services</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.external.osgi.nom.tam</groupId>
+            <artifactId>fits</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

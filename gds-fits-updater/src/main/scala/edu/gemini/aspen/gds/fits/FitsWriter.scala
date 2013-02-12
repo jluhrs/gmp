@@ -21,12 +21,12 @@ class FitsWriter(file: File) extends FitsReader(file) {
 
   private def addNewKeywords(hdu: BasicHDU, header: Header) {
     val hduHeader = hdu.getHeader
-    val existingKeywords = hduHeader.iterator() collect {
+    val existingKeywords = hduHeader.iterator().collect {
       case k: HeaderCard if k.isKeyValuePair => k
     }
 
     // Find keys in header but not in the file
-    val newKeywords = header.keywords collect {
+    val newKeywords = header.keywords.collect {
       // Select keys
       case k if !(existingKeywords exists {
         _.getKey == k.keywordName.key

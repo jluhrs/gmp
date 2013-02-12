@@ -20,14 +20,14 @@ class ODBActorsFactory(@Requires dbService: IDBDatabaseService, @Requires progra
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
     val programID = (programIdDatabase !? RetrieveProgramId(dataLabel)).asInstanceOf[Option[String]]
     // Only produce actors if the programID has been already stored in the programIdDatabase
-    val eventConfiguration = actorsConfiguration filter {
+    val eventConfiguration = actorsConfiguration.filter {
       _.event.name == obsEvent.name
     }
-    programID filter {
+    programID.filter {
       _ => eventConfiguration.nonEmpty
-    } map {
+    }.map {
       id => new ODBValuesActor(id, dbService, eventConfiguration)
-    } toList
+    }.toList
   }
 
   override def getSource = KeywordSource.ODB

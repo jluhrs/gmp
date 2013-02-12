@@ -38,6 +38,10 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
+            <artifactId>gds-actors-composer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-epics-actors</artifactId>
         </dependency>
         <dependency>
@@ -85,6 +89,10 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-actors</artifactId>
         </dependency>
     </dependencies>
 

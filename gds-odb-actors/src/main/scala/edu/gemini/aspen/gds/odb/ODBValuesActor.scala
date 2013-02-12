@@ -32,11 +32,11 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
       _.getDataObject
     }
     // Do a collect for each item or return a set of default values
-    dataObjOpt collect {
+    dataObjOpt.collect {
       case p: SPProgram => p
-    } map {
+    }.map {
       collectValuesFromProgram(_)
-    } getOrElse {
+    }.getOrElse {
       LOG.severe("No program found with id: " + progId)
       Nil
     }
@@ -48,8 +48,8 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
    * Collected Value
    */
   private def collectValuesFromProgram(program: SPProgram): List[CollectedValue[_]] = {
-    configuration flatMap {
-        c => new ODBOneValueActor(program, c).collectValues
+    configuration.flatMap {
+      c => new ODBOneValueActor(program, c).collectValues
     }
   }
 
@@ -59,7 +59,7 @@ class ODBValuesActor(programID: String, queryRunner: IDBDatabaseService, configu
   private class ODBOneValueActor(program: SPProgram, configuration: GDSConfiguration) extends OneItemKeywordValueActor(configuration) {
     override def collectValues(): List[CollectedValue[_]] = {
       val result = extractorFunctions.getOrElse(sourceChannel, unKnownChannelExtractor(_))(program)
-      result map valueToCollectedValue toList
+      result.map(valueToCollectedValue).toList
     }
   }
 

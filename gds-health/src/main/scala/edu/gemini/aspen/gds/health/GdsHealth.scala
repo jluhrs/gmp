@@ -10,6 +10,7 @@ import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 import actors.Actor
 import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
+import collection.mutable.ListBuffer
 
 case object UpdateHealth
 
@@ -96,7 +97,7 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
 
   private class HealthState(implicit val LOG: Logger) {
 
-    private val actors = new Array[Boolean](6) //Booleans are initialized to false
+    private val actors = ListBuffer[Boolean](false, false, false, false, false, false) //Booleans are initialized to false
 
     private var obsEvtHndl = false
     private var headerRec = false

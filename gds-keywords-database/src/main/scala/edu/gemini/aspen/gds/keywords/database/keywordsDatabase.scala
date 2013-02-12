@@ -27,7 +27,7 @@ sealed trait KeywordsDatabaseAction
 case class Store[T](dataLabel: DataLabel, value: CollectedValue[T]) extends KeywordsDatabaseAction
 
 //store a List of CollectedValue associated with a data label
-case class StoreList[T](dataLabel: DataLabel, value: List[CollectedValue[T]]) extends KeywordsDatabaseAction
+case class StoreList(dataLabel: DataLabel, value: List[CollectedValue[_]]) extends KeywordsDatabaseAction
 
 //retrieve all CollectedValues associated with a data label
 case class Retrieve(dataLabel: DataLabel) extends KeywordsDatabaseAction

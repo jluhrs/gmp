@@ -104,8 +104,8 @@ class LoggingEventBeanQueryTest extends Mockito {
   @Test
   def loadWithFilter {
     // Add two level of logs
-    val debugLogEvents = (for (i <- 0 to 10) yield buildEvent(i, Level.DEBUG)) toList
-    val errorLogEvents = (for (i <- 0 to 10) yield buildEvent(i, Level.ERROR)) toList
+    val debugLogEvents = (for (i <- 0 to 10) yield buildEvent(i, Level.DEBUG)).toList
+    val errorLogEvents = (for (i <- 0 to 10) yield buildEvent(i, Level.ERROR)).toList
     val logEvents = debugLogEvents ::: errorLogEvents
     logSource.logEvents returns logEvents
 

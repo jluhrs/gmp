@@ -71,7 +71,7 @@ public class WeatherStationUpdatesIT {
         private List<Double> results = Lists.newArrayList();
 
         public <T> void valueChanged(String channel, List<T> values) {
-            if (!values.isEmpty() && values.get(0) instanceof Double) {
+            if (values != null && !values.isEmpty() && values.get(0) instanceof Double) {
                 List<Double> doubleValues = (List<Double>) values;
                 System.out.println(CHANNELS.get(channel) + ": " + doubleValues);
                 results.addAll(doubleValues);

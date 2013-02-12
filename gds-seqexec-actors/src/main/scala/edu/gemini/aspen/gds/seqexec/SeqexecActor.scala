@@ -32,9 +32,9 @@ class SeqexecActor(seqexecKeyDB: TemporarySeqexecKeywordsDatabase, dataLabel: Da
 
   private class OneItemSeqexecValueActor(config: GDSConfiguration, map: Map[FitsKeyword, AnyRef]) extends OneItemKeywordValueActor(config) {
     def collectValues(): List[CollectedValue[_]] = {
-      seqexecValuesMap.get(config.keyword) map {
+      seqexecValuesMap.get(config.keyword).map {
         valueToCollectedValue
-      } toList
+      }.toList
     }
   }
 

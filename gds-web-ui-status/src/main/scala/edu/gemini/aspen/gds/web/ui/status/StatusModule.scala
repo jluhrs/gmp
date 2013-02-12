@@ -40,7 +40,7 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   val lastDataLabel = new Label(property = lastDataLabelProp)
 
   // Grid for the elements on the top of the page
-  val topGrid = new GridLayout(columns = 2, rows = 3, height = 100 px, width = 100 pct) {
+  val topGrid = new GridLayout(columns = 2, rows = 3, height = 100.px, width = 100.pct) {
     setColumnExpandRatio(0, 1.0f)
     setColumnExpandRatio(1, 3.0f)
 
@@ -115,7 +115,7 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
   })
   keywordsTable.setColumnAlignment(statusProperty, com.vaadin.ui.Table.ALIGN_CENTER)
   keywordsTable.setColumnWidth(statusProperty, 20)
-  keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS)
+  keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS.toArray)
   setKeywordColumnTitles()
 
   def displayKeywords(itemId: AnyRef) = {
@@ -126,7 +126,7 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
         }
       if (items.nonEmpty) {
         keywordsTable.setContainerDataSource(Container(items: _*))
-        keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS)
+        keywordsTable.setVisibleColumns(StatusModule.KEYWORD_COLUMNS.toArray)
       }
       case _ =>
     }
@@ -162,7 +162,7 @@ class StatusModule(observationSource: ObservationsSource) extends GDSWebModule {
     processingProp.setValue(observationSource.pending.mkString(", "))
     statusTable.refreshRowCache()
     statusTable.setContainerDataSource(statusTable.getContainerDataSource)
-    statusTable.setVisibleColumns(StatusModule.OBSERVATION_COLUMNS)
+    statusTable.setVisibleColumns(StatusModule.OBSERVATION_COLUMNS.toArray)
   }
 
   def updateHealth(item: StatusItem[_]) {
@@ -237,11 +237,11 @@ protected object StatusModule {
 
   val OBSERVATION_STYLES = Map[ObservationStatus, String](MissingKeywords -> "warn", ObservationError -> "error", ErrorKeywords -> "warn")
   val OBSERVATION_COLUMN_NAMES = Map("status" -> "", "timeStamp" -> "Time ", "dataLabel" -> "Data Label", "errorMsg" -> "Error message", "writeTime" -> "Time to write")
-  val OBSERVATION_COLUMNS = Array[AnyRef]("status", "timeStamp", "dataLabel", "writeTime", "errorMsg")
+  val OBSERVATION_COLUMNS = List("status", "timeStamp", "dataLabel", "writeTime", "errorMsg")
 
   val KEYWORD_STYLES = Map[CollectionError.Value, String](CollectionError.GenericError -> "error")
   val KEYWORD_COLUMN_NAMES = Map("status" -> "", "keyword" -> "Keyword", "value" -> "Value")
-  val KEYWORD_COLUMNS = Array[AnyRef]("status", "keyword", "value")
+  val KEYWORD_COLUMNS = List("status", "keyword", "value")
 
   def buildLabel(label: String) = new Label(caption = label, style = "gds-bold")
 

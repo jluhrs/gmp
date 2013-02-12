@@ -43,7 +43,7 @@ class LogsModule(logSource: LogSource) extends GDSWebModule {
       add(levelCombo)
     }
     val drawer = new Drawer("Filters", filters)
-    drawer.setWidth(100 percent)
+    drawer.setWidth(100.percent)
     add(drawer)
     add(logTable, ratio = 1.0f)
   }

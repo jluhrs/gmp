@@ -25,7 +25,11 @@ class TemporarySeqexecKeywordsDatabaseImplTest {
     }
 
     val noValue = db !? (100, Retrieve(new DataLabel("label"), keyword))
-    noValue
+    noValue match {
+      case Some(None) =>
+      case Some(x) => fail()
+      case None => fail()
+    }
   }
 
   @Test

@@ -9,15 +9,18 @@ class CollectedValue[T] protected(val keyword: FitsKeyword, val value: T, val co
 
   override def equals(other: Any): Boolean = other match {
     case that: CollectedValue[_] => (that canEqual this) && keyword == that.keyword && value == that.value && comment == that.comment && index == that.index && format.getOrElse("") == that.format.getOrElse("")
-    case _ => false
+    case _                       => false
   }
 
   // Used by equals and can be overrode by extensions
-  protected def canEqual(other: Any): Boolean = other.isInstanceOf[CollectedValue[_]]
+  protected def canEqual(other: Any): Boolean = other match {
+    case _:CollectedValue[_] => true
+    case _                   => false
+  }
 
   override def hashCode: Int = 41 * (41 * (41 * (41 * (41 + index) + comment.##) + value.##) + keyword.##) + format.##
 
-  override def toString = "CollectedValue(" + keyword + ", " + value + ", " + comment + ", " + index + ", " + format.getOrElse("\"\"") + ")"
+  override def toString = s"CollectedValue(${keyword}, ${value}, ${comment}, ${index}, ${format.getOrElse("\"\"")})"
 }
 
 /**
@@ -29,5 +32,5 @@ object CollectedValue {
 
   def apply[T](keyword: FitsKeyword, value: T, comment: String, index: Int, format: Option[String])(implicit _type: FitsType[T]) = new CollectedValue[T](keyword, value, comment, index, format)
 
-  def unapply(cv: CollectedValue[_]) = Option(cv.keyword, cv.value, cv.comment, cv.index)
+  def unapply[T](cv: CollectedValue[T]) = Option(cv.keyword, cv.value, cv.comment, cv.index)
 }

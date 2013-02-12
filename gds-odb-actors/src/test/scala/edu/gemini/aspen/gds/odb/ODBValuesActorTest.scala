@@ -2,17 +2,18 @@ package edu.gemini.aspen.gds.odb
 
 import org.junit.Assert._
 import org.junit.Test
-import org.scalatest.Spec
+import org.scalatest.FunSuite
 import edu.gemini.aspen.giapi.data.DataLabel
-import org.specs2.mock.Mockito
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.spModel.gemini.obscomp.SPProgram
 import edu.gemini.pot.spdb.IDBDatabaseService
 import edu.gemini.pot.sp.{ISPProgram, SPProgramID}
 import edu.gemini.aspen.gds.api._
 import fits.FitsKeyword
+import org.scalatest.mock.MockitoSugar
+import org.mockito.Mockito._
 
-class ODBValuesActorTest extends Spec with Mockito {
+class ODBValuesActorTest extends FunSuite with MockitoSugar {
   val dataLabel = new DataLabel("GS-2011")
   val programIDLabel = "programID"
   val programID = SPProgramID.toProgramID("programID")
@@ -28,8 +29,8 @@ class ODBValuesActorTest extends Spec with Mockito {
   val firstNameFitsKeyword = new FitsKeyword("PIFSTNAM")
 
   spProgram.setPIInfo(piInfo)
-  databaseService.lookupProgramByID(programID) returns ispProgram
-  ispProgram.getDataObject returns spProgram
+  when(databaseService.lookupProgramByID(programID)).thenReturn(ispProgram)
+  when(ispProgram.getDataObject.asInstanceOf[SPProgram]).thenReturn(spProgram)
 
   // Return type must be Any to avoid a compiler bug
   def buildActorAndCollect(configuration: List[GDSConfiguration]): Any = {
@@ -41,8 +42,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     result().asInstanceOf[List[CollectedValue[_]]]
   }
 
-  @Test
-  def testNormalCollection() {
+  test("normal collection") {
     val configuration = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI First Name", true)
 
     val result = buildActorAndCollect(configuration)
@@ -57,7 +57,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     }
 
     // verify mock
-    there was databaseService.lookupProgramByID(programID)
+    verify(databaseService).lookupProgramByID(programID)
   }
 
   // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
@@ -74,7 +74,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     }
 
     // verify mock
-    there was databaseService.lookupProgramByID(programID)
+    verify(databaseService).lookupProgramByID(programID)
   }
 
   @Test
@@ -107,7 +107,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     }
 
     // verify mock
-    there was databaseService.lookupProgramByID(programID)
+    verify(databaseService).lookupProgramByID(programID)
   }
 
   // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
@@ -126,7 +126,7 @@ class ODBValuesActorTest extends Spec with Mockito {
       case _ => fail("Should not reply other message ")
     }
     // verify mock
-    there was databaseService.lookupProgramByID(programID)
+    verify(databaseService).lookupProgramByID(programID)
   }
 
   // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
@@ -145,14 +145,14 @@ class ODBValuesActorTest extends Spec with Mockito {
     }
 
     // verify mock
-    there was databaseService.lookupProgramByID(programID)
+    verify(databaseService).lookupProgramByID(programID)
   }
 
   // should not return anything if the value cannot be read. The default will be added by an PostProcessingPolicy
   // it doesn't matter at this point if the item is mandatory or not
   @Test
   def testProgramNotFound() {
-    databaseService.lookupProgramByID(programID) returns null
+    when(databaseService.lookupProgramByID(programID)).thenReturn(null)
     val configuration = buildConfigurationItem(firstNameFitsKeyword, firstNameChannel, "PI First Name", true)
 
     val result = buildActorAndCollect(configuration)
@@ -163,7 +163,7 @@ class ODBValuesActorTest extends Spec with Mockito {
     }
 
     // verify mock
-    there was databaseService.lookupProgramByID(programID)
+    verify(databaseService).lookupProgramByID(programID)
   }
 
   @Test
@@ -182,17 +182,12 @@ class ODBValuesActorTest extends Spec with Mockito {
     }
 
     // verify mock
-    there was databaseService.lookupProgramByID(programID)
+    verify(databaseService).lookupProgramByID(programID)
   }
 
 
   def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory: Boolean) = {
     List(GDSConfiguration("GPI", "OBS_START_ACQ", fitsKeyword, 0, "STRING", mandatory, "NOT FOUND", "ODB", channelName, 0, "", comment))
   }
-
-  //
-  //    def buildConfigurationItem(fitsKeyword: FitsKeyword, channelName: String, comment: String, mandatory: Boolean) = {
-  //        List()
-  //    }
 
 }

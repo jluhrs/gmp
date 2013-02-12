@@ -24,16 +24,16 @@ class EpicsArrayValuesActor(channel: ReadOnlyChannel[_], configurations: Travers
   override def exceptionHandler = {
     case e: Exception => {
       LOG log(Level.SEVERE, "Unhandled exception while collecting data item", e)
-      reply(configurations map {
+      reply(configurations.map {
         c => ErrorCollectedValue(c.keyword, CollectionError.GenericError, c.fitsComment.value, c.index.index)
-      } toList)
+      }.toList)
     }
   }
 
   override def collectValues(): List[CollectedValue[_]] = {
     val values = channel.getAll
 
-    configurations map {
+    configurations.map {
       c =>
         try {
           new EpicsOneValueActor(c, values.get(c.arrayIndex.value).asInstanceOf[AnyRef]).collectValues().head
@@ -42,7 +42,7 @@ class EpicsArrayValuesActor(channel: ReadOnlyChannel[_], configurations: Travers
             ErrorCollectedValue(c.keyword, CollectionError.ArrayIndexOutOfBounds, c.fitsComment.value, c.index.index)
           }
         }
-    } toList
+    }.toList
   }
 
 
@@ -51,7 +51,7 @@ class EpicsArrayValuesActor(channel: ReadOnlyChannel[_], configurations: Travers
    */
   private class EpicsOneValueActor(configuration: GDSConfiguration, value: AnyRef) extends OneItemKeywordValueActor(configuration) {
     override def collectValues(): List[CollectedValue[_]] = {
-      Option(value) map valueToCollectedValue toList
+      Option(value).map(valueToCollectedValue).toList
     }
   }
 

@@ -12,11 +12,11 @@ class InstrumentStatusActor(statusDB: StatusDatabaseService, configuration: GDSC
     val s = System.currentTimeMillis()
     val statusItem = Option(statusDB.getStatusItem(sourceChannel))
     LOG.fine("Retrieving STATUS keyword " + fitsKeyword + " " + statusItem + " took " + (System.currentTimeMillis() - s) + "[ms]")
-    statusItem map {
+    statusItem.map {
       s => Option(s.getValue)
-    } map {
+    }.map {
       x => valueToCollectedValue(x.get)
-    } toList
+    }.toList
   }
 
 }

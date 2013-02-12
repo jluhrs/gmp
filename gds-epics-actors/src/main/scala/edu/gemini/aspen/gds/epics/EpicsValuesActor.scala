@@ -12,13 +12,13 @@ class EpicsValuesActor(channel: ReadOnlyChannel[_], configuration: GDSConfigurat
     val collected = if (arrayIndex > 0) {
       val values = channel.getAll
       if (arrayIndex < values.size()) {
-        Option(channel.getAll.get(arrayIndex)) map valueToCollectedValue
+        Option(channel.getAll.get(arrayIndex)).map(valueToCollectedValue)
       } else {
         Option(ErrorCollectedValue(fitsKeyword, CollectionError.ArrayIndexOutOfBounds, fitsComment, headerIndex))
       }
     } else {
-      Option(channel.getFirst) map valueToCollectedValue
+      Option(channel.getFirst).map(valueToCollectedValue)
     }
-    collected toList
+    collected.toList
   }
 }

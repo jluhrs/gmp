@@ -64,7 +64,7 @@ class FitsFileProcessor(val propertyHolder: PropertyHolder)(implicit LOG: Logger
         Right(("Writing updated FITS file at " + dataLabel.toString + " took " + stopwatch.stop().elapsedMillis() + " [ms]", stopwatch.elapsedMillis()))
       }
     } catch {
-      case ex =>
+      case ex:Exception =>
         LOG.log(Level.SEVERE, ex.getMessage, ex)
         Left(ex.getMessage)
     }

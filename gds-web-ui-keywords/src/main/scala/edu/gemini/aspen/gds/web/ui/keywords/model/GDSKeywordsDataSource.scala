@@ -40,9 +40,9 @@ abstract class GDSKeywordsDataSource(config: List[ConfigItem[_]]) extends Indexe
   /**
    * Method to make the Table#getContainerPropertyIds behave more like scala
    */
-  protected[keywords] def propertyIds: List[String] = getContainerPropertyIds collect {
+  protected[keywords] def propertyIds: List[String] = getContainerPropertyIds.collect {
     case c: String => c
-  } toList
+  }.toList
 
   /**
    * Returns the width of a given column

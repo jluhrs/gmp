@@ -54,7 +54,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
       try {
         actorsBuilder(obsEvent, dataLabel)
       } catch {
-        case e =>
+        case e:Exception =>
           LOG.log(Level.SEVERE, "Caught an exception from an actor factory", e)
           Nil
       }
