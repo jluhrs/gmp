@@ -6,7 +6,7 @@ import edu.gemini.aspen.gds.api.CollectedValue
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.keywords.database._
 import java.util.concurrent.TimeUnit._
-import collection.mutable.ConcurrentMap
+import collection.concurrent
 import scala.collection.JavaConversions._
 import com.google.common.cache.CacheBuilder
 
@@ -38,7 +38,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     this ! Store(dataLabel, value)
   }
 
-  def storeList(dataLabel: DataLabel, value: List[CollectedValue[_]]) {
+  def storeList[T](dataLabel: DataLabel, value: List[CollectedValue[T]]) {
     this ! StoreList(dataLabel, value)
   }
 
@@ -51,7 +51,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     this ! Clean(dataLabel)
   }
 
-  private val map: ConcurrentMap[DataLabel, List[CollectedValue[_]]] = CacheBuilder.newBuilder()
+  private val map: concurrent.Map[DataLabel, List[CollectedValue[_]]] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .build[DataLabel, List[CollectedValue[_]]]().asMap()
 
@@ -59,8 +59,7 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
    * Store the keyword
    *
    * @param dataLabel to which the keywords belong
-   * @param keyword keyword to store
-   * @param value value to associate to the keyword*/
+   */
   private def _store(dataLabel: DataLabel, headerItem: List[CollectedValue[_]]) {
     map.put(dataLabel, headerItem ++ map.getOrElse(dataLabel, List[CollectedValue[_]]()))
   }

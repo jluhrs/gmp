@@ -11,7 +11,7 @@ trait KeywordsDatabase extends Actor {
   def store(dataLabel: DataLabel, value: CollectedValue[_]): Unit
 
   //store a List of CollectedValue associated with a data label
-  def storeList(dataLabel: DataLabel, value: List[CollectedValue[_]]): Unit
+  def storeList[T](dataLabel: DataLabel, value: List[CollectedValue[T]]): Unit
 
   //retrieve all CollectedValues associated with a data label
   def retrieve(dataLabel: DataLabel): List[CollectedValue[_]]
@@ -24,10 +24,10 @@ trait KeywordsDatabase extends Actor {
 sealed trait KeywordsDatabaseAction
 
 //store a CollectedValue associated with a data label
-case class Store(dataLabel: DataLabel, value: CollectedValue[_]) extends KeywordsDatabaseAction
+case class Store[T](dataLabel: DataLabel, value: CollectedValue[T]) extends KeywordsDatabaseAction
 
 //store a List of CollectedValue associated with a data label
-case class StoreList(dataLabel: DataLabel, value: List[CollectedValue[_]]) extends KeywordsDatabaseAction
+case class StoreList[T](dataLabel: DataLabel, value: List[CollectedValue[T]]) extends KeywordsDatabaseAction
 
 //retrieve all CollectedValues associated with a data label
 case class Retrieve(dataLabel: DataLabel) extends KeywordsDatabaseAction

@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.keywords.database.{RetrieveProgramId, StoreProgramId, ProgramIdDatabase}
 import scala.collection.JavaConversions._
 import java.util.concurrent.TimeUnit.MILLISECONDS
-import collection.mutable.ConcurrentMap
+import collection.concurrent
 import com.google.common.cache.CacheBuilder
 
 /**
@@ -29,7 +29,7 @@ class ProgramIdDatabaseImpl extends ProgramIdDatabase {
     }
   }
 
-  private val map: ConcurrentMap[DataLabel, String] = CacheBuilder.newBuilder()
+  private val map: concurrent.Map[DataLabel, String] = CacheBuilder.newBuilder()
     .expireAfterWrite(expirationMillis, MILLISECONDS)
     .build[DataLabel, String]().asMap()
 
