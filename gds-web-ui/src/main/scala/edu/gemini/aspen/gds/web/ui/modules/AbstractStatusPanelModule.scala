@@ -17,7 +17,7 @@ abstract class AbstractStatusPanelModule extends StatusPanelModule {
   lazy val itemLabel = new Label(label, style = "gds-status")
   lazy val itemValue = new Label(item, style = "gds-status", property = property)
 
-  def buildModule = new HorizontalLayout(height = 100 percent, spacing = true) {
+  def buildModule = new HorizontalLayout(height = 100.percent, spacing = true) {
     add(itemLabel, alignment = Alignment.MIDDLE_LEFT)
     add(itemValue, alignment = Alignment.MIDDLE_RIGHT)
   }

@@ -72,9 +72,9 @@ class StaticResources(ctx: BundleContext) extends HttpServlet {
    * Finds the Vaadin Bundle
    */
   private def findVaadinBundle(ctx: BundleContext): Option[Bundle] =
-    ctx.getBundles().toList filter {
+    ctx.getBundles().toList.filter {
         v: Bundle => "com.vaadin".equals(v.getSymbolicName())
-    } headOption
+    }.headOption
 
   /**
    * Finds any Bundle with a widgetset headers wrapped in an option

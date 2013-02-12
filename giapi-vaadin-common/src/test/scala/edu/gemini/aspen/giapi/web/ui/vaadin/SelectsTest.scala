@@ -11,7 +11,7 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.data.Property
 @RunWith(classOf[JUnitRunner])
 class SelectsTest extends FunSuite {
   test("Table construction") {
-    val table = new Table(caption="caption", width=90 px, height=100 px)
+    val table = new Table(caption="caption", width=90.px, height=100.px)
     assertEquals("caption", table.getCaption)
     assertEquals(90, table.getWidth, 0)
     assertEquals(100, table.getHeight, 0)

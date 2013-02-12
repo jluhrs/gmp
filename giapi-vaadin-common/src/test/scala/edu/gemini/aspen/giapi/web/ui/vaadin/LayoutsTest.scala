@@ -11,7 +11,7 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.layouts.{HorizontalLayout, VerticalL
 @RunWith(classOf[JUnitRunner])
 class LayoutsTest extends FunSuite {
   test("Vertical Layout construction") {
-    var layout = new VerticalLayout(width = 90 percent, height = 90 percent)
+    var layout = new VerticalLayout(width = 90.percent, height = 90.percent)
     assertEquals(90.0, layout.getWidth, 0)
     assertEquals(90.0, layout.getHeight, 0)
 
@@ -42,7 +42,7 @@ class LayoutsTest extends FunSuite {
   }
 
   test("HorizontalLayout construction") {
-    var layout = new HorizontalLayout(width = 90 percent, height = 90 percent)
+    var layout = new HorizontalLayout(width = 90.percent, height = 90.percent)
     assertEquals(90.0, layout.getWidth, 0)
     assertEquals(90.0, layout.getHeight, 0)
 

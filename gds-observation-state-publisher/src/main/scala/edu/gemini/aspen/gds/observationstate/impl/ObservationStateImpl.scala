@@ -2,7 +2,6 @@ package edu.gemini.aspen.gds.observationstate.impl
 
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
 import edu.gemini.aspen.giapi.data.DataLabel
-import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.observationstate._
 import java.util.concurrent.TimeUnit._
 import scala.collection.JavaConversions._
@@ -12,6 +11,7 @@ import java.util.Date
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
 import com.google.common.cache.CacheBuilder
 import edu.gemini.aspen.gds.observationstate.ObservationInfo
+import org.joda.time.{DateTime, Duration}
 
 @Component
 @Instantiate

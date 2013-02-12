@@ -19,7 +19,7 @@ class StatusPanelImpl extends StatusPanel {
   var modules = List[StatusPanelModule]()
 
   override def buildStatusPanel = {
-    val layout = new HorizontalLayout(margin = false, style = "gds-status", height = 25 px, width = 100 percent)
+    val layout = new HorizontalLayout(margin = false, style = "gds-status", height = 25.px, width = 100.percent)
 
     modules sortBy {
       _.order
@@ -28,8 +28,8 @@ class StatusPanelImpl extends StatusPanel {
         val statusItem = m.buildModule
         layout.add(statusItem, alignment = Alignment.MIDDLE_CENTER, ratio = 1f / modules.size)
         layout.add(new Label(style = "vertical-separator") {
-          setHeight(100 percent)
-          setWidth(1 px)
+          setHeight(100.percent)
+          setWidth(1.px)
         })
     }
     new Panel(layout)

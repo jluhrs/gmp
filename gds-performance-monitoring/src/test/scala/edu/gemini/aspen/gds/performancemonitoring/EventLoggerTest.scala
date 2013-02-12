@@ -1,15 +1,15 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
 import org.scalatest.junit.AssertionsForJUnit
-import org.scala_tools.time.Imports._
 import scala.Some
 import org.junit.{Test, Before}
+import org.joda.time.Duration
 
 class EventLoggerTest extends AssertionsForJUnit {
 
   private def check(value: Duration, target: Duration, margin: Duration) = {
-    ((value >= target) && (value - target) < margin) ||
-      ((value <= target) && (target - value) < margin)
+    ((value.isLongerThan(target) || value == target) && (value.minus(target).isShorterThan(margin)) ||
+      ((value.isShorterThan(target) || value == target) && (target.minus(value)).isShorterThan(margin)))
   }
 
   val delay = 100;
@@ -42,7 +42,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   def testRetrieve() {
 
     val x = el.retrieve("set")
-    assert(check(x("hola").get, delay.millis, 100.millis), "Time is: " + x("hola").get)
+    assert(check(x("hola").get, new Duration(delay), new Duration(100)), "Time is: " + x("hola").get)
     assert(x("chao").isEmpty) //doesn't end
     assert(x("Oops").isEmpty) //doesn't start
   }
@@ -50,7 +50,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   @Test
   def testRetrieveEvent() {
     el.retrieve("set", "hola") match {
-      case Some(x: Duration) => assert(check(x, delay.millis, 50.millis), "Time is: " + x)
+      case Some(x: Duration) => assert(check(x, new Duration(delay), new Duration(50)), "Time is: " + x)
       case _ => fail()
     }
   }
@@ -66,7 +66,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   @Test
   def testRetrieveEventAverage() {
     el.average("hola") match {
-      case Some(x: Duration) => assert(check(x, delay.millis, 50.millis), "Time is: " + x)
+      case Some(x: Duration) => assert(check(x, new Duration(delay), new Duration(50)), "Time is: " + x)
       case _ => fail()
     }
   }

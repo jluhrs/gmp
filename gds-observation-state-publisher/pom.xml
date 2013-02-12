@@ -33,10 +33,6 @@
             <artifactId>joda-time</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
-            <artifactId>time_2.9.1</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo.handler.eventadmin</artifactId>
         </dependency>

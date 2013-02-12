@@ -48,7 +48,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
       }
     })
     setTheme("gds")
-    tabsSheet.setHeight(100 percent)
+    tabsSheet.setHeight(100.percent)
 
     val mainLayout = new VerticalLayout(margin = true, sizeFull = true) {
       add(buildTopPanel)
@@ -84,7 +84,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
 
   def findTabsPositions(sortedModules: List[(GDSWebModule, TabSheet.Tab)]) = {
     for {i <- 0 until sortedModules.size
-         val (_, t) = sortedModules(i)}
+         (_, t) = sortedModules(i)}
     yield (t, i)
   }
 
@@ -152,7 +152,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     val linkButton = new LinkButton("Login", action = _ => mainWindow.addWindow(new LoginWindow(this, authenticationService)))
     linkButton.addStyleName("gds-login-label")
 
-    new HorizontalLayout(width = 100 percent, height = 20 px) {
+    new HorizontalLayout(width = 100.percent, height = 20.px) {
       setDebugId("login-panel")
       add(linkButton, alignment = Alignment.MIDDLE_RIGHT)
     }
@@ -174,7 +174,7 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
       addComponent(userLabel)
     }
 
-    new HorizontalLayout(width = 100 percent, height = 20 px) {
+    new HorizontalLayout(width = 100.percent, height = 20.px) {
       setDebugId("User-Panel")
 
       add(subLayout, alignment = Alignment.MIDDLE_LEFT, ratio = 1.0f)
@@ -186,9 +186,9 @@ class GDSCoreVaadinApp(@Requires statusPanel: StatusPanel, @Requires authenticat
     // Add the GDS Label
     val gdsLabel = new Label(content = "GIAPI Data Service", style = "gds-title")
     // Add the logo
-    val image = new Embedded(source = new ClassResource("gemini-logo.jpg", this), height = 95 px, width = 282 px, style = "gds-title")
+    val image = new Embedded(source = new ClassResource("gemini-logo.jpg", this), height = 95.px, width = 282.px, style = "gds-title")
 
-    new HorizontalLayout(height = 95 px, width = 100 percent) {
+    new HorizontalLayout(height = 95.px, width = 100.percent) {
       setDebugId("Banner-Layout")
       add(gdsLabel, alignment = Alignment.MIDDLE_LEFT, ratio = 1.0f)
       add(image, alignment = Alignment.MIDDLE_RIGHT)

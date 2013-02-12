@@ -687,14 +687,14 @@
 
             <!-- Joda time dependencies -->
             <dependency>
-                <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
-                <artifactId>time_2.9.1</artifactId>
-                <version>0.5</version>
-            </dependency>
-            <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
-                <version>1.6.2</version>
+                <version>2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.joda</groupId>
+                <artifactId>joda-convert</artifactId>
+                <version>1.2</version>
             </dependency>
 
             <!-- OCS shared -->

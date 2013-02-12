@@ -12,8 +12,8 @@ private class SHA1Encoder extends Encoder {
   def encode(value: String) = {
     val d = sha.digest(value.getBytes)
     // Return in hex
-    d map {
+    d.map {
       "%02x".format(_)
-    } mkString
+    }.mkString
   }
 }

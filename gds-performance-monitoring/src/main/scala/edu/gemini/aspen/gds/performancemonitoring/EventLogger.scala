@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
-import org.scala_tools.time.Imports._
 import scala.{Some, Option}
 import collection.mutable.{SynchronizedMap, HashMap}
+import org.joda.time.{Duration, DateTime}
 
 //todo: Add javadoc to this class
 /**
@@ -31,13 +31,13 @@ class EventLogger[A, B] {
   def retrieve(set: A): scala.collection.Map[B, Option[Duration]] =
     map.getOrElse(set, collection.mutable.Map.empty[B, (Option[DateTime], Option[DateTime])])
       .mapValues({
-      case (Some(start), Some(end)) => Some((start to end).toDuration)
+      case (Some(start), Some(end)) => Some(new Duration(start, end))
       case _ => None
     })
 
   def retrieve(set: A, evt: B): Option[Duration] =
     map.getOrElse(set, collection.mutable.Map.empty[B, (Option[DateTime], Option[DateTime])]).get(evt) flatMap {
-      case (Some(start), Some(end)) => Some((start to end).toDuration)
+      case (Some(start), Some(end)) => Some(new Duration(start, end))
       case _ => None
     }
 
@@ -49,18 +49,18 @@ class EventLogger[A, B] {
     } yield times
 
     val durations = values.collect({
-      case (Some(start), Some(end)) => (start to end).toDuration
+      case (Some(start), Some(end)) => new Duration(start, end)
     })
 
     case class Average(sum: Duration, count: Int) {
       def +(other: Duration): Average = {
-        Average(sum + other, count + 1)
+        Average(sum.plus(other), count + 1)
       }
 
       def average(): Option[Duration] = {
         count match {
           case 0 => None
-          case x => Some(((sum.millis / x).toInt.millis).toDuration)
+          case x => Some(new Duration(sum.getMillis / x))
         }
       }
     }
@@ -73,14 +73,14 @@ class EventLogger[A, B] {
   def retrieveAll(): scala.collection.Map[A, scala.collection.Map[B, Option[Duration]]] = {
     map.mapValues({
       case m => m.mapValues({
-        case (Some(start), Some(end)) => Some((start to end).toDuration)
+        case (Some(start), Some(end)) => Some(new Duration(start, end))
         case _ => None
       })
     })
   }
 
   def check(set: A, evt: B, millis: Long): Boolean = retrieve(set, evt) match {
-    case Some(x: Duration) => x.millis <= millis
+    case Some(x: Duration) => x.getMillis <= millis
     case _ => false
   }
 }

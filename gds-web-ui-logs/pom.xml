@@ -54,10 +54,6 @@
             <artifactId>pax-logging-service</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.external.osgi.org.scala-tools.time</groupId>
-            <artifactId>time_2.9.1</artifactId>
-        </dependency>
-        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>

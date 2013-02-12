@@ -52,6 +52,7 @@ class GDSConfigurationParserTest extends FunSuite {
         assertEquals(5, k.pos.column)
         assertFalse(k.atEnd)
         assertEquals(4, k.offset)
+      case _ => fail()
     }
   }
 

@@ -22,7 +22,7 @@ package object vaadin {
       }
     }*/
 
-  implicit def itemClickWrapper(action: (ItemClickEvent) => Unit) =
+  implicit val itemClickWrapper = (action: (ItemClickEvent) => Unit) =>
     new ItemClickEvent.ItemClickListener {
       override def itemClick(event: ItemClickEvent) {
         action(event)
@@ -36,7 +36,7 @@ package object vaadin {
       }
     }*/
 
-  implicit def login(action: (LoginForm#LoginEvent) => Unit) = new LoginForm.LoginListener {
+  implicit val login = (action: (LoginForm#LoginEvent) => Unit) => new LoginForm.LoginListener {
     def onLogin(event: LoginForm#LoginEvent) {
       action(event)
     }
@@ -68,9 +68,9 @@ package object vaadin {
 
   /**
    * Implicit conversions of Integer to UnitExtent */
-  implicit def intToUnitExtent(value: Int): UnitExtent = new UnitExtent(value)
+  implicit class intToUnitExtent(value: Int) extends UnitExtent(value)
 
   /**
    * Implicit conversions of Doubles to UnitExtent */
-  implicit def doubleToUnitExtent(value: Double): UnitExtent = new UnitExtent(value)
+  implicit class doubleToUnitExtent(value: Double) extends UnitExtent(value)
 }

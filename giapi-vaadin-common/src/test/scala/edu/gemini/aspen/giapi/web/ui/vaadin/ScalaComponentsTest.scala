@@ -54,7 +54,7 @@ class ScalaComponentsTest extends FunSuite {
     var e = new Embedded("caption")
     assertEquals("caption", e.getCaption)
 
-    e = new Embedded(width = 10 px, height = 20 px)
+    e = new Embedded(width = 10.px, height = 20.px)
     assertEquals(10.0, e.getWidth, 0)
     assertEquals(20.0, e.getHeight, 0)
   }

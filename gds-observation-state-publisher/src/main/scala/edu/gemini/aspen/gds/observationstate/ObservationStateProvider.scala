@@ -2,8 +2,8 @@ package edu.gemini.aspen.gds.observationstate
 
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectionError
-import org.scala_tools.time.Imports._
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import org.joda.time.{Duration, DateTime}
 
 /**
  * Interface to be required by somebody that wants to poll for data for the Observation state
