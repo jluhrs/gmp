@@ -37,6 +37,10 @@
             <artifactId>jsr305</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-actors</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
