@@ -360,11 +360,6 @@
                     <artifactId>org.apache.felix.gogo.shell</artifactId>
                     <version>0.10.0</version>
                 </dependency>
-                <!-- Scala OSGi needs to be set explicitly for deployment packages -->
-                <dependency>
-                    <groupId>com.weiglewilczek.scala-lang-osgi</groupId>
-                    <artifactId>scala-library</artifactId>
-                </dependency>
             </dependencies>
             <build>
                 <plugins>
