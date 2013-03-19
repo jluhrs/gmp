@@ -113,6 +113,11 @@
             <artifactId>gmp-commands-records</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-health</artifactId>
+        </dependency>
+
         <!-- GDS health imports all the GDS bundles -->
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
