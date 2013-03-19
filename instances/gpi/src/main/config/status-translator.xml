@@ -123,7 +123,7 @@
                 <from>Open</from>
                 <to>LYOT_OPEN_G6231</to>
             </Map>
-            <Map>
+            <!--Map>
                 <from>Lyot_080_02</from>
                 <to>LYOT_080_02_G6233</to>
             </Map>
@@ -154,6 +154,38 @@
             <Map>
                 <from>Lyot_080_04_43</from>
                 <to>LYOT_080_04_43_G6240</to>
+            </Map-->
+            <Map>
+                <from>080m12_03</from>
+                <to>080m12_03</to>
+            </Map>
+            <Map>
+                <from>080m12_04</from>
+                <to>080m12_04</to>
+            </Map>
+            <Map>
+                <from>080_04</from>
+                <to>080_04</to>
+            </Map>
+            <Map>
+                <from>080m12_06</from>
+                <to>080m12_06</to>
+            </Map>
+            <Map>
+                <from>080m12_04_c</from>
+                <to>080m12_04_c</to>
+            </Map>
+            <Map>
+                <from>080m12_06_03</from>
+                <to>080m12_06_03</to>
+            </Map>
+            <Map>
+                <from>080m12_07</from>
+                <to>080m12_07</to>
+            </Map>
+            <Map>
+                <from>080m12_10</from>
+                <to>080m12_10</to>
             </Map>
             <Map>
                 <from>UNKNOWN</from>
