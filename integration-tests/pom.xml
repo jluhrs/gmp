@@ -130,10 +130,6 @@
             <artifactId>gmp-status-gateway</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.guava-osgi</groupId>
-            <artifactId>guava-osgi</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-api</artifactId>
         </dependency>
@@ -294,17 +290,6 @@
             <artifactId>pax-exam-container-default</artifactId>
             <version>${pax-exam.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>shared-util</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>shared-test</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>

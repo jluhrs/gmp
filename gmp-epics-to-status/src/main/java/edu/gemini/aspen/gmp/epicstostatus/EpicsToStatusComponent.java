@@ -18,8 +18,6 @@ import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.ChannelAlarmListener;
 import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.jms.api.JmsProvider;
-import edu.gemini.shared.util.immutable.Pair;
-import edu.gemini.shared.util.immutable.Tuple2;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
@@ -61,7 +59,7 @@ public class EpicsToStatusComponent {
     /**
      * Structure mapping Giapi Status Item -> Epics PV
      */
-    private final Map<String, Tuple2<StatusSetter, ReadOnlyClientEpicsChannel<?>>> channelMap = new HashMap<String, Tuple2<StatusSetter, ReadOnlyClientEpicsChannel<?>>>();
+    private final Map<String, StatusChannelPair> channelMap = new HashMap<String, StatusChannelPair>();
 
     private final EpicsReader _reader;
     private final String xmlFileName;
@@ -100,7 +98,7 @@ public class EpicsToStatusComponent {
                     ch.destroy();
                     continue;
                 }
-                channelMap.put(item.getEpicschannel(), new Pair<StatusSetter, ReadOnlyClientEpicsChannel<?>>(ss, ch));
+                channelMap.put(item.getEpicschannel(), new StatusChannelPair(ss, ch));
                 try {
                     try {
                         //To give time for the channel to connect before registering the listener
@@ -113,7 +111,7 @@ public class EpicsToStatusComponent {
                             @Override
                             public void valueChanged(String channelName, List<String> values) {
                                 try {
-                                    channelMap.get(channelName)._1().setStatusItem(new HealthStatus(item.getStatusitem(), Health.valueOf(values.get(item.getIndex() != null ? item.getIndex() : 0))));
+                                    channelMap.get(channelName).statusSetter.setStatusItem(new HealthStatus(item.getStatusitem(), Health.valueOf(values.get(item.getIndex() != null ? item.getIndex() : 0))));
                                 } catch (JMSException e) {
                                     LOG.log(Level.SEVERE, e.getMessage(), e);
                                 } catch (IllegalArgumentException e) {
@@ -128,7 +126,7 @@ public class EpicsToStatusComponent {
                                 try {
                                     AlarmSeverity sev = SEVERITY_MAP.get(severity);
                                     AlarmCause cause = CAUSE_MAP.get(status);
-                                    channelMap.get(channelName)._1().setStatusItem(new AlarmStatus(item.getStatusitem(),
+                                    channelMap.get(channelName).statusSetter.setStatusItem(new AlarmStatus(item.getStatusitem(),
                                             values.get(item.getIndex() != null ? item.getIndex() : 0),
                                             new AlarmState(sev != null ? sev : AlarmSeverity.ALARM_WARNING, cause != null ? cause : AlarmCause.ALARM_CAUSE_OTHER, status.getName())));
                                 } catch (JMSException e) {
@@ -141,7 +139,7 @@ public class EpicsToStatusComponent {
                             @Override
                             public void valueChanged(String channelName, List values) {
                                 try {
-                                    channelMap.get(channelName)._1().setStatusItem(new BasicStatus(item.getStatusitem(), values.get(item.getIndex() != null ? item.getIndex() : 0)));
+                                    channelMap.get(channelName).statusSetter.setStatusItem(new BasicStatus(item.getStatusitem(), values.get(item.getIndex() != null ? item.getIndex() : 0)));
                                 } catch (JMSException e) {
                                     LOG.log(Level.SEVERE, e.getMessage(), e);
                                 }
@@ -166,10 +164,10 @@ public class EpicsToStatusComponent {
 
     @Invalidate
     public void shutdown() {
-        for (Tuple2<StatusSetter, ReadOnlyClientEpicsChannel<?>> pair : channelMap.values()) {
-            pair._1().stopJms();
+        for (StatusChannelPair pair : channelMap.values()) {
+            pair.statusSetter.stopJms();
             try {
-                pair._2().destroy();
+                pair.channel.destroy();
             } catch (CAException e) {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             } catch (IllegalStateException e) {

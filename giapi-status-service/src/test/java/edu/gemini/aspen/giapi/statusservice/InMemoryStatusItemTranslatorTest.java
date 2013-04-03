@@ -68,12 +68,12 @@ public class InMemoryStatusItemTranslatorTest {
         assertEquals(2, translated.size());
 
         StatusItem first =new HealthStatus(top.buildStatusItemName("first"), Health.GOOD);
-        assertEquals(first.getName(),translated.get(0).getName());
-        assertEquals(first.getValue(),translated.get(0).getValue());
+        assertEquals(first.getName(),translated.get(1).getName());
+        assertEquals(first.getValue(),translated.get(1).getValue());
 
         StatusItem second =new HealthStatus(top.buildStatusItemName("second"), Health.GOOD);
-        assertEquals(second.getName(),translated.get(1).getName());
-        assertEquals(second.getValue(),translated.get(1).getValue());
+        assertEquals(second.getName(),translated.get(0).getName());
+        assertEquals(second.getValue(),translated.get(0).getValue());
     }
     @Test
     public void testMultipleOriginsSameTranslation() throws JAXBException, IOException, JMSException, SAXException {

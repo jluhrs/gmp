@@ -46,14 +46,6 @@
             <groupId>edu.gemini.external.osgi.net.jmatrix.eproperties</groupId>
             <artifactId>eproperties</artifactId>
         </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>shared-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>shared-test</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

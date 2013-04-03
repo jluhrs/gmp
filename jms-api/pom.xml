@@ -28,10 +28,6 @@
             <groupId>javax.jms</groupId>
             <artifactId>com.springsource.javax.jms</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.googlecode.guava-osgi</groupId>
-            <artifactId>guava-osgi</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

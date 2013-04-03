@@ -612,6 +612,13 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- OCS shared -->
+            <dependency>
+                <groupId>gemini-nocs</groupId>
+                <artifactId>shared-util</artifactId>
+                <version>1.0.5</version>
+            </dependency>
+
             <!-- PAX-WEB -->
             <dependency>
                 <groupId>org.ops4j.pax.web</groupId>
@@ -676,9 +683,9 @@
 
             <!-- Guava -->
             <dependency>
-                <groupId>com.googlecode.guava-osgi</groupId>
-                <artifactId>guava-osgi</artifactId>
-                <version>11.0.1</version>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>14.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
@@ -696,18 +703,6 @@
                 <groupId>org.joda</groupId>
                 <artifactId>joda-convert</artifactId>
                 <version>1.2</version>
-            </dependency>
-
-            <!-- OCS shared -->
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>shared-util</artifactId>
-                <version>1.0.5</version>
-            </dependency>
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>shared-test</artifactId>
-                <version>1.0.1</version>
             </dependency>
 
             <!-- ODB/Jini dependencies -->
@@ -922,6 +917,10 @@
             <groupId>edu.gemini.external.osgi.com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
 
         <dependency>

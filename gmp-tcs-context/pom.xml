@@ -36,10 +36,6 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-jms-util</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.googlecode.guava-osgi</groupId>
-            <artifactId>guava-osgi</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

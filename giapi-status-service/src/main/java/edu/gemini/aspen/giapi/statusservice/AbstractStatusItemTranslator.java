@@ -1,5 +1,6 @@
 package edu.gemini.aspen.giapi.statusservice;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import edu.gemini.aspen.giapi.status.Health;
@@ -11,9 +12,6 @@ import edu.gemini.aspen.giapi.statusservice.generated.MapType;
 import edu.gemini.aspen.giapi.statusservice.generated.StatusType;
 import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
 import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.shared.util.immutable.None;
-import edu.gemini.shared.util.immutable.Option;
-import edu.gemini.shared.util.immutable.Some;
 import net.jmatrix.eproperties.EProperties;
 import org.xml.sax.SAXException;
 
@@ -208,7 +206,7 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
      * @param newVal  value of the item
      * @return a Some<StatusItem<?>> if everything is correct, otherwise a None.
      */
-    private Option<StatusItem<?>> createStatus(DataType type, String newName, String newVal) {
+    private Optional<StatusItem<?>> createStatus(DataType type, String newName, String newVal) {
         StatusItem<?> newItem = null;
         try {
             switch (type) {
@@ -234,9 +232,9 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
         if (newItem == null) {
-            return None.instance();
+            return Optional.absent();
         } else {
-            return new Some(newItem);
+            return Optional.<StatusItem<?>>of(newItem);
         }
     }
 
@@ -258,15 +256,16 @@ abstract public class AbstractStatusItemTranslator implements StatusItemTranslat
             //no translation, return default
             if (newVal == null) {
                 if (defaults.get(Key.create(item.getName(),newName)) != null) {
-                    for (StatusItem<?> newItem : createStatus(types.get(Key.create(item.getName(),newName)), newName, defaults.get(Key.create(item.getName(),newName)))) {
-                        list.add(newItem);
+                    Optional<StatusItem<?>> newItem = createStatus(types.get(Key.create(item.getName(),newName)), newName, defaults.get(Key.create(item.getName(),newName)));
+                    if (newItem.isPresent()) {
+                        list.add(newItem.get());
                     }
                 }
             } else {
-
                 //return proper translation
-                for (StatusItem<?> newItem : createStatus(types.get(Key.create(item.getName(),newName)), newName, newVal)) {
-                    list.add(newItem);
+                Optional<StatusItem<?>> newItem = createStatus(types.get(Key.create(item.getName(),newName)), newName, newVal);
+                if (newItem.isPresent()) {
+                    list.add(newItem.get());
                 }
             }
         }
