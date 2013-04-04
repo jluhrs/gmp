@@ -28,9 +28,7 @@ abstract public class FelixContainerConfigurationBase {
                 mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
-                mavenBundle().artifactId("guava-osgi").groupId("com.googlecode.guava-osgi").versionAsInProject(),
-                mavenBundle().artifactId("shared-test").groupId("gemini-nocs").update().versionAsInProject(),
-                mavenBundle().artifactId("shared-util").groupId("gemini-nocs").update().versionAsInProject());
+                mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject());
     }
 
     abstract protected String confDir();

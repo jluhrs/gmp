@@ -8,6 +8,7 @@ import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -51,7 +52,7 @@ public class GDSWithODBIT extends GDSIntegrationBase {
         assertNotNull(getBundle("edu.gemini.aspen.gds.odb"));
     }
 
-    @Test
+    @Ignore
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException {
         TimeUnit.MILLISECONDS.sleep(800);
 

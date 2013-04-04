@@ -10,6 +10,7 @@ import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
 import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
@@ -60,7 +61,7 @@ public class GDSWithODBAndEliminateErrorsPolicyIT extends GDSIntegrationBase {
         assertNotNull(getBundle("edu.gemini.jini.jini-driver"));
     }
 
-    @Test
+    @Ignore
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException{
         TimeUnit.MILLISECONDS.sleep(600);
         assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));

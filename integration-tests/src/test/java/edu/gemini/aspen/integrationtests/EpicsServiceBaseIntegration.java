@@ -14,13 +14,6 @@ import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.cleanCaches;
 
-/**
- * Created by IntelliJ IDEA.
- * User: cquiroz
- * Date: 4/4/11
- * Time: 6:43 PM
- * To change this template use File | Settings | File Templates.
- */
 public class EpicsServiceBaseIntegration {
     static {
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
@@ -45,10 +38,8 @@ public class EpicsServiceBaseIntegration {
                 mavenBundle().artifactId("org.apache.felix.fileinstall").groupId("org.apache.felix").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-service").groupId("org.ops4j.pax.logging").versionAsInProject(),
-                mavenBundle().artifactId("guava-osgi").groupId("com.googlecode.guava-osgi").versionAsInProject(),
+                mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject(),
                 mavenBundle().artifactId("jca-lib").groupId("edu.gemini.external.osgi.jca-lib").versionAsInProject(),
-                mavenBundle().artifactId("shared-test").groupId("gemini-nocs").versionAsInProject(),
-                mavenBundle().artifactId("shared-util").groupId("gemini-nocs").versionAsInProject(),
                 mavenBundle().artifactId("epics-api").groupId("edu.gemini.epics").versionAsInProject(),
                 mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").versionAsInProject()
         );
