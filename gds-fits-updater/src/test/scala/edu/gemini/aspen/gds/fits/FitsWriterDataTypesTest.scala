@@ -86,6 +86,66 @@ class FitsWriterDataTypesTest extends FunSuite with BeforeAndAfterEach {
     assertEquals("16.01", toMap(updatedHeader).get("KEY").get)
   }
 
+  test("update keyword with infinite double value and no formatting") {
+    val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)
+    val fitsFile = new FitsWriter(originalFile)
+
+    val headerUpdate = createHeadersWithKeywordAndFormat(Double.PositiveInfinity, "")
+
+    fitsFile.updateHeader(headerUpdate, destFile)
+
+    val updatedFitsFile = new FitsReader(destFile)
+    val updatedHeader = updatedFitsFile.header(0).get
+
+    assertTrue(updatedHeader.containsKey("KEY"))
+    assertEquals("INF", toMap(updatedHeader).get("KEY").get)
+  }
+
+  test("update keyword with infinite double value and formatting") {
+    val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)
+    val fitsFile = new FitsWriter(originalFile)
+
+    val headerUpdate = createHeadersWithKeywordAndFormat(Double.PositiveInfinity, "%.2f")
+
+    fitsFile.updateHeader(headerUpdate, destFile)
+
+    val updatedFitsFile = new FitsReader(destFile)
+    val updatedHeader = updatedFitsFile.header(0).get
+
+    assertTrue(updatedHeader.containsKey("KEY"))
+    assertEquals("INF", toMap(updatedHeader).get("KEY").get)
+  }
+
+  test("update keyword with Nan double value and no formatting") {
+    val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)
+    val fitsFile = new FitsWriter(originalFile)
+
+    val headerUpdate = createHeadersWithKeywordAndFormat(Double.NaN, "")
+
+    fitsFile.updateHeader(headerUpdate, destFile)
+
+    val updatedFitsFile = new FitsReader(destFile)
+    val updatedHeader = updatedFitsFile.header(0).get
+
+    assertTrue(updatedHeader.containsKey("KEY"))
+    assertEquals("NAN", toMap(updatedHeader).get("KEY").get)
+  }
+
+  test("update keyword with Nan double value and formatting") {
+    val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)
+    val fitsFile = new FitsWriter(originalFile)
+
+    val headerUpdate = createHeadersWithKeywordAndFormat(Double.NaN, "%.2f")
+
+    fitsFile.updateHeader(headerUpdate, destFile)
+
+    val updatedFitsFile = new FitsReader(destFile)
+    val updatedHeader = updatedFitsFile.header(0).get
+
+    assertTrue(updatedHeader.containsKey("KEY"))
+    assertEquals("NAN", toMap(updatedHeader).get("KEY").get)
+  }
+
   test("update keyword with int item") {
     val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)
     val fitsFile = new FitsWriter(originalFile)
@@ -165,7 +225,7 @@ class FitsWriterDataTypesTest extends FunSuite with BeforeAndAfterEach {
     val originalFile = new File(classOf[FitsWriterDataTypesTest].getResource("sample1.fits").toURI)
     val fitsFile = new FitsWriter(originalFile)
 
-    val headerUpdate = createHeadersWithKeywordAndFormat(1.1,"Bla: %d")
+    val headerUpdate = createHeadersWithKeywordAndFormat(1.1, "Bla: %d")
 
     fitsFile.updateHeader(headerUpdate, destFile)
 

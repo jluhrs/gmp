@@ -62,6 +62,20 @@ class FitsWriter(file: File) extends FitsReader(file) {
             }
             hduHeader.addLine(card)
           }
+          case d: Double if d.isInfinite => {
+            val card = new HeaderCard(k.keywordName, "", k.comment)
+            val value = "INF"
+            validateValue(value)
+            card.setValue(value)
+            hduHeader.addLine(card)
+          }
+          case d: Double if d.isNaN => {
+            val card = new HeaderCard(k.keywordName, "", k.comment)
+            val value = "NAN"
+            validateValue(value)
+            card.setValue(value)
+            hduHeader.addLine(card)
+          }
           case d: Double => {
             val card = new HeaderCard(k.keywordName, d, k.comment)
             try {
