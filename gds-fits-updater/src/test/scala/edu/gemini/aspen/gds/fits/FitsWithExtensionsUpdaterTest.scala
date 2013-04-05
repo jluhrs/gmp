@@ -8,6 +8,7 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.Conversions._
 import edu.gemini.aspen.gds.api.fits.{HeaderItem, Header}
 import com.google.common.base.Stopwatch
+import java.util.concurrent.TimeUnit
 
 @RunWith(classOf[JUnitRunner])
 class FitsWithExtensionsUpdaterTest extends FitsBaseTest {
@@ -63,7 +64,7 @@ class FitsWithExtensionsUpdaterTest extends FitsBaseTest {
     val headers = createHeadersWithAirMass(1)
     updateFitsFile(headers)
 
-    assertTrue(stopwatch.stop().elapsedMillis() <= 300)
+    assertTrue(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS) <= 300)
   }
 
 }

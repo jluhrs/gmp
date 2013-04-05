@@ -10,6 +10,7 @@ import annotation.tailrec
 import nom.tam.fits.{BasicHDU, HeaderCard}
 import com.google.common.io.Files
 import java.util.logging.Level
+import java.util.concurrent.TimeUnit
 
 /**
  * Wrapper class that can write fits files
@@ -137,7 +138,7 @@ class FitsWriter(file: File) extends FitsReader(file) {
     val finalFile = new BufferedFile(destinationFile, "rw")
     fitsFile.write(finalFile)
 
-    LOG.info("File %s, written in %d [ms]".format(destinationFile, stopwatch.stop().elapsedMillis()))
+    LOG.info("File %s, written in %d [ms]".format(destinationFile, stopwatch.stop().elapsed(TimeUnit.MILLISECONDS)))
   }
 
   /**

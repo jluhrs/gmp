@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.fits
 import com.google.common.hash.Hashing
 import java.net.URL
 import java.io.{FileOutputStream, File}
-import com.google.common.io.{Closeables, ByteStreams, Files}
+import com.google.common.io.{Closer, Closeables, ByteStreams, Files}
 
 trait FitsSamplesDownloader {
   // Check if file is available and md5 hashes matches
@@ -14,12 +14,15 @@ trait FitsSamplesDownloader {
 
     if (!available) {
       println("Downloading sample to " + sampleFile)
-      val fitsInputStream = new URL("http://sbfgpidev1/gpi/samples/" + sampleFile).openStream()
-      val output = new FileOutputStream(sampleFile)
+      val closer = Closer.create()
       try {
+        val fitsInputStream = closer.register(new URL("http://sbfgpidev1/gpi/samples/" + sampleFile).openStream())
+        val output = closer.register(new FileOutputStream(sampleFile))
         ByteStreams.copy(fitsInputStream, output)
+      } catch {
+        case e:Throwable => throw closer.rethrow(e)
       } finally {
-        Closeables.closeQuietly(output)
+        closer.close()
       }
     }
   }

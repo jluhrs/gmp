@@ -8,6 +8,7 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.fits.{HeaderItem, Header}
 import edu.gemini.aspen.gds.api.Conversions._
 import com.google.common.base.Stopwatch
+import java.util.concurrent.TimeUnit
 
 @RunWith(classOf[JUnitRunner])
 class FitsUpdaterTest extends FitsBaseTest {
@@ -94,7 +95,7 @@ class FitsUpdaterTest extends FitsBaseTest {
     val headers = createHeadersWithAirMass(0)
     updateFitsFile(headers)
 
-    assertTrue(stopwatch.stop().elapsedMillis() <= 300)
+    assertTrue(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS) <= 300)
   }
 
   test("should skip updating an extension if not present, bug GIAPI-879") {
