@@ -268,6 +268,125 @@
             </Map>
         </Maps>
     </Status>
+    <Status default="UNKNOWN" originalName="aoFltHealth" originalType="INT" translatedName="aoFltHealth.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="adcHealth" originalType="INT" translatedName="adcHealth.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="cc.ppmHealth" originalType="INT" translatedName="cc.ppmHealth.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="cc.polHealth" originalType="INT" translatedName="cc.polHealth.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="cc.lyotHealth" originalType="INT" translatedName="cc.lyotHealth.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="cc.fpmHealth" originalType="INT" translatedName="cc.fpmHealth.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="cc.modHealth" originalType="INT" translatedName="cc.modHealth.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>GOOD</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>WARNING</to>
+            </Map>
+            <Map>
+                <from>2</from>
+                <to>BAD</to>
+            </Map>
+        </Maps>
+    </Status>
     <Status default="UNKNOWN" originalName="adcDeploy" originalType="INT" translatedName="adcDeploy.gemini"
             translatedType="STRING">
         <Maps>
@@ -344,7 +463,7 @@
             </Map>
         </Maps>
     </Status>
-    <Status default="GPI_SRC_UNKNOWN" originalName="artificialSourceSC" originalType="INT" translatedName="artificialSourceSC.gemini"
+    <Status default="GPI_SRC_UNKNOWN" originalName="artificialSourceSCstate" originalType="INT" translatedName="artificialSourceSCstate.gemini"
             translatedType="STRING">
         <Maps>
             <Map>
