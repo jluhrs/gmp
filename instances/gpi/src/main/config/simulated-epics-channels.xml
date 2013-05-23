@@ -18,18 +18,6 @@
 
 <channels>
     <channel>
-        <name>tcs:sad:sourceATrackFrame.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>6</updateRate>
-    </channel>
-    <channel>
-        <name>tcs:sad:sourceATrackEq.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>7</updateRate>
-    </channel>
-    <channel>
         <name>tcs:sad:sourceATrackWavelength.VAL</name>
         <type>double</type>
         <size>1</size>
