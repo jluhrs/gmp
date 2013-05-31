@@ -75,8 +75,10 @@
             </ConfigSet>
 
             <ConfigSet name="selectSource">
-                <field>source</field>
-                <field>intensity</field>
+                <field>sourceIr</field>
+                <field>sourceVis</field>
+                <field>powerSC</field>
+                <field>attenuationSC</field>
             </ConfigSet>
 
             <ConfigSet name="selectShutter">
