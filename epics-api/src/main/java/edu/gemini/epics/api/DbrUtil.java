@@ -3,6 +3,7 @@ package edu.gemini.epics.api;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +39,14 @@ public class DbrUtil {
                 values.add(a);
             }
             return values;
+        } else if (type.isBYTE()) {
+            List<Byte> values = new ArrayList<Byte>();
+            Object objVal = dbr.getValue();
+            byte[] val = (byte[]) objVal;
+            for (byte a : val) {
+                values.add(a);
+            }
+            return values;
         } else if (type.isSTRING()) {
             List<String> values = new ArrayList<String>();
             Object objVal = dbr.getValue();
@@ -53,7 +62,14 @@ public class DbrUtil {
             }
             return values;
         } else if (type.isENUM()) {
-            throw new UnsupportedOperationException("Enum types are not supported by this class");
+            List<String> values = new ArrayList<String>();
+            Object objVal = dbr.getValue();
+            int length = Array.getLength(objVal);
+            for (int i = 0; i < length; i ++) {
+                Object arrayElement = Array.get(objVal, i);
+                values.add(arrayElement.toString());
+            }
+            return values;
         } else {
             throw new UnsupportedOperationException("Type " + dbr.getType() + " is not supported by this class");
         }
