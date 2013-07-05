@@ -11,6 +11,7 @@ import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -309,5 +310,86 @@ public class ActionManagerImplTest {
         //a log message should appear in the logs saying that an unexpected action was received.
         cl.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
         assertFalse(cl.wasInvoked());
+    }
+
+    @Test
+    public void testReceptionOfErrorAndCompleteInParallel() {
+        CompletionListenerMock clA = new CompletionListenerMock();
+
+        int idA = 1;
+        Action commandA = new Action(idA,
+                new Command(SequenceCommand.GUIDE,
+                        Activity.PRESET_START,
+                        emptyConfiguration()),
+                clA, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+        //register this action with the manager
+        manager.registerAction(commandA);
+
+        CompletionListenerMock clB = new CompletionListenerMock();
+
+        int idB = 2;
+        Action commandB = new Action(idB,
+                new Command(SequenceCommand.TEST,
+                        Activity.PRESET_START,
+                        emptyConfiguration()),
+                clB, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+        //register this action with the manager
+        manager.registerAction(commandB);
+
+        //command A fails
+        manager.registerCompletionInformation(idA, HandlerResponse.createError("Some error"));
+        //But command B is fine
+        manager.registerCompletionInformation(idB, HandlerResponse.COMPLETED);
+
+        //the command A gets an error
+        clA.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
+        assertTrue(clA.wasInvoked());
+        assertTrue(clA.getLastResponse().hasErrorMessage());
+
+        //And command B should be Ok
+        clB.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
+        assertTrue(clB.wasInvoked());
+        assertFalse(clB.getLastResponse().hasErrorMessage());
+    }
+
+    @Test
+    @Ignore
+    public void testReceptionOfErrorAndCompleteInParallelError2() {
+        CompletionListenerMock clA = new CompletionListenerMock();
+
+        int idA = 1;
+        Action commandA = new Action(idA,
+                new Command(SequenceCommand.GUIDE,
+                        Activity.PRESET_START,
+                        emptyConfiguration()),
+                clA, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+        //register this action with the manager
+        manager.registerAction(commandA);
+
+        CompletionListenerMock clB = new CompletionListenerMock();
+
+        int idB = 2;
+        Action commandB = new Action(idB,
+                new Command(SequenceCommand.TEST,
+                        Activity.PRESET_START,
+                        emptyConfiguration()),
+                clB, CommandSender.DEFAULT_COMMAND_RESPONSE_TIMEOUT);
+        //register this action with the manager
+        manager.registerAction(commandB);
+
+        //command B fails
+        manager.registerCompletionInformation(idB, HandlerResponse.createError("Some error"));
+        //But command A is fine
+        manager.registerCompletionInformation(idA, HandlerResponse.COMPLETED);
+
+        //the command B gets an error
+        clB.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
+        assertTrue(clB.wasInvoked());
+        assertTrue(clB.getLastResponse().hasErrorMessage());
+
+        //And command A should be Ok
+        clA.waitForCompletion(TIMEOUT_FOR_NO_RESPONSE);
+        assertTrue(clA.wasInvoked());
+        assertFalse(clA.getLastResponse().hasErrorMessage());
     }
 }
