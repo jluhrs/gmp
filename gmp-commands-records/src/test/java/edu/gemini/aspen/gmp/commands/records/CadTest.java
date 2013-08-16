@@ -56,7 +56,6 @@ public class CadTest {
         Channel<String> label = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DATA_LABEL"), "");
         Channel<CarRecord.Val> carVal = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + "C.VAL"), CarRecord.Val.IDLE);
 
-
         class CarListener extends CountDownLatch implements ChannelListener<CarRecord.Val> {
 
             public CarListener() {
@@ -82,7 +81,6 @@ public class CadTest {
         Thread.sleep(200);
 
         assertEquals(CadState.MARKED, cad.getState());
-
 
         //test CAR
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DIR"), Dir.CLEAR);
@@ -117,7 +115,6 @@ public class CadTest {
 
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DIR"), Dir.CLEAR);
         Thread.sleep(200);
-
 
         //0 -> clear -> 0
         setDir(Dir.CLEAR, 0, dir, cad);

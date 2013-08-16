@@ -33,8 +33,6 @@ public class CadRecordImpl implements CadRecord {
     final private List<String> attributeNames = new ArrayList<String>();
     final private CarRecord car;
 
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-
     /**
      * Constructor
      *
@@ -84,7 +82,6 @@ public class CadRecordImpl implements CadRecord {
         LOG.fine("InValidate " + seqCom.getName() + " CAD record");
         epicsCad.stop();
         car.stop();
-
     }
 
     @Override
@@ -97,7 +94,7 @@ public class CadRecordImpl implements CadRecord {
         return car;
     }
 
-    private synchronized CadState processDir(Dir dir) {
+    private synchronized void processDir(Dir dir) {
         if (state != CadState.CLEAR) {
             LOG.info("CAD Record: " + seqCom.getName() + " in State: " + state + " received Directive: " + dir);
         }
@@ -110,44 +107,28 @@ public class CadRecordImpl implements CadRecord {
         }
 
         if (state != CadState.CLEAR) {
-            LOG.fine("CAD Record: " + seqCom.getName() + " now in State: " + newState);
+            LOG.info("CAD Record: " + seqCom.getName() + " now in State: " + newState);
         }
 
-
-        return newState;
+        state = newState;
     }
 
     private class AttributeListener implements ChannelListener<String> {
         @Override
-        public void valueChanged(String channelName, final List<String> values) {
-            synchronized (executor) {
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        LOG.fine("CAD Record: " + seqCom.getName() + " Attribute Received: " + values.get(0));
-                        state = processDir(Dir.MARK);
-                    }
-                });
-            }
+        public void valueChanged(final String channelName, final List<String> values) {
+            LOG.info("CAD Record: " + seqCom.getName() + " Attribute Received: " + values.get(0) + " on " + channelName);
+            processDir(Dir.MARK);
         }
     }
 
     private class DirListener implements ChannelListener<Dir> {
         @Override
         public void valueChanged(String channelName, final List<Dir> values) {
-            synchronized (executor) {
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        state = processDir(values.get(0));
-                    }
-                });
-            }
+            processDir(values.get(0));
         }
-
     }
 
-    CadState getState() {
+    protected CadState getState() {
         return state;
     }
 

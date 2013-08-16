@@ -17,8 +17,6 @@ import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,8 +49,6 @@ public class ApplyRecord {
      * indicates that the record is currently processing a directive
      */
     volatile private boolean processing = false;
-
-    private final ExecutorService executor = Executors.newCachedThreadPool();
 
 
     /**
@@ -112,7 +108,6 @@ public class ApplyRecord {
                 omss = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".OMSS"), "");
                 clid = cas.createChannel(epicsTop.buildEpicsChannelName(name + ".CLID"), 0);
 
-
                 car.start();
                 for (CadRecord cad : cads) {
                     cad.start();
@@ -136,7 +131,6 @@ public class ApplyRecord {
                 cas.destroyChannel(mess);
                 cas.destroyChannel(omss);
                 cas.destroyChannel(clid);
-
 
                 car.stop();
                 for (CadRecord cad : cads) {
@@ -224,9 +218,34 @@ public class ApplyRecord {
         return !error;
     }
 
+    private void processCarStatusChange(CarRecord.Val state, String message, Integer errorCode, Integer id) {
+        synchronized (car) {
+            if (state == CarRecord.Val.ERR) {
+                car.setError(Math.max(id, car.getClId()), message, errorCode);
+            }
+            for (CadRecord cad : cads) {
+                //if any CAR is in error, then global CAR should be in error
+                if (cad.getCar().getState() == CarRecord.Val.ERR) {
+                    car.setError(Math.max(id, cad.getCar().getClId()), message, errorCode);
+                    return;
+                }
+            }
+            if (!processing && state == CarRecord.Val.IDLE) {
+                for (CadRecord cad : cads) {
+                    if (cad.getCar().getState() != CarRecord.Val.IDLE) {
+                        return;
+                    }
+                }
+                car.setIdle(Math.max(id, car.getClId()));
+            }
+       }
+    }
+
 
     private int getClientId() throws CAException, TimeoutException {
-        return clid.getFirst();
+        synchronized (clid) {
+            return clid.getFirst();
+        }
     }
 
     private void setMessage(String message) throws CAException, TimeoutException {
@@ -257,10 +276,11 @@ public class ApplyRecord {
 
 
     private int incAndGetClientId() throws CAException, TimeoutException {
-        int value = getClientId();
-        clid.setValue(++value);
-        return value;
-
+        synchronized (clid) {
+            int value = getClientId();
+            clid.setValue(++value);
+            return value;
+        }
     }
 
     /**
@@ -270,19 +290,12 @@ public class ApplyRecord {
         @Override
         public void valueChanged(String channelName, final List<Dir> values) {
             LOG.info("Received DIR write: " + values.get(0));
-            synchronized (executor) {
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            processDir(values.get(0));
-                        } catch (CAException e) {
-                            LOG.log(Level.SEVERE, e.getMessage(), e);
-                        } catch (TimeoutException e) {
-                            LOG.log(Level.SEVERE, e.getMessage(), e);
-                        }
-                    }
-                });
+            try {
+                processDir(values.get(0));
+            } catch (CAException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            } catch (TimeoutException e) {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
     }
@@ -295,34 +308,8 @@ public class ApplyRecord {
         @Override
         public void update(final CarRecord.Val state, final String message, final Integer errorCode, final Integer id) {
             LOG.info("Received CAR status change: " + state);
-            synchronized (executor) {
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (car) {
-                            if (state == CarRecord.Val.ERR) {
-                                car.setError(Math.max(id, car.getClId()), message, errorCode);
-                            }
-                            for (CadRecord cad : cads) {
-                                //if any CAR is in error, then global CAR should be in error
-                                if (cad.getCar().getState() == CarRecord.Val.ERR) {
-                                    car.setError(Math.max(id, cad.getCar().getClId()), message, errorCode);
-                                    return;
-                                }
-                            }
-                            if (!processing && state == CarRecord.Val.IDLE) {
-                                for (CadRecord cad : cads) {
-                                    if (cad.getCar().getState() != CarRecord.Val.IDLE) {
-                                        return;
-                                    }
-                                }
-                                car.setIdle(Math.max(id, car.getClId()));
-                            }
-
-                        }
-                    }
-                });
-            }
+            processCarStatusChange(state, message, errorCode, id);
         }
     }
+
 }

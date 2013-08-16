@@ -39,17 +39,17 @@ public class CarRecord {
     /**
      * Output error code
      */
-    //private Channel<Long> oerr;
     private Channel<Integer> oerr;
     /**
      * Value of the latest client ID
      */
-    //private Channel<Long> clid;
     private Channel<Integer> clid;
 
     private final ChannelAccessServer cas;
 
     private final String prefix;
+
+    private final List<CarListener> listeners = new CopyOnWriteArrayList<CarListener>();
 
     /**
      * Constructor
@@ -113,11 +113,11 @@ public class CarRecord {
         notifyListeners(state, message, errorCode, clientId);
     }
 
-    private List<CarListener> listeners = new CopyOnWriteArrayList<CarListener>();
-
     private void notifyListeners(Val state, String message, int errorCode, int id) throws CAException {
-        for (CarListener listener : listeners) {
-            listener.update(state, message, errorCode, id);
+        synchronized (listeners) {
+            for (CarListener listener : listeners) {
+                listener.update(state, message, errorCode, id);
+            }
         }
     }
 
@@ -127,7 +127,9 @@ public class CarRecord {
      * @param listener to be notified when the CAR state changes
      */
     void registerListener(CarListener listener) {
-        listeners.add(listener);
+        synchronized (listeners) {
+            listeners.add(listener);
+        }
     }
 
     /**
@@ -136,7 +138,9 @@ public class CarRecord {
      * @param listener to unregister
      */
     void unRegisterListener(CarListener listener) {
-        listeners.remove(listener);
+        synchronized (listeners) {
+            listeners.remove(listener);
+        }
     }
 
     /**
@@ -144,7 +148,7 @@ public class CarRecord {
      *
      * @param id client ID for the command we are providing feedback
      */
-    synchronized void setBusy(Integer id) {
+    void setBusy(Integer id) {
         try {
             changeState(Val.BUSY, "", 0, id);
         } catch (CAException e) {
@@ -159,7 +163,7 @@ public class CarRecord {
      *
      * @param id client ID for the command we are providing feedback
      */
-    synchronized void setIdle(Integer id) {
+    void setIdle(Integer id) {
         try {
             changeState(Val.IDLE, "", 0, id);
         } catch (CAException e) {
@@ -177,7 +181,7 @@ public class CarRecord {
      * @param message   error message
      * @param errorCode error code
      */
-    synchronized void setError(Integer id, String message, int errorCode) {
+    void setError(Integer id, String message, int errorCode) {
         try {
             changeState(Val.ERR, message, errorCode, id);
         } catch (CAException e) {
