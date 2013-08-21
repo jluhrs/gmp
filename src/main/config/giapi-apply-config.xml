@@ -187,6 +187,10 @@
                 <field>statName</field>
                 <field>statSelected</field>
             </ConfigSet>
+
+            <ConfigSet name="alignAndCalib">
+                <field>part1</field>
+            </ConfigSet>
         </ConfigRecord>
     </Apply>
 </Records>
