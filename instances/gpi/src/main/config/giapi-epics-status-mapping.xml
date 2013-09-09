@@ -446,54 +446,6 @@
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
-        <giapiname>gpi:currentTempSuperC</giapiname>
-        <epicsname>currentTempSuperC</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:currentTempSuperC</giapiname>
-        <epicsname>currentTempSuperC</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:currentTempSuperC</giapiname>
-        <epicsname>currentTempSuperC</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:currentTempSuperC</giapiname>
-        <epicsname>currentTempSuperC</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:ao:aoRmsWavefrontError</giapiname>
-        <epicsname>ao:aoRmsWavefrontError</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:ao:aoRmsWavefrontError</giapiname>
-        <epicsname>ao:aoRmsWavefrontError</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:ao:aoRmsWavefrontError</giapiname>
-        <epicsname>ao:aoRmsWavefrontError</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:ao:aoRmsWavefrontError</giapiname>
-        <epicsname>ao:aoRmsWavefrontError</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
         <giapiname>gpi:ao:aoRmsWavefrontError</giapiname>
         <epicsname>ao:aoRmsWavefrontError</epicsname>
         <type>FLOAT</type>
@@ -640,7 +592,6 @@
     <!--
         Start GEA channels
     -->
-
     <SimpleChannel>
         <giapiname>gpi:ao.darkLevel</giapiname>
         <epicsname>ao.darkLevel</epicsname>
@@ -1262,6 +1213,12 @@
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
+        <giapiname>tlc.oneWireAss.maxMemsHumidity.alarm.severity</giapiname>
+        <epicsname>tlc:oneWireAss.maxMemsHumidity.alarm.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxTweeterN2resevoirHumidity.alarm.severity</giapiname>
         <epicsname>tlc:oneWireAss.maxTweeterN2resevoirHumidity.alarm.severity</epicsname>
         <type>INT</type>
@@ -1346,6 +1303,27 @@
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
+
+    <!-- Channels monitoring IFS temperature gradients -->
+    <AlarmChannel>
+        <giapiname>ifs.temperature.temperatureGradientAlarm06.severity</giapiname>
+        <epicsname>ifs:temperature.temperatureGradientAlarm06.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
+        <giapiname>ifs.cryoStat.cryo1TemperatureAlarm.severity</giapiname>
+        <epicsname>ifs:cryoStat.cryo1TemperatureAlarm.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
+        <giapiname>ifs.cryoStat.cryo2TemperatureAlarm.severity</giapiname>
+        <epicsname>ifs:cryoStat.cryo2TemperatureAlarm.severity</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+
     <AlarmChannel>
         <giapiname>aoc.wfsDetTemp.wfsDetTemperatureAlarm.severity</giapiname>
         <epicsname>aoc:wfsDetTemp.wfsDetTemperatureAlarm.severity</epicsname>
