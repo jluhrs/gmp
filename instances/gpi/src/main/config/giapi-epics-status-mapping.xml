@@ -327,7 +327,7 @@
     -->
     <SimpleChannel>
         <giapiname>gpi:ao.wfsDetTemp</giapiname>
-        <epicsname>ao.wfsDetTemp</epicsname>
+        <epicsname>aoc:wfsDetTemp</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
@@ -381,7 +381,7 @@
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxEEHumidity</giapiname>
-        <epicsname>maxEEHumidity</epicsname>
+        <epicsname>tlc:maxEEHumidity</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
@@ -570,7 +570,7 @@
     -->
     <SimpleChannel>
         <giapiname>gpi:aoc.darkLevel</giapiname>
-        <epicsname>aoc.darkLevel</epicsname>
+        <epicsname>aoc:darkLevel</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
@@ -1136,25 +1136,25 @@
 
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxGlycolInputTemp.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxGlycolInputTemp.alarm.severity</epicsname>
+        <epicsname>tlc:maxGlycolInputTemp.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxGlycolOutputTemp.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxGlycolOutputTemp.alarm.severity</epicsname>
+        <epicsname>tlc:maxGlycolOutputTemp.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxAirHeatExInputTemp.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxAirHeatExInputTemp.alarm.severity</epicsname>
+        <epicsname>tlc:maxAirHeatExInputTemp.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxAirHeatExOutputTemp.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxAirHeatExOutputTemp.alarm.severity</epicsname>
+        <epicsname>tlc:maxAirHeatExOutputTemp.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
@@ -1172,25 +1172,25 @@
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxIfsCryoGlycolInputTemp.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxIfsCryoGlycolInputTemp.alarm.severity</epicsname>
+        <epicsname>tlc:maxIfsCryoGlycolInputTemp.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxIfsCryoGlycolOutputTemp.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxIfsCryoGlycolOutputTemp.alarm.severity</epicsname>
+        <epicsname>tlc:maxIfsCryoGlycolOutputTemp.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxEEHumidity.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxEEHumidity.alarm.severity</epicsname>
+        <epicsname>tlc:maxEEHumidity.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxMemsHumidity.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxMemsHumidity.alarm.severity</epicsname>
+        <epicsname>tlc:maxMemsHumidity.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
@@ -1202,20 +1202,20 @@
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.maxOmssHumidity.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.maxOmssHumidity.alarm.severity</epicsname>
+        <epicsname>tlc:maxOmssHumidity.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>tlc.oneWireAss.meanAmbientHumidity.alarm.severity</giapiname>
-        <epicsname>tlc:oneWireAss.meanAmbientHumidity.alarm.severity</epicsname>
+        <epicsname>tlc:meanAmbientHumidity.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
 
     <AlarmChannel>
         <giapiname>ifs.pressure.pressureAlarm.severity</giapiname>
-        <epicsname>ifs:pressure.pressureAlarm.severity</epicsname>
+        <epicsname>ifs:pressure.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
@@ -1283,32 +1283,32 @@
     <!-- Channels monitoring IFS temperature gradients -->
     <AlarmChannel>
         <giapiname>ifs.temperature.temperatureGradientAlarm06.severity</giapiname>
-        <epicsname>ifs:temperature.temperatureGradientAlarm06.severity</epicsname>
+        <epicsname>ifs:temperatureGradient06.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>ifs.cryoStat.cryo1TemperatureAlarm.severity</giapiname>
-        <epicsname>ifs:cryoStat.cryo1TemperatureAlarm.severity</epicsname>
+        <epicsname>ifs:cryo1Temperature.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>ifs.cryoStat.cryo2TemperatureAlarm.severity</giapiname>
-        <epicsname>ifs:cryoStat.cryo2TemperatureAlarm.severity</epicsname>
+        <epicsname>ifs:cryo2Temperature.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
 
     <AlarmChannel>
         <giapiname>aoc.wfsDetTemp.wfsDetTemperatureAlarm.severity</giapiname>
-        <epicsname>aoc:wfsDetTemp.wfsDetTemperatureAlarm.severity</epicsname>
+        <epicsname>aoc:wfsDetTemp.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>aoc.darkLevel.darkLevelAlarm.severity</giapiname>
-        <epicsname>aoc:darkLevel.darkLevelAlarm.severity</epicsname>
+        <epicsname>aoc:darkLevel.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
