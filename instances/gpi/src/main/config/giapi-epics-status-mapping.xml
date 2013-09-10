@@ -333,25 +333,25 @@
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxGlycolInputTemp</giapiname>
-        <epicsname>maxGlycolInputTemp</epicsname>
+        <epicsname>tlc:maxGlycolInputTemp</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxGlycolOutputTemp</giapiname>
-        <epicsname>maxGlycolOutputTemp</epicsname>
+        <epicsname>tlc:maxGlycolOutputTemp</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxAirHeatExInputTemp</giapiname>
-        <epicsname>maxAirHeatExInputTemp</epicsname>
+        <epicsname>tlc:maxAirHeatExInputTemp</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxAirHeatExOutputTemp</giapiname>
-        <epicsname>maxAirHeatExOutputTemp</epicsname>
+        <epicsname>tlc:maxAirHeatExOutputTemp</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
@@ -369,13 +369,13 @@
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxIfsCryoGlycolInputTemp</giapiname>
-        <epicsname>maxIfsCryoGlycolInputTemp</epicsname>
+        <epicsname>tlc:maxIfsCryoGlycolInputTemp</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxIfsCryoGlycolOutputTemp</giapiname>
-        <epicsname>maxIfsCryoGlycolOutputTemp</epicsname>
+        <epicsname>tlc:maxIfsCryoGlycolOutputTemp</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
@@ -387,25 +387,19 @@
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxMemsHumidity</giapiname>
-        <epicsname>maxMemsHumidity</epicsname>
+        <epicsname>tlc:maxMemsHumidity</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:maxOmssHumidity</giapiname>
-        <epicsname>maxOmssHumidity</epicsname>
+        <epicsname>tlc:maxOmssHumidity</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:meanAmbientHumidity</giapiname>
-        <epicsname>meanAmbientHumidity</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:meanAmbientHumidity</giapiname>
-        <epicsname>meanAmbientHumidity</epicsname>
+        <epicsname>tlc:meanAmbientHumidity</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
@@ -429,13 +423,13 @@
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:ifsPressure1</giapiname>
-        <epicsname>ifsPressure1</epicsname>
+        <epicsname>ifs:ifsPressure1</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:ifsPressure2</giapiname>
-        <epicsname>ifsPressure2</epicsname>
+        <epicsname>ifs:ifsPressure2</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
@@ -554,24 +548,6 @@
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
-        <giapiname>gpi:cal:rmsTip</giapiname>
-        <epicsname>cal:rmsTip</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:cal:rmsTilt</giapiname>
-        <epicsname>cal:rmsTilt</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
-        <giapiname>gpi:cal:rmsFocus</giapiname>
-        <epicsname>cal:rmsFocus</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
         <giapiname>gpi:ao:aoRmsWavefrontError</giapiname>
         <epicsname>ao:aoRmsWavefrontError</epicsname>
         <type>FLOAT</type>
@@ -593,8 +569,8 @@
         Start GEA channels
     -->
     <SimpleChannel>
-        <giapiname>gpi:ao.darkLevel</giapiname>
-        <epicsname>ao.darkLevel</epicsname>
+        <giapiname>gpi:aoc.darkLevel</giapiname>
+        <epicsname>aoc.darkLevel</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
