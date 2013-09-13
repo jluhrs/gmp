@@ -411,7 +411,7 @@
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:ifsDetectorMollyBlock</giapiname>
-        <epicsname>ifsDetectorMollyBlock</epicsname>
+        <epicsname>ifs:ifsDetectorMollyBlock</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
@@ -1221,7 +1221,7 @@
     </AlarmChannel>
     <AlarmChannel>
         <giapiname>ifs.temperature.temperatureAlarm01.severity</giapiname>
-        <epicsname>ifs:temperature.temperatureAlarm01.severity</epicsname>
+        <epicsname>ifs:temperatureAlarm01.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
@@ -1284,6 +1284,12 @@
     <AlarmChannel>
         <giapiname>ifs.temperature.temperatureGradientAlarm06.severity</giapiname>
         <epicsname>ifs:temperatureGradient06.alarm</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </AlarmChannel>
+    <AlarmChannel>
+        <giapiname>ifs.temperature.temperatureGradientAlarm01.severity</giapiname>
+        <epicsname>ifs:temperatureGradient01.alarm</epicsname>
         <type>INT</type>
         <initial>0</initial>
     </AlarmChannel>
