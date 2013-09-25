@@ -67,7 +67,6 @@ public class EpicsPcsUpdaterTest {
         pcsUpdater.update(new PcsUpdate(new Double[]{1.0, 2.0}));
 
         verify(ch).setValue(eq(ImmutableList.of(1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)));
-
     }
 
     @Test
@@ -78,24 +77,18 @@ public class EpicsPcsUpdaterTest {
         verify(ch, never()).setValue(anyDouble());
     }
 
-    //@Test
-    /*public void verifyTooLongPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
-        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, null, channel);
+    @Test
+    public void verifyTooLongPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, channel);
 
-        Double[] zernikes = new Double[EpicsPcsUpdater.INPUTS.length + 1];
-        for (int i = 0; i < EpicsPcsUpdater.INPUTS.length + 1; i++) {
+        Double[] zernikes = new Double[EpicsPcsUpdater.ZERNIKES_COUNT + 1];
+        for (int i = 0; i < EpicsPcsUpdater.ZERNIKES_COUNT + 1; i++) {
             zernikes[i] = (double)i;
         }
 
         pcsUpdater.update(new PcsUpdate(zernikes));
 
         verifyBindings(channel);
-        InOrder inOrder= inOrder(ch);
-
-        for (int i = 0; i < EpicsPcsUpdater.INPUTS.length; i++) {
-            inOrder.verify(ch).setValue(eq(zernikes[i]));
-        }
-
-        verifyNoMoreInteractions(null);
-    }*/
+        verify(ch).setValue(eq(ImmutableList.of(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0)));
+    }
 }
