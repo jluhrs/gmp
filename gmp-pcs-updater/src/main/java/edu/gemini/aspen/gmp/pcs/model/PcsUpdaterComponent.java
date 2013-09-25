@@ -20,17 +20,15 @@ public class PcsUpdaterComponent {
 
     private String pcsChannel;
 
-    private final EpicsWriter _epicsWriter;
     private final PcsUpdaterComposite pcsUpdaterAggregate;
     private final ChannelAccessServer _channelFactory;
 
     private PcsUpdater updater;
 
-    public PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory, @Requires EpicsWriter epicsWriter,
+    public PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory,
                                   @Requires PcsUpdaterComposite updater,
                                   @Property(name = "simulation", value = "yes", mandatory = true) Boolean simulation,
                                   @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel) {
-        this._epicsWriter = epicsWriter;
         this.pcsUpdaterAggregate = updater;
         this.simulation = simulation;
         this.pcsChannel = pcsChannel;
@@ -41,7 +39,7 @@ public class PcsUpdaterComponent {
     public void registerEpicsWriter() {
         if (!simulation) {
             try {
-                updater = new EpicsPcsUpdater(_channelFactory, _epicsWriter, pcsChannel);
+                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel);
                 pcsUpdaterAggregate.registerUpdater(updater);
                 LOG.info("EPICS Connection established");
             } catch (PcsUpdaterException ex) {
@@ -68,7 +66,7 @@ public class PcsUpdaterComponent {
             }
 
             try {
-                updater = new EpicsPcsUpdater(_channelFactory, _epicsWriter, pcsChannel);
+                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel);
                 pcsUpdaterAggregate.registerUpdater(updater);
                 LOG.info("New instance of EPICS writer registered");
             } catch (PcsUpdaterException ex) {

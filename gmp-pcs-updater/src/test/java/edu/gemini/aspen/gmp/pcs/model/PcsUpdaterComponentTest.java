@@ -25,7 +25,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponent() {
-        return new PcsUpdaterComponent(channelFactory, epicsWriter, pcsComposite, false, channel);
+        return new PcsUpdaterComponent(channelFactory, pcsComposite, false, channel);
     }
 
     private void verifyBindings(String baseChannel, int count) throws CAException {
@@ -41,7 +41,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponentInSimulation() {
-        return new PcsUpdaterComponent(channelFactory, epicsWriter, pcsComposite, true, channel);
+        return new PcsUpdaterComponent(channelFactory, pcsComposite, true, channel);
     }
 
     @Test

@@ -27,12 +27,10 @@ public class EpicsPcsUpdater implements PcsUpdater {
     static final String TCS_ZERNIKES_BASE_CHANNEL = "tst:array";
     public static final Integer ZERNIKES_COUNT = 19;
 
-    private final EpicsWriter _writer;
     private final ChannelAccessServer _channelFactory;
     private final Channel<Double> zernikesChannel;
 
-    public EpicsPcsUpdater(ChannelAccessServer channelFactory, EpicsWriter writer, String baseChannel) throws PcsUpdaterException {
-        _writer = writer;
+    public EpicsPcsUpdater(ChannelAccessServer channelFactory, String baseChannel) throws PcsUpdaterException {
         _channelFactory = channelFactory;
 
         /**

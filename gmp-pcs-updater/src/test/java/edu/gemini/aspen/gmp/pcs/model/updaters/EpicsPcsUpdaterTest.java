@@ -33,13 +33,13 @@ public class EpicsPcsUpdaterTest {
 
     @Test
     public void constructionWithDefaultChannel() throws Exception {
-        new EpicsPcsUpdater(channelFactory, null, null);
+        new EpicsPcsUpdater(channelFactory, null);
         verifyBindings(EpicsPcsUpdater.TCS_ZERNIKES_BASE_CHANNEL);
     }
 
     @Test
     public void constructionWithExplicitChannel() throws Exception {
-        new EpicsPcsUpdater(channelFactory, null, channel);
+        new EpicsPcsUpdater(channelFactory, channel);
         verifyBindings(channel);
     }
 
@@ -50,12 +50,12 @@ public class EpicsPcsUpdaterTest {
     @Test(expected = PcsUpdaterException.class)
     public void constructionWithNadEpicsChannel() throws Exception {
         doThrow(new CAException("Test exception", new RuntimeException())).when(channelFactory).createChannel(eq(channel), eq(EpicsPcsUpdater.buildZeroZernikesArray()));
-        new EpicsPcsUpdater(channelFactory, null, channel);
+        new EpicsPcsUpdater(channelFactory, channel);
     }
 
     @Test
     public void pcsUpdateWithoutValues() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
-        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, null, channel);
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, channel);
         pcsUpdater.update(new PcsUpdate(new Double[0]));
         verifyBindings(channel);
         verify(ch, never()).setValue(anyDouble());
@@ -63,7 +63,7 @@ public class EpicsPcsUpdaterTest {
 
     @Test
     public void simplePcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
-        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, null, channel);
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, channel);
         pcsUpdater.update(new PcsUpdate(new Double[]{1.0, 2.0}));
 
         verify(ch).setValue(eq(ImmutableList.of(1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)));
@@ -72,7 +72,7 @@ public class EpicsPcsUpdaterTest {
 
     @Test
     public void nullPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
-        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, null, channel);
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, channel);
         pcsUpdater.update(null);
         verifyBindings(channel);
         verify(ch, never()).setValue(anyDouble());
