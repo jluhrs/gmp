@@ -19,18 +19,17 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for EpicsPcsUpdater
- *
- * @author cquiroz
  */
 public class EpicsPcsUpdaterTest {
     private EpicsWriter writer = mock(EpicsWriter.class);
-    private ReadWriteClientEpicsChannel ch=mock(ReadWriteClientEpicsChannel.class);
+    private ReadWriteClientEpicsChannel ch = mock(ReadWriteClientEpicsChannel.class);
     private ChannelAccessServer channelFactory = mock(ChannelAccessServer.class);
+    private String channel = "X:val1";
+
     @Before
     public void setUp(){
         doReturn(ch).when(writer).getDoubleChannel(anyString());
     }
-    private String channel = "X:val1";
 
     @Test
     public void constructionWithDefaultChannel() throws PcsUpdaterException, EpicsException {
@@ -44,12 +43,10 @@ public class EpicsPcsUpdaterTest {
         verifyBindings(channel);
     }
 
-
     private void verifyBindings(String baseChannel) {
         for (String s: EpicsPcsUpdater.INPUTS) {
             verify(writer).getDoubleChannel(eq(baseChannel + "." + s));
         }
-
     }
 
     @Test(expected = PcsUpdaterException.class)
@@ -76,7 +73,6 @@ public class EpicsPcsUpdaterTest {
         inOrder.verify(ch).setValue(eq(2.0));
 
     }
-
 
     @Test
     public void nullPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {

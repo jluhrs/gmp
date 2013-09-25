@@ -168,7 +168,6 @@ public class CasTest {
 
         DBR dbr = ch.getDBR();
 
-
         int num = dbr.getCount();
         assertEquals(3, num);
         Object obj = dbr.getValue();
@@ -176,6 +175,45 @@ public class CasTest {
         assertEquals(3, objarr[0]);
         assertEquals(4, objarr[1]);
         assertEquals(5, objarr[2]);
+
+    }
+
+    /**
+     * Starts the server, adds a Double PV, writes an array, reads it back, checks the value read is correct and stops the server
+     */
+    @Test
+    public void testWriteDoubleArray() throws Exception {
+        Channel<Double> ch = giapicas.createChannel(varname, ImmutableList.of(0.0, 0.0, 0.0));
+        ch.setValue(ImmutableList.of(3.0, 4.0, 5.0));
+
+        DBR dbr = ch.getDBR();
+
+        int num = dbr.getCount();
+        assertEquals(3, num);
+        Object obj = dbr.getValue();
+        double[] objarr = (double[]) obj;
+        assertEquals(3.0, objarr[0], 0.0);
+        assertEquals(4.0, objarr[1], 0.0);
+        assertEquals(5.0, objarr[2], 0.0);
+    }
+
+    /**
+     * Starts the server, adds a Float PV, writes an array, reads it back, checks the value read is correct and stops the server
+     */
+    @Test
+    public void testWriteFloatArray() throws Exception {
+        Channel<Float> ch = giapicas.createChannel(varname, ImmutableList.of(0.0f, 0.0f, 0.0f));
+        ch.setValue(ImmutableList.of(3.0f, 4.0f, 5.0f));
+
+        DBR dbr = ch.getDBR();
+
+        int num = dbr.getCount();
+        assertEquals(3, num);
+        Object obj = dbr.getValue();
+        float[] objarr = (float[]) obj;
+        assertEquals(3.0, objarr[0], 0.0);
+        assertEquals(4.0, objarr[1], 0.0);
+        assertEquals(5.0, objarr[2], 0.0);
 
     }
 
@@ -189,12 +227,10 @@ public class CasTest {
         Channel<Double> chD = giapicas.createChannel("nico:double", 1.0);
         Channel<String> chS = giapicas.createChannel("nico:string", "1");
 
-
         chI.setValue(3);
         chF.setValue(3.0f);
         chD.setValue(3.0);
         chS.setValue("three");
-
 
         DBR dbr[] = new DBR[4];
         dbr[0] = chI.getDBR();

@@ -31,8 +31,8 @@ class DoubleChannel extends AbstractChannel<Double> {
     @Override
     protected DBR buildDBR(List<Double> values) {
         double[] newValues = new double[values.size()];
-        for (Double value : values) {
-            newValues[0] = value;
+        for (int i = 0; i < values.size(); i++) {
+            newValues[i] = values.get(i).doubleValue();
         }
         return new DBR_STS_Double(newValues);
     }

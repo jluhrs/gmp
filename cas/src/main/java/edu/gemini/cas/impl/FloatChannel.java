@@ -31,8 +31,8 @@ class FloatChannel extends AbstractChannel<Float> {
     @Override
     protected DBR buildDBR(List<Float> values) {
         float[] newValues = new float[values.size()];
-        for (Float value : values) {
-            newValues[0] = value;
+        for (int i = 0; i < values.size(); i++) {
+            newValues[i] = values.get(i).floatValue();
         }
         return new DBR_STS_Float(newValues);
     }
