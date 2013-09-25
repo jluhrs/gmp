@@ -12,7 +12,6 @@ import static org.mockito.Mockito.*;
 public class PcsUpdaterComponentTest {
     private EpicsWriter epicsWriter = mock(EpicsWriter.class);
     private ChannelAccessServer channelFactory = mock(ChannelAccessServer.class);
-    private PcsUpdaterComposite pcsComposite = new PcsUpdaterCompositeImpl();
     private String channel = "tst";
 
     @Test
@@ -24,7 +23,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponent() {
-        return new PcsUpdaterComponent(channelFactory, pcsComposite, false, channel);
+        return new PcsUpdaterComponent(channelFactory, false, channel);
     }
 
     private void verifyBindings(String baseChannel, int count) throws CAException {
@@ -40,7 +39,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponentInSimulation() {
-        return new PcsUpdaterComponent(channelFactory, pcsComposite, true, channel);
+        return new PcsUpdaterComponent(channelFactory, true, channel);
     }
 
     @Test
