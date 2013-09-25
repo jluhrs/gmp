@@ -114,4 +114,19 @@ public class PcsUpdaterComponentTest {
         verifyBindings(channel, 1);
     }
 
+    @Test
+    public void changeChannel() throws Exception {
+        Channel<Double> epicsChannel = mock(Channel.class);
+        when(channelFactory.createChannel(anyString(), any(List.class))).thenReturn(epicsChannel);
+
+        PcsUpdaterComponent component = buildComponent();
+
+        component.startComponent();
+
+        component.updatedComponent(new Hashtable(ImmutableMap.of("simulation", "false", "epicsChannel", "test:newchannel")));
+
+        verify(channelFactory).destroyChannel(any(ReadOnlyChannel.class));
+        verify(channelFactory).createChannel(eq("test:newchannel"), eq(EpicsPcsUpdater.buildZeroZernikesArray()));
+    }
+
 }

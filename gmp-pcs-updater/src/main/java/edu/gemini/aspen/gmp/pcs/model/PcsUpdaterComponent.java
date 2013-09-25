@@ -74,6 +74,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     @Updated
     public void updatedComponent(Dictionary<String, String> conf) {
         this.simulation = Boolean.parseBoolean(conf.get("simulation"));
+        this.pcsChannel = conf.get("epicsChannel");
         LOG.info("Modify PCS Updater Component simulation=" + simulation + " channelName=" + pcsChannel);
         if (simulation && updater != null) {
             updater.stopChannel();
