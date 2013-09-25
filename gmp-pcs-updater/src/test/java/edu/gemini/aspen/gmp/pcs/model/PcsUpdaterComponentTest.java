@@ -100,14 +100,18 @@ public class PcsUpdaterComponentTest {
         verify(channelFactory).destroyChannel(any(ReadOnlyChannel.class));
     }
 
-    /*@Test
-    public void modifyWriterInSimulation() throws EpicsException {
+    @Test
+    public void transitionToNonSimulation() throws Exception {
+        Channel<Double> epicsChannel = mock(Channel.class);
+        when(channelFactory.createChannel(anyString(), any(List.class))).thenReturn(epicsChannel);
+
         PcsUpdaterComponent component = buildComponentInSimulation();
 
         component.startComponent();
 
-        component.updatedComponent(null);
-        verifyZeroInteractions(epicsWriter);
-    }*/
+        component.updatedComponent(new Hashtable(ImmutableMap.of("simulation", "false", "epicsChannel", channel)));
+
+        verifyBindings(channel, 1);
+    }
 
 }

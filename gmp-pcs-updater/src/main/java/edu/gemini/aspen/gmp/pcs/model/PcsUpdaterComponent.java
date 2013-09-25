@@ -79,20 +79,19 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
             updater.stopChannel();
             updater = null;
         }
-        /*if (!simulation) {
+        if (!simulation) {
             if (updater != null) {
-                pcsUpdaterAggregate.unregisterUpdater(updater);
-                LOG.info("Removed old instance of EPICS writer");
+                updater.stopChannel();
+                updater = null;
             }
 
             try {
                 updater = new EpicsPcsUpdater(_channelFactory, pcsChannel);
-                pcsUpdaterAggregate.registerUpdater(updater);
                 LOG.info("New instance of EPICS writer registered");
             } catch (PcsUpdaterException ex) {
                 LOG.log(Level.WARNING, "Can't initialize EPICS channels", ex);
             }
-        }*/
+        }
     }
 
     public void update(PcsUpdate update) throws PcsUpdaterException {
