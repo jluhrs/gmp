@@ -12,7 +12,6 @@ import static org.mockito.Mockito.*;
 
 public class PcsUpdaterComponentTest {
     private EpicsWriter epicsWriter = mock(EpicsWriter.class);
-    private JmsProvider provider = mock(JmsProvider.class);
     private ChannelAccessServer channelFactory = mock(ChannelAccessServer.class);
     private PcsUpdaterComposite pcsComposite = new PcsUpdaterCompositeImpl();
     private String channel = "tst";
@@ -29,15 +28,8 @@ public class PcsUpdaterComponentTest {
         return new PcsUpdaterComponent(channelFactory, epicsWriter, pcsComposite, false, channel);
     }
 
-
-    private void verifyBindings(String baseChannel, int times) {
-        for (String s : EpicsPcsUpdater.INPUTS) {
-            verify(epicsWriter, times(times)).getDoubleChannel(eq(baseChannel + "." + s));
-        }
-    }
-
     private void verifyBindings(String baseChannel) {
-        verifyBindings(baseChannel, 1);
+        verify(epicsWriter).getDoubleChannel(baseChannel);
     }
 
     @Test
@@ -90,7 +82,7 @@ public class PcsUpdaterComponentTest {
 
         component.modifiedEpicsWriter();
 
-        verifyBindings(channel, 2);
+        verifyBindings(channel);
     }
 
     @Test

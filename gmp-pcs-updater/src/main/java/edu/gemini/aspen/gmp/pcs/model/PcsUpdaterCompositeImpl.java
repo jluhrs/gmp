@@ -81,4 +81,9 @@ public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite, JmsArtifact
     public void stopJms() {
         _messageConsumer.stopJms();
     }
+
+    @Override
+    public String toString() {
+        return "PCS Updater";
+    }
 }

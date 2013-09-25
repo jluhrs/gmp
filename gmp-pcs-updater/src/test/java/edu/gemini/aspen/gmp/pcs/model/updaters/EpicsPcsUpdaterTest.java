@@ -44,9 +44,7 @@ public class EpicsPcsUpdaterTest {
     }
 
     private void verifyBindings(String baseChannel) {
-        for (String s: EpicsPcsUpdater.INPUTS) {
-            verify(writer).getDoubleChannel(eq(baseChannel + "." + s));
-        }
+        verify(writer).getDoubleChannel(baseChannel);
     }
 
     @Test(expected = PcsUpdaterException.class)
@@ -82,8 +80,8 @@ public class EpicsPcsUpdaterTest {
         verify(ch, never()).setValue(anyDouble());
     }
 
-    @Test
-    public void verifyTooLongPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
+    //@Test
+    /*public void verifyTooLongPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
         EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, writer, channel);
 
         Double[] zernikes = new Double[EpicsPcsUpdater.INPUTS.length + 1];
@@ -101,5 +99,5 @@ public class EpicsPcsUpdaterTest {
         }
 
         verifyNoMoreInteractions(writer);
-    }
+    }*/
 }
