@@ -11,26 +11,34 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
  * Implementation of a PCS Updater object that will send zernikes updates to
  * the EPICS channels in the TCS.
  *
- *
- *
  * There are 14 zernikes to write.
  */
 public class EpicsPcsUpdater implements PcsUpdater {
     private static final Logger LOG = Logger.getLogger(EpicsPcsUpdater.class.getName());
-    static final String TCS_ZERNIKES_BASE_CHANNEL = "tst:array";
+    public static final String TCS_ZERNIKES_BASE_CHANNEL = "tst:array";
     public static final Integer ZERNIKES_COUNT = 19;
 
     private final ChannelAccessServer _channelFactory;
     private final Channel<Double> zernikesChannel;
+    private final Double[] gains;
 
-    public EpicsPcsUpdater(ChannelAccessServer channelFactory, String baseChannel) throws PcsUpdaterException {
+    public EpicsPcsUpdater(ChannelAccessServer channelFactory, String baseChannel, List<Double> gains) throws PcsUpdaterException {
         _channelFactory = channelFactory;
+        Double coeff[] = new Double[ZERNIKES_COUNT];
+        gains.toArray(coeff);
+        for (int i = 0; i < coeff.length; i++) {
+            if (coeff[i] == null) {
+                coeff[i] = new Double(1.0);
+            }
+        }
+        this.gains = coeff;
 
         /**
          * If the baseChannel is not specified, use the default one
@@ -66,7 +74,7 @@ public class EpicsPcsUpdater implements PcsUpdater {
             Double[] exposedArray = new Double[ZERNIKES_COUNT];
             for (int i = 0; i < ZERNIKES_COUNT; i++) {
                 if (i < zernikes.length) {
-                    exposedArray[i] = zernikes[i];
+                    exposedArray[i] = zernikes[i] * gains[i];
                 } else {
                     exposedArray[i] = 0.0;
                 }

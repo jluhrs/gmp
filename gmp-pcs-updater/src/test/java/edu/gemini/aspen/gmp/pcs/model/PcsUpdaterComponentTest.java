@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
@@ -23,6 +24,7 @@ public class PcsUpdaterComponentTest {
     private EpicsWriter epicsWriter = mock(EpicsWriter.class);
     private ChannelAccessServer channelFactory = mock(ChannelAccessServer.class);
     private String channel = "tst";
+    private String gains = "1.0";
 
     @Test
     public void registerWriter() throws Exception {
@@ -33,7 +35,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponent() {
-        return new PcsUpdaterComponent(channelFactory, false, channel);
+        return new PcsUpdaterComponent(channelFactory, false, channel, gains);
     }
 
     private void verifyBindings(String baseChannel, int count) throws CAException {
@@ -49,7 +51,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponentInSimulation() {
-        return new PcsUpdaterComponent(channelFactory, true, channel);
+        return new PcsUpdaterComponent(channelFactory, true, channel, gains);
     }
 
     @Test

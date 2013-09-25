@@ -1,21 +1,16 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
-import com.google.common.collect.Iterators;
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import edu.gemini.aspen.gmp.pcs.jms.PcsUpdateListener;
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.cas.ChannelAccessServer;
-import edu.gemini.cas.ChannelFactory;
-import edu.gemini.epics.EpicsWriter;
 import edu.gemini.jms.api.*;
-import org.apache.felix.ipojo.Nullable;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
-import java.util.Arrays;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,6 +22,7 @@ import java.util.logging.Logger;
 public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComponent.class.getName());
 
+    private List<Double> gains;
     private Boolean simulation;
     private String pcsChannel;
 
@@ -36,16 +32,24 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     private BaseMessageConsumer _messageConsumer;
 
     private PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory,
-                               @Property(name = "simulation", value = "yes", mandatory = true) String simulation, // Simulation must be a string to be compatible with iPojo
-                               @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel) {
-        this(channelFactory, Boolean.parseBoolean(simulation), pcsChannel);
+                                @Property(name = "simulation", value = "yes", mandatory = true) String simulation, // Simulation must be a string to be compatible with iPojo
+                                @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel,
+                                @Property(name = "gains", value = "NOVALID", mandatory = true) String gains) {
+        this(channelFactory, Boolean.parseBoolean(simulation), pcsChannel, gains);
     }
 
     public PcsUpdaterComponent(ChannelAccessServer channelFactory,
                                boolean simulation,
-                               String pcsChannel) {
+                               String pcsChannel,
+                               String gains) {
         this.simulation = simulation;
         this.pcsChannel = pcsChannel;
+        this.gains = Lists.transform(ImmutableList.copyOf(gains.split(" ")), new Function<String, Double>() {
+            @Override
+            public Double apply(String input) {
+                return Double.parseDouble(input);
+            }
+        });
         _channelFactory = channelFactory;
     }
 
@@ -54,7 +58,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
         LOG.info("Start PCS Updater Component");
         if (!simulation) {
             try {
-                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel);
+                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel, gains);
                 LOG.info("EPICS Connection established");
             } catch (PcsUpdaterException ex) {
                 LOG.log(Level.WARNING, "Can't initialize EPICS channels", ex);
@@ -87,7 +91,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
             }
 
             try {
-                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel);
+                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel, gains);
                 LOG.info("New instance of EPICS writer registered");
             } catch (PcsUpdaterException ex) {
                 LOG.log(Level.WARNING, "Can't initialize EPICS channels", ex);
