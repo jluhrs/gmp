@@ -6,7 +6,6 @@ import edu.gemini.aspen.gmp.pcs.model.PcsUpdater;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.EpicsWriter;
 import edu.gemini.epics.api.Channel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;

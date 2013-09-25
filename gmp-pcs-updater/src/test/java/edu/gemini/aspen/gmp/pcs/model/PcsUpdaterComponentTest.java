@@ -1,12 +1,22 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsWriter;
+import edu.gemini.epics.api.Channel;
+import edu.gemini.epics.api.ReadOnlyChannel;
 import gov.aps.jca.CAException;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.List;
+
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 public class PcsUpdaterComponentTest {
@@ -52,14 +62,17 @@ public class PcsUpdaterComponentTest {
     }
 
     @Test
-    public void unregisterWriter() throws Exception {
+    public void stopComponent() throws Exception {
+        Channel<Double> epicsChannel = mock(Channel.class);
+        when(channelFactory.createChannel(anyString(), any(List.class))).thenReturn(epicsChannel);
+
         PcsUpdaterComponent component = buildComponent();
 
         component.startComponent();
 
         component.stopComponent();
         verifyBindings(channel, 1);
-        // TODO Should the channel be unbound?
+        verify(channelFactory).destroyChannel(any(ReadOnlyChannel.class));
     }
 
     @Test
@@ -73,24 +86,28 @@ public class PcsUpdaterComponentTest {
     }
 
     @Test
-    public void modifyWriter() throws Exception {
+    public void transitionToSimulation() throws Exception {
+        Channel<Double> epicsChannel = mock(Channel.class);
+        when(channelFactory.createChannel(anyString(), any(List.class))).thenReturn(epicsChannel);
+
         PcsUpdaterComponent component = buildComponent();
 
         component.startComponent();
 
-        component.modifiedEpicsWriter();
+        component.updatedComponent(new Hashtable(ImmutableMap.of("simulation", "true", "epicsChannel", channel)));
 
-        verifyBindings(channel, 2);
+        verifyBindings(channel, 1);
+        verify(channelFactory).destroyChannel(any(ReadOnlyChannel.class));
     }
 
-    @Test
+    /*@Test
     public void modifyWriterInSimulation() throws EpicsException {
         PcsUpdaterComponent component = buildComponentInSimulation();
 
         component.startComponent();
 
-        component.modifiedEpicsWriter();
+        component.updatedComponent(null);
         verifyZeroInteractions(epicsWriter);
-    }
+    }*/
 
 }

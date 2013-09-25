@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
+import com.google.common.collect.Iterators;
 import edu.gemini.aspen.gmp.pcs.jms.PcsUpdateListener;
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.cas.ChannelAccessServer;
@@ -11,6 +12,8 @@ import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import java.util.Arrays;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -32,9 +35,15 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     private EpicsPcsUpdater updater;
     private BaseMessageConsumer _messageConsumer;
 
-    public PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory,
-                                  @Property(name = "simulation", value = "yes", mandatory = true) Boolean simulation,
-                                  @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel) {
+    private PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory,
+                               @Property(name = "simulation", value = "yes", mandatory = true) String simulation, // Simulation must be a string to be compatible with iPojo
+                               @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel) {
+        this(channelFactory, Boolean.parseBoolean(simulation), pcsChannel);
+    }
+
+    public PcsUpdaterComponent(ChannelAccessServer channelFactory,
+                               boolean simulation,
+                               String pcsChannel) {
         this.simulation = simulation;
         this.pcsChannel = pcsChannel;
         _channelFactory = channelFactory;
@@ -63,8 +72,13 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     }
 
     @Updated
-    public void modifiedEpicsWriter() {
+    public void updatedComponent(Dictionary<String, String> conf) {
+        this.simulation = Boolean.parseBoolean(conf.get("simulation"));
         LOG.info("Modify PCS Updater Component simulation=" + simulation + " channelName=" + pcsChannel);
+        if (simulation && updater != null) {
+            updater.stopChannel();
+            updater = null;
+        }
         /*if (!simulation) {
             if (updater != null) {
                 pcsUpdaterAggregate.unregisterUpdater(updater);
