@@ -25,13 +25,11 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComponent.class.getName());
 
     private Boolean simulation;
-
     private String pcsChannel;
 
     private final ChannelAccessServer _channelFactory;
 
-    private PcsUpdater updater;
-
+    private EpicsPcsUpdater updater;
     private BaseMessageConsumer _messageConsumer;
 
     public PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory,
@@ -59,7 +57,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     public void stopComponent() {
         LOG.info("Stop PCS Updater Component");
         if (!simulation && updater != null) {
-            // TODO kill updater
+            updater.stopChannel();
             updater = null;
             LOG.info("Disconnected from EPICS");
         }
@@ -67,7 +65,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
 
     @Updated
     public void modifiedEpicsWriter() {
-        LOG.info("Modify PCS Updater Component");
+        LOG.info("Modify PCS Updater Component simulation=" + simulation + " channelName=" + pcsChannel);
         /*if (!simulation) {
             if (updater != null) {
                 pcsUpdaterAggregate.unregisterUpdater(updater);

@@ -94,4 +94,8 @@ public class EpicsPcsUpdater implements PcsUpdater {
         }
         return builder.build();
     }
+
+    public void stopChannel() {
+        _channelFactory.destroyChannel(zernikesChannel);
+    }
 }
