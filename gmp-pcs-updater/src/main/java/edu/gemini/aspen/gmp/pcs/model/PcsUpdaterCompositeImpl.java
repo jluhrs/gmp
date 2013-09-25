@@ -27,7 +27,7 @@ public class PcsUpdaterCompositeImpl implements PcsUpdaterComposite, JmsArtifact
     /**
      * Register a new PcsUpdater in this aggregation
      *
-     * @param updater the new updater in the agregation
+     * @param updater the new updater in the aggregation
      */
     @Override
     @Bind(aggregate = true)

@@ -36,7 +36,7 @@ public class PcsUpdaterComponent {
     }
 
     @Validate
-    public void registerEpicsWriter() {
+    public void startComponent() {
         if (!simulation) {
             try {
                 updater = new EpicsPcsUpdater(_channelFactory, pcsChannel);
@@ -49,7 +49,7 @@ public class PcsUpdaterComponent {
     }
 
     @Invalidate
-    public void unRegisterEpicsWriter() {
+    public void stopComponent() {
         if (!simulation && updater != null) {
             pcsUpdaterAggregate.unregisterUpdater(updater);
             updater = null;

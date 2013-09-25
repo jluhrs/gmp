@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
-import com.google.common.collect.ImmutableList;
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.EpicsException;
@@ -20,7 +19,7 @@ public class PcsUpdaterComponentTest {
     public void registerWriter() throws Exception {
         PcsUpdaterComponent component = buildComponent();
 
-        component.registerEpicsWriter();
+        component.startComponent();
         verifyBindings(channel, 1);
     }
 
@@ -36,7 +35,7 @@ public class PcsUpdaterComponentTest {
     public void registerWriterInSimulation() throws EpicsException {
         PcsUpdaterComponent component = buildComponentInSimulation();
 
-        component.registerEpicsWriter();
+        component.startComponent();
         verifyZeroInteractions(epicsWriter);
     }
 
@@ -49,7 +48,7 @@ public class PcsUpdaterComponentTest {
         PcsUpdaterComponent component = buildComponentInSimulation();
         doThrow(new EpicsException("Test exception", new RuntimeException())).when(epicsWriter).getDoubleChannel(anyString());
 
-        component.registerEpicsWriter();
+        component.startComponent();
         verifyZeroInteractions(epicsWriter);
     }
 
@@ -57,9 +56,9 @@ public class PcsUpdaterComponentTest {
     public void unregisterWriter() throws Exception {
         PcsUpdaterComponent component = buildComponent();
 
-        component.registerEpicsWriter();
+        component.startComponent();
 
-        component.unRegisterEpicsWriter();
+        component.stopComponent();
         verifyBindings(channel, 1);
         // TODO Should the channel be unbound?
     }
@@ -68,9 +67,9 @@ public class PcsUpdaterComponentTest {
     public void unregisterWriterInSimulation() throws EpicsException {
         PcsUpdaterComponent component = buildComponentInSimulation();
 
-        component.registerEpicsWriter();
+        component.startComponent();
 
-        component.unRegisterEpicsWriter();
+        component.stopComponent();
         verifyZeroInteractions(epicsWriter);
     }
 
@@ -78,7 +77,7 @@ public class PcsUpdaterComponentTest {
     public void modifyWriter() throws Exception {
         PcsUpdaterComponent component = buildComponent();
 
-        component.registerEpicsWriter();
+        component.startComponent();
 
         component.modifiedEpicsWriter();
 
@@ -89,7 +88,7 @@ public class PcsUpdaterComponentTest {
     public void modifyWriterInSimulation() throws EpicsException {
         PcsUpdaterComponent component = buildComponentInSimulation();
 
-        component.registerEpicsWriter();
+        component.startComponent();
 
         component.modifiedEpicsWriter();
         verifyZeroInteractions(epicsWriter);
