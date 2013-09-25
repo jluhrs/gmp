@@ -3,6 +3,8 @@ package edu.gemini.aspen.gmp.pcs.model.updaters;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdater;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
+import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.cas.ChannelFactory;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsWriter;
 import edu.gemini.epics.ReadWriteClientEpicsChannel;
@@ -28,11 +30,13 @@ public class EpicsPcsUpdater implements PcsUpdater {
 
     private final EpicsWriter _writer;
     private final String[] _channels;
+    private final ChannelAccessServer _channelFactory;
     private List<ReadWriteClientEpicsChannel<Double>> epicsChannels = new ArrayList<ReadWriteClientEpicsChannel<Double>>();
 
-    public EpicsPcsUpdater(EpicsWriter writer, String baseChannel) throws PcsUpdaterException {
+    public EpicsPcsUpdater(ChannelAccessServer channelFactory, EpicsWriter writer, String baseChannel) throws PcsUpdaterException {
         _writer = writer;
         _channels = new String[INPUTS.length];
+        _channelFactory = channelFactory;
         /**
          * If the baseChannel is not specified, use the default one
          */
@@ -46,7 +50,6 @@ public class EpicsPcsUpdater implements PcsUpdater {
     }
 
     private void bindEpicsChannels() throws PcsUpdaterException {
-
         for (String channel : _channels) {
             try {
                 epicsChannels.add(_writer.getDoubleChannel(channel));
@@ -89,6 +92,12 @@ public class EpicsPcsUpdater implements PcsUpdater {
     }
 
     private List<String> _buildChannelList(String baseChannel) {
+        try {
+            System.out.println("Try to create channel " + baseChannel);
+            _channelFactory.createChannel(baseChannel, new ArrayList<Double>(INPUTS.length));
+        } catch (CAException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
         List<String> channels = new ArrayList<String>(INPUTS.length);
         baseChannel += ".";

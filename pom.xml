@@ -199,7 +199,7 @@
             <dependency>
                 <groupId>edu.gemini.external.osgi.jca-lib</groupId>
                 <artifactId>jca-lib</artifactId>
-                <version>1.3.1</version>
+                <version>1.3.3</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.epics</groupId>

@@ -1,6 +1,8 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
+import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.cas.ChannelFactory;
 import edu.gemini.epics.EpicsWriter;
 import org.apache.felix.ipojo.annotations.*;
 
@@ -20,10 +22,11 @@ public class PcsUpdaterComponent {
 
     private final EpicsWriter _epicsWriter;
     private final PcsUpdaterComposite pcsUpdaterAggregate;
+    private final ChannelAccessServer _channelFactory;
 
     private PcsUpdater updater;
 
-    public PcsUpdaterComponent(@Requires EpicsWriter epicsWriter,
+    public PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory, @Requires EpicsWriter epicsWriter,
                                   @Requires PcsUpdaterComposite updater,
                                   @Property(name = "simulation", value = "yes", mandatory = true) Boolean simulation,
                                   @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel) {
@@ -31,13 +34,14 @@ public class PcsUpdaterComponent {
         this.pcsUpdaterAggregate = updater;
         this.simulation = simulation;
         this.pcsChannel = pcsChannel;
+        _channelFactory = channelFactory;
     }
 
     @Validate
     public void registerEpicsWriter() {
         if (!simulation) {
             try {
-                updater = new EpicsPcsUpdater(_epicsWriter, pcsChannel);
+                updater = new EpicsPcsUpdater(_channelFactory, _epicsWriter, pcsChannel);
                 pcsUpdaterAggregate.registerUpdater(updater);
                 LOG.info("EPICS Connection established");
             } catch (PcsUpdaterException ex) {
@@ -64,7 +68,7 @@ public class PcsUpdaterComponent {
             }
 
             try {
-                updater = new EpicsPcsUpdater(_epicsWriter, pcsChannel);
+                updater = new EpicsPcsUpdater(_channelFactory, _epicsWriter, pcsChannel);
                 pcsUpdaterAggregate.registerUpdater(updater);
                 LOG.info("New instance of EPICS writer registered");
             } catch (PcsUpdaterException ex) {

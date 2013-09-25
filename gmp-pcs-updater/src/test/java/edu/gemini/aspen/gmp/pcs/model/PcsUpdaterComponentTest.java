@@ -1,6 +1,8 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
+import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.cas.ChannelFactory;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsWriter;
 import edu.gemini.jms.api.JmsProvider;
@@ -11,6 +13,7 @@ import static org.mockito.Mockito.*;
 public class PcsUpdaterComponentTest {
     private EpicsWriter epicsWriter = mock(EpicsWriter.class);
     private JmsProvider provider = mock(JmsProvider.class);
+    private ChannelAccessServer channelFactory = mock(ChannelAccessServer.class);
     private PcsUpdaterComposite pcsComposite = new PcsUpdaterCompositeImpl();
     private String channel = "tst";
 
@@ -23,7 +26,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponent() {
-        return new PcsUpdaterComponent(epicsWriter, pcsComposite, false, channel);
+        return new PcsUpdaterComponent(channelFactory, epicsWriter, pcsComposite, false, channel);
     }
 
 
@@ -46,7 +49,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponentInSimulation() {
-        return new PcsUpdaterComponent(epicsWriter, pcsComposite, true, channel);
+        return new PcsUpdaterComponent(channelFactory, epicsWriter, pcsComposite, true, channel);
     }
 
     @Test

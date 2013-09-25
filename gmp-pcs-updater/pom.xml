@@ -25,6 +25,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>edu.gemini.cas</groupId>
+            <artifactId>cas</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-api</artifactId>
         </dependency>

@@ -2,6 +2,8 @@ package edu.gemini.aspen.gmp.pcs.model.updaters;
 
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdate;
 import edu.gemini.aspen.gmp.pcs.model.PcsUpdaterException;
+import edu.gemini.cas.ChannelAccessServer;
+import edu.gemini.cas.ChannelFactory;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsWriter;
 import edu.gemini.epics.ReadWriteClientEpicsChannel;
@@ -23,6 +25,7 @@ import static org.mockito.Mockito.*;
 public class EpicsPcsUpdaterTest {
     private EpicsWriter writer = mock(EpicsWriter.class);
     private ReadWriteClientEpicsChannel ch=mock(ReadWriteClientEpicsChannel.class);
+    private ChannelAccessServer channelFactory = mock(ChannelAccessServer.class);
     @Before
     public void setUp(){
         doReturn(ch).when(writer).getDoubleChannel(anyString());
@@ -31,13 +34,13 @@ public class EpicsPcsUpdaterTest {
 
     @Test
     public void constructionWithDefaultChannel() throws PcsUpdaterException, EpicsException {
-        new EpicsPcsUpdater(writer, null);
+        new EpicsPcsUpdater(channelFactory, writer, null);
         verifyBindings(EpicsPcsUpdater.TCS_ZERNIKES_BASE_CHANNEL);
     }
 
     @Test
     public void constructionWithExplicitChannel() throws PcsUpdaterException, EpicsException {
-        new EpicsPcsUpdater(writer, channel);
+        new EpicsPcsUpdater(channelFactory, writer, channel);
         verifyBindings(channel);
     }
 
@@ -52,12 +55,12 @@ public class EpicsPcsUpdaterTest {
     @Test(expected = PcsUpdaterException.class)
     public void constructionWithNadEpicsChannel() throws PcsUpdaterException, EpicsException {
         doThrow(new EpicsException("Test exception", new RuntimeException())).when(writer).getDoubleChannel(anyString());
-        new EpicsPcsUpdater(writer, channel);
+        new EpicsPcsUpdater(channelFactory, writer, channel);
     }
 
     @Test
     public void pcsUpdateWithoutValues() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
-        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, writer, channel);
         pcsUpdater.update(new PcsUpdate(new Double[0]));
         verifyBindings(channel);
         verify(ch, never()).setValue(anyDouble());
@@ -65,7 +68,7 @@ public class EpicsPcsUpdaterTest {
 
     @Test
     public void simplePcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
-        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, writer, channel);
         pcsUpdater.update(new PcsUpdate(new Double[]{1.0, 2.0}));
 
         InOrder inOrder= inOrder(ch);
@@ -77,7 +80,7 @@ public class EpicsPcsUpdaterTest {
 
     @Test
     public void nullPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
-        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, writer, channel);
         pcsUpdater.update(null);
         verifyBindings(channel);
         verify(ch, never()).setValue(anyDouble());
@@ -85,7 +88,7 @@ public class EpicsPcsUpdaterTest {
 
     @Test
     public void verifyTooLongPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
-        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(writer, channel);
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, writer, channel);
 
         Double[] zernikes = new Double[EpicsPcsUpdater.INPUTS.length + 1];
         for (int i = 0; i < EpicsPcsUpdater.INPUTS.length + 1; i++) {
