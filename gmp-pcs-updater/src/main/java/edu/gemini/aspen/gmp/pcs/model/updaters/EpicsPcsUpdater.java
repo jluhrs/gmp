@@ -96,6 +96,7 @@ public class EpicsPcsUpdater implements PcsUpdater {
     }
 
     public void stopChannel() {
+        LOG.info("Stopping channel for PCS Updatus: " + zernikesChannel.getName());
         _channelFactory.destroyChannel(zernikesChannel);
     }
 }

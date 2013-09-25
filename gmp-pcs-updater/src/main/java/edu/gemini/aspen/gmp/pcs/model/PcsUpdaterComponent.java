@@ -59,7 +59,6 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
         if (!simulation && updater != null) {
             updater.stopChannel();
             updater = null;
-            LOG.info("Disconnected from EPICS");
         }
     }
 
