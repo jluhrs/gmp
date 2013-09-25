@@ -86,10 +86,14 @@ public class EpicsPcsUpdater implements PcsUpdater {
 
     private Channel<Double> _buildChannelList(String baseChannel) throws CAException {
         LOG.info("Create channel for publishing zernikes " + baseChannel);
+        return _channelFactory.createChannel(baseChannel, buildZeroZernikesArray());
+    }
+
+    public static ImmutableList<Double> buildZeroZernikesArray() {
         ImmutableList.Builder<Double> builder = new ImmutableList.Builder<Double>();
         for (int i = 0; i < ZERNIKES_COUNT; i++) {
             builder.add(0.0);
         }
-        return _channelFactory.createChannel(baseChannel, builder.build());
+        return builder.build();
     }
 }

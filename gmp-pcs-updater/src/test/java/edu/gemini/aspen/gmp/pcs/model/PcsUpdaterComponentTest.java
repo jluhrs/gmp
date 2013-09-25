@@ -1,11 +1,11 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
+import com.google.common.collect.ImmutableList;
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.cas.ChannelAccessServer;
-import edu.gemini.cas.ChannelFactory;
 import edu.gemini.epics.EpicsException;
 import edu.gemini.epics.EpicsWriter;
-import edu.gemini.jms.api.JmsProvider;
+import gov.aps.jca.CAException;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
@@ -17,19 +17,19 @@ public class PcsUpdaterComponentTest {
     private String channel = "tst";
 
     @Test
-    public void registerWriter() throws EpicsException {
+    public void registerWriter() throws Exception {
         PcsUpdaterComponent component = buildComponent();
 
         component.registerEpicsWriter();
-        verifyBindings(channel);
+        verifyBindings(channel, 1);
     }
 
     private PcsUpdaterComponent buildComponent() {
         return new PcsUpdaterComponent(channelFactory, epicsWriter, pcsComposite, false, channel);
     }
 
-    private void verifyBindings(String baseChannel) {
-        verify(epicsWriter).getDoubleChannel(baseChannel);
+    private void verifyBindings(String baseChannel, int count) throws CAException {
+        verify(channelFactory, times(count)).createChannel(eq(baseChannel), eq(EpicsPcsUpdater.buildZeroZernikesArray()));
     }
 
     @Test
@@ -54,13 +54,13 @@ public class PcsUpdaterComponentTest {
     }
 
     @Test
-    public void unregisterWriter() throws EpicsException {
+    public void unregisterWriter() throws Exception {
         PcsUpdaterComponent component = buildComponent();
 
         component.registerEpicsWriter();
 
         component.unRegisterEpicsWriter();
-        verifyBindings(channel);
+        verifyBindings(channel, 1);
         // TODO Should the channel be unbound?
     }
 
@@ -75,14 +75,14 @@ public class PcsUpdaterComponentTest {
     }
 
     @Test
-    public void modifyWriter() throws EpicsException {
+    public void modifyWriter() throws Exception {
         PcsUpdaterComponent component = buildComponent();
 
         component.registerEpicsWriter();
 
         component.modifiedEpicsWriter();
 
-        verifyBindings(channel);
+        verifyBindings(channel, 2);
     }
 
     @Test
