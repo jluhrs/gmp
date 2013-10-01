@@ -83,6 +83,23 @@ public class EpicsPcsUpdaterTest {
     }
 
     @Test
+    public void testTAICorrection() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
+        EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, channel, gains, 35);
+        pcsUpdater.update(new PcsUpdate(new Double[]{1.0, 2.0}));
+
+        ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
+        verify(ch).setValue(argument.capture());
+
+        assertTrue((((Double) argument.getValue().get(0)) - 35*1000) <= (double)System.currentTimeMillis());
+        assertEquals(Double.valueOf(2), argument.getValue().get(1));
+        assertEquals(Double.valueOf(1.0), argument.getValue().get(2));
+        assertEquals(Double.valueOf(2.0), argument.getValue().get(3));
+        for (int i = 4; i < EpicsPcsUpdater.ARRAY_LENGTH; i++) {
+            assertEquals(Double.valueOf(0.0), argument.getValue().get(i));
+        }
+    }
+
+    @Test
     public void nullPcsUpdate() throws PcsUpdaterException, EpicsException, CAException, TimeoutException {
         EpicsPcsUpdater pcsUpdater = new EpicsPcsUpdater(channelFactory, channel, gains, taiDiff);
         pcsUpdater.update(null);
