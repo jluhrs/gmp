@@ -1,9 +1,6 @@
 package edu.gemini.aspen.gmp.pcs.model;
 
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.EpicsException;
@@ -13,7 +10,6 @@ import edu.gemini.epics.api.ReadOnlyChannel;
 import gov.aps.jca.CAException;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
