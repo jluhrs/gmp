@@ -23,15 +23,18 @@ import java.util.logging.Logger;
 public class EpicsPcsUpdater implements PcsUpdater {
     private static final Logger LOG = Logger.getLogger(EpicsPcsUpdater.class.getName());
     public static final String TCS_ZERNIKES_BASE_CHANNEL = "tst:array";
-    public static final Integer ZERNIKES_COUNT = 19;
+    public static final int ARRAY_LENGTH = 40;
+    public static final int MAX_ZERNIKES = 19;
 
     private final ChannelAccessServer _channelFactory;
     private final Channel<Double> zernikesChannel;
     private final Double[] gains;
+    private int taiDiff;
 
-    public EpicsPcsUpdater(ChannelAccessServer channelFactory, String baseChannel, List<Double> gains) throws PcsUpdaterException {
+    public EpicsPcsUpdater(ChannelAccessServer channelFactory, String baseChannel, List<Double> gains, int taiDiff) throws PcsUpdaterException {
         _channelFactory = channelFactory;
-        Double coeff[] = new Double[ZERNIKES_COUNT];
+        this.taiDiff = taiDiff;
+        Double coeff[] = new Double[ARRAY_LENGTH];
         gains.toArray(coeff);
         for (int i = 0; i < coeff.length; i++) {
             if (coeff[i] == null) {
@@ -70,11 +73,18 @@ public class EpicsPcsUpdater implements PcsUpdater {
                 LOG.warning("No Zernikes available in this update");
                 return;
             }
+            long utc = System.currentTimeMillis();
+            long tai = utc + taiDiff * 1000;
 
-            Double[] exposedArray = new Double[ZERNIKES_COUNT];
-            for (int i = 0; i < ZERNIKES_COUNT; i++) {
-                if (i < zernikes.length) {
-                    exposedArray[i] = zernikes[i] * gains[i];
+            Double[] exposedArray = new Double[ARRAY_LENGTH];
+            // TAI on the first zernike
+            exposedArray[0] = (double)tai;
+            // Number of coefficients
+            long ncoeff = Math.min(zernikes.length, MAX_ZERNIKES);
+            exposedArray[1] = (double)ncoeff;
+            for (int i = 2; i < ARRAY_LENGTH; i++) {
+                if (i < zernikes.length + 2) {
+                    exposedArray[i] = zernikes[i - 2] * gains[i - 2];
                 } else {
                     exposedArray[i] = 0.0;
                 }
@@ -96,7 +106,7 @@ public class EpicsPcsUpdater implements PcsUpdater {
 
     public static ImmutableList<Double> buildZeroZernikesArray() {
         ImmutableList.Builder<Double> builder = new ImmutableList.Builder<Double>();
-        for (int i = 0; i < ZERNIKES_COUNT; i++) {
+        for (int i = 0; i < ARRAY_LENGTH; i++) {
             builder.add(0.0);
         }
         return builder.build();

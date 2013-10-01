@@ -25,6 +25,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     private List<Double> gains;
     private Boolean simulation;
     private String pcsChannel;
+    private Integer taiDiff;
 
     private final ChannelAccessServer _channelFactory;
 
@@ -34,14 +35,16 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     private PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory,
                                 @Property(name = "simulation", value = "yes", mandatory = true) String simulation, // Simulation must be a string to be compatible with iPojo
                                 @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel,
-                                @Property(name = "gains", value = "NOVALID", mandatory = true) String gains) {
-        this(channelFactory, Boolean.parseBoolean(simulation), pcsChannel, gains);
+                                @Property(name = "gains", value = "NOVALID", mandatory = true) String gains,
+                                @Property(name = "taiDiff", value = "0", mandatory = false) String taiDiff) {
+        this(channelFactory, Boolean.parseBoolean(simulation), pcsChannel, gains, Integer.parseInt(taiDiff));
     }
 
     public PcsUpdaterComponent(ChannelAccessServer channelFactory,
                                boolean simulation,
                                String pcsChannel,
-                               String gains) {
+                               String gains,
+                               Integer taiDiff) {
         this.simulation = simulation;
         this.pcsChannel = pcsChannel;
         this.gains = Lists.transform(ImmutableList.copyOf(gains.split(" ")), new Function<String, Double>() {
@@ -50,6 +53,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
                 return Double.parseDouble(input);
             }
         });
+        this.taiDiff = taiDiff;
         _channelFactory = channelFactory;
     }
 
@@ -58,7 +62,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
         LOG.info("Start PCS Updater Component");
         if (!simulation) {
             try {
-                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel, gains);
+                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel, gains, taiDiff);
                 LOG.info("EPICS Connection established");
             } catch (PcsUpdaterException ex) {
                 LOG.log(Level.WARNING, "Can't initialize EPICS channels", ex);
@@ -91,7 +95,7 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
             }
 
             try {
-                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel, gains);
+                updater = new EpicsPcsUpdater(_channelFactory, pcsChannel, gains, taiDiff);
                 LOG.info("New instance of EPICS writer registered");
             } catch (PcsUpdaterException ex) {
                 LOG.log(Level.WARNING, "Can't initialize EPICS channels", ex);

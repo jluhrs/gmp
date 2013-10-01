@@ -25,6 +25,7 @@ public class PcsUpdaterComponentTest {
     private ChannelAccessServer channelFactory = mock(ChannelAccessServer.class);
     private String channel = "tst";
     private String gains = "1.0";
+    private int taiDiff = 0;
 
     @Test
     public void registerWriter() throws Exception {
@@ -35,7 +36,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponent() {
-        return new PcsUpdaterComponent(channelFactory, false, channel, gains);
+        return new PcsUpdaterComponent(channelFactory, false, channel, gains, taiDiff);
     }
 
     private void verifyBindings(String baseChannel, int count) throws CAException {
@@ -51,7 +52,7 @@ public class PcsUpdaterComponentTest {
     }
 
     private PcsUpdaterComponent buildComponentInSimulation() {
-        return new PcsUpdaterComponent(channelFactory, true, channel, gains);
+        return new PcsUpdaterComponent(channelFactory, true, channel, gains, taiDiff);
     }
 
     @Test
