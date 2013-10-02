@@ -379,7 +379,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-fits-updater</artifactId>
-                <version>0.4.1-SNAPSHOT</version>
+                <version>0.4.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -399,7 +399,7 @@
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
                 <artifactId>gds-fits-checker</artifactId>
-                <version>0.3.13-SNAPSHOT</version>
+                <version>0.4.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.aspen.gds</groupId>
@@ -1016,8 +1016,8 @@
         <module>gds-properties-actors</module>
         <module>gds-odb-actors</module>
         <module>gds-constant-actors</module>
-        <module>gds-obsevent-handler</module>
         <module>gds-fits-updater</module>
+        <module>gds-obsevent-handler</module>
         <module>gds-datalabel-provider</module>
         <module>gds-static-header-receiver</module>
         <module>gds-seqexec-actors</module>
