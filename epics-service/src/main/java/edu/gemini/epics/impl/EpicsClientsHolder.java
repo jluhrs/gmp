@@ -4,7 +4,6 @@ import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.Maps;
 import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.EpicsException;
-import edu.gemini.epics.api.EpicsClient;
 
 import java.util.Collection;
 import java.util.Map;

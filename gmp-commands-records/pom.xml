@@ -38,10 +38,6 @@
             <artifactId>gmp-top</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
-            <artifactId>jca-lib</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.epics</groupId>
             <artifactId>epics-service</artifactId>
             <scope>test</scope>

@@ -52,8 +52,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>edu.gemini.external.osgi.jca-lib</groupId>
-            <artifactId>jca-lib</artifactId>
+            <groupId>edu.gemini.external.osgi.gov.aps.jca</groupId>
+            <artifactId>jca</artifactId>
         </dependency>
         <dependency>
             <groupId>edu.gemini.cas</groupId>
