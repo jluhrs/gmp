@@ -1,5 +1,31 @@
 /*! \page release_notes Release Notes
 
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3.6
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-1019'>GIAPI-1019</a>] -         Properly handle Infinity and NaN double values
+</li>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-1020'>GIAPI-1020</a>] -         Update gds configuration for GIEC-045 and GIEC-048
+</li>
+</ul>
+                    
+<h2>        Story
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-1017'>GIAPI-1017</a>] -         GMP Health not available
+</li>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-1025'>GIAPI-1025</a>] -         Rework the M1 offloading component to match the proper format for Zernikes
+</li>
+</ul>
+    
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-1016'>GIAPI-1016</a>] -         Upgrade to scala 2.10
+</li>
+</ul>
 
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3.4
 
