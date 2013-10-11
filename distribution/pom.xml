@@ -139,14 +139,6 @@
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-fits-checker</artifactId>
         </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>spdb-activator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>rr</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>edu.gemini.aspen.gds.web.ui</groupId>
