@@ -59,7 +59,7 @@
             </ConfigSet>
 
             <ConfigSet name="observationMode">
-                <field>modeName</field>
+                <field>mode</field>
             </ConfigSet>
 
             <ConfigSet name="selectAdc">
