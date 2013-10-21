@@ -3,6 +3,7 @@ package edu.gemini.aspen.gds.api
 import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
 import scala.collection._
+import java.io.File
 
 /**
  * Interface for an PostProcessingPolicy that uses OSGi services implementing error policies
@@ -20,13 +21,7 @@ class CompositePostProcessingPolicyImpl extends DefaultPostProcessingPolicy with
 
   // Apply all the original headers
   override def applyPolicy(dataLabel: DataLabel, headers: immutable.List[CollectedValue[_]]): immutable.List[CollectedValue[_]] = {
-    LOG.info("Applying policies: " + policies.sortWith((a, b) => a.priority < b.priority).foldLeft("")((B, A) => B + " " + A.getClass.getSimpleName))
-    //iterative
-    //        var h = headers
-    //        for (ep <- policies) {
-    //            h = ep.applyPolicy(dataLabel, h)
-    //        }
-    //        h
+    LOG.info("Applying policies: " + policies.sortWith((a, b) => a.priority < b.priority).foldLeft("")((B, A) => s"$B ${A.getClass.getSimpleName}"))
 
     //recursive
     applyPolicies(dataLabel, policies.sortWith((a, b) => a.priority < b.priority), headers)
@@ -37,7 +32,13 @@ class CompositePostProcessingPolicyImpl extends DefaultPostProcessingPolicy with
       case Nil => headers
       case _ => l.last.applyPolicy(dataLabel, applyPolicies(dataLabel, l.init, headers))
     }
+  }
 
+  override def fileReady(originalFile: File, processedFile: File) {
+    val sortedPolicies = policies.sortWith((a, b) => a.priority < b.priority)
+    for {
+      p <- sortedPolicies
+    } yield p.fileReady(originalFile, processedFile)
   }
 
   @Bind(optional = true, aggregate = true)
