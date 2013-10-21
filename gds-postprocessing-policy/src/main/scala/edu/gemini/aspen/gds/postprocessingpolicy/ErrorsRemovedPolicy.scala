@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.errorpolicy
+package edu.gemini.aspen.gds.postprocessingpolicy
 
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.{PostProcessingPolicy, ErrorCollectedValue, CollectedValue, DefaultPostProcessingPolicy}

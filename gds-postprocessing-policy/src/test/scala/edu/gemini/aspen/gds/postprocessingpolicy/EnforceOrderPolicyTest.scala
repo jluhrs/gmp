@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.errorpolicy
+package edu.gemini.aspen.gds.postprocessingpolicy
 
 import org.junit.Assert._
 import edu.gemini.aspen.giapi.data.DataLabel

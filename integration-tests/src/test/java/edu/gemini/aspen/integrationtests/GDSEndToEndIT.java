@@ -75,7 +75,7 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
         } catch (InvalidSyntaxException ex) {
             fail();
         }
-        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.errorpolicy.EnforceOrderPolicy"));
+        assertTrue(errorPolicies.contains("edu.gemini.aspen.gds.postprocessingpolicy.EnforceOrderPolicy"));
 
 
         copyInitialFile();

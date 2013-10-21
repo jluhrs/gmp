@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gds.errorpolicy
+package edu.gemini.aspen.gds.postprocessingpolicy
 
 import edu.gemini.aspen.giapi.data.DataLabel
 import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
