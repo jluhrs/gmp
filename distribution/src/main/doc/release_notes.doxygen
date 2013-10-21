@@ -1,5 +1,24 @@
 /*! \page release_notes Release Notes
 
+
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3.7
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-1029'>GIAPI-1029</a>] -         GMP Health not updated
+</li>
+</ul>
+            
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-1027'>GIAPI-1027</a>] -         Add option to delete the original raw file after the final file has been completed
+</li>
+<li>[<a href='http://swgserv01.cl.gemini.edu:8080/browse/GIAPI-1028'>GIAPI-1028</a>] -         GDS Should append the fits extension if missing
+</li>
+</ul>
+
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3.6
     
 <h2>        Bug
