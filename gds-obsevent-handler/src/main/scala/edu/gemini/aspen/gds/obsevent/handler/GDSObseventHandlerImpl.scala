@@ -25,13 +25,13 @@ trait GDSObseventHandler
 class GDSObseventHandlerImpl(
                           @Requires actorsFactory: CompositeActorsFactory,
                           @Requires keywordsDatabase: KeywordsDatabase,
-                          @Requires errorPolicy: CompositePostProcessingPolicy,
+                          @Requires postProcessingPolicy: CompositePostProcessingPolicy,
                           @Requires propertyHolder: PropertyHolder) extends GDSObseventHandler {
 
   @Publishes(name="gdsrelay", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent")
   var publisher:Publisher = _
 
-  private lazy val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, errorPolicy, propertyHolder, publisher)
+  private lazy val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, postProcessingPolicy, propertyHolder, publisher)
 
   @Subscriber(name="obsend", topics="edu/gemini/aspen/gds/obsevent/handler", dataType = "scala.Tuple2", dataKey = "observationevent")
   def onObservationEvent(event: (ObservationEvent, DataLabel)) {

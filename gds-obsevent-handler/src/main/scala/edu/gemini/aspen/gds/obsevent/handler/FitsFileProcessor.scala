@@ -52,6 +52,10 @@ class FitsFileProcessor(val propertyHolder: PropertyHolder)(implicit LOG: Logger
     val stopwatch = new Stopwatch().start()
     val srcPath = propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")
     val destPath = propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")
+    val namingFunction = propertyHolder.getProperty("APPEND_FITS_EXTENSION") match {
+      case s: String if s.trim.equalsIgnoreCase("true") => (dataLabel: DataLabel) => if (dataLabel.getName.toLowerCase.endsWith(".fits")) dataLabel.getName else s"${dataLabel.getName}.fits"
+      case _                                            => (dataLabel: DataLabel) => dataLabel.getName
+    }
 
     try {
       val srcDir = findSrcFile(dataLabel)
@@ -64,10 +68,10 @@ class FitsFileProcessor(val propertyHolder: PropertyHolder)(implicit LOG: Logger
         val srcFile = new File(srcPath)
         val destFile = new File(destPath)
         val fu = new FitsUpdater(srcFile, destFile, dataLabel, headers.toList)
-        val result = fu.updateFitsHeaders()
+        val result = fu.updateFitsHeaders(outputNamingFunction = namingFunction)
         stopwatch.stop()
         val writeTime = stopwatch.elapsed(TimeUnit.MILLISECONDS)
-        Right(FitsWriteResult(s"Writing updated FITS file at ${dataLabel.toString} took ${writeTime} [ms]", writeTime, result._1, result._2))
+        Right(FitsWriteResult(s"Writing updated FITS file at ${dataLabel.toString} took $writeTime [ms]", writeTime, result._1, result._2))
       }
     } catch {
       case ex:Exception =>

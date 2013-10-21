@@ -50,6 +50,11 @@ public class SimplePropertyHolder implements PropertyHolder {
         _properties.put(GmpProperties.DEFAULT.name(), DEFAULT);
     }
 
+    @Property(name = "APPEND_FITS_EXTENSION", value = "NO_VALID", mandatory = true)
+    public void setAPPEND_FITS_EXTENSION(String APPEND_FITS_EXTENSION) {
+        _properties.put(GmpProperties.APPEND_FITS_EXTENSION.name(), APPEND_FITS_EXTENSION);
+    }
+
     private Map<String, String> _properties = new HashMap<String, String>();
 
     @Updated
