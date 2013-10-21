@@ -8,6 +8,7 @@ import com.google.common.base.Stopwatch
 import edu.gemini.aspen.gds.fits.FitsUpdater
 import java.util.logging.{Level, Logger}
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 trait FileLocator {
   val propertyHolder: PropertyHolder
@@ -16,8 +17,9 @@ trait FileLocator {
 
     new File(srcPath, dataLabel.toString)
   }
-
 }
+
+case class FitsWriteResult(message: String, time: Long, srcFile: File, destFile: File)
 
 /**
  * Utility class capable of coordinating the process of writing the FITS file once all observations have arrived */
@@ -44,7 +46,7 @@ class FitsFileProcessor(val propertyHolder: PropertyHolder)(implicit LOG: Logger
 
   /**
    * Choreographs the process of writing and update fits file sending the required information for book keeping */
-  def updateFITSFile(dataLabel: DataLabel, processedList: List[CollectedValue[_]]): Either[String, (String, Long)] = {
+  def updateFITSFile(dataLabel: DataLabel, processedList: List[CollectedValue[_]]): Either[String, FitsWriteResult] = {
     val headers = convertToHeaders(processedList)
 
     val stopwatch = new Stopwatch().start()
@@ -59,9 +61,13 @@ class FitsFileProcessor(val propertyHolder: PropertyHolder)(implicit LOG: Logger
       } else if (!destDir.exists()) {
         Left("Destination dir %s not found".format(destDir))
       } else {
-        val fu = new FitsUpdater(new File(srcPath), new File(destPath), dataLabel, headers.toList)
-        fu.updateFitsHeaders()
-        Right(("Writing updated FITS file at " + dataLabel.toString + " took " + stopwatch.stop().elapsedMillis() + " [ms]", stopwatch.elapsedMillis()))
+        val srcFile = new File(srcPath)
+        val destFile = new File(destPath)
+        val fu = new FitsUpdater(srcFile, destFile, dataLabel, headers.toList)
+        val result = fu.updateFitsHeaders()
+        stopwatch.stop()
+        val writeTime = stopwatch.elapsed(TimeUnit.MILLISECONDS)
+        Right(FitsWriteResult(s"Writing updated FITS file at ${dataLabel.toString} took ${writeTime} [ms]", writeTime, result._1, result._2))
       }
     } catch {
       case ex:Exception =>

@@ -7,7 +7,7 @@ import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
 import actors.Actor
 import actors.Actor.actor
-import java.io.FileNotFoundException
+import java.io.{File, FileNotFoundException}
 import java.util.logging.{Level, Logger}
 
 import edu.gemini.aspen.gds.api._
@@ -16,7 +16,7 @@ import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 
 class ReplyHandler(actorsFactory: CompositeActorsFactory,
   keywordsDatabase: KeywordsDatabase,
-  errorPolicy: PostProcessingPolicy,
+  postProcessingPolicy: PostProcessingPolicy,
   propertyHolder: PropertyHolder,
   publisher: Publisher) extends Actor {
   private implicit val LOG = Logger.getLogger(this.getClass.getName)
@@ -129,17 +129,20 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
 
     try {
       val list = (keywordsDatabase !? Retrieve(dataLabel)).asInstanceOf[List[CollectedValue[_]]]
-      val processedList = errorPolicy.applyPolicy(dataLabel, list)
+      val processedList = postProcessingPolicy.applyPolicy(dataLabel, list)
       val cleanedList = processedList.filterNot(_.isError)
 
       fileProcessor.updateFITSFile(dataLabel, cleanedList) match {
-        case Right((msg:String, writeTime:Long)) =>
-          LOG.info(msg)
+        case Right(FitsWriteResult(message, writeTime, srcFile, destFile)) =>
+          LOG.info(message)
           publisher.sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable))
           publisher.sendData(GDSEndObservation(dataLabel, writeTime, processedList))
-        case Left(errorMsg:String) =>
+
+          postProcessingPolicy.fileReady(srcFile, destFile)
+        case Left(errorMsg: String) =>
           LOG.severe(errorMsg)
           publisher.sendData(GDSObservationError(dataLabel, errorMsg))
+        case a => println(a)
       }
     } catch {
       case ex: FileNotFoundException => LOG.log(Level.SEVERE, ex.getMessage)
