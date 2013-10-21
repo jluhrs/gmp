@@ -1,12 +1,16 @@
 package edu.gemini.aspen.gds.postprocessingpolicy
 
-/**
- * Created with IntelliJ IDEA.
- * User: cquiroz
- * Date: 10/21/13
- * Time: 11:57 AM
- * To change this template use File | Settings | File Templates.
- */
-class DeleteOriginalPolicyTest {
+import org.junit.Test
+import org.junit.Assert._
+import com.google.common.io.Files
 
+class DeleteOriginalPolicyTest {
+  @Test
+  def testNonErrors() {
+    val file1 = Files.createTempDir()
+    val deleteOriginal = new DeleteOriginalPolicy()
+    deleteOriginal.fileReady(file1, file1)
+
+    assertFalse(file1.exists())
+  }
 }
