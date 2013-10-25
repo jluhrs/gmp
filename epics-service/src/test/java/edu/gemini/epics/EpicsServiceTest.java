@@ -82,4 +82,13 @@ public class EpicsServiceTest {
         EpicsService epicsService = new EpicsService(context);
         assertEquals(context, epicsService.getJCAContext());
     }
+
+    /**
+     * Simulates multiple IP addresses
+     */
+    @Test
+    public void testSupportForMultipleIPs() {
+        assertNotNull(new EpicsService("127.0.0.1 0.0.0.0"));
+    }
+
 }

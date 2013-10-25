@@ -53,7 +53,10 @@ public class EpicsService implements JCAContextController {
 
     private void validateAddressToConnect(String addressList) {
         Preconditions.checkArgument(addressList != null, "Address to connect cannot be null");
-        Preconditions.checkArgument(addressList.matches(IPADDRESS_PATTERN), "Address list should be an IP address: " + addressList);
+        String[] adresses = addressList.split("\\s");
+        for (String addr: adresses) {
+            Preconditions.checkArgument(addr.matches(IPADDRESS_PATTERN), "Address list should be an IP address: " + addressList);
+        }
     }
 
     @Override
