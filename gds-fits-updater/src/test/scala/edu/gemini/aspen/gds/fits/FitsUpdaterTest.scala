@@ -9,6 +9,7 @@ import edu.gemini.aspen.gds.api.fits.{HeaderItem, Header}
 import edu.gemini.aspen.gds.api.Conversions._
 import com.google.common.base.Stopwatch
 import java.util.concurrent.TimeUnit
+import com.google.common.io.Files
 
 @RunWith(classOf[JUnitRunner])
 class FitsUpdaterTest extends FitsBaseTest {
@@ -118,6 +119,46 @@ class FitsUpdaterTest extends FitsBaseTest {
     assertEquals("DATALABEL", FitsUpdater.toFitsFileName("DATALABEL"))
 
     assertEquals("DATALABEL.fits", FitsUpdater.toFitsFileName("DATALABEL.fits"))
+  }
+
+  test("skip non existing filenames") {
+    val tmp = Files.createTempDir()
+
+    val file = new File(tmp, "test.fits")
+    file.delete()
+
+    assertEquals(file, FitsUpdater.safeDestinationFile(file))
+
+    Files.touch(file)
+    val file1 = new File(tmp, "test-1.fits")
+    file1.delete()
+    assertEquals(file1, FitsUpdater.safeDestinationFile(file))
+    Files.touch(file1)
+    val file2 = new File(tmp, "test-2.fits")
+    file2.delete()
+    assertEquals(file2, FitsUpdater.safeDestinationFile(file))
+    file1.delete()
+    file2.delete()
+  }
+
+  test("should not overwrite files") {
+    val headers = Header(0, Nil)
+
+    val t1 = updateFitsFile(headers :: Nil)._2
+
+    val lastModified =  destinationFile.lastModified()
+
+    TimeUnit.SECONDS.sleep(1)
+
+    val t = updateFitsFile(headers :: Nil)._2
+
+    // Check that destination file has not been updated
+    assertEquals(lastModified, destinationFile.lastModified())
+    val newDestinationFile = new File(destinationFile.getParent, "N-sample1-1.fits")
+    assertTrue(newDestinationFile.exists)
+
+    destinationFile.delete()
+    newDestinationFile.delete()
   }
 
 }

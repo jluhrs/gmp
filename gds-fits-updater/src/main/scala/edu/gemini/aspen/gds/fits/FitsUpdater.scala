@@ -7,6 +7,7 @@ import actors.Reactor
 import java.util.logging.{Level, Logger}
 import edu.gemini.aspen.gds.api.fits.Header
 import com.google.common.io.Files
+import scala.annotation.tailrec
 
 case class Update(namingFunction: DataLabel => String = label => FitsUpdater.toFitsFileName(label))
 
@@ -75,16 +76,39 @@ class FitsUpdater(fromDirectory: File, toDirectory: File, dataLabel: DataLabel, 
     }
 
     val writer = new FitsWriter(originalFile)
+
     writer.updateHeaders(updatedHeaders, tempFile)
     // Make sure the dirs exist
+
     Files.createParentDirs(destinationFile)
-    Files.move(tempFile, destinationFile)
-    (originalFile, destinationFile)
+    val newDestinationFile = FitsUpdater.safeDestinationFile(destinationFile)
+    if (newDestinationFile.getAbsolutePath != destinationFile.getAbsolutePath) {
+      LOG.warning(s"File $destinationFile already exist, using $newDestinationFile instead")
+    }
+    Files.move(tempFile, newDestinationFile)
+    (originalFile, newDestinationFile)
   }
 
 }
 
 object FitsUpdater {
   def toFitsFileName(dataLabel: DataLabel):String = dataLabel.toString
+
+  @tailrec
+  final def safeDestinationFile(file: File): File = {
+    val NameRegex = """(\w*)-(\d+)""".r
+    if (!file.exists()) {
+      file
+    } else {
+      val name = Files.getNameWithoutExtension(file.getAbsolutePath)
+      val ext = Files.getFileExtension(file.getAbsolutePath)
+      val nextFilename = name match {
+        case NameRegex(n, d) => s"$n-${d.toInt + 1}.$ext"
+        case _               => s"$name-1.$ext"
+      }
+      safeDestinationFile(new File(file.getParentFile, nextFilename))
+    }
+  }
+
 }
 
