@@ -35,7 +35,7 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
   }
 
   private def updateHealth() {
-    LOG.info("Updating Health to " + healthState.getHealth + " on " + healthName)
+    LOG.info(s"Updating Health to ${healthState.getHealth} on $healthName")
     stateActor ! UpdateHealth
   }
 
@@ -97,7 +97,7 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
 
   private class HealthState(implicit val LOG: Logger) {
 
-    private val actors = ListBuffer[Boolean](false, false, false, false, false, false) //Booleans are initialized to false
+    private val actors = ListBuffer[Boolean](false, false, true /* ODB is disabled*/, false, false, false) //Booleans are initialized to false
 
     private var obsEvtHndl = false
     private var headerRec = false
