@@ -48,11 +48,11 @@ public class TcsContextComponent implements JmsArtifact {
 
     protected TcsContextComponent(@Requires EpicsReader reader,
             @Property(name = "tcsChannel", value = "NOVALID", mandatory = true) String tcsChannel,
-            @Property(name = "simulation", value = "true", mandatory = true) Boolean simulation,
+            @Property(name = "simulation", value = "true", mandatory = true) String simulation,
             @Property(name = "simulationData", value = "NOVALID", mandatory = true) String simulationData) {
         this._epicsReader = reader;
         this.tcsChannel = tcsChannel;
-        this.simulation = simulation;
+        this.simulation = Boolean.parseBoolean(simulation);
         this.simulationData = simulationData;
 
         _dispatcher = new JmsTcsContextDispatcher("TCS Context Replier");
@@ -69,10 +69,10 @@ public class TcsContextComponent implements JmsArtifact {
 
     @Validate
     public void validated() throws JMSException {
-        LOG.info("Got instance of epics reader " + _epicsReader);
         if (!simulation) {
-            LOG.info("TCS in simulation mode");
             addNewTcsContextFetcher();
+        } else {
+            LOG.info("TCS in simulation mode");
         }
     }
 
