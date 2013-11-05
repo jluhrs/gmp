@@ -75,6 +75,7 @@ public class Heartbeat implements JmsArtifact {
 
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
+        LOG.info("Start GMP Heartbeat");
         if (sendJms) {
             try {
                 producer.startJms(provider);
@@ -89,7 +90,7 @@ public class Heartbeat implements JmsArtifact {
 
     @Override
     public void stopJms() {
-        LOG.info("Heartbeat InValidate");
+        LOG.info("Stop GMP Heartbeat");
         future.cancel(false);
         executor.shutdown();
         try {
