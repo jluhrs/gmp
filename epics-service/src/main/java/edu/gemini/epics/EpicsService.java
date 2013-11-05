@@ -55,7 +55,7 @@ public class EpicsService implements JCAContextController {
         Preconditions.checkArgument(addressList != null, "Address to connect cannot be null");
         String[] adresses = addressList.split("\\s");
         for (String addr: adresses) {
-            Preconditions.checkArgument(addr.matches(IPADDRESS_PATTERN), "Address list should be an IP address: " + addressList);
+            Preconditions.checkArgument(addr.matches(IPADDRESS_PATTERN), "Address should be an IP address: " + addr);
         }
     }
 
