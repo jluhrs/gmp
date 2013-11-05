@@ -11,5 +11,5 @@ import javax.jms.JMSException;
  *         Date: 7/6/12
  */
 public interface IStatusSetter {
-    public void setStatusItem(StatusItem statusItem) throws JMSException;
+    public boolean setStatusItem(StatusItem statusItem) throws JMSException;
 }

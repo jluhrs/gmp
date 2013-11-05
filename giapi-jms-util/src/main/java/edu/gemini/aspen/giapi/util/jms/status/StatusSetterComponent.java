@@ -32,13 +32,14 @@ public class StatusSetterComponent extends MultiDestinationMessageProducer imple
      * @throws javax.jms.JMSException
      */
     @Override
-    public void setStatusItem(StatusItem statusItem) throws JMSException {
-
+    public boolean setStatusItem(StatusItem statusItem) throws JMSException {
         if (isConnected()) {
             Message m = MessageBuilder.buildStatusItemMessage(_session, statusItem);
             send(m, new DestinationData(JmsKeys.GMP_STATUS_DESTINATION_PREFIX + statusItem.getName(), DestinationType.TOPIC));
-        }else{
-            LOG.warning("Trying to send a StatusItem update before starting Jms. This item will be lost: "+statusItem);
+            return true;
+        } else {
+            LOG.warning("Trying to send a StatusItem update before starting Jms. This item will be lost: " + statusItem);
+            return false;
         }
     }
 
