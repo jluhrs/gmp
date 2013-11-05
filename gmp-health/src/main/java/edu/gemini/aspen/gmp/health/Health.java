@@ -3,6 +3,8 @@ package edu.gemini.aspen.gmp.health;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter;
 import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.jms.api.JmsArtifact;
+import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
  */
 @Component
 @Provides
-public class Health {
+public class Health implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Health.class.getName());
     private final IStatusSetter statusSetter;
     private final Top top;
@@ -26,28 +28,20 @@ public class Health {
     private final BundlesDatabase bundlesDatabase;
 
     private final ScheduledThreadPoolExecutor executor;
-    private final ScheduledFuture future;
+    private ScheduledFuture future;
     private final HealthChecker checker = new HealthChecker();
 
     private edu.gemini.aspen.giapi.status.Health health = null;
 
     public Health(@Property(name = "healthName", value = "INVALID", mandatory = true) String healthStatusName,
             @Requires Top top, @Requires IStatusSetter statusSetter, @Requires BundlesDatabase bundlesDatabase) {
-        LOG.info("Health Constructor");
+        LOG.info("Health Constructor on status " + healthStatusName);
         this.top = top;
         this.statusSetter = statusSetter;
         this.healthStatusName = healthStatusName;
         this.bundlesDatabase = bundlesDatabase;
         executor = new ScheduledThreadPoolExecutor(1);
         executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
-        future = executor.scheduleAtFixedRate(checker, 0, 1000, TimeUnit.MILLISECONDS);
-
-    }
-
-    @Validate
-    public void start() {
-        LOG.info("Start GMP Health");
-        setupHealthValue();
     }
 
     protected void setupHealthValue() {
@@ -57,18 +51,25 @@ public class Health {
                 health = edu.gemini.aspen.giapi.status.Health.WARNING;
             }
             if (!health.equals(this.health)) {
-                this.health = health;
-                LOG.info("GMP Health changed to " + health);
-                statusSetter.setStatusItem(new HealthStatus(top.buildStatusItemName(healthStatusName), health));
+                if (statusSetter.setStatusItem(new HealthStatus(top.buildStatusItemName(healthStatusName), health))) {
+                    LOG.info("GMP Health changed to " + health);
+                    this.health = health;
+                }
             }
         } catch (JMSException e) {
             LOG.log(Level.SEVERE, "Error setting up health", e);
         }
     }
 
-    @Invalidate
-    public void stop() {
-        LOG.info("Health InValidate");
+    @Override
+    public void startJms(JmsProvider provider) throws JMSException {
+        LOG.info("Start GMP Health");
+        future = executor.scheduleAtFixedRate(checker, 1000, 1000, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void stopJms() {
+        LOG.info("Stop GMP Health");
         future.cancel(false);
         executor.shutdown();
         try {
@@ -77,6 +78,7 @@ public class Health {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
+
 
     private class HealthChecker implements Runnable {
 

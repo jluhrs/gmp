@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter;
 import edu.gemini.aspen.gmp.top.Top;
 import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.jms.api.JmsProvider;
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
@@ -21,7 +22,8 @@ public class HealthTest {
         BundlesDatabase bundlesDB = mock(BundlesDatabase.class);
         when(bundlesDB.getPercentageActive()).thenReturn(new AtomicDouble(1.0));
         Health service = new Health("health", top, statusSetter, bundlesDB);
-        service.start();
+        JmsProvider provider = mock(JmsProvider.class);
+        service.startJms(provider);
     }
 
     @Test
@@ -31,6 +33,7 @@ public class HealthTest {
         BundlesDatabase bundlesDB = mock(BundlesDatabase.class);
         when(bundlesDB.getPercentageActive()).thenReturn(new AtomicDouble(0.7));
         Health service = new Health("health", top, statusSetter, bundlesDB);
-        service.start();
+        JmsProvider provider = mock(JmsProvider.class);
+        service.startJms(provider);
     }
 }
