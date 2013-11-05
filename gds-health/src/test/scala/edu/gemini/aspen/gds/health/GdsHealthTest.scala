@@ -75,7 +75,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   test("Bad Health") {
     val gdsHealth = new GdsHealth(top, setter)
-    gdsHealth.validate()
+    gdsHealth.startJms(provider)
 
     val handler = new TestHandler(1)
     agg.bindStatusHandler(handler)
@@ -90,7 +90,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   test("Warning Health") {
     val gdsHealth = new GdsHealth(top, setter)
-    gdsHealth.validate()
+    gdsHealth.startJms(provider)
 
     val handler = new TestHandler(2)
     agg.bindStatusHandler(handler)
@@ -117,7 +117,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   test("Good Health") {
     val gdsHealth = new GdsHealth(top, setter)
-    gdsHealth.validate()
+    gdsHealth.startJms(provider)
 
     val handler = new TestHandler(expectedUpdates + 1)
     agg.bindStatusHandler(handler)
@@ -132,7 +132,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   test("Unbind some elements to warning") {
     val gdsHealth = new GdsHealth(top, setter)
-    gdsHealth.validate()
+    gdsHealth.startJms(provider)
 
     val startHandler = new TestHandler(expectedUpdates - 1)
     agg.bindStatusHandler(startHandler)
@@ -153,7 +153,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   test("Unbind some elements to bad") {
     val gdsHealth = new GdsHealth(top, setter)
-    gdsHealth.validate()
+    gdsHealth.startJms(provider)
 
     val startHandler = new TestHandler(expectedUpdates)
     agg.bindStatusHandler(startHandler)

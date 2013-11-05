@@ -11,15 +11,18 @@ import actors.Actor
 import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import collection.mutable.ListBuffer
+import edu.gemini.jms.api.{JmsProvider, JmsArtifact}
 
 case object UpdateHealth
+case object Connected
 
 /**
  * OSGi component providing health information for the GDS
  */
 @Component
 @Instantiate
-class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
+@Provides
+class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) extends JmsArtifact {
   implicit private val LOG = Logger.getLogger(this.getClass.getName)
 
   private val healthName = top.buildStatusItemName("gds:health")
@@ -29,14 +32,16 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
   private val stateActor = new StateActor()
   stateActor.start()
 
-  @Validate
-  def validate() {
-    updateHealth()
-  }
-
   private def updateHealth() {
     LOG.info(s"Updating Health to ${healthState.getHealth} on $healthName")
     stateActor ! UpdateHealth
+  }
+
+  def stopJms() {}
+
+  def startJms(provider: JmsProvider) {
+    LOG.info("Start GDS Health")
+    stateActor ! Connected
   }
 
   @Bind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
@@ -82,16 +87,25 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
   }
 
   class StateActor extends Actor {
+    var connected = false
 
     override def act() {
       loop {
         react {
-          case UpdateHealth =>
-            setter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
-            setter.setStatusItem(new BasicStatus[String](healthMessageName, healthState.getMessage))
-            LOG.fine(healthState.getMessage)
+          case Connected                 =>
+            connected = true
+            updateHealthValues()
+          case UpdateHealth if connected =>
+            updateHealthValues()
+          case UpdateHealth              =>
         }
       }
+    }
+
+    def updateHealthValues() {
+      setter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
+      setter.setStatusItem(new BasicStatus[String](healthMessageName, healthState.getMessage))
+      LOG.fine(healthState.getMessage)
     }
   }
 
@@ -120,14 +134,14 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) {
 
     def registerActorFactory(source: KeywordSource.Value) {
       source match {
-        case KeywordSource.NONE => LOG.fine("Registered KeywordActorsFactory of unknown type: " + source)
+        case KeywordSource.NONE => LOG.fine(s"Registered KeywordActorsFactory of unknown type: $source")
         case x => actors(x.id) = true
       }
     }
 
     def unregisterActorFactory(source: KeywordSource.Value) {
       source match {
-        case KeywordSource.NONE => LOG.fine("Unregistered KeywordActorsFactory of unknown type: " + source)
+        case KeywordSource.NONE => LOG.fine(s"Unregistered KeywordActorsFactory of unknown type: $source")
         case x => actors(x.id) = false
       }
     }
