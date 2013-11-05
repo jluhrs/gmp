@@ -17,16 +17,4 @@
 
 
 <channels>
-    <channel>
-        <name>tcs:sad:sourceATrackWavelength.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>8</updateRate>
-    </channel>
-    <channel>
-        <name>tcs:sad:windSpeed.VAL</name>
-        <type>double</type>
-        <size>1</size>
-        <updateRate>9</updateRate>
-    </channel>
 </channels>
