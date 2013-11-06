@@ -1,5 +1,31 @@
 /*! \page release_notes Release Notes
 
+        Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3.8
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1029'>GIAPI-1029</a>] -         GMP Health not updated
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1032'>GIAPI-1032</a>] -         EPICS Service should support multiple IPs
+</li>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1033'>GIAPI-1033</a>] -         GDS Health sometimes fails
+</li>
+</ul>
+            
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1030'>GIAPI-1030</a>] -         The GDS should not overwrite files on the destination directory
+</li>
+</ul>
+            
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://swgserv01:8080/browse/GIAPI-1034'>GIAPI-1034</a>] -         Reconfigure GMP-GPI to connect to the TCS
+</li>
+</ul>
 
         Release Notes - Gemini Instrument Application Programmer Interface - Version Release 14.3.7
     
