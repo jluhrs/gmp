@@ -20,7 +20,22 @@
     </channel>
     <channel>
         <name>gpi:E2</name>
-        <type>double</type>
+        <type>int</type>
         <value>20</value>
+    </channel>
+    <channel>
+        <name>gpi:E3</name>
+        <type>string</type>
+        <value>ABCD</value>
+    </channel>
+    <channel>
+        <name>gpi:E4</name>
+        <type>float</type>
+        <value>1.0</value>
+    </channel>
+    <channel>
+        <name>gpi:E5</name>
+        <type>byte</type>
+        <value>1</value>
     </channel>
 </channels>
