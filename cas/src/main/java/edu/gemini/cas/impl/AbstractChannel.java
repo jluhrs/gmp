@@ -128,6 +128,15 @@ abstract class AbstractChannel<T> implements ServerChannel<T> {
     }
 
     /**
+     * Checks if this channel represents a Byte
+     *
+     * @return true if Byte, false otherwise
+     */
+    public boolean isByte() {
+        return pv.getType().isBYTE();
+    }
+
+    /**
      * Checks if this channel represents an Integer
      *
      * @return true if Integer, false otherwise

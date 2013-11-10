@@ -114,6 +114,8 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
             ch = createDoubleChannel(name, values.size());
         } else if (values.get(0) instanceof String) {
             ch = createStringChannel(name, values.size());
+        } else if (values.get(0) instanceof Byte) {
+            ch = createByteChannel(name, values.size());
         } else if (values.get(0) instanceof Enum) {
             Class<? extends Enum> clazz = (Class<? extends Enum>) values.get(0).getClass();
             ch = createEnumChannel(name, values.size(), clazz);
@@ -194,6 +196,29 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
             }
         }
         FloatChannel ch = new FloatChannel(name, length);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Byte
+     *
+     * @param name   name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    private ServerChannel<Byte> createByteChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            edu.gemini.epics.api.Channel ch = channels.get(name);
+            if (ch instanceof ByteChannel) {
+                return (ByteChannel) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Float");
+            }
+        }
+        ByteChannel ch = new ByteChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
         return ch;

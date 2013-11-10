@@ -226,20 +226,23 @@ public class CasTest {
         Channel<Float> chF = giapicas.createChannel("nico:float", 1.0f);
         Channel<Double> chD = giapicas.createChannel("nico:double", 1.0);
         Channel<String> chS = giapicas.createChannel("nico:string", "1");
+        Channel<Byte> chB = giapicas.createChannel("nico:byte", (byte)127);
 
         chI.setValue(3);
         chF.setValue(3.0f);
         chD.setValue(3.0);
         chS.setValue("three");
+        chB.setValue((byte)3);
 
-        DBR dbr[] = new DBR[4];
+        DBR dbr[] = new DBR[5];
         dbr[0] = chI.getDBR();
         dbr[1] = chF.getDBR();
         dbr[2] = chD.getDBR();
         dbr[3] = chS.getDBR();
-        Object ret[] = new Object[4];
+        dbr[4] = chB.getDBR();
+        Object ret[] = new Object[dbr.length];
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < dbr.length; i++) {
             assertEquals(1, dbr[i].getCount());
             ret[i] = dbr[i].getValue();
         }
@@ -247,6 +250,7 @@ public class CasTest {
         assertEquals(3f, ((float[]) ret[1])[0], 0.00001);
         assertEquals(3.0, ((double[]) ret[2])[0], 0.00001);
         assertEquals("three", ((String[]) ret[3])[0]);
+        assertEquals((byte)3, ((byte[]) ret[4])[0]);
 
     }
 
