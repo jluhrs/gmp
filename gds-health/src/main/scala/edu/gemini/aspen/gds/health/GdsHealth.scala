@@ -12,6 +12,7 @@ import edu.gemini.aspen.gmp.top.Top
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import collection.mutable.ListBuffer
 import edu.gemini.jms.api.{JmsProvider, JmsArtifact}
+import scala.actors.threadpool.TimeUnit
 
 case object UpdateHealth
 case object Connected
@@ -93,8 +94,10 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) extends Jms
       loop {
         react {
           case Connected                 =>
-            connected = true
-            updateHealthValues()
+              TimeUnit.SECONDS.sleep(1)
+              LOG.info("GDS Health Connected")
+              connected = true
+              updateHealthValues()
           case UpdateHealth if connected =>
             updateHealthValues()
           case UpdateHealth              =>
@@ -105,7 +108,7 @@ class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) extends Jms
     def updateHealthValues() {
       setter.setStatusItem(new HealthStatus(healthName, healthState.getHealth))
       setter.setStatusItem(new BasicStatus[String](healthMessageName, healthState.getMessage))
-      LOG.fine(healthState.getMessage)
+      LOG.info("GDS health SET " + healthState)
     }
   }
 
