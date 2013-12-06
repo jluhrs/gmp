@@ -648,4 +648,69 @@
             </Map>
         </Maps>
     </Status>
+    <Status default="UNKNOWN" originalName="cal:correcting" originalType="INT" translatedName="cal:correcting.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="ao:tweeterLoop" originalType="INT" translatedName="aoc:tweeterLoop.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="ao:wooferLoop" originalType="INT" translatedName="aoc:wooferLoop.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="ao:tipTiltLoop" originalType="INT" translatedName="aoc:tipTiltLoop.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="m1Offloading" originalType="INT" translatedName="m1Offloading.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>
