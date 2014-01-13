@@ -5,7 +5,7 @@ package edu.gemini.aspen.giapi.commands;
  */
 public interface CommandSender {
 
-    int DEFAULT_COMMAND_RESPONSE_TIMEOUT = 500;
+    int DEFAULT_COMMAND_RESPONSE_TIMEOUT = 1000;
 
     /**
      * Sends a Command to a registered handler.
