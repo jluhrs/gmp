@@ -29,7 +29,7 @@ public class JmsProviderTracker extends ServiceTracker {
     public JmsProviderTracker(BundleContext ctx, JmsArtifact... artifacts) {
         super(ctx, JmsProvider.class.getName(), null);
         _jmsArtifacts = Arrays.copyOf(artifacts, artifacts.length);
-        LOG.log(Level.WARNING, "ActiveMQBroker built JMSProviderTracjker tracker for " + Arrays.toString(_jmsArtifacts), new RuntimeException());
+        LOG.log(Level.WARNING, "ActiveMQBroker built JMSProviderTracker tracker for " + Arrays.toString(_jmsArtifacts), new RuntimeException());
     }
 
     @Override

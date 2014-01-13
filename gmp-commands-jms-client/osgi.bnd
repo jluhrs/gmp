@@ -3,5 +3,4 @@
 #-----------------------------------------------------------------
 
 Bundle-Activator:
-Export-Package:
-Private-Package: ${bundle.namespace}.*;version="${pom.version}"
+Export-Package: ${bundle.namespace}.*;version="${pom.version}"
