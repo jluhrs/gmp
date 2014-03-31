@@ -57,6 +57,12 @@
     </SimpleChannel>
 
     <SimpleChannel>
+        <giapiname>gpi:following</giapiname>
+        <epicsname>following</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
         <giapiname>gpi:aoReadingCalData</giapiname>
         <epicsname>aoReadingCalData</epicsname>
         <type>INT</type>
