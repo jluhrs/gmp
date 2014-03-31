@@ -147,10 +147,10 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
         @Override
         public void transportInterupted() {
-            for (JmsProviderStatusListener l : _statusListenerHandlers) {
-                l.transportInterrupted();
-            }
             if (connected.compareAndSet(true, false)) {
+                for (JmsProviderStatusListener l : _statusListenerHandlers) {
+                    l.transportInterrupted();
+                }
                 for (JmsArtifact a : _jmsArtifacts) {
                     try {
                         a.stopJms();
@@ -164,11 +164,11 @@ public final class ActiveMQJmsProvider implements JmsProvider {
         @Override
         public void transportResumed() {
             LOG.fine("Connection resumed");
-            for (JmsProviderStatusListener l : _statusListenerHandlers) {
-                l.transportResumed();
-            }
             // First time connection
             if (!connected.getAndSet(true)) {
+                for (JmsProviderStatusListener l : _statusListenerHandlers) {
+                    l.transportResumed();
+                }
                 for (JmsArtifact a : _jmsArtifacts) {
                     LOG.fine("Starting JMS Artifact" + a);
                     try {
