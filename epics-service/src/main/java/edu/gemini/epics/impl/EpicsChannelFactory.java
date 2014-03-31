@@ -73,7 +73,7 @@ class EpicsChannelFactory {
         synchronized (_ctx) {
             _ctx.addContextExceptionListener(new ContextExceptionListener() {
                 public void contextException(ContextExceptionEvent cee) {
-                    LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
+                    LOG.log(Level.WARNING, "Trouble in JCA Context." + cee.getMessage() + " on channel " + cee.getChannel());
                 }
 
                 public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {

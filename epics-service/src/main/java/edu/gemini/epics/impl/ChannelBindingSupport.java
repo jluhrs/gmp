@@ -146,11 +146,11 @@ public class ChannelBindingSupport {
     private void addContextListeners() throws CAException {
         _ctx.addContextExceptionListener(new ContextExceptionListener() {
             public void contextException(ContextExceptionEvent cee) {
-                LOG.log(Level.WARNING, "Trouble in JCA Context.", cee);
+                LOG.log(Level.WARNING, "Trouble in JCA Context: " + cee.getMessage());
             }
 
             public void contextVirtualCircuitException(ContextVirtualCircuitExceptionEvent cvce) {
-                LOG.log(Level.WARNING, "Trouble in JCA Context.", cvce);
+                LOG.log(Level.WARNING, "Trouble in JCA Context: " + cvce);
             }
         });
         _ctx.addContextMessageListener(new ContextMessageListener() {
