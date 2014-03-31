@@ -18,7 +18,12 @@
     </Apply>
 
     <Apply name="ao:apply">
-        <ConfigRecord name="ao:config">
+        <SequenceCommand>GUIDE</SequenceCommand>
+        <SequenceCommand>END_GUIDE</SequenceCommand>
+    </Apply>
+
+    <Apply name="inst:apply">
+        <ConfigRecord name="inst:config">
             <ConfigSet name="configAo">
                 <field>useAo</field>
                 <field>magnitudeI</field>
@@ -28,15 +33,11 @@
             </ConfigSet>
             <ConfigSet name="configCal">
                 <field>useCal</field>
+                <field>useCALtoAOCoffload</field>
                 <field>magnitudeH</field>
+                <field>fpmPinholeBias</field>
+                <field>modeName</field>
             </ConfigSet>
-        </ConfigRecord>
-        <SequenceCommand>GUIDE</SequenceCommand>
-        <SequenceCommand>END_GUIDE</SequenceCommand>
-    </Apply>
-
-    <Apply name="inst:apply">
-        <ConfigRecord name="inst:config">
             <ConfigSet name="configIfs">
                 <field>integrationTime</field>
                 <field>readoutMode</field>
