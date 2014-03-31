@@ -12,7 +12,7 @@ class EventLoggerTest extends AssertionsForJUnit {
       ((value.isShorterThan(target) || value == target) && (target.minus(value)).isShorterThan(margin)))
   }
 
-  val delay = 100;
+  val delay = 100
   var el: EventLogger[String, String] = _
 
   @Before
