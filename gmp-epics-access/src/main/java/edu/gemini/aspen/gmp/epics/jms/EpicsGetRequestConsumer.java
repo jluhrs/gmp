@@ -1,10 +1,20 @@
 package edu.gemini.aspen.gmp.epics.jms;
 
-import edu.gemini.jms.api.*;
+import com.cosylab.epics.caj.CAJChannel;
+import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
+import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
+import edu.gemini.epics.EpicsReader;
+import edu.gemini.epics.api.DbrUtil;
+import edu.gemini.jms.api.*;
+import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.event.ConnectionEvent;
+import gov.aps.jca.event.ConnectionListener;
 
 import javax.jms.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,40 +29,42 @@ public class EpicsGetRequestConsumer implements MessageListener {
 
 
     private final BaseMessageConsumer _messageConsumer;
-    private final ReplyMessageSender _replySender;
+    private final ChannelGetReplyMessageSender _replySender;
+    private final EpicsReader epicsReader;
 
-    private final EpicsConfiguration _epicsConfiguration;
+    public EpicsGetRequestConsumer(JmsProvider provider, EpicsReader epicsReader) {
+        this.epicsReader = epicsReader;
 
-    public EpicsGetRequestConsumer(JmsProvider provider, EpicsConfiguration config) {
-
-        _epicsConfiguration = config;
-        _messageConsumer = new BaseMessageConsumer("Epics Configuration Request Consumer",
-                new DestinationData(JmsKeys.GMP_GEMINI_EPICS_REQUEST_DESTINATION, DestinationType.QUEUE),
+        _messageConsumer = new BaseMessageConsumer("Epics Get Request Consumer",
+                new DestinationData(JmsKeys.GMP_GEMINI_EPICS_GET_DESTINATION, DestinationType.TOPIC),
                 this);
-        _replySender = new ReplyMessageSender("Epics Configuration Request Reply");
+        _replySender = new ChannelGetReplyMessageSender("Epics Get Request Reply");
         try {
             _messageConsumer.startJms(provider);
             _replySender.startJms(provider);
             LOG.info(
-                    "Message Consumer started to receive epics config requests");
+                    "Message Consumer started to receive epics get requests");
         } catch (JMSException e) {
             LOG.log(Level.WARNING, "Exception starting up Service Request Consumer", e);
         }
 
     }
 
-    private static class ReplyMessageSender extends BaseMessageProducer {
+    private static class ChannelGetReplyMessageSender extends BaseMessageProducer {
 
-        public ReplyMessageSender(String clientName) {
+        public ChannelGetReplyMessageSender(String clientName) {
             super(clientName, null);
         }
 
-        public void send(Destination d, Iterable<String> validChannelsNames) throws JMSException {
-            MapMessage replyMessage = _session.createMapMessage();
+        public <T> EpicsUpdateImpl<T> valueChanged(String channel, List<T> values) {
+            return new EpicsUpdateImpl<T>(channel, values);
+        }
 
-            for (String name : validChannelsNames) {
-                replyMessage.setBoolean(name, true);
-            }
+        public void send(Destination d, String channelName, DBR dbr) throws JMSException {
+            List<?> values = DbrUtil.extractValues(dbr);
+
+            Message replyMessage = EpicsJmsFactory.createMessage(_session, valueChanged(channelName, values));
+
             _producer.send(d, replyMessage);
         }
     }
@@ -62,19 +74,24 @@ public class EpicsGetRequestConsumer implements MessageListener {
 
         try {
             //let's see if it contains a valid request
+            final String channelName = message.getStringProperty(JmsKeys.GMP_GEMINI_EPICS_CHANNEL_PROPERTY);
 
-            boolean isEpicsRequest = message.getBooleanProperty(JmsKeys.GMP_GEMINI_EPICS_CHANNEL_PROPERTY);
-
-            if (!isEpicsRequest) return;
+            if (channelName.isEmpty()) return;
 
             //get the information to return the answer.
-            Destination destination = message.getJMSReplyTo();
-            if (destination == null) {
+            final Destination destination = message.getJMSReplyTo();
+            if (destination != null) {
+                try {
+                    _replySender.send(destination, channelName, epicsReader.getChannelAsync(channelName).getDBR());
+                } catch (CAException e) {
+                    LOG.log(Level.SEVERE, "Exception reading channelName " + channelName, e);
+                } catch (TimeoutException e) {
+                    LOG.log(Level.SEVERE, "Timed out waiting for channelName " + channelName, e);
+                }
+            } else {
                 LOG.warning("Invalid destination received. Can't reply to request");
-                return;
             }
 
-            _replySender.send(destination, _epicsConfiguration.getValidChannelsNames());
         } catch (InvalidDestinationException ex) {
             LOG.log(Level.WARNING, "Destination has been destroyed", ex);
         } catch (JMSException e) {
