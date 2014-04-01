@@ -105,7 +105,6 @@ public class EpicsJmsFactory {
      */
     private static DBRType getDataType(List<?> data) {
 
-
         if (!data.isEmpty() && data.get(0) instanceof Short) return DBR_Short.TYPE;
 
         if (!data.isEmpty() && data.get(0) instanceof Integer) return DBR_Int.TYPE;

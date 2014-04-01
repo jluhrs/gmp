@@ -5,6 +5,7 @@ import com.cosylab.epics.caj.CAJContext;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateImpl;
 import edu.gemini.epics.EpicsReader;
+import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.DbrUtil;
 import edu.gemini.jms.api.*;
 import gov.aps.jca.CAException;
@@ -76,13 +77,18 @@ public class EpicsGetRequestConsumer implements MessageListener {
             //let's see if it contains a valid request
             final String channelName = message.getStringProperty(JmsKeys.GMP_GEMINI_EPICS_CHANNEL_PROPERTY);
 
-            if (channelName.isEmpty()) return;
+            if (channelName == null || channelName.isEmpty()) return;
 
             //get the information to return the answer.
             final Destination destination = message.getJMSReplyTo();
             if (destination != null) {
                 try {
-                    _replySender.send(destination, channelName, epicsReader.getChannelAsync(channelName).getDBR());
+                    ReadOnlyClientEpicsChannel<?> channel = epicsReader.getChannelAsync(channelName);
+                    if (channel != null) {
+                        _replySender.send(destination, channelName, channel.getDBR());
+                    } else {
+                        LOG.log(Level.SEVERE, "Cannot open channel " + channelName);
+                    }
                 } catch (CAException e) {
                     LOG.log(Level.SEVERE, "Exception reading channelName " + channelName, e);
                 } catch (TimeoutException e) {
