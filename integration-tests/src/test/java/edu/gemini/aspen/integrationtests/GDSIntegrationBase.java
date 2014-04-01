@@ -93,7 +93,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     }
 
     protected void copyInitialFile(String src, String dest) throws IOException, URISyntaxException {
-        ByteStreams.copy(GDSWithODBIT.class.getResourceAsStream(src), new FileOutputStream(dest));
+        ByteStreams.copy(getClass().getResourceAsStream(src), new FileOutputStream(dest));
     }
 
     protected void sendObservationEvents(ObservationEventHandler eventHandler, DataLabel dataLabel) throws InterruptedException {
