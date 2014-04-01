@@ -147,10 +147,6 @@
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
-            <artifactId>gds-odb-actors</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-instrument-status-actors</artifactId>
         </dependency>
         <dependency>
@@ -188,18 +184,6 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-actors</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>spdb-activator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>rr</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>gemini-nocs</groupId>
-            <artifactId>jini-driver</artifactId>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
