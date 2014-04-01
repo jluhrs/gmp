@@ -6,6 +6,9 @@ target
 /*.fits
 /*.iws
 /runner
+.DS_Store
+/*.orig
+releases.properties
 
 # /cas/
 /cas/*.iml
