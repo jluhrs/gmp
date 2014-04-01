@@ -984,9 +984,7 @@
         <module>gds-web-ui-status</module>
         <module>gds-web-ui-logs</module>
         <module>gmp-web-ui-properties</module>
-        <!--module>gpi-ao-plot</module>
-        <module>gmp-web-ui-console</module-->
-        <!--module>gmp-web-ui-status</module-->
+        <module>gpi</module>
         <module>integration-tests</module>
         <module>distribution</module>
     </modules>
