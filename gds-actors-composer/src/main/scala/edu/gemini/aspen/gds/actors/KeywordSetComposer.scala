@@ -7,6 +7,7 @@ import scala.collection._
 import edu.gemini.aspen.gds.keywords.database.{StoreList, KeywordsDatabase}
 import java.util.logging.{Level, Logger}
 import com.google.common.base.Stopwatch
+import java.util.concurrent.TimeUnit
 
 /**
  * Message to indicate that FITS header data collection should begin
@@ -36,13 +37,13 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   }
 
   private def doCollection(sender: OutputChannel[Any], obsEvent: ObservationEvent, dataLabel: DataLabel) {
-    LOG.info("Starting keyword collection on dataset " + dataLabel + " for event " + obsEvent.name)
+    LOG.info(s"Starting keyword collection on dataset $dataLabel for event ${obsEvent.name}")
 
     val s = System.currentTimeMillis()
     val dataFutures = requestCollection(obsEvent, dataLabel, actorsFactory.buildActors)
 
     waitForDataAndReply(dataLabel, dataFutures) {
-      LOG.info("Finished keyword collection: " + dataFutures.size + " collecting actors for " + obsEvent + " completed in " + (System.currentTimeMillis() - s) + " [ms]")
+      LOG.info(s"Finished keyword collection: ${dataFutures.size} collecting actors for $obsEvent completed in ${System.currentTimeMillis() - s} [ms]")
       // Reply to the original sender
       sender ! AcquisitionRequestReply(obsEvent, dataLabel)
     }
@@ -92,7 +93,8 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   private def measureDuration[T](msg: String)(action: => T): T = {
     val s = new Stopwatch().start()
     val result = action
-    LOG.fine(msg + " took " + s.stop().elapsedMillis() + " [ms]")
+    val duration = s.stop().elapsed(TimeUnit.MILLISECONDS)
+    LOG.fine(s"Message $msg processing took $duration [ms]")
     result
   }
 
