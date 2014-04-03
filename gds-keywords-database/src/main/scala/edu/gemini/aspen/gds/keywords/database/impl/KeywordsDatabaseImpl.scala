@@ -25,11 +25,11 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
   def act() {
     loop {
       react {
-        case Store(dataLabel: DataLabel, value: CollectedValue[_]) => _store(dataLabel, List[CollectedValue[_]](value))
+        case Store(dataLabel: DataLabel, value: CollectedValue[_])           => _store(dataLabel, List[CollectedValue[_]](value))
         case StoreList(dataLabel: DataLabel, value: List[CollectedValue[_]]) => _store(dataLabel, value)
-        case Retrieve(dataLabel) => reply(_retrieve(dataLabel))
-        case Clean(dataLabel) => _clean(dataLabel)
-        case x => sys.error("Argument not known " + x)
+        case Retrieve(dataLabel)                                             => reply(_retrieve(dataLabel))
+        case Clean(dataLabel)                                                => _clean(dataLabel)
+        case x                                                               => sys.error("Argument not known " + x)
       }
     }
   }
