@@ -14,6 +14,7 @@ import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
@@ -83,7 +84,7 @@ public class CommandSenderImpl implements CommandSender {
         //will complete immediately.
         _manager.registerAction(action);
 
-        Stopwatch stopwatch = new Stopwatch().start();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         LOG.fine("About to execute apply " + action);
         HandlerResponse response = _executor.execute(action, _sender);
 
@@ -92,7 +93,7 @@ public class CommandSenderImpl implements CommandSender {
         //that must be completed at a later time, therefore the
         //Completion listener is ignored in this case. See GIAPI design
         //and use, section 10.6
-        LOG.info("Response for " + action + " arrived: " + response + " in " + stopwatch.stop().elapsedMillis() + " [ms]");
+        LOG.info("Response for " + action + " arrived: " + response + " in " + stopwatch.stop().elapsed(TimeUnit.MILLISECONDS) + " [ms]");
         if (response != null) {
             LOG.fine("Got response " + response + " for action " + action);
             if (response.getResponse() == HandlerResponse.Response.STARTED) {
