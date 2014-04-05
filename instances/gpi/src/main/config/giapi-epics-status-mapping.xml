@@ -304,12 +304,6 @@
         <initial>0</initial>
     </SimpleChannel>
     <SimpleChannel>
-        <giapiname>gpi:ao.flux</giapiname>
-        <epicsname>ao.flux</epicsname>
-        <type>FLOAT</type>
-        <initial>0</initial>
-    </SimpleChannel>
-    <SimpleChannel>
         <giapiname>gpi:ao.roAverage</giapiname>
         <epicsname>ao.roAverage</epicsname>
         <type>FLOAT</type>
