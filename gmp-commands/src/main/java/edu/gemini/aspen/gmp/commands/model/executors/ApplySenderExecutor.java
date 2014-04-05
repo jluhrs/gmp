@@ -10,6 +10,7 @@ import edu.gemini.aspen.gmp.commands.model.impl.HandlerResponseAnalyzer;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
@@ -82,9 +83,9 @@ public class ApplySenderExecutor implements SequenceCommandExecutor {
             if (applyHandlers.isEmpty() || applyHandlers.contains(cp)) {
                 LOG.fine("Attempt to send apply for configuration " + c + " with id " + action.getId() + " and timeout " + action.getTimeout());
                 ActionMessage am = _actionMessageBuilder.buildActionMessage(action, cp);
-                Stopwatch s = new Stopwatch().start();
+                Stopwatch s = Stopwatch.createStarted();
                 response = sender.send(am, action.getTimeout());
-                LOG.fine("Response for apply was " + response + " took " + s.stop().elapsedMillis() + " [ms]");
+                LOG.fine("Response for apply was " + response + " took " + s.stop().elapsed(TimeUnit.MILLISECONDS) + " [ms]");
 
                 //if the response is started, there is one handler that will
                 //provide answer to this action later. Notify the action
