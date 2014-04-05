@@ -11,16 +11,17 @@ import edu.gemini.aspen.giapi.data.DataLabel
 import org.mockito.Mockito._
 import edu.gemini.aspen.gds.api.GDSStartObservation
 import org.mockito.ArgumentCaptor
-import edu.gemini.aspen.giapi.status.StatusItem
+import edu.gemini.aspen.giapi.status.{StatusDatabaseService, StatusItem}
 
 @RunWith(classOf[JUnitRunner])
 class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
   test("export datalabel") {
     val top = mock[Top]
     when(top.buildStatusItemName("observationDataLabel")).thenReturn("gpi:observationDataLabel")
+    val statusDB = mock[StatusDatabaseService]
     val setter = mock[IStatusSetter]
 
-    val listener = new ObservationEventsListener(top, setter)
+    val listener = new ObservationEventsListener(top, setter, statusDB)
     listener.gdsEvent(GDSStartObservation(new DataLabel("NEW_LABEL")))
 
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
@@ -33,8 +34,9 @@ class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
     val top = mock[Top]
     when(top.buildStatusItemName("observationDataLabel")).thenReturn("gpi:observationDataLabel")
     val setter = mock[IStatusSetter]
+    val statusDB = mock[StatusDatabaseService]
 
-    val listener = new ObservationEventsListener(top, setter)
+    val listener = new ObservationEventsListener(top, setter, statusDB)
     listener.gdsEvent(GDSStartObservation(new DataLabel("ANOTHER_LABEL")))
 
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
@@ -47,8 +49,9 @@ class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
     val top = mock[Top]
     when(top.buildStatusItemName("observationDataLabel")).thenReturn("gmp:observationDataLabel")
     val setter = mock[IStatusSetter]
-
-    val listener = new ObservationEventsListener(top, setter)
+    val statusDB = mock[StatusDatabaseService]
+    
+    val listener = new ObservationEventsListener(top, setter, statusDB)
     listener.gdsEvent(GDSStartObservation(new DataLabel("ANOTHER_LABEL")))
 
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
