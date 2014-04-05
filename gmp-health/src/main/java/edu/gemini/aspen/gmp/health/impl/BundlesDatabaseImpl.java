@@ -4,7 +4,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.AtomicDouble;
-import com.sun.istack.internal.Nullable;
 import edu.gemini.aspen.gmp.health.BundlesDatabase;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
@@ -36,7 +35,7 @@ public class BundlesDatabaseImpl implements BundlesDatabase {
         ImmutableList<Bundle> bundles = ImmutableList.copyOf(this.context.getBundles());
         ImmutableList<Bundle> activeBundles = ImmutableList.copyOf(Collections2.filter(bundles, new Predicate<Bundle>() {
             @Override
-            public boolean apply(@Nullable Bundle bundle) {
+            public boolean apply(Bundle bundle) {
                 return bundle.getState() == Bundle.ACTIVE || bundle.getHeaders().get("Fragment-Host") != null;
             }
         }));
