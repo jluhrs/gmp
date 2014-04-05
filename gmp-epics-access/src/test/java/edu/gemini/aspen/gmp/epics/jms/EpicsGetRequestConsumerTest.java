@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gmp.epics.jms;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.gmp.epics.impl.EpicsRequestHandlerImpl;
 import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.api.ChannelAlarmListener;
@@ -16,8 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import scala.util.control.*;
-import scala.util.control.Exception;
 
 import javax.jms.*;
 
