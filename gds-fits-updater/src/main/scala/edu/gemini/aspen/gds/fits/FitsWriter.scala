@@ -132,7 +132,7 @@ class FitsWriter(file: File) extends FitsReader(file) {
   }
 
   private def commitChanges(destinationFile: File) {
-    val stopwatch = new Stopwatch().start()
+    val stopwatch = Stopwatch.createStarted()
 
     Files.createParentDirs(destinationFile)
     val finalFile = new BufferedFile(destinationFile, "rw")
