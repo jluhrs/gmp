@@ -49,7 +49,7 @@ class FitsFileProcessor(val propertyHolder: PropertyHolder)(implicit LOG: Logger
   def updateFITSFile(dataLabel: DataLabel, processedList: List[CollectedValue[_]]): Either[String, FitsWriteResult] = {
     val headers = convertToHeaders(processedList)
 
-    val stopwatch = new Stopwatch().start()
+    val stopwatch = Stopwatch.createStarted()
     val srcPath = propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")
     val destPath = propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")
     val namingFunction = propertyHolder.getProperty("APPEND_FITS_EXTENSION") match {
