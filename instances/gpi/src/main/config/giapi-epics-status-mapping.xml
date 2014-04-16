@@ -1124,6 +1124,13 @@
         <initial>0</initial>
     </SimpleChannel>
 
+    <!-- remaning time -->
+    <SimpleChannel>
+        <giapiname>ifs:timeLeft</giapiname>
+        <epicsname>ifs:timeLeft</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </SimpleChannel>
 
     <!--Alarms-->
 
@@ -1324,6 +1331,5 @@
         <giapiname>gpi:health</giapiname>
         <epicsname>health</epicsname>
     </HealthChannel>
-
 
 </Channels>
