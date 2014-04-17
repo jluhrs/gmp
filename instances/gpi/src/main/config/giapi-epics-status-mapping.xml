@@ -1128,7 +1128,7 @@
     <SimpleChannel>
         <giapiname>ifs:timeLeft</giapiname>
         <epicsname>ifs:timeLeft</epicsname>
-        <type>INT</type>
+        <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
 
