@@ -17,9 +17,9 @@ import edu.gemini.aspen.giapi.status.{StatusDatabaseService, StatusItem}
 class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
   test("export datalabel") {
     val top = mock[Top]
-    when(top.buildStatusItemName("observationDataLabel")).thenReturn("gpi:observationDataLabel")
-    val statusDB = mock[StatusDatabaseService]
+    when(top.buildStatusItemName("ifs:observationDataLabel")).thenReturn("gpi:ifs:observationDataLabel")
     val setter = mock[IStatusSetter]
+    val statusDB = mock[StatusDatabaseService]
 
     val listener = new ObservationEventsListener(top, setter, statusDB)
     listener.gdsEvent(GDSStartObservation(new DataLabel("NEW_LABEL")))
@@ -27,12 +27,12 @@ class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
 
     verify(setter).setStatusItem(argument.capture())
-    assertEquals(argument.getValue.getName, "gpi:observationDataLabel")
+    assertEquals(argument.getValue.getName, "gpi:ifs:observationDataLabel")
     assertEquals(argument.getValue.getValue, "NEW_LABEL")
   }
   test("export datalabel verify label name") {
     val top = mock[Top]
-    when(top.buildStatusItemName("observationDataLabel")).thenReturn("gpi:observationDataLabel")
+    when(top.buildStatusItemName("ifs:observationDataLabel")).thenReturn("gpi:ifs:observationDataLabel")
     val setter = mock[IStatusSetter]
     val statusDB = mock[StatusDatabaseService]
 
@@ -42,22 +42,22 @@ class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
 
     verify(setter).setStatusItem(argument.capture())
-    assertEquals(argument.getValue.getName, "gpi:observationDataLabel")
+    assertEquals(argument.getValue.getName, "gpi:ifs:observationDataLabel")
     assertEquals(argument.getValue.getValue, "ANOTHER_LABEL")
   }
   test("export datalabel verify channel name") {
     val top = mock[Top]
-    when(top.buildStatusItemName("observationDataLabel")).thenReturn("gmp:observationDataLabel")
+    when(top.buildStatusItemName("ifs:observationDataLabel")).thenReturn("gmp:ifs:observationDataLabel")
     val setter = mock[IStatusSetter]
     val statusDB = mock[StatusDatabaseService]
-    
+
     val listener = new ObservationEventsListener(top, setter, statusDB)
     listener.gdsEvent(GDSStartObservation(new DataLabel("ANOTHER_LABEL")))
 
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
 
     verify(setter).setStatusItem(argument.capture())
-    assertEquals(argument.getValue.getName, "gmp:observationDataLabel")
+    assertEquals(argument.getValue.getName, "gmp:ifs:observationDataLabel")
     assertEquals(argument.getValue.getValue, "ANOTHER_LABEL")
   }
 }
