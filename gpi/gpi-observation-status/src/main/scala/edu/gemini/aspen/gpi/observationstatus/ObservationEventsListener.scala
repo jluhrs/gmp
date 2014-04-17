@@ -31,9 +31,9 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: I
 
   val LOG = Logger.getLogger(classOf[ObservationEventsListener].getName)
 
-  val readoutOverhead = 10
-  val writeOverhead = 7
-  val perCoaddOverhead = 3
+  val readoutOverhead = 4
+  val writeOverhead = 2
+  val perCoaddOverhead = 2.7
 
   private val cache = CacheBuilder.newBuilder()
       .removalListener(TimerRemoval)
@@ -57,7 +57,7 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: I
         val exposureTime = Option(statusDB.getStatusItem[Float](gmpTop.buildStatusItemName("currentIntegrationTime"))).map(_.getValue)
         (exposureTime |@| coAdds)((e, c) => (e + perCoaddOverhead) * c + readoutOverhead + writeOverhead).foreach { observationTime =>
           LOG.info(s"Exposure started with exposure time ${exposureTime.get} and coadds ${coAdds.get}")
-          val estimatedTimeLeft = 1000*observationTime/2
+          val estimatedTimeLeft = 1000 * observationTime
           LOG.info(s"Start counter to $estimatedTimeLeft")
           if (Option(cache.getIfPresent(dataLabel)).isEmpty) {
             val timerTask = cache.get(dataLabel, new Callable[ObsTimerTask] {
@@ -69,7 +69,7 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: I
             val obsTimeItem = gmpTop.buildStatusItemName("ifs:estimatedObservationTime")
             LOG.info(s"Set estimated observation time $estimatedTimeLeft on $obsTimeItem")
             statusSetter.setStatusItem(new BasicStatus(obsTimeItem, estimatedTimeLeft.toInt))
-            timer.scheduleAtFixedRate(timerTask, 0, 100)
+            timer.scheduleAtFixedRate(timerTask, 0, 200)
           }
         }
         LOG.info(s"Set observationDataLabel to $dataLabel")
@@ -88,12 +88,11 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: I
     val stopwatch = Stopwatch.createStarted()
     override def run() = {
       //
-      if (stopwatch.isRunning) {
-        val remainingTime = observationTime - stopwatch.elapsed(TimeUnit.MILLISECONDS)
-        statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:timeLeft"), Math.max(0, remainingTime.toInt)))
-        if (remainingTime <= 0 && stopwatch.isRunning) {
-          cancel()
-        }
+      val remainingTime = observationTime - stopwatch.elapsed(TimeUnit.MILLISECONDS)
+      statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:timeLeft"), Math.max(0, remainingTime / 1000)))
+      statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:timeLeftMS"), Math.max(0, remainingTime.toInt)))
+      if (remainingTime <= 0 && stopwatch.isRunning) {
+        cancel()
       }
     }
 
@@ -102,7 +101,8 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: I
         stopwatch.stop()
       }
       cancel()
-      statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:timeLeft"), 0))
+      statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:timeLeft"), 0d))
+      statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:timeLeftMS"), 0))
     }
 
     def isRunning = stopwatch.isRunning
