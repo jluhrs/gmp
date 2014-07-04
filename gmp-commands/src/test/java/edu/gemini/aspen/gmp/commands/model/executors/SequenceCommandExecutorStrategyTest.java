@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.commands.model.executors;
 
 import edu.gemini.aspen.giapi.commands.*;
+import edu.gemini.aspen.giapi.status.setter.StatusSetter;
 import edu.gemini.aspen.giapitestsupport.commands.CompletionListenerMock;
 import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers;
 import edu.gemini.aspen.gmp.commands.model.Action;
@@ -9,25 +10,30 @@ import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.aspen.gmp.commands.model.impl.ActionManager;
 import edu.gemini.aspen.gmp.commands.test.ActionSenderMock;
+import edu.gemini.gmp.top.Top;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static edu.gemini.aspen.giapi.commands.DefaultConfiguration.emptyConfiguration;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 public class SequenceCommandExecutorStrategyTest {
 
     private ActionMessageBuilder builder = mock(ActionMessageBuilder.class);
     private CommandHandlers handlers = mock(CommandHandlers.class);
     private ActionManager manager = mock(ActionManager.class);
+    private StatusSetter setter = mock(StatusSetter.class);
+    private Top top = mock(Top.class);
     private SequenceCommandExecutorStrategy strategy;
     private CompletionListenerMock listener = new CompletionListenerMock();
 
     @Before
     public void setUp() throws Exception {
-        strategy = new SequenceCommandExecutorStrategy(builder, manager, handlers, "noscript");
+        when(top.buildStatusItemName(anyString())).thenReturn("abc");
+        strategy = new SequenceCommandExecutorStrategy(builder, manager, handlers, setter, top, "noscript");
     }
 
 
