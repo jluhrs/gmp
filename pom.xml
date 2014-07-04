@@ -1068,4 +1068,27 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <profiles>
+        <profile>
+            <!-- When called it builds the documentation -->
+            <id>default</id>
+            <activation>
+              <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
+                    <version>1.0.1</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.ipojo.arch</artifactId>
+                    <version>1.6.0</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+
 </project>
