@@ -1,7 +1,7 @@
 package edu.gemini.gmp.status.translator.osgi
 
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate
-import edu.gemini.gmp.status.translator.LocalStatusItemTranslator
+import edu.gemini.gmp.status.translator.{StatusItemTranslator, LocalStatusItemTranslator}
 import edu.gemini.gmp.top.Top
 import edu.gemini.jms.api.JmsArtifact
 import org.osgi.framework.BundleContext
@@ -31,7 +31,7 @@ case class LocalTranslatorFactory(top: Top, aggregate: StatusHandlerAggregate, c
     val provider = new LocalStatusItemTranslator(top, aggregate, configName)
     try {
       provider.start
-      val serviceRegistration = context.registerService(Array[String](classOf[StatusHandler].getName, classOf[JmsArtifact].getName), provider, new Hashtable[String, AnyRef])
+      val serviceRegistration = context.registerService(Array[String](classOf[StatusHandler].getName, classOf[JmsArtifact].getName, classOf[StatusItemTranslator].getName), provider, new Hashtable[String, AnyRef])
       existingServices += pid -> serviceRegistration
     } catch {
       case e: Exception =>

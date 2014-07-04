@@ -66,8 +66,6 @@ object TranslationType {
 
 
 abstract class AbstractStatusItemTranslator(top: Top, xmlFileName: String) extends StatusItemTranslator {
-  private final val LOG: Logger = Logger.getLogger(classOf[AbstractStatusItemTranslator].getName)
-  private final val CONF_DIR_PROPERTY: String = "statusTranslatorFile"
 
   val name = s"StatusItemTranslator: $this"
   var config: StatusItemTranslatorConfiguration = null
