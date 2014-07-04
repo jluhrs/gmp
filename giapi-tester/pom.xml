@@ -211,6 +211,10 @@
             <artifactId>giapi-test-support</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

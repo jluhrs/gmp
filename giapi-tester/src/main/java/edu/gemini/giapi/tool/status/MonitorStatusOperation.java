@@ -3,7 +3,6 @@ package edu.gemini.giapi.tool.status;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
-import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
 import edu.gemini.giapi.tool.arguments.*;
@@ -98,7 +97,7 @@ public class MonitorStatusOperation implements Operation {
 
         StatusMonitor monitor = new StatusMonitor(_expectedValue);
 
-        StatusHandlerAggregate aggregate = new StatusHandlerAggregateImpl();
+        StatusHandlerAggregate aggregate = new StatusHandlerAggregate();
         aggregate.bindStatusHandler(monitor);
 
         StatusService service = new StatusService(aggregate, "Status Monitor Service Client", _statusName);
@@ -129,7 +128,7 @@ public class MonitorStatusOperation implements Operation {
             } else if (_timeout == 0) {//exit now
                 //do nothing
             } else {//wait forever
-                service.initialize();
+                service.startJms(provider);
                 Thread.sleep(Long.MAX_VALUE);
             }
         } catch (TimeoutException e) {
