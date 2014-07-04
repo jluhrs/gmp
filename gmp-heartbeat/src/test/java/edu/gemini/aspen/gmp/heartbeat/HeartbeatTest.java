@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.heartbeat;
 
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetterComponent;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.gmp.heartbeat.jms.JmsHeartbeatConsumer;
-import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.gmp.top.TopImpl;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.activemq.broker.BrokerService;
@@ -56,7 +56,7 @@ public class HeartbeatTest {
         broker.setUseJmx(false);
         broker.start();
         JmsProvider provider = new ActiveMQJmsProvider("vm://HeartbeatTestBroker");
-        StatusSetterComponent ss = new StatusSetterComponent();
+        StatusSetterImpl ss = new StatusSetterImpl("name", "name");
         ss.startJms(provider);
         Heartbeat hb = new Heartbeat("gmp:heartbeat", true, new TopImpl("gpisim", "gpisim"), ss);
         JmsHeartbeatConsumer hbc = new JmsHeartbeatConsumer("Test HeartBeat Consumer", hbl);

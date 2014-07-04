@@ -1,9 +1,9 @@
 package edu.gemini.aspen.gmp.heartbeat;
 
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
+import edu.gemini.aspen.giapi.status.setter.StatusSetter;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
-import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.*;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Property;
@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 @Provides
 public class Heartbeat implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Heartbeat.class.getName());
-    private final IStatusSetter heartbeatSetter;
+    private final StatusSetter heartbeatSetter;
     private final Top top;
     private final String heartbeatName;
     private final boolean sendJms;
@@ -64,7 +64,7 @@ public class Heartbeat implements JmsArtifact {
     public Heartbeat(@Property(name = "heartbeatName", value = "INVALID", mandatory = true) String heartbeatName,
                      @Property(name = "sendJms", value = "INVALID", mandatory = true) boolean sendJms,
                      @Requires Top top,
-                     @Requires IStatusSetter heartbeatSetter) {
+                     @Requires StatusSetter heartbeatSetter) {
         LOG.info("Heartbeat Constructor");
         this.top = top;
         this.heartbeatName = heartbeatName;
