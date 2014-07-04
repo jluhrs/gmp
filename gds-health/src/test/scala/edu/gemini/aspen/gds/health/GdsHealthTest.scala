@@ -15,7 +15,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetterComponent
+import edu.gemini.aspen.giapi.status.setter.StatusSetterComponent
 
 @RunWith(classOf[JUnitRunner])
 class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {

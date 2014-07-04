@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapi.util.jms.status;
+package edu.gemini.aspen.giapi.status.setter;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -6,9 +6,6 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.giapi.util.jms.MessageBuilder;
 import edu.gemini.jms.api.*;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -16,9 +13,9 @@ import javax.jms.Message;
 /**
  * This class encapsulates the code to publish a StatusItem update.
  */
-@Component
-@Provides
-@Instantiate
+//@Component
+//@Provides
+//@Instantiate
 public class StatusSetterComponent extends MultiDestinationMessageProducer implements JmsArtifact, IStatusSetter {
     private Cache<String, StatusItem> itemsCache = CacheBuilder.newBuilder().weakValues().maximumSize(500).build();
 

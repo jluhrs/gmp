@@ -5,7 +5,6 @@ import scala.collection.JavaConversions._
 import org.apache.felix.ipojo.handlers.event.Subscriber
 import edu.gemini.aspen.gds.api._
 import edu.gemini.aspen.gmp.top.Top
-import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter
 import edu.gemini.aspen.giapi.status.impl.BasicStatus
 import edu.gemini.aspen.giapi.data.DataLabel
 import com.google.common.cache.{RemovalNotification, RemovalListener, CacheLoader, CacheBuilder}
@@ -20,6 +19,7 @@ import Scalaz._
 import java.util.concurrent.{TimeUnit, Callable}
 import com.google.common.base.Stopwatch
 import java.util.logging.Logger
+import edu.gemini.aspen.giapi.status.setter.IStatusSetter
 
 /**
  * Intermediate class to convert GDS events into status items for GPI */

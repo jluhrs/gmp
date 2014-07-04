@@ -90,7 +90,7 @@ public class StatusSetterIT extends FelixContainerConfigurationBase {
         //register handlers
         TestHandler testHandler1 = new TestHandler();
         context.registerService(FilteredStatusHandler.class.getName(), testHandler1, null);
-        IStatusSetter setter = (IStatusSetter) context.getService(context.getServiceReference("edu.gemini.aspen.giapi.util.jms.status.IStatusSetter"));
+        IStatusSetter setter = (IStatusSetter) context.getService(context.getServiceReference("edu.gemini.aspen.giapi.status.setter.IStatusSetter"));
         assertNotNull(setter);
         assertNotNull(context.getService(context.getServiceReference(StatusHandlerAggregate.class.getName())));
 

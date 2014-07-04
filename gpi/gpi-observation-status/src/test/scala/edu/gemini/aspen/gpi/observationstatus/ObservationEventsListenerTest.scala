@@ -6,12 +6,12 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
 import edu.gemini.aspen.gmp.top.Top
-import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter
 import edu.gemini.aspen.giapi.data.DataLabel
 import org.mockito.Mockito._
 import edu.gemini.aspen.gds.api.GDSStartObservation
 import org.mockito.ArgumentCaptor
 import edu.gemini.aspen.giapi.status.{StatusDatabaseService, StatusItem}
+import edu.gemini.aspen.giapi.status.setter.IStatusSetter
 
 @RunWith(classOf[JUnitRunner])
 class ObservationEventsListenerTest extends FunSuite with MockitoSugar {

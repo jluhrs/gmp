@@ -4,7 +4,6 @@ import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
 import edu.gemini.aspen.giapi.status.impl.{BasicStatus, HealthStatus}
 import edu.gemini.aspen.giapi.status.Health
-import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 
 import actors.Actor
@@ -13,6 +12,7 @@ import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import collection.mutable.ListBuffer
 import edu.gemini.jms.api.{JmsProvider, JmsArtifact}
 import scala.actors.threadpool.TimeUnit
+import edu.gemini.aspen.giapi.status.setter.IStatusSetter
 
 case object UpdateHealth
 case object Connected

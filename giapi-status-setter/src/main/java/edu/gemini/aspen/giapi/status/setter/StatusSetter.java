@@ -1,4 +1,4 @@
-package edu.gemini.aspen.giapi.util.jms.status;
+package edu.gemini.aspen.giapi.status.setter;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
