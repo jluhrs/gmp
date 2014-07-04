@@ -17,15 +17,15 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  * @author cquiroz
  *
  */
-public class StatusHandlerAggregateImplTest {
+public class StatusHandlerAggregateTest {
 
-    private StatusHandlerAggregateImpl manager;
+    private StatusHandlerAggregate manager;
     private StatusHandler handler;
     private StatusItem<Integer> item;
 
     @Before
     public void setupTest() {
-        manager = new StatusHandlerAggregateImpl();
+        manager = new StatusHandlerAggregate();
         handler = mock(StatusHandler.class);
         item = new BasicStatus<Integer>("status", 0);
     }

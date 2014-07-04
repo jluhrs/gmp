@@ -15,8 +15,6 @@ import java.util.logging.Logger;
  * The main class for the status service. This class is responsible to interface between the OSGi
  * container and the actual implementation residing in the StatusService
  */
-@Component
-@Provides
 public class StatusService implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(StatusService.class.getName());
     private static final String DEFAULT_STATUS = ">"; //defaults to listen for all the status items.
@@ -24,13 +22,12 @@ public class StatusService implements JmsArtifact {
 
     private StatusHandlerAggregate _aggregate;
 
-
     private final String statusName;
     private final String serviceName;
 
     private StatusConsumer _consumer;
 
-    public StatusService(@Requires StatusHandlerAggregate aggregate,
+    public StatusService(StatusHandlerAggregate aggregate,
                          @Property(name = "serviceName", value = DEFAULT_NAME, mandatory = true) String serviceName,
                          @Property(name = "statusName", value = DEFAULT_STATUS, mandatory = true) String statusName) {
         Preconditions.checkArgument(aggregate != null);
@@ -40,10 +37,6 @@ public class StatusService implements JmsArtifact {
         this.serviceName = serviceName;
         this.statusName = statusName;
         this._aggregate = aggregate;
-    }
-
-    @Validate
-    public void initialize() {
     }
 
     @Override

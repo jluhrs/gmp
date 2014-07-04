@@ -27,7 +27,7 @@ public class StatusServiceTest {
 
     @Before
     public void setUp()  throws JMSException {
-        StatusHandlerAggregate aggregate = new StatusHandlerAggregateImpl();
+        StatusHandlerAggregate aggregate = new StatusHandlerAggregate();
         String serviceName = "Service Name";
         String serviceStatus = ">";
         provider = buildJMSProviderMock();
