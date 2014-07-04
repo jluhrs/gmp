@@ -1,8 +1,13 @@
 package edu.gemini.aspen.giapi.commands;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Maps;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -105,7 +110,13 @@ public final class DefaultConfiguration implements Configuration {
 
     @Override
     public String toString() {
-        return "{config=" + _config + '}';
+        Collection<String> transform = Collections2.transform(_config.entrySet(), new Function<Map.Entry<ConfigPath, String>, String>() {
+            @Override
+            public String apply(Map.Entry<ConfigPath, String> entry) {
+                return "-config " + entry.getKey() + "=" + entry.getValue();
+            }
+        });
+        return Joiner.on(" ").join(transform);
     }
 
     public static class Builder {

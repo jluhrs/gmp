@@ -34,4 +34,12 @@ class CadCompletionListener implements CompletionListener {
         }
 
     }
+
+    @Override
+    public String toString() {
+        return "CadCompletionListener{" +
+                "clientId=" + clientId +
+                ", car=" + car +
+                '}';
+    }
 }

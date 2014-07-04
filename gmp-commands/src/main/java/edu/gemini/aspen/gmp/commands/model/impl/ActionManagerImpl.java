@@ -114,7 +114,6 @@ public class ActionManagerImpl implements ActionManager {
          *                   waiting for completion feedback and the actual
          *                   response to be sent to the clients.
          */
-
         private void updateClients(UpdateData updateData) {
             int actionId = updateData.actionId;
             HandlerResponse response = updateData.response;

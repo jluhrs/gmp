@@ -55,7 +55,7 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
         }
 
         Command command = action.getCommand();
-        LOG.info("About to execute command " + command);
+        LOG.info("About to execute action " + action);
         return findCommandExecutor(command.getSequenceCommand()).execute(action, sender);
     }
 
