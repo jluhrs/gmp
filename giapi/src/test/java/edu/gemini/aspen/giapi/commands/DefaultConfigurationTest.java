@@ -19,7 +19,7 @@ public class DefaultConfigurationTest {
     public void testBasicConfigurationWithSimplePath() {
         Configuration configuration = configuration(configPath("X"), "value1");
         assertEquals(1, configuration.getKeys().size());
-        assertEquals("{config={X=value1}}", configuration.toString());
+        assertEquals("-config X=value1", configuration.toString());
         assertEquals("value1", configuration.getValue(configPath("X")));
         assertNull(configuration.getValue(configPath("Y")));
         assertTrue(configuration.getKeys().contains(configPath("X")));

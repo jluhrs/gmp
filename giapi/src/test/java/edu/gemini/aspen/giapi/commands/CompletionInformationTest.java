@@ -30,7 +30,7 @@ public class CompletionInformationTest {
         assertNotNull(completionInformation);
         assertEquals(handlerResponse, completionInformation.getHandlerResponse());
         assertEquals(command, completionInformation.getCommand());
-        assertEquals("[[response=[ACCEPTED]][command=INIT][activity=START][{config={}}]]", completionInformation.toString());
+        assertEquals("[[response=[ACCEPTED]][command=INIT][activity=START][]]", completionInformation.toString());
     }
 
     @Test
