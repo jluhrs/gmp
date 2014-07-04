@@ -43,6 +43,10 @@
             <artifactId>giapi-test-support</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

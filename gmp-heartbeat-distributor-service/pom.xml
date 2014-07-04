@@ -50,6 +50,10 @@
             <groupId>edu.gemini.aspen.gmp</groupId>
             <artifactId>gmp-heartbeat</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

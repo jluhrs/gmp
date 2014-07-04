@@ -49,6 +49,10 @@
             <groupId>edu.gemini.external.osgi.org.vaadin</groupId>
             <artifactId>aceeditor</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
