@@ -1,19 +1,13 @@
 package edu.gemini.gmp.status.translator
 
 import edu.gemini.aspen.giapi.status.Health
-import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.giapi.status.StatusItem
 import edu.gemini.aspen.giapi.status.impl.BasicStatus
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
+import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate
 import edu.gemini.aspen.gmp.statusdb.StatusDatabase
-import edu.gemini.gmp.top.Top
 import edu.gemini.gmp.top.TopImpl
 import org.junit.Test
-import org.xml.sax.SAXException
-import javax.jms.JMSException
-import javax.xml.bind.JAXBException
-import java.io.IOException
-import java.util.List
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.mockito.Matchers.any

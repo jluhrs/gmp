@@ -23,10 +23,8 @@ class LocalStatusItemTranslator(top: Top, aggregate: StatusHandlerAggregate, xml
   }
 
   def update[T](item: StatusItem[T]) {
-    println(item)
     for (newItem <- translate(item)) {
       LOG.fine(s"Publishing translated status item: $newItem")
-      println("Publishing translated status item: " + newItem)
       aggregate.update(newItem)
     }
   }
