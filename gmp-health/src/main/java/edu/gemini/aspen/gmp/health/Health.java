@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gmp.health;
 
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
-import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.aspen.giapi.status.setter.StatusSetter;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Provides
 public class Health implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Health.class.getName());
-    private final IStatusSetter statusSetter;
+    private final StatusSetter statusSetter;
     private final Top top;
     private final String healthStatusName;
     private final BundlesDatabase bundlesDatabase;
@@ -34,7 +34,7 @@ public class Health implements JmsArtifact {
     private edu.gemini.aspen.giapi.status.Health health = null;
 
     public Health(@Property(name = "healthName", value = "INVALID", mandatory = true) String healthStatusName,
-            @Requires Top top, @Requires IStatusSetter statusSetter, @Requires BundlesDatabase bundlesDatabase) {
+            @Requires Top top, @Requires StatusSetter statusSetter, @Requires BundlesDatabase bundlesDatabase) {
         LOG.info("Health Constructor on status " + healthStatusName);
         this.top = top;
         this.statusSetter = statusSetter;
