@@ -1,8 +1,8 @@
-package edu.gemini.aspen.gmp.top.osgi;
+package edu.gemini.gmp.top.osgi;
 
 import com.google.common.collect.Maps;
-import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.gmp.top.Top;
+import edu.gemini.gmp.top.TopImpl;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ManagedServiceFactory;

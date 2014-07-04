@@ -8,12 +8,12 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>edu.gemini.aspen.gmp.top</bundle.symbolicName>
-        <bundle.namespace>edu.gemini.aspen.gmp.top</bundle.namespace>
+        <bundle.symbolicName>edu.gemini.gmp.top</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.gmp.top</bundle.namespace>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.gemini.aspen.gmp</groupId>
+    <groupId>edu.gemini.gmp</groupId>
     <artifactId>gmp-top</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 

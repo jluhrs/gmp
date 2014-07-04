@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.top;
+package edu.gemini.gmp.top;
 
 /**
  * Interface Top

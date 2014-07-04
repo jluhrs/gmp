@@ -1,6 +1,6 @@
-package edu.gemini.aspen.gmp.top.osgi;
+package edu.gemini.gmp.top.osgi;
 
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

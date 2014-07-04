@@ -165,7 +165,7 @@
         <dependencies>
             <!-- Internal modules -->
             <dependency>
-                <groupId>edu.gemini.aspen.gmp</groupId>
+                <groupId>edu.gemini.gmp</groupId>
                 <artifactId>gmp-top</artifactId>
                 <version>0.1.0-SNAPSHOT</version>
             </dependency>
