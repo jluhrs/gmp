@@ -1,7 +1,5 @@
 package edu.gemini.aspen.gmp.statusservice;
 
-import edu.gemini.aspen.giapi.status.Health;
-import edu.gemini.aspen.gmp.statusservice.generated.Channels;
 import edu.gemini.aspen.gmp.statusservice.generated.SimpleChannelType;
 
 /**
