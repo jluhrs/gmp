@@ -7,7 +7,7 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
-import edu.gemini.aspen.gmp.top.TopImpl
+import edu.gemini.gmp.top.TopImpl
 
 @RunWith(classOf[JUnitRunner])
 class StatusModuleFactoryTest extends FunSuite with MockitoSugar {

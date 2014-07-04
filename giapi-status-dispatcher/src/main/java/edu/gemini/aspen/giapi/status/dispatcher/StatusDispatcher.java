@@ -2,7 +2,6 @@ package edu.gemini.aspen.giapi.status.dispatcher;
 
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
-import org.apache.felix.ipojo.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +22,6 @@ import java.util.logging.Logger;
  * be invoked. It will provide mechanisms for client code to register these
  * handlers and associate them with particular status items.
  */
-@Component
-@Instantiate
-@Provides
 public class StatusDispatcher implements StatusHandler {
 
     private final static Logger LOG = Logger.getLogger(StatusDispatcher.class.getName());
@@ -33,11 +29,6 @@ public class StatusDispatcher implements StatusHandler {
     private final List<FilteredStatusHandler> _handlers = new ArrayList<FilteredStatusHandler>();
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
-
-    @Validate
-    public void start() {
-        // Required by IPojo
-    }
 
     @Override
     public String getName() {
@@ -57,7 +48,6 @@ public class StatusDispatcher implements StatusHandler {
         }
     }
 
-    @Bind(aggregate = true, optional = true)
     public void bindStatusHandler(FilteredStatusHandler handler) {
         lock.writeLock().lock();
         _handlers.add(handler);
@@ -65,7 +55,6 @@ public class StatusDispatcher implements StatusHandler {
         LOG.info("Status Handler Registered at Dispatcher: " + handler);
     }
 
-    @Unbind
     public void unbindStatusHandler(FilteredStatusHandler handler) {
         lock.writeLock().lock();
         _handlers.remove(handler);

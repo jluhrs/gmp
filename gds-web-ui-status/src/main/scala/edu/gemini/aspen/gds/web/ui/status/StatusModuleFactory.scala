@@ -1,11 +1,10 @@
 package edu.gemini.aspen.gds.web.ui.status
 
 import edu.gemini.aspen.gds.web.ui.api.GDSWebModuleFactory
-import edu.gemini.aspen.giapi.status.{StatusItem, StatusDatabaseService}
-import edu.gemini.aspen.gds.observationstate.ObservationStateProvider
+import edu.gemini.aspen.giapi.status.StatusItem
 import model.ObservationsSource
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
-import edu.gemini.aspen.gmp.top.Top
+import edu.gemini.gmp.top.Top
 import edu.gemini.aspen.giapi.status.dispatcher.{StatusItemFilter, FilteredStatusHandler}
 
 /**

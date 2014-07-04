@@ -8,7 +8,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.gemini.aspen.gpi</groupId>
+    <groupId>edu.gemini.gpi</groupId>
     <artifactId>gpi</artifactId>
     <version>0.1.1-SNAPSHOT</version>
 

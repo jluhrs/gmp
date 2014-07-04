@@ -9,14 +9,14 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>edu.gemini.aspen.gpi.observationstatus</bundle.symbolicName>
-        <bundle.namespace>edu.gemini.aspen.gpi.observationstatus</bundle.namespace>
+        <bundle.symbolicName>edu.gemini.gpi.observationstatus</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.gpi.observationstatus</bundle.namespace>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.gemini.aspen.gpi</groupId>
+    <groupId>edu.gemini.gpi</groupId>
     <artifactId>gpi-observation-status</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
 
     <name>GPI Observation Status</name>
     <description>GPI Observation Status</description>

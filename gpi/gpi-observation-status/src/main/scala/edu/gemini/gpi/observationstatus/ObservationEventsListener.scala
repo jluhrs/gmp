@@ -1,10 +1,11 @@
-package edu.gemini.aspen.gpi.observationstatus
+package edu.gemini.gpi.observationstatus
 
+import edu.gemini.aspen.giapi.status.setter.StatusSetter
 import org.apache.felix.ipojo.annotations.{Invalidate, Requires, Instantiate, Component}
 import scala.collection.JavaConversions._
 import org.apache.felix.ipojo.handlers.event.Subscriber
 import edu.gemini.aspen.gds.api._
-import edu.gemini.aspen.gmp.top.Top
+import edu.gemini.gmp.top.Top
 import edu.gemini.aspen.giapi.status.impl.BasicStatus
 import edu.gemini.aspen.giapi.data.DataLabel
 import com.google.common.cache.{RemovalNotification, RemovalListener, CacheLoader, CacheBuilder}
@@ -19,13 +20,12 @@ import Scalaz._
 import java.util.concurrent.{TimeUnit, Callable}
 import com.google.common.base.Stopwatch
 import java.util.logging.Logger
-import edu.gemini.aspen.giapi.status.setter.IStatusSetter
 
 /**
  * Intermediate class to convert GDS events into status items for GPI */
 @Component
 @Instantiate
-class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: IStatusSetter, @Requires statusDB: StatusDatabaseService) {
+class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: StatusSetter, @Requires statusDB: StatusDatabaseService) {
   // expiration of 1 day by default but tests can override it
   def expirationMillis = 24 * 60 * 60 * 1000
 
