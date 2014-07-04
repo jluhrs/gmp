@@ -1,7 +1,7 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 import edu.gemini.aspen.giapi.commands.*;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import org.mockito.Matchers;
 
 import static org.mockito.Matchers.anyLong;

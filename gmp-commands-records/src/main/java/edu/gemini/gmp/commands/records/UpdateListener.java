@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.dbr.DBR;

@@ -5,7 +5,7 @@ This bundle provides provides CAD, CAR and APPLY EPICS records using the \ref ca
 
 \section comm_records_provides_sec Provided Services
 This bundle provides Java implementations of the Gemini APPLY, CAD and CAR records. It instantiates one
-\ref edu.gemini.aspen.gmp.commands.records.RecordFactory, which will instantiate one or more APPLY records, with CAD records
+\ref edu.gemini.gmp.commands.records.RecordFactory, which will instantiate one or more APPLY records, with CAD records
  as specified in the configuration file. These CAD records can be the ones matching Gemini sequence commands, or configuration
  records, which hold the different parameters that will go in the APPLY sequence command to the instrument. Each
  CAD and APPLY record has an associated CAR record. The CAR record associated with an APPLY
@@ -21,8 +21,8 @@ the \ref gmp-commands bundle, and the \ref edu.gemini.aspen.gmp.top.Top "Top" OS
 \ref gmp_epics_top bundle.
 
 \section comm_records_configuration_sec Configuration
-  This bundle has its main configuration file in \ref edu.gemini.aspen.gmp.commands.records.RecordFactory-default.cfg.
-  There, you can set the name of the file where the \ref edu.gemini.aspen.gmp.commands.records.RecordFactory
+  This bundle has its main configuration file in \ref edu.gemini.gmp.commands.records.RecordFactory-default.cfg.
+  There, you can set the name of the file where the \ref edu.gemini.gmp.commands.records.RecordFactory
    configuration is defined. The default is
   \ref giapi-apply-config.xml and it can be used as an example. The schema file to which said configuration
   must adhere is \ref giapi-apply-config.xsd. For example:
@@ -71,8 +71,8 @@ detected in the DIR channel:
 \li if all CAR records are IDLE, put the master CAR to IDLE. If one of them is in ERROR, put the master CAR in ERROR.
 \li if the master CAR stays BUSY, it will go to IDLE as soon as all CAR records go to IDLE.
 
-This record is implemented in \ref edu.gemini.aspen.gmp.commands.records.ApplyRecord with 2 inner classes for listeners
-\ref edu.gemini.aspen.gmp.commands.records.ApplyRecord.DirListener and \ref edu.gemini.aspen.gmp.commands.records.ApplyRecord.CarListener.
+This record is implemented in \ref edu.gemini.gmp.commands.records.ApplyRecord with 2 inner classes for listeners
+\ref edu.gemini.gmp.commands.records.ApplyRecord.DirListener and \ref edu.gemini.gmp.commands.records.ApplyRecord.CarListener.
 The first one initiates the record processing when a directive is written to the DIR EPICS channel. The second one takes
 care of updating the APPLY's CAR record when one of the 'child' CARs changes state.
 
@@ -84,13 +84,13 @@ record, except the client ID field has another name.
 The internal logic has been implemented as close as possible to the one specified in \ref gemcad. The Associated CAR
 record only goes to BUSY when a command(PRESET, CANCEL, START or PRESET_START) is sent to the instrument.
 
-This records is implemented in several classes. First \ref edu.gemini.aspen.gmp.commands.records.CadRecordImpl takes
-care of instantiating the other classes. Inner classes \ref edu.gemini.aspen.gmp.commands.records.CadRecordImpl.AttributeListener and
-\ref edu.gemini.aspen.gmp.commands.records.CadRecordImpl.DirListener take care of changing the CADs state to MARKED when an attribute
+This records is implemented in several classes. First \ref edu.gemini.gmp.commands.records.CadRecordImpl takes
+care of instantiating the other classes. Inner classes \ref edu.gemini.gmp.commands.records.CadRecordImpl.AttributeListener and
+\ref edu.gemini.gmp.commands.records.CadRecordImpl.DirListener take care of changing the CADs state to MARKED when an attribute
 is written to, and initiate the record processing when a directive is written to the DIR EPICS channel respectively.
-The state transitions and actual sending of the commands are implemented in \ref edu.gemini.aspen.gmp.commands.records.CadState.
+The state transitions and actual sending of the commands are implemented in \ref edu.gemini.gmp.commands.records.CadState.
 
-Finally, \ref edu.gemini.aspen.gmp.commands.records.EpicsCad encapsulates the EPICS channels of the CAD record.
+Finally, \ref edu.gemini.gmp.commands.records.EpicsCad encapsulates the EPICS channels of the CAD record.
 
 \subsection car_sec GIAPI CAR Record
 The CAR record described in \ref gemcar has been simplified to the minimum required by the Gemini OCS from a
@@ -101,7 +101,7 @@ as EPICS channels are VAL, OMSS, OERR and CLID. The GIAPI CAR record has no inte
 and APPLY records.
 Whether the master CAR record is IDLE or BUSY, it will contain the client ID of the last processed APPLY.
 
-The CAR record implemented in \ref edu.gemini.aspen.gmp.commands.records.CarRecord is fairly simple, just a collection
+The CAR record implemented in \ref edu.gemini.gmp.commands.records.CarRecord is fairly simple, just a collection
 of EPICS channels and some methods to manipulate its state.
 
 \section comm_records_troubleshooting_sec Troubleshooting

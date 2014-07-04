@@ -1,11 +1,11 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.records.generated.ConfigRecordType;
-import edu.gemini.aspen.gmp.commands.records.generated.ConfigSetType;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.commands.records.generated.ConfigRecordType;
+import edu.gemini.gmp.commands.records.generated.ConfigSetType;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
@@ -304,7 +304,7 @@ public class ApplyRecord {
     /**
      * This listener will be invoked when any CAR changes state, and will reflect the states in the main CAR
      */
-    private class CarListener implements edu.gemini.aspen.gmp.commands.records.CarListener {
+    private class CarListener implements edu.gemini.gmp.commands.records.CarListener {
         @Override
         public void update(final CarRecord.Val state, final String message, final Integer errorCode, final Integer id) {
             LOG.info("Received CAR status change: " + state);

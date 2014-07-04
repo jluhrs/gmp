@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 /**
 * Interface to monitor changes to a CAR record

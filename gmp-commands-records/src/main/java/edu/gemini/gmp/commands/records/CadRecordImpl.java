@@ -1,15 +1,13 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.ChannelListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 /**

@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;

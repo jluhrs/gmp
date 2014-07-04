@@ -1,9 +1,9 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.CommandSender;
-import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.gmp.top.Top;
+import edu.gemini.gmp.top.TopImpl;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;

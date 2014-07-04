@@ -1,12 +1,12 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
-import edu.gemini.aspen.gmp.commands.records.generated.ApplyType;
-import edu.gemini.aspen.gmp.commands.records.generated.ConfigRecordType;
-import edu.gemini.aspen.gmp.commands.records.generated.Records;
-import edu.gemini.aspen.gmp.commands.records.generated.SequenceCommandType;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.commands.records.generated.ApplyType;
+import edu.gemini.gmp.commands.records.generated.ConfigRecordType;
+import edu.gemini.gmp.commands.records.generated.Records;
+import edu.gemini.gmp.commands.records.generated.SequenceCommandType;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;

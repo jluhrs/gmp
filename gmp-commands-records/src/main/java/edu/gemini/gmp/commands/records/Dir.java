@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 /**
 * These are all the Directives accepted by CAD and APPLY records.

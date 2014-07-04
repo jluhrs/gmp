@@ -9,14 +9,14 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>edu.gemini.aspen.gmp.commands-records</bundle.symbolicName>
-        <bundle.namespace>edu.gemini.aspen.gmp.commands.records</bundle.namespace>
+        <bundle.symbolicName>edu.gemini.gmp.commands-records</bundle.symbolicName>
+        <bundle.namespace>edu.gemini.gmp.commands.records</bundle.namespace>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.gemini.aspen.gmp</groupId>
+    <groupId>edu.gemini.gmp</groupId>
     <artifactId>gmp-commands-records</artifactId>
-    <version>0.4.5-SNAPSHOT</version>
+    <version>0.5.0-SNAPSHOT</version>
 
     <name>GMP Commands Records</name>
     <description>GMP Commands Records</description>
@@ -58,7 +58,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <generatePackage>edu.gemini.aspen.gmp.commands.records.generated</generatePackage>
+                    <generatePackage>edu.gemini.gmp.commands.records.generated</generatePackage>
                     <removeOldOutput>true</removeOldOutput>
                     <schemaIncludes>
                         <schemaInclude>**/*.xsd</schemaInclude>

@@ -1,11 +1,9 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 import edu.gemini.aspen.giapi.commands.Command;
 import edu.gemini.aspen.giapi.commands.CompletionListener;
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
-import gov.aps.jca.CAException;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

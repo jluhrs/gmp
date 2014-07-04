@@ -1,4 +1,4 @@
-package edu.gemini.aspen.gmp.commands.records;
+package edu.gemini.gmp.commands.records;
 
 /**
  * This is the interface exposed by the CAD records to OSGI. The apply record uses it to gain access to the CAD and CAR
