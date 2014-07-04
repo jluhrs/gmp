@@ -13,9 +13,6 @@ import javax.jms.Message;
 /**
  * This class encapsulates the code to publish a StatusItem update.
  */
-//@Component
-//@Provides
-//@Instantiate
 public class StatusSetterService extends MultiDestinationMessageProducer implements JmsArtifact, StatusSetter {
     private Cache<String, StatusItem> itemsCache = CacheBuilder.newBuilder().weakValues().maximumSize(500).build();
 
