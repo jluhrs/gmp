@@ -2,10 +2,6 @@ package edu.gemini.aspen.giapi.status.dispatcher;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.dispatcher.filters.ConfigPathFilter;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Requires;
-import org.apache.felix.ipojo.annotations.Validate;
 
 import java.util.logging.Logger;
 
@@ -15,17 +11,13 @@ import java.util.logging.Logger;
 * @author Nicolas A. Barriga
 *         Date: 2/24/11
 */
-@Component
-@Instantiate
 public class ExampleHandler2 {
     private static final Logger LOG = Logger.getLogger(ExampleHandler2.class.getName());
-    @Requires
     private StatusDispatcher _dispatcher;
     public ExampleHandler2(){
         LOG.info("Constructing ExampleHandler2");
 
     }
-    @Validate
     public void initialize() {
         LOG.info("Validating ExampleHandler2");
         _dispatcher.bindStatusHandler(new FilteredStatusHandler() {
