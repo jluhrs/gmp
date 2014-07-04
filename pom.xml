@@ -54,14 +54,14 @@
         <org.activemq.core.version>5.5.1</org.activemq.core.version>
         <pax-web.version>1.1.2</pax-web.version>
         <pax-logging.version>1.7.2</pax-logging.version>
-        <pax-runner.version>1.8.5</pax-runner.version>
+        <pax-runner.version>1.8.6-SNAPSHOT</pax-runner.version>
         <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.10.4</scala-lang.version>
         <scalatest.version>2.10</scalatest.version>
         <scala-plugin.version>3.1.6</scala-plugin.version>
         <vaadin.version>6.8.2</vaadin.version>
         <junit.version>4.10</junit.version>
-        <felix.framework.version>4.0.3</felix.framework.version>
+        <felix.framework.version>4.2.1</felix.framework.version>
 
         <gmp.version>${project.version}</gmp.version>
         <!-- Global encoding -->
@@ -570,13 +570,13 @@
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.compendium</artifactId>
-                <version>4.2.0</version>
+                <version>4.3.0</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
-                <version>4.2.0</version>
+                <version>4.3.0</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -797,13 +797,13 @@
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.fileinstall</artifactId>
-                <version>3.1.10</version>
+                <version>3.4.0</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.configadmin</artifactId>
-                <version>1.2.8</version>
+                <version>1.8.0</version>
                 <optional>true</optional>
             </dependency>
 
@@ -811,7 +811,7 @@
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.eventadmin</artifactId>
-                <version>1.2.14</version>
+                <version>1.3.2</version>
                 <scope>provided</scope>
             </dependency>
 
