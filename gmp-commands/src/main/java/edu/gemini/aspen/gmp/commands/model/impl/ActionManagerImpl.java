@@ -2,11 +2,6 @@ package edu.gemini.aspen.gmp.commands.model.impl;
 
 import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.Action;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Invalidate;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Validate;
 
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
@@ -25,9 +20,6 @@ import java.util.logging.Logger;
  * and notifies back the clients with completion information whenever that is
  * available.
  */
-@Component
-@Provides
-@Instantiate
 public class ActionManagerImpl implements ActionManager {
 
     private static final Logger LOG = Logger.getLogger(
@@ -257,7 +249,6 @@ public class ActionManagerImpl implements ActionManager {
      * information invoking the <code>CompletionListener</code> handlers
      * registered.
      */
-    @Validate
     public void start() {
         //Submit the processor task for execution in a separate thread
         _executorService.submit(_processor);
@@ -266,7 +257,6 @@ public class ActionManagerImpl implements ActionManager {
     /**
      * Stop the processing thread of this action manager.
      */
-    @Invalidate
     public void stop() {
         _processor.stop();
         stopExecutionService();

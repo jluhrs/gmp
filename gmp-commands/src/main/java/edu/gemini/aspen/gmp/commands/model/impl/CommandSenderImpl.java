@@ -9,10 +9,6 @@ import edu.gemini.aspen.giapi.commands.HandlerResponse;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.executors.SequenceCommandExecutor;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Requires;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -22,9 +18,6 @@ import java.util.logging.Logger;
  * This is the implementation used by OSGi clients to send commands
  * down to the client
  */
-@Component
-@Instantiate
-@Provides
 public class CommandSenderImpl implements CommandSender {
     private static final Logger LOG = Logger.getLogger(CommandSender.class.getName());
 
@@ -55,9 +48,9 @@ public class CommandSenderImpl implements CommandSender {
      * @param executor the executor that will be in charge
      *                 of processing the actions using the given sender.
      */
-    public CommandSenderImpl(@Requires ActionManager manager,
-                             @Requires ActionSender sender,
-                             @Requires SequenceCommandExecutor executor) {
+    public CommandSenderImpl(ActionManager manager,
+                             ActionSender sender,
+                             SequenceCommandExecutor executor) {
         Preconditions.checkArgument(manager != null, "ActionManager cannot be null");
         Preconditions.checkArgument(sender != null, "ActionSender cannot be null");
         Preconditions.checkArgument(executor != null, "SequenceCommandExecutor cannot be null");

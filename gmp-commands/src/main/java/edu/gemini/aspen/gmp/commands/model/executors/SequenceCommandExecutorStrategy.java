@@ -20,8 +20,6 @@ import java.util.logging.Logger;
  * <p/>
  * As this class is exported as an OSGi service it will be used by ActionManager
  */
-@Component
-@Provides
 public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor {
     private static final Logger LOG = Logger.getLogger(SequenceCommandExecutorStrategy.class.getName());
 
@@ -35,17 +33,13 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
      * @param builder ActionMessageBuilder to be used.
      * @param manager the Action Manager that keeps track of the actions
      */
-    public SequenceCommandExecutorStrategy(@Requires ActionMessageBuilder builder,
-                                           @Requires ActionManager manager,
-                                           @Requires CommandHandlers commandHandlers,
+    public SequenceCommandExecutorStrategy(ActionMessageBuilder builder,
+                                           ActionManager manager,
+                                           CommandHandlers commandHandlers,
                                            @Property(name = "instrumentStartupScript", value = "INVALID", mandatory = true) String instrumentStartupScript) {
         _defaultExecutor = new DefaultSenderExecutor(builder);
         _applyExecutor = new ApplySenderExecutor(builder, manager, commandHandlers);
         _rebootExecutor = new RebootSenderExecutor(new LinuxRebootManager(instrumentStartupScript));
-    }
-
-    @Validate
-    public void validate() {
     }
 
     @Override
