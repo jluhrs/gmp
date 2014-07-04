@@ -42,6 +42,7 @@
         <felix.cm.loglevel>1</felix.cm.loglevel>
         <felix.log.level>0</felix.log.level>
         <felix.fileinstall.log.level>1</felix.fileinstall.log.level>
+        <felix.fileinstall.noInitialDelay>true</felix.fileinstall.noInitialDelay>
         <ipojo.log.level>warn</ipojo.log.level>
         <org.ops4j.pax.logging.DefaultServiceLog.level>WARN</org.ops4j.pax.logging.DefaultServiceLog.level>
 
