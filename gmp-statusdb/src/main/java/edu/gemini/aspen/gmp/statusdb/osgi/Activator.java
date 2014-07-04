@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gmp.statusdb.osgi;
 
 import edu.gemini.aspen.giapi.status.StatusDatabaseService;
+import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.gmp.statusdb.StatusDatabase;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -10,11 +11,11 @@ import java.util.Hashtable;
 
 public class Activator implements BundleActivator {
 
-    private ServiceRegistration<StatusDatabaseService> serviceRegistration;
+    private ServiceRegistration<?> serviceRegistration;
 
     @Override
     public void start(BundleContext context) throws Exception {
-        serviceRegistration = context.registerService(StatusDatabaseService.class, new StatusDatabase(), new Hashtable<String, String>());
+        serviceRegistration = context.registerService(new String[] {StatusDatabaseService.class.getName(), StatusHandler.class.getName()}, new StatusDatabase(), new Hashtable<String, String>());
     }
 
     @Override
