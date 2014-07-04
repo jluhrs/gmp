@@ -1126,9 +1126,9 @@
 
     <!-- remaning time -->
     <SimpleChannel>
-        <giapiname>ifs:timeLeft</giapiname>
+        <giapiname>gpi:ifs:timeLeft</giapiname>
         <epicsname>ifs:timeLeft</epicsname>
-        <type>FLOAT</type>
+        <type>DOUBLE</type>
         <initial>0</initial>
     </SimpleChannel>
 
