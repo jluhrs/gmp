@@ -3,7 +3,7 @@ package edu.gemini.aspen.gmp.statusservice;
 
 import edu.gemini.aspen.giapi.status.*;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.cas.AlarmChannel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;

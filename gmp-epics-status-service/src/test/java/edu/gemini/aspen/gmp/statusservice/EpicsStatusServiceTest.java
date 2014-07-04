@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.statusservice;
 
-
 import edu.gemini.aspen.giapi.status.AlarmCause;
 import edu.gemini.aspen.giapi.status.AlarmSeverity;
 import edu.gemini.aspen.giapi.status.Health;
@@ -9,8 +8,8 @@ import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
-import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.gmp.top.Top;
+import edu.gemini.gmp.top.TopImpl;
 import edu.gemini.cas.AlarmChannel;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
