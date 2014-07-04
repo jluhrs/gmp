@@ -62,4 +62,8 @@ public class StatusDispatcher implements StatusHandler {
         LOG.info("Removed Status Handler from Dispatcher: " + handler);
     }
 
+    @Override
+    public String toString() {
+        return "StatusDispatcher";
+    }
 }
