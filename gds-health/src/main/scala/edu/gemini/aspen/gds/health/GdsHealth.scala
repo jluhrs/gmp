@@ -12,7 +12,7 @@ import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import collection.mutable.ListBuffer
 import edu.gemini.jms.api.{JmsProvider, JmsArtifact}
 import scala.actors.threadpool.TimeUnit
-import edu.gemini.aspen.giapi.status.setter.IStatusSetter
+import edu.gemini.aspen.giapi.status.setter.StatusSetter
 
 case object UpdateHealth
 case object Connected
@@ -23,7 +23,7 @@ case object Connected
 @Component
 @Instantiate
 @Provides
-class GdsHealth(@Requires top: Top, @Requires setter: IStatusSetter) extends JmsArtifact {
+class GdsHealth(@Requires top: Top, @Requires setter: StatusSetter) extends JmsArtifact {
   implicit private val LOG = Logger.getLogger(this.getClass.getName)
 
   private val healthName = top.buildStatusItemName("gds:health")

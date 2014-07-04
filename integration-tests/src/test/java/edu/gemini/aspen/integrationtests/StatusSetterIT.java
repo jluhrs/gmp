@@ -3,8 +3,8 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.dispatcher.StatusDispatcher;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
+import edu.gemini.aspen.giapi.status.setter.StatusSetter;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
-import edu.gemini.aspen.giapi.util.jms.status.IStatusSetter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -90,7 +90,7 @@ public class StatusSetterIT extends FelixContainerConfigurationBase {
         //register handlers
         TestHandler testHandler1 = new TestHandler();
         context.registerService(FilteredStatusHandler.class.getName(), testHandler1, null);
-        IStatusSetter setter = (IStatusSetter) context.getService(context.getServiceReference("edu.gemini.aspen.giapi.status.setter.IStatusSetter"));
+        StatusSetter setter = (StatusSetter) context.getService(context.getServiceReference("edu.gemini.aspen.giapi.status.setter.IStatusSetter"));
         assertNotNull(setter);
         assertNotNull(context.getService(context.getServiceReference(StatusHandlerAggregate.class.getName())));
 

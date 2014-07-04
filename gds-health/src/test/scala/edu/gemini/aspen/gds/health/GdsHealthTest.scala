@@ -15,7 +15,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import edu.gemini.aspen.giapi.status.setter.StatusSetterComponent
+import edu.gemini.aspen.giapi.status.setter.StatusSetterService
 
 @RunWith(classOf[JUnitRunner])
 class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
@@ -28,7 +28,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   val agg = new StatusHandlerAggregateImpl
   val provider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false&broker.persistent=false")
   val top = mock[Top]
-  var setter: StatusSetterComponent = _
+  var setter: StatusSetterService = _
 
   // Remove non actor based sources and add 2 for GDSObseventHandlerImpl and HeaderReceiver
   val expectedUpdates = (KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT).size + 2
@@ -61,7 +61,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     provider.startConnection()
     statusservice = new StatusService(agg, "Status Service " + testCounter.incrementAndGet(), ">")
     statusservice.startJms(provider)
-    setter = new StatusSetterComponent
+    setter = new StatusSetterService
     setter.startJms(provider)
 
     when(top.buildStatusItemName(same(origHealthName))).thenReturn(healthName)

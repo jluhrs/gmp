@@ -52,6 +52,10 @@
             <artifactId>giapi-jms-util</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.giapi</groupId>
+            <artifactId>giapi-status-setter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.jms</groupId>
             <artifactId>jms-activemq-broker</artifactId>
         </dependency>

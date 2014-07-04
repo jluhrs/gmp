@@ -65,6 +65,10 @@
             <artifactId>giapi-jms-util</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.aspen.giapi</groupId>
+            <artifactId>giapi-status-setter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-service</artifactId>
         </dependency>
@@ -81,6 +85,10 @@
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo.handler.eventadmin</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
