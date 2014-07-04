@@ -16,7 +16,7 @@ public class ActiveMQJMSProviderTest {
     @Test
     public void testConstruction() {
         String brokerUrl = "vm:testBroker?broker.persistent=false";
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, 1000);
         provider.startConnection();
 
         assertNotNull(provider.getConnectionFactory());
@@ -26,7 +26,7 @@ public class ActiveMQJMSProviderTest {
     public void testConstructionWithPropertySubstitution() {
         String brokerUrl = "${address}?broker.persistent=false";
         System.setProperty("address", "vm:testBroker");
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, 1000);
         provider.startConnection();
 
         assertNotNull(provider.getConnectionFactory());
@@ -35,7 +35,7 @@ public class ActiveMQJMSProviderTest {
     @Test
     public void addStatusListener() throws InterruptedException, JMSException {
         String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, 1000);
 
         final AtomicBoolean resumed = new AtomicBoolean(false);
         final CountDownLatch latch = new CountDownLatch(1);
@@ -64,7 +64,7 @@ public class ActiveMQJMSProviderTest {
     @Test
     public void startJmsArtifact() throws InterruptedException, JMSException {
         String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, 1000);
 
         final AtomicBoolean started = new AtomicBoolean(false);
 
@@ -92,7 +92,7 @@ public class ActiveMQJMSProviderTest {
     @Test
     public void addJmsArtifactAfterStart() throws InterruptedException, JMSException {
         String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, 1000);
 
         final AtomicBoolean started = new AtomicBoolean(false);
 
@@ -119,7 +119,7 @@ public class ActiveMQJMSProviderTest {
     @Test
     public void addJmsArtifactAfterStartWithException() throws InterruptedException {
         String brokerUrl = "failover:(vm:testBroker?broker.persistent=false)";
-        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, "1000");
+        ActiveMQJmsProvider provider = new ActiveMQJmsProvider(brokerUrl, 1000);
 
         final AtomicBoolean called = new AtomicBoolean(false);
 
