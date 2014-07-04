@@ -72,7 +72,7 @@ public class JmsStatusTranslatorIT extends FelixContainerConfigurationBase {
         assertNotNull(context.getService(context.getServiceReference(StatusHandlerAggregate.class.getName())));
 
         //check that the correct translator is running
-        ServiceReference[] refs=context.getAllServiceReferences("edu.gemini.aspen.giapi.statusservice.StatusItemTranslator",null);
+        ServiceReference[] refs=context.getAllServiceReferences("edu.gemini.gmp.status.translator.StatusItemTranslator",null);
         Assert.assertEquals(1,refs.length);
         assertTrue(context.getService(refs[0]) instanceof JmsStatusItemTranslatorImpl);
 

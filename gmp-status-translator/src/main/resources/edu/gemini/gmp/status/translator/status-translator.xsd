@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="TranslateStatus">
+        <xs:complexType>
+            <xs:choice  minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Status" type="StatusType"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="dataType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INT"/>
+            <xs:enumeration value="FLOAT"/>
+            <xs:enumeration value="DOUBLE"/>
+            <xs:enumeration value="STRING"/>
+            <xs:enumeration value="HEALTH"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="StatusType">
+        <xs:sequence  minOccurs="1">
+            <xs:element name="Maps" type="MapList"/>
+        </xs:sequence>
+        <xs:attribute name="originalName" type="xs:string" use="required"/>
+        <xs:attribute name="translatedName" type="xs:string" use="required"/>
+        <xs:attribute name="originalType" type="dataType" use="required"/>
+        <xs:attribute name="translatedType" type="dataType" use="required"/>
+        <xs:attribute name="default" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="MapList">
+        <xs:choice  minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="Map" type="MapType"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="MapType">
+        <xs:sequence>
+            <xs:element name="from" type="xs:string"/>
+            <xs:element name="to" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
