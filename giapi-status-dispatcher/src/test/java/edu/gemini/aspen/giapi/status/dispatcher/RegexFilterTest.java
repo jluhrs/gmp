@@ -3,10 +3,9 @@ package edu.gemini.aspen.giapi.status.dispatcher;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.dispatcher.filters.RegexFilter;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
-import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
 import org.junit.Before;
 import org.junit.Test;
@@ -118,7 +117,7 @@ public class RegexFilterTest {
         provider.startConnection();
 
         //create status service connected to the jms provider
-        StatusHandlerAggregate agg = new StatusHandlerAggregateImpl();
+        StatusHandlerAggregate agg = new StatusHandlerAggregate();
         StatusService statusservice = new StatusService(agg, "Status Service", ">");
         statusservice.startJms(provider);
 
@@ -126,7 +125,7 @@ public class RegexFilterTest {
         agg.bindStatusHandler(dispatcher);
 
 
-        StatusSetter ss = new StatusSetter("Test Status Setter", "gpi:a:test.2");
+        StatusSetterImpl ss = new StatusSetterImpl("Test Status Setter", "gpi:a:test.2");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<String>("gpi:a:test.2", "test value"));
 

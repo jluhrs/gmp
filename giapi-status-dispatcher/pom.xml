@@ -41,6 +41,14 @@
             <artifactId>jms-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>edu.gemini.jms</groupId>
+            <artifactId>jms-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.giapi</groupId>
+            <artifactId>giapi-status-setter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-test-support</artifactId>
             <scope>test</scope>
@@ -53,6 +61,10 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
         </dependency>
     </dependencies>
 
