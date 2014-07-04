@@ -17,6 +17,7 @@ public class Activator implements BundleActivator {
     private final StatusHandlerAggregate tracker = new StatusHandlerAggregate();
     private ServiceTracker<StatusHandler, StatusHandler> statusHandlerServiceTracker;
     private ServiceRegistration<ManagedServiceFactory> factoryService;
+    private ServiceRegistration<StatusHandlerAggregate> aggregateService;
 
     @Override
     public void start(final BundleContext bundleContext) throws Exception {
@@ -45,6 +46,8 @@ public class Activator implements BundleActivator {
 
         StatusServiceFactory serviceFactory = new StatusServiceFactory(tracker, bundleContext);
         factoryService = bundleContext.registerService(ManagedServiceFactory.class, serviceFactory, props);
+
+        aggregateService = bundleContext.registerService(StatusHandlerAggregate.class, tracker, new Hashtable<String, String>());
     }
 
     @Override
@@ -54,6 +57,10 @@ public class Activator implements BundleActivator {
         if (factoryService != null) {
             factoryService.unregister();
             factoryService = null;
+        }
+        if (aggregateService != null) {
+            aggregateService.unregister();
+            aggregateService = null;
         }
     }
 }

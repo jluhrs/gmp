@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * themselves.
  *
  */
-public class StatusHandlerAggregate implements StatusHandler {
+public class StatusHandlerAggregate implements StatusHandler, HandlerAggregate {
     private static final Logger LOG = Logger.getLogger(StatusHandlerAggregate.class.getName());
     private static final String STATUS_HANDLER_NAME = "Status Handler Manager";
 
