@@ -3,6 +3,7 @@ package edu.gemini.aspen.giapi.statusservice.osgi;
 import com.google.common.collect.Maps;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
+import edu.gemini.jms.api.JmsArtifact;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ManagedServiceFactory;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 public class StatusServiceFactory implements ManagedServiceFactory {
     private static final Logger LOG = Logger.getLogger(StatusServiceFactory.class.getName());
 
-    private final Map<String, ServiceRegistration<StatusService>> existingServices = Maps.newHashMap();
+    private final Map<String, ServiceRegistration<JmsArtifact>> existingServices = Maps.newHashMap();
     private final StatusHandlerAggregate aggregate;
     private final BundleContext context;
     public static final String SERVICE_NAME = "serviceName";
@@ -33,7 +34,7 @@ public class StatusServiceFactory implements ManagedServiceFactory {
     public void updated(String pid, Dictionary<String, ?> properties) {
         if (checkProperties(properties)) {
             StatusService provider = createService(properties);
-            ServiceRegistration<StatusService> serviceRegistration = context.registerService(StatusService.class, provider, new Hashtable<String, Object>());
+            ServiceRegistration<JmsArtifact> serviceRegistration = context.registerService(JmsArtifact.class, provider, new Hashtable<String, Object>());
             existingServices.put(pid, serviceRegistration);
         } else {
             LOG.warning("Cannot build " + StatusService.class.getName() + " without the " + SERVICE_NAME + " and " + STATUS_FILTER + " properties");
@@ -53,7 +54,7 @@ public class StatusServiceFactory implements ManagedServiceFactory {
 
     public void deleted(String pid) {
         if (existingServices.containsKey(pid)) {
-            ServiceRegistration<StatusService> serviceRef = existingServices.get(pid);
+            ServiceRegistration<JmsArtifact> serviceRef = existingServices.get(pid);
             serviceRef.unregister();
             existingServices.remove(pid);
         }
