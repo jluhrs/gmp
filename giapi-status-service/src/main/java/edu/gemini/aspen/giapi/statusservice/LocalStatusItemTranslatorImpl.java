@@ -1,7 +1,7 @@
 package edu.gemini.aspen.giapi.statusservice;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;

@@ -6,8 +6,8 @@ import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
 import edu.gemini.aspen.gmp.statusdb.StatusDatabase;
-import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.gmp.top.Top;
+import edu.gemini.gmp.top.TopImpl;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 

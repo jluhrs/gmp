@@ -1,9 +1,9 @@
 package edu.gemini.aspen.giapi.statusservice;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.giapi.statusservice.generated.StatusType;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 @Provides
 public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator implements JmsArtifact, StatusItemTranslator {
     private static final Logger LOG = Logger.getLogger(JmsStatusItemTranslatorImpl.class.getName());
-    private final Map<String, StatusSetter> setters = new HashMap<String, StatusSetter>();
+    private final Map<String, StatusSetterImpl> setters = new HashMap<String, StatusSetterImpl>();
     private JmsProvider provider;
     private final AtomicBoolean validateDone = new AtomicBoolean(false);
 
@@ -45,7 +45,7 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
         for (StatusType status : config.getStatuses()) {
             setters.put(
                     top.buildStatusItemName(status.getOriginalName()),
-                    new StatusSetter(
+                    new StatusSetterImpl(
                             this.getName() + status.getOriginalName(),
                             top.buildStatusItemName(status.getOriginalName())));
         }
@@ -62,7 +62,7 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
             @Override
             public void run() {
                 waitFor(validateDone);
-                for (StatusSetter ss : setters.values()) {
+                for (StatusSetterImpl ss : setters.values()) {
                     try {
                         ss.startJms(provider);
                     } catch (JMSException e) {
@@ -92,7 +92,7 @@ public class JmsStatusItemTranslatorImpl extends AbstractStatusItemTranslator im
     public void stopJms() {
         jmsStarted.set(false);
         getter.stopJms();
-        for (StatusSetter ss : setters.values()) {
+        for (StatusSetterImpl ss : setters.values()) {
             ss.stopJms();
         }
     }

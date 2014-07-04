@@ -11,7 +11,7 @@ import edu.gemini.aspen.giapi.statusservice.generated.DataType;
 import edu.gemini.aspen.giapi.statusservice.generated.MapType;
 import edu.gemini.aspen.giapi.statusservice.generated.StatusType;
 import edu.gemini.aspen.giapi.util.jms.status.StatusGetter;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import net.jmatrix.eproperties.EProperties;
 import org.xml.sax.SAXException;
 

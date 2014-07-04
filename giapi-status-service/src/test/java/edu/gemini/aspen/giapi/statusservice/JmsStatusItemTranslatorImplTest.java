@@ -1,7 +1,7 @@
 package edu.gemini.aspen.giapi.statusservice;
 
-import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.gmp.top.Top;
+import edu.gemini.gmp.top.TopImpl;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 

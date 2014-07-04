@@ -3,7 +3,7 @@ package edu.gemini.aspen.giapi.statusservice;
 import com.google.common.base.Preconditions;
 import edu.gemini.aspen.giapi.status.StatusDatabaseService;
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import org.apache.felix.ipojo.annotations.*;
 import org.xml.sax.SAXException;
 
