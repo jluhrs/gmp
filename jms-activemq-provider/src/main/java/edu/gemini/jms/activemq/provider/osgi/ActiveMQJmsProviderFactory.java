@@ -85,7 +85,7 @@ public class ActiveMQJmsProviderFactory implements ManagedServiceFactory {
 
     public void bindJmsArtifact(JmsArtifact jmsArtifact) {
         existingArtifacts.add(jmsArtifact);
-        notifyJmsArtifactArrival();
+        notifyJmsArtifactArrival(jmsArtifact);
     }
 
     public void unbindJmsArtifact(JmsArtifact jmsArtifact) {
@@ -102,6 +102,12 @@ public class ActiveMQJmsProviderFactory implements ManagedServiceFactory {
             for (JmsArtifact a: existingArtifacts) {
                 ref.provider.bindJmsArtifact(a);
             }
+        }
+    }
+
+    private void notifyJmsArtifactArrival(JmsArtifact a) {
+        for (ServiceRef ref: existingServices.values()) {
+            ref.provider.bindJmsArtifact(a);
         }
     }
 }

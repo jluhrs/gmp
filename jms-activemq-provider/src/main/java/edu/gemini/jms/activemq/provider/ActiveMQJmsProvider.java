@@ -123,15 +123,15 @@ public final class ActiveMQJmsProvider implements JmsProvider {
     public void bindJmsArtifact(JmsArtifact jmsArtifact) {
         synchronized (_jmsArtifacts) {
             _jmsArtifacts.add(jmsArtifact);
-        }
-        if (connected.get()) {
-            try {
-                jmsArtifact.startJms(this);
-            } catch (Throwable e) {
-                LOG.severe("Exception starting JMSArtifact " + e);
+            if (connected.get()) {
+                try {
+                    jmsArtifact.startJms(this);
+                } catch (Throwable e) {
+                    LOG.severe("Exception starting JMSArtifact " + e);
+                }
             }
+            LOG.info("JMS Artifact Registered: " + jmsArtifact);
         }
-        LOG.info("JMS Artifact Registered: " + jmsArtifact);
     }
 
     public void unbindJmsArtifact(JmsArtifact jmsArtifact) {
@@ -161,11 +161,13 @@ public final class ActiveMQJmsProvider implements JmsProvider {
                 for (JmsProviderStatusListener l : _statusListenerHandlers) {
                     l.transportInterrupted();
                 }
-                for (JmsArtifact a : _jmsArtifacts) {
-                    try {
-                        a.stopJms();
-                    } catch (Exception e) {
-                        LOG.log(Level.SEVERE, "Exception while shutting down jms artifact " + a, e);
+                synchronized (_jmsArtifacts) {
+                    for (JmsArtifact a : _jmsArtifacts) {
+                        try {
+                            a.stopJms();
+                        } catch (Exception e) {
+                            LOG.log(Level.SEVERE, "Exception while shutting down jms artifact " + a, e);
+                        }
                     }
                 }
             }
@@ -179,12 +181,14 @@ public final class ActiveMQJmsProvider implements JmsProvider {
                 for (JmsProviderStatusListener l : _statusListenerHandlers) {
                     l.transportResumed();
                 }
-                for (JmsArtifact a : _jmsArtifacts) {
-                    LOG.fine("Starting JMS Artifact " + a);
-                    try {
-                        a.startJms(ActiveMQJmsProvider.this);
-                    } catch (Throwable e) {
-                        LOG.severe("Exception starting JMSArtifact " + e);
+                synchronized (_jmsArtifacts) {
+                    for (JmsArtifact a : _jmsArtifacts) {
+                        LOG.fine("Starting JMS Artifact " + a);
+                        try {
+                            a.startJms(ActiveMQJmsProvider.this);
+                        } catch (Throwable e) {
+                            LOG.severe("Exception starting JMSArtifact " + e);
+                        }
                     }
                 }
             }
