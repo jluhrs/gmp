@@ -2,7 +2,7 @@ package edu.gemini.aspen.gds.health
 
 import org.junit.Assert._
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider
-import edu.gemini.aspen.giapi.statusservice.{StatusHandlerAggregateImpl, StatusService}
+import edu.gemini.aspen.giapi.statusservice.{StatusHandlerAggregate, StatusService}
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
@@ -10,7 +10,7 @@ import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import actors.threadpool.AtomicInteger
-import edu.gemini.aspen.gmp.top.Top
+import edu.gemini.gmp.top.Top
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.junit.runner.RunWith
@@ -25,7 +25,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   val origHealthMessageName = "gds:health:message"
   val testCounter = new AtomicInteger(0)
 
-  val agg = new StatusHandlerAggregateImpl
+  val agg = new StatusHandlerAggregate
   val provider = new ActiveMQJmsProvider("vm://GdsHealthTest?broker.useJmx=false&broker.persistent=false")
   val top = mock[Top]
   var setter: StatusSetterService = _

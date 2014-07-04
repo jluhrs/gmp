@@ -7,7 +7,7 @@ import edu.gemini.aspen.giapi.status.Health
 import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 
 import actors.Actor
-import edu.gemini.aspen.gmp.top.Top
+import edu.gemini.gmp.top.Top
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import collection.mutable.ListBuffer
 import edu.gemini.jms.api.{JmsProvider, JmsArtifact}
