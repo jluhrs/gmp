@@ -306,5 +306,10 @@
             <artifactId>org.apache.felix.ipojo.annotations</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>edu.gemini.gmp</groupId>
+            <artifactId>gmp-status-translator</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

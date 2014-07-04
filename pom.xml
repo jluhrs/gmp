@@ -826,6 +826,19 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.shell</artifactId>
+                <version>1.4.2</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.shell.remote</artifactId>
+                <version>1.1.2</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-actors</artifactId>
                 <version>${scala-lang.version}</version>
@@ -847,6 +860,21 @@
                 <groupId>edu.gemini.util.osgi</groupId>
                 <artifactId>osgi</artifactId>
                 <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.gogo.runtime</artifactId>
+                <version>0.10.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.gogo.shell</artifactId>
+                <version>0.10.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
+                <version>1.0.1</version>
             </dependency>
 
         </dependencies>
@@ -870,14 +898,6 @@
             <artifactId>gsbase</artifactId>
         </dependency>
 
-        <!--dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo</artifactId>
-        </dependency-->
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.compendium</artifactId>
