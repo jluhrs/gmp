@@ -73,6 +73,7 @@
                 <version>${org.apache.felix.ipojo}</version>
                 <executions>
                     <execution>
+                        <id>compile-ipojo</id>
                         <goals>
                             <goal>ipojo-bundle</goal>
                         </goals>
