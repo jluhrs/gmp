@@ -15,12 +15,12 @@ import java.util.Hashtable;
 
 public class Activator implements BundleActivator {
     private final StatusHandlerAggregate tracker = new StatusHandlerAggregate();
-    private ServiceTracker<StatusHandler, StatusHandler> serviceTracker;
+    private ServiceTracker<StatusHandler, StatusHandler> statusHandlerServiceTracker;
     private ServiceRegistration<ManagedServiceFactory> factoryService;
 
     @Override
     public void start(final BundleContext bundleContext) throws Exception {
-        serviceTracker = new ServiceTracker<StatusHandler, StatusHandler>(bundleContext, StatusHandler.class, new ServiceTrackerCustomizer<StatusHandler, StatusHandler>() {
+        statusHandlerServiceTracker = new ServiceTracker<StatusHandler, StatusHandler>(bundleContext, StatusHandler.class, new ServiceTrackerCustomizer<StatusHandler, StatusHandler>() {
             @Override
             public StatusHandler addingService(ServiceReference<StatusHandler> reference) {
                 StatusHandler statusHandler = bundleContext.getService(reference);
@@ -38,20 +38,19 @@ public class Activator implements BundleActivator {
                 tracker.unbindStatusHandler(statusHandler);
             }
         });
-        serviceTracker.open();
+        statusHandlerServiceTracker.open();
 
         Hashtable<String, String> props = new Hashtable<String, String>();
         props.put("service.pid", StatusService.class.getName());
 
         StatusServiceFactory serviceFactory = new StatusServiceFactory(tracker, bundleContext);
         factoryService = bundleContext.registerService(ManagedServiceFactory.class, serviceFactory, props);
-
     }
 
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
         tracker.cleanHandlers();
-        serviceTracker.close();
+        statusHandlerServiceTracker.close();
         if (factoryService != null) {
             factoryService.unregister();
             factoryService = null;

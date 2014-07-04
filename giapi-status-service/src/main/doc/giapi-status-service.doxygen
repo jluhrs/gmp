@@ -5,7 +5,7 @@
  *
  * \section giapi-status-service_provides_sec Provided Services
  * This bundle provides implementations for the \ref edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate "StatusHandlerAggregate"
- and \ref edu.gemini.aspen.giapi.statusservice.StatusItemTranslator "StatusItemTranslator" services. The aggregate accept many
+ and \ref edu.gemini.gmp.status.translator.StatusItemTranslator "StatusItemTranslator" services. The aggregate accept many
  subscibers to receive StatusItem updates. The translator takes a StatusItem, and publishes a new one according to some configurable rules.
  It also provides a component
  \ref edu.gemini.aspen.giapi.statusservice.StatusService "StatusService" which starts the object that listens to StatusItem updates and passes
@@ -23,7 +23,7 @@
   a sample at \ref edu.gemini.aspen.giapi.statusservice.StatusService-default.cfg.
 
   If you want a \ref edu.gemini.aspen.giapi.statusservice.LocalStatusItemTranslatorImpl or a
-  \ref edu.gemini.aspen.giapi.statusservice.JmsStatusItemTranslatorImpl you need to configure the appropriate one with an
+  \ref edu.gemini.gmp.status.translator.JmsStatusItemTranslatorImpl you need to configure the appropriate one with an
   xmlFileName property.
 
   The XML (sample at \ref status-translator.xml) contains the name and type of an item to translate, the name and type of the new item

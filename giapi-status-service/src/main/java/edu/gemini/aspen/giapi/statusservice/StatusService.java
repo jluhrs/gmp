@@ -5,7 +5,6 @@ import edu.gemini.aspen.giapi.statusservice.jms.JmsStatusListener;
 import edu.gemini.aspen.giapi.statusservice.jms.StatusConsumer;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import java.util.logging.Level;
@@ -17,8 +16,6 @@ import java.util.logging.Logger;
  */
 public class StatusService implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(StatusService.class.getName());
-    private static final String DEFAULT_STATUS = ">"; //defaults to listen for all the status items.
-    private static final String DEFAULT_NAME = "Status Service";
 
     private StatusHandlerAggregate _aggregate;
 
@@ -28,8 +25,8 @@ public class StatusService implements JmsArtifact {
     private StatusConsumer _consumer;
 
     public StatusService(StatusHandlerAggregate aggregate,
-                         @Property(name = "serviceName", value = DEFAULT_NAME, mandatory = true) String serviceName,
-                         @Property(name = "statusName", value = DEFAULT_STATUS, mandatory = true) String statusName) {
+                         String serviceName,
+                         String statusName) {
         Preconditions.checkArgument(aggregate != null);
         Preconditions.checkArgument(serviceName != null);
         Preconditions.checkArgument(statusName != null);

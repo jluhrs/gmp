@@ -34,56 +34,9 @@
             <artifactId>giapi-jms-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.gmp</groupId>
-            <artifactId>gmp-top</artifactId>
+            <groupId>edu.gemini.aspen</groupId>
+            <artifactId>giapi</artifactId>
         </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen.gmp</groupId>
-            <artifactId>gmp-statusdb</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.aspen.giapi</groupId>
-            <artifactId>giapi-status-setter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>edu.gemini.external.osgi.net.jmatrix.eproperties</groupId>
-            <artifactId>eproperties</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.8.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <generatePackage>edu.gemini.aspen.giapi.statusservice.generated</generatePackage>
-                    <removeOldOutput>true</removeOldOutput>
-                    <schemaIncludes>
-                        <schemaInclude>**/*.xsd</schemaInclude>
-                    </schemaIncludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
