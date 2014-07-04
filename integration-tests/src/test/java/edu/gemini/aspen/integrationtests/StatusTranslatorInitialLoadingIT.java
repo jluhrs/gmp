@@ -4,7 +4,7 @@ import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.statusservice.JmsStatusItemTranslatorImpl;
-import edu.gemini.aspen.giapi.statusservice.LocalStatusItemTranslatorImpl;
+import edu.gemini.aspen.giapi.statusservice.LocalStatusItemTranslator;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.statusservice.StatusItemTranslator;
 import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
@@ -98,7 +98,7 @@ public class StatusTranslatorInitialLoadingIT extends FelixContainerConfiguratio
         TimeUnit.MILLISECONDS.sleep(1000);
 
         LOG.info("Starting translator");
-        LocalStatusItemTranslatorImpl translator =   new LocalStatusItemTranslatorImpl(top, aggregate, "${felix.fileinstall.dir}/../../status-translator.xml");
+        LocalStatusItemTranslator translator =   new LocalStatusItemTranslator(top, aggregate, "${felix.fileinstall.dir}/../../status-translator.xml");
         context.registerService(new String[]{JmsArtifact.class.getName(), StatusItemTranslator.class.getName()},translator,null);
 
         TimeUnit.MILLISECONDS.sleep(1000);

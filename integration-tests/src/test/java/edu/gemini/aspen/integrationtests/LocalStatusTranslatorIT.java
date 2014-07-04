@@ -3,9 +3,8 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
-import edu.gemini.aspen.giapi.statusservice.LocalStatusItemTranslatorImpl;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Assert;
 import org.junit.Test;
@@ -71,15 +70,15 @@ public class LocalStatusTranslatorIT extends FelixContainerConfigurationBase {
         assertNotNull(context.getService(context.getServiceReference(StatusHandlerAggregate.class.getName())));
 
         //check that the correct translator is running
-        ServiceReference[] refs=context.getAllServiceReferences("edu.gemini.aspen.giapi.statusservice.StatusItemTranslator",null);
+        ServiceReference[] refs=context.getAllServiceReferences("edu.gemini.gmp.status.translator.StatusItemTranslator",null);
         assertEquals(1,refs.length);
-        assertTrue(context.getService(refs[0]) instanceof LocalStatusItemTranslatorImpl);
+        assertTrue(context.getService(refs[0]) instanceof LocalStatusItemTranslator);
 
         // Wait a bit for the services to be registered before sending the status update
         TimeUnit.MILLISECONDS.sleep(300);
 
         //send StatusItem update via JMS
-        StatusSetter ss = new StatusSetter("Test Status Setter", "gpisim:old");
+        StatusSetterImpl ss = new StatusSetterImpl("Test Status Setter", "gpisim:old");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<Integer>("gpisim:old", 0));
 
