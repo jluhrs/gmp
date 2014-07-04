@@ -3,11 +3,12 @@ package edu.gemini.aspen.gmp.status.simulator;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
+import edu.gemini.aspen.giapi.status.setter.StatusSetter;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.gmp.status.simulator.generated.StatusType;
 import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactory;
 import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactoryBuilder;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.apache.felix.ipojo.annotations.*;
@@ -32,7 +33,7 @@ import java.util.logging.Logger;
 @Provides
 public class StatusSimulator implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(StatusSimulator.class.getName());
-    private final Map<SimulatedStatus, StatusSetter> statusSetters;
+    private final Map<SimulatedStatus, StatusSetterImpl> statusSetters;
     private final ScheduledExecutorService executorService =
             Executors.newScheduledThreadPool(10);
     private final List<ScheduledFuture<?>> _tasks = Lists.newArrayList();
@@ -43,10 +44,10 @@ public class StatusSimulator implements JmsArtifact {
         LOG.info("Simulating using configuration at " + configFile);
         SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration(new FileInputStream(configFile));
         List<StatusType> statuses = simulatorConfiguration.getStatuses();
-        Map<SimulatedStatus, StatusSetter> simulatorsMap = Maps.newHashMap();
+        Map<SimulatedStatus, StatusSetterImpl> simulatorsMap = Maps.newHashMap();
         for (StatusType s : statuses) {
             s.setName(top.buildStatusItemName(s.getName()));
-            StatusSetter statusSetter = new StatusSetter("StatusSimulator-" + s.getName(), s.getName());
+            StatusSetterImpl statusSetter = new StatusSetterImpl("StatusSimulator-" + s.getName(), s.getName());
             SimulatedStatus simulatedStatus = buildSimulatedStatus(s);
             simulatorsMap.put(simulatedStatus, statusSetter);
         }
@@ -70,7 +71,7 @@ public class StatusSimulator implements JmsArtifact {
 
     @Override
     public void startJms(JmsProvider provider) throws JMSException {
-        for (StatusSetter s : statusSetters.values()) {
+        for (StatusSetterImpl s : statusSetters.values()) {
             s.startJms(provider);
         }
         startSimulation();
@@ -79,14 +80,14 @@ public class StatusSimulator implements JmsArtifact {
     @Override
     public void stopJms() {
         stopSimulation();
-        for (StatusSetter s : statusSetters.values()) {
+        for (StatusSetterImpl s : statusSetters.values()) {
             s.stopJms();
         }
     }
 
     public synchronized void startSimulation() {
         LOG.info("Start status items simulation");
-        for (Map.Entry<SimulatedStatus, StatusSetter> s : statusSetters.entrySet()) {
+        for (Map.Entry<SimulatedStatus, StatusSetterImpl> s : statusSetters.entrySet()) {
             SimulatedStatus simulatedStatus = s.getKey();
             LOG.info("Simulate status item " + simulatedStatus.getName() + " at " + simulatedStatus.getUpdateRate() + " with " + simulatedStatus.getClass().getSimpleName());
             ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(

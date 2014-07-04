@@ -1,6 +1,6 @@
 package edu.gemini.aspen.gmp.status.simulator;
 
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Before;
 import org.junit.Test;
