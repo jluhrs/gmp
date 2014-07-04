@@ -34,7 +34,7 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
     private final String currentCommandTimestamp;
     private SequenceCommandExecutor _rebootExecutor;
 
-    private Command lastCommand = null;
+    private Action lastAction = null;
 
     /**
      * Construct the executor specifying the ActionMessageBuilder to use.
@@ -65,17 +65,21 @@ public class SequenceCommandExecutorStrategy implements SequenceCommandExecutor 
 
         Command command = action.getCommand();
         try {
-            statusSetter.setStatusItem(new BasicStatus<String>(currentCommandStatus, command.getSequenceCommand().toString()));
+            statusSetter.setStatusItem(new BasicStatus<String>(currentCommandStatus, formatCommand(action)));
             statusSetter.setStatusItem(new BasicStatus<Integer>(currentCommandTimestamp, (int)System.currentTimeMillis()));
-            if (lastCommand != null) {
-                statusSetter.setStatusItem(new BasicStatus<String>(lastCommandStatus, lastCommand.getSequenceCommand().toString()));
+            if (lastAction != null) {
+                statusSetter.setStatusItem(new BasicStatus<String>(lastCommandStatus, formatCommand(lastAction)));
             }
         } catch (JMSException e) {
             LOG.warning("Exception publishing command status " + e.getMessage());
         }
-        lastCommand = command;
+        lastAction = action;
         LOG.info("About to execute action " + action);
         return findCommandExecutor(command.getSequenceCommand()).execute(action, sender);
+    }
+
+    private String formatCommand(Action action) {
+        return String.format("|%d|%s|%s|%s|", action.getId(), action.getCommand().getSequenceCommand().toString(), action.getCommand().getActivity().getName(), action.getCommand().getConfiguration().toString());
     }
 
     private SequenceCommandExecutor findCommandExecutor(SequenceCommand sequenceCommand) {
