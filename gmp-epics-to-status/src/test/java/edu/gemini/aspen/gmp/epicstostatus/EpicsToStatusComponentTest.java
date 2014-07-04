@@ -4,7 +4,6 @@ package edu.gemini.aspen.gmp.epicstostatus;
 import edu.gemini.aspen.giapi.status.StatusHandler;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
-import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregateImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.EpicsReader;
@@ -87,7 +86,7 @@ public class EpicsToStatusComponentTest {
 
         //setup a status service and a status handler to check updates are getting published
         StatusMonitor monitor = new StatusMonitor();
-        StatusHandlerAggregate aggregate = new StatusHandlerAggregateImpl();
+        StatusHandlerAggregate aggregate = new StatusHandlerAggregate();
         aggregate.bindStatusHandler(monitor);
         StatusService service = new StatusService(aggregate, "Status Monitor Service Client", "giapitest:statusitemint");
         service.startJms(provider);

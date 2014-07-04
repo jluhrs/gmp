@@ -7,7 +7,7 @@ import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.impl.AlarmStatus;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.impl.HealthStatus;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.gmp.epicstostatus.generated.AlarmChannelType;
 import edu.gemini.aspen.gmp.epicstostatus.generated.Channels;
 import edu.gemini.aspen.gmp.epicstostatus.generated.HealthChannelType;
@@ -90,7 +90,7 @@ public class EpicsToStatusComponent {
         for (final SimpleChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             try {
                 ReadOnlyClientEpicsChannel ch = _reader.getChannelAsync(item.getEpicschannel());
-                StatusSetter ss = new StatusSetter(NAME + item.getStatusitem(), item.getStatusitem());
+                StatusSetterImpl ss = new StatusSetterImpl(NAME + item.getStatusitem(), item.getStatusitem());
                 try {
                     ss.startJms(provider);
                 } catch (JMSException e) {
