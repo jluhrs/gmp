@@ -5,6 +5,7 @@ import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
 import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
+import edu.gemini.gmp.status.translator.LocalStatusItemTranslator;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Assert;
 import org.junit.Test;

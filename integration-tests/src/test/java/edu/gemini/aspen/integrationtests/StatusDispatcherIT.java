@@ -3,8 +3,8 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.dispatcher.StatusDispatcher;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Assert;
 import org.junit.Test;
@@ -101,7 +101,7 @@ public class StatusDispatcherIT extends FelixContainerConfigurationBase {
         TimeUnit.MILLISECONDS.sleep(200);
 
         //send StatusItem update via JMS
-        StatusSetter ss = new StatusSetter("Test Status Setter", "gpi:status1");
+        StatusSetterImpl ss = new StatusSetterImpl("Test Status Setter", "gpi:status1");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<String>("gpi:status1", "gpi:status1"));
 

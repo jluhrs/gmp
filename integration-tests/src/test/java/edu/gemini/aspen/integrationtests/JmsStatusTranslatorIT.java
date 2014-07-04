@@ -3,9 +3,10 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
-import edu.gemini.aspen.giapi.statusservice.JmsStatusItemTranslatorImpl;
+import edu.gemini.aspen.giapi.status.setter.StatusSetter;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
+import edu.gemini.gmp.status.translator.JmsStatusItemTranslatorImpl;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Assert;
 import org.junit.Test;
@@ -82,7 +83,7 @@ public class JmsStatusTranslatorIT extends FelixContainerConfigurationBase {
         TimeUnit.MILLISECONDS.sleep(300);
 
         //send StatusItem update via JMS
-        StatusSetter ss = new StatusSetter("Test Status Setter", "gpisim:old");
+        StatusSetterImpl ss = new StatusSetterImpl("Test Status Setter", "gpisim:old");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<Integer>("gpisim:old", 0));
 

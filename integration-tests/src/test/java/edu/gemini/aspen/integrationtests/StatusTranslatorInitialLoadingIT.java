@@ -3,12 +3,12 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.impl.BasicStatus;
-import edu.gemini.aspen.giapi.statusservice.JmsStatusItemTranslatorImpl;
-import edu.gemini.aspen.giapi.statusservice.LocalStatusItemTranslator;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
-import edu.gemini.aspen.giapi.statusservice.StatusItemTranslator;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.status.translator.JmsStatusItemTranslatorImpl;
+import edu.gemini.gmp.status.translator.LocalStatusItemTranslator;
+import edu.gemini.gmp.status.translator.StatusItemTranslator;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.junit.Assert;
@@ -86,7 +86,7 @@ public class StatusTranslatorInitialLoadingIT extends FelixContainerConfiguratio
 
         LOG.info("Sending update");
         //send StatusItem update via JMS
-        StatusSetter ss = new StatusSetter("Test Status Setter", "gpisim:old");
+        StatusSetterImpl ss = new StatusSetterImpl("Test Status Setter", "gpisim:old");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<Integer>("gpisim:old", 0));
         TimeUnit.MILLISECONDS.sleep(1000);
@@ -129,7 +129,7 @@ public class StatusTranslatorInitialLoadingIT extends FelixContainerConfiguratio
 
         LOG.info("Sending update");
         //send StatusItem update via JMS
-        StatusSetter ss = new StatusSetter("Test Status Setter", "gpisim:old");
+        StatusSetterImpl ss = new StatusSetterImpl("Test Status Setter", "gpisim:old");
         ss.startJms(provider);
         ss.setStatusItem(new BasicStatus<Integer>("gpisim:old", 0));
         TimeUnit.MILLISECONDS.sleep(1000);
