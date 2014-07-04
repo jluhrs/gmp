@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.jms</groupId>
     <artifactId>jms-activemq-provider</artifactId>
-    <version>1.4.20-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
 
     <name>ActiveMQ JMS Service Provider</name>
     <description>A JMS Service Provider based on the Apache ActiveMQ</description>
