@@ -45,7 +45,7 @@
             <artifactId>vaadin</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen.gmp</groupId>
+            <groupId>edu.gemini.gmp</groupId>
             <artifactId>gmp-top</artifactId>
         </dependency>
         <dependency>
