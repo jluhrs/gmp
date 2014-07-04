@@ -16,11 +16,11 @@ import javax.jms.Message;
 //@Component
 //@Provides
 //@Instantiate
-public class StatusSetterComponent extends MultiDestinationMessageProducer implements JmsArtifact, IStatusSetter {
+public class StatusSetterService extends MultiDestinationMessageProducer implements JmsArtifact, StatusSetter {
     private Cache<String, StatusItem> itemsCache = CacheBuilder.newBuilder().weakValues().maximumSize(500).build();
 
-    public StatusSetterComponent() {
-        super("StatusSetterComponent");
+    public StatusSetterService() {
+        super("StatusSetterService");
     }
 
     /**
