@@ -3,7 +3,8 @@ package edu.gemini.giapi.tool.status;
 import edu.gemini.aspen.giapi.status.AlarmCause;
 import edu.gemini.aspen.giapi.status.AlarmSeverity;
 import edu.gemini.aspen.giapi.status.StatusItem;
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetter;
+import edu.gemini.aspen.giapi.status.setter.StatusSetter;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterService;
 import edu.gemini.giapi.tool.arguments.*;
 import edu.gemini.giapi.tool.parser.Argument;
 import edu.gemini.giapi.tool.parser.Operation;
@@ -70,7 +71,7 @@ public class SetStatusOperation implements Operation {
             LOG.severe("If you indicate an alarm type, you must indicate severity and cause (message is optional).");
             return 0;
         }
-        StatusSetter setter = new StatusSetter("GIAPI Tester", _statusItem.getName());
+        StatusSetterService setter = new StatusSetterService();
 
 
         try {
