@@ -1,6 +1,6 @@
 package edu.gemini.aspen.epicsheartbeat;
 
-import edu.gemini.aspen.gmp.top.Top;
+import edu.gemini.gmp.top.Top;
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;

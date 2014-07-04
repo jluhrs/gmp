@@ -1,9 +1,9 @@
 package edu.gemini.aspen.epicsheartbeat;
 
-import edu.gemini.aspen.giapi.util.jms.status.StatusSetterComponent;
+import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.gmp.heartbeat.Heartbeat;
-import edu.gemini.aspen.gmp.top.Top;
-import edu.gemini.aspen.gmp.top.TopImpl;
+import edu.gemini.gmp.top.Top;
+import edu.gemini.gmp.top.TopImpl;
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatDistributor;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
@@ -29,7 +29,7 @@ public class EpicsHeartbeatTest {
     Heartbeat hb;
     ChannelAccessServerImpl cas;
     Top top;
-    StatusSetterComponent ss;
+    StatusSetterImpl ss;
 
     static {
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
@@ -50,7 +50,7 @@ public class EpicsHeartbeatTest {
         cas.start();
 
         top = new TopImpl("gpitest","gpitest");
-        ss = new StatusSetterComponent();
+        ss = new StatusSetterImpl("name", "set");
         ss.startJms(provider);
         hb = new Heartbeat("gmp:heartbeat",true,top,ss);
         hb.startJms(provider);
