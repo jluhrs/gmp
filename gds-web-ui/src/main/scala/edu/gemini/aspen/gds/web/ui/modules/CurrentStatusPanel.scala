@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.web.ui.vaadin.data._
 import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate}
 import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusDatabaseService}
 import com.vaadin.ui.Label
-import edu.gemini.aspen.gmp.top.Top
+import edu.gemini.gmp.top.Top
 
 @org.apache.felix.ipojo.annotations.Component
 @Instantiate
