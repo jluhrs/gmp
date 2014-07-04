@@ -18,18 +18,19 @@ class LocalStatusItemTranslator(top: Top, aggregate: StatusHandlerAggregate, xml
 
    def start {
     LOG.finer("Start validate")
-    initItems
+    //initItems
     LOG.finer("End validate")
   }
 
   def update[T](item: StatusItem[T]) {
     for (newItem <- translate(item)) {
       LOG.fine(s"Publishing translated status item: $newItem")
+      println(s"Publishing translated status item: $newItem")
       aggregate.update(newItem)
     }
   }
 
-  def startJms(provider: JmsProvider) {
+  /*def startJms(provider: JmsProvider) {
     LOG.finer("Start startJms")
     getter.startJms(provider)
     jmsStarted.set(true)
@@ -41,6 +42,6 @@ class LocalStatusItemTranslator(top: Top, aggregate: StatusHandlerAggregate, xml
     jmsStarted.set(false)
     getter.stopJms
     LOG.finer("End stopJms")
-  }
+  }*/
 
 }

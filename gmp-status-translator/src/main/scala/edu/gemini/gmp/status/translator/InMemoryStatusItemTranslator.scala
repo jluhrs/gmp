@@ -20,23 +20,22 @@ class InMemoryStatusItemTranslator(top: Top, aggregate: StatusHandlerAggregate, 
     initItems
   }
 
-  protected override def initItems {
+  protected def initItems {
     import scala.collection.JavaConversions._
     for (item <- statusDatabase.getAll) {
       update(item)
     }
   }
 
-  override def stop {
+  def stop {
     LOG.info("Start stop")
-    super.stop
+    //super.stop
     LOG.info("End stop")
   }
 
   def update[T](item: StatusItem[T]) {
     for (newItem <- translate(item)) {
       LOG.finer(s"Publishing translated status item: ${newItem.getName}")
-      println(s"Publishing translated status item: $newItem")
       aggregate.update(newItem)
     }
   }

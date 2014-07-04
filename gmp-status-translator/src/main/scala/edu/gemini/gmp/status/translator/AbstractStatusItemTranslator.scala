@@ -7,12 +7,13 @@ import edu.gemini.aspen.giapi.status.impl.BasicStatus
 import edu.gemini.aspen.giapi.status.impl.HealthStatus
 import edu.gemini.aspen.giapi.util.jms.status.StatusGetter
 import edu.gemini.gmp.top.Top
-import java.util.concurrent.ScheduledThreadPoolExecutor
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.logging.Logger
+import scala.concurrent.ExecutionContext.Implicits.global
 import edu.gemini.gmp.status.translator.generated.{StatusType, DataType}
 import java.io.{FileInputStream, File}
+import edu.gemini.jms.api.{JmsProvider, JmsArtifact}
+
 import scala.collection._
+import scala.concurrent.Future
 
 case class ItemTranslation[A, +B](destinationName: String, default: Option[B], translations: Map[A, B], destinationType: DataType) {
   def translate(value: A):StatusItem[_] = {
@@ -65,12 +66,11 @@ object TranslationType {
 }
 
 
-abstract class AbstractStatusItemTranslator(top: Top, xmlFileName: String) extends StatusItemTranslator {
+abstract class AbstractStatusItemTranslator(top: Top, xmlFileName: String) extends StatusItemTranslator with JmsArtifact {
 
   val name = s"StatusItemTranslator: $this"
   var config: StatusItemTranslatorConfiguration = null
   val getter: StatusGetter = new StatusGetter("Status Translator initial item loader")
-  val jmsStarted: AtomicBoolean = new AtomicBoolean(false)
 
   val fileExistence = for {
     x <- Option(new File(xmlFileName))
@@ -102,42 +102,17 @@ abstract class AbstractStatusItemTranslator(top: Top, xmlFileName: String) exten
 
   val translations = fileExistence.map(extract).map(_.groupBy(a => a._1)).getOrElse(Map.empty)  //val translations = fileExistence.map(extract).map(_.toMap).getOrElse(Map.empty)
 
-  /**
-   * Try to fetch items from the StatusDB at startup. Translate those found.
-   */
-  protected def initItems {
-    val executor: ScheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1)
-    /*executor.execute(new Runnable {
-      def run {
-        LOG.fine("Start initItems")
-        try {
-          waitFor(jmsStarted)
-          var sleepTime: Long = 100
-          var items: Collection[StatusItem[_]] = null
-          do {
-            items = getter.getAllStatusItems
-            if (items == null) {
-              LOG.warning("Couldn't get StatusItems from StatusDB, sleeping...")
-              Thread.sleep(sleepTime *= 2)
-            }
-          } while (items == null)
-          import scala.collection.JavaConversions._
-          for (item <- items) {
-            update(item)
-          }
-        }
-        catch {
-          case e: Exception => {
-            LOG.log(Level.SEVERE, e.getMessage, e)
-          }
-        }
-        LOG.fine("End initItems")
-      }
-    })*/
+  override def startJms(provider: JmsProvider) {
+    getter.startJms(provider)
+    import scala.collection.JavaConversions._
+    Future.apply {
+      for {
+        si <- getter.getAllStatusItems
+      } update(si)
+    }
   }
 
-  def stop() {
-  }
+  override def stopJms {}
 
   def getName = name
 

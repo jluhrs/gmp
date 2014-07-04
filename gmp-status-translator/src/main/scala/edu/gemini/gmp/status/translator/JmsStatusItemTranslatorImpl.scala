@@ -27,7 +27,7 @@ case class JmsStatusItemTranslatorImpl(to: Top, xmlFileNam: String) extends Abst
       setters.put(to.buildStatusItemName(status.getOriginalName), new StatusSetterImpl(this.getName + status.getOriginalName, to.buildStatusItemName(status.getOriginalName)))
     }
     validateDone.set(true)
-    initItems
+    //initItems
   }
 
   /**
@@ -54,19 +54,19 @@ case class JmsStatusItemTranslatorImpl(to: Top, xmlFileNam: String) extends Abst
     })*/
   }
 
-  override def stop {
+  def stop {
     validateDone.set(false)
-    super.stop
+    //super.stop
   }
 
-  def startJms(provider: JmsProvider) {
+  override def startJms(provider: JmsProvider) {
     getter.startJms(provider)
     this.provider = provider
     initSetters
   }
 
-  def stopJms {
-    jmsStarted.set(false)
+  override def stopJms {
+    //jmsStarted.set(false)
     getter.stopJms
     import scala.collection.JavaConversions._
     for (ss <- setters.values) {
