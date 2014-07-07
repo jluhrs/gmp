@@ -17,7 +17,6 @@ public class Activator implements BundleActivator {
 
     private ServiceRegistration<ManagedServiceFactory> factoryService;
     private ServiceTracker<JmsArtifact, JmsArtifact> jmsArtifactTracker;
-    private ServiceTracker<JmsProviderStatusListener, JmsArtifact> jmsStatusTracker;
 
     public void start(BundleContext context) {
         Hashtable<String, String> props = new Hashtable<String, String>();
