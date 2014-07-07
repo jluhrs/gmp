@@ -3,17 +3,11 @@ package edu.gemini.aspen.gmp.commands.handlers.impl;
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.ConfigPath;
 import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
 
 import javax.management.*;
 import java.util.List;
 import java.util.Set;
 
-@Component
-@Instantiate
-@Provides
 public class CommandHandlersImpl implements CommandHandlers {
     @Override
     public List<ConfigPath> getApplyHandlers() {
