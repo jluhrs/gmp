@@ -5,9 +5,18 @@ package edu.gemini.jms.activemq.broker;
  */
 public class ConfigDefaults {
 
-    public static final int BROKER_PORT = 61616;
-    public static final String BROKER_URL = "tcp://0.0.0.0:" + BROKER_PORT;
+    public static final String BROKER_NAME_PROPERTY = "brokerName";
+    public static final String BROKER_URL_PROPERTY = "brokerUrl";
+    public static final String BROKER_PERSISTENT_PROPERTY = "persistent";
+    public static final String BROKER_DELETE_MESSAGES_ON_STARTUP_PROPERTY = "deleteMsgOnStartup";
+    public static final String BROKER_USE_ADVISORY_MESSAGES_PROPERTY = "useAdvisoryMessages";
+    public static final String BROKER_USE_JMX_PROPERTY = "useJmx";
+    public static final String BROKER_JMX_RMI_PORT_PROPERTY = "jmxRmiServerPort";
+    public static final String BROKER_JMX_CONNECTOR_PORT_PROPERTY = "jmxConnectorPort";
 
+    public static final int BROKER_PORT = 61616;
+
+    public static final String BROKER_URL = "tcp://0.0.0.0:" + BROKER_PORT;
     public static final String BROKER_NAME = "gmp";
     // Set to true to enable the broker's JMX usage
     public static final boolean BROKER_USE_JMX = true;
