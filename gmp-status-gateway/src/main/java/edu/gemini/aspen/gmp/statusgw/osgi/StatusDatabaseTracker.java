@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Status database service tracker
  */
-public class StatusDatabaseTracker extends ServiceTracker {
+public class StatusDatabaseTracker extends ServiceTracker<StatusDatabaseService, StatusDatabaseService> {
 
     private static final Logger LOG = Logger.getLogger(StatusDatabaseTracker.class.getName());
 
@@ -23,16 +23,16 @@ public class StatusDatabaseTracker extends ServiceTracker {
     }
 
     @Override
-    public Object addingService(ServiceReference serviceReference) {
+    public StatusDatabaseService addingService(ServiceReference<StatusDatabaseService> serviceReference) {
 
         LOG.info("Status Gateway has found a Status Database Service");
-        StatusDatabaseService databaseService = (StatusDatabaseService) context.getService(serviceReference);
+        StatusDatabaseService databaseService = context.getService(serviceReference);
         _serviceDecorator.setDatabaseService(databaseService);
         return databaseService;
     }
 
     @Override
-    public void removedService(ServiceReference serviceReference, Object o) {
+    public void removedService(ServiceReference<StatusDatabaseService> serviceReference, StatusDatabaseService o) {
         LOG.info("Status Gateway has lost a Status Database Service");
         _serviceDecorator.removeDatabaseService();
         context.ungetService(serviceReference);
