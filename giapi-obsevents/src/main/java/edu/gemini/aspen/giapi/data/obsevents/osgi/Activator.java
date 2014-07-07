@@ -19,12 +19,12 @@ import java.util.logging.Logger;
 /**
  * Activator for the Observation Event Monitor
  */
-public class Activator implements BundleActivator, ServiceTrackerCustomizer {
+public class Activator implements BundleActivator, ServiceTrackerCustomizer<ObservationEventHandler, ObservationEventHandler> {
 
     private static final Logger LOG = Logger.getLogger(
             Activator.class.getName());
 
-    private ServiceTracker _tracker = null;
+    private ServiceTracker<ObservationEventHandler, ObservationEventHandler> _tracker = null;
 
     private ObservationEventHandlerComposite handlerComposite = null;
 
@@ -45,7 +45,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         bundleContext.registerService(JmsArtifact.class.getName(), consumer, null);
 
         //and start tracking for observation event handlers as well...
-        _tracker = new ServiceTracker(bundleContext, ObservationEventHandler.class.getName(), this);
+        _tracker = new ServiceTracker<ObservationEventHandler, ObservationEventHandler>(bundleContext, ObservationEventHandler.class.getName(), this);
         _tracker.open();
     }
 
@@ -58,23 +58,26 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer {
         handlerComposite = null;
     }
 
-    public void removedService(ServiceReference serviceReference, Object o) {
-        LOG.info("Observation Handler removed.");
-        ObservationEventHandler handler = (ObservationEventHandler) context.getService(serviceReference);
-        handlerComposite.unregisterHandler(handler);
-    }
-
-    public Object addingService(ServiceReference serviceReference) {
+    @Override
+    public ObservationEventHandler addingService(ServiceReference<ObservationEventHandler> serviceReference) {
 
         LOG.info("Observation Event Handler added.");
-        ObservationEventHandler handler = (ObservationEventHandler) context.getService(serviceReference);
+        ObservationEventHandler handler = context.getService(serviceReference);
         handlerComposite.registerHandler(handler);
 
         return handler;
 
     }
 
-    public void modifiedService(ServiceReference serviceReference, Object o) {
+    @Override
+    public void removedService(ServiceReference<ObservationEventHandler> serviceReference, ObservationEventHandler o) {
+        LOG.info("Observation Handler removed.");
+        ObservationEventHandler handler = context.getService(serviceReference);
+        handlerComposite.unregisterHandler(handler);
+    }
+
+    @Override
+    public void modifiedService(ServiceReference<ObservationEventHandler> serviceReference, ObservationEventHandler o) {
         //do nothing
     }
 }
