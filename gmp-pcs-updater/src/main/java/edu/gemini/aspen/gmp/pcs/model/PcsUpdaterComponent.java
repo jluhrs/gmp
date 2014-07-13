@@ -7,7 +7,6 @@ import edu.gemini.aspen.gmp.pcs.jms.PcsUpdateListener;
 import edu.gemini.aspen.gmp.pcs.model.updaters.EpicsPcsUpdater;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.jms.api.*;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import java.util.*;
@@ -17,8 +16,6 @@ import java.util.logging.Logger;
 /**
  * Interface to define a composite of several PCS updater objects
  */
-@Component
-@Provides
 public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(PcsUpdaterComponent.class.getName());
 
@@ -31,14 +28,6 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
 
     private EpicsPcsUpdater updater;
     private BaseMessageConsumer _messageConsumer;
-
-    private PcsUpdaterComponent(@Requires ChannelAccessServer channelFactory,
-                                @Property(name = "simulation", value = "yes", mandatory = true) String simulation, // Simulation must be a string to be compatible with iPojo
-                                @Property(name = "epicsChannel", value = "NOVALID", mandatory = true) String pcsChannel,
-                                @Property(name = "gains", value = "NOVALID", mandatory = true) String gains,
-                                @Property(name = "taiDiff", value = "0", mandatory = false) String taiDiff) {
-        this(channelFactory, Boolean.parseBoolean(simulation), pcsChannel, gains, Integer.parseInt(taiDiff));
-    }
 
     public PcsUpdaterComponent(ChannelAccessServer channelFactory,
                                boolean simulation,
@@ -57,7 +46,6 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
         _channelFactory = channelFactory;
     }
 
-    @Validate
     public void startComponent() {
         LOG.info("Start PCS Updater Component");
         if (!simulation) {
@@ -70,7 +58,6 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
         }
     }
 
-    @Invalidate
     public void stopComponent() {
         LOG.info("Stop PCS Updater Component");
         if (!simulation && updater != null) {
@@ -79,10 +66,9 @@ public class PcsUpdaterComponent implements PcsUpdater, JmsArtifact {
         }
     }
 
-    @Updated
-    public void updatedComponent(Dictionary<String, String> conf) {
-        this.simulation = Boolean.parseBoolean(conf.get("simulation"));
-        this.pcsChannel = conf.get("epicsChannel");
+    public void updatedComponent(Dictionary<String, ?> conf) {
+        this.simulation = Boolean.parseBoolean(conf.get("simulation").toString());
+        this.pcsChannel = conf.get("epicsChannel").toString();
         LOG.info("Modify PCS Updater Component simulation=" + simulation + " channelName=" + pcsChannel);
         if (simulation && updater != null) {
             updater.stopChannel();
