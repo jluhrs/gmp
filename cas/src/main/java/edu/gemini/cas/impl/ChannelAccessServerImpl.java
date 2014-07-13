@@ -6,7 +6,6 @@ import edu.gemini.cas.*;
 import edu.gemini.epics.api.ReadOnlyChannel;
 import gov.aps.jca.*;
 import gov.aps.jca.cas.ServerContext;
-import org.apache.felix.ipojo.annotations.*;
 
 import java.lang.Enum;
 import java.util.HashMap;
@@ -23,9 +22,6 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: Sep 30, 2010
  */
-@Component
-@Instantiate
-@Provides
 public class ChannelAccessServerImpl implements ChannelAccessServer {
     private static final Logger LOG = Logger.getLogger(ChannelAccessServerImpl.class.getName());
     private DefaultServerImpl server;
@@ -46,7 +42,6 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @throws IllegalStateException if trying to start an already started server
      * @throws CAException           is thrown if the jca context could not be instantiated.
      */
-    @Validate
     public void start() throws CAException {
         executor = Executors.newSingleThreadExecutor();
         channels = new HashMap<String, edu.gemini.epics.api.Channel<?>>();
@@ -75,7 +70,6 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      * @throws java.lang.IllegalStateException
      *                     if the context has already been destroyed.
      */
-    @Invalidate
     public void stop() throws CAException {
         for (String name : channels.keySet()) {
             edu.gemini.epics.api.Channel ch = channels.get(name);
