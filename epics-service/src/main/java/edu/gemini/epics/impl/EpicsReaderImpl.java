@@ -4,7 +4,6 @@ import edu.gemini.epics.EpicsReader;
 import edu.gemini.epics.JCAContextController;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import gov.aps.jca.CAException;
-import org.apache.felix.ipojo.annotations.*;
 
 /**
  * Class EpicsReaderImpl
@@ -12,23 +11,10 @@ import org.apache.felix.ipojo.annotations.*;
  * @author Nicolas A. Barriga
  *         Date: 11/7/11
  */
-@Component
-@Instantiate
-@Provides(specifications = EpicsReader.class)
 public class EpicsReaderImpl extends EpicsChannelFactory implements EpicsReader {
 
-    public EpicsReaderImpl(@Requires JCAContextController epicsService) {
+    public EpicsReaderImpl(JCAContextController epicsService) {
         super(epicsService);
-    }
-
-    @Validate
-    public void validate() {
-
-    }
-
-    @Invalidate
-    public void invalidate() {
-
     }
 
     @Override

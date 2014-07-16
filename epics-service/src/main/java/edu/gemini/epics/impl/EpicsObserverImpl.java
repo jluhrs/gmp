@@ -4,12 +4,6 @@ import com.google.common.base.Preconditions;
 import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.EpicsObserver;
 import edu.gemini.epics.JCAContextController;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Invalidate;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Requires;
-import org.apache.felix.ipojo.annotations.Validate;
 
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -20,21 +14,17 @@ import static com.google.common.base.Preconditions.checkArgument;
  * This class is an implementation of EpicsObserver. It allows EpicClient objects to
  * register to be notified upon changes on an epics channel
  */
-@Component
-@Provides
-@Instantiate(name = "epicsObserver")
 public class EpicsObserverImpl implements EpicsObserver {
     private static final Logger LOG = Logger.getLogger(EpicsObserver.class.getName());
     private final JCAContextController contextController;
     private final EpicsClientsHolder epicsClientsHolder = new EpicsClientsHolder();
 
-    public EpicsObserverImpl(@Requires JCAContextController contextController) {
+    public EpicsObserverImpl(JCAContextController contextController) {
         LOG.info("Created EpicsObserver");
         checkArgument(contextController != null, "Cannot be build with a null contextController");
         this.contextController = contextController;
     }
 
-    @Validate
     public void startObserver() {
         Preconditions.checkState(contextController.isContextAvailable(), "JCA Context must be already available");
 
@@ -42,7 +32,6 @@ public class EpicsObserverImpl implements EpicsObserver {
         epicsClientsHolder.connectAllPendingClients(contextController.getJCAContext());
     }
 
-    @Invalidate
     public void stopObserver() {
         epicsClientsHolder.disconnectAllClients();
     }

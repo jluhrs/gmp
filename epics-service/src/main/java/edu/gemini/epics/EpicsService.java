@@ -5,12 +5,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import gov.aps.jca.CAException;
 import gov.aps.jca.JCALibrary;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Invalidate;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Updated;
-import org.apache.felix.ipojo.annotations.Validate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -24,8 +18,6 @@ import java.util.logging.Logger;
  *
  * EpicsService is in charge of creating the JCA Context and manage its life cycle
  */
-@Component
-@Provides
 public class EpicsService implements JCAContextController {
     private static final Logger LOG = Logger.getLogger(EpicsService.class.getName());
     private static final String IPADDRESS_PATTERN =
@@ -33,13 +25,13 @@ public class EpicsService implements JCAContextController {
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-    protected static final String PROPERTY_ADDRESS_LIST = "addressList";
+    public static final String PROPERTY_ADDRESS_LIST = "addressList";
 
     private String _addressList;
 
     private CAJContext _ctx;
 
-    public EpicsService(@Property(name = PROPERTY_ADDRESS_LIST, value = "127.0.0.1", mandatory = true) String addressList) {
+    public EpicsService(String addressList) {
         LOG.info("EpicsService created with " + addressList);
         validateAddressToConnect(addressList);
         this._addressList = addressList;
@@ -71,10 +63,9 @@ public class EpicsService implements JCAContextController {
         return _ctx != null;
     }
 
-    @Updated
-    public void changedAddress(Dictionary<String, String> properties) {
+    public void changedAddress(Dictionary<String, ?> properties) {
         if (properties.get(PROPERTY_ADDRESS_LIST) != null) {
-            this._addressList = properties.get(PROPERTY_ADDRESS_LIST);
+            this._addressList = properties.get(PROPERTY_ADDRESS_LIST).toString();
             LOG.fine("Address List changed, update JCA Context to " + this._addressList);
         }
     }
@@ -82,7 +73,6 @@ public class EpicsService implements JCAContextController {
     /**
      * Called when the service is stopped, it informs the known clients and closes the context
      */
-    @Invalidate
     public void stopService() {
         if (isContextAvailable()) {
             try {
@@ -97,7 +87,6 @@ public class EpicsService implements JCAContextController {
     /**
      * Starts the context and binds IEpicClients already found
      */
-    @Validate
     public void startService() {
         if (isContextAvailable()) {
             stopService();

@@ -3,11 +3,6 @@ package edu.gemini.epics.impl;
 import com.google.common.collect.ImmutableList;
 import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.EpicsObserver;
-import org.apache.felix.ipojo.annotations.Bind;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Requires;
-import org.apache.felix.ipojo.annotations.Unbind;
 
 import java.util.Map;
 import java.util.logging.Logger;
@@ -21,13 +16,11 @@ import static com.google.common.base.Preconditions.checkArgument;
  * Clients need to register an EpicsClient service and include the EpicsClient.EPICS_CHANNEL
  * service properties to indicate which channels it wants to listen to
  */
-@Component
-@Instantiate
 public class EpicsClientSubscriber {
     private static final Logger LOG = Logger.getLogger(EpicsClientSubscriber.class.getName());
     private final EpicsObserver _epicsObserver;
 
-    protected EpicsClientSubscriber(@Requires EpicsObserver epicsObserver) {
+    public EpicsClientSubscriber(EpicsObserver epicsObserver) {
         checkArgument(epicsObserver != null);
         LOG.fine("EpicsClientSubscriber created with " + epicsObserver);
         _epicsObserver = epicsObserver;
@@ -42,7 +35,6 @@ public class EpicsClientSubscriber {
      * @param epicsClient       An OSGi service implementing EpicsClient that appears in the system
      * @param serviceProperties The properties of the service registration
      */
-    @Bind(optional = true)
     public void bindEpicsClient(EpicsClient epicsClient, Map<String, Object> serviceProperties) {
         if (serviceHasValidProperties(serviceProperties)) {
             String[] channels = (String[]) serviceProperties.get(EpicsClient.EPICS_CHANNELS);
@@ -61,7 +53,6 @@ public class EpicsClientSubscriber {
      *
      * @param epicsClient An OSGi service implementing EpicsClient that disappears
      */
-    @Unbind
     public void unbindEpicsClient(EpicsClient epicsClient) {
         _epicsObserver.unregisterEpicsClient(epicsClient);
     }

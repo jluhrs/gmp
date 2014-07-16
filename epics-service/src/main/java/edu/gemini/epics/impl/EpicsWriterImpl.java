@@ -5,10 +5,6 @@ import edu.gemini.epics.JCAContextController;
 import edu.gemini.epics.ReadOnlyClientEpicsChannel;
 import edu.gemini.epics.ReadWriteClientEpicsChannel;
 import gov.aps.jca.CAException;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Requires;
 
 /**
  * Class EpicsWriterImpl
@@ -16,12 +12,9 @@ import org.apache.felix.ipojo.annotations.Requires;
  * @author Nicolas A. Barriga
  *         Date: 11/9/11
  */
-@Component
-@Instantiate
-@Provides(specifications = EpicsWriter.class)
 public class EpicsWriterImpl extends EpicsChannelFactory implements EpicsWriter {
 
-    public EpicsWriterImpl(@Requires JCAContextController epicsService) {
+    public EpicsWriterImpl(JCAContextController epicsService) {
         super(epicsService);
     }
 
@@ -38,19 +31,16 @@ public class EpicsWriterImpl extends EpicsChannelFactory implements EpicsWriter 
     @Override
     public ReadWriteClientEpicsChannel<Float> getFloatChannel(String channelName) {
         return _getFloatChannel(channelName);
-
     }
 
     @Override
     public ReadWriteClientEpicsChannel<String> getStringChannel(String channelName) {
         return _getStringChannel(channelName);
-
     }
 
     @Override
     public ReadWriteClientEpicsChannel<?> getChannelAsync(String channelName) {
         return _getChannelAsync(channelName);
-
     }
 
     @Override
