@@ -1,8 +1,7 @@
-package edu.gemini.epics.osgi;
+package edu.gemini.gmp.commands.records.osgi;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import edu.gemini.epics.*;
 import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.impl.EpicsClientSubscriber;
 import edu.gemini.epics.impl.EpicsObserverImpl;
@@ -21,7 +20,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class EpicsServiceFactory implements ManagedServiceFactory {
+public class RecordsManagedFactory implements ManagedServiceFactory {
     private static final Logger LOG = Logger.getLogger(EpicsServiceFactory.class.getName());
 
     private final Map<String, EpicsServices> existingServices = Maps.newHashMap();
@@ -42,18 +41,16 @@ public class EpicsServiceFactory implements ManagedServiceFactory {
         private final ServiceRef<EpicsWriter> epicsWriter;
         private final ServiceRef<EpicsReader> epicsReader;
         private final ServiceRef<EpicsObserverImpl> epicsObserver;
-        private final ServiceTracker<EpicsClient, EpicsClient> clientServiceTracker;
 
-        private EpicsServices(ServiceRef<EpicsService> epicsService, ServiceRef<EpicsWriter> epicsWriter, ServiceRef<EpicsReader> epicsReader, ServiceRef<EpicsObserverImpl> epicsObserver, ServiceTracker<EpicsClient, EpicsClient> clientServiceTracker) {
+        private EpicsServices(ServiceRef<EpicsService> epicsService, ServiceRef<EpicsWriter> epicsWriter, ServiceRef<EpicsReader> epicsReader, ServiceRef<EpicsObserverImpl> epicsObserver) {
             this.epicsService = epicsService;
             this.epicsWriter = epicsWriter;
             this.epicsReader = epicsReader;
             this.epicsObserver = epicsObserver;
-            this.clientServiceTracker = clientServiceTracker;
         }
     }
 
-    public EpicsServiceFactory(BundleContext context) {
+    public RecordsManagedFactory(BundleContext context) {
         this.context = context;
     }
 
@@ -83,12 +80,12 @@ public class EpicsServiceFactory implements ManagedServiceFactory {
 
                 final EpicsClientSubscriber epicsClientSubscriber = new EpicsClientSubscriber(epicsObserver);
 
-                ServiceTracker<EpicsClient, EpicsClient> clientServiceTracker = new ServiceTracker<EpicsClient, EpicsClient>(context, EpicsClient.class, new ServiceTrackerCustomizer<EpicsClient, EpicsClient>() {
+                new ServiceTracker<EpicsClient, EpicsClient>(context, EpicsClient.class, new ServiceTrackerCustomizer<EpicsClient, EpicsClient>() {
                     @Override
                     public EpicsClient addingService(ServiceReference<EpicsClient> reference) {
                         EpicsClient epicsClient = context.getService(reference);
                         HashMap<String, Object> properties = Maps.newHashMap();
-                        for (String key : reference.getPropertyKeys()) {
+                        for (String key: reference.getPropertyKeys()) {
                             properties.put(key, reference.getProperty(key));
                         }
                         epicsClientSubscriber.bindEpicsClient(epicsClient, ImmutableMap.copyOf(properties));
@@ -105,9 +102,8 @@ public class EpicsServiceFactory implements ManagedServiceFactory {
                         epicsClientSubscriber.unbindEpicsClient(epicsClient);
                     }
                 });
-                clientServiceTracker.open();
 
-                existingServices.put(pid, new EpicsServices(new ServiceRef<EpicsService>(esRegistration, epicsService), new ServiceRef<EpicsWriter>(ewRegistration, epicsWriter), new ServiceRef<EpicsReader>(erRegistration, epicsReader), new ServiceRef<EpicsObserverImpl>(eoRegistration, epicsObserver), clientServiceTracker));
+                existingServices.put(pid, new EpicsServices(new ServiceRef<EpicsService>(esRegistration, epicsService), new ServiceRef<EpicsWriter>(ewRegistration, epicsWriter), new ServiceRef<EpicsReader>(erRegistration, epicsReader), new ServiceRef<EpicsObserverImpl>(eoRegistration, epicsObserver)));
             } else {
                 LOG.warning("Cannot build " + EpicsService.class.getName() + " without the required properties");
             }
@@ -139,8 +135,6 @@ public class EpicsServiceFactory implements ManagedServiceFactory {
 
             ServiceRef<EpicsReader> erReference = existingServices.get(pid).epicsReader;
             erReference.serviceRegistration.unregister();
-
-            existingServices.get(pid).clientServiceTracker.close();
 
             existingServices.remove(pid);
         }
