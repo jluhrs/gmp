@@ -68,6 +68,8 @@ set -e # reenable
 # Start the GMP server if not already running
 #
 function startContainer() {
+    set +e # disable because egrep will return 1 on mismatch
+    pid_isrunning=`ps -eo pid | egrep ^[[:space:]]*${pid}$`
     if [ -z ${pid_isrunning} ]; then
         echo "Starting ${app_name} version $GMP_VERSION"
         # Will start pax-runner as a daemon reading the configuration from the file bin/runner.args
@@ -93,7 +95,7 @@ function startContainer() {
 function stopContainer() {
   if [ ! -z ${pid_isrunning} ]; then
     echo "Stopping ${app_name} with pid ${pid}"
-    exec java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop
+    java -cp ${app_root}/bin/pax-runner-${PAX_RUNNER_VERSION}.jar org.ops4j.pax.runner.daemon.DaemonLauncher --stop
     wait $!
     retval=$?
     sleep 10
