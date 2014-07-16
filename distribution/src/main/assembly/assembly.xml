@@ -77,6 +77,13 @@
             <directory>target/site/doxygen</directory>
             <outputDirectory>/doc</outputDirectory>
         </fileSet>
+        <!-- Copy startup scripts of any project specific config -->
+        <fileSet>
+            <directory>../instances/${gmp.instance}/src/main/etc/bin</directory>
+            <outputDirectory>/bin</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>0755</fileMode>
+        </fileSet>
         <fileSet>
             <directory>src/main/etc/bin</directory>
             <fileMode>0755</fileMode>
