@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class RecordsManagedFactory implements ManagedServiceFactory {
-    private static final Logger LOG = Logger.getLogger(EpicsServiceFactory.class.getName());
+    private static final Logger LOG = Logger.getLogger(RecordsManagedFactory.class.getName());
 
-    private final Map<String, EpicsServices> existingServices = Maps.newHashMap();
+    /*private final Map<String, EpicsServices> existingServices = Maps.newHashMap();
     private final BundleContext context;
 
     private class ServiceRef<T> {
@@ -48,10 +48,10 @@ public class RecordsManagedFactory implements ManagedServiceFactory {
             this.epicsReader = epicsReader;
             this.epicsObserver = epicsObserver;
         }
-    }
+    }*/
 
     public RecordsManagedFactory(BundleContext context) {
-        this.context = context;
+        //this.context = context;
     }
 
     public String getName() {
@@ -60,7 +60,7 @@ public class RecordsManagedFactory implements ManagedServiceFactory {
 
     @Override
     public void updated(String pid, Dictionary<String, ?> properties) {
-        if (existingServices.containsKey(pid)) {
+        /*if (existingServices.containsKey(pid)) {
             existingServices.get(pid).epicsService.service.changedAddress(properties);
         } else {
             if (checkProperties(properties)) {
@@ -107,45 +107,43 @@ public class RecordsManagedFactory implements ManagedServiceFactory {
             } else {
                 LOG.warning("Cannot build " + EpicsService.class.getName() + " without the required properties");
             }
-        }
+        }*/
     }
 
-    private EpicsService createService(Dictionary<String, ?> properties) {
+    /*private EpicsService createService(Dictionary<String, ?> properties) {
         String addressList = properties.get(EpicsService.PROPERTY_ADDRESS_LIST).toString();
         return new EpicsService(addressList);
     }
 
     private boolean checkProperties(Dictionary<String, ?> properties) {
         return properties.get(EpicsService.PROPERTY_ADDRESS_LIST) != null;
-    }
+    }*/
 
     @Override
     public void deleted(String pid) {
-        if (existingServices.containsKey(pid)) {
-            ServiceRef<EpicsObserverImpl> eoReference = existingServices.get(pid).epicsObserver;
-            eoReference.serviceRegistration.unregister();
-            eoReference.service.stopObserver();
+        /*if (existingServices.containsKey(pid)) {
+                    ServiceRef<EpicsObserverImpl> eoReference = existingServices.get(pid).epicsObserver;
+                    eoReference.serviceRegistration.unregister();
+                    eoReference.service.stopObserver();
 
-            ServiceRef<EpicsService> reference = existingServices.get(pid).epicsService;
-            reference.serviceRegistration.unregister();
-            reference.service.stopService();
+                    ServiceRef<EpicsService> reference = existingServices.get(pid).epicsService;
+                    reference.serviceRegistration.unregister();
+                    reference.service.stopService();
 
-            ServiceRef<EpicsWriter> ewReference = existingServices.get(pid).epicsWriter;
-            ewReference.serviceRegistration.unregister();
+                    ServiceRef<EpicsWriter> ewReference = existingServices.get(pid).epicsWriter;
+                    ewReference.serviceRegistration.unregister();
 
-            ServiceRef<EpicsReader> erReference = existingServices.get(pid).epicsReader;
-            erReference.serviceRegistration.unregister();
+                    ServiceRef<EpicsReader> erReference = existingServices.get(pid).epicsReader;
+                    erReference.serviceRegistration.unregister();
 
-            existingServices.remove(pid);
-        }
+                    existingServices.remove(pid);
+                }*/
     }
 
-    public void stopServices() {
+    /*public void stopServices() {
         for (String pid: existingServices.keySet()) {
             deleted(pid);
         }
-    }
-
-
+    }*/
 
 }
