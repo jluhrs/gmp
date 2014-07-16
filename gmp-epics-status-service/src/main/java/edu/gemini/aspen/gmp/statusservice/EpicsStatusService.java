@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gmp.statusservice;
 
-
 import edu.gemini.aspen.giapi.status.*;
 import edu.gemini.aspen.gmp.statusservice.generated.*;
 import edu.gemini.gmp.top.Top;
@@ -11,7 +10,6 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
-import org.apache.felix.ipojo.annotations.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
@@ -30,8 +28,6 @@ import java.util.logging.Logger;
  *         Date: Nov 9, 2010
  */
 //TODO:support multiple values (array)
-@Component
-@Provides
 public class EpicsStatusService implements StatusHandler {
     private static final Logger LOG = Logger.getLogger(EpicsStatusService.class.getName());
     private static final Map<AlarmCause, Status> CAUSE_MAP = new EnumMap<AlarmCause, Status>(AlarmCause.class);
@@ -60,19 +56,18 @@ public class EpicsStatusService implements StatusHandler {
 
     private final ChannelAccessServer _channelAccessServer;
     private final String xmlFileName;
-    private final Top epicsTop;
+    private final Top top;
 
 
-    public EpicsStatusService(@Requires ChannelAccessServer cas,
-            @Requires Top epicsTop,
-            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
+    public EpicsStatusService(ChannelAccessServer cas,
+            Top top,
+            String xmlFileName) {
         _channelAccessServer = cas;
         this.xmlFileName = xmlFileName;
-        this.epicsTop = epicsTop;
+        this.top = top;
     }
 
 
-    @Validate
     public void initialize() throws JAXBException, SAXException {
         EpicsStatusServiceConfiguration conf = new EpicsStatusServiceConfiguration(xmlFileName);
         initialize(conf.getSimulatedChannels());
@@ -87,11 +82,11 @@ public class EpicsStatusService implements StatusHandler {
         for (BaseChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             try {
                 if (item instanceof HealthChannelType) {
-                    addHealthVariable(item.getGiapiname(), epicsTop.buildEpicsChannelName(item.getEpicsname()), Health.valueOf("BAD"));
+                    addHealthVariable(item.getGiapiname(), top.buildEpicsChannelName(item.getEpicsname()), Health.valueOf("BAD"));
                 } else if (item instanceof AlarmChannelType) {
                     addAlarmVariable(item.getGiapiname(), epicsTop.buildEpicsChannelName(item.getEpicsname()), ChannelsHelper.getInitial((SimpleChannelType) item));
                 } else if (item instanceof SimpleChannelType) {
-                    addVariable(item.getGiapiname(), epicsTop.buildEpicsChannelName(item.getEpicsname()), ChannelsHelper.getInitial((SimpleChannelType) item));
+                    addVariable(item.getGiapiname(), top.buildEpicsChannelName(item.getEpicsname()), ChannelsHelper.getInitial((SimpleChannelType) item));
                 }
             } catch (CAException ex) {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
@@ -103,7 +98,6 @@ public class EpicsStatusService implements StatusHandler {
     /**
      * Destroys the registered channels in the ChannelAccessServer
      */
-    @Invalidate
     public void shutdown() {
         try {
             for (String name : channelMap.keySet().toArray(new String[0])) {
