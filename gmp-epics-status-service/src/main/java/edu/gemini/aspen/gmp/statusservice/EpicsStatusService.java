@@ -82,9 +82,9 @@ public class EpicsStatusService implements StatusHandler {
         for (BaseChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             try {
                 if (item instanceof HealthChannelType) {
-                    addHealthVariable(item.getGiapiname(), top.buildEpicsChannelName(item.getEpicsname()), Health.valueOf("BAD"));
+                    addHealthVariable(top.buildStatusItemName(item.getGiapiname()), top.buildEpicsChannelName(item.getEpicsname()), Health.valueOf("BAD"));
                 } else if (item instanceof AlarmChannelType) {
-                    addAlarmVariable(item.getGiapiname(), epicsTop.buildEpicsChannelName(item.getEpicsname()), ChannelsHelper.getInitial((SimpleChannelType) item));
+                    addAlarmVariable(top.buildStatusItemName(item.getGiapiname()), top.buildEpicsChannelName(item.getEpicsname()), ChannelsHelper.getInitial((SimpleChannelType) item));
                 } else if (item instanceof SimpleChannelType) {
                     addVariable(item.getGiapiname(), top.buildEpicsChannelName(item.getEpicsname()), ChannelsHelper.getInitial((SimpleChannelType) item));
                 }
@@ -199,13 +199,14 @@ public class EpicsStatusService implements StatusHandler {
 
     @Override
     public <T> void update(StatusItem<T> item) {
+        String itemName = item.getName();
         try {
             if (channelMap.containsKey(item.getName())) {
                 Channel ch = channelMap.get(item.getName());
                 ch.setValue(item.getValue());
-            } else if (alarmChannelMap.containsKey(item.getName())) {
+            } else if (alarmChannelMap.containsKey(itemName)) {
                 if (item instanceof AlarmStatusItem) {
-                    AlarmChannel ch = alarmChannelMap.get(item.getName());
+                    AlarmChannel ch = alarmChannelMap.get(itemName);
                     ch.setValue(item.getValue());
                     setAlarm((AlarmStatusItem<T>) item, ch);
                 } else {
