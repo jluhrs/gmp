@@ -1,18 +1,7 @@
 package edu.gemini.gmp.commands.records.osgi;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import edu.gemini.epics.api.EpicsClient;
-import edu.gemini.epics.impl.EpicsClientSubscriber;
-import edu.gemini.epics.impl.EpicsObserverImpl;
-import edu.gemini.epics.impl.EpicsReaderImpl;
-import edu.gemini.epics.impl.EpicsWriterImpl;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ManagedServiceFactory;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 import java.util.Dictionary;
 import java.util.HashMap;
