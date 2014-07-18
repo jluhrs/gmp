@@ -30,18 +30,18 @@ import java.util.logging.Logger;
  *         Date: 4/20/12
  */
 @Component
-public class RecordFactory {
-    private static final Logger LOG = Logger.getLogger(RecordFactory.class.getName());
+public class CommandRecordsBuilder {
+    private static final Logger LOG = Logger.getLogger(CommandRecordsBuilder.class.getName());
     List<ApplyRecord> applys = new ArrayList<ApplyRecord>();
     private final String resetRecordsName = "gmp:resetRecords";
     private Channel<Reset> reset;
     private final Top epicsTop;
     private final ChannelAccessServer cas;
 
-    protected RecordFactory(@Requires ChannelAccessServer cas,
-                            @Requires CommandSender cs,
-                            @Requires Top epicsTop,
-                            @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
+    protected CommandRecordsBuilder(@Requires ChannelAccessServer cas,
+                                    @Requires CommandSender cs,
+                                    @Requires Top epicsTop,
+                                    @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
 
         LOG.info("Constructing RecordFactory");
         this.cas = cas;

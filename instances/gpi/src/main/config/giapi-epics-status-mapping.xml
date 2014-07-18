@@ -326,7 +326,7 @@
         Start GEA channels
     -->
     <SimpleChannel>
-        <giapiname>gpi:ao.wfsDetTemp</giapiname>
+        <giapiname>gpi:ao:wfsDetTemp</giapiname>
         <epicsname>aoc:wfsDetTemp</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
@@ -569,7 +569,7 @@
         Start GEA channels
     -->
     <SimpleChannel>
-        <giapiname>gpi:aoc.darkLevel</giapiname>
+        <giapiname>gpi:ao:darkLevel</giapiname>
         <epicsname>aoc:darkLevel</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
