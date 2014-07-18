@@ -66,7 +66,7 @@ public class ApplyRecord {
                           String name) {
         LOG = Logger.getLogger("APPLY Record " + epicsTop.buildEpicsChannelName(name));
 
-        LOG.fine("Constructing APPLY Record");
+        LOG.info("Constructing APPLY Record " + epicsTop.buildEpicsChannelName(name));
         this.cas = cas;
         this.epicsTop = epicsTop;
         this.name = name;

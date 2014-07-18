@@ -95,7 +95,7 @@ public class ApplyTest {
 
     @Test
     public void applyTestObserve() throws CAException, InterruptedException, IOException, TimeoutException {
-        RecordFactory rf = new RecordFactory(cas, cs, epicsTop, xmlFile.getPath());
+        CommandRecordsBuilder rf = new CommandRecordsBuilder(cas, cs, epicsTop, xmlFile.getPath());
         rf.start();
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName("apply.DIR"), Dir.CLEAR);
         Channel<Integer> val = cas.createChannel(epicsTop.buildEpicsChannelName("apply.VAL"), 0);
@@ -123,7 +123,7 @@ public class ApplyTest {
 
     @Test
     public void testReset() throws CAException, TimeoutException, InterruptedException {
-        RecordFactory rf = new RecordFactory(cas, cs, epicsTop, xmlFile.getPath());
+        CommandRecordsBuilder rf = new CommandRecordsBuilder(cas, cs, epicsTop, xmlFile.getPath());
         rf.start();
 
         Channel<Reset> reset = cas.createChannel(epicsTop.buildEpicsChannelName("gmp:resetRecords"), Reset.NO_RESET);

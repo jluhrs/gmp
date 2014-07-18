@@ -11,7 +11,6 @@ import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
 import gov.aps.jca.CAException;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -29,19 +28,18 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 4/20/12
  */
-@Component
 public class CommandRecordsBuilder {
     private static final Logger LOG = Logger.getLogger(CommandRecordsBuilder.class.getName());
-    List<ApplyRecord> applys = new ArrayList<ApplyRecord>();
+    private List<ApplyRecord> applys = new ArrayList<ApplyRecord>();
     private final String resetRecordsName = "gmp:resetRecords";
     private Channel<Reset> reset;
     private final Top epicsTop;
     private final ChannelAccessServer cas;
 
-    protected CommandRecordsBuilder(@Requires ChannelAccessServer cas,
-                                    @Requires CommandSender cs,
-                                    @Requires Top epicsTop,
-                                    @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
+    public CommandRecordsBuilder(ChannelAccessServer cas,
+                                 CommandSender cs,
+                                 Top epicsTop,
+                                 String xmlFileName) {
 
         LOG.info("Constructing RecordFactory");
         this.cas = cas;
@@ -81,7 +79,6 @@ public class CommandRecordsBuilder {
 
     }
 
-    @Validate
     public void start() {
         startApplys();
         try {
@@ -93,7 +90,6 @@ public class CommandRecordsBuilder {
 
     }
 
-    @Invalidate
     public void stop() {
         stopApplys();
         cas.destroyChannel(reset);
