@@ -90,10 +90,10 @@ public class EpicsStatusServiceTest{
         ess.update(new AlarmStatus<Integer>("name1", 4, AlarmSeverity.ALARM_OK, AlarmCause.ALARM_CAUSE_OK));
 
         Set<String> testSet = new HashSet<String>();
-        testSet.add("name1");
-        testSet.add("name2");
-        testSet.add("name3");
-        testSet.add("name4");
+        testSet.add("gpi:name1");
+        testSet.add("gpi:name2");
+        testSet.add("gpi:name3");
+        testSet.add("gpi:name4");
         assertEquals(testSet, ess.getAlarmChannels().keySet());
 
 
@@ -105,10 +105,8 @@ public class EpicsStatusServiceTest{
     @Test
     public void testFull() throws Exception {
 
-
         //initialize and check channels are created
         EpicsStatusServiceConfiguration essc = new EpicsStatusServiceConfiguration(xml.getPath());
-
 
         EpicsStatusService ess = new EpicsStatusService(cas, epicsTop, xml.getPath());
         ess.initialize();
@@ -120,9 +118,9 @@ public class EpicsStatusServiceTest{
 
         for (BaseChannelType cc : essc.getSimulatedChannels().getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             if (cc instanceof HealthChannelType) {
-                assertTrue(hc.keySet().contains(cc.getGiapiname()));
+                assertTrue(hc.keySet().contains("gpi:" + cc.getGiapiname()));
             } else if (cc instanceof AlarmChannelType) {
-                assertTrue(ac.keySet().contains(cc.getGiapiname()));
+                assertTrue(ac.keySet().contains("gpi:" + cc.getGiapiname()));
             } else if (cc instanceof SimpleChannelType) {
                 assertTrue(nc.keySet().contains(cc.getGiapiname()));
             } else {
