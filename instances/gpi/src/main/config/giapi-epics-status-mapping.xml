@@ -1124,11 +1124,24 @@
         <initial>0</initial>
     </SimpleChannel>
 
-    <!-- remaning time -->
+    <!-- remaining time -->
     <SimpleChannel>
         <giapiname>gpi:ifs:timeLeft</giapiname>
         <epicsname>ifs:timeLeft</epicsname>
         <type>DOUBLE</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <!-- IFS Cryo Temperatures -->
+    <SimpleChannel>
+        <giapiname>gpi:cryo1TemperatureVal</giapiname>
+        <epicsname>ifs:cryo1Temperature</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:cryo2TemperatureVal</giapiname>
+        <epicsname>ifs:cryo2Temperature</epicsname>
+        <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
 
