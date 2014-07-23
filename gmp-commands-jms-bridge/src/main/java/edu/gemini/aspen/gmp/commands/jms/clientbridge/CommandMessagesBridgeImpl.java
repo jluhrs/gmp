@@ -9,11 +9,9 @@ import edu.gemini.jms.api.DestinationData;
 import edu.gemini.jms.api.DestinationType;
 import edu.gemini.jms.api.FormatException;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,9 +21,6 @@ import java.util.logging.Logger;
  * <br>
  * It also creates listeners to track responses to the commands
  */
-@Component
-@Instantiate
-@Provides
 public class CommandMessagesBridgeImpl implements CommandMessagesBridge {
     private static final Logger LOG = Logger.getLogger(CommandMessagesBridgeImpl.class.getName());
     private static final DestinationData REPLY_DESTINATION = new DestinationData(JmsKeys.GW_COMMAND_REPLY_QUEUE, DestinationType.QUEUE);
@@ -39,7 +34,7 @@ public class CommandMessagesBridgeImpl implements CommandMessagesBridge {
      * @param jmsProvider The JmsProvider required to listen for incoming requests and send the replies
      * @param commandSender The CommandSender to forward valid requests
      */
-    public CommandMessagesBridgeImpl(@Requires JmsProvider jmsProvider, @Requires CommandSender commandSender) {
+    public CommandMessagesBridgeImpl(JmsProvider jmsProvider, CommandSender commandSender) {
         Preconditions.checkArgument(jmsProvider != null, "JMS Provider cannot be null");
         Preconditions.checkArgument(commandSender != null, "CommandSender cannot be null");
         _jmsProvider = jmsProvider;
@@ -89,10 +84,6 @@ public class CommandMessagesBridgeImpl implements CommandMessagesBridge {
 
         listener.startJms(_jmsProvider);
         return listener;
-    }
-
-    @Validate
-    public void startComponent() {
     }
 
 }
