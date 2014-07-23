@@ -7,7 +7,6 @@ import edu.gemini.aspen.giapi.util.jms.HandlerResponseMessageParser;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.jms.api.*;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
@@ -22,10 +21,7 @@ import java.util.logging.Logger;
  * the GMP with their completion information. Completion information can be
  * either COMPLETED or ERROR.
  */
-@Component
-@Instantiate
-@Provides(specifications = JmsArtifact.class)
-class CompletionInfoListener implements MessageListener, JmsArtifact {
+public class CompletionInfoListener implements MessageListener, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(
             CompletionInfoListener.class.getName());
 
@@ -36,7 +32,7 @@ class CompletionInfoListener implements MessageListener, JmsArtifact {
     private final BaseMessageConsumer _messageConsumer;
 
 
-    public CompletionInfoListener(@Requires CommandUpdater updater) {
+    public CompletionInfoListener(CommandUpdater updater) {
         Preconditions.checkArgument(updater != null, "CommandUpdater cannot be null");
         _commandUpdater = updater;
 
@@ -86,11 +82,6 @@ class CompletionInfoListener implements MessageListener, JmsArtifact {
 
     private boolean messageContainsActionId(MapMessage message) throws JMSException {
         return message.propertyExists(JmsKeys.GMP_ACTIONID_PROP);
-    }
-
-    @Validate
-    public void startListening() {
-        // Required by iPojo
     }
 
     @Override

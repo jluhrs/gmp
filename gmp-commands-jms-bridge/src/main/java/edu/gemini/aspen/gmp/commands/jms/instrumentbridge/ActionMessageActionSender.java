@@ -9,15 +9,8 @@ import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.aspen.gmp.commands.model.SequenceCommandException;
 import edu.gemini.jms.api.*;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Invalidate;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Requires;
-import org.apache.felix.ipojo.annotations.Validate;
 
 import javax.jms.JMSException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

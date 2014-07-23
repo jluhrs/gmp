@@ -10,9 +10,6 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.commands.model.Action;
 import edu.gemini.aspen.gmp.commands.model.ActionMessage;
 import edu.gemini.aspen.gmp.commands.model.ActionMessageBuilder;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -22,10 +19,7 @@ import java.util.Map;
  * objects based on a given Action.
  * This service is required by SequenceCommandExecutors
  */
-@Component
-@Provides
-@Instantiate
-class JmsActionMessageBuilder implements ActionMessageBuilder {
+public class JmsActionMessageBuilder implements ActionMessageBuilder {
     /**
      * Map to store topics associated to each sequence command
      */
