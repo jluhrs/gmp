@@ -3,6 +3,8 @@ package edu.gemini.aspen.gmp.commands.jms.osgi;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.gmp.commands.jms.clientbridge.CommandMessagesBridge;
 import edu.gemini.aspen.gmp.commands.jms.clientbridge.CommandMessagesBridgeImpl;
+import edu.gemini.aspen.gmp.commands.jms.clientbridge.CommandMessagesConsumer;
+import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -17,6 +19,7 @@ public class Activator implements BundleActivator {
     private ServiceTracker<CommandSender, CommandSender> csServiceTracker;
     private ServiceTracker<JmsProvider, JmsProvider> jmsProviderServiceTracker;
     private ServiceRegistration<CommandMessagesBridge> bridgeServiceRegistration;
+    public ServiceRegistration<JmsArtifact> commandMessagesConsumerRegistration;
 
     @Override
     public void start(final BundleContext context) throws Exception {
@@ -31,7 +34,9 @@ public class Activator implements BundleActivator {
                     public JmsProvider addingService(ServiceReference<JmsProvider> JmsProviderReference) {
                         JmsProvider jmsProvider = context.getService(JmsProviderReference);
                         CommandMessagesBridgeImpl bridge = new CommandMessagesBridgeImpl(jmsProvider, cs);
+                        CommandMessagesConsumer commandMessagesConsumer = new CommandMessagesConsumer(bridge);
                         bridgeServiceRegistration = context.registerService(CommandMessagesBridge.class, bridge, new Hashtable<String, String>());
+                        commandMessagesConsumerRegistration = context.registerService(JmsArtifact.class, commandMessagesConsumer, new Hashtable<String, String>());
                         return jmsProvider;
                     }
 
@@ -45,6 +50,10 @@ public class Activator implements BundleActivator {
                         if (bridgeServiceRegistration != null) {
                             bridgeServiceRegistration.unregister();
                             bridgeServiceRegistration = null;
+                        }
+                        if (commandMessagesConsumerRegistration != null) {
+                            commandMessagesConsumerRegistration.unregister();
+                            commandMessagesConsumerRegistration = null;
                         }
                     }
                 });
@@ -81,6 +90,10 @@ public class Activator implements BundleActivator {
         if (bridgeServiceRegistration != null) {
             bridgeServiceRegistration.unregister();
             bridgeServiceRegistration = null;
+        }
+        if (commandMessagesConsumerRegistration != null) {
+            commandMessagesConsumerRegistration.unregister();
+            commandMessagesConsumerRegistration = null;
         }
 
     }
