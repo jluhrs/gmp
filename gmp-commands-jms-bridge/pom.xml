@@ -16,11 +16,27 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gmp</groupId>
     <artifactId>gmp-commands-jms-bridge</artifactId>
-    <version>0.4.20-SNAPSHOT</version>
+    <version>0.5.0-SNAPSHOT</version>
 
     <name>GMP Commands JMS Bridge</name>
 
     <packaging>bundle</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-ipojo-plugin</artifactId>
+                <version>${org.apache.felix.ipojo}</version>
+                <executions>
+                    <execution>
+                        <id>compile-ipojo</id>
+                        <phase/>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!--
@@ -48,10 +64,6 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-test-support</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
         </dependency>
     </dependencies>
 
