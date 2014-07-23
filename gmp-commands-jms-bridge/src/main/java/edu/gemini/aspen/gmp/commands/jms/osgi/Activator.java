@@ -4,6 +4,8 @@ import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.gmp.commands.jms.clientbridge.CommandMessagesBridge;
 import edu.gemini.aspen.gmp.commands.jms.clientbridge.CommandMessagesBridgeImpl;
 import edu.gemini.aspen.gmp.commands.jms.clientbridge.CommandMessagesConsumer;
+import edu.gemini.aspen.gmp.commands.jms.instrumentbridge.ActionMessageActionSender;
+import edu.gemini.aspen.gmp.commands.model.ActionSender;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import org.osgi.framework.BundleActivator;
@@ -19,10 +21,14 @@ public class Activator implements BundleActivator {
     private ServiceTracker<CommandSender, CommandSender> csServiceTracker;
     private ServiceTracker<JmsProvider, JmsProvider> jmsProviderServiceTracker;
     private ServiceRegistration<CommandMessagesBridge> bridgeServiceRegistration;
-    public ServiceRegistration<JmsArtifact> commandMessagesConsumerRegistration;
+    private ServiceRegistration<JmsArtifact> commandMessagesConsumerRegistration;
+    private ServiceRegistration<?> amServiceRegistration;
 
     @Override
     public void start(final BundleContext context) throws Exception {
+        ActionMessageActionSender actionMessageActionSender = new ActionMessageActionSender();
+        amServiceRegistration = context.registerService(new String[]{ActionSender.class.getName(), JmsArtifact.class.getName()}, actionMessageActionSender, new Hashtable<String, Object>());
+
         csServiceTracker = new ServiceTracker<CommandSender, CommandSender>(context, CommandSender.class, new ServiceTrackerCustomizer<CommandSender, CommandSender>() {
 
             @Override
@@ -31,12 +37,14 @@ public class Activator implements BundleActivator {
                 jmsProviderServiceTracker = new ServiceTracker<JmsProvider, JmsProvider>(context, JmsProvider.class, new ServiceTrackerCustomizer<JmsProvider, JmsProvider>() {
 
                     @Override
-                    public JmsProvider addingService(ServiceReference<JmsProvider> JmsProviderReference) {
-                        JmsProvider jmsProvider = context.getService(JmsProviderReference);
-                        CommandMessagesBridgeImpl bridge = new CommandMessagesBridgeImpl(jmsProvider, cs);
-                        CommandMessagesConsumer commandMessagesConsumer = new CommandMessagesConsumer(bridge);
-                        bridgeServiceRegistration = context.registerService(CommandMessagesBridge.class, bridge, new Hashtable<String, String>());
-                        commandMessagesConsumerRegistration = context.registerService(JmsArtifact.class, commandMessagesConsumer, new Hashtable<String, String>());
+                    public JmsProvider addingService(ServiceReference<JmsProvider> jmsProviderReference) {
+                        JmsProvider jmsProvider = context.getService(jmsProviderReference);
+                        if (bridgeServiceRegistration == null) {
+                            CommandMessagesBridgeImpl bridge = new CommandMessagesBridgeImpl(jmsProvider, cs);
+                            CommandMessagesConsumer commandMessagesConsumer = new CommandMessagesConsumer(bridge);
+                            bridgeServiceRegistration = context.registerService(CommandMessagesBridge.class, bridge, new Hashtable<String, String>());
+                            commandMessagesConsumerRegistration = context.registerService(JmsArtifact.class, commandMessagesConsumer, new Hashtable<String, String>());
+                        }
                         return jmsProvider;
                     }
 
@@ -94,6 +102,10 @@ public class Activator implements BundleActivator {
         if (commandMessagesConsumerRegistration != null) {
             commandMessagesConsumerRegistration.unregister();
             commandMessagesConsumerRegistration = null;
+        }
+        if (amServiceRegistration != null) {
+            amServiceRegistration.unregister();
+            amServiceRegistration = null;
         }
 
     }

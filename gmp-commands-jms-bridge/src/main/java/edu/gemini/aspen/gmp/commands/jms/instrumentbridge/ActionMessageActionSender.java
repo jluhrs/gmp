@@ -26,10 +26,7 @@ import java.util.logging.Logger;
  * the {@link edu.gemini.aspen.gmp.commands.model.ActionSender} interface
  * that is required by the SequenceCommandExecutor
  */
-@Component
-@Instantiate
-@Provides(specifications = {ActionSender.class, JmsArtifact.class})
-class ActionMessageActionSender implements ActionSender, JmsArtifact {
+public class ActionMessageActionSender implements ActionSender, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(ActionMessageActionSender.class.getName());
     private final HandlerResponseSenderReply _messageSender = new HandlerResponseSenderReply(JmsKeys.GW_COMMAND_TOPIC);
 
@@ -62,11 +59,6 @@ class ActionMessageActionSender implements ActionSender, JmsArtifact {
         LOG.fine("Attempt to send action message to " + destinationData + " and wait for reply");
 
         return _messageSender.sendMessageWithReply(destinationData, instrumentMessageBuilder, timeout);
-    }
-
-    @Validate
-    public void startJmsClient() {
-        // Required by IPojo
     }
 
     @Override
