@@ -19,24 +19,15 @@ import java.util.logging.Logger;
  * will be invoked whenever an update to the monitored EPICS channel is
  * received.
  */
-@Component
-@Instantiate
-@Provides
 public class EpicsRequestHandlerImpl implements EpicsRequestHandler, JmsArtifact {
     private static final Logger LOG = Logger.getLogger(EpicsRequestHandlerImpl.class.getName());
     private final EpicsReader epicsReader;
 
     private EpicsGetRequestConsumer _epicsRequestConsumer;
 
-    public EpicsRequestHandlerImpl(@Requires(proxy = false) EpicsReader epicsReader) {
+    public EpicsRequestHandlerImpl(EpicsReader epicsReader) {
         Preconditions.checkArgument(epicsReader != null, "Cannot create an EpicsRequestHandlerImpl with a null context");
         this.epicsReader = epicsReader;
-    }
-
-
-    @Invalidate
-    public void invalidate() {
-        LOG.info("Stopping EpicsRequestHandler bundle");
     }
 
     @Override
