@@ -22,6 +22,7 @@ public class Activator implements BundleActivator {
     private ServiceRegistration<?> erhRegistration;
     private ServiceRegistration<EpicsRegistrar> registrarServiceRegistration;
     private ServiceRegistration<ManagedServiceFactory> factoryService;
+    private ChannelConfigurationFactory configurationFactory;
 
     @Override
     public void start(final BundleContext context) throws Exception {
@@ -31,7 +32,8 @@ public class Activator implements BundleActivator {
         Hashtable<String, String> props = new Hashtable<String, String>();
         props.put("service.pid", ChannelListConfiguration.class.getName());
 
-        factoryService = context.registerService(ManagedServiceFactory.class, new ChannelConfigurationFactory(context), props);
+        configurationFactory = new ChannelConfigurationFactory(context, epicsUpdaterThread);
+        factoryService = context.registerService(ManagedServiceFactory.class, configurationFactory, props);
 
         erServiceTracker = new ServiceTracker<EpicsReader, EpicsReader>(context, EpicsReader.class, new ServiceTrackerCustomizer<EpicsReader, EpicsReader>() {
 

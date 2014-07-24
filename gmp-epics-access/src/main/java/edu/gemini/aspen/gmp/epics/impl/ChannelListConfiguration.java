@@ -23,10 +23,7 @@ public class ChannelListConfiguration implements EpicsConfiguration {
 
     private ImmutableSet<String> _validChannels;
     
-    private String configFileStr;
-
     public ChannelListConfiguration(String configFileStr) {
-        this.configFileStr = configFileStr;
         Document doc = getPropertiesDocument(configFileStr);
         _validChannels = parseChannels(doc);
     }
