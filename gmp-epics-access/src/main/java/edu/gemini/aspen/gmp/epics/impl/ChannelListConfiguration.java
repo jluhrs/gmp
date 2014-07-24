@@ -3,10 +3,6 @@ package edu.gemini.aspen.gmp.epics.impl;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import edu.gemini.aspen.gmp.epics.EpicsConfiguration;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Validate;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -22,28 +18,15 @@ import java.util.Set;
 /**
  * An Epics Configuration built on top of the OSGI properties infraestructure
  */
-@Component
-@Provides
 public class ChannelListConfiguration implements EpicsConfiguration {
-    private static final String CONF_FILE = "gmp.epics.conf";
     private static final String CHANNEL_TAG = "channel";
 
     private ImmutableSet<String> _validChannels;
     
-    @Property(mandatory = true, value = CONF_FILE, name = "configurationFile")
     private String configFileStr;
-
-    private ChannelListConfiguration() {
-
-    }
 
     public ChannelListConfiguration(String configFileStr) {
         this.configFileStr = configFileStr;
-        parseConfiguration();
-    }
-
-    @Validate
-    public void parseConfiguration() {
         Document doc = getPropertiesDocument(configFileStr);
         _validChannels = parseChannels(doc);
     }

@@ -3,9 +3,6 @@ package edu.gemini.aspen.gmp.epics.impl;
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.EpicsUpdate;
 import edu.gemini.aspen.gmp.epics.EpicsUpdateListener;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,16 +15,13 @@ import java.util.logging.Logger;
  * to receive Epics Updates, and then process them via the
  * registered listeners using a separate thread
  */
-@Component
-@Instantiate
-@Provides
 public class EpicsUpdaterThread implements EpicsRegistrar {
     private final static Logger LOG = Logger.getLogger(EpicsUpdaterThread.class.getName());
 
     private final BlockingQueue<EpicsUpdate<?>> _updateQueue =
             new LinkedBlockingQueue<EpicsUpdate<?>>();
 
-    Map<String, EpicsUpdateListener> _updatersMap = new HashMap<String, EpicsUpdateListener>();
+    private final Map<String, EpicsUpdateListener> _updatersMap = new HashMap<String, EpicsUpdateListener>();
 
     /**
      * The executor service provides a separate thread for the Updater thread

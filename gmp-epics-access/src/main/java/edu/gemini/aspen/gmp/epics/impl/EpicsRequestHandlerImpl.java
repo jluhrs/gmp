@@ -6,7 +6,6 @@ import edu.gemini.aspen.gmp.epics.jms.EpicsGetRequestConsumer;
 import edu.gemini.epics.EpicsReader;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import java.util.logging.Logger;
