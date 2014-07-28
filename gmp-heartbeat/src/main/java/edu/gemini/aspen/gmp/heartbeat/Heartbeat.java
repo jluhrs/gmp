@@ -5,10 +5,6 @@ import edu.gemini.aspen.giapi.status.setter.StatusSetter;
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.*;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Requires;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
