@@ -2,7 +2,6 @@ package edu.gemini.aspen.gmp.epics.simulator;
 
 import edu.gemini.aspen.gmp.epics.EpicsRegistrar;
 import edu.gemini.aspen.gmp.epics.simulator.channels.SimulatedEpicsChannel;
-import org.apache.felix.ipojo.annotations.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
