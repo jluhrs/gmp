@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Component
 public class EpicsSimulatorComponent {
     private static final Logger LOG = Logger.getLogger(EpicsSimulatorComponent.class.getName());
     private final String _simulationConfigFile;
@@ -19,22 +18,21 @@ public class EpicsSimulatorComponent {
     private Simulator _simulator;
     private SimulatedEpicsConfiguration conf;
 
-    public EpicsSimulatorComponent(@Requires EpicsRegistrar registrar,
-            @Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true) String simulationConfigFile) {
+    public EpicsSimulatorComponent(EpicsRegistrar registrar, String simulationConfigFile) {
         this._registrar = registrar;
         this._simulationConfigFile = simulationConfigFile;
     }
 
-    @Updated
     public void readConfiguration() {
         try {
             conf = new XMLBasedSimulatedEpicsConfiguration(new FileInputStream(_simulationConfigFile));
+            stopSimulation();
+            startSimulation();
         } catch (FileNotFoundException e) {
             LOG.log(Level.SEVERE, "Missing configuration file, cannot start", e);
         }
     }
 
-    @Validate
     public void startSimulation() {
         if (isConfigurationAvailable()) {
             LOG.info("GMP Epics Registrar module found. Starting simulation");
@@ -55,7 +53,6 @@ public class EpicsSimulatorComponent {
         return conf != null;
     }
 
-    @Invalidate
     public void stopSimulation() {
         if (isSimulationRunning()) {
             LOG.info("Stopping simulation");
