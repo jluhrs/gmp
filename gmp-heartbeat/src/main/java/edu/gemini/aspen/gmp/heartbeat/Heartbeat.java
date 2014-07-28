@@ -25,8 +25,6 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 12/29/10
  */
-@Component
-@Provides
 public class Heartbeat implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Heartbeat.class.getName());
     private final StatusSetter heartbeatSetter;
@@ -61,10 +59,10 @@ public class Heartbeat implements JmsArtifact {
     private ScheduledThreadPoolExecutor executor;
     private ScheduledFuture future;
 
-    public Heartbeat(@Property(name = "heartbeatName", value = "INVALID", mandatory = true) String heartbeatName,
-                     @Property(name = "sendJms", value = "INVALID", mandatory = true) boolean sendJms,
-                     @Requires Top top,
-                     @Requires StatusSetter heartbeatSetter) {
+    public Heartbeat(String heartbeatName,
+                     boolean sendJms,
+                     Top top,
+                     StatusSetter heartbeatSetter) {
         LOG.info("Heartbeat Constructor");
         this.top = top;
         this.heartbeatName = heartbeatName;
@@ -101,5 +99,9 @@ public class Heartbeat implements JmsArtifact {
         if (sendJms) {
             producer.stopJms();
         }
+    }
+
+    public void stopService() {
+        stopJms();
     }
 }
