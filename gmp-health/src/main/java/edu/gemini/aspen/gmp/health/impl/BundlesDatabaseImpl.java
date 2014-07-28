@@ -5,17 +5,11 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.AtomicDouble;
 import edu.gemini.aspen.gmp.health.BundlesDatabase;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Instantiate;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
 
-@Component
-@Instantiate
-@Provides
 public class BundlesDatabaseImpl implements BundlesDatabase {
     private final BundleContext context;
     private final AtomicDouble percentageActive = new AtomicDouble(1);

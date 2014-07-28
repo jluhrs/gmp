@@ -18,8 +18,6 @@ import java.util.logging.Logger;
 /**
  * Class Health evaluates the health of the GMP
  */
-@Component
-@Provides
 public class Health implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(Health.class.getName());
     private final StatusSetter statusSetter;
@@ -33,8 +31,8 @@ public class Health implements JmsArtifact {
 
     private edu.gemini.aspen.giapi.status.Health health = null;
 
-    public Health(@Property(name = "healthName", value = "INVALID", mandatory = true) String healthStatusName,
-            @Requires Top top, @Requires StatusSetter statusSetter, @Requires BundlesDatabase bundlesDatabase) {
+    public Health(String healthStatusName,
+            Top top, StatusSetter statusSetter, BundlesDatabase bundlesDatabase) {
         LOG.info("Health Constructor on status " + healthStatusName);
         this.top = top;
         this.statusSetter = statusSetter;
@@ -70,15 +68,20 @@ public class Health implements JmsArtifact {
     @Override
     public void stopJms() {
         LOG.info("Stop GMP Health");
-        future.cancel(false);
-        executor.shutdown();
-        try {
-            executor.awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        if (!future.isCancelled()) {
+            future.cancel(false);
+            executor.shutdown();
+            try {
+                executor.awaitTermination(1, TimeUnit.SECONDS);
+            } catch (InterruptedException ex) {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
         }
     }
 
+    public void stopService() {
+        stopJms();
+    }
 
     private class HealthChecker implements Runnable {
 
