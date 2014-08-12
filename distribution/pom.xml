@@ -314,6 +314,13 @@
             <properties>
                 <gmp.instance>gpi</gmp.instance>
             </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>edu.gemini.gpi</groupId>
+                    <artifactId>gpi-observation-status</artifactId>
+                    <version>0.2.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
         </profile>
         <profile>
             <id>production</id>
