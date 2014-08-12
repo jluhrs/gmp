@@ -52,6 +52,10 @@
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.gemini.util.osgi</groupId>
+            <artifactId>osgi</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
