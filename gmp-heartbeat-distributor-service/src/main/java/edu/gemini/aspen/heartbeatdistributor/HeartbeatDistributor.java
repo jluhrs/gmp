@@ -3,7 +3,6 @@ package edu.gemini.aspen.heartbeatdistributor;
 import edu.gemini.aspen.gmp.heartbeat.jms.JmsHeartbeatConsumer;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;

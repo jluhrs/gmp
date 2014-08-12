@@ -6,7 +6,6 @@ import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
-import org.apache.felix.ipojo.annotations.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,8 +16,6 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 3/14/11
  */
-@Component
-@Provides
 public class EpicsHeartbeat implements HeartbeatConsumer {
     private static final Logger LOG = Logger.getLogger(EpicsHeartbeat.class.getName());
 
@@ -30,18 +27,16 @@ public class EpicsHeartbeat implements HeartbeatConsumer {
 
     private Channel<Integer> ch = null;
 
-    public EpicsHeartbeat(@Requires ChannelAccessServer cas, @Requires Top epicsTop, @Property(name = "channelName", value = "INVALID", mandatory = true) String channelName) {
+    public EpicsHeartbeat(ChannelAccessServer cas, Top epicsTop, String channelName) {
         this.channelName = channelName;
         this.cas = cas;
         this.epicsTop = epicsTop;
     }
 
-    @Validate
     public void initialize() throws CAException {
         ch = cas.createChannel(epicsTop.buildEpicsChannelName(channelName), -1);
     }
 
-    @Invalidate
     public void shutdown() {
         try {
             cas.destroyChannel(ch);
@@ -50,7 +45,6 @@ public class EpicsHeartbeat implements HeartbeatConsumer {
         }
     }
 
-    @Updated
     public void update() throws CAException {
         shutdown();
         initialize();
