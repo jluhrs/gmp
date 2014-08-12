@@ -20,9 +20,6 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 3/10/11
  */
-@Component
-@Instantiate
-@Provides
 public class HeartbeatDistributor implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(HeartbeatDistributor.class.getName());
     private final List<HeartbeatConsumer> consumers = new CopyOnWriteArrayList<HeartbeatConsumer>();
@@ -94,7 +91,6 @@ public class HeartbeatDistributor implements JmsArtifact {
      *
      * @param consumer the consumer to register
      */
-    @Bind(aggregate = true, optional = true)
     public void bindHeartbeatConsumer(HeartbeatConsumer consumer) {
         consumers.add(consumer);
         LOG.info("Heartbeat Consumer registered at Distributor: " + consumer);
@@ -106,7 +102,6 @@ public class HeartbeatDistributor implements JmsArtifact {
      *
      * @param consumer the consumer to unregister
      */
-    @Unbind
     public void unbindHeartbeatConsumer(HeartbeatConsumer consumer) {
         consumers.remove(consumer);
         LOG.info("Removed Heartbeat Consumer from Distributor: " + consumer);
