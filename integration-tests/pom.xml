@@ -4,7 +4,7 @@
         <relativePath>../poms/scala/</relativePath>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>scala-compiled-bundle-settings</artifactId>
-        <version>14.3.10-SNAPSHOT</version>
+        <version>14.3.10</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -17,7 +17,7 @@
 
     <groupId>edu.gemini.aspen</groupId>
     <artifactId>integration-tests</artifactId>
-    <version>0.0.22-SNAPSHOT</version>
+    <version>0.0.22</version>
 
     <name>Integration Tests</name>
     <description>Integration Tests</description>
@@ -226,7 +226,7 @@
         <dependency>
             <groupId>org.ops4j.pax.runner</groupId>
             <artifactId>pax-runner</artifactId>
-            <version>${pax-runner.version}</version>
+            <version>1.8.6</version>
             <optional>true</optional>
         </dependency>
         <dependency>

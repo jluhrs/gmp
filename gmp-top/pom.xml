@@ -4,7 +4,7 @@
         <relativePath>../poms/compiled/</relativePath>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>compiled-bundle-settings</artifactId>
-        <version>14.3.10-SNAPSHOT</version>
+        <version>14.3.10</version>
     </parent>
 
     <properties>
@@ -15,7 +15,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.gmp</groupId>
     <artifactId>gmp-top</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <name>GMP Top</name>
     <description>GMP Top</description>
@@ -31,7 +31,7 @@
                 <executions>
                     <execution>
                         <id>compile-ipojo</id>
-                        <phase/>
+                        <phase />
                     </execution>
                 </executions>
             </plugin>

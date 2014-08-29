@@ -5,11 +5,11 @@
     <parent>
         <groupId>edu.gemini.aspen</groupId>
         <artifactId>giapi-osgi</artifactId>
-        <version>14.3.10-SNAPSHOT</version>
+        <version>14.3.10</version>
     </parent>
 
     <artifactId>gmp-server</artifactId>
-    <version>14.3.10-SNAPSHOT</version>
+    <version>14.3.10</version>
 
     <packaging>pom</packaging>
 
@@ -318,7 +318,7 @@
                 <dependency>
                     <groupId>edu.gemini.gpi</groupId>
                     <artifactId>gpi-observation-status</artifactId>
-                    <version>0.2.0-SNAPSHOT</version>
+                    <version>0.2.0</version>
                 </dependency>
             </dependencies>
         </profile>
@@ -340,7 +340,7 @@
                 <dependency>
                     <groupId>org.ops4j.pax.runner</groupId>
                     <artifactId>pax-runner</artifactId>
-                    <version>${pax-runner.version}</version>
+                    <version>1.8.6</version>
                 </dependency>
                 <!-- Felix Shell and GOGO -->
                 <dependency>
