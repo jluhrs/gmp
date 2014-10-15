@@ -25,23 +25,8 @@ class LocalStatusItemTranslator(top: Top, aggregate: StatusHandlerAggregate, xml
   def update[T](item: StatusItem[T]) {
     for (newItem <- translate(item)) {
       LOG.fine(s"Publishing translated status item: $newItem")
-      println(s"Publishing translated status item: $newItem")
       aggregate.update(newItem)
     }
   }
-
-  /*def startJms(provider: JmsProvider) {
-    LOG.finer("Start startJms")
-    getter.startJms(provider)
-    jmsStarted.set(true)
-    LOG.finer("End startJms")
-  }
-
-  def stopJms {
-    LOG.finer("Start stopJms")
-    jmsStarted.set(false)
-    getter.stopJms
-    LOG.finer("End stopJms")
-  }*/
 
 }
