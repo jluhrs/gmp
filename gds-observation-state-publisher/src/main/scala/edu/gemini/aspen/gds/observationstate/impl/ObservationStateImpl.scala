@@ -82,7 +82,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def getLastDataLabel(n: Int): Traversable[DataLabel] = {
     obsInfoMap.toList.sortWith({
-      (a: (DataLabel, ObservationState), b: (DataLabel, ObservationState)) => (a._2.timestamp.compareTo(b._2.timestamp) >= 0)
+      (a: (DataLabel, ObservationState), b: (DataLabel, ObservationState)) => (a._2.timestamp.compareTo(b._2.timestamp) > 0)
     }).take(n) map {
       a: (DataLabel, ObservationState) => a._1
     }

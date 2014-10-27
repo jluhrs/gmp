@@ -3,7 +3,7 @@ package edu.gemini.aspen.gds.performancemonitoring
 import org.scalatest.junit.AssertionsForJUnit
 import scala.Some
 import org.junit.{Test, Before}
-import org.joda.time.Duration
+import org.joda.time.{DateTime, Duration}
 
 class EventLoggerTest extends AssertionsForJUnit {
 
@@ -12,7 +12,13 @@ class EventLoggerTest extends AssertionsForJUnit {
       ((value.isShorterThan(target) || value == target) && (target.minus(value)).isShorterThan(margin)))
   }
 
-  val delay = 100
+  private def busyWait(value: Duration) = {
+    var start =  DateTime.now
+    while ( new Duration(start, DateTime.now).compareTo(value) < 0 ) {}
+  }
+
+  val delay = new Duration(100)
+  var precision = new Duration(50)
   var el: EventLogger[String, String] = _
 
   @Before
@@ -21,17 +27,17 @@ class EventLoggerTest extends AssertionsForJUnit {
 
     el.addEventSet("set")
     el.start("set", "hola")
-    Thread.sleep(delay)
+    busyWait(delay)
     el.end("set", "hola")
 
     el.addEventSet("otroset")
     el.start("otroset", "hola")
-    Thread.sleep(delay)
+    busyWait(delay)
     el.end("otroset", "hola")
 
     el.addEventSet("otrosetmas")
     el.start("otrosetmas", "hola")
-    Thread.sleep(delay)
+    busyWait(delay)
     el.end("otrosetmas", "hola")
 
     el.start("set", "chao")
@@ -42,7 +48,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   def testRetrieve() {
 
     val x = el.retrieve("set")
-    assert(check(x("hola").get, new Duration(delay), new Duration(100)), "Time is: " + x("hola").get)
+    assert(check(x("hola").get, delay, precision), "Time is: " + x("hola").get)
     assert(x("chao").isEmpty) //doesn't end
     assert(x("Oops").isEmpty) //doesn't start
   }
@@ -50,7 +56,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   @Test
   def testRetrieveEvent() {
     el.retrieve("set", "hola") match {
-      case Some(x: Duration) => assert(check(x, new Duration(delay), new Duration(50)), "Time is: " + x)
+      case Some(x: Duration) => assert(check(x, delay, precision), "Time is: " + x)
       case _ => fail()
     }
   }
@@ -66,7 +72,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   @Test
   def testRetrieveEventAverage() {
     el.average("hola") match {
-      case Some(x: Duration) => assert(check(x, new Duration(delay), new Duration(50)), "Time is: " + x)
+      case Some(x: Duration) => assert(check(x, delay, precision), "Time is: " + x)
       case _ => fail()
     }
   }
