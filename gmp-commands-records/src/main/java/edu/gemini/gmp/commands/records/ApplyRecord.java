@@ -39,7 +39,6 @@ public class ApplyRecord {
     private Channel<String> omss;
     private Channel<Integer> clid;
 
-
     private final CarRecord car;
 
     private final ChannelAccessServer cas;
@@ -63,7 +62,8 @@ public class ApplyRecord {
                           Top epicsTop,
                           Collection<SequenceCommand> seqComs,
                           Collection<ConfigRecordType> configs,
-                          String name) {
+                          String name,
+                          long timeout) {
         LOG = Logger.getLogger("APPLY Record " + epicsTop.buildEpicsChannelName(name));
 
         LOG.info("Constructing APPLY Record " + epicsTop.buildEpicsChannelName(name));
@@ -74,13 +74,13 @@ public class ApplyRecord {
 
         for (SequenceCommand seq : seqComs) {
             if (seq.equals(SequenceCommand.OBSERVE)) {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), Lists.<String>newArrayList(seq.getName() + ".DATA_LABEL")));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), Lists.<String>newArrayList(seq.getName() + ".DATA_LABEL"), timeout));
             } else if (seq.equals(SequenceCommand.REBOOT)) {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), Lists.<String>newArrayList(seq.getName() + ".REBOOT_OPT")));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), Lists.<String>newArrayList(seq.getName() + ".REBOOT_OPT"), timeout));
             } else if (seq.equals(SequenceCommand.ENGINEERING)) {
                 //We do not want to expose engineering command to EPICS at this moment
             } else {
-                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), new ArrayList<String>()));
+                cads.add(new CadRecordImpl(cas, cs, epicsTop, seq.getName(), new ArrayList<String>(), timeout));
             }
         }
         for (ConfigRecordType configRecord : configs) {
@@ -90,7 +90,7 @@ public class ApplyRecord {
                     attributes.add(configSet.getName() + "." + field);
                 }
             }
-            cads.add(new CadRecordImpl(cas, cs, epicsTop, configRecord.getName(), attributes));
+            cads.add(new CadRecordImpl(cas, cs, epicsTop, configRecord.getName(), attributes, timeout));
         }
     }
 

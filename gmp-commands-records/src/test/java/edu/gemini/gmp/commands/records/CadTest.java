@@ -29,8 +29,6 @@ import static org.junit.Assert.fail;
  *         Date: 4/11/11
  */
 public class CadTest {
-    private static final Logger LOG = Logger.getLogger(CadTest.class.getName());
-
     private ChannelAccessServerImpl cas;
     private final Top epicsTop = new TopImpl("gpi", "gpi");
     private final String cadName = "observe";
@@ -49,7 +47,7 @@ public class CadTest {
 
     @Test
     public void cadTest() throws CAException, InterruptedException, TimeoutException {
-        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
+        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"), 1000);
         cad.start();
 
         //test mark
@@ -108,7 +106,7 @@ public class CadTest {
 
     @Test
     public void cadStateTransitionTest() throws CAException, BrokenBarrierException, InterruptedException, TimeoutException {
-        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"));
+        CadRecordImpl cad = new CadRecordImpl(cas, cs, epicsTop, cadName, Lists.newArrayList(cadName + ".DATA_LABEL"), 1000);
         cad.start();
         Channel<String> a = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + ".DATA_LABEL"), "");
         a.setValue("label");

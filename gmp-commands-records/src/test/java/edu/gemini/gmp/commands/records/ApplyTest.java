@@ -97,6 +97,7 @@ public class ApplyTest {
     public void applyTestObserve() throws CAException, InterruptedException, IOException, TimeoutException {
         CommandRecordsBuilder rf = new CommandRecordsBuilder(cas, cs, epicsTop, xmlFile.getPath());
         rf.start();
+
         Channel<Dir> dir = cas.createChannel(epicsTop.buildEpicsChannelName("apply.DIR"), Dir.CLEAR);
         Channel<Integer> val = cas.createChannel(epicsTop.buildEpicsChannelName("apply.VAL"), 0);
         Channel<Integer> clid = cas.createChannel(epicsTop.buildEpicsChannelName("apply.CLID"), 0);
@@ -106,11 +107,10 @@ public class ApplyTest {
         Channel<Integer> carClid = cas.createChannel(epicsTop.buildEpicsChannelName(cadName + "C.CLID"), 0);
         ReadWriteClientEpicsChannel<String> data_label = epicsWriter.getStringChannel(epicsTop.buildEpicsChannelName(cadName + ".DATA_LABEL"));
 
-
         data_label.setValue("label");
-        Thread.sleep(200);
+        Thread.sleep(1500);
         dir.setValue(Dir.START);
-        Thread.sleep(500);
+        Thread.sleep(1500);
         assertEquals(new Integer(1), clid.getFirst());
         assertEquals(new Integer(1), cadClid.getFirst());
         assertEquals(new Integer(1), carClid.getFirst());

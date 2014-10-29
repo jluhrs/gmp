@@ -18,8 +18,6 @@ import java.util.logging.Logger;
  */
 public class CadRecordImpl implements CadRecord {
     private final Logger LOG;
-
-
     private CadState state = CadState.CLEAR;
 
     final private CommandSender cs;
@@ -30,6 +28,8 @@ public class CadRecordImpl implements CadRecord {
     final private String name;
     final private List<String> attributeNames = new ArrayList<String>();
     final private CarRecord car;
+    private final long timeout;
+
 
     /**
      * Constructor
@@ -44,7 +44,9 @@ public class CadRecordImpl implements CadRecord {
                             CommandSender cs,
                             Top epicsTop,
                             String name,
-                            Iterable<String> attributes) {
+                            Iterable<String> attributes,
+                            long timeout) {
+        this.timeout = timeout;
         LOG = Logger.getLogger("CAD Record " + epicsTop.buildEpicsChannelName(name));
 
         this.cs = cs;
@@ -96,7 +98,7 @@ public class CadRecordImpl implements CadRecord {
         if (state != CadState.CLEAR) {
             LOG.info("CAD Record: " + seqCom.getName() + " in State: " + state + " received Directive: " + dir);
         }
-        CadState newState = state.processDir(dir, epicsCad, cs, seqCom, car);
+        CadState newState = state.processDir(dir, epicsCad, cs, seqCom, car, timeout);
 
         if (newState == CadState.CLEAR) {
             if (dir == Dir.START || dir == Dir.CLEAR || dir == Dir.STOP) {

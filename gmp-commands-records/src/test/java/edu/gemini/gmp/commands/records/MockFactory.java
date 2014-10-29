@@ -33,11 +33,14 @@ public class MockFactory {
         Command preset_start = new Command(SequenceCommand.valueOf(cadName.toUpperCase()), Activity.PRESET_START, DefaultConfiguration.configurationBuilder().
                 withConfiguration("DATA_LABEL", "label").
                 build());
+        when(cs.sendCommand(eq(preset), Matchers.<CompletionListener>any(), anyLong())).thenReturn(HandlerResponse.ACCEPTED);
         when(cs.sendCommand(eq(preset), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);
+        when(cs.sendCommand(eq(start), Matchers.<CompletionListener>any(), anyLong())).thenReturn(HandlerResponse.COMPLETED);
         when(cs.sendCommand(eq(start), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.COMPLETED);
+        when(cs.sendCommand(eq(cancel), Matchers.<CompletionListener>any(), anyLong())).thenReturn(HandlerResponse.ACCEPTED);
         when(cs.sendCommand(eq(cancel), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.ACCEPTED);
+        when(cs.sendCommand(eq(preset_start), Matchers.<CompletionListener>any(), anyLong())).thenReturn(HandlerResponse.COMPLETED);
         when(cs.sendCommand(eq(preset_start), Matchers.<CompletionListener>any())).thenReturn(HandlerResponse.COMPLETED);
-        when(cs.sendCommand(Matchers.<Command>any(), Matchers.<CompletionListener>any(), anyLong())).thenReturn(HandlerResponse.ACCEPTED);
 
         return cs;
     }

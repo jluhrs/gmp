@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 enum CadState {
     CLEAR {
         @Override
-        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
+        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car, long timeout) {
             switch (dir) {
                 case MARK:
                     try {
@@ -63,7 +63,7 @@ enum CadState {
     },
     MARKED {
         @Override
-        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
+        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car, long timeout) {
 
             HandlerResponse resp;
             switch (dir) {
@@ -91,7 +91,7 @@ enum CadState {
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
-                    resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad);
+                    resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad, timeout);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
@@ -115,7 +115,7 @@ enum CadState {
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
-                    resp = doActivity(Activity.PRESET_START, cs, seqCom, epicsCad.getClid(), car, epicsCad);
+                    resp = doActivity(Activity.PRESET_START, cs, seqCom, epicsCad.getClid(), car, epicsCad, timeout);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.STARTED)) {
                             endProcessingNoCarUpdate(epicsCad);
@@ -138,7 +138,7 @@ enum CadState {
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
-                    resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad);
+                    resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad, timeout);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
@@ -160,7 +160,7 @@ enum CadState {
     },
     IS_PRESET {
         @Override
-        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car) {
+        public CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car, long timeout) {
 
             HandlerResponse resp;
             switch (dir) {
@@ -188,7 +188,7 @@ enum CadState {
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
-                    resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad);
+                    resp = doActivity(Activity.PRESET, cs, seqCom, epicsCad.getClid(), car, epicsCad, timeout);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
@@ -212,7 +212,7 @@ enum CadState {
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
-                    resp = doActivity(Activity.START, cs, seqCom, epicsCad.getClid(), car, epicsCad);
+                    resp = doActivity(Activity.START, cs, seqCom, epicsCad.getClid(), car, epicsCad, timeout);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.STARTED)) {
                             endProcessingNoCarUpdate(epicsCad);
@@ -235,7 +235,7 @@ enum CadState {
                     } catch (CAException e) {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
-                    resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad);
+                    resp = doActivity(Activity.CANCEL, cs, seqCom, epicsCad.getClid(), car, epicsCad, timeout);
                     try {
                         if (resp.getResponse().equals(HandlerResponse.Response.ACCEPTED)) {
                             endProcessing(epicsCad, car);
@@ -267,9 +267,9 @@ enum CadState {
      * @param car      the CAR associated with the given CAD
      * @return the new state after processing the directive
      */
-    public abstract CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car);
+    public abstract CadState processDir(Dir dir, EpicsCad epicsCad, CommandSender cs, SequenceCommand seqCom, CarRecord car, long timeout);
 
-    private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CarRecord car, EpicsCad epicsCad) {
+    private static HandlerResponse doActivity(Activity activity, CommandSender cs, SequenceCommand seqCom, Integer id, CarRecord car, EpicsCad epicsCad, long timeout) {
         HandlerResponse resp;
         Map<String, String> config = epicsCad.getConfig();
         try {
@@ -278,9 +278,9 @@ enum CadState {
                 for (String name : config.keySet()) {
                     builder.withConfiguration(name, config.get(name));
                 }
-                resp = cs.sendCommand(new Command(seqCom, activity, builder.build()), new CadCompletionListener(id, car));
+                resp = cs.sendCommand(new Command(seqCom, activity, builder.build()), new CadCompletionListener(id, car), timeout);
             } else {
-                resp = cs.sendCommand(new Command(seqCom, activity), new CadCompletionListener(id, car));
+                resp = cs.sendCommand(new Command(seqCom, activity), new CadCompletionListener(id, car), timeout);
             }
         } catch (IllegalArgumentException ex) {
             resp = HandlerResponse.createError("Trying to send an " + seqCom.getName() + " with an illegal (or without) configuration. " + ex);

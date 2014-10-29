@@ -74,7 +74,7 @@ public class CommandRecordsBuilder {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
-            applys.add(new ApplyRecord(cas, cs, epicsTop, seqComs, configs, apply.getName()));
+            applys.add(new ApplyRecord(cas, cs, epicsTop, seqComs, configs, apply.getName(), apply.getTimeout()));
         }
 
     }
