@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Records xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="giapi-apply-config.xsd">
-    <Apply name="apply">
+    <Apply name="apply" timeout="10000">
         <SequenceCommand>TEST</SequenceCommand>
         <SequenceCommand>REBOOT</SequenceCommand>
         <SequenceCommand>INIT</SequenceCommand>
@@ -17,12 +17,12 @@
         <SequenceCommand>ABORT</SequenceCommand>
     </Apply>
 
-    <Apply name="ao:apply">
+    <Apply name="ao:apply" timeout="10000">
         <SequenceCommand>GUIDE</SequenceCommand>
         <SequenceCommand>END_GUIDE</SequenceCommand>
     </Apply>
 
-    <Apply name="inst:apply">
+    <Apply name="inst:apply" timeout="10000">
         <ConfigRecord name="inst:config">
             <ConfigSet name="configAo">
                 <field>useAo</field>

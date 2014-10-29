@@ -2,6 +2,7 @@
 
 # Set felix as the platform
 --platform=felix
+--version=${felix.framework.version}
 
 # Minimal debug from pax-runner
 --log=info
