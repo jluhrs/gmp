@@ -35,7 +35,7 @@
         <osgi.shell.telnet.ip>0.0.0.0</osgi.shell.telnet.ip>
         <osgi.shell.telnet.port>15001</osgi.shell.telnet.port>
         <org.osgi.framework.system.packages.extra>javax.xml.parsers,com.sun.jini,com.sun.javadoc,sun.io,sun.swing,sun.misc,com.sun,sun.security.action,edu.gemini.rmi.server,sun.rmi.runtime,com.sun.xml.internal.bind</org.osgi.framework.system.packages.extra>
-        <org.osgi.framework.system.packages.extra>org.osgi.framework.bootdelegation</org.osgi.framework.system.packages.extra>
+        <org.osgi.framework.bootdelegation>com.sun.xml.internal.bind</org.osgi.framework.bootdelegation>
         <vmo.settings>-Xverify:none -XX:+UnlockDiagnosticVMOptions -XX:+UnsyncloadClass</vmo.settings>
 
         <!-- Logging properties -->
