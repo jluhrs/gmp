@@ -1,7 +1,9 @@
 package edu.gemini.epics;
 
+import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
+import edu.gemini.epics.api.ChannelListener;
 import edu.gemini.epics.api.EpicsClient;
 import edu.gemini.epics.impl.EpicsObserverImpl;
 import edu.gemini.epics.impl.EpicsReaderImpl;
@@ -10,6 +12,8 @@ import gov.aps.jca.TimeoutException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -107,5 +111,32 @@ public class ReadOnlyClientEpicsChannelTest {
 
         assertEquals("Failed to read Enum channel.", readValue, testValue);
     }
+
+    private boolean updated = false;
+
+    @Test
+    public void testMonitor() throws CAException, TimeoutException {
+        Channel ch = giapicas.createChannel(CHANNEL_NAME, 1);
+
+        ReadOnlyClientEpicsChannel<Integer> roChannel = epicsReader.getIntegerChannel(CHANNEL_NAME);
+        roChannel.registerListener(new ChannelListener<Integer>() {
+            @Override
+            public void valueChanged(String channelName, List<Integer> values) {
+                updated = true;
+            }
+        });
+
+        ch.setValue(ImmutableList.of(2));
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue("Failed to trigger channel monitor.", updated);
+
+    }
+
 
 }

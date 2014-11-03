@@ -63,6 +63,7 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
             }
         };
         listeners.put(tChannelListener, new MonitorListenerPair(channel.addMonitor(Monitor.VALUE, ml), ml));
+        channel.getContext().flushIO();
     }
 
     @Override
@@ -89,6 +90,7 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
             }
         };
         listeners.put(tChannelAlarmListener, new MonitorListenerPair(channel.addMonitor(Monitor.VALUE, ml), ml));
+        channel.getContext().flushIO();
     }
 
     @Override
