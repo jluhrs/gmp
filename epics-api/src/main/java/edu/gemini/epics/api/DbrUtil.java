@@ -62,17 +62,23 @@ public class DbrUtil {
             }
             return values;
         } else if (type.isENUM()) {
-            List<String> values = new ArrayList<String>();
+            List<Short> values = new ArrayList<Short>();
             Object objVal = dbr.getValue();
-            int length = Array.getLength(objVal);
-            for (int i = 0; i < length; i ++) {
-                Object arrayElement = Array.get(objVal, i);
-                values.add(arrayElement.toString());
+            short[] val = (short[]) objVal;
+            for (short a : val) {
+                values.add(a);
             }
             return values;
         } else {
             throw new UnsupportedOperationException("Type " + dbr.getType() + " is not supported by this class");
         }
+    }
+
+    public static <T extends Enum<T>> List<T> mapEnum(List<String> inValues, Class<T> enumClass) {
+        List<T> values = new ArrayList<T>();
+
+
+        return values;
     }
 
 }

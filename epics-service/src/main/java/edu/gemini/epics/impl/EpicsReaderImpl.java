@@ -40,6 +40,11 @@ public class EpicsReaderImpl extends EpicsChannelFactory implements EpicsReader 
     }
 
     @Override
+    public <T extends Enum<T>> ReadOnlyClientEpicsChannel<T> getEnumChannel(String channelName, Class<T> enumClass) {
+        return _getEnumChannel(channelName, enumClass);
+    }
+
+    @Override
     public ReadOnlyClientEpicsChannel<?> getChannelAsync(String channelName) {
         return _getChannelAsync(channelName);
 

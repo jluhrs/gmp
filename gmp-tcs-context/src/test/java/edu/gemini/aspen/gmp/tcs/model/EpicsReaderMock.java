@@ -114,6 +114,11 @@ public class EpicsReaderMock implements EpicsReader {
     }
 
     @Override
+    public <T extends Enum<T>> ReadOnlyClientEpicsChannel<T> getEnumChannel(String channelName, Class<T> enumClass) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public ReadOnlyClientEpicsChannel<?> getChannelAsync(String channel) throws EpicsException {
         throw new UnsupportedOperationException();
     }

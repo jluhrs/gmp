@@ -9,6 +9,8 @@ import edu.gemini.epics.JCAContextController;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBRType;
+import gov.aps.jca.dbr.DBR_LABELS_Enum;
 import gov.aps.jca.event.*;
 
 //import java.lang.ref.PhantomReference;
@@ -16,6 +18,8 @@ import gov.aps.jca.event.*;
 //import java.lang.ref.ReferenceQueue;
 //import java.util.IdentityHashMap;
 //import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -158,6 +162,49 @@ class EpicsChannelFactory {
             throw new IllegalArgumentException("Channel " + channelName + " can be connected to, but is of incorrect type.");
         } else {
             ch = new ReadWriteEpicsChannelImpl<String>(cajChannel);
+//            ch2Ref.put(new PhantomReference<ReadWriteEpicsChannelImpl<?>>(ch, refQueue), cajChannel);
+        }
+
+        return ch;
+    }
+
+    protected <T extends Enum<T>> ReadWriteEpicsEnumChannel<T> _getEnumChannel(String channelName, Class<T> enumClass) {
+        ReadWriteEpicsEnumChannel<T> ch;
+
+        CAJChannel cajChannel = bindChannel(channelName);
+        if (!cajChannel.getFieldType().isENUM()) {
+            try {
+                cajChannel.destroy();
+            } catch (CAException e) {
+                LOG.log(Level.WARNING, e.getMessage(), e);
+            }
+            throw new IllegalArgumentException("Channel " + channelName + " can be connected to, but is of incorrect type.");
+        } else {
+            //Check that the channel enum values match the enum class values
+            DBR_LABELS_Enum labels;
+            try {
+                labels = (DBR_LABELS_Enum) cajChannel.get(DBRType.LABELS_ENUM, 1);
+                _ctx.pendIO(1.0);
+            } catch (CAException e) {
+                throw new EpicsException("Enum values cannot be retrieved for Epics channel " + channelName, e);
+            } catch (TimeoutException e) {
+                throw new EpicsException("Enum values cannot be retrieved for Epics channel " + channelName, e);
+            }
+            if ( labels == null ) {
+                throw new EpicsException("Enum channel " + channelName + " doesn't provide labels.", null );
+            }
+            //Verify that the enumClass elements correspond with the EPICS enum values
+            T[] enumConstants = enumClass.getEnumConstants();
+            int enumSize = enumConstants.length;
+            boolean goodEnum = labels.getLabels().length == enumSize;
+            for ( int i = 0; goodEnum && i< enumSize; ++i) {
+                goodEnum = enumConstants[i].toString().equals(labels.getLabels()[i]);
+            }
+            if(!goodEnum) {
+                throw new EpicsException("Enum type provided for " + channelName + " doesn't correspond with Epics enum", null );
+            }
+
+            ch = new ReadWriteEpicsEnumChannel<T>(cajChannel, enumClass);
 //            ch2Ref.put(new PhantomReference<ReadWriteEpicsChannelImpl<?>>(ch, refQueue), cajChannel);
         }
 

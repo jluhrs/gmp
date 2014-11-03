@@ -18,7 +18,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   }
 
   val delay = new Duration(100)
-  var precision = new Duration(50)
+  var precision = new Duration(100)
   var el: EventLogger[String, String] = _
 
   @Before

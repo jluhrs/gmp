@@ -41,7 +41,7 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
 
     @Override
     public List<T> getAll() throws CAException, TimeoutException {
-        return (List<T>) DbrUtil.extractValues(getDBR());
+        return mapValues(DbrUtil.extractValues(getDBR()));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
         MonitorListener ml = new MonitorListener() {
             @Override
             public void monitorChanged(MonitorEvent ev) {
-                tChannelListener.valueChanged(channel.getName(), (List<T>) DbrUtil.extractValues(ev.getDBR()));
+                tChannelListener.valueChanged(channel.getName(), mapValues(DbrUtil.extractValues(ev.getDBR())));
             }
         };
         listeners.put(tChannelListener, new MonitorListenerPair(channel.addMonitor(Monitor.VALUE, ml), ml));
@@ -83,7 +83,7 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
             @Override
             public void monitorChanged(MonitorEvent ev) {
                 tChannelAlarmListener.valueChanged(channel.getName(),
-                        (List<T>) DbrUtil.extractValues(ev.getDBR()),
+                        mapValues(DbrUtil.extractValues(ev.getDBR())),
                         ev.getDBR().isSTS() ? ((STS) ev.getDBR()).getStatus() : Status.NO_ALARM,
                         ev.getDBR().isSTS() ? ((STS) ev.getDBR()).getSeverity() : Severity.NO_ALARM);
             }
@@ -117,5 +117,9 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
     public void destroy() throws CAException {
         channel.destroy();
         listeners.clear();
+    }
+
+    protected List<T> mapValues(List<?> vals) {
+        return (List<T>) vals;
     }
 }

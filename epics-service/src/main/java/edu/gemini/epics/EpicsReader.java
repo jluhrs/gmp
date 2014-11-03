@@ -23,6 +23,8 @@ public interface EpicsReader {
 
     ReadOnlyClientEpicsChannel<String> getStringChannel(String channelName);
 
+    <T extends Enum<T>> ReadOnlyClientEpicsChannel<T> getEnumChannel(String channelName, Class<T> enumClass);
+
     ReadOnlyClientEpicsChannel<?> getChannelAsync(String channelName);
 
     void destroyChannel(ReadOnlyClientEpicsChannel<?> channel) throws CAException;
