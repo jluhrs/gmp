@@ -1,5 +1,6 @@
 package edu.gemini.gmp.commands.records;
 
+import com.google.common.base.Optional;
 import edu.gemini.cas.ChannelAccessServer;
 import edu.gemini.epics.api.Channel;
 import gov.aps.jca.CAException;
@@ -20,12 +21,10 @@ public class CarRecord {
     private final Logger LOG;
 
     enum Val {
-        UNAVAILABLE,
         IDLE,
         PAUSED,
-        ERR,
-        BUSY,
-        UNKNOWN
+        ERROR,
+        BUSY
     }
 
     /**
@@ -183,7 +182,7 @@ public class CarRecord {
      */
     void setError(Integer id, String message, int errorCode) {
         try {
-            changeState(Val.ERR, message, errorCode, id);
+            changeState(Val.ERROR, message, errorCode, id);
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         } catch (TimeoutException e) {
@@ -197,15 +196,15 @@ public class CarRecord {
      *
      * @return state of the CAR
      */
-    public synchronized Val getState() {
+    public synchronized Optional<Val> getState() {
         try {
-            return val.getFirst();
+            return Optional.fromNullable(val.getFirst());
         } catch (CAException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);  //To change body of catch statement use File | Settings | File Templates.
-            return Val.UNKNOWN;
+            return Optional.absent();
         } catch (TimeoutException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
-            return Val.UNKNOWN;
+            return Optional.absent();
         }
     }
 

@@ -1,5 +1,6 @@
 package edu.gemini.gmp.commands.records;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import edu.gemini.aspen.giapi.commands.CommandSender;
 import edu.gemini.aspen.giapi.commands.SequenceCommand;
@@ -154,7 +155,7 @@ public class ApplyRecord {
             if (retVal) {
                 boolean idle = true;
                 for (CadRecord cad : cads) {
-                    if (cad.getCar().getState() != CarRecord.Val.IDLE) {
+                    if (!cad.getCar().getState().equals(Optional.fromNullable(CarRecord.Val.IDLE))) {
                         idle = false;
                     }
                 }
@@ -220,19 +221,19 @@ public class ApplyRecord {
 
     private void processCarStatusChange(CarRecord.Val state, String message, Integer errorCode, Integer id) {
         synchronized (car) {
-            if (state == CarRecord.Val.ERR) {
+            if (state == CarRecord.Val.ERROR) {
                 car.setError(Math.max(id, car.getClId()), message, errorCode);
             }
             for (CadRecord cad : cads) {
                 //if any CAR is in error, then global CAR should be in error
-                if (cad.getCar().getState() == CarRecord.Val.ERR) {
+                if (cad.getCar().getState().equals(Optional.fromNullable(CarRecord.Val.ERROR))) {
                     car.setError(Math.max(id, cad.getCar().getClId()), message, errorCode);
                     return;
                 }
             }
             if (!processing && state == CarRecord.Val.IDLE) {
                 for (CadRecord cad : cads) {
-                    if (cad.getCar().getState() != CarRecord.Val.IDLE) {
+                    if ( ! cad.getCar().getState().equals(Optional.fromNullable(CarRecord.Val.IDLE)) ) {
                         return;
                     }
                 }

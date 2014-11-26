@@ -37,7 +37,7 @@ public class CarRecordTest {
         CarRecord car = new CarRecord(cas, carPrefix);
         car.start();
 
-        Channel<CarRecord.Val> val = cas.createChannel(carPrefix + ".VAL", CarRecord.Val.UNKNOWN);
+        Channel<CarRecord.Val> val = cas.createChannel(carPrefix + ".VAL", CarRecord.Val.IDLE);
         Channel<String> omss = cas.createChannel(carPrefix + ".OMSS", "");
         Channel<Integer> oerr = cas.createChannel(carPrefix + ".OERR", 0);
         Channel<Integer> clid = cas.createChannel(carPrefix + ".CLID", 0);
