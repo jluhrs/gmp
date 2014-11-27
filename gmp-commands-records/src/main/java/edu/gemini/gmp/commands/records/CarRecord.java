@@ -23,8 +23,8 @@ public class CarRecord {
     enum Val {
         IDLE,
         PAUSED,
-        ERROR,
-        BUSY
+        BUSY,
+        ERROR
     }
 
     /**
