@@ -18,8 +18,10 @@ class EventLoggerTest extends AssertionsForJUnit {
   }
 
   val delay = new Duration(100)
-  var precision = new Duration(100)
+  val precision = new Duration(100)
   var el: EventLogger[String, String] = _
+
+  var holaInterval: Duration = _
 
   @Before
   def setup() {
@@ -27,8 +29,10 @@ class EventLoggerTest extends AssertionsForJUnit {
 
     el.addEventSet("set")
     el.start("set", "hola")
+    val startTime = DateTime.now
     busyWait(delay)
     el.end("set", "hola")
+    holaInterval = new Duration(startTime, DateTime.now)
 
     el.addEventSet("otroset")
     el.start("otroset", "hola")
@@ -48,7 +52,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   def testRetrieve() {
 
     val x = el.retrieve("set")
-    assert(check(x("hola").get, delay, precision), "Time is: " + x("hola").get)
+    assert(check(x("hola").get, holaInterval, precision), "Time is: " + x("hola").get)
     assert(x("chao").isEmpty) //doesn't end
     assert(x("Oops").isEmpty) //doesn't start
   }
@@ -56,7 +60,7 @@ class EventLoggerTest extends AssertionsForJUnit {
   @Test
   def testRetrieveEvent() {
     el.retrieve("set", "hola") match {
-      case Some(x: Duration) => assert(check(x, delay, precision), "Time is: " + x)
+      case Some(x: Duration) => assert(check(x, holaInterval, precision), "Time is: " + x)
       case _ => fail()
     }
   }
