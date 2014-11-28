@@ -28,7 +28,7 @@ class CadCompletionListener implements CompletionListener {
         if (response.getResponse().equals(HandlerResponse.Response.COMPLETED)) {
             car.setIdle(clientId);
         } else {
-            car.setError(clientId, response.hasErrorMessage() ? "" : response.getMessage(), -1);
+            car.setError(clientId, response.hasErrorMessage() ? response.getMessage() : "", -1);
         }
 
     }
