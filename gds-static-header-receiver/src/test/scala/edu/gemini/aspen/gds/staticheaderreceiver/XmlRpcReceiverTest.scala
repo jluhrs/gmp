@@ -21,20 +21,20 @@ class XmlRpcReceiverTest extends AssertionsForJUnit with MockitoSugar {
   @Test
   def testDB() {
     db ! Store("label", "KEY", 1.asInstanceOf[AnyRef])
-    (db !?(1000, Retrieve("label", "KEY"))) match {
+    db !?(1000, Retrieve("label", "KEY")) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !?(1000, Retrieve("wronglabel", "KEY"))) match {
+    db !?(1000, Retrieve("wronglabel", "KEY")) match {
       case Some(None) =>
       case _ => fail()
     }
-    (db !?(1000, Retrieve("label", "WRONGKEY"))) match {
+    db !?(1000, Retrieve("label", "WRONGKEY")) match {
       case Some(None) =>
       case _ => fail()
     }
     db ! Clean("label")
-    (db !?(1000, Retrieve("label", "KEY"))) match {
+    db !?(1000, Retrieve("label", "KEY")) match {
       case Some(None) =>
       case _ => fail()
     }
@@ -47,23 +47,23 @@ class XmlRpcReceiverTest extends AssertionsForJUnit with MockitoSugar {
     xmlRpcReceiver.storeKeyword("label", "KEY", 1)
     xmlRpcReceiver.storeKeywords("label2", ("KEY,INT,1" :: "KEY2,DOUBLE,1.0" :: "KEY3,STRING,uno" :: Nil).toArray)
     xmlRpcReceiver.closeObservation("label")
-    (db !?(1000, Retrieve("label", "KEY"))) match {
+    db !?(1000, Retrieve("label", "KEY")) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !?(1000, Retrieve("label2", "KEY"))) match {
+    db !?(1000, Retrieve("label2", "KEY")) match {
       case Some(Some(1)) =>
       case _ => fail()
     }
-    (db !?(1000, Retrieve("label2", "KEY2"))) match {
+    db !?(1000, Retrieve("label2", "KEY2")) match {
       case Some(Some(1.0)) =>
       case _ => fail()
     }
-    (db !?(1000, Retrieve("label2", "KEY3"))) match {
+    db !?(1000, Retrieve("label2", "KEY3")) match {
       case Some(Some("uno")) =>
       case _ => fail()
     }
-    (pdb !?(1000, RetrieveProgramId("label"))) match {
+    pdb !?(1000, RetrieveProgramId("label")) match {
       case Some(Some("id")) =>
       case _ => fail()
     }
@@ -76,11 +76,11 @@ class XmlRpcReceiverTest extends AssertionsForJUnit with MockitoSugar {
     xmlRpcReceiver.closeObservation("label3")
     db !?(1000, Retrieve("label3", "SCIBAND")) match {
       case Some(Some(1)) =>
-      case _                => fail()
+      case _             => fail()
     }
     db !?(1000, Retrieve("label3", "REQIQ")) match {
-      case Some(Some("id")) => fail()
-      case _                =>
+      case Some(Some("")) =>
+      case _              => fail()
     }
   }
 

@@ -100,9 +100,15 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    * @param keywords An array of Strings, each of which contains three parts, separated by a comma: the keyword name, the data type and the value
    */
   def storeKeywords(dataLabel: String, keywords: Array[Object]) {
+    def replaceDefaults(pieces: List[String]) = pieces match {
+      case k :: "STRING" :: Nil => List(k, "STRING", "")
+      case k :: d :: v :: Nil   => pieces
+      case _                    => Nil
+    }
+
     for {
       keyword <- keywords
-      pieces = keyword.toString.split(",")
+      pieces = replaceDefaults(keyword.toString.split(",").toList)
       if pieces.length == 3
     } {
       val key = pieces(0).trim().toUpperCase

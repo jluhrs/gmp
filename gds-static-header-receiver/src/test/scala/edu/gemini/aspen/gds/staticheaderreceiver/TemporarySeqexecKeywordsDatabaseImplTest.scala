@@ -52,10 +52,9 @@ class TemporarySeqexecKeywordsDatabaseImplTest {
 
     val value = db !? (100, RetrieveAll(dataLabel))
     value match {
-      case Some(x: Map[FitsKeyword, AnyRef]) => {
+      case Some(x: Map[FitsKeyword, AnyRef]) =>
         assertEquals(1, x.size)
         assertEquals(originalValue, x(keyword))
-      }
       case _ => fail()
     }
   }
