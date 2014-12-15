@@ -1380,6 +1380,73 @@
         <initial>0</initial>
     </SimpleChannel>
 
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange01</giapiname>
+        <epicsname>ifs:temperatureGradientChange01</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange02</giapiname>
+        <epicsname>ifs:temperatureGradientChange02</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange03</giapiname>
+        <epicsname>ifs:temperatureGradientChange03</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange04</giapiname>
+        <epicsname>ifs:temperatureGradientChange04</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange05</giapiname>
+        <epicsname>ifs:temperatureGradientChange05</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange06</giapiname>
+        <epicsname>ifs:temperatureGradientChange06</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange07</giapiname>
+        <epicsname>ifs:temperatureGradientChange07</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange08</giapiname>
+        <epicsname>ifs:temperatureGradientChange08</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange09</giapiname>
+        <epicsname>ifs:temperatureGradientChange09</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:temperatureGradientChange10</giapiname>
+        <epicsname>ifs:temperatureGradientChange10</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifs:absPressureDifference</giapiname>
+        <epicsname>ifs:absPressureDifference</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+
     <!-- One Wire Humidity measurements -->
     <SimpleChannel>
         <giapiname>gpi:oneWire:humidity:3rdEEHeatExchanger</giapiname>
