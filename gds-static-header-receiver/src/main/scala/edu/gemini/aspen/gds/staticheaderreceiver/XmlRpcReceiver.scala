@@ -19,7 +19,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    * @param dataLabel The name of the FITS file to be written
    */
   def openObservation(programId: String, dataLabel: String) {
-    LOG.info("Opened Observation, Program ID: " + programId + " Data label: " + dataLabel)
+    LOG.info(s"Opened Observation, Program ID: $programId Data label: $dataLabel")
     programIdDB ! StoreProgramId(dataLabel, programId)
     publisher.sendData(ObservationEvent.EXT_START_OBS, new DataLabel(dataLabel))
   }
@@ -42,7 +42,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    * @param dataLabel The name of the FITS file to be written
    */
   def closeObservation(dataLabel: String) {
-    LOG.info("Closed Observation, Data label: " + dataLabel)
+    LOG.info(s"Closed Observation, Data label: $dataLabel")
     publisher.sendData(ObservationEvent.EXT_END_OBS, new DataLabel(dataLabel))
   }
 
@@ -65,7 +65,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    * @param value The FITS keyword value
    */
   def storeKeyword(dataLabel: String, keyword: String, value: String) {
-    LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
+    LOG.info(s"Data label: $dataLabel Keyword: $keyword Value: $value")
     keywordsDatabase ! Store(dataLabel, keyword, value)
   }
 
@@ -77,7 +77,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    * @param value The FITS keyword value
    */
   def storeKeyword(dataLabel: String, keyword: String, value: Double) {
-    LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
+    LOG.info(s"Data label: $dataLabel Keyword: $keyword Value: $value")
     keywordsDatabase ! Store(dataLabel, keyword, value.asInstanceOf[AnyRef])
   }
 
@@ -89,7 +89,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    * @param value The FITS keyword value
    */
   def storeKeyword(dataLabel: String, keyword: String, value: Int) {
-    LOG.info("Data label: " + dataLabel + " Keyword: " + keyword + " Value: " + value)
+    LOG.info(s"Data label: $dataLabel Keyword: $keyword Value: $value")
     keywordsDatabase ! Store(dataLabel, keyword, value.asInstanceOf[AnyRef])
   }
 
