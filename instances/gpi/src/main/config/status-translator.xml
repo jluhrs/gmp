@@ -681,4 +681,134 @@
             </Map>
         </Maps>
     </Status>
+    <Status default="UNKNOWN" originalName="foldTracking" originalType="INT" translatedName="foldTracking.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="aoWfsTracking" originalType="INT" translatedName="aoWfsTracking.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="calIfsTracking" originalType="INT" translatedName="calIfsTracking.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="foldApplyPupilOffsets" originalType="INT" translatedName="foldApplyPupilOffsets.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="calIfsApplyLyotOffsets" originalType="INT" translatedName="calIfsApplyLyotOffsets.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="aoWfsApplyDarResiduals" originalType="INT" translatedName="aoWfsApplyDarResiduals.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="aoWfsApplyOpenLoopModel" originalType="INT" translatedName="aoWfsApplyOpenLoopModel.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="foldApplyOpenLoopModel" originalType="INT" translatedName="foldApplyOpenLoopModel.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="calIfsApplyOpenLoopModel" originalType="INT" translatedName="calIfsApplyOpenLoopModel.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
+    <Status default="UNKNOWN" originalName="aoSpatialApplyTempCorrection" originalType="INT" translatedName="aoSpatialApplyTempCorrection.gemini"
+            translatedType="STRING">
+        <Maps>
+            <Map>
+                <from>0</from>
+                <to>FALSE</to>
+            </Map>
+            <Map>
+                <from>1</from>
+                <to>TRUE</to>
+            </Map>
+        </Maps>
+    </Status>
 </TranslateStatus>
