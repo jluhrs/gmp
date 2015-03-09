@@ -100,21 +100,15 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    * @param keywords An array of Strings, each of which contains three parts, separated by a comma: the keyword name, the data type and the value
    */
   def storeKeywords(dataLabel: String, keywords: Array[Object]) {
-    def replaceDefaults(pieces: List[String]) = pieces match {
-      case k :: "STRING" :: Nil => List(k, "STRING", "")
-      case k :: d :: v :: Nil   => pieces
-      case _                    => Nil
-    }
-
     for {
       keyword <- keywords
-      pieces = replaceDefaults(keyword.toString.split(",").toList)
-      if pieces.length == 3
+      pieces = keyword.toString.split(",")
     } {
       val key = pieces(0).trim().toUpperCase
       val dataType = pieces(1).trim()
-      val value = pieces(2).trim()
       try {
+        val value = if (pieces.length == 3) pieces(2).trim() else ""
+
         dataType match {
           case "INT"    => storeKeyword(dataLabel, key, value.toInt)
           case "DOUBLE" => storeKeyword(dataLabel, key, value.toDouble)
@@ -123,6 +117,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
         }
       } catch {
         case ex: java.lang.NumberFormatException => LOG.log(Level.SEVERE, ex.getMessage, ex)
+        case e: Exception                        => LOG.log(Level.SEVERE, e.getMessage, e)
       }
     }
   }
