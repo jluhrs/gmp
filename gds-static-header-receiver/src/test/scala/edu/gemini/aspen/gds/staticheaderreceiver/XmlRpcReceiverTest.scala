@@ -87,14 +87,14 @@ class XmlRpcReceiverTest extends AssertionsForJUnit with MockitoSugar {
   @Test
   def handleNewLinesInKeywords(): Unit = {
     xmlRpcReceiver.openObservation("id", "label3")
-    xmlRpcReceiver.storeKeywords("label3", ("SCIBAND,INT,1" :: "REQIQ,STRING,My name\nAnd yours" :: Nil).toArray)
+    xmlRpcReceiver.storeKeywords("label3", ("SCIBAND,INT,1" :: "REQIQ,STRING,D. Krogsrud -  L. Magill -  F. Rantakyro" :: Nil).toArray)
     xmlRpcReceiver.closeObservation("label3")
     db !?(1000, Retrieve("label3", "SCIBAND")) match {
       case Some(Some(1)) =>
       case _             => fail()
     }
     db !?(1000, Retrieve("label3", "REQIQ")) match {
-      case Some(Some("My nameAnd yours")) =>
+      case Some(Some("D. Krogsrud -  L. Magill -  F. Rantakyro")) =>
       case x              => println(x);fail()
     }
   }

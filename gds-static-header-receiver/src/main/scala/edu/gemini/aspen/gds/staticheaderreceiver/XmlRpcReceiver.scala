@@ -100,14 +100,22 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    * @param keywords An array of Strings, each of which contains three parts, separated by a comma: the keyword name, the data type and the value
    */
   def storeKeywords(dataLabel: String, keywords: Array[Object]) {
+    val regex = """(\w*),(\w*),(.*)""".r
     for {
       keyword <- keywords
-      pieces = keyword.toString.split(",")
+      pieces = keyword match {
+        case regex(k, t, v) => (k, t, v)
+        case _ => ("", "", "")
+      }
+      if pieces._1.nonEmpty
     } {
-      val key = pieces(0).trim().toUpperCase
-      val dataType = pieces(1).trim()
+      val key = pieces._1.trim().toUpperCase
+      val dataType = pieces._2.trim()
       try {
-        val value = (if (pieces.length == 3) pieces(2).trim() else "").replaceAll("\t?\n?\r?\f?", " ")
+        LOG.info("STORE")
+        LOG.info(s"<|${pieces._1},${pieces._2},${pieces._3}|>")
+        val value = pieces._3.trim()
+        LOG.info(value)
 
         dataType match {
           case "INT"    => storeKeyword(dataLabel, key, value.toInt)

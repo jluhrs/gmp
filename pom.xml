@@ -627,14 +627,6 @@
                 </exclusions>
             </dependency>
 
-            <!-- SPModel -->
-            <dependency>
-                <groupId>gemini-nocs</groupId>
-                <artifactId>spModel-type</artifactId>
-                <version>1.0.0</version>
-                <scope>test</scope>
-            </dependency>
-
             <!-- OCS shared -->
             <dependency>
                 <groupId>gemini-nocs</groupId>
