@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen.gds</groupId>
     <artifactId>gds-static-header-receiver</artifactId>
-    <version>0.2.22-SNAPSHOT</version>
+    <version>0.2.21</version>
 
     <name>GDS Static Header Receiver</name>
     <description>The module provides a service for the seqexec to publish its FITS headers</description>

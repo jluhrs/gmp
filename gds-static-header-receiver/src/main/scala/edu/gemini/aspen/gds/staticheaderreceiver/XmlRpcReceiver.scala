@@ -107,7 +107,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
       val key = pieces(0).trim().toUpperCase
       val dataType = pieces(1).trim()
       try {
-        val value = if (pieces.length == 3) pieces(2).trim() else ""
+        val value = (if (pieces.length == 3) pieces(2).trim() else "").replaceAll("\t?\n?\r?\f?", " ")
 
         dataType match {
           case "INT"    => storeKeyword(dataLabel, key, value.toInt)
