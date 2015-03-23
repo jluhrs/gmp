@@ -12,6 +12,8 @@ set -u # Don't allow using non defined variables
 PAX_RUNNER_VERSION=${pax-runner.version}
 GMP_VERSION=${gmp.version}
 
+export LD_LIBRARY_PATH=${GPI_ROOT}/giapi-dist/lib
+
 # Confirm that java is available
 which java > /dev/null || { echo "Need java in PATH to run"; exit 1; }
 
@@ -83,6 +85,12 @@ function startContainer() {
         retval=$?
         sleep 10
         echo "Started ${app_name}"
+        if [ "$(/sbin/pidof gpCmdEvent)" ]
+        then
+                kill `/sbin/pidof gpCmdEvent`
+        fi
+        echo "Start gpCmdEv"
+        /data/gpitlc/dev/gpi/current/rel/source/tlc/bin/linux64/gpCmdEvent -daemon -c /data/gpitlc/dev/gpi/current/rel/source/tlc/config/CONFIG.CmdEvent
         return $retval
     else
         echo "${app_name} already running with pid ${pid}"
@@ -114,7 +122,6 @@ function stopContainer() {
     echo "${app_name} not running"
   fi
 }
-
 
 #
 # Kill the GMP process
