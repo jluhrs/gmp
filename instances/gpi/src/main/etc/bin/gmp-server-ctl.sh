@@ -110,6 +110,7 @@ function stopContainer() {
       sleep 1
       if [[ "$counter" -gt 25 ]]; then
         echo "Taking too long to die, forced to kill"
+        jstack -l "$pid" > $HOME/.pax/dump_${pid}
         kill -9 "$pid"
         sleep 5
       fi
