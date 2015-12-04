@@ -67,6 +67,21 @@ class CollectedValueTest {
   }
 
   @Test
+  def testPatternMatchingBoolean() {
+    // Build with string
+    val cv = CollectedValue("KEYWORD", false, "comment", 0, None)
+    cv match {
+      case CollectedValue(keyword, value, comment, index) => {
+        assertEquals(new FitsKeyword("KEYWORD"), keyword)
+        assertEquals(false, value)
+        assertEquals("comment", comment)
+        assertEquals(0, index)
+      }
+      case _ => fail("Should match")
+    }
+  }
+
+  @Test
   def testPatternMatchingInList() {
     // Build with string
     val cv = CollectedValue("KEYWORD", 1.1, "comment", 0, None)

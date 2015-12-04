@@ -94,6 +94,18 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
   }
 
   /**
+   * Associate a keyword to a given data set
+   *
+   * @param dataLabel The name of the FITS file to be written, and to which keywords must be associated
+   * @param keyword The FITS keyword name
+   * @param value The FITS keyword value
+   */
+  def storeKeyword(dataLabel: String, keyword: String, value: Boolean) {
+    LOG.info(s"Data label: $dataLabel Keyword: $keyword Value: $value")
+    keywordsDatabase ! Store(dataLabel, keyword, value.asInstanceOf[AnyRef])
+  }
+
+  /**
    * Associate keywords to a given data set
    *
    * @param dataLabel The name of the FITS file to be written, and to which keywords must be associated
@@ -118,10 +130,11 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
         LOG.info(value)
 
         dataType match {
-          case "INT"    => storeKeyword(dataLabel, key, value.toInt)
-          case "DOUBLE" => storeKeyword(dataLabel, key, value.toDouble)
-          case "STRING" => storeKeyword(dataLabel, key, value.toString)
-          case x        => LOG.severe(s"Wrong data type: $x")
+          case "INT"     => storeKeyword(dataLabel, key, value.toInt)
+          case "DOUBLE"  => storeKeyword(dataLabel, key, value.toDouble)
+          case "STRING"  => storeKeyword(dataLabel, key, value.toString)
+          case "BOOLEAN" => storeKeyword(dataLabel, key, value.toBoolean)
+          case x         => LOG.severe(s"Wrong data type: $x")
         }
       } catch {
         case ex: java.lang.NumberFormatException => LOG.log(Level.SEVERE, ex.getMessage, ex)

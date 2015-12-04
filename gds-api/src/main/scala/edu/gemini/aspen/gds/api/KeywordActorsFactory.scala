@@ -9,7 +9,7 @@ import scala.collection._
  * that can in turn retrieve keyword values
  */
 trait KeywordActorsFactory {
-  var actorsConfiguration: immutable.List[GDSConfiguration] = immutable.List()
+  var actorsConfiguration: List[GDSConfiguration] = List.empty
 
   /**
    * Request the factory to create and start actors required for the given observation event

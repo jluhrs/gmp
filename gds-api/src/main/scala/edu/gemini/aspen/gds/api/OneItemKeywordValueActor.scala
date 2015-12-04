@@ -36,8 +36,8 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
     // Any number can be converted to a double
     case DataType("DOUBLE") => newDoubleCollectedValue(value)
     // Any number can be converted to a int
-    case DataType("INT") => newIntCollectedValue(value)
-    // Any number can be converted to a int
+    case DataType("INT")    => newIntCollectedValue(value)
+    // Any string can be converted to a boolean
     case DataType("BOOLEAN") => newBooleanCollectedValue(value)
     // this should not happen
     case _ => newMismatchError
@@ -52,21 +52,26 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
 
   private def newIntCollectedValue(value: Any) = value match {
     case x: java.lang.Long => {
-      LOG.warning("Possible loss of precision converting " + x + " to integer")
+      LOG.warning(s"Possible loss of precision converting $x to integer")
       collectedValueFromInt(x.intValue)
     }
     case x: java.lang.Integer => collectedValueFromInt(x.intValue)
-    case x: java.lang.Short => collectedValueFromInt(x.intValue)
-    case x: java.lang.Byte => collectedValueFromInt(x.intValue)
-    case _ => newMismatchError
+    case x: java.lang.Short   => collectedValueFromInt(x.intValue)
+    case x: java.lang.Byte    => collectedValueFromInt(x.intValue)
+    case _                    => newMismatchError
   }
 
   private def newBooleanCollectedValue(value: Any) = value match {
-    case x: java.lang.Number => CollectedValue(fitsKeyword, x.doubleValue() != 0, fitsComment, headerIndex, format)
-    case x: String if x.equalsIgnoreCase("false") || x.equalsIgnoreCase("f") || x.equalsIgnoreCase("0") || x.isEmpty => CollectedValue(fitsKeyword, false, fitsComment, headerIndex, format)
-    case x: String => CollectedValue(fitsKeyword, true, fitsComment, headerIndex, format)
-    case x: Boolean => CollectedValue(fitsKeyword, x, fitsComment, headerIndex, format)
-    case _ => newMismatchError
+    case x: java.lang.Number
+      => CollectedValue(fitsKeyword, x.doubleValue() != 0, fitsComment, headerIndex, format)
+    case x: String if x.equalsIgnoreCase("false") || x.equalsIgnoreCase("f") || x.equalsIgnoreCase("0") || x.isEmpty
+      => CollectedValue(fitsKeyword, false, fitsComment, headerIndex, format)
+    case x: String
+      => CollectedValue(fitsKeyword, true, fitsComment, headerIndex, format)
+    case x: Boolean
+      => CollectedValue(fitsKeyword, x, fitsComment, headerIndex, format)
+    case _
+      => newMismatchError
   }
 
   private def newMismatchError = ErrorCollectedValue(fitsKeyword, CollectionError.TypeMismatch, fitsComment, headerIndex)
