@@ -114,8 +114,13 @@ public final class Action implements Comparable<Action> {
         return sb.toString();
     }
 
-    public void sendResponseToListeners(HandlerResponse response) {
-        _listener.onHandlerResponse(response,
-                _command);
+    public void sendResponseToListeners(final HandlerResponse response) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                _listener.onHandlerResponse(response,
+                                        _command);
+            }
+        }).start();
     }
 }

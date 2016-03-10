@@ -56,7 +56,7 @@ public class ActionManagerImpl implements ActionManager {
     /**
      * A Lock to synchronize the action manager with the command sender.
      */
-    private Lock _lock = new ReentrantLock();
+    private Lock _lock = new ReentrantLock(true);
 
     /**
      * Tracks the responses received for the tracked actions
@@ -181,7 +181,10 @@ public class ActionManagerImpl implements ActionManager {
         public void run() {
             while (isRunning()) {
                 try {
-                    updateClients(_updateQueue.take());
+                    UpdateData data = _updateQueue.poll(1, TimeUnit.SECONDS);
+                    if (data != null) {
+                        updateClients(data);
+                    }
                 } catch (InterruptedException e) {
                     LOG.info("Update Processor Thread interrupted. Exiting");
                     return;
