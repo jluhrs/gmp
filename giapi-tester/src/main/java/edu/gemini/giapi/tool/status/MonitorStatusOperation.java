@@ -63,7 +63,7 @@ public class MonitorStatusOperation implements Operation {
         }
 
         private boolean matchesExpectedValue(String expectedValue) {
-            return expectedValue != null && lastItem != null && lastItem.getValue() != null ? lastItem.getValue().toString().equals(expectedValue) : false;
+            return (expectedValue != null && lastItem != null && lastItem.getValue() != null) && lastItem.getValue().toString().equals(expectedValue);
         }
     }
 
@@ -89,8 +89,10 @@ public class MonitorStatusOperation implements Operation {
         return _statusName != null;
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     public int execute() throws Exception {
 
+        // Totally synchronous method to listen for status updates
         JmsProvider provider = new ActiveMQJmsProvider("tcp://" + _host + ":61616");
 
         StatusGetter getter = new StatusGetter("GIAPI Tester");
@@ -101,10 +103,10 @@ public class MonitorStatusOperation implements Operation {
         aggregate.bindStatusHandler(monitor);
 
         StatusService service = new StatusService(aggregate, "Status Monitor Service Client", _statusName);
-        service.startJms(provider);
 
         try {
 
+            // Read the initial value
             getter.startJms(provider);
 
             if (_statusName.equals(">")) {
@@ -121,6 +123,8 @@ public class MonitorStatusOperation implements Operation {
 
             getter.stopJms();
 
+            // Start listening
+            service.startJms(provider);
 
             if (_timeout > 0) {//wait the timeout
                 ScheduledFuture<Void> timeoutFuture = startTimeoutThread();
@@ -128,7 +132,6 @@ public class MonitorStatusOperation implements Operation {
             } else if (_timeout == 0) {//exit now
                 //do nothing
             } else {//wait forever
-                service.startJms(provider);
                 Thread.sleep(Long.MAX_VALUE);
             }
         } catch (TimeoutException e) {
