@@ -405,7 +405,13 @@
     </SimpleChannel>
     <SimpleChannel>
         <giapiname>gpi:ifsDetectorColdTip</giapiname>
-        <epicsname>ifsDetectorColdTip</epicsname>
+        <epicsname>ifsDetectorColdTip1</epicsname>
+        <type>FLOAT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+    <SimpleChannel>
+        <giapiname>gpi:ifsDetectorColdTip2</giapiname>
+        <epicsname>ifsDetectorColdTip2</epicsname>
         <type>FLOAT</type>
         <initial>0</initial>
     </SimpleChannel>
