@@ -43,6 +43,8 @@ public final class ActiveMQJmsProvider implements JmsProvider {
         // Setup the connection factory
         LOG.info("ActiveMQ JMS Provider setup with url: " + brokerUrl + " and close timeout " + closeTimeout);
         _factory = new ActiveMQConnectionFactory(brokerUrl);
+        _factory.setOptimizeAcknowledge(true);
+        _factory.setAlwaysSessionAsync(false);
         _factory.setCloseTimeout(closeTimeout);
         _factory.setTransportListener(new JmsTransportListener());
     }
