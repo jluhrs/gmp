@@ -39,8 +39,11 @@ public class ActiveMQBrokerFactory implements ManagedServiceFactory {
             boolean useAdvisoryMessages = "true".equalsIgnoreCase(properties.get(ConfigDefaults.BROKER_USE_ADVISORY_MESSAGES_PROPERTY).toString());
             int jmxPort = Integer.parseInt(properties.get(ConfigDefaults.BROKER_JMX_RMI_PORT_PROPERTY).toString());
             int jmxConnectorPort = Integer.parseInt(properties.get(ConfigDefaults.BROKER_JMX_CONNECTOR_PORT_PROPERTY).toString());
+            double memoryPercentage = Double.parseDouble(properties.get(ConfigDefaults.BROKER_MEMORY_PERCENTAGE_PROPERTY).toString());
+            int maxStorageMB = Integer.parseInt(properties.get(ConfigDefaults.BROKER_MAX_STORAGE_MB_PROPERTY).toString());
+            int maxMessagesLimit = Integer.parseInt(properties.get(ConfigDefaults.BROKER_MAX_MESSAGES_LIMIT_PROPERTY).toString());
             LOG.info("Build " + ActiveMQBroker.class.getName() + " with url " + url);
-            return new ActiveMQBrokerComponent(useJmx, persistent, name, url, deleteMessagesOnStartup, useAdvisoryMessages, jmxPort, jmxConnectorPort);
+            return new ActiveMQBrokerComponent(useJmx, persistent, name, url, deleteMessagesOnStartup, useAdvisoryMessages, jmxPort, jmxConnectorPort, memoryPercentage, maxStorageMB, maxMessagesLimit);
         } catch (NumberFormatException e) {
             LOG.severe("Cannot start ActiveMQBroker");
             throw e;
@@ -55,7 +58,8 @@ public class ActiveMQBrokerFactory implements ManagedServiceFactory {
             properties.get(ConfigDefaults.BROKER_DELETE_MESSAGES_ON_STARTUP_PROPERTY) != null &&
             properties.get(ConfigDefaults.BROKER_USE_ADVISORY_MESSAGES_PROPERTY) != null &&
             properties.get(ConfigDefaults.BROKER_JMX_RMI_PORT_PROPERTY) != null &&
-            properties.get(ConfigDefaults.BROKER_JMX_CONNECTOR_PORT_PROPERTY) != null;
+            properties.get(ConfigDefaults.BROKER_JMX_CONNECTOR_PORT_PROPERTY) != null &&
+            properties.get(ConfigDefaults.BROKER_MEMORY_PERCENTAGE_PROPERTY) != null;
     }
 
     @Override

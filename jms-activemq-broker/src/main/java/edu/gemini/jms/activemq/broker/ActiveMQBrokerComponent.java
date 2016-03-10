@@ -20,13 +20,16 @@ public class ActiveMQBrokerComponent implements Serializable {
     private final String url;
 
     public ActiveMQBrokerComponent(boolean useJmx,
-            boolean persistent,
-            String brokerName,
-            String url,
-            boolean deleteMsgOnStartup,
-            boolean useAdvisoryMessages,
-            int jmxRmiServerPort,
-            int jmxConnectorPort) {
+                                   boolean persistent,
+                                   String brokerName,
+                                   String url,
+                                   boolean deleteMsgOnStartup,
+                                   boolean useAdvisoryMessages,
+                                   int jmxRmiServerPort,
+                                   int jmxConnectorPort,
+                                   double memoryPercentage,
+                                   int maxMessagesLimit,
+                                   int maxStorageMB) {
         this.url = url;
 
         _broker = activemq()
@@ -38,6 +41,9 @@ public class ActiveMQBrokerComponent implements Serializable {
                 .deleteMsgOnStartup(deleteMsgOnStartup)
                 .jmxConnectorPort(jmxConnectorPort)
                 .jmxRrmiServerPort(jmxRmiServerPort)
+                .memoryPercentage(memoryPercentage)
+                .maxStorageMB(maxStorageMB)
+                .maxMessagesLimit(maxMessagesLimit)
                 .build();
     }
 

@@ -3,6 +3,9 @@ package edu.gemini.jms.activemq.broker;
 import edu.gemini.jms.api.Broker;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.ManagementContext;
+import org.apache.activemq.broker.region.policy.ConstantPendingMessageLimitStrategy;
+import org.apache.activemq.broker.region.policy.PolicyEntry;
+import org.apache.activemq.broker.region.policy.PolicyMap;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,13 +19,34 @@ public class ActiveMQBroker implements Broker {
 
     private final BrokerService _broker;
 
-    public ActiveMQBroker(Builder builder) {
+    private ActiveMQBroker(Builder builder) {
         _broker = new BrokerService();
         _broker.setUseJmx(builder.useJmx);
         _broker.setPersistent(builder.isPersistent);
         _broker.setBrokerName(builder.brokerName);
         _broker.setDeleteAllMessagesOnStartup(builder.deleteMsgOnStartup);
         _broker.setAdvisorySupport(builder.useAdvisoryMessages);
+
+        // Define some limits for resource usage
+        _broker.getSystemUsage().getMemoryUsage().setLimit((int)(Runtime.getRuntime().totalMemory() * Math.min(0.9, builder.memoryPercentage)));
+        _broker.getSystemUsage().getStoreUsage().setLimit(builder.maxStorageMB * 1024 * 1024);
+        _broker.getSystemUsage().getTempUsage().setLimit(builder.maxStorageMB * 1024 * 1024);
+        //Set the Destination policies
+        PolicyEntry policy = new PolicyEntry();
+        //set a memory limit of 4mb for each destination
+        policy.setMemoryLimit(4 * 1024 *1024);
+        //disable flow control (Important, this removes the slowing down of producers if consumers are slow)
+        policy.setProducerFlowControl(false);
+
+        // This makes the broker not to hold too many messages in memory
+        ConstantPendingMessageLimitStrategy limitStrategy = new ConstantPendingMessageLimitStrategy();
+        limitStrategy.setLimit(builder.maxMessagesLimit);
+        policy.setPendingMessageLimitStrategy(limitStrategy);
+
+        PolicyMap pMap = new PolicyMap();
+        //configure the policy
+        pMap.setDefaultEntry(policy);
+        _broker.setDestinationPolicy(pMap);
         if (builder.useJmx) {
             ManagementContext managementContext = new ManagementContext();
             managementContext.setCreateMBeanServer(false);
@@ -61,6 +85,9 @@ public class ActiveMQBroker implements Broker {
         private boolean useAdvisoryMessages = ConfigDefaults.BROKER_USE_ADVISORY_MESSAGES;
         private int jmxRmiServerPort = ConfigDefaults.BROKER_JMX_RMI_PORT;  
         private int jmxConnectorPort = ConfigDefaults.BROKER_JMX_CONNECTOR_PORT;
+        private double memoryPercentage = ConfigDefaults.BROKER_MEMORY_PERCENTAGE;
+        private int maxStorageMB = ConfigDefaults.BROKER_MAX_STORAGE_MB;
+        private int maxMessagesLimit = ConfigDefaults.BROKER_MAX_MESSAGES_LIMIT;
 
         public Builder useJmx(boolean useJmx) {
             this.useJmx = useJmx;
@@ -72,8 +99,22 @@ public class ActiveMQBroker implements Broker {
             return this;
         }
 
-        public Builder jmxRrmiServerPort(int jmxRmiServerPort) {
+        Builder jmxRrmiServerPort(int jmxRmiServerPort) {
             this.jmxRmiServerPort = jmxRmiServerPort;
+            return this;
+        }
+
+        Builder memoryPercentage(double memoryPercentage) {
+            this.memoryPercentage = memoryPercentage;
+            return this;
+        }
+
+        Builder maxStorageMB(int maxStorageMB) {
+            this.maxStorageMB = maxStorageMB;
+            return this;
+        }
+        Builder maxMessagesLimit(int maxMessagesLimit) {
+            this.maxMessagesLimit = maxMessagesLimit;
             return this;
         }
 
