@@ -4,7 +4,7 @@
         <relativePath>../poms/scala/</relativePath>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>scala-compiled-bundle-settings</artifactId>
-        <version>14.3.13-SNAPSHOT</version>
+        <version>14.4.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -17,7 +17,7 @@
 
     <groupId>edu.gemini.aspen</groupId>
     <artifactId>integration-tests</artifactId>
-    <version>0.0.25-SNAPSHOT</version>
+    <version>0.0.25</version>
 
     <name>Integration Tests</name>
     <description>Integration Tests</description>
