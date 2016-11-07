@@ -1,31 +1,33 @@
 package edu.gemini.gpi.observationstatus
 
 import edu.gemini.aspen.giapi.status.setter.StatusSetter
-import org.apache.felix.ipojo.annotations.{Invalidate, Requires, Instantiate, Component}
-import scala.collection.JavaConversions._
-import org.apache.felix.ipojo.handlers.event.Subscriber
 import edu.gemini.aspen.gds.api._
 import edu.gemini.gmp.top.Top
 import edu.gemini.aspen.giapi.status.impl.BasicStatus
 import edu.gemini.aspen.giapi.data.DataLabel
-import com.google.common.cache.{RemovalNotification, RemovalListener, CacheLoader, CacheBuilder}
-import java.util.concurrent.TimeUnit._
+import edu.gemini.aspen.giapi.status.StatusDatabaseService
 import edu.gemini.aspen.gds.api.GDSStartObservation
 import edu.gemini.aspen.gds.api.GDSObservationError
 import edu.gemini.aspen.gds.api.GDSEndObservation
-import java.util.{TimerTask, Timer}
-import edu.gemini.aspen.giapi.status.StatusDatabaseService
+
+import java.util.concurrent.TimeUnit._
+import java.util.{Timer, TimerTask}
+import java.util.concurrent.{Callable, TimeUnit}
+import java.util.logging.Logger
+
+import com.google.common.base.Stopwatch
+import com.google.common.cache.{CacheBuilder, CacheLoader, RemovalListener, RemovalNotification}
+import org.osgi.service.event.{Event, EventHandler}
+
 import scalaz._
 import Scalaz._
-import java.util.concurrent.{TimeUnit, Callable}
-import com.google.common.base.Stopwatch
-import java.util.logging.Logger
+
+import scala.collection.JavaConversions._
+
 
 /**
  * Intermediate class to convert GDS events into status items for GPI */
-@Component
-@Instantiate
-class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: StatusSetter, @Requires statusDB: StatusDatabaseService) {
+class ObservationEventsListener(gmpTop: Top, statusSetter: StatusSetter, statusDB: StatusDatabaseService) extends EventHandler {
   // expiration of 1 day by default but tests can override it
   def expirationMillis = 24 * 60 * 60 * 1000
   private val LOG = Logger.getLogger(classOf[ObservationEventsListener].getName)
@@ -53,12 +55,10 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: S
 
   val timer = new Timer()
 
-  @Invalidate
   def invalidate() {
     cache.invalidateAll()
   }
 
-  @Subscriber(name = "gpiobseventlistener", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent", dataType = "edu.gemini.aspen.gds.api.GDSNotification")
   def gdsEvent(event: GDSNotification) {
     event match {
       case GDSStartObservation(dataLabel)     =>
@@ -139,4 +139,10 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: S
     }
   }
 
+  override def handleEvent(event: Event): Unit = {
+    Option(event.getProperty("gdsevent")).foreach {
+      case n: GDSNotification => gdsEvent(n)
+      case _                  => //
+    }
+  }
 }
