@@ -20,7 +20,7 @@ case class GDSStartObservation(dataLabel: DataLabel) extends GDSNotification
  * Notification that an observation has completed
  * @param dataLabel The data label of the observation
  */
-case class GDSEndObservation(dataLabel: DataLabel, writeTime: Long, keywords: Traversable[CollectedValue[_]]= Traversable.empty) extends GDSNotification
+case class GDSEndObservation(dataLabel: DataLabel, writeTime: Long, keywords: Traversable[CollectedValue[_]] = Traversable.empty) extends GDSNotification
 
 /**
  * Notification that an observation has stopped with an error

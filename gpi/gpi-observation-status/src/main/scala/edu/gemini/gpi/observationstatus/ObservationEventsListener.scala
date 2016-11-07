@@ -28,12 +28,21 @@ import java.util.logging.Logger
 class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: StatusSetter, @Requires statusDB: StatusDatabaseService) {
   // expiration of 1 day by default but tests can override it
   def expirationMillis = 24 * 60 * 60 * 1000
-
-  val LOG = Logger.getLogger(classOf[ObservationEventsListener].getName)
+  private val LOG = Logger.getLogger(classOf[ObservationEventsListener].getName)
 
   val readoutOverhead = 4
   val writeOverhead = 2
   val perCoaddOverhead = 2.7
+
+  val massLastUpdate = gmpTop.buildStatusItemName("massLastUpdate")
+  val dimmLastUpdate = gmpTop.buildStatusItemName("dimmLastUpdate")
+
+  val massMinsSince = gmpTop.buildStatusItemName("massMinsSince")
+  val dimmMinsSince = gmpTop.buildStatusItemName("dimmMinsSince")
+
+  val coAddsStatus = gmpTop.buildStatusItemName("currentNumCoadds")
+  val integrationTimeStatus = gmpTop.buildStatusItemName("currentIntegrationTime")
+  val obsTimeStatus = gmpTop.buildStatusItemName("ifs:estimatedObservationTime")
 
   private val cache = CacheBuilder.newBuilder()
       .removalListener(TimerRemoval)
@@ -52,40 +61,54 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: S
   @Subscriber(name = "gpiobseventlistener", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent", dataType = "edu.gemini.aspen.gds.api.GDSNotification")
   def gdsEvent(event: GDSNotification) {
     event match {
-      case GDSStartObservation(dataLabel) =>
-        val coAdds = Option(statusDB.getStatusItem[Int](gmpTop.buildStatusItemName("currentNumCoadds"))).map(_.getValue)
-        val exposureTime = Option(statusDB.getStatusItem[Float](gmpTop.buildStatusItemName("currentIntegrationTime"))).map(_.getValue)
+      case GDSStartObservation(dataLabel)     =>
+        val coAdds = Option(statusDB.getStatusItem[Int](coAddsStatus)).map(_.getValue)
+        val exposureTime = Option(statusDB.getStatusItem[Float](integrationTimeStatus)).map(_.getValue)
         (exposureTime |@| coAdds)((e, c) => (e + perCoaddOverhead) * c + readoutOverhead + writeOverhead).foreach { observationTime =>
           LOG.info(s"Exposure started with exposure time ${exposureTime.get} and coadds ${coAdds.get}")
           val estimatedTimeLeft = 1000 * observationTime
           LOG.info(s"Start counter to $estimatedTimeLeft")
           if (Option(cache.getIfPresent(dataLabel)).isEmpty) {
             val timerTask = cache.get(dataLabel, new Callable[ObsTimerTask] {
-              override def call() = {
+              override def call(): ObsTimerTask = {
                 ObsTimerTask(estimatedTimeLeft.toLong)
               }
             })
 
-            val obsTimeItem = gmpTop.buildStatusItemName("ifs:estimatedObservationTime")
-            LOG.info(s"Set estimated observation time $estimatedTimeLeft on $obsTimeItem")
-            statusSetter.setStatusItem(new BasicStatus(obsTimeItem, estimatedTimeLeft.toInt))
+            LOG.info(s"Set estimated observation time $estimatedTimeLeft on $obsTimeStatus")
+            statusSetter.setStatusItem(new BasicStatus(obsTimeStatus, estimatedTimeLeft.toInt))
             timer.scheduleAtFixedRate(timerTask, 0, 200)
           }
         }
         LOG.info(s"Set observationDataLabel to $dataLabel")
         statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:observationDataLabel"), dataLabel.getName))
-      case GDSEndObservation(dataLabel, _, _)           =>
+        // Set the status item for time since last update of MASS/DIMM
+        updateTimeSince(massLastUpdate, massMinsSince)
+        updateTimeSince(dimmLastUpdate, dimmMinsSince)
+      case GDSEndObservation(dataLabel, _, _) =>
         cache.get(dataLabel).endObservation()
         cache.invalidate(dataLabel)
-      case GDSObservationError(dataLabel, _)         =>
+      case GDSObservationError(dataLabel, _)  =>
         cache.get(dataLabel).endObservation()
         cache.invalidate(dataLabel)
-      case _                              => // Ignore
+      case _                                  => // Ignore
+    }
+  }
+
+  /**
+    * Updates a status item with minutes since a given value reading a timestamp
+    */
+  private def updateTimeSince(srcTimeStampStatus: String, destMinsSinceStatus: String) = {
+    Option(statusDB.getStatusItem[Int](srcTimeStampStatus)).foreach { i =>
+      Option(i.getValue).foreach { t=>
+        val secs = System.currentTimeMillis() / 1000 - t
+        statusSetter.setStatusItem(new BasicStatus[Int](destMinsSinceStatus, (secs / 60).toInt))
+      }
     }
   }
 
   case class ObsTimerTask(observationTime: Double = 0) extends TimerTask{
-    val stopwatch = Stopwatch.createStarted()
+    private val stopwatch = Stopwatch.createStarted()
     override def run() = {
       //
       val remainingTime = observationTime - stopwatch.elapsed(TimeUnit.MILLISECONDS)
@@ -96,7 +119,7 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: S
       }
     }
 
-    def endObservation() = {
+    def endObservation(): Unit = {
       if (stopwatch.isRunning) {
         stopwatch.stop()
       }
@@ -105,7 +128,7 @@ class ObservationEventsListener(@Requires gmpTop: Top, @Requires statusSetter: S
       statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:timeLeftMS"), 0))
     }
 
-    def isRunning = stopwatch.isRunning
+    def isRunning: Boolean = stopwatch.isRunning
   }
 
   case object TimerRemoval extends RemovalListener[DataLabel, ObsTimerTask] {

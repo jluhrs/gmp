@@ -16,6 +16,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * Class that listens for gpi specific variables and produce new ones. It does calculations that the status translator is unable to do
  */
 class GpiItemTranslator(top: Top, statusSetter: StatusSetter) extends StatusHandler with JmsArtifact {
+
   val LOG = Logger.getLogger(classOf[GpiItemTranslator].getName)
 
   val getter: StatusGetter = new StatusGetter("GPI Special Status Translator")
@@ -35,29 +36,24 @@ class GpiItemTranslator(top: Top, statusSetter: StatusSetter) extends StatusHand
 
   override def update[T](item: StatusItem[T]) = {
     if (item.getName == irStatus) {
-      LOG.info("IR " + item.getValue.toString)
       current = current.copy(ir = item.getValue.toString == "1")
       updateStatus()
     }
     if (item.getName == visibleStatus) {
-      LOG.info("VIS " + item.getValue.toString)
       current = current.copy(visible = item.getValue.toString == "1")
       updateStatus()
     }
     if (item.getName == scStatus) {
-      LOG.info("SC " + item.getValue.toString)
       current = current.copy(scState = item.getValue.toString == "1")
       updateStatus()
     }
     if (item.getName == scPower) {
-      LOG.info("SCP " + item.getValue)
       current = current.copy(scPower = item.getValue.asInstanceOf[Float])
       updateStatus()
     }
   }
 
   private def updateStatus() {
-    LOG.info("Update " + lightOnStatus + " to " + current.isOn)
     statusSetter.setStatusItem(new BasicStatus[Int](lightOnStatus, current.isOn))
   }
 
