@@ -17,4 +17,5 @@
     <channel>tcs:sad:currentWindSpeed.VAL</channel>
     <channel>tcs:sad:parAngle</channel>
     <channel>ag:port:gpi</channel>
+    <channel>gpi:fpsParkRequest</channel>
 </channels>

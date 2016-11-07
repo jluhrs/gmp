@@ -1503,6 +1503,13 @@
         <initial>0</initial>
     </SimpleChannel>
 
+    <SimpleChannel>
+        <giapiname>gpi:fpsParkRequest</giapiname>
+        <epicsname>fpsParkRequest</epicsname>
+        <type>INT</type>
+        <initial>0</initial>
+    </SimpleChannel>
+
     <!--Alarms-->
 
     <AlarmChannel>
