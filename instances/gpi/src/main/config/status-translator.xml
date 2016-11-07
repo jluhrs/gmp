@@ -107,6 +107,10 @@
                 <to>APOD_HSTAR_G6210</to>
             </Map>
             <Map>
+                <from>ND3</from>
+                <to>ND3_G6211</to>
+            </Map>
+            <Map>
                 <from>UNKNOWN</from>
                 <to>UNKNOWN</to>
             </Map>
