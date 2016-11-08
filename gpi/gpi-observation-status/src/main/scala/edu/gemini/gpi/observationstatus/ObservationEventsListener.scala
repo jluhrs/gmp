@@ -99,11 +99,13 @@ class ObservationEventsListener(gmpTop: Top, statusSetter: StatusSetter, statusD
     * Updates a status item with minutes since a given value reading a timestamp
     */
   private def updateTimeSince(srcTimeStampStatus: String, destMinsSinceStatus: String) = {
-    Option(statusDB.getStatusItem[Int](srcTimeStampStatus)).foreach { i =>
+    Option(statusDB.getStatusItem[Int](srcTimeStampStatus)).map { i =>
       Option(i.getValue).foreach { t=>
         val secs = System.currentTimeMillis() / 1000 - t
         statusSetter.setStatusItem(new BasicStatus[Int](destMinsSinceStatus, (secs / 60).toInt))
       }
+    }.getOrElse {
+      statusSetter.setStatusItem(new BasicStatus[Int](destMinsSinceStatus, 999))
     }
   }
 
