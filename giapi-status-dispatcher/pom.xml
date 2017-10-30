@@ -57,10 +57,6 @@
             <artifactId>jms-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.jms</groupId>
-            <artifactId>jms-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.aspen.giapi</groupId>
             <artifactId>giapi-status-setter</artifactId>
         </dependency>
