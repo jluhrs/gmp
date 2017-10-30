@@ -587,13 +587,13 @@
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.compendium</artifactId>
-                <version>4.3.0</version>
+                <version>4.3.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
-                <version>4.3.0</version>
+                <version>4.3.1</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -1064,7 +1064,7 @@
         <repository>
             <!-- Maven central mirror -->
             <id>edu.gemini.mirror</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/repo1</url>
+            <url>http://build.cl.gemini.edu:8081/artifactory/repository</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
