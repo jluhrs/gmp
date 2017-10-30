@@ -19,6 +19,8 @@ public interface EpicsReader {
 
     ReadOnlyClientEpicsChannel<Integer> getIntegerChannel(String channelName);
 
+    ReadOnlyClientEpicsChannel<Short> getShortChannel(String channelName);
+
     ReadOnlyClientEpicsChannel<Float> getFloatChannel(String channelName);
 
     ReadOnlyClientEpicsChannel<String> getStringChannel(String channelName);

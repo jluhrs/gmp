@@ -9,7 +9,7 @@ import gov.aps.jca.CAException;
  * Class EpicsReaderImpl
  *
  * @author Nicolas A. Barriga
- *         Date: 11/7/11
+ * Date: 11/7/11
  */
 public class EpicsReaderImpl extends EpicsChannelFactory implements EpicsReader {
 
@@ -25,6 +25,11 @@ public class EpicsReaderImpl extends EpicsChannelFactory implements EpicsReader 
     @Override
     public ReadOnlyClientEpicsChannel<Integer> getIntegerChannel(String channelName) {
         return _getIntegerChannel(channelName);
+    }
+
+    @Override
+    public ReadOnlyClientEpicsChannel<Short> getShortChannel(String channelName) {
+        return _getShortChannel(channelName);
     }
 
     @Override

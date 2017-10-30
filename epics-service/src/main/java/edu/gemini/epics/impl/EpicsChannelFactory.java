@@ -130,6 +130,25 @@ class EpicsChannelFactory {
         return ch;
     }
 
+    protected ReadWriteEpicsChannelImpl<Short> _getShortChannel(String channelName) {
+        ReadWriteEpicsChannelImpl<Short> ch;
+
+        CAJChannel cajChannel = bindChannel(channelName);
+        if (!cajChannel.getFieldType().isSHORT()) {
+            try {
+                cajChannel.destroy();
+            } catch (CAException e) {
+                LOG.log(Level.WARNING, e.getMessage(), e);
+            }
+            throw new IllegalArgumentException("Channel " + channelName + " can be connected to, but is of incorrect type.");
+        } else {
+            ch = new ReadWriteEpicsChannelImpl<Short>(cajChannel);
+//            ch2Ref.put(new PhantomReference<ReadWriteEpicsChannelImpl<?>>(ch, refQueue), cajChannel);
+        }
+
+        return ch;
+    }
+
     protected ReadWriteEpicsChannelImpl<Float> _getFloatChannel(String channelName) {
         ReadWriteEpicsChannelImpl<Float> ch;
 
