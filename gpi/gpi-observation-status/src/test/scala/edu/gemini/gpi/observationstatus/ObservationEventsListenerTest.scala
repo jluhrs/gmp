@@ -18,6 +18,10 @@ class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
   test("export datalabel") {
     val top = mock[Top]
     when(top.buildStatusItemName("ifs:observationDataLabel")).thenReturn("gpi:ifs:observationDataLabel")
+    when(top.buildStatusItemName("massLastUpdate")).thenReturn("gpi:massLastUpdate")
+    when(top.buildStatusItemName("massMinsSince")).thenReturn("gpi:massMinsSince")
+    when(top.buildStatusItemName("dimmLastUpdate")).thenReturn("gpi:dimmLastUpdate")
+    when(top.buildStatusItemName("dimmMinsSince")).thenReturn("gpi:dimmMinsSince")
     val setter = mock[StatusSetter]
     val statusDB = mock[StatusDatabaseService]
 
@@ -26,13 +30,17 @@ class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
 
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
 
-    verify(setter).setStatusItem(argument.capture())
+    verify(setter, times(3)).setStatusItem(argument.capture())
     assertEquals(argument.getValue.getName, "gpi:ifs:observationDataLabel")
     assertEquals(argument.getValue.getValue, "NEW_LABEL")
   }
   test("export datalabel verify label name") {
     val top = mock[Top]
     when(top.buildStatusItemName("ifs:observationDataLabel")).thenReturn("gpi:ifs:observationDataLabel")
+    when(top.buildStatusItemName("massLastUpdate")).thenReturn("gpi:massLastUpdate")
+    when(top.buildStatusItemName("massMinsSince")).thenReturn("gpi:massMinsSince")
+    when(top.buildStatusItemName("dimmLastUpdate")).thenReturn("gpi:dimmLastUpdate")
+    when(top.buildStatusItemName("dimmMinsSince")).thenReturn("gpi:dimmMinsSince")
     val setter = mock[StatusSetter]
     val statusDB = mock[StatusDatabaseService]
 
@@ -41,13 +49,17 @@ class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
 
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
 
-    verify(setter).setStatusItem(argument.capture())
+    verify(setter, times(3)).setStatusItem(argument.capture())
     assertEquals(argument.getValue.getName, "gpi:ifs:observationDataLabel")
     assertEquals(argument.getValue.getValue, "ANOTHER_LABEL")
   }
   test("export datalabel verify channel name") {
     val top = mock[Top]
     when(top.buildStatusItemName("ifs:observationDataLabel")).thenReturn("gmp:ifs:observationDataLabel")
+    when(top.buildStatusItemName("massLastUpdate")).thenReturn("gpi:massLastUpdate")
+    when(top.buildStatusItemName("massMinsSince")).thenReturn("gpi:massMinsSince")
+    when(top.buildStatusItemName("dimmLastUpdate")).thenReturn("gpi:dimmLastUpdate")
+    when(top.buildStatusItemName("dimmMinsSince")).thenReturn("gpi:dimmMinsSince")
     val setter = mock[StatusSetter]
     val statusDB = mock[StatusDatabaseService]
 
@@ -56,7 +68,7 @@ class ObservationEventsListenerTest extends FunSuite with MockitoSugar {
 
     val argument = ArgumentCaptor.forClass(classOf[StatusItem[String]])
 
-    verify(setter).setStatusItem(argument.capture())
+    verify(setter, times(3)).setStatusItem(argument.capture())
     assertEquals(argument.getValue.getName, "gmp:ifs:observationDataLabel")
     assertEquals(argument.getValue.getValue, "ANOTHER_LABEL")
   }

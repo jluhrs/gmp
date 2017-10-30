@@ -81,10 +81,10 @@ class ObservationEventsListener(gmpTop: Top, statusSetter: StatusSetter, statusD
           }
         }
         LOG.info(s"Set observationDataLabel to $dataLabel")
-        statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:observationDataLabel"), dataLabel.getName))
         // Set the status item for time since last update of MASS/DIMM
         updateTimeSince(massLastUpdate, massMinsSince)
         updateTimeSince(dimmLastUpdate, dimmMinsSince)
+        statusSetter.setStatusItem(new BasicStatus(gmpTop.buildStatusItemName("ifs:observationDataLabel"), dataLabel.getName))
       case GDSEndObservation(dataLabel, _, _) =>
         cache.get(dataLabel).endObservation()
         cache.invalidate(dataLabel)
