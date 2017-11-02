@@ -39,6 +39,14 @@ public class DbrUtil {
                 values.add(a);
             }
             return values;
+        } else if (type.isSHORT()) {
+            List<Short> values = new ArrayList<Short>();
+            Object objVal = dbr.getValue();
+            short[] val = (short[]) objVal;
+            for (short a : val) {
+                values.add(a);
+            }
+            return values;
         } else if (type.isBYTE()) {
             List<Byte> values = new ArrayList<Byte>();
             Object objVal = dbr.getValue();

@@ -48,6 +48,13 @@ public class ReadWriteEpicsChannelImpl<T> extends ReadOnlyEpicsChannelImpl<T> im
                 arr[i] = list.get(i);
             }
             channel.put(arr);
+        } else if (getType().isSHORT()) {
+            List<Short> list = (List<Short>) values;
+            short arr[] = new short[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                arr[i] = list.get(i);
+            }
+            channel.put(arr);
         } else if (getType().isSTRING()) {
             channel.put(values.toArray(new String[values.size()]));
         } else {

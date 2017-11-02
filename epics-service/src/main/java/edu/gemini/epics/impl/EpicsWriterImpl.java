@@ -29,7 +29,7 @@ public class EpicsWriterImpl extends EpicsChannelFactory implements EpicsWriter 
     }
 
     @Override
-    public ReadOnlyClientEpicsChannel<Short> getShortChannel(String channelName) {
+    public ReadWriteClientEpicsChannel<Short> getShortChannel(String channelName) {
         return _getShortChannel(channelName);
     }
 

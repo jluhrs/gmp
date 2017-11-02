@@ -146,6 +146,15 @@ abstract class AbstractChannel<T> implements ServerChannel<T> {
     }
 
     /**
+     * Checks if this channel represents an Short
+     *
+     * @return true if Short, false otherwise
+     */
+    public boolean isShort() {
+        return pv.getType().isSHORT();
+    }
+
+    /**
      * Checks if this channel represents a String
      *
      * @return true if String, false otherwise

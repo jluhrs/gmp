@@ -14,6 +14,9 @@ public interface EpicsWriter extends EpicsReader {
     ReadWriteClientEpicsChannel<Integer> getIntegerChannel(String channelName);
 
     @Override
+    ReadWriteClientEpicsChannel<Short> getShortChannel(String channelName);
+
+    @Override
     ReadWriteClientEpicsChannel<Float> getFloatChannel(String channelName);
 
     @Override

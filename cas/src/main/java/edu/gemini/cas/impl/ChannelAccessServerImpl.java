@@ -102,6 +102,8 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
         ServerChannel ch = null;
         if (values.get(0) instanceof Integer) {
             ch = createIntegerChannel(name, values.size());
+        } else if (values.get(0) instanceof Short) {
+            ch = createShortChannel(name, values.size());
         } else if (values.get(0) instanceof Float) {
             ch = createFloatChannel(name, values.size());
         } else if (values.get(0) instanceof Double) {
@@ -167,6 +169,29 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
             }
         }
         IntegerChannel ch = new IntegerChannel(name, length);
+        ch.register(server);
+        channels.put(name, ch);
+        return ch;
+    }
+
+    /**
+     * Creates a new channel, with a simulated EPICS process variable(PV) of type Short
+     *
+     * @param name   name of the PV in EPICS
+     * @param length length of the PV data
+     * @return the new channel
+     * @throws IllegalArgumentException if channel already exists but is of different type
+     */
+    private ServerChannel<Short> createShortChannel(String name, int length) {
+        if (channels.containsKey(name)) {
+            edu.gemini.epics.api.Channel ch = channels.get(name);
+            if (ch instanceof ShortChannel) {
+                return (ShortChannel) ch;
+            } else {
+                throw new IllegalArgumentException("Channel " + name + " already exists, but is not of type Short");
+            }
+        }
+        ShortChannel ch = new ShortChannel(name, length);
         ch.register(server);
         channels.put(name, ch);
         return ch;

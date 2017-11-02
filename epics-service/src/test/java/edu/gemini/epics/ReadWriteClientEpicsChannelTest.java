@@ -57,6 +57,21 @@ public class ReadWriteClientEpicsChannelTest {
     }
 
     @Test
+    public void testWriteShort() throws CAException, TimeoutException {
+        short testValue = 1;
+        Channel ch = giapicas.createChannel(CHANNEL_NAME, (short)0);
+        
+        ReadWriteClientEpicsChannel<Short> rwChannel = epicsWriter.getShortChannel(CHANNEL_NAME);
+        
+        rwChannel.setValue(testValue);
+
+        short readValue = rwChannel.getFirst();
+
+        assertTrue("Failed to write Short channel.", readValue==testValue);
+
+    }
+
+    @Test
     public void testWriteDouble() throws CAException, TimeoutException {
         double testValue = 2.0;
         Channel ch = giapicas.createChannel(CHANNEL_NAME, 0.0);

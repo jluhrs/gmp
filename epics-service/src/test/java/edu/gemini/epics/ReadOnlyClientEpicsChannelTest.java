@@ -61,6 +61,19 @@ public class ReadOnlyClientEpicsChannelTest {
     }
 
     @Test
+    public void testReadShort() throws CAException, TimeoutException {
+        short testValue = 1;
+        Channel ch = giapicas.createChannel(CHANNEL_NAME, testValue);
+
+        ReadOnlyClientEpicsChannel<Short> roChannel = epicsReader.getShortChannel(CHANNEL_NAME);
+
+        short readValue = roChannel.getFirst();
+
+        assertTrue("Failed to read Short channel.", readValue==testValue);
+
+    }
+
+    @Test
     public void testReadDouble() throws CAException, TimeoutException {
         double testValue = 2.0;
         Channel ch = giapicas.createChannel(CHANNEL_NAME, testValue);
