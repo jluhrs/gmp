@@ -5,11 +5,11 @@
     <parent>
         <groupId>edu.gemini.aspen</groupId>
         <artifactId>giapi-osgi</artifactId>
-        <version>14.4.4</version>
+        <version>14.4.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>gmp-server</artifactId>
-    <version>14.4.4</version>
+    <version>14.4.5-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -318,7 +318,7 @@
                 <dependency>
                     <groupId>edu.gemini.gpi</groupId>
                     <artifactId>gpi-observation-status</artifactId>
-                    <version>0.2.7</version>
+                    <version>0.2.8-SNAPSHOT</version>
                 </dependency>
             </dependencies>
         </profile>
