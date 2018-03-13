@@ -20,4 +20,11 @@ public interface JCAContextController {
      * @return <code>true</code> if you can get a JCA Context, <code>false</code> otherwise
      */
     boolean isContextAvailable();
+    
+    /**
+     * Retrieve default IO timeout from context.
+     * 
+     * @return timeout value, in seconds
+     */
+    double timeout();
 }

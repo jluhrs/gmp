@@ -25,16 +25,19 @@ public class EpicsService implements JCAContextController {
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                     "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-    public static final String PROPERTY_ADDRESS_LIST = "addressList";
 
     private String _addressList;
+    
+    // Timeout in seconds
+    private double ioTimeout = 1.0;
 
     private CAJContext _ctx;
 
-    public EpicsService(String addressList) {
+    public EpicsService(String addressList, double ioTimeout) {
         LOG.info("EpicsService created with " + addressList);
         validateAddressToConnect(addressList);
         this._addressList = addressList;
+        this.ioTimeout = ioTimeout;
     }
 
     public EpicsService(CAJContext context) {
@@ -63,11 +66,16 @@ public class EpicsService implements JCAContextController {
         return _ctx != null;
     }
 
-    public void changedAddress(Dictionary<String, ?> properties) {
-        if (properties.get(PROPERTY_ADDRESS_LIST) != null) {
-            this._addressList = properties.get(PROPERTY_ADDRESS_LIST).toString();
-            LOG.fine("Address List changed, update JCA Context to " + this._addressList);
+    public void setAddress(String addressList) {
+        if (addressList != null) {
+            this._addressList = addressList;
+            LOG.fine("Address List changed to " + this._addressList);
         }
+    }
+
+    public void setTimeout(double ioTimeout) {
+        this.ioTimeout = ioTimeout;
+        LOG.fine("Default IO timeout changed to " + this.ioTimeout);
     }
 
     /**
@@ -120,6 +128,11 @@ public class EpicsService implements JCAContextController {
                 LOG.info("JCALibrary Info: " + line);
             }
         }
+    }
+
+    @Override
+    public double timeout() {
+        return ioTimeout;
     }
 
 }

@@ -26,16 +26,18 @@ import java.util.Map;
  */
 public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T> {
     protected final CAJChannel channel;
+    protected double timeout;
     private final Map<EpicsListener<?>, MonitorListenerPair> listeners = new HashMap<EpicsListener<?>, MonitorListenerPair>();
 
-    public ReadOnlyEpicsChannelImpl(CAJChannel channel) {
+    public ReadOnlyEpicsChannelImpl(CAJChannel channel, double timeout) {
         this.channel = channel;
+        this.timeout =  timeout;
     }
 
     @Override
     public DBR getDBR() throws CAException, TimeoutException {
         DBR dbr = channel.get();
-        channel.getContext().pendIO(1.0);
+        channel.getContext().pendIO(timeout);
         return dbr;
     }
 

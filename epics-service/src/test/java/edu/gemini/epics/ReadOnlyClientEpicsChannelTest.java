@@ -33,7 +33,7 @@ public class ReadOnlyClientEpicsChannelTest {
         giapicas = new ChannelAccessServerImpl();
         giapicas.start();
 
-        epicsService = new EpicsService("127.0.0.1");
+        epicsService = new EpicsService("127.0.0.1", 1.0);
         epicsService.startService();
         epicsReader = new EpicsReaderImpl(epicsService);
     }
@@ -41,7 +41,7 @@ public class ReadOnlyClientEpicsChannelTest {
     @After
     public void tearDown() throws Exception {
         epicsService.stopService();
-		epicsService = null;
+        epicsService = null;
 
         Thread.sleep(20);//can't start and stop immediately, and our tests are too short
         giapicas.stop();

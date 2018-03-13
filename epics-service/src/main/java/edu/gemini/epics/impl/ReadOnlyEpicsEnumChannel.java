@@ -12,8 +12,8 @@ import java.util.List;
  * Created by jluhrs on 10/23/14.
  */
 public class ReadOnlyEpicsEnumChannel<T extends Enum<T>> extends ReadOnlyEpicsChannelImpl<T> {
-    public ReadOnlyEpicsEnumChannel(CAJChannel channel, Class<T> enumType) {
-        super(channel);
+    public ReadOnlyEpicsEnumChannel(CAJChannel channel, Class<T> enumType, double timeout) {
+        super(channel, timeout);
 
         this.enumType = enumType;
     }

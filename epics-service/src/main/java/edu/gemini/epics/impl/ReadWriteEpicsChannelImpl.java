@@ -16,8 +16,8 @@ import java.util.List;
  *         Date: 11/9/11
  */
 public class ReadWriteEpicsChannelImpl<T> extends ReadOnlyEpicsChannelImpl<T> implements ReadWriteClientEpicsChannel<T> {
-    public ReadWriteEpicsChannelImpl(CAJChannel channel) {
-        super(channel);
+    public ReadWriteEpicsChannelImpl(CAJChannel channel, double timeout) {
+        super(channel, timeout);
     }
 
     @Override
@@ -61,6 +61,6 @@ public class ReadWriteEpicsChannelImpl<T> extends ReadOnlyEpicsChannelImpl<T> im
             throw new UnsupportedOperationException("Only EPICS channels of types Integer, Float, Double and String are supported at this time.");
         }
 
-        channel.getContext().pendIO(1.0);
+        channel.getContext().pendIO(timeout);
     }
 }

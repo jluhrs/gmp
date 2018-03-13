@@ -21,7 +21,7 @@ public class EpicsServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        epicsService = new EpicsService("127.0.0.1");
+        epicsService = new EpicsService("127.0.0.1", 1.0);
     }
 
     @Test
@@ -59,14 +59,13 @@ public class EpicsServiceTest {
     public void updateAddressList() {
         Dictionary<String, String> dictionary = new Hashtable<String, String>();
         String NEW_ADDRESS = "0.0.0.0";
-        dictionary.put(EpicsService.PROPERTY_ADDRESS_LIST, NEW_ADDRESS);
-        epicsService.changedAddress(dictionary);
+        epicsService.setAddress(NEW_ADDRESS);
 
         epicsService.startService();
         assertEquals(NEW_ADDRESS, System.getProperty("com.cosylab.epics.caj.CAJContext.addr_list"));
 
         // Now pass an empty set
-        epicsService.changedAddress(new Hashtable<String, String>());
+        epicsService.setAddress(null);
         epicsService.startService();
         assertEquals(NEW_ADDRESS, System.getProperty("com.cosylab.epics.caj.CAJContext.addr_list"));
     }
@@ -88,7 +87,7 @@ public class EpicsServiceTest {
      */
     @Test
     public void testSupportForMultipleIPs() {
-        assertNotNull(new EpicsService("127.0.0.1 0.0.0.0"));
+        assertNotNull(new EpicsService("127.0.0.1 0.0.0.0", 1.0));
     }
 
 }
