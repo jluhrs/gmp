@@ -27,40 +27,42 @@ public class ReadWriteEpicsChannelImpl<T> extends ReadOnlyEpicsChannelImpl<T> im
 
     @Override
     public void setValue(List<T> values) throws CAException, TimeoutException {
-        if (getType().isDOUBLE()) {
-            List<Double> list = (List<Double>) values;
-            double arr[] = new double[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                arr[i] = list.get(i);
+        synchronized (channel.getContext()) {
+            if (getType().isDOUBLE()) {
+                List<Double> list = (List<Double>) values;
+                double arr[] = new double[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    arr[i] = list.get(i);
+                }
+                channel.put(arr);
+            } else if (getType().isFLOAT()) {
+                List<Float> list = (List<Float>) values;
+                float arr[] = new float[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    arr[i] = list.get(i);
+                }
+                channel.put(arr);
+            } else if (getType().isINT()) {
+                List<Integer> list = (List<Integer>) values;
+                int arr[] = new int[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    arr[i] = list.get(i);
+                }
+                channel.put(arr);
+            } else if (getType().isSHORT()) {
+                List<Short> list = (List<Short>) values;
+                short arr[] = new short[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    arr[i] = list.get(i);
+                }
+                channel.put(arr);
+            } else if (getType().isSTRING()) {
+                channel.put(values.toArray(new String[values.size()]));
+            } else {
+                throw new UnsupportedOperationException("Only EPICS channels of types Integer, Float, Double and String are supported at this time.");
             }
-            channel.put(arr);
-        } else if (getType().isFLOAT()) {
-            List<Float> list = (List<Float>) values;
-            float arr[] = new float[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                arr[i] = list.get(i);
-            }
-            channel.put(arr);
-        } else if (getType().isINT()) {
-            List<Integer> list = (List<Integer>) values;
-            int arr[] = new int[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                arr[i] = list.get(i);
-            }
-            channel.put(arr);
-        } else if (getType().isSHORT()) {
-            List<Short> list = (List<Short>) values;
-            short arr[] = new short[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                arr[i] = list.get(i);
-            }
-            channel.put(arr);
-        } else if (getType().isSTRING()) {
-            channel.put(values.toArray(new String[values.size()]));
-        } else {
-            throw new UnsupportedOperationException("Only EPICS channels of types Integer, Float, Double and String are supported at this time.");
-        }
 
-        channel.getContext().pendIO(timeout);
+            channel.getContext().pendIO(timeout);
+        }
     }
 }

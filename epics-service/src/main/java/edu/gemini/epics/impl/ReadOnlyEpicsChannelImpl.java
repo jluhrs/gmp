@@ -36,8 +36,11 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
 
     @Override
     public DBR getDBR() throws CAException, TimeoutException {
-        DBR dbr = channel.get();
-        channel.getContext().pendIO(timeout);
+        DBR dbr;
+        synchronized (channel.getContext()) {
+            dbr = channel.get();
+            channel.getContext().pendIO(timeout);
+        }
         return dbr;
     }
 

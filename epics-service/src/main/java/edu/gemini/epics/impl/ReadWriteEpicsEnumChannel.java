@@ -27,10 +27,12 @@ public class ReadWriteEpicsEnumChannel<T extends Enum<T>> extends ReadOnlyEpicsE
     public void setValue(List<T> values) throws CAException, TimeoutException {
         String arr[] = new String[values.size()];
         for (int i = 0; i < values.size(); i++) {
-           arr[i] = values.get(i).toString();
+            arr[i] = values.get(i).toString();
         }
-        channel.put(arr);
+        synchronized (channel.getContext()) {
+            channel.put(arr);
 
-        channel.getContext().pendIO(timeout);
+            channel.getContext().pendIO(timeout);
+        }
     }
 }

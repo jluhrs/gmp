@@ -199,8 +199,10 @@ class EpicsChannelFactory {
             //Check that the channel enum values match the enum class values
             DBR_LABELS_Enum labels;
             try {
-                labels = (DBR_LABELS_Enum) cajChannel.get(DBRType.LABELS_ENUM, 1);
-                _ctx.pendIO(timeout);
+                synchronized (_ctx) {
+                    labels = (DBR_LABELS_Enum) cajChannel.get(DBRType.LABELS_ENUM, 1);
+                    _ctx.pendIO(timeout);
+                }
             } catch (CAException e) {
                 throw new EpicsException("Enum values cannot be retrieved for Epics channel " + channelName, e);
             } catch (TimeoutException e) {
@@ -279,8 +281,10 @@ class EpicsChannelFactory {
                 });
             }
         } else {
-            epicsChannel = (CAJChannel) _ctx.createChannel(channelName);
-            _ctx.pendIO(timeout);
+            synchronized (_ctx) {
+                epicsChannel = (CAJChannel) _ctx.createChannel(channelName);
+                _ctx.pendIO(timeout);
+            }
             if (epicsChannel.getConnectionState() != Channel.ConnectionState.CONNECTED) {
                 throw new IllegalStateException("Channel " + channelName + " cannot be connected");
             }
