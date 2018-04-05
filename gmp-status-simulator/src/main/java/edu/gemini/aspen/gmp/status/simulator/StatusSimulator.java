@@ -11,7 +11,6 @@ import edu.gemini.aspen.gmp.status.simulator.simulators.StatusSimulatorFactoryBu
 import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import javax.xml.bind.JAXBException;
@@ -29,8 +28,6 @@ import java.util.logging.Logger;
 /**
  * Class StatusSimulator creates loops to simulate the value of status items
  */
-@Component
-@Provides
 public class StatusSimulator implements JmsArtifact {
     private static final Logger LOG = Logger.getLogger(StatusSimulator.class.getName());
     private final Map<SimulatedStatus, StatusSetterImpl> statusSetters;
@@ -38,10 +35,9 @@ public class StatusSimulator implements JmsArtifact {
             Executors.newScheduledThreadPool(10);
     private final List<ScheduledFuture<?>> _tasks = Lists.newArrayList();
     private final AtomicBoolean simulating = new AtomicBoolean(false);
+    public static String configurationFile = "simulationConfiguration";
 
-    public StatusSimulator(@Property(name = "simulationConfiguration", value = "NOVALID", mandatory = true) String configFile,
-                           @Requires Top top) throws JAXBException, FileNotFoundException {
-        LOG.info("Simulating using configuration at " + configFile);
+    public StatusSimulator(String configFile, Top top) throws JAXBException, FileNotFoundException {
         SimulatorConfiguration simulatorConfiguration = new SimulatorConfiguration(new FileInputStream(configFile));
         List<StatusType> statuses = simulatorConfiguration.getStatuses();
         Map<SimulatedStatus, StatusSetterImpl> simulatorsMap = Maps.newHashMap();
@@ -52,10 +48,6 @@ public class StatusSimulator implements JmsArtifact {
             simulatorsMap.put(simulatedStatus, statusSetter);
         }
         statusSetters = ImmutableMap.copyOf(simulatorsMap);
-    }
-
-    @Validate
-    public void startComponent() throws JMSException {
     }
 
     private SimulatedStatus buildSimulatedStatus(StatusType s) {
@@ -85,7 +77,7 @@ public class StatusSimulator implements JmsArtifact {
         }
     }
 
-    public synchronized void startSimulation() {
+    private synchronized void startSimulation() {
         LOG.info("Start status items simulation");
         for (Map.Entry<SimulatedStatus, StatusSetterImpl> s : statusSetters.entrySet()) {
             SimulatedStatus simulatedStatus = s.getKey();
@@ -97,7 +89,7 @@ public class StatusSimulator implements JmsArtifact {
         simulating.set(true);
     }
 
-    public synchronized void stopSimulation() {
+    private synchronized void stopSimulation() {
         simulating.set(false);
         for (ScheduledFuture<?> f : _tasks) {
             f.cancel(true);
@@ -108,7 +100,7 @@ public class StatusSimulator implements JmsArtifact {
         private final SimulatedStatus status;
         private final StatusSetter setter;
 
-        public SimulationTask(SimulatedStatus status, StatusSetter setter) {
+        SimulationTask(SimulatedStatus status, StatusSetter setter) {
             this.status = status;
             this.setter = setter;
         }

@@ -7,7 +7,7 @@ public class IntRandomStatusSimulator extends BaseStatusSimulator<Integer> {
     private final int minValue;
     private final int maxValue;
 
-    public IntRandomStatusSimulator(String name, long updateRate, int minValue, int maxValue) {
+    IntRandomStatusSimulator(String name, long updateRate, int minValue, int maxValue) {
         super(name, updateRate);
         this.minValue = minValue;
         this.maxValue = maxValue;

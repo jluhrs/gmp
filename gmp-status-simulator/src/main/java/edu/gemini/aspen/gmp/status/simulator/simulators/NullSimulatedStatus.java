@@ -11,7 +11,7 @@ import edu.gemini.aspen.gmp.status.simulator.SimulatedStatus;
 public class NullSimulatedStatus implements SimulatedStatus<Integer> {
     private final String name;
 
-    public NullSimulatedStatus(String name) {
+    NullSimulatedStatus(String name) {
         this.name = name;
     }
 

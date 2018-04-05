@@ -5,4 +5,3 @@
 # No exports for this package
 Export-Package: ${bundle.namespace};version="${pom.version}",${bundle.namespace}.generated;version="${pom.version}"
 #Private-Package:${bundle.namespace}.*;version="${pom.version}"
-Bundle-Activator:

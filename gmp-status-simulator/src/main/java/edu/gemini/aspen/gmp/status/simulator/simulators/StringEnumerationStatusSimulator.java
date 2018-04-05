@@ -11,7 +11,7 @@ import java.util.List;
 public class StringEnumerationStatusSimulator extends BaseStatusSimulator<String> {
     private final Iterator<String> value;
 
-    public StringEnumerationStatusSimulator(String name, long updateRate, List<String> values) {
+    StringEnumerationStatusSimulator(String name, long updateRate, List<String> values) {
         super(name, updateRate);
         this.value = Iterators.cycle(values);
     }

@@ -7,5 +7,5 @@ import edu.gemini.aspen.gmp.status.simulator.generated.StatusType;
  * Factory class for simulated status objects
  */
 public interface StatusSimulatorFactory {
-    public SimulatedStatus buildStatusSimulator(StatusType s);
+    SimulatedStatus buildStatusSimulator(StatusType s);
 }
