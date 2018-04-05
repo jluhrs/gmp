@@ -19,9 +19,25 @@
     <version>0.4.19-SNAPSHOT</version>
 
     <name>GDS Observation State Publisher</name>
-    <description>The module provides information about the latests observations processed by the GDS</description>
+    <description>The module provides information about the latest observations processed by the GDS</description>
 
     <packaging>bundle</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-ipojo-plugin</artifactId>
+                <version>${org.apache.felix.ipojo}</version>
+                <executions>
+                    <execution>
+                        <id>compile-ipojo</id>
+                        <phase />
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
@@ -36,6 +52,10 @@
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.util.osgi</groupId>
+            <artifactId>osgi</artifactId>
         </dependency>
     </dependencies>
 

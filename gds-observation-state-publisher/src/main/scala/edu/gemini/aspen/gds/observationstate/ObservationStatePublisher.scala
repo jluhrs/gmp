@@ -1,8 +1,6 @@
 package edu.gemini.aspen.gds.observationstate
 
-import edu.gemini.aspen.gds.api.CollectionError
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.api.fits.FitsKeyword
 
 
 /**

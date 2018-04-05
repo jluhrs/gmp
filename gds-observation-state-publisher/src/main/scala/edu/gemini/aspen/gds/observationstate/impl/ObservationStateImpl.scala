@@ -1,25 +1,22 @@
 package edu.gemini.aspen.gds.observationstate.impl
 
-import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
-import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.observationstate._
-import java.util.concurrent.TimeUnit._
-import scala.collection.JavaConversions._
-import scala.collection.concurrent._
-import edu.gemini.aspen.gds.api.{CollectedValue, CollectionError}
-import collection.mutable.{SynchronizedSet, HashSet, Set}
 import java.util.Date
-import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import java.util.concurrent.TimeUnit._
+
 import com.google.common.cache.CacheBuilder
-import edu.gemini.aspen.gds.observationstate.ObservationInfo
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import edu.gemini.aspen.gds.api.{CollectedValue, CollectionError}
+import edu.gemini.aspen.gds.observationstate.{ObservationInfo, _}
+import edu.gemini.aspen.giapi.data.DataLabel
 import org.joda.time.{DateTime, Duration}
 
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[ObservationStateRegistrar], classOf[ObservationStateProvider]))
-class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) extends ObservationStateRegistrar with ObservationStateProvider {
+import scala.collection.JavaConversions._
+import scala.collection.concurrent._
+import scala.collection.mutable.{HashSet, Set, SynchronizedSet}
+
+class ObservationStateImpl(obsStatePubl: ObservationStatePublisher) extends ObservationStateRegistrar with ObservationStateProvider {
   // expiration of 1 day by default but tests can override it
-  def expirationMillis = 24 * 60 * 60 * 1000
+  def expirationMillis: Int = 24 * 60 * 60 * 1000
 
   class ObservationState {
     val missingKeywords: Set[FitsKeyword] = new HashSet[FitsKeyword] with SynchronizedSet[FitsKeyword]
@@ -38,7 +35,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def registerMissingKeyword(label: DataLabel, keywords: Traversable[FitsKeyword]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationState).missingKeywords ++= keywords
-    if (!keywords.isEmpty) {
+    if (keywords.nonEmpty) {
       obsInfoMap.getOrElseUpdate(label, new ObservationState).inError = true
     }
   }
@@ -46,12 +43,12 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
   //todo: use cause for something
   override def registerError(label: DataLabel, cause: String) {
     obsInfoMap.getOrElseUpdate(label, new ObservationState).failed = true
-    obsStatePubl.publishObservationError(new ObservationInfo(label, ObservationError, errorMsg = Option(cause)))
+    obsStatePubl.publishObservationError(ObservationInfo(label, ObservationError, errorMsg = Option(cause)))
   }
 
   override def registerCollectionError(label: DataLabel, errors: Traversable[(FitsKeyword, CollectionError.CollectionError)]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationState).errorKeywords ++= errors
-    if (!errors.isEmpty) {
+    if (errors.nonEmpty) {
       obsInfoMap.getOrElseUpdate(label, new ObservationState).inError = true
     }
   }
@@ -62,7 +59,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def endObservation(label: DataLabel, writeTime:Long, collectedValues: Traversable[CollectedValue[_]]) {
     obsInfoMap.getOrElseUpdate(label, new ObservationState).ended = true
-    obsStatePubl.publishEndObservation(new ObservationInfo(label, Successful, writeTime = Some(writeTime), collectedValues = collectedValues))
+    obsStatePubl.publishEndObservation(ObservationInfo(label, Successful, writeTime = Some(writeTime), collectedValues = collectedValues))
   }
 
   override def startObservation(label: DataLabel) {
@@ -82,7 +79,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def getLastDataLabel(n: Int): Traversable[DataLabel] = {
     obsInfoMap.toList.sortWith({
-      (a: (DataLabel, ObservationState), b: (DataLabel, ObservationState)) => (a._2.timestamp.compareTo(b._2.timestamp) > 0)
+      (a: (DataLabel, ObservationState), b: (DataLabel, ObservationState)) => a._2.timestamp.compareTo(b._2.timestamp) > 0
     }).take(n) map {
       a: (DataLabel, ObservationState) => a._1
     }
@@ -104,7 +101,7 @@ class ObservationStateImpl(@Requires obsStatePubl: ObservationStatePublisher) ex
 
   override def getObservationsInProgress: Traversable[DataLabel] = {
     obsInfoMap.filter {
-      case (key, value) => (value.started && !value.ended)
+      case (_, value) => value.started && !value.ended
     }.keySet
   }
 

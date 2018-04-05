@@ -1,21 +1,18 @@
 package edu.gemini.aspen.gds.observationstate.impl
 
-import org.apache.felix.ipojo.annotations.{Requires, Provides, Instantiate, Component}
-import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
-import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api._
 import java.util.logging.Logger
+
+import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
+import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
+import edu.gemini.aspen.giapi.data.DataLabel
 
 /**
  * This policy checks for errors and missing values and adds them to the ObservationStateRegistrar.
  * It should be run after EnforceMandatory policy and before ErrorsRemoved policy applied.
  */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
-class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires obsState: ObservationStateRegistrar) extends DefaultPostProcessingPolicy {
-  protected override val LOG = Logger.getLogger(this.getClass.getName)
+class InspectPolicy(configService: GDSConfigurationService, obsState: ObservationStateRegistrar) extends DefaultPostProcessingPolicy {
+  protected override val LOG: Logger = Logger.getLogger(this.getClass.getName)
   override val priority = 5
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
@@ -45,5 +42,5 @@ class InspectPolicy(@Requires configService: GDSConfigurationService, @Requires 
     })
   }
 
-  override def toString = this.getClass.getSimpleName
+  override def toString: String = this.getClass.getSimpleName
 }
