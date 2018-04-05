@@ -1,41 +1,34 @@
 package edu.gemini.aspen.gds.obsevent.handler
 
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
-import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.actors._
+import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 import edu.gemini.aspen.gmp.services.PropertyHolder
-import org.apache.felix.ipojo.annotations.{Provides, Requires, Instantiate, Component}
-import org.apache.felix.ipojo.handlers.event.publisher.Publisher
-import org.apache.felix.ipojo.handlers.event.{Publishes, Subscriber}
+import org.osgi.service.event.{Event, EventAdmin, EventHandler}
 
 /**
  * Marker interface used to export GDSObseventHandlerImpl and used by the Health component */
 trait GDSObseventHandler
 
+object GDSObseventHandler {
+  val ObsEventTopic = "edu/gemini/aspen/gds/obsevent/handler"
+  val ObsEventKey = "observationevent"
+}
+
 /**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
  * keyword values acquisition process
  */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[GDSObseventHandler]))
-// todo: reduce amount of dependencies
-class GDSObseventHandlerImpl(
-                          @Requires actorsFactory: CompositeActorsFactory,
-                          @Requires keywordsDatabase: KeywordsDatabase,
-                          @Requires postProcessingPolicy: CompositePostProcessingPolicy,
-                          @Requires propertyHolder: PropertyHolder) extends GDSObseventHandler {
+class GDSObseventHandlerImpl(actorsFactory: CompositeActorsFactory, keywordsDatabase: KeywordsDatabase, postProcessingPolicy: CompositePostProcessingPolicy, propertyHolder: PropertyHolder, ea: EventAdmin) extends GDSObseventHandler with EventHandler {
 
-  @Publishes(name="gdsrelay", topics = "edu/gemini/aspen/gds/gdsevent", dataKey = "gdsevent")
-  var publisher:Publisher = _
+  private val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, postProcessingPolicy, propertyHolder, ea)
 
-  private lazy val replyHandler = new ReplyHandler(actorsFactory, keywordsDatabase, postProcessingPolicy, propertyHolder, publisher)
-
-  @Subscriber(name="obsend", topics="edu/gemini/aspen/gds/obsevent/handler", dataType = "scala.Tuple2", dataKey = "observationevent")
-  def onObservationEvent(event: (ObservationEvent, DataLabel)) {
-    replyHandler ! AcquisitionRequest(event._1, event._2)
+  override def handleEvent(event: Event): Unit = {
+    event.getProperty(GDSObseventHandler.ObsEventKey) match {
+      case (e: ObservationEvent, d: DataLabel) => replyHandler ! AcquisitionRequest(e, d)
+      case _ => sys.error("Uknown message from observation event")
+    }
   }
-
 }

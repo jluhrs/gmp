@@ -50,7 +50,6 @@ public enum ObservationEvent {
      */
     EXT_END_OBS("EXT_END_OBS");
 
-
     private final String eventName;
 
     private ObservationEvent(String name) {

@@ -14,15 +14,13 @@ import org.scalatest.mock.MockitoSugar
 import java.util.logging.Logger
 import edu.gemini.aspen.gds.api.CollectedValue
 import edu.gemini.aspen.gds.api.fits.{HeaderItem, Header}
-import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 
 @RunWith(classOf[JUnitRunner])
 class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAfter {
-  val propertyHolder = mock[PropertyHolder]
-  val tempDir = System.getProperty("java.io.tmpdir")
+  val propertyHolder: PropertyHolder = mock[PropertyHolder]
+  val tempDir: String = System.getProperty("java.io.tmpdir")
   when(propertyHolder.getProperty(anyString())).thenReturn(tempDir)
 
-  val registrar = mock[Publisher]
   val dataLabel = new DataLabel("GS-2011.fits")
   val dummyFile = new File(tempDir, dataLabel.getName)
 
@@ -31,14 +29,14 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
   }
 
   test("convertToHeaders empty") {
-    implicit val LOG = mock[Logger]
+    implicit val LOG: Logger = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
     assertEquals(List(Header(0, Nil)), fp.convertToHeaders(Nil))
   }
 
   test("convertToHeaders with one header") {
-    implicit val LOG = mock[Logger]
+    implicit val LOG: Logger = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
     val cv = List(CollectedValue("KEY", "1.0", "comment", 0, None))
@@ -51,7 +49,7 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
   }
 
   test("convertToHeaders with format") {
-    implicit val LOG = mock[Logger]
+    implicit val LOG: Logger = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
     val cv = List(CollectedValue("KEY", "1.0", "comment", 0, Some("%.2f")))
@@ -64,7 +62,7 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
   }
 
   test("convertToHeaders with two headers") {
-    implicit val LOG = mock[Logger]
+    implicit val LOG: Logger = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
     val cv2 = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 1, None) :: Nil
@@ -73,7 +71,7 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
   }
 
   test("write to file") {
-    implicit val LOG = mock[Logger]
+    implicit val LOG: Logger = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
     val cv = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 1, None) :: Nil
@@ -86,7 +84,7 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
 
 
   test("read an non-existing file") {
-    implicit val LOG = mock[Logger]
+    implicit val LOG: Logger = mock[Logger]
     val fp = new FitsFileProcessor(propertyHolder)
 
     val cv = CollectedValue("KEY", "1.0", "comment", 0, None) :: CollectedValue("KEY2", "1.0", "comment", 1, None) :: Nil
@@ -98,7 +96,7 @@ class FitsFileProcessorTest extends FunSuite with MockitoSugar with BeforeAndAft
   }
 
   test("write to a non valid destination") {
-    implicit val LOG = mock[Logger]
+    implicit val LOG: Logger = mock[Logger]
     val propertyHolder = mock[PropertyHolder]
     when(propertyHolder.getProperty("DHS_SCIENCE_DATA_PATH")).thenReturn(tempDir)
     when(propertyHolder.getProperty("DHS_PERMANENT_SCIENCE_DATA_PATH")).thenReturn("<")

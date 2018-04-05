@@ -1,31 +1,40 @@
 package edu.gemini.aspen.gds.obsevent.handler
 
-import edu.gemini.aspen.giapi.data.ObservationEvent._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.aspen.gds.keywords.database.{Retrieve, Clean, KeywordsDatabase}
-import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
-import edu.gemini.aspen.gds.actors._
-import actors.Actor
-import actors.Actor.actor
-import java.io.{File, FileNotFoundException}
+import java.io.FileNotFoundException
+import java.util
 import java.util.logging.{Level, Logger}
 
+import edu.gemini.aspen.gds.actors._
+import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
 import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.gds.keywords.database.{Clean, KeywordsDatabase, Retrieve}
+import edu.gemini.aspen.giapi.data.ObservationEvent._
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 import edu.gemini.aspen.gmp.services.PropertyHolder
-import org.apache.felix.ipojo.handlers.event.publisher.Publisher
+import org.osgi.service.event.{Event, EventAdmin}
+
+import scala.actors.Actor
+import scala.actors.Actor.actor
 
 class ReplyHandler(actorsFactory: CompositeActorsFactory,
   keywordsDatabase: KeywordsDatabase,
   postProcessingPolicy: PostProcessingPolicy,
   propertyHolder: PropertyHolder,
-  publisher: Publisher) extends Actor {
-  private implicit val LOG = Logger.getLogger(this.getClass.getName)
+  publisher: EventAdmin) extends Actor {
+  private implicit val LOG: Logger = Logger.getLogger(this.getClass.getName)
   private val eventLogger = new ObservationEventLogger
   private val bookKeeper = new ObsEventBookKeeping
   private val fileProcessor = new FitsFileProcessor(propertyHolder)
   private val obsTransactions = new ObservationTransactionsStore()
 
   start()
+
+  def sendData(not: GDSNotification): Unit = {
+    val properties: util.HashMap[String, GDSNotification] = new java.util.HashMap()
+    properties.put(GDSNotification.GDSNotificationKey, not)
+    val event = new Event(GDSNotification.GDSEventsTopic, properties)
+    publisher.postEvent(event)
+  }
 
   def act() {
     loop {
@@ -42,7 +51,7 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
     obsEvent match {
       case OBS_PREP =>
         eventLogger.addEventSet(dataLabel)
-        publisher.sendData(GDSStartObservation(dataLabel))
+        sendData(GDSStartObservation(dataLabel))
       case EXT_START_OBS =>
         // This indicates that the observation was started by the seqexec using a "transaction" of sorts
         obsTransactions.startTransaction(dataLabel)
@@ -114,12 +123,11 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
     eventLogger.enforceTimeConstraints(obsEvent, dataLabel)
 
     obsEvent match {
-      case OBS_END_DSET_WRITE => {
+      case OBS_END_DSET_WRITE =>
         //log timing stats for this datalabel
         for (evt <- ObservationEvent.values()) {
           eventLogger.logTiming(evt, dataLabel)
         }
-      }
       case _ =>
     }
   }
@@ -135,13 +143,13 @@ class ReplyHandler(actorsFactory: CompositeActorsFactory,
       fileProcessor.updateFITSFile(dataLabel, cleanedList) match {
         case Right(FitsWriteResult(message, writeTime, srcFile, destFile)) =>
           LOG.info(message)
-          publisher.sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel).toTraversable))
-          publisher.sendData(GDSEndObservation(dataLabel, writeTime, processedList))
+          sendData(GDSObservationTimes(dataLabel, eventLogger.retrieve(dataLabel)))
+          sendData(GDSEndObservation(dataLabel, writeTime, processedList))
 
           postProcessingPolicy.fileReady(srcFile, destFile)
         case Left(errorMsg: String) =>
           LOG.severe(errorMsg)
-          publisher.sendData(GDSObservationError(dataLabel, errorMsg))
+          sendData(GDSObservationError(dataLabel, errorMsg))
         case a => println(a)
       }
     } catch {

@@ -1,22 +1,17 @@
 package edu.gemini.aspen.gds.obsevent.handler
 
-import org.apache.felix.ipojo.annotations.{Provides, Instantiate, Component}
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent, ObservationEventHandler}
-import org.apache.felix.ipojo.handlers.event.publisher.Publisher
-import org.apache.felix.ipojo.handlers.event.Publishes
+import org.osgi.service.event.{Event, EventAdmin}
 
 /**
  * Very simple object that passes observation events through the OSGi EventAdmin using the iPojo adapters */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[ObservationEventHandler]))
-class ObservationEvent2EventAdmin(publisher0:Publisher = null) extends ObservationEventHandler {
-  @Publishes(name="obsrelay", topics = "edu/gemini/aspen/gds/obsevent/handler", dataKey = "observationevent")
-  val publisher:Publisher = publisher0
+class ObservationEvent2EventAdmin(publisher: EventAdmin) extends ObservationEventHandler {
 
-  def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
-    require(publisher != null)
-    publisher.sendData((event, dataLabel))
+  def onObservationEvent(obsEvent: ObservationEvent, dataLabel: DataLabel) {
+    val properties: java.util.HashMap[String, (ObservationEvent, DataLabel)] = new java.util.HashMap()
+    properties.put(GDSObseventHandler.ObsEventKey, (obsEvent, dataLabel))
+    val event = new Event(GDSObseventHandler.ObsEventTopic, properties)
+    publisher.postEvent(event)
   }
 
 }

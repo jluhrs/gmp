@@ -44,53 +44,46 @@ class FitsWriter(file: File) extends FitsReader(file) {
               validateValue(value)
               card.setValue(value)
             } catch {
-              case ex: Exception => {
+              case ex: Exception =>
                 LOG.log(Level.WARNING, "Couldn't properly format value '" + s + "' with formatter '" + k.format.get + "'", ex)
-              }
             }
             hduHeader.addLine(card)
           }
-          case i: Int => {
+          case i: Int =>
             val card = new HeaderCard(k.keywordName, i, k.comment)
             try {
               val value = String.format(k.format.get, i.underlying())
               validateValue(value)
               card.setValue(value)
             } catch {
-              case ex: Exception => {
+              case ex: Exception =>
                 LOG.log(Level.WARNING, "Couldn't properly format value '" + i + "' with formatter '" + k.format.get + "'", ex)
-              }
             }
             hduHeader.addLine(card)
-          }
-          case d: Double if d.isInfinite => {
+          case d: Double if d.isInfinite =>
             val card = new HeaderCard(k.keywordName, "", k.comment)
             val value = "INF"
             validateValue(value)
             card.setValue(value)
             hduHeader.addLine(card)
-          }
-          case d: Double if d.isNaN => {
+          case d: Double if d.isNaN =>
             val card = new HeaderCard(k.keywordName, "", k.comment)
             val value = "NAN"
             validateValue(value)
             card.setValue(value)
             hduHeader.addLine(card)
-          }
-          case d: Double => {
+          case d: Double =>
             val card = new HeaderCard(k.keywordName, d, k.comment)
             try {
               val value = String.format(k.format.get, d.underlying())
               validateValue(value)
               card.setValue(value)
             } catch {
-              case ex: Exception => {
+              case ex: Exception =>
                 LOG.log(Level.WARNING, "Couldn't properly format value '" + d + "' with formatter '" + k.format.get + "'", ex)
-              }
             }
             hduHeader.addLine(card)
-          }
-          case b: Boolean => {
+          case b: Boolean =>
             val card = new HeaderCard(k.keywordName, b, k.comment)
             try {
               val value = String.format(k.format.get, b: java.lang.Boolean)
@@ -98,12 +91,10 @@ class FitsWriter(file: File) extends FitsReader(file) {
               card.setValue(value)
             }
             catch {
-              case ex: Exception => {
+              case ex: Exception =>
                 LOG.log(Level.WARNING, "Couldn't properly format value '" + b + "' with formatter '" + k.format.get + "'", ex)
-              }
             }
             hduHeader.addLine(card)
-          }
           case _ => LOG.warning("Ignored key of unknown type " + k)
         }
       } else {

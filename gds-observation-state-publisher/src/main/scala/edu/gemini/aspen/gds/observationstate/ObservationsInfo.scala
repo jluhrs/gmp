@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gds.observationstate
 
-import reflect.BeanProperty
 import org.joda.time.DateTime
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectedValue
+
+import scala.beans.BeanProperty
 
 sealed trait ObservationStatus
 case object Successful extends ObservationStatus

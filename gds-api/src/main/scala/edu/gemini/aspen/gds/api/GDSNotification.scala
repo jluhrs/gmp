@@ -10,6 +10,11 @@ sealed trait GDSNotification {
   val dataLabel: DataLabel
 }
 
+object GDSNotification {
+  val GDSEventsTopic: String = "edu/gemini/aspen/gds/gdsevent"
+  val GDSNotificationKey: String = "gdsevent"
+}
+
 /**
  * Notification that an observation has started
  * @param dataLabel The data label of the observation
