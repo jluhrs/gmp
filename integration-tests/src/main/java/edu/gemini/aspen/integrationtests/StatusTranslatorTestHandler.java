@@ -17,17 +17,12 @@ import java.util.logging.Logger;
 * @author Nicolas A. Barriga
 *         Date: 2/24/11
 */
-@Component
-@Provides(specifications = FilteredStatusHandler.class)
 public class StatusTranslatorTestHandler implements FilteredStatusHandler {
     private int counter = 0;
     private final CountDownLatch latch = new CountDownLatch(1);
     private static final Logger LOG = Logger.getLogger(StatusTranslatorTestHandler.class.getName());
     private Health value;
-    @Validate
-    public void initialize(){
-        LOG.info("Constructing StatusTranslatorTestHandler");
-    }
+
     @Override
     public ConfigPathFilter getFilter() {
         return new ConfigPathFilter("gpisim:new");

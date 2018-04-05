@@ -1,8 +1,6 @@
 package edu.gemini.aspen.integrationtests;
 
 import edu.gemini.aspen.heartbeatdistributor.HeartbeatConsumer;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -14,8 +12,6 @@ import java.util.logging.Logger;
 * @author Nicolas A. Barriga
 *         Date: 3/10/11
 */
-@Component
-@Provides
 public class TestConsumerComponent implements HeartbeatConsumer {
     private final Logger LOG = Logger.getLogger(TestConsumerComponent.class.getName());
     private final CountDownLatch latch;
