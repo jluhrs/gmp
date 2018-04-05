@@ -1,18 +1,18 @@
 package edu.gemini.aspen.gds.health
 
-import org.apache.felix.ipojo.annotations._
 import java.util.logging.Logger
-import edu.gemini.aspen.giapi.status.impl.{BasicStatus, HealthStatus}
-import edu.gemini.aspen.giapi.status.Health
-import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
 
-import actors.Actor
-import edu.gemini.gmp.top.Top
+import edu.gemini.aspen.gds.api.{KeywordActorsFactory, KeywordSource}
 import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
-import collection.mutable.ListBuffer
-import edu.gemini.jms.api.{JmsProvider, JmsArtifact}
-import scala.actors.threadpool.TimeUnit
+import edu.gemini.aspen.giapi.status.Health
+import edu.gemini.aspen.giapi.status.impl.{BasicStatus, HealthStatus}
 import edu.gemini.aspen.giapi.status.setter.StatusSetter
+import edu.gemini.gmp.top.Top
+import edu.gemini.jms.api.{JmsArtifact, JmsProvider}
+
+import scala.actors.Actor
+import scala.actors.threadpool.TimeUnit
+import scala.collection.mutable.ListBuffer
 
 case object UpdateHealth
 case object Connected
@@ -20,10 +20,7 @@ case object Connected
 /**
  * OSGi component providing health information for the GDS
  */
-@Component
-@Instantiate
-@Provides
-class GdsHealth(@Requires top: Top, @Requires setter: StatusSetter) extends JmsArtifact {
+class GdsHealth(top: Top, setter: StatusSetter) extends JmsArtifact {
   implicit private val LOG = Logger.getLogger(this.getClass.getName)
 
   private val healthName = top.buildStatusItemName("gds:health")
@@ -45,42 +42,36 @@ class GdsHealth(@Requires top: Top, @Requires setter: StatusSetter) extends JmsA
     stateActor ! Connected
   }
 
-  @Bind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
   def bindHeaderReceiver() {
     LOG.fine("Binding HeaderReceiver")
     healthState.registerHeaderReceiver()
     updateHealth()
   }
 
-  @Unbind(specification = "edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver", optional = true)
   def unbindHeaderReceiver() {
     LOG.fine("Unbinding HeaderReceiver")
     healthState.unregisterHeaderReceiver()
     updateHealth()
   }
 
-  @Bind(aggregate = true, specification = "edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler", optional = true)
   def bindGDSObseventHandler(evtHndlr: GDSObseventHandler) {
     LOG.fine("Binding GDSObseventHandlerImpl")
     healthState.registerGDSObseventHandler()
     updateHealth()
   }
 
-  @Unbind(aggregate = true, specification = "edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler", optional = true)
   def unbindGDSObseventHandler(evtHndlr: GDSObseventHandler) {
     LOG.fine("Unbinding GDSObseventHandlerImpl")
     healthState.unregisterGDSObseventHandler()
     updateHealth()
   }
 
-  @Bind(aggregate = true, optional = true)
   def bindActorFactory(fact: KeywordActorsFactory) {
     LOG.fine("Binding ActorsFactory: " + fact.getClass.getName)
     healthState.registerActorFactory(fact.getSource)
     updateHealth()
   }
 
-  @Unbind(aggregate = true, optional = true)
   def unbindActorFactory(fact: KeywordActorsFactory) {
     LOG.fine("Unbinding ActorsFactory: " + fact.getClass.getName)
     healthState.unregisterActorFactory(fact.getSource)
@@ -149,7 +140,7 @@ class GdsHealth(@Requires top: Top, @Requires setter: StatusSetter) extends JmsA
       }
     }
 
-    def getHealth = {
+    def getHealth: Health = {
       if (obsEvtHndl) {
         if (actors.reduceLeft({
           _ && _
@@ -163,19 +154,17 @@ class GdsHealth(@Requires top: Top, @Requires setter: StatusSetter) extends JmsA
       }
     }
 
-    def getMessage = {
+    def getMessage: String = {
       getHealth match {
         case Health.GOOD => ""
         case _ => "Missing components: " +
           (if (!headerRec) "HeaderReceiver, " else "") +
           (if (!obsEvtHndl) "ObservationEventHandler, " else "") +
           (actors.indices collect {
-            case x if actors(x) == false => KeywordSource(x).toString
-          } reduceLeftOption ({
+            case x if !actors(x) => KeywordSource(x).toString
+          } reduceLeftOption {
             _ + ", " + _
-          }) map {
-            case x => "Actor factories: " + x
-          } getOrElse "")
+          } map (x => "Actor factories: " + x) getOrElse "")
       }
     }
   }

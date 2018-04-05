@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
-import scala.{Some, Option}
 import collection.mutable.{SynchronizedMap, HashMap}
 import org.joda.time.{Duration, DateTime}
 
