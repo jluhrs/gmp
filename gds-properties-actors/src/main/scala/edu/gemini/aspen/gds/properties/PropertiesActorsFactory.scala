@@ -1,14 +1,9 @@
-package edu.gemini.aspen.gds.seqexec
+package edu.gemini.aspen.gds.properties
 
 
-import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.aspen.gds.properties.PropertiesValuesActor
-import edu.gemini.aspen.gds.api.{KeywordValueActor, AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
+import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, KeywordValueActor}
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 
-@Component
-@Instantiate
-@Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class PropertiesActorsFactory extends AbstractKeywordActorsFactory {
 
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel):List[KeywordValueActor] = {
