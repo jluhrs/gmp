@@ -3,4 +3,3 @@
 #-----------------------------------------------------------------
 
 Export-Package: ${bundle.namespace}.*
-Bundle-Activator:

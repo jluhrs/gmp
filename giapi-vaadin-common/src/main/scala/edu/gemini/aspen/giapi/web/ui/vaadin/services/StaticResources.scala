@@ -1,29 +1,20 @@
 package edu.gemini.aspen.giapi.web.ui.vaadin.services
 
-import java.net.URL;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.Servlet
-import org.osgi.framework.Bundle;
+import java.net.URL
+import javax.servlet.http.HttpServlet
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import org.osgi.framework.Bundle
 import org.osgi.framework.BundleContext
-import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.gds.api.Predef._
 import scala.collection.JavaConversions._
 
 /**
  * Servlet that can serve static resources needed by Vaadin
  */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[Servlet]))
 class StaticResources(ctx: BundleContext) extends HttpServlet {
-  @ServiceProperty(name = "alias", value = "/VAADIN")
-  val label: String = "/VAADIN"
-  @ServiceProperty(name = "servlet-key", value = "VaadinResourcesServlet")
-  val servletName: String = "VaadinResourcesServlet"
-  val vaadinBundle = findVaadinBundle(ctx)
-  val widgetBundles = vaadinBundle :: findWidgetBundles(ctx)
+  val vaadinBundle: Option[Bundle] = findVaadinBundle(ctx)
+  val widgetBundles: List[Option[Bundle]] = vaadinBundle :: findWidgetBundles(ctx)
 
   override def doGet(req: HttpServletRequest, resp: HttpServletResponse) {
     val path = req.getPathInfo
@@ -37,8 +28,7 @@ class StaticResources(ctx: BundleContext) extends HttpServlet {
       b => Option(b.getResource(resourcePath))
     }
     // Send the resource in the output stream
-    u map {
-        ur: URL =>
+    u.map { ur: URL =>
         use(ur.openStream) {
             in => use(resp.getOutputStream()) {
               out =>
@@ -50,7 +40,7 @@ class StaticResources(ctx: BundleContext) extends HttpServlet {
                   }
             }
         }
-    } getOrElse {
+    }.getOrElse {
       resp.sendError(HttpServletResponse.SC_NOT_FOUND)
     }
   }
@@ -72,9 +62,9 @@ class StaticResources(ctx: BundleContext) extends HttpServlet {
    * Finds the Vaadin Bundle
    */
   private def findVaadinBundle(ctx: BundleContext): Option[Bundle] =
-    ctx.getBundles().toList.filter {
-        v: Bundle => "com.vaadin".equals(v.getSymbolicName())
-    }.headOption
+    ctx.getBundles.toList.find {
+      v: Bundle => "com.vaadin".equals(v.getSymbolicName())
+    }
 
   /**
    * Finds any Bundle with a widgetset headers wrapped in an option
