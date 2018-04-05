@@ -15,13 +15,8 @@ import java.util.logging.Logger
 
 /**
  * Factory class that instead of adding keywords to a file verifies those already on the file */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[ObservationEventHandler]))
-class InstrumentKeywordsChecker(@Requires configService: GDSConfigurationService,
-                         @Requires obsState: ObservationStateRegistrar,
-                         @Requires propertyHolder: PropertyHolder) extends ObservationEventHandler {
-  protected val LOG = Logger.getLogger(this.getClass.getName)
+class InstrumentKeywordsChecker(configService: GDSConfigurationService, obsState: ObservationStateRegistrar, propertyHolder: PropertyHolder) extends ObservationEventHandler {
+  protected val LOG: Logger = Logger.getLogger(this.getClass.getName)
 
   override def onObservationEvent(event: ObservationEvent, dataLabel: DataLabel) {
     event match {

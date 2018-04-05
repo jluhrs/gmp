@@ -24,6 +24,22 @@
 
     <packaging>bundle</packaging>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-ipojo-plugin</artifactId>
+                <version>${org.apache.felix.ipojo}</version>
+                <executions>
+                    <execution>
+                        <id>compile-ipojo</id>
+                        <phase />
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
@@ -46,8 +62,8 @@
             <artifactId>fits</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+            <groupId>edu.gemini.util.osgi</groupId>
+            <artifactId>osgi</artifactId>
         </dependency>
     </dependencies>
 
