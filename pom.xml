@@ -43,12 +43,12 @@
         <org.activemq.core.version>5.5.1</org.activemq.core.version>
         <pax-web.version>1.1.2</pax-web.version>
         <pax-logging.version>1.7.2</pax-logging.version>
-        <pax-runner.version>1.8.6</pax-runner.version>
+        <pax-runner.version>1.9.0</pax-runner.version>
         <scala-lang.version>2.10.4</scala-lang.version>
         <scalatest.version>2.10</scalatest.version>
         <scala-plugin.version>3.1.6</scala-plugin.version>
         <junit.version>4.10</junit.version>
-        <felix.framework.version>4.2.1</felix.framework.version>
+        <felix.framework.version>5.4.0</felix.framework.version>
 
         <gmp.version>${project.version}</gmp.version>
         <!-- Global encoding -->
@@ -536,14 +536,14 @@
             <!-- OSGI -->
             <dependency>
                 <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.compendium</artifactId>
-                <version>4.3.1</version>
+                <artifactId>osgi.cmpn</artifactId>
+                <version>6.0.0</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
-                <version>4.3.1</version>
+                <version>6.0.0</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -792,12 +792,11 @@
 
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.compendium</artifactId>
+            <artifactId>osgi.cmpn</artifactId>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
@@ -899,7 +898,7 @@
         <repository>
             <!-- Maven central mirror -->
             <id>edu.gemini.mirror</id>
-            <url>http://sbfosxdev01-mp1.cl.gemini.edu:8081/artifactory/repository</url>
+            <url>http://sbfswgosxdev-mp1.cl.gemini.edu:8081/artifactory/repository</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -907,12 +906,12 @@
         <repository>
             <!-- Repository of other local dependencies stored locally -->
             <id>edu.gemini.ext-releases-local</id>
-            <url>http://sbfosxdev01-mp1.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
+            <url>http://sbfswgosxdev-mp1.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
         </repository>
         <repository>
             <!-- Repository of other local dependencies stored locally -->
             <id>edu.gemini.libs-releases-local</id>
-            <url>http://sbfosxdev01-mp1.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+            <url>http://sbfswgosxdev-mp1.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
         </repository>
     </repositories>
 
