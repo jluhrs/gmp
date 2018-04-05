@@ -6,18 +6,6 @@
         <url>http://www.gemini.edu/</url>
     </organization>
 
-    <!--
-     | put license details here
-    <licenses>
-      <license>
-        <name>...</name>
-        <url>http://...</url>
-        <comments>
-        </comments>
-      </license>
-    </licenses>
-    -->
-
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.gemini.aspen</groupId>
     <artifactId>giapi-osgi</artifactId>
@@ -920,11 +908,6 @@
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-api</artifactId>
         </dependency>
-        <!--dependency>
-            <groupId>edu.gemini.external.osgi.com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <version>2.3.0</version>
-        </dependency-->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -934,37 +917,6 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
         </dependency>
-
-        <!--dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
-            <version>1.0.1</version>
-            <scope>provided</scope>
-        </dependency-->
-
-        <!-- Felix Shell and remote shell -->
-        <!--dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.shell</artifactId>
-            <version>1.4.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.shell.remote</artifactId>
-            <version>1.1.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.eventadmin</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.handler.eventadmin</artifactId>
-            <scope>provided</scope>
-        </dependency-->
     </dependencies>
 
     <modules>

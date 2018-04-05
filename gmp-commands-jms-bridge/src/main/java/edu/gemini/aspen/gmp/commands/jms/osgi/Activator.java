@@ -32,7 +32,7 @@ public class Activator implements BundleActivator {
     private ServiceRegistration<ActionMessageBuilder> mbServiceRegistration;
 
     @Override
-    public void start(final BundleContext context) throws Exception {
+    public void start(final BundleContext context) {
         ActionMessageActionSender actionMessageActionSender = new ActionMessageActionSender();
         amServiceRegistration = context.registerService(new String[]{ActionSender.class.getName(), JmsArtifact.class.getName()}, actionMessageActionSender, new Hashtable<String, Object>());
         JmsActionMessageBuilder jmsActionMessageBuilder = new JmsActionMessageBuilder();
@@ -120,7 +120,7 @@ public class Activator implements BundleActivator {
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
+    public void stop(BundleContext context) {
         if (jmsProviderServiceTracker != null) {
             jmsProviderServiceTracker.close();
             jmsProviderServiceTracker = null;

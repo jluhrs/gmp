@@ -18,7 +18,7 @@ public class Activator implements BundleActivator {
     private ServiceTracker<FilteredStatusHandler, FilteredStatusHandler> serviceTracker = null;
 
     @Override
-    public void start(BundleContext context) throws Exception {
+    public void start(BundleContext context) {
         StatusDispatcher statusDispatcher = new StatusDispatcher();
         serviceRegistration = context.registerService(StatusHandler.class, statusDispatcher, new Hashtable<String, String>());
         serviceTracker = new ServiceTracker<FilteredStatusHandler, FilteredStatusHandler>(context, FilteredStatusHandler.class, new FSHTracker(context, statusDispatcher));
@@ -26,7 +26,7 @@ public class Activator implements BundleActivator {
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
+    public void stop(BundleContext context) {
         if (serviceRegistration != null) {
             serviceRegistration.unregister();
             serviceRegistration = null;

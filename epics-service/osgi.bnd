@@ -1,3 +1,4 @@
 #-----------------------------------------------------------------
 # Use this file to add customized Bnd instructions for the bundle
 #-----------------------------------------------------------------
+Export-Package: !edu.gemini.epics.api;edu.gemini.epics.*;version="${pom.version}"

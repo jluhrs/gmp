@@ -19,7 +19,7 @@ public class Activator implements BundleActivator {
     private ServiceTracker<StatusSetter, StatusSetter> ssServiceTracker;
 
     @Override
-    public void start(final BundleContext context) throws Exception {
+    public void start(final BundleContext context) {
         topServiceTracker = new ServiceTracker<Top, Top>(context, Top.class, new ServiceTrackerCustomizer<Top, Top>() {
 
             @Override
@@ -79,7 +79,7 @@ public class Activator implements BundleActivator {
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
+    public void stop(BundleContext context) {
         if (factoryService != null) {
             factoryService.unregister();
             factoryService = null;

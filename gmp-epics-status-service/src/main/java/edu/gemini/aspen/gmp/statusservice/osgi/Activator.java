@@ -19,7 +19,7 @@ public class Activator implements BundleActivator {
     private ServiceRegistration<ManagedServiceFactory> factoryService;
 
     @Override
-    public void start(final BundleContext context) throws Exception {
+    public void start(final BundleContext context) {
         caServiceTracker = new ServiceTracker<ChannelAccessServer, ChannelAccessServer>(context, ChannelAccessServer.class, new ServiceTrackerCustomizer<ChannelAccessServer, ChannelAccessServer>() {
 
             @Override
