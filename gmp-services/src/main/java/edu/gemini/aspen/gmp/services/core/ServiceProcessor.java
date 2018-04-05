@@ -10,7 +10,7 @@ public interface ServiceProcessor {
      *
      * @param service A service to register
      */
-    public void registerService(Service service);
+    void registerService(Service service);
 
 
     /**
@@ -22,6 +22,6 @@ public interface ServiceProcessor {
      * @throws ServiceException in case a problem happens while processing
      * the request by the service
      */
-    public void process(ServiceType type, ServiceRequest request) throws ServiceException;
+    void process(ServiceType type, ServiceRequest request) throws ServiceException;
 
 }

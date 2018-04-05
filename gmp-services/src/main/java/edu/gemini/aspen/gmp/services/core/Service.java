@@ -15,12 +15,12 @@ public interface Service {
      * @throws ServiceException in case the service can not process the
      * request
      */
-    public void process(ServiceRequest request) throws ServiceException;
+    void process(ServiceRequest request) throws ServiceException;
 
     /**
      * The service type
      * @return enumerated type to describe the service
      */
-    public ServiceType getType();
+    ServiceType getType();
 
 }
