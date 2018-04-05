@@ -21,7 +21,6 @@ import edu.gemini.jms.api.JmsProvider;
 import gov.aps.jca.CAException;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
-import org.apache.felix.ipojo.annotations.*;
 import org.xml.sax.SAXException;
 
 import javax.jms.JMSException;
@@ -38,7 +37,6 @@ import java.util.logging.Logger;
  * @author Nicolas A. Barriga
  *         Date: 1/24/12
  */
-@Component
 public class EpicsToStatusComponent {
     private static final Logger LOG = Logger.getLogger(EpicsToStatusComponent.class.getName());
     private static final Map<Status, AlarmCause> CAUSE_MAP = new HashMap<Status, AlarmCause>();
@@ -66,16 +64,16 @@ public class EpicsToStatusComponent {
     private final JmsProvider provider;
 
     private static final String NAME = "GMP_EPICS_TO_STATUS";
+    public static final String PROP = "xmlFileName";
 
-    public EpicsToStatusComponent(@Requires EpicsReader reader,
-                                  @Requires JmsProvider provider,
-                                  @Property(name = "xmlFileName", value = "INVALID", mandatory = true) String xmlFileName) {
+    public EpicsToStatusComponent(EpicsReader reader,
+                                  JmsProvider provider,
+                                  String xmlFileName) {
         _reader = reader;
         this.xmlFileName = xmlFileName;
         this.provider = provider;
     }
 
-    @Validate
     public void initialize() throws JAXBException, SAXException {
         EpicsToStatusConfiguration conf = new EpicsToStatusConfiguration(xmlFileName);
         initialize(conf.getSimulatedChannels());
@@ -86,7 +84,7 @@ public class EpicsToStatusComponent {
      *
      * @param items channels to create and listen to.
      */
-    public void initialize(Channels items) {
+    private void initialize(Channels items) {
         for (final SimpleChannelType item : items.getSimpleChannelOrAlarmChannelOrHealthChannel()) {
             try {
                 ReadOnlyClientEpicsChannel ch = _reader.getChannelAsync(item.getEpicschannel());
@@ -162,7 +160,6 @@ public class EpicsToStatusComponent {
     }
 
 
-    @Invalidate
     public void shutdown() {
         for (StatusChannelPair pair : channelMap.values()) {
             pair.statusSetter.stopJms();
