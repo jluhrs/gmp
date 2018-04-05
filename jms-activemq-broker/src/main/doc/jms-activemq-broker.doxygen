@@ -1,8 +1,7 @@
 /*!
  * \page jms_activemq_broker JMS ActiveMQ Broker
  *
- * The ActiveMQ Broker bundle encapsulates an ActiveMQ broker making it compatible with OSGi. It contains a
- * configurable iPojo component that takes the configuration, builds and start an embedded Broker
+ * The ActiveMQ Broker bundle encapsulates an ActiveMQ broker making it compatible with OSGi.
  *
  * \section jms_activemq_broker_provides_sec Provided Services
  * This bundle does not provides any services

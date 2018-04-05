@@ -60,7 +60,7 @@ class FitsWithExtensionsUpdaterTest extends FitsBaseTest {
     }
   }
   test("should update a file in less than 300 ms") {
-    val stopwatch = new Stopwatch().start
+    val stopwatch = Stopwatch.createStarted()
     val headers = createHeadersWithAirMass(1)
     updateFitsFile(headers)
 

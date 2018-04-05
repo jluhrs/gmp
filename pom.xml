@@ -32,7 +32,6 @@
         <felix.log.level>0</felix.log.level>
         <felix.fileinstall.log.level>1</felix.fileinstall.log.level>
         <felix.fileinstall.noInitialDelay>true</felix.fileinstall.noInitialDelay>
-        <ipojo.log.level>warn</ipojo.log.level>
         <org.ops4j.pax.logging.DefaultServiceLog.level>WARN</org.ops4j.pax.logging.DefaultServiceLog.level>
 
         <!-- Configuration dir -->
@@ -45,7 +44,6 @@
         <pax-web.version>1.1.2</pax-web.version>
         <pax-logging.version>1.7.2</pax-logging.version>
         <pax-runner.version>1.8.6</pax-runner.version>
-        <org.apache.felix.ipojo>1.8.0</org.apache.felix.ipojo>
         <scala-lang.version>2.10.4</scala-lang.version>
         <scalatest.version>2.10</scalatest.version>
         <scala-plugin.version>3.1.6</scala-plugin.version>
@@ -549,36 +547,6 @@
                 <scope>provided</scope>
             </dependency>
 
-            <!-- IPojo dependencies -->
-            <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-                <version>${org.apache.felix.ipojo}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.ipojo.handler.eventadmin</artifactId>
-                <version>${org.apache.felix.ipojo}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.ipojo</artifactId>
-                <version>${org.apache.felix.ipojo}</version>
-                <!--<scope>provided</scope>-->
-                <exclusions>
-                    <exclusion>
-                        <artifactId>asm-all</artifactId>
-                        <groupId>asm</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>org.apache.felix</artifactId>
-                        <groupId>org.apache.felix.ipojo.metadata</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
             <!-- OCS shared -->
             <dependency>
                 <groupId>gemini-nocs</groupId>
@@ -791,11 +759,6 @@
                 <version>0.10.0</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
-                <version>1.0.1</version>
-            </dependency>
-            <dependency>
                 <groupId>edu.gemini.external.osgi.com.jcraft</groupId>
                 <artifactId>jsch</artifactId>
                 <version>0.1.51</version>
@@ -969,28 +932,6 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-    <profiles>
-        <profile>
-            <!-- When called it builds the documentation -->
-            <id>default</id>
-            <activation>
-              <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>org.apache.felix.ipojo.arch.gogo</artifactId>
-                    <version>1.0.1</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>org.apache.felix.ipojo.arch</artifactId>
-                    <version>1.6.0</version>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 
 
 </project>

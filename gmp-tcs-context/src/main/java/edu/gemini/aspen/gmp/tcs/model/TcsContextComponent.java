@@ -4,7 +4,6 @@ import edu.gemini.aspen.gmp.tcs.jms.JmsTcsContextDispatcher;
 import edu.gemini.aspen.gmp.tcs.jms.TcsContextRequestListener;
 import edu.gemini.epics.EpicsReader;
 import edu.gemini.jms.api.*;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import java.io.FileInputStream;

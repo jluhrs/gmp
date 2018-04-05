@@ -1,7 +1,5 @@
 package edu.gemini.aspen.heartbeatdistributor;
 
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.junit.Ignore;
 
 import java.util.concurrent.CountDownLatch;
@@ -14,11 +12,10 @@ import java.util.logging.Logger;
 * @author Nicolas A. Barriga
 *         Date: 3/10/11
 */
-@Component
-@Provides
 @Ignore
 public class TestConsumerComponent implements HeartbeatConsumer {
     private final Logger LOG = Logger.getLogger(TestConsumerComponent.class.getName());
+
     private final CountDownLatch latch;
 
     private int last=-1;

@@ -4,9 +4,6 @@ import edu.gemini.aspen.giapi.status.Health;
 import edu.gemini.aspen.giapi.status.StatusItem;
 import edu.gemini.aspen.giapi.status.dispatcher.FilteredStatusHandler;
 import edu.gemini.aspen.giapi.status.dispatcher.filters.ConfigPathFilter;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
-import org.apache.felix.ipojo.annotations.Validate;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;

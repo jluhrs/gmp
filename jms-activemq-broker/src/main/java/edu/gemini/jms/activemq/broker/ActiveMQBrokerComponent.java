@@ -50,7 +50,6 @@ public class ActiveMQBrokerComponent implements Serializable {
     public synchronized void startBroker() {
         LOG.info("Starting ActiveMQBroker broker with URL:" + url);
         // Start in a separate thread, otherwise there is a risk of a race condition
-        // with other iPojo components
         new Thread(new Runnable() {
             @Override
             public void run() {

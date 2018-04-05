@@ -92,7 +92,7 @@ class FitsUpdaterTest extends FitsBaseTest {
   }
 
   test("should update a file in less than 300 msecs") {
-    val stopwatch = new Stopwatch().start
+    val stopwatch = Stopwatch.createStarted()
     val headers = createHeadersWithAirMass(0)
     updateFitsFile(headers)
 

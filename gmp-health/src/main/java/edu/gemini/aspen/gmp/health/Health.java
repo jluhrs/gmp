@@ -5,7 +5,6 @@ import edu.gemini.aspen.giapi.status.setter.StatusSetter;
 import edu.gemini.gmp.top.Top;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.JMSException;
 import java.util.concurrent.ScheduledFuture;
@@ -42,7 +41,7 @@ public class Health implements JmsArtifact {
         executor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
     }
 
-    protected void setupHealthValue() {
+    private void setupHealthValue() {
         try {
             edu.gemini.aspen.giapi.status.Health health = edu.gemini.aspen.giapi.status.Health.GOOD;
             if (bundlesDatabase.getPercentageActive().get() < 1.0) {
@@ -60,7 +59,7 @@ public class Health implements JmsArtifact {
     }
 
     @Override
-    public void startJms(JmsProvider provider) throws JMSException {
+    public void startJms(JmsProvider provider) {
         LOG.info("Start GMP Health");
         future = executor.scheduleAtFixedRate(checker, 1000, 1000, TimeUnit.MILLISECONDS);
     }

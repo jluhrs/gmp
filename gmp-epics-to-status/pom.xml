@@ -64,17 +64,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-ipojo-plugin</artifactId>
-                <version>${org.apache.felix.ipojo}</version>
-                <executions>
-                    <execution>
-                        <id>compile-ipojo</id>
-                        <phase />
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
                 <version>0.8.1</version>

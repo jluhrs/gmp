@@ -25,17 +25,6 @@
 
     <build>
         <plugins>
-                    <plugin>
-                        <groupId>org.apache.felix</groupId>
-                        <artifactId>maven-ipojo-plugin</artifactId>
-                        <version>${org.apache.felix.ipojo}</version>
-                        <executions>
-                            <execution>
-                                <id>compile-ipojo</id>
-                                <phase />
-                            </execution>
-                        </executions>
-                    </plugin>
             <plugin>
                 <groupId>com.sun.tools.xjc.maven2</groupId>
                 <artifactId>maven-jaxb-plugin</artifactId>

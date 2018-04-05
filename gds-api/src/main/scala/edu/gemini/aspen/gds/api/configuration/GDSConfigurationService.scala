@@ -1,7 +1,6 @@
 package edu.gemini.aspen.gds.api.configuration
 
 import edu.gemini.aspen.gds.api.GDSConfiguration
-import org.apache.felix.ipojo.annotations.{Component, Property, Provides}
 import java.io.{BufferedWriter, File, FileWriter}
 import java.util.logging.Logger
 

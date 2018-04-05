@@ -25,17 +25,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-ipojo-plugin</artifactId>
-                <version>${org.apache.felix.ipojo}</version>
-                <executions>
-                    <execution>
-                        <id>compile-ipojo</id>
-                        <phase />
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>1.5</version>
@@ -47,7 +36,6 @@
                             <exclude>org.apache.activemq:kahadb</exclude>
                             <exclude>edu.gemini.aspen:giapi-test-support</exclude>
                             <exclude>org.apache.geronimo.specs:geronimo-jms_1.1_spec</exclude>
-                            <exclude>org.apache.felix:org.apache.felix.ipojo.metadata</exclude>
                         </excludes>
                     </artifactSet>
                     <filters>
@@ -175,10 +163,6 @@
             <artifactId>activemq-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.6.4</version>
@@ -210,10 +194,6 @@
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-test-support</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
         </dependency>
     </dependencies>
 

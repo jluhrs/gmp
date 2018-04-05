@@ -1,19 +1,16 @@
 package edu.gemini.aspen.gds.postprocessingpolicy
 
-import edu.gemini.aspen.gds.api.{DefaultPostProcessingPolicy, PostProcessingPolicy}
-import org.apache.felix.ipojo.annotations.{Component, Property, Provides}
 import java.io.File
 import java.util.logging.Logger
 
-import sys.process._
+import edu.gemini.aspen.gds.api.DefaultPostProcessingPolicy
+
+import scala.sys.process._
 
 /**
  * Post Processing Policy to set the permissions on the file to fit archiving requirements
  */
-@Component
-@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
-class SetPermissionsPolicy(@Property (name = "permissions", value = "gpi", mandatory = true) permissions: String,
-                           @Property (name = "useSudo", value = "true", mandatory = true) sudo: String) extends DefaultPostProcessingPolicy {
+class SetPermissionsPolicy(permissions: String, sudo: String) extends DefaultPostProcessingPolicy {
   val useSudo: Boolean = sudo.equalsIgnoreCase("true")
 
   override val priority = 12

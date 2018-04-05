@@ -5,7 +5,7 @@ import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent, ObservationEven
 import org.osgi.service.event.{Event, EventAdmin}
 
 /**
- * Very simple object that passes observation events through the OSGi EventAdmin using the iPojo adapters */
+ * Very simple object that passes observation events through OSGi EventAdmin */
 class ObservationEvent2EventAdmin(publisher: EventAdmin) extends ObservationEventHandler {
 
   def onObservationEvent(obsEvent: ObservationEvent, dataLabel: DataLabel) {

@@ -1,17 +1,17 @@
 package edu.gemini.aspen.gds.fits.checker
 
+import java.io.File
+import java.util.logging.Logger
 
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import java.io.File
-import edu.gemini.aspen.gds.fits.FitsReader
-import edu.gemini.aspen.gds.api.{GDSConfiguration, KeywordSource}
-import edu.gemini.aspen.giapi.data.{ObservationEvent, ObservationEventHandler, DataLabel}
-import org.apache.felix.ipojo.annotations.{Instantiate, Requires, Provides, Component}
-import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
-import scala.actors.Actor._
-import edu.gemini.aspen.gmp.services.PropertyHolder
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
-import java.util.logging.Logger
+import edu.gemini.aspen.gds.api.{GDSConfiguration, KeywordSource}
+import edu.gemini.aspen.gds.fits.FitsReader
+import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent, ObservationEventHandler}
+import edu.gemini.aspen.gmp.services.PropertyHolder
+
+import scala.actors.Actor._
 
 /**
  * Factory class that instead of adding keywords to a file verifies those already on the file */

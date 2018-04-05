@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The EpicsService is an iPojo Component that has a reference to a JCA Context
+ * The EpicsService is a Component that has a reference to a JCA Context
  * implementing {@link JCAContextController} which is used by many other service
  *
  * EpicsService is in charge of creating the JCA Context and manage its life cycle
