@@ -1,16 +1,23 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
-import edu.gemini.aspen.gds.api.Conversions._
+import java.util
 import java.util.logging.{Level, Logger}
-import edu.gemini.aspen.gds.keywords.database.{StoreProgramId, ProgramIdDatabase}
+
+import edu.gemini.aspen.gds.api.Conversions._
+import edu.gemini.aspen.gds.api.GDSObseventHandler
+import edu.gemini.aspen.gds.keywords.database.{ProgramIdDatabase, StoreProgramId}
 import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.Store
-import org.apache.felix.ipojo.handlers.event.publisher.Publisher
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
+import org.osgi.service.event.{Event, EventAdmin}
 
-class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, programIdDB: ProgramIdDatabase, publisher: Publisher) {
-  protected val LOG = Logger.getLogger(this.getClass.getName)
+class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, programIdDB: ProgramIdDatabase, publisher: EventAdmin) {
+  protected val LOG: Logger = Logger.getLogger(this.getClass.getName)
 
-
+  private def sendData(event: ObservationEvent, dataLabel: DataLabel): Unit = {
+    val props = new util.HashMap[String, (ObservationEvent, DataLabel)]()
+    props.put(GDSObseventHandler.ObsEventKey, (event, dataLabel))
+    publisher.postEvent(new Event(GDSObseventHandler.ObsEventTopic, props))
+  }
   /**
    * Opening an observation means associating it with a program ID, and telling GDS to wait for
    * someone to close it before writing the FITS file.
@@ -21,7 +28,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
   def openObservation(programId: String, dataLabel: String) {
     LOG.info(s"Opened Observation, Program ID: $programId Data label: $dataLabel")
     programIdDB ! StoreProgramId(dataLabel, programId)
-    publisher.sendData(ObservationEvent.EXT_START_OBS, new DataLabel(dataLabel))
+    sendData(ObservationEvent.EXT_START_OBS, new DataLabel(dataLabel))
   }
 
   /**
@@ -43,7 +50,7 @@ class XmlRpcReceiver(keywordsDatabase: TemporarySeqexecKeywordsDatabase, program
    */
   def closeObservation(dataLabel: String) {
     LOG.info(s"Closed Observation, Data label: $dataLabel")
-    publisher.sendData(ObservationEvent.EXT_END_OBS, new DataLabel(dataLabel))
+    sendData(ObservationEvent.EXT_END_OBS, new DataLabel(dataLabel))
   }
 
   /**

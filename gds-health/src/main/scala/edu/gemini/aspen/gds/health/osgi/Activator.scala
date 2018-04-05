@@ -2,9 +2,8 @@ package edu.gemini.aspen.gds.health.osgi
 
 import java.util
 
-import edu.gemini.aspen.gds.api.KeywordActorsFactory
+import edu.gemini.aspen.gds.api.{GDSObseventHandler, KeywordActorsFactory}
 import edu.gemini.aspen.gds.health.GdsHealth
-import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
 import edu.gemini.aspen.gds.staticheaderreceiver.HeaderReceiver
 import edu.gemini.aspen.giapi.status.setter.StatusSetter
 import edu.gemini.gmp.top.Top

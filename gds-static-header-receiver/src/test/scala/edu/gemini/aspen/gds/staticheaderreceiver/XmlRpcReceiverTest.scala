@@ -5,16 +5,16 @@ import org.scalatest.junit.AssertionsForJUnit
 import edu.gemini.aspen.gds.api.Conversions._
 import org.junit.Test
 import edu.gemini.aspen.gds.keywords.database.impl.ProgramIdDatabaseImpl
-import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{Store, Retrieve, Clean}
-import scala.Some
+import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{Clean, Retrieve, Store}
+
 import edu.gemini.aspen.gds.keywords.database.RetrieveProgramId
 import org.scalatest.mock.MockitoSugar
-import org.apache.felix.ipojo.handlers.event.publisher.Publisher
+import org.osgi.service.event.EventAdmin
 
 class XmlRpcReceiverTest extends AssertionsForJUnit with MockitoSugar {
   val db = new TemporarySeqexecKeywordsDatabaseImpl
   val pdb = new ProgramIdDatabaseImpl
-  val publisher = mock[Publisher]
+  val publisher = mock[EventAdmin]
   val xmlRpcReceiver = new XmlRpcReceiver(db, pdb, publisher)
 
 

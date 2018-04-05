@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gds.obsevent.handler
 
+import edu.gemini.aspen.gds.api.GDSObseventHandler
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent, ObservationEventHandler}
 import org.osgi.service.event.{Event, EventAdmin}
 

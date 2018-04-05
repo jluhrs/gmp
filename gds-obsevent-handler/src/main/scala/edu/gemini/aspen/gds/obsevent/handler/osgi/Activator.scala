@@ -3,9 +3,9 @@ package edu.gemini.aspen.gds.obsevent.handler.osgi
 import java.util
 
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory
-import edu.gemini.aspen.gds.api.CompositePostProcessingPolicy
+import edu.gemini.aspen.gds.api.{CompositePostProcessingPolicy, GDSObseventHandler}
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase
-import edu.gemini.aspen.gds.obsevent.handler.{GDSObseventHandler, GDSObseventHandlerImpl, ObservationEvent2EventAdmin}
+import edu.gemini.aspen.gds.obsevent.handler.{GDSObseventHandlerImpl, ObservationEvent2EventAdmin}
 import edu.gemini.aspen.giapi.data.ObservationEventHandler
 import edu.gemini.aspen.gmp.services.PropertyHolder
 import edu.gemini.util.osgi.Tracker

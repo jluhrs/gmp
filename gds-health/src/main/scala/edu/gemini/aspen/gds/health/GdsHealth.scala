@@ -2,8 +2,7 @@ package edu.gemini.aspen.gds.health
 
 import java.util.logging.Logger
 
-import edu.gemini.aspen.gds.api.{KeywordActorsFactory, KeywordSource}
-import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
+import edu.gemini.aspen.gds.api.{GDSObseventHandler, KeywordActorsFactory, KeywordSource}
 import edu.gemini.aspen.giapi.status.Health
 import edu.gemini.aspen.giapi.status.impl.{BasicStatus, HealthStatus}
 import edu.gemini.aspen.giapi.status.setter.StatusSetter
@@ -21,12 +20,12 @@ case object Connected
  * OSGi component providing health information for the GDS
  */
 class GdsHealth(top: Top, setter: StatusSetter) extends JmsArtifact {
-  implicit private val LOG = Logger.getLogger(this.getClass.getName)
+  private val LOG: Logger = Logger.getLogger(this.getClass.getName)
 
   private val healthName = top.buildStatusItemName("gds:health")
   private val healthMessageName = top.buildStatusItemName("gds:health:message")
 
-  private val healthState = new HealthState
+  private val healthState = new HealthState(LOG)
   private val stateActor = new StateActor()
   stateActor.start()
 
@@ -103,7 +102,7 @@ class GdsHealth(top: Top, setter: StatusSetter) extends JmsArtifact {
     }
   }
 
-  private class HealthState(implicit val LOG: Logger) {
+  private class HealthState(LOG: Logger) {
 
     private val actors = ListBuffer[Boolean](false, false, true /* ODB is disabled*/, false, false, false) //Booleans are initialized to false
 

@@ -1,14 +1,15 @@
 package edu.gemini.aspen.gds.staticheaderreceiver
 
-import edu.gemini.aspen.giapi.data.DataLabel
-import org.apache.felix.ipojo.annotations.{Component, Instantiate, Provides}
-import actors.Actor
-import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl.{RetrieveAll, Retrieve, Store, CleanAll, Clean}
-import collection.concurrent._
 import java.util.concurrent.TimeUnit._
-import scala.collection.JavaConversions._
-import edu.gemini.aspen.gds.api.fits.FitsKeyword
+
 import com.google.common.cache.CacheBuilder
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import edu.gemini.aspen.gds.staticheaderreceiver.TemporarySeqexecKeywordsDatabaseImpl._
+import edu.gemini.aspen.giapi.data.DataLabel
+
+import scala.actors.Actor
+import scala.collection.JavaConversions._
+import scala.collection.concurrent._
 
 /**
  * Companion object used to logically group message classes.
@@ -32,22 +33,16 @@ object TemporarySeqexecKeywordsDatabaseImpl {
 
 }
 
-/**
- * Needed for iPojo
- */
 trait TemporarySeqexecKeywordsDatabase extends Actor
 
 /**
  * This component stores keyword values coming from the seqexec, so that later an actor will pick them up and
  * complete the information with data from the config file.
  */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[TemporarySeqexecKeywordsDatabase]))
 class TemporarySeqexecKeywordsDatabaseImpl extends TemporarySeqexecKeywordsDatabase {
   type ValuesCollection = collection.mutable.Map[FitsKeyword, AnyRef]
   // expiration of 1 day by default but tests can override it
-  def expirationMillis = 24 * 60 * 60 * 1000
+  def expirationMillis: Int = 24 * 60 * 60 * 1000
 
   start()
 

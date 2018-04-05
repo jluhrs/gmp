@@ -5,10 +5,10 @@ import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider
 import edu.gemini.aspen.giapi.statusservice.{StatusHandlerAggregate, StatusService}
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import edu.gemini.aspen.giapi.status.{Health, StatusItem, StatusHandler}
-import edu.gemini.aspen.gds.api.{KeywordSource, KeywordActorsFactory}
-import edu.gemini.aspen.gds.obsevent.handler.GDSObseventHandler
+import edu.gemini.aspen.giapi.status.{Health, StatusHandler, StatusItem}
+import edu.gemini.aspen.gds.api.{GDSObseventHandler, KeywordActorsFactory, KeywordSource}
 import java.util.concurrent.{CountDownLatch, TimeUnit}
+
 import actors.threadpool.AtomicInteger
 import edu.gemini.gmp.top.Top
 import org.scalatest.mock.MockitoSugar
@@ -106,7 +106,7 @@ class GdsHealthTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   def bindAllHealthSources(gdsHealth: GdsHealth) {
     gdsHealth.bindGDSObseventHandler(mock[GDSObseventHandler])
     val fact = mock[KeywordActorsFactory]
-    for (source <- (KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT - KeywordSource.ODB )) {
+    for (source <- KeywordSource.values - KeywordSource.NONE - KeywordSource.INSTRUMENT - KeywordSource.ODB) {
       println("Bind source " + source)
       when(fact.getSource).thenReturn(source)
       gdsHealth.bindActorFactory(fact)

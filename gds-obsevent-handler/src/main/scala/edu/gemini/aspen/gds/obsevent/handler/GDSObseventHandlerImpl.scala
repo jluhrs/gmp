@@ -9,15 +9,6 @@ import edu.gemini.aspen.gmp.services.PropertyHolder
 import org.osgi.service.event.{Event, EventAdmin, EventHandler}
 
 /**
- * Marker interface used to export GDSObseventHandlerImpl and used by the Health component */
-trait GDSObseventHandler
-
-object GDSObseventHandler {
-  val ObsEventTopic = "edu/gemini/aspen/gds/obsevent/handler"
-  val ObsEventKey = "observationevent"
-}
-
-/**
  * Simple Observation Event Handler that creates a KeywordSetComposer and launches the
  * keyword values acquisition process
  */

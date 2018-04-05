@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gds.obsevent.handler
 
+import edu.gemini.aspen.gds.api.GDSObseventHandler
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 import org.scalatest.FunSuite
 import org.junit.runner.RunWith
