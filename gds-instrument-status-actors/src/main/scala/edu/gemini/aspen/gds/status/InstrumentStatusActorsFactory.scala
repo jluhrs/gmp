@@ -1,17 +1,13 @@
 package edu.gemini.aspen.gds.status
 
-import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource}
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 import edu.gemini.aspen.giapi.status.StatusDatabaseService
-import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
 
 /**
  * Factory of Actors that can retrieve instrument status
  */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[KeywordActorsFactory]))
-class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) extends AbstractKeywordActorsFactory {
+class InstrumentStatusActorsFactory(statusDB: StatusDatabaseService) extends AbstractKeywordActorsFactory {
   override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
     configurationsForEvent(obsEvent).map {
       new InstrumentStatusActor(statusDB, _)
@@ -29,8 +25,4 @@ class InstrumentStatusActorsFactory(@Requires statusDB: StatusDatabaseService) e
     }
   }
 
-  @Validate
-  def start() {
-    LOG.info("InstrumentStatusActorFactory started")
-  }
 }
