@@ -38,7 +38,6 @@ class CompositePostProcessingPolicyImpl extends DefaultPostProcessingPolicy with
   }
 
   def addPolicy(ep: PostProcessingPolicy) {
-    println("Add " + ep)
     policies = ep :: policies
   }
 

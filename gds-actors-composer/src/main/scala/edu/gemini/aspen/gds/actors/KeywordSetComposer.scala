@@ -91,7 +91,7 @@ class KeywordSetComposer(actorsFactory: KeywordActorsFactory, keywordsDatabase: 
   /**
    * Interceptor method to measure how long a given action takes */
   private def measureDuration[T](msg: String)(action: => T): T = {
-    val s = new Stopwatch().start()
+    val s = Stopwatch.createStarted()
     val result = action
     val duration = s.stop().elapsed(TimeUnit.MILLISECONDS)
     LOG.fine(s"Message $msg processing took $duration [ms]")

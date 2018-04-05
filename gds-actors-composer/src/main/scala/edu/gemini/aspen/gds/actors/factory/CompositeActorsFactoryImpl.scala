@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.actors.factory
 
-import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
 import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, GDSConfiguration, KeywordActorsFactory, KeywordValueActor}
@@ -44,7 +43,6 @@ class CompositeActorsFactoryImpl(configService: GDSConfigurationService) extends
   /**
    * Method called when a new KeywordActorsFactory is registered */
   def addFactory(keywordFactory: KeywordActorsFactory): Unit = {
-  println("Add " + keywordFactory)
     keywordFactory.configure(actorsConfiguration)
     factories = keywordFactory :: factories
   }

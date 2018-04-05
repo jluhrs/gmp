@@ -1,11 +1,14 @@
 package edu.gemini.aspen.gds.api.configuration
 
 import edu.gemini.aspen.gds.api.GDSConfiguration
-import org.apache.felix.ipojo.annotations.{Property, Provides, Component}
+import org.apache.felix.ipojo.annotations.{Component, Property, Provides}
 import java.io.{BufferedWriter, File, FileWriter}
+import java.util.logging.Logger
+
 import edu.gemini.aspen.gds.api.Predef._
 import com.google.common.io.Files
 import com.google.common.base.Charsets
+
 import util.parsing.input.Position
 
 /**
@@ -53,9 +56,12 @@ trait GDSConfigurationService {
   def addConfiguration(config: List[GDSConfiguration]): Unit
 }
 
-@Component
-@Provides(specifications = Array[Class[_]](classOf[GDSConfigurationService]))
-class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", value = "NOVALID", mandatory = true) configurationFile: String) extends GDSConfigurationService {
+object GDSConfigurationService {
+  val LOG = Logger.getLogger(this.getClass.getName)
+  val KeywordsConfiguration = "keywordsConfiguration"
+}
+
+class GDSConfigurationServiceImpl(configurationFile: String) extends GDSConfigurationService {
   def getConfiguration: List[GDSConfiguration] = {
     GDSConfigurationFile.getConfiguration(configurationFile)
   }
@@ -70,9 +76,9 @@ class GDSConfigurationServiceImpl(@Property(name = "keywordsConfiguration", valu
     }
   }
 
-  def hasError = GDSConfigurationFile.hasError(configurationFile)
+  def hasError: Boolean = GDSConfigurationFile.hasError(configurationFile)
 
-  def textContent = {
+  def textContent: String = {
     val originalFile = new File(configurationFile)
     Files.toString(originalFile, Charsets.UTF_8)
   }
