@@ -27,7 +27,7 @@ class CompositeActorsFactoryImplTest extends FunSuite with MockitoSugar {
     val startObservationFactory = new CompositeActorsFactoryImpl(mock[GDSConfigurationService])
 
     // Register dummy factory
-    startObservationFactory.bindKeywordFactory(new DummyActorsFactory())
+    startObservationFactory.addFactory(new DummyActorsFactory())
 
     val actors = startObservationFactory.buildActors(ObservationEvent.OBS_START_ACQ, dataLabel)
     assertEquals(1, actors.size)
@@ -37,7 +37,7 @@ class CompositeActorsFactoryImplTest extends FunSuite with MockitoSugar {
     val startObservationFactory = new CompositeActorsFactoryImpl(mock[GDSConfigurationService])
 
     // Register dummy factory
-    startObservationFactory.bindKeywordFactory(new DummyActorsFactory())
+    startObservationFactory.addFactory(new DummyActorsFactory())
 
     val actors = startObservationFactory.buildActors(ObservationEvent.OBS_PREP, dataLabel)
     assertEquals(1, actors.size)
@@ -47,7 +47,7 @@ class CompositeActorsFactoryImplTest extends FunSuite with MockitoSugar {
     val startObservationFactory = new CompositeActorsFactoryImpl(mock[GDSConfigurationService])
 
     // Register dummy factory
-    startObservationFactory.bindKeywordFactory(new DummyActorsFactory())
+    startObservationFactory.addFactory(new DummyActorsFactory())
 
     val actors = startObservationFactory.buildActors(ObservationEvent.OBS_END_ACQ, dataLabel)
     assertEquals(1, actors.size)
@@ -58,10 +58,10 @@ class CompositeActorsFactoryImplTest extends FunSuite with MockitoSugar {
 
     // Register dummy factory
     val actorsFactory = new DummyActorsFactory()
-    startObservationFactory.bindKeywordFactory(actorsFactory)
+    startObservationFactory.addFactory(actorsFactory)
 
     // Unregister dummy factory
-    startObservationFactory.unbindKeywordFactory(actorsFactory)
+    startObservationFactory.removeFactory(actorsFactory)
 
     val actors = startObservationFactory.buildActors(ObservationEvent.OBS_START_ACQ, dataLabel)
     assertTrue(actors.isEmpty)
@@ -74,7 +74,7 @@ class CompositeActorsFactoryImplTest extends FunSuite with MockitoSugar {
 
     // Register configurable factory
     val actorsFactory = new ConfigurableActorsFactory()
-    startObservationFactory.bindKeywordFactory(actorsFactory)
+    startObservationFactory.addFactory(actorsFactory)
 
     val actors = startObservationFactory.buildActors(ObservationEvent.OBS_START_ACQ, dataLabel)
     assertTrue(actors.isEmpty)

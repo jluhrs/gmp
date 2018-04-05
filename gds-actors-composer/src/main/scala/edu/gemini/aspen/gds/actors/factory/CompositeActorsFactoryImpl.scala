@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gds.actors.factory
 
 import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordActorsFactory, GDSConfiguration}
+import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, GDSConfiguration, KeywordActorsFactory, KeywordValueActor}
+
 import scala.collection._
 
 /**
@@ -14,12 +15,12 @@ trait CompositeActorsFactory extends KeywordActorsFactory
 /**
  * A composite Actors Factory that can listen for OSGi services registered as
  * keyword actors factories */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[CompositeActorsFactory]))
-class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationService) extends AbstractKeywordActorsFactory with CompositeActorsFactory {
+class CompositeActorsFactoryImpl(configService: GDSConfigurationService) extends AbstractKeywordActorsFactory with CompositeActorsFactory {
   // List of composed factories
   @volatile var factories = immutable.List[KeywordActorsFactory]()
+  actorsConfiguration = configService.getConfiguration
+  //this had to be added for the epics factory. Channels take time to connect, so we want them early
+  configure(actorsConfiguration)
 
   override def configure(configuration: immutable.List[GDSConfiguration]) {
     // Configure each factory in the composite
@@ -28,7 +29,7 @@ class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationServic
     }
   }
 
-  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
     // Fetch the latest configuration
     actorsConfiguration = configService.getConfiguration
 
@@ -42,25 +43,18 @@ class CompositeActorsFactoryImpl(@Requires configService: GDSConfigurationServic
 
   /**
    * Method called when a new KeywordActorsFactory is registered */
-  @Bind(aggregate = true, optional = true)
-  def bindKeywordFactory(keywordFactory: KeywordActorsFactory) {
+  def addFactory(keywordFactory: KeywordActorsFactory): Unit = {
+  println("Add " + keywordFactory)
     keywordFactory.configure(actorsConfiguration)
     factories = keywordFactory :: factories
   }
 
   /**
    * Method called when a KeywordActorsFactory is unregistered */
-  @Unbind(aggregate = true)
-  def unbindKeywordFactory(keywordFactory: KeywordActorsFactory) {
+  def removeFactory(keywordFactory: KeywordActorsFactory): Unit = {
     factories = factories filterNot {
       _ == keywordFactory
     }
   }
 
-  @Validate
-  def startConfiguration() {
-    actorsConfiguration = configService.getConfiguration
-    //this had to be added for the epics factory. Channels take time to connect, so we want them early
-    configure(actorsConfiguration)
-  }
 }
