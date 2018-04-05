@@ -49,7 +49,6 @@
         <scala-lang.version>2.10.4</scala-lang.version>
         <scalatest.version>2.10</scalatest.version>
         <scala-plugin.version>3.1.6</scala-plugin.version>
-        <vaadin.version>6.8.2</vaadin.version>
         <junit.version>4.10</junit.version>
         <felix.framework.version>4.2.1</felix.framework.version>
 
@@ -455,36 +454,6 @@
                 <artifactId>gmp-webconsole-branding</artifactId>
                 <version>0.1.30-SNAPSHOT</version>
             </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.gds.web.ui</groupId>
-                <artifactId>gds-web-ui-keywords</artifactId>
-                <version>0.1.30-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.gds.web.ui</groupId>
-                <artifactId>gds-web-ui-configuration</artifactId>
-                <version>0.1.30-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.gds.web.ui</groupId>
-                <artifactId>gds-web-ui-status</artifactId>
-                <version>0.3.10-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.gds.web.ui</groupId>
-                <artifactId>gds-web-ui-logs</artifactId>
-                <version>0.1.30-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.giapi.web.ui.vaadin</groupId>
-                <artifactId>giapi-vaadin-common</artifactId>
-                <version>0.1.30-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.gds.web.ui</groupId>
-                <artifactId>gds-web-ui</artifactId>
-                <version>0.3.10-SNAPSHOT</version>
-            </dependency>
 
             <!-- EProperties -->
             <dependency>
@@ -696,38 +665,6 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>2.1</version>
-            </dependency>
-
-            <!-- Vaadin dependencies -->
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin</artifactId>
-                <version>${vaadin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.vaadin.addon</groupId>
-                <artifactId>confirmdialog</artifactId>
-                <version>1.2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.vaadin.addons.lazyquerycontainer</groupId>
-                <artifactId>vaadin-lazyquerycontainer</artifactId>
-                <version>1.2.11</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.vaadin</groupId>
-                <artifactId>aceeditor</artifactId>
-                <version>0.2.3</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-                <artifactId>drawer</artifactId>
-                <version>1.1.10</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.gemini.external.osgi.org.vaadin.addons</groupId>
-                <artifactId>refresher</artifactId>
-                <version>1.1.1</version>
             </dependency>
 
             <!-- XMLRPC Server dependencies -->
@@ -976,13 +913,6 @@
         <module>gds-health</module>
         <module>gds-observation-state-publisher</module>
         <module>gds-fits-checker</module>
-        <module>giapi-vaadin-common</module>
-        <module>gds-web-ui</module>
-        <module>gds-web-ui-keywords</module>
-        <module>gds-web-ui-configuration</module>
-        <module>gds-web-ui-status</module>
-        <module>gds-web-ui-logs</module>
-        <module>gmp-web-ui-properties</module>
         <module>gpi</module>
         <module>integration-tests</module>
         <module>distribution</module>

@@ -182,10 +182,6 @@
             <artifactId>gds-performance-monitoring</artifactId>
         </dependency>
         <dependency>
-            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
-            <artifactId>gds-web-ui</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.external.osgi.gov.aps.jca</groupId>
             <artifactId>jca</artifactId>
         </dependency>
@@ -208,22 +204,6 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
-            <version>2.0rc3</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>2.0rc3</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin</artifactId>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>

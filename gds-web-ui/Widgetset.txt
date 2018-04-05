@@ -1,9 +1,0 @@
-Vaadin can incorporate plugins or widgetset
-
-Sometimes, for example when the version of one of them has changed, or Vaadin itselfs gets an upgrade, the widgetsets need a recompilation
-
-The maven projects has the logic to do so but it has to be done manually
-
-Follow the following steps:
-mvn vaadin:update-widgetset
-mvn gwt:compile
