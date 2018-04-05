@@ -5,10 +5,10 @@ import java.util
 import edu.gemini.aspen.gds.keywords.database.ProgramIdDatabase
 import edu.gemini.aspen.gds.staticheaderreceiver.{HeaderReceiver, SeqexecHeaderServlet, TemporarySeqexecKeywordsDatabase, TemporarySeqexecKeywordsDatabaseImpl}
 import edu.gemini.util.osgi.Tracker
-import org.ops4j.pax.web.service.WebContainer
 import org.osgi.framework.{BundleActivator, BundleContext, ServiceRegistration}
 import org.osgi.service.event.EventAdmin
 import org.osgi.util.tracker.ServiceTracker
+import org.ops4j.pax.web.service.WebContainer
 
 class Activator extends BundleActivator {
   var dbRegistration: Option[ServiceRegistration[_]] = None
