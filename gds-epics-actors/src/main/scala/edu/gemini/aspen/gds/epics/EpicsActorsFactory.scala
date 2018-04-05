@@ -1,20 +1,17 @@
 package edu.gemini.aspen.gds.epics
 
-import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import scala.collection._
-import edu.gemini.epics.{ReadOnlyClientEpicsChannel, EpicsReader, EpicsException}
-import mutable.HashMap
-import edu.gemini.aspen.gds.api.{Channel, GDSConfiguration, AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
+import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
+import edu.gemini.epics.{EpicsException, EpicsReader, ReadOnlyClientEpicsChannel}
 import gov.aps.jca.CAException
 
-@Component
-@Instantiate
-@Provides(specifications = Array(classOf[KeywordActorsFactory]))
-class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKeywordActorsFactory {
+import scala.collection._
+import scala.collection.mutable.HashMap
+
+class EpicsActorsFactory(epicsReader: EpicsReader) extends AbstractKeywordActorsFactory {
   private val channels: mutable.Map[Channel, ReadOnlyClientEpicsChannel[_]] = new HashMap[Channel, ReadOnlyClientEpicsChannel[_]]
 
-  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[KeywordValueActor] = {
     val (single, multiple) = actorsConfiguration filter {
       _.event.name == obsEvent.name
     } filter {
@@ -73,7 +70,6 @@ class EpicsActorsFactory(@Requires epicsReader: EpicsReader) extends AbstractKey
 
   override def getSource = KeywordSource.EPICS
 
-  @Invalidate
   def unbindAllChannels() {
     channels.values.foreach {
       _.destroy()

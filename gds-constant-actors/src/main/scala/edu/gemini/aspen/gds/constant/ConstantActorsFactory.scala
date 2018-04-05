@@ -1,22 +1,18 @@
 package edu.gemini.aspen.gds.constant
 
-import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource, KeywordActorsFactory}
+import edu.gemini.aspen.gds.api.{AbstractKeywordActorsFactory, KeywordSource}
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 
 /**
  * Factory of Actors that can retrieve instrument status
  */
-@Component
-@Instantiate
-@Provides(specifications = Array(classOf[KeywordActorsFactory]))
 class ConstantActorsFactory extends AbstractKeywordActorsFactory {
 
-  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel) = {
+  override def buildActors(obsEvent: ObservationEvent, dataLabel: DataLabel): List[ConstantActor] = {
     new ConstantActor(configurationsForEvent(obsEvent)) :: Nil
   }
 
-  override def getSource = KeywordSource.CONSTANT
+  override def getSource: KeywordSource.Value = KeywordSource.CONSTANT
 
   /**
    * Filters out only the configuration events relevant for a given observation event
@@ -27,8 +23,4 @@ class ConstantActorsFactory extends AbstractKeywordActorsFactory {
     }
   }
 
-  @Validate
-  def start() {
-    LOG.fine("ConstantActorFactory started")
-  }
 }
