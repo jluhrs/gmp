@@ -50,10 +50,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.external.osgi.nom.tam</groupId>
             <artifactId>fits</artifactId>
         </dependency>

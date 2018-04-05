@@ -8,10 +8,10 @@ import edu.gemini.aspen.giapi.status.setter.StatusSetterImpl;
 import edu.gemini.aspen.giapi.statusservice.StatusHandlerAggregate;
 import edu.gemini.aspen.giapi.statusservice.StatusService;
 import edu.gemini.jms.activemq.provider.ActiveMQJmsProvider;
-import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,7 +25,7 @@ public class ListFilterTest {
     private CountDownLatch latch;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         dispatcher = new StatusDispatcher();
         counter = new AtomicInteger(0);
         latch = null;
@@ -40,7 +40,7 @@ public class ListFilterTest {
         });
         //TimedList one: gpi:a:test.3
         dispatcher.bindStatusHandler(new TestHandler() {
-            private TimedListFilter filter = new TimedListFilter(new Duration(200),"gpi:a:test.3");
+            private TimedListFilter filter = new TimedListFilter(Duration.ofMillis(200),"gpi:a:test.3");
             @Override
             public TimedListFilter getFilter() {
                 return filter;
@@ -86,10 +86,10 @@ public class ListFilterTest {
     public void testUpdateLocal2() throws Exception {
         latch = new CountDownLatch(1);
 
-        dispatcher.update(new BasicStatus<String>("gpi:a", "any value")); //will not match
-        dispatcher.update(new BasicStatus<String>("gpi:a:test.2", "any value")); //will match once
-        dispatcher.update(new BasicStatus<String>("gpi:b", "any value")); //will not match
-        dispatcher.update(new BasicStatus<String>("gpi:c", "any value"));//will not match
+        dispatcher.update(new BasicStatus<>("gpi:a", "any value")); //will not match
+        dispatcher.update(new BasicStatus<>("gpi:a:test.2", "any value")); //will match once
+        dispatcher.update(new BasicStatus<>("gpi:b", "any value")); //will not match
+        dispatcher.update(new BasicStatus<>("gpi:c", "any value"));//will not match
         //check that the right amount of handlers were called
         latch.await(1, TimeUnit.SECONDS);
         assertEquals(1, counter.get());
@@ -99,7 +99,7 @@ public class ListFilterTest {
     public void testUpdateLocal() throws Exception {
         latch = new CountDownLatch(1);
 
-        dispatcher.update(new BasicStatus<String>("gpi:a:test.1", "test value"));
+        dispatcher.update(new BasicStatus<>("gpi:a:test.1", "test value"));
 
         //check that the right amount of handlers were called
         latch.await(1, TimeUnit.SECONDS);
@@ -111,10 +111,10 @@ public class ListFilterTest {
     public void testTimeListFilterLocal() throws Exception {
         latch = new CountDownLatch(2);
 
-        dispatcher.update(new BasicStatus<String>("gpi:a:test.3", "test value"));
-        dispatcher.update(new BasicStatus<String>("gpi:a:test.3", "test value"));
+        dispatcher.update(new BasicStatus<>("gpi:a:test.3", "test value"));
+        dispatcher.update(new BasicStatus<>("gpi:a:test.3", "test value"));
         Thread.sleep(210);
-        dispatcher.update(new BasicStatus<String>("gpi:a:test.3", "test value"));
+        dispatcher.update(new BasicStatus<>("gpi:a:test.3", "test value"));
 
         //check that the right amount of handlers were called
         latch.await(2, TimeUnit.SECONDS);
@@ -140,7 +140,7 @@ public class ListFilterTest {
 
         StatusSetterImpl ss = new StatusSetterImpl("Test Status Setter", "gpi:a:test.2");
         ss.startJms(provider);
-        ss.setStatusItem(new BasicStatus<String>("gpi:a:test.2", "test value"));
+        ss.setStatusItem(new BasicStatus<>("gpi:a:test.2", "test value"));
 
         latch.await(1, TimeUnit.SECONDS);
         assertEquals(1, counter.get());

@@ -1,9 +1,10 @@
 package edu.gemini.aspen.gds.observationstate
 
+import java.time.{Duration, LocalDateTime}
+
 import edu.gemini.aspen.giapi.data.DataLabel
 import edu.gemini.aspen.gds.api.CollectionError
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
-import org.joda.time.{Duration, DateTime}
 
 /**
  * Interface to be required by somebody that wants to poll for data for the Observation state
@@ -42,7 +43,7 @@ trait ObservationStateProvider {
   /**
    * Returns timing information for the processing of the observation events for a given DataLabel
    */
-  def getTimestamp(label: DataLabel): Option[DateTime]
+  def getTimestamp(label: DataLabel): Option[LocalDateTime]
 
   /**
    * Returns the last DataLabel processed. A DataLabel timestamp is created upon first hearing of an observation,

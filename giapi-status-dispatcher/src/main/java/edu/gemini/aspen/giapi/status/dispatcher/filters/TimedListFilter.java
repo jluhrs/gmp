@@ -1,8 +1,9 @@
 package edu.gemini.aspen.giapi.status.dispatcher.filters;
 
 import edu.gemini.aspen.giapi.status.StatusItem;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 /**
  * Class TimedListFilter extends a ListFilter, adding a restriction on the frequency of matches.
@@ -12,7 +13,7 @@ import org.joda.time.Duration;
  */
 public class TimedListFilter extends ListFilter {
     private final Duration duration;
-    private DateTime last;
+    private LocalDateTime last;
 
     /**
      * @param interval Minimum interval between successful matches
@@ -21,22 +22,12 @@ public class TimedListFilter extends ListFilter {
     public TimedListFilter(Duration interval, String... filters) {
         super(filters);
         this.duration = interval;
-        last = new DateTime().minus(duration).minus(duration);
-    }
-
-    /**
-     * @param frequency Maximum frequency of successful matches
-     * @param filters
-     */
-    public TimedListFilter(int frequency, String... filters) {
-        super(filters);
-        this.duration = new Duration(1000 / frequency);
-        last = new DateTime().minus(duration).minus(duration);
+        last = LocalDateTime.now().minus(duration).minus(duration);
     }
 
     @Override
     synchronized public boolean match(StatusItem item) {
-        DateTime now = new DateTime();
+        LocalDateTime now = LocalDateTime.now();
         if (last.plus(duration).isBefore(now)) {
             boolean match = super.match(item);
             if (match) {

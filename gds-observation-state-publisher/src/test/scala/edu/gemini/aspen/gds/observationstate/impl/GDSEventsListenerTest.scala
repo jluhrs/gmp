@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gds.observationstate.impl
 
+import java.time.Duration
 import java.util
 
 import org.junit.runner.RunWith
@@ -10,7 +11,6 @@ import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar
 import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
-import org.joda.time.Duration
 import edu.gemini.aspen.gds.api._
 import org.osgi.service.event.Event
 
@@ -45,7 +45,7 @@ class GDSEventsListenerTest extends FunSuite with MockitoSugar {
     val registrar = mock[ObservationStateRegistrar]
     val listener = new GDSEventsListener(registrar)
 
-    listener.handleEvent(buildEvent(GDSObservationTimes(dataLabel, Traversable((ObservationEvent.OBS_START_ACQ, Some(new Duration(100)))))))
+    listener.handleEvent(buildEvent(GDSObservationTimes(dataLabel, Traversable((ObservationEvent.OBS_START_ACQ, Some(Duration.ofSeconds(100)))))))
     verify(registrar).registerTimes(same(dataLabel), any())
   }
 

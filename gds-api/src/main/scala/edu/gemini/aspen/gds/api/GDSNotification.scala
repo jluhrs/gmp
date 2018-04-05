@@ -1,8 +1,8 @@
 package edu.gemini.aspen.gds.api
 
-import edu.gemini.aspen.giapi.data.{ObservationEvent, DataLabel}
-import org.joda.time.Duration
+import java.time.Duration
 
+import edu.gemini.aspen.giapi.data.{DataLabel, ObservationEvent}
 
 /**
  * Parent trait of case classes defining notifications or events produced by the GDS */

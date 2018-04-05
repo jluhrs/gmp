@@ -1,24 +1,24 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
+import java.time.{Duration, LocalDateTime}
+
 import org.scalatest.junit.AssertionsForJUnit
-import scala.Some
-import org.junit.{Test, Before}
-import org.joda.time.{DateTime, Duration}
+import org.junit.{Before, Test}
 
 class EventLoggerTest extends AssertionsForJUnit {
 
   private def check(value: Duration, target: Duration, margin: Duration) = {
-    ((value.isLongerThan(target) || value == target) && (value.minus(target).isShorterThan(margin)) ||
-      ((value.isShorterThan(target) || value == target) && (target.minus(value)).isShorterThan(margin)))
+    (value.compareTo(target) > 0 || value == target) && (value.minus(target).compareTo(margin) < 0) ||
+      ((value.compareTo(target) < 0 || value == target) && target.minus(value).compareTo(margin) < 0)
   }
 
-  private def busyWait(value: Duration) = {
-    var start =  DateTime.now
-    while ( new Duration(start, DateTime.now).compareTo(value) < 0 ) {}
+  private def busyWait(value: Duration): Unit = {
+    var start = LocalDateTime.now
+    while (Duration.between(start, LocalDateTime.now).compareTo(value) < 0 ) {}
   }
 
-  val delay = new Duration(100)
-  val precision = new Duration(100)
+  val delay: Duration = Duration.ofMillis(100)
+  val precision: Duration = Duration.ofMillis(100)
   var el: EventLogger[String, String] = _
 
   var holaInterval: Duration = _
@@ -29,10 +29,10 @@ class EventLoggerTest extends AssertionsForJUnit {
 
     el.addEventSet("set")
     el.start("set", "hola")
-    val startTime = DateTime.now
+    val startTime = LocalDateTime.now
     busyWait(delay)
     el.end("set", "hola")
-    holaInterval = new Duration(startTime, DateTime.now)
+    holaInterval = Duration.between(startTime, LocalDateTime.now)
 
     el.addEventSet("otroset")
     el.start("otroset", "hola")

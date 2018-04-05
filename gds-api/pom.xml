@@ -33,10 +33,6 @@
             <artifactId>scala-actors</artifactId>
         </dependency>
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.util.osgi</groupId>
             <artifactId>osgi</artifactId>
         </dependency>

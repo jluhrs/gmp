@@ -1,7 +1,8 @@
 package edu.gemini.aspen.gds.performancemonitoring
 
-import collection.mutable.{SynchronizedMap, HashMap}
-import org.joda.time.{Duration, DateTime}
+import java.time.{Duration, LocalDateTime}
+
+import scala.collection.mutable
 
 //todo: Add javadoc to this class
 /**
@@ -13,30 +14,30 @@ import org.joda.time.{Duration, DateTime}
  */
 class EventLogger[A, B] {
   //map: eventSet -> (event -> (startTime, endTime))
-  private val map = new HashMap[A, collection.mutable.Map[B, (Option[DateTime], Option[DateTime])]] with SynchronizedMap[A, collection.mutable.Map[B, (Option[DateTime], Option[DateTime])]]
+  private val map = new mutable.HashMap[A, collection.mutable.Map[B, (Option[LocalDateTime], Option[LocalDateTime])]] with mutable.SynchronizedMap[A, collection.mutable.Map[B, (Option[LocalDateTime], Option[LocalDateTime])]]
 
   def addEventSet(set: A) {
-    map += set -> new HashMap[B, (Option[DateTime], Option[DateTime])] with SynchronizedMap[B, (Option[DateTime], Option[DateTime])]
+    map += set -> new mutable.HashMap[B, (Option[LocalDateTime], Option[LocalDateTime])] with mutable.SynchronizedMap[B, (Option[LocalDateTime], Option[LocalDateTime])]
   }
 
   def start(set: A, evt: B) {
-    map.getOrElseUpdate(set, new HashMap[B, (Option[DateTime], Option[DateTime])] with SynchronizedMap[B, (Option[DateTime], Option[DateTime])]) += evt ->(Some(DateTime.now), map(set).getOrElse(evt, (None, None))._2)
+    map.getOrElseUpdate(set, new mutable.HashMap[B, (Option[LocalDateTime], Option[LocalDateTime])] with mutable.SynchronizedMap[B, (Option[LocalDateTime], Option[LocalDateTime])]) += evt ->(Some(LocalDateTime.now), map(set).getOrElse(evt, (None, None))._2)
   }
 
   def end(set: A, evt: B) {
-    map.getOrElseUpdate(set, new HashMap[B, (Option[DateTime], Option[DateTime])] with SynchronizedMap[B, (Option[DateTime], Option[DateTime])]) += evt ->(map(set).getOrElse(evt, (None, None))._1, Some(DateTime.now))
+    map.getOrElseUpdate(set, new mutable.HashMap[B, (Option[LocalDateTime], Option[LocalDateTime])] with mutable.SynchronizedMap[B, (Option[LocalDateTime], Option[LocalDateTime])]) += evt ->(map(set).getOrElse(evt, (None, None))._1, Some(LocalDateTime.now))
   }
 
   def retrieve(set: A): scala.collection.Map[B, Option[Duration]] =
-    map.getOrElse(set, collection.mutable.Map.empty[B, (Option[DateTime], Option[DateTime])])
+    map.getOrElse(set, collection.mutable.Map.empty[B, (Option[LocalDateTime], Option[LocalDateTime])])
       .mapValues({
-      case (Some(start), Some(end)) => Some(new Duration(start, end))
+      case (Some(start), Some(end)) => Some(Duration.between(start, end))
       case _ => None
     })
 
   def retrieve(set: A, evt: B): Option[Duration] =
-    map.getOrElse(set, collection.mutable.Map.empty[B, (Option[DateTime], Option[DateTime])]).get(evt) flatMap {
-      case (Some(start), Some(end)) => Some(new Duration(start, end))
+    map.getOrElse(set, collection.mutable.Map.empty[B, (Option[LocalDateTime], Option[LocalDateTime])]).get(evt) flatMap {
+      case (Some(start), Some(end)) => Some(Duration.between(start, end))
       case _ => None
     }
 
@@ -48,7 +49,7 @@ class EventLogger[A, B] {
     } yield times
 
     val durations = values.collect({
-      case (Some(start), Some(end)) => new Duration(start, end)
+      case (Some(start), Some(end)) => Duration.between(start, end)
     })
 
     case class Average(sum: Duration, count: Int) {
@@ -59,11 +60,11 @@ class EventLogger[A, B] {
       def average(): Option[Duration] = {
         count match {
           case 0 => None
-          case x => Some(new Duration(sum.getMillis / x))
+          case x => Some(Duration.ofMillis(sum.toMillis / x))
         }
       }
     }
-    val avg = new Average(Duration.standardSeconds(0), 0)
+    val avg = Average(Duration.ofSeconds(0), 0)
     durations.foldLeft(avg) {
       (currentAvg, currentVal) => currentAvg + currentVal
     }.average()
@@ -71,15 +72,15 @@ class EventLogger[A, B] {
 
   def retrieveAll(): scala.collection.Map[A, scala.collection.Map[B, Option[Duration]]] = {
     map.mapValues({
-      case m => m.mapValues({
-        case (Some(start), Some(end)) => Some(new Duration(start, end))
+      m => m.mapValues({
+        case (Some(start), Some(end)) => Some(Duration.between(start, end))
         case _ => None
       })
     })
   }
 
   def check(set: A, evt: B, millis: Long): Boolean = retrieve(set, evt) match {
-    case Some(x: Duration) => x.getMillis <= millis
+    case Some(x: Duration) => x.toMillis <= millis
     case _ => false
   }
 }

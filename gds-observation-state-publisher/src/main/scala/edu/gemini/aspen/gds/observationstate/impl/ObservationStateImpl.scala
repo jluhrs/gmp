@@ -1,5 +1,6 @@
 package edu.gemini.aspen.gds.observationstate.impl
 
+import java.time.{Duration, LocalDateTime, ZoneId}
 import java.util.Date
 import java.util.concurrent.TimeUnit._
 
@@ -8,10 +9,10 @@ import edu.gemini.aspen.gds.api.fits.FitsKeyword
 import edu.gemini.aspen.gds.api.{CollectedValue, CollectionError}
 import edu.gemini.aspen.gds.observationstate.{ObservationInfo, _}
 import edu.gemini.aspen.giapi.data.DataLabel
-import org.joda.time.{DateTime, Duration}
 
 import scala.collection.JavaConversions._
 import scala.collection.concurrent._
+import scala.collection.mutable
 import scala.collection.mutable.{HashSet, Set, SynchronizedSet}
 
 class ObservationStateImpl(obsStatePubl: ObservationStatePublisher) extends ObservationStateRegistrar with ObservationStateProvider {
@@ -19,9 +20,9 @@ class ObservationStateImpl(obsStatePubl: ObservationStatePublisher) extends Obse
   def expirationMillis: Int = 24 * 60 * 60 * 1000
 
   class ObservationState {
-    val missingKeywords: Set[FitsKeyword] = new HashSet[FitsKeyword] with SynchronizedSet[FitsKeyword]
-    val errorKeywords: Set[(FitsKeyword, CollectionError.CollectionError)] = new HashSet[(FitsKeyword, CollectionError.CollectionError)] with SynchronizedSet[(FitsKeyword, CollectionError.CollectionError)]
-    val times: Set[(AnyRef, Option[Duration])] = new HashSet[(AnyRef, Option[Duration])] with SynchronizedSet[(AnyRef, Option[Duration])]
+    val missingKeywords: mutable.Set[FitsKeyword] = new mutable.HashSet[FitsKeyword] with mutable.SynchronizedSet[FitsKeyword]
+    val errorKeywords: mutable.Set[(FitsKeyword, CollectionError.CollectionError)] = new mutable.HashSet[(FitsKeyword, CollectionError.CollectionError)] with mutable.SynchronizedSet[(FitsKeyword, CollectionError.CollectionError)]
+    val times: mutable.Set[(AnyRef, Option[Duration])] = new mutable.HashSet[(AnyRef, Option[Duration])] with mutable.SynchronizedSet[(AnyRef, Option[Duration])]
     var started = false
     var ended = false
     var inError = false
@@ -89,7 +90,7 @@ class ObservationStateImpl(obsStatePubl: ObservationStatePublisher) extends Obse
     obsInfoMap.getOrElse(label, new ObservationState).times
   }
 
-  override def getTimestamp(label: DataLabel): Option[DateTime] = obsInfoMap.get(label) map { o => new DateTime(o.timestamp) }
+  override def getTimestamp(label: DataLabel): Option[LocalDateTime] = obsInfoMap.get(label) map { o => LocalDateTime.ofInstant(o.timestamp.toInstant, ZoneId.systemDefault()) }
 
   override def getMissingKeywords(label: DataLabel): Traversable[FitsKeyword] = {
     obsInfoMap.getOrElse(label, new ObservationState).missingKeywords

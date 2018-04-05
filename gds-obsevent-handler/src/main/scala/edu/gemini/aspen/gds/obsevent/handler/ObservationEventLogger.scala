@@ -27,12 +27,12 @@ class ObservationEventLogger(val collectDeadline: Long = 5000L)(implicit LOG: Lo
    * Logs the timing of an ObservationEvent of a datalabel */
   def logTiming(evt: ObservationEvent, label: DataLabel) {
     val avgTime = average(evt) map {
-      x => x.getMillis
+      x => x.toMillis
     } getOrElse {
       "unknown"
     }
     val currTime = retrieve(label, evt) map {
-      x => x.getMillis
+      x => x.toMillis
     } getOrElse {
       "unknown"
     }
