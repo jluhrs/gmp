@@ -36,7 +36,7 @@ public class TcsContextComponentTest {
 
     @Test
     public void testValidation() throws JMSException {
-        TcsContextComponent component = new TcsContextComponent(reader, TCS_CONTEXT_CHANNEL, "false", "");
+        TcsContextComponent component = new TcsContextComponent(reader, TCS_CONTEXT_CHANNEL, false, "");
         component.startJms(provider);
 
         verify(provider, times(2)).getConnectionFactory();
@@ -45,7 +45,7 @@ public class TcsContextComponentTest {
 
     @Test
     public void testInvalidation() throws JMSException {
-        TcsContextComponent component = new TcsContextComponent(reader, TCS_CONTEXT_CHANNEL, "false", "");
+        TcsContextComponent component = new TcsContextComponent(reader, TCS_CONTEXT_CHANNEL, false, "");
         component.startJms(provider);
         component.stopJms();
         verify(session, times(2)).close();

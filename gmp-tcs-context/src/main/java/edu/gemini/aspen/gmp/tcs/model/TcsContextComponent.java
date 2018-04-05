@@ -15,10 +15,8 @@ import java.util.logging.Logger;
 /**
  * Interface to define a composite of several TCS Context objects
  */
-@Component
-@Provides
 public class TcsContextComponent implements JmsArtifact {
-    private static final Logger LOG = Logger.getLogger(TcsContextComponent.class.getName());
+    public static final Logger LOG = Logger.getLogger(TcsContextComponent.class.getName());
 
     private final Boolean simulation;
 
@@ -46,13 +44,14 @@ public class TcsContextComponent implements JmsArtifact {
 
     private TcsContextFetcher fetcher;
 
-    protected TcsContextComponent(@Requires EpicsReader reader,
-            @Property(name = "tcsChannel", value = "NOVALID", mandatory = true) String tcsChannel,
-            @Property(name = "simulation", value = "true", mandatory = true) String simulation,
-            @Property(name = "simulationData", value = "NOVALID", mandatory = true) String simulationData) {
+    public static String TCSCHANNEL = "tcsChannel";
+    public static String SIMULATION = "simulation";
+    public static String SIMULATION_DATA = "simulationData";
+
+    public TcsContextComponent(EpicsReader reader, String tcsChannel, Boolean simulation, String simulationData) {
         this._epicsReader = reader;
         this.tcsChannel = tcsChannel;
-        this.simulation = Boolean.parseBoolean(simulation);
+        this.simulation = simulation;
         this.simulationData = simulationData;
 
         _dispatcher = new JmsTcsContextDispatcher("TCS Context Replier");
@@ -67,8 +66,7 @@ public class TcsContextComponent implements JmsArtifact {
         );
     }
 
-    @Validate
-    public void validated() throws JMSException {
+    public void start() throws JMSException {
         if (!simulation) {
             addNewTcsContextFetcher();
         } else {
@@ -96,8 +94,7 @@ public class TcsContextComponent implements JmsArtifact {
         }
     }
 
-    @Invalidate
-    public void unRegisterEpicsReader() {
+    public void stop() {
         if (!simulation) {
             removeOldTcsContextFetcher();
         }
