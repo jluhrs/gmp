@@ -47,8 +47,6 @@ abstract public class FelixContainerConfigurationBase {
                 systemPackage("org.xml.sax"),
                 systemPackage("org.xml.sax.helpers"),
                 systemPackage("org.xml.sax.ext"),
-//                systemPackages("javax.xml.parsers", "javax.net.ssl"),
-//            mavenBundle().artifactId("javax.xml.bind").groupId("jaxb-api-osgi").version("2.2.7"),
                 junitBundles(),
                 mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject(),
                 mavenBundle().artifactId("pax-logging-api").groupId("org.ops4j.pax.logging").versionAsInProject(),
@@ -61,8 +59,8 @@ abstract public class FelixContainerConfigurationBase {
                 mavenBundle().artifactId("osgi").groupId("edu.gemini.util.osgi").versionAsInProject(),
                 mavenBundle().artifactId("scala-library").groupId("org.scala-lang").versionAsInProject(),
                 mavenBundle().artifactId("scalaz-core_2.10").groupId("org.scalaz").versionAsInProject(),
-                mavenBundle().artifactId("javax.activation").groupId("org.glassfish").version("3.0-Prelude")
-//                mavenBundle().artifactId("guava").groupId("com.google.guava").versionAsInProject());
+                mavenBundle().artifactId("javax.activation").groupId("org.glassfish").version("3.0-Prelude"),
+                mavenBundle().artifactId("gmp-top").groupId("edu.gemini.gmp").update().versionAsInProject()
         );
     }
 

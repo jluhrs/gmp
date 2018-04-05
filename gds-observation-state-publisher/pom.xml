@@ -29,11 +29,6 @@
             <artifactId>gds-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.util.osgi</groupId>
             <artifactId>osgi</artifactId>
         </dependency>
