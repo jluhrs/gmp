@@ -20,12 +20,12 @@ public class Activator implements BundleActivator {
 
     @Override
     public void start(final BundleContext context) {
-        topServiceTracker = new ServiceTracker<Top, Top>(context, Top.class, new ServiceTrackerCustomizer<Top, Top>() {
+        topServiceTracker = new ServiceTracker<>(context, Top.class, new ServiceTrackerCustomizer<Top, Top>() {
 
             @Override
             public Top addingService(ServiceReference<Top> topReference) {
                 final Top top = context.getService(topReference);
-                ssServiceTracker = new ServiceTracker<StatusSetter, StatusSetter>(context, StatusSetter.class, new ServiceTrackerCustomizer<StatusSetter, StatusSetter>() {
+                ssServiceTracker = new ServiceTracker<>(context, StatusSetter.class, new ServiceTrackerCustomizer<StatusSetter, StatusSetter>() {
                     private HeartbeatFactory factory;
 
                     @Override
@@ -33,7 +33,7 @@ public class Activator implements BundleActivator {
                         StatusSetter ss = context.getService(ssReference);
                         factory = new HeartbeatFactory(context, top, ss);
 
-                        Hashtable<String, String> props = new Hashtable<String, String>();
+                        Hashtable<String, String> props = new Hashtable<>();
                         props.put("service.pid", Heartbeat.class.getName());
 
                         factoryService = context.registerService(ManagedServiceFactory.class, factory, props);

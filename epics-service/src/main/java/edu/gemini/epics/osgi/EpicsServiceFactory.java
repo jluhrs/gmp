@@ -69,7 +69,7 @@ public class EpicsServiceFactory implements ManagedServiceFactory {
         }
     }
 
-    public EpicsServiceFactory(BundleContext context) {
+    EpicsServiceFactory(BundleContext context) {
         this.context = context;
     }
 
@@ -87,21 +87,21 @@ public class EpicsServiceFactory implements ManagedServiceFactory {
             if (checkProperties(properties)) {
                 EpicsService epicsService = createService(properties);
                 epicsService.startService();
-                ServiceRegistration<?> esRegistration = context.registerService(JCAContextController.class, epicsService, new Hashtable<String, Object>());
+                ServiceRegistration<?> esRegistration = context.registerService(JCAContextController.class, epicsService, new Hashtable<>());
 
                 EpicsWriter epicsWriter = new EpicsWriterImpl(epicsService);
-                ServiceRegistration<?> ewRegistration = context.registerService(EpicsWriter.class, epicsWriter, new Hashtable<String, Object>());
+                ServiceRegistration<?> ewRegistration = context.registerService(EpicsWriter.class, epicsWriter, new Hashtable<>());
 
                 EpicsReader epicsReader = new EpicsReaderImpl(epicsService);
-                ServiceRegistration<?> erRegistration = context.registerService(EpicsReader.class, epicsReader, new Hashtable<String, Object>());
+                ServiceRegistration<?> erRegistration = context.registerService(EpicsReader.class, epicsReader, new Hashtable<>());
 
                 EpicsObserverImpl epicsObserver = new EpicsObserverImpl(epicsService);
                 epicsObserver.startObserver();
-                ServiceRegistration<?> eoRegistration = context.registerService(EpicsObserver.class, epicsObserver, new Hashtable<String, Object>());
+                ServiceRegistration<?> eoRegistration = context.registerService(EpicsObserver.class, epicsObserver, new Hashtable<>());
 
                 final EpicsClientSubscriber epicsClientSubscriber = new EpicsClientSubscriber(epicsObserver);
 
-                ServiceTracker<EpicsClient, EpicsClient> clientServiceTracker = new ServiceTracker<EpicsClient, EpicsClient>(context, EpicsClient.class, new ServiceTrackerCustomizer<EpicsClient, EpicsClient>() {
+                ServiceTracker<EpicsClient, EpicsClient> clientServiceTracker = new ServiceTracker<>(context, EpicsClient.class, new ServiceTrackerCustomizer<EpicsClient, EpicsClient>() {
                     @Override
                     public EpicsClient addingService(ServiceReference<EpicsClient> reference) {
                         EpicsClient epicsClient = context.getService(reference);
@@ -123,9 +123,9 @@ public class EpicsServiceFactory implements ManagedServiceFactory {
                         epicsClientSubscriber.unbindEpicsClient(epicsClient);
                     }
                 });
-                clientServiceTracker.open();
+                clientServiceTracker.open(true);
 
-                existingServices.put(pid, new EpicsServices(new ServiceRef<EpicsService>(esRegistration, epicsService), new ServiceRef<EpicsWriter>(ewRegistration, epicsWriter), new ServiceRef<EpicsReader>(erRegistration, epicsReader), new ServiceRef<EpicsObserverImpl>(eoRegistration, epicsObserver), clientServiceTracker));
+                existingServices.put(pid, new EpicsServices(new ServiceRef<>(esRegistration, epicsService), new ServiceRef<>(ewRegistration, epicsWriter), new ServiceRef<>(erRegistration, epicsReader), new ServiceRef<>(eoRegistration, epicsObserver), clientServiceTracker));
             } else {
                 LOG.warning("Cannot build " + EpicsService.class.getName() + " without the required properties");
             }

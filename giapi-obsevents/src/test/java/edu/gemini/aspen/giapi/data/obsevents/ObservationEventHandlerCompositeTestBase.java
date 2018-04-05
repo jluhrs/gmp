@@ -18,7 +18,6 @@ public abstract class ObservationEventHandlerCompositeTestBase {
 
     private int flagValue = 0;
 
-
     Random random = new Random();
 
     private List<ObservationEvent> events;

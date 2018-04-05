@@ -24,7 +24,7 @@ public class NewEpicsReaderTest extends NewEpicsTestBase {
     }
 
     @Test
-    public void testGetWrongUnderlyingType() throws CAException, InterruptedException {
+    public void testGetWrongUnderlyingType() {
         try {
             ReadOnlyClientEpicsChannel<Integer> channel = epicsReader.getIntegerChannel(doubleName);
         } catch (IllegalArgumentException ex) {
@@ -34,7 +34,7 @@ public class NewEpicsReaderTest extends NewEpicsTestBase {
 
 
     @Test
-    public void testGetWrongType() throws CAException, InterruptedException {
+    public void testGetWrongType() throws CAException {
 
         ReadOnlyClientEpicsChannel<Double> channel = epicsReader.getDoubleChannel(doubleName);
         assertTrue(channel.isValid());
@@ -63,7 +63,7 @@ public class NewEpicsReaderTest extends NewEpicsTestBase {
     }
 
     @Test
-    public void testGetValues() throws CAException, InterruptedException, TimeoutException {
+    public void testGetValues() throws CAException, TimeoutException {
         ReadOnlyClientEpicsChannel<Double> dChannel = epicsReader.getDoubleChannel(doubleName);
         ReadOnlyClientEpicsChannel<Integer> iChannel = epicsReader.getIntegerChannel(intName);
         ReadOnlyClientEpicsChannel<Float> fChannel = epicsReader.getFloatChannel(floatName);
@@ -87,7 +87,7 @@ public class NewEpicsReaderTest extends NewEpicsTestBase {
         ReadOnlyClientEpicsChannel<?> dChannel = epicsReader.getChannelAsync(doubleName);
         Thread.sleep(500);
         assertTrue(dChannel.isValid());
-        assertEquals((Double) 1.0, dChannel.getFirst());
+        assertEquals(1.0, dChannel.getFirst());
         dChannel.destroy();
     }
 

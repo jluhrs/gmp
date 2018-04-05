@@ -17,5 +17,5 @@ public interface JmsArtifact {
     /**
      * Stop this JMS artifact.
      */
-    public void stopJms();
+    void stopJms();
 }

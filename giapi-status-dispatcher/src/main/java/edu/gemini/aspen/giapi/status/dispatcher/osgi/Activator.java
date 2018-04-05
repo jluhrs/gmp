@@ -21,8 +21,8 @@ public class Activator implements BundleActivator {
     public void start(BundleContext context) {
         StatusDispatcher statusDispatcher = new StatusDispatcher();
         serviceRegistration = context.registerService(StatusHandler.class, statusDispatcher, new Hashtable<String, String>());
-        serviceTracker = new ServiceTracker<FilteredStatusHandler, FilteredStatusHandler>(context, FilteredStatusHandler.class, new FSHTracker(context, statusDispatcher));
-        serviceTracker.open();
+        serviceTracker = new ServiceTracker<>(context, FilteredStatusHandler.class, new FSHTracker(context, statusDispatcher));
+        serviceTracker.open(true);
     }
 
     @Override

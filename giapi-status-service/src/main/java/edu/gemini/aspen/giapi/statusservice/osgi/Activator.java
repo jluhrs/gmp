@@ -20,8 +20,8 @@ public class Activator implements BundleActivator {
     private ServiceRegistration<StatusHandlerAggregate> aggregateService;
 
     @Override
-    public void start(final BundleContext bundleContext) throws Exception {
-        statusHandlerServiceTracker = new ServiceTracker<StatusHandler, StatusHandler>(bundleContext, StatusHandler.class, new ServiceTrackerCustomizer<StatusHandler, StatusHandler>() {
+    public void start(final BundleContext bundleContext) {
+        statusHandlerServiceTracker = new ServiceTracker<>(bundleContext, StatusHandler.class, new ServiceTrackerCustomizer<StatusHandler, StatusHandler>() {
             @Override
             public StatusHandler addingService(ServiceReference<StatusHandler> reference) {
                 StatusHandler statusHandler = bundleContext.getService(reference);
@@ -39,9 +39,9 @@ public class Activator implements BundleActivator {
                 tracker.unbindStatusHandler(statusHandler);
             }
         });
-        statusHandlerServiceTracker.open();
+        statusHandlerServiceTracker.open(true);
 
-        Hashtable<String, String> props = new Hashtable<String, String>();
+        Hashtable<String, String> props = new Hashtable<>();
         props.put("service.pid", StatusService.class.getName());
 
         StatusServiceFactory serviceFactory = new StatusServiceFactory(tracker, bundleContext);
@@ -51,7 +51,7 @@ public class Activator implements BundleActivator {
     }
 
     @Override
-    public void stop(BundleContext bundleContext) throws Exception {
+    public void stop(BundleContext bundleContext) {
         tracker.cleanHandlers();
         statusHandlerServiceTracker.close();
         if (factoryService != null) {

@@ -4,15 +4,17 @@ import edu.gemini.jms.api.JmsProvider;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Inject;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
@@ -28,14 +30,15 @@ import static org.ops4j.pax.exam.CoreOptions.options;
  *
  * @author cquiroz
  */
-@RunWith(JUnit4TestRunner.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class ActiveMQJMSProviderIT extends FelixContainerConfigurationBase {
     @Inject
     private BundleContext context;
 
     @Configuration
-    public static Option[] baseConfig() {
-        return options(
+    public Option[] baseConfig() {
+        return concatenate(super.baseContainerConfig(), options(
                 mavenBundle().artifactId("activemq-core").groupId("org.apache.activemq").versionAsInProject(),
                 mavenBundle().artifactId("geronimo-j2ee-management_1.1_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").versionAsInProject(),
@@ -43,7 +46,7 @@ public class ActiveMQJMSProviderIT extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("jms-api").groupId("edu.gemini.jms").versionAsInProject(),
                 mavenBundle().artifactId("eproperties").groupId("edu.gemini.external.osgi.net.jmatrix.eproperties").versionAsInProject(),
                 mavenBundle().artifactId("jms-activemq-provider").groupId("edu.gemini.jms").versionAsInProject()
-        );
+        ));
     }
 
     protected String confDir() {
@@ -66,7 +69,7 @@ public class ActiveMQJMSProviderIT extends FelixContainerConfigurationBase {
     }
 
     @Test
-    public void doesServiceExist() throws IOException, BundleException, InterruptedException {
+    public void doesServiceExist() {
         assertTrue(isJMSProviderAvailable());
         JmsProvider provider = findJmsProvider();
         // WARN extra dependency on ActiveMQ API

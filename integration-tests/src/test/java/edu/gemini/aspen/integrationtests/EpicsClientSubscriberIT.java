@@ -3,7 +3,9 @@ package edu.gemini.aspen.integrationtests;
 import edu.gemini.epics.api.EpicsClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceRegistration;
 
@@ -17,31 +19,15 @@ import static org.junit.Assert.assertTrue;
 /**
  * Basic integration test for EpicsService verifying that the services can run and its properties be set
  */
-@RunWith(JUnit4TestRunner.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class EpicsClientSubscriberIT extends EpicsServiceBaseIntegration {
-    @Test
-    public void registerMockEpicsClient() throws InterruptedException {
-        EpicsClientMock epicsClient = new EpicsClientMock();
-
-        Dictionary<String, String[]> serviceProperties = new Hashtable<String, String[]>();
-        serviceProperties.put(EpicsClient.EPICS_CHANNELS, new String[]{"ws:wsFilter.VALL"});
-        ServiceRegistration serviceRegistration = context.registerService(EpicsClient.class.getName(), epicsClient, serviceProperties);
-
-        // Give it 3 seconds
-        TimeUnit.MILLISECONDS.sleep(2000);
-        assertTrue(epicsClient.wasConnectedCalled());
-        assertFalse(epicsClient.wasDisconnectedCalled());
-        assertTrue(epicsClient.getUpdatesCount() > 0);
-
-        serviceRegistration.unregister();
-        assertTrue(epicsClient.wasDisconnectedCalled());
-    }
 
     @Test
     public void registerMockEpicsClientWithNoProperties() throws InterruptedException {
         EpicsClientMock epicsClient = new EpicsClientMock();
 
-        Dictionary<String, String[]> serviceProperties = new Hashtable<String, String[]>();
+        Dictionary<String, String[]> serviceProperties = new Hashtable<>();
         ServiceRegistration serviceRegistration = context.registerService(EpicsClient.class.getName(), epicsClient, serviceProperties);
 
         // Wait a little bit
@@ -55,9 +41,9 @@ public class EpicsClientSubscriberIT extends EpicsServiceBaseIntegration {
     public void testDisconnectUponObserverUnRegistration() throws InterruptedException, BundleException {
         EpicsClientMock epicsClient = new EpicsClientMock();
 
-        Dictionary<String, String[]> serviceProperties = new Hashtable<String, String[]>();
+        Dictionary<String, String[]> serviceProperties = new Hashtable<>();
         serviceProperties.put(EpicsClient.EPICS_CHANNELS, new String[]{"ws:wsFilter.VALL"});
-        context.registerService(EpicsClient.class.getName(), epicsClient, serviceProperties);
+        ServiceRegistration serviceRegistration = context.registerService(EpicsClient.class.getName(), epicsClient, serviceProperties);
 
         // Wait a little bit
         TimeUnit.MILLISECONDS.sleep(500);
@@ -65,6 +51,7 @@ public class EpicsClientSubscriberIT extends EpicsServiceBaseIntegration {
         getEpicsServiceBundle().stop();
 
         assertTrue(epicsClient.wasDisconnectedCalled());
+        serviceRegistration.unregister();
     }
 
 }

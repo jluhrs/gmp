@@ -30,7 +30,7 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer<Obse
 
     private BundleContext context = null;
 
-    public void start(BundleContext bundleContext) throws Exception {
+    public void start(BundleContext bundleContext) {
         context = bundleContext;
 
         handlerComposite = new ObservationEventAction();
@@ -45,11 +45,11 @@ public class Activator implements BundleActivator, ServiceTrackerCustomizer<Obse
         bundleContext.registerService(JmsArtifact.class.getName(), consumer, null);
 
         //and start tracking for observation event handlers as well...
-        _tracker = new ServiceTracker<ObservationEventHandler, ObservationEventHandler>(bundleContext, ObservationEventHandler.class.getName(), this);
+        _tracker = new ServiceTracker<>(bundleContext, ObservationEventHandler.class.getName(), this);
         _tracker.open();
     }
 
-    public void stop(BundleContext bundleContext) throws Exception {
+    public void stop(BundleContext bundleContext) {
         LOG.info("Stop tracking for JMS Provider");
 
         _tracker.close();

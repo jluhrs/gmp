@@ -15,17 +15,16 @@ import org.junit.Before;
  *         Date: 11/9/11
  */
 public class NewEpicsTestBase {
-    protected JCALibrary jca;
-    protected CAJContext context;
-    protected ChannelAccessServerImpl cas;
-    protected final String doubleName = "giapitest:double";
-    protected final String intName = "giapitest:int";
-    protected final String floatName = "giapitest:float";
-    protected final String stringName = "giapitest:string";
-    protected Channel<Double> doubleChannel;
-    protected Channel<Integer> intChannel;
-    protected Channel<Float> floatChannel;
-    protected Channel<String> stringChannel;
+    CAJContext context;
+    ChannelAccessServerImpl cas;
+    final String doubleName = "giapitest:double";
+    final String floatName = "giapitest:float";
+    final String intName = "giapitest:int";
+    final String stringName = "giapitest:string";
+    Channel<Double> doubleChannel;
+    Channel<Integer> intChannel;
+    Channel<Float> floatChannel;
+    Channel<String> stringChannel;
 
     static {
         System.setProperty("com.cosylab.epics.caj.CAJContext.addr_list", "127.0.0.1");
@@ -34,7 +33,7 @@ public class NewEpicsTestBase {
 
     @Before
     public void setup() throws CAException {
-        jca = JCALibrary.getInstance();
+        JCALibrary jca = JCALibrary.getInstance();
         context = (CAJContext) jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
         cas = new ChannelAccessServerImpl();
         cas.start();

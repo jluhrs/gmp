@@ -3,7 +3,9 @@ package edu.gemini.aspen.integrationtests;
 import com.google.common.collect.Sets;
 import edu.gemini.aspen.gds.actors.factory.CompositeActorsFactory;
 import edu.gemini.aspen.gds.api.CompositePostProcessingPolicy;
+import edu.gemini.aspen.gds.api.GDSConfiguration;
 import edu.gemini.aspen.gds.api.PostProcessingPolicy;
+import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService;
 import edu.gemini.aspen.gds.keywords.database.KeywordsDatabase;
 import edu.gemini.aspen.gds.observationstate.ObservationStatePublisher;
 import edu.gemini.aspen.gds.observationstate.ObservationStateRegistrar;
@@ -11,9 +13,11 @@ import edu.gemini.aspen.giapi.data.DataLabel;
 import edu.gemini.aspen.giapi.data.ObservationEventHandler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
@@ -26,27 +30,26 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 //import edu.gemini.fits.FitsParseException;
 
-@RunWith(JUnit4TestRunner.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class GDSEndToEndIT extends GDSIntegrationBase {
     @Configuration
-    public static Option[] gdsEpicsBundles() {
-        return options(
-                vmOption("-Xverify:none "),
+    public Option[] gdsEpicsBundles() {
+        return concatenate(super.gdsBundles(), options(
                 mavenBundle().artifactId("epics-api").groupId("edu.gemini.epics").versionAsInProject(),
                 mavenBundle().artifactId("epics-service").groupId("edu.gemini.epics").versionAsInProject(),
                 mavenBundle().artifactId("caj").groupId("edu.gemini.external.osgi.com.cosylab.epics.caj").versionAsInProject(),
                 mavenBundle().artifactId("jca").groupId("edu.gemini.external.osgi.gov.aps.jca").versionAsInProject(),
                 mavenBundle().artifactId("gds-epics-actors").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-postprocessing-policy").groupId("edu.gemini.aspen.gds").versionAsInProject()
-        );
+        ));
     }
 
     @Test
-    public void bundleExistence() throws InterruptedException {
+    public void bundleExistence() {
         assertNotNull(getBundle("edu.gemini.aspen.gds.api"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.keywords.database"));
         assertNotNull(getBundle("edu.gemini.aspen.gds.actors"));
@@ -59,10 +62,10 @@ public class GDSEndToEndIT extends GDSIntegrationBase {
     @Test
     public void sendObsEvents() throws InterruptedException, URISyntaxException, IOException {
         TimeUnit.MILLISECONDS.sleep(4000);
+        assertNotNull(context.getService(context.getServiceReference(GDSConfigurationService.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositeActorsFactory.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(KeywordsDatabase.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(CompositePostProcessingPolicy.class.getName())));
-        assertNotNull(context.getService(context.getServiceReference(ObservationStatePublisher.class.getName())));
         assertNotNull(context.getService(context.getServiceReference(ObservationStateRegistrar.class.getName())));
         ObservationEventHandler eventHandler = (ObservationEventHandler) context.getService(context.getServiceReference(ObservationEventHandler.class.getName()));
         assertNotNull(eventHandler);

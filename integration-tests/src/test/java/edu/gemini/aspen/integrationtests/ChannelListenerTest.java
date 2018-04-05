@@ -22,9 +22,6 @@ import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-//import java.lang.ref.Reference;
-//import java.lang.ref.WeakReference;
-
 public class ChannelListenerTest extends NewEpicsTestBase {
     private EpicsReader epicsReader;
     private EpicsWriter epicsWriter;

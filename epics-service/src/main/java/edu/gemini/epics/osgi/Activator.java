@@ -14,8 +14,8 @@ public class Activator implements BundleActivator {
     private ServiceRegistration<ManagedServiceFactory> factoryService;
 
     @Override
-    public void start(BundleContext context) throws Exception {
-        Hashtable<String, String> props = new Hashtable<String, String>();
+    public void start(BundleContext context) {
+        Hashtable<String, String> props = new Hashtable<>();
         props.put("service.pid", EpicsService.class.getName());
 
         factory = new EpicsServiceFactory(context);
@@ -24,7 +24,7 @@ public class Activator implements BundleActivator {
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
+    public void stop(BundleContext context) {
         if (factory != null) {
             factory.stopServices();
             factory = null;

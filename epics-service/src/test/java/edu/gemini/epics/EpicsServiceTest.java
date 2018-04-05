@@ -1,14 +1,9 @@
 package edu.gemini.epics;
 
 import com.cosylab.epics.caj.CAJContext;
-import com.google.common.collect.ImmutableMap;
-import edu.gemini.epics.api.EpicsClient;
 import gov.aps.jca.Context;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Dictionary;
-import java.util.Hashtable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,11 +11,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 public class EpicsServiceTest {
-    private static final ImmutableMap<String, Object> CHANNELS_TO_READ = ImmutableMap.<String, Object>of(EpicsClient.EPICS_CHANNELS, new String[]{"tst:tst"});
     private EpicsService epicsService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         epicsService = new EpicsService("127.0.0.1", 1.0);
     }
 
@@ -57,7 +51,6 @@ public class EpicsServiceTest {
      */
     @Test
     public void updateAddressList() {
-        Dictionary<String, String> dictionary = new Hashtable<String, String>();
         String NEW_ADDRESS = "0.0.0.0";
         epicsService.setAddress(NEW_ADDRESS);
 

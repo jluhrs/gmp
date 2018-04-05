@@ -34,7 +34,7 @@ public class StatusServiceFactory implements ManagedServiceFactory {
     public void updated(String pid, Dictionary<String, ?> properties) {
         if (checkProperties(properties)) {
             StatusService provider = createService(properties);
-            ServiceRegistration<JmsArtifact> serviceRegistration = context.registerService(JmsArtifact.class, provider, new Hashtable<String, Object>());
+            ServiceRegistration<JmsArtifact> serviceRegistration = context.registerService(JmsArtifact.class, provider, new Hashtable<>());
             existingServices.put(pid, serviceRegistration);
         } else {
             LOG.warning("Cannot build " + StatusService.class.getName() + " without the " + SERVICE_NAME + " and " + STATUS_FILTER + " properties");

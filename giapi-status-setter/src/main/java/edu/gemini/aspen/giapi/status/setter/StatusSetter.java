@@ -13,5 +13,5 @@ public interface StatusSetter {
      * Sets the value of an status item
      * @param statusItem
      */
-    public boolean setStatusItem(StatusItem statusItem) throws JMSException;
+    boolean setStatusItem(StatusItem statusItem) throws JMSException;
 }

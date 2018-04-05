@@ -15,8 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * called
  */
 public class EpicsClientMock implements EpicsClient {
-    private boolean connectedCalled = false;
-    private boolean disconnectedCalled = false;
+    private volatile boolean connectedCalled = false;
+    private volatile boolean disconnectedCalled = false;
     private AtomicInteger updatesCount = new AtomicInteger(0);
 
     @Override
@@ -26,6 +26,7 @@ public class EpicsClientMock implements EpicsClient {
 
     @Override
     public void connected() {
+        System.out.println("CONNECTED");
         connectedCalled = true;
     }
 

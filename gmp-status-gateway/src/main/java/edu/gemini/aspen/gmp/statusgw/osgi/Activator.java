@@ -2,9 +2,11 @@ package edu.gemini.aspen.gmp.statusgw.osgi;
 
 import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.aspen.gmp.statusgw.StatusDatabaseServiceDecorator;
-import edu.gemini.aspen.gmp.statusgw.jms.*;
+import edu.gemini.aspen.gmp.statusgw.jms.JmsStatusDispatcher;
+import edu.gemini.aspen.gmp.statusgw.jms.MultipleStatusItemsRequestListener;
+import edu.gemini.aspen.gmp.statusgw.jms.StatusItemRequestListener;
+import edu.gemini.aspen.gmp.statusgw.jms.StatusNamesRequestListener;
 import edu.gemini.jms.api.*;
-import edu.gemini.jms.api.osgi.JmsProviderTracker;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -15,7 +17,7 @@ public class Activator implements BundleActivator {
 
     private StatusDatabaseTracker _dbTracker;
 
-    public void start(BundleContext bundleContext) throws Exception {
+    public void start(BundleContext bundleContext) {
 
         StatusDatabaseServiceDecorator decorator = new StatusDatabaseServiceDecorator();
 
@@ -59,7 +61,7 @@ public class Activator implements BundleActivator {
         _dbTracker.open();
     }
 
-    public void stop(BundleContext bundleContext) throws Exception {
+    public void stop(BundleContext bundleContext) {
         _dbTracker.close();
         _dbTracker = null;
     }

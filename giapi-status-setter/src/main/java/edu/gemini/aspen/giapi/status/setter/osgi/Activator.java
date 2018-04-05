@@ -16,7 +16,7 @@ public class Activator implements BundleActivator {
     @Override
     public void start(BundleContext bundleContext) {
         String[] interfaces = new String[] {JmsArtifact.class.getName(), StatusSetter.class.getName()};
-        serviceRegistration = bundleContext.registerService(interfaces, new StatusSetterService(), new Hashtable<String, Object>());
+        serviceRegistration = bundleContext.registerService(interfaces, new StatusSetterService(), new Hashtable<>());
     }
 
     @Override

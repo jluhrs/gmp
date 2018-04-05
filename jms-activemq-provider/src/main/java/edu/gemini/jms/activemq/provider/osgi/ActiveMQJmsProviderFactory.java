@@ -31,10 +31,10 @@ public class ActiveMQJmsProviderFactory implements ManagedServiceFactory {
     private final Map<String, ServiceRef> existingServices = Maps.newHashMap();
     private final List<JmsArtifact> existingArtifacts = Lists.newArrayList();
     private final BundleContext context;
-    public static final String BROKER_URL_PROPERTY = "brokerUrl";
+    private static final String BROKER_URL_PROPERTY = "brokerUrl";
     private static final String CLOSE_TIMEOUT_PROPERTY = "closeTimeout";
 
-    public ActiveMQJmsProviderFactory(BundleContext context) {
+    ActiveMQJmsProviderFactory(BundleContext context) {
         this.context = context;
     }
 
@@ -45,7 +45,7 @@ public class ActiveMQJmsProviderFactory implements ManagedServiceFactory {
     public void updated(String pid, Dictionary<String, ?> properties) {
         if (checkProperties(properties)) {
             ActiveMQJmsProvider provider = createService(properties);
-            ServiceRegistration<JmsProvider> serviceRegistration = context.registerService(JmsProvider.class, provider, new Hashtable<String, Object>());
+            ServiceRegistration<JmsProvider> serviceRegistration = context.registerService(JmsProvider.class, provider, new Hashtable<>());
             provider.startConnection();
             existingServices.put(pid, new ServiceRef(serviceRegistration, provider));
             notifyJmsArtifactArrival();

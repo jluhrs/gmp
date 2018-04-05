@@ -24,8 +24,8 @@ public class Activator implements BundleActivator {
 
         ActiveMQJmsProviderFactory providerFactory = new ActiveMQJmsProviderFactory(context);
 
-        jmsArtifactTracker = new ServiceTracker<JmsArtifact, JmsArtifact>(context, JmsArtifact.class, new JmsArtifactTracker(context, providerFactory));
-        jmsArtifactTracker.open();
+        jmsArtifactTracker = new ServiceTracker<>(context, JmsArtifact.class, new JmsArtifactTracker(context, providerFactory));
+        jmsArtifactTracker.open(true);
 
         factoryService = context.registerService(ManagedServiceFactory.class, providerFactory, props);
     }

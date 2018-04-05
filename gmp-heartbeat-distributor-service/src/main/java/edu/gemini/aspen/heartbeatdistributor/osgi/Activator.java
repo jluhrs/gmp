@@ -19,11 +19,11 @@ public class Activator implements BundleActivator {
     private ServiceTracker<HeartbeatConsumer, HeartbeatConsumer> heartbeatConsumerServiceTracker;
 
     @Override
-    public void start(final BundleContext context) throws Exception {
+    public void start(final BundleContext context) {
         distributor = new HeartbeatDistributor();
-        registration = context.registerService(JmsArtifact.class, distributor, new Hashtable<String, Object>());
+        registration = context.registerService(JmsArtifact.class, distributor, new Hashtable<>());
 
-        heartbeatConsumerServiceTracker = new ServiceTracker<HeartbeatConsumer, HeartbeatConsumer>(context, HeartbeatConsumer.class, new ServiceTrackerCustomizer<HeartbeatConsumer, HeartbeatConsumer>() {
+        heartbeatConsumerServiceTracker = new ServiceTracker<>(context, HeartbeatConsumer.class, new ServiceTrackerCustomizer<HeartbeatConsumer, HeartbeatConsumer>() {
             @Override
             public HeartbeatConsumer addingService(ServiceReference<HeartbeatConsumer> reference) {
                 HeartbeatConsumer consumer = context.getService(reference);
@@ -41,11 +41,11 @@ public class Activator implements BundleActivator {
                 distributor.unbindHeartbeatConsumer(heartbeatConsumer);
             }
         });
-        heartbeatConsumerServiceTracker.open();
+        heartbeatConsumerServiceTracker.open(true);
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
+    public void stop(BundleContext context) {
         if (registration != null) {
             registration.unregister();
             registration = null;

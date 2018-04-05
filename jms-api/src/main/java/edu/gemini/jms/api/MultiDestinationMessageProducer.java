@@ -22,7 +22,7 @@ public class MultiDestinationMessageProducer implements JmsArtifact, ExceptionLi
     private DestinationBuilder _destinationBuilder;
     private Map<DestinationData, MessageProducer> _producers = new HashMap<DestinationData, MessageProducer>();
 
-    private boolean _isConnected;
+    private volatile boolean _isConnected;
 
     public MultiDestinationMessageProducer(String clientName) {
         _clientName = clientName;
