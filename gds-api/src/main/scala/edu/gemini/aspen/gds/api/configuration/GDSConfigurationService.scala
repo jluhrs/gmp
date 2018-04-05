@@ -56,7 +56,7 @@ trait GDSConfigurationService {
 }
 
 object GDSConfigurationService {
-  val LOG = Logger.getLogger(this.getClass.getName)
+  val LOG: Logger = Logger.getLogger(this.getClass.getName)
   val KeywordsConfiguration = "keywordsConfiguration"
 }
 
@@ -79,7 +79,7 @@ class GDSConfigurationServiceImpl(configurationFile: String) extends GDSConfigur
 
   def textContent: String = {
     val originalFile = new File(configurationFile)
-    Files.toString(originalFile, Charsets.UTF_8)
+    Files.asCharSource(originalFile, Charsets.UTF_8).read()
   }
 
   def errors: Option[(String, Int, Position)] = GDSConfigurationFile.errors(configurationFile)

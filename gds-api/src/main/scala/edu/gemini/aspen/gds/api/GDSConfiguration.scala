@@ -72,7 +72,7 @@ case class GDSConfiguration(instrument: Instrument,
       addTabs(keyword.key, 2) +
       addTabs(index.index.toString, 1) +
       addTabs(dataType.name, 1) +
-      addTabs((if (mandatory.mandatory) "T" else "F"), 1) +
+      addTabs(if (mandatory.mandatory) "T" else "F", 1) +
       addTabs(nullValue.value, 2) +
       addTabs(subsystem.name.toString, 1) +
       addTabs(channel.name, 3) +

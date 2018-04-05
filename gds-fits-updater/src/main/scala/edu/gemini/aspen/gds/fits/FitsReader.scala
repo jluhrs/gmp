@@ -8,7 +8,7 @@ import edu.gemini.aspen.gds.api.fits.{HeaderItem, FitsKeyword, Header}
 import com.google.common.hash.Hashing
 
 class FitsReader(file: File) {
-  protected val LOG = Logger.getLogger(this.getClass.getName)
+  protected val LOG: Logger = Logger.getLogger(this.getClass.getName)
   require(file.exists)
   require(file.isFile, {
     LOG.severe("File " + file + " is not a file")
@@ -47,14 +47,14 @@ class FitsReader(file: File) {
             r => r.map(hasher.putFloat)
           }
           hasher.hash().toString
-        case l: Array[Array[Double]] => sys.error("Unimplemented")
-        case l: Array[Array[Int]] => sys.error("Unimplemented")
-        case l: Array[Array[Short]] => sys.error("Unimplemented")
-        case l: Array[Array[Boolean]] => sys.error("Unimplemented")
+        case _: Array[Array[Double]] => sys.error("Unimplemented")
+        case _: Array[Array[Int]] => sys.error("Unimplemented")
+        case _: Array[Array[Short]] => sys.error("Unimplemented")
+        case _: Array[Array[Boolean]] => sys.error("Unimplemented")
         case l: Array[AnyRef] =>
           l.foreach {
             // This is a bit unreliable so we hash a counter
-            r => hasher.putInt(1)
+            _ => hasher.putInt(1)
           }
           hasher.hash().toString
         case x => sys.error("Unknown data type to hash " + x)
@@ -67,9 +67,9 @@ class FitsReader(file: File) {
    * @param index Header index
    * @return a set of contained keywords or empty if the header is not available */
   def keys(index: Int): Traversable[FitsKeyword] = header(index).map {
-    h => (h.keywords.map {
+    h => h.keywords.map {
       _.keywordName
-    })
+    }
   }.getOrElse(Traversable.empty[FitsKeyword])
 
 }

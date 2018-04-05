@@ -112,7 +112,7 @@ class GDSConfigurationServiceTest extends FunSuite {
 
     val fileContent = serviceOrig.textContent
 
-    val originalContent = Files.toString(new File(TEST_DIR + NEW_CONFIG), Charsets.UTF_8)
+    val originalContent = Files.asCharSource(new File(TEST_DIR + NEW_CONFIG), Charsets.UTF_8).read()
     assertEquals(originalContent, fileContent)
     assertTrue(serviceOrig.errors.isEmpty)
   }
