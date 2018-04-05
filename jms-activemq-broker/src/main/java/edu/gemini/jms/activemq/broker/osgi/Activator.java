@@ -12,8 +12,8 @@ public class Activator implements BundleActivator {
     private ServiceRegistration<ManagedServiceFactory> factoryService;
 
     @Override
-    public void start(BundleContext context) throws Exception {
-        Hashtable<String, String> props = new Hashtable<String, String>();
+    public void start(BundleContext context) {
+        Hashtable<String, String> props = new Hashtable<>();
         props.put("service.pid", ActiveMQBrokerComponent.class.getName());
 
         ActiveMQBrokerFactory providerFactory = new ActiveMQBrokerFactory();
@@ -22,7 +22,7 @@ public class Activator implements BundleActivator {
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
+    public void stop(BundleContext context) {
         if (factoryService != null) {
             factoryService.unregister();
             factoryService = null;

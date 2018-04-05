@@ -41,8 +41,8 @@
         <!-- Component versions -->
         <clover.version>3.1.0</clover.version>
         <org.activemq.core.version>5.5.1</org.activemq.core.version>
-        <pax-web.version>1.1.2</pax-web.version>
-        <pax-logging.version>1.7.2</pax-logging.version>
+        <pax-web.version>6.1.2</pax-web.version>
+        <pax-logging.version>1.10.1</pax-logging.version>
         <pax-runner.version>1.9.0</pax-runner.version>
         <scala-lang.version>2.10.4</scala-lang.version>
         <scalatest.version>2.10</scalatest.version>
@@ -536,8 +536,8 @@
             <!-- OSGI -->
             <dependency>
                 <groupId>org.osgi</groupId>
-                <artifactId>osgi.cmpn</artifactId>
-                <version>6.0.0</version>
+                <artifactId>org.osgi.enterprise</artifactId>
+                <version>5.0.0</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -678,29 +678,29 @@
                 </exclusions>
             </dependency>
 
-            <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.metatype</artifactId>
-                <version>1.0.4</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>org.osgi.core</artifactId>
-                        <groupId>org.apache.felix</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.apache.felix</groupId>-->
+                <!--<artifactId>org.apache.felix.metatype</artifactId>-->
+                <!--<version>1.0.4</version>-->
+                <!--<exclusions>-->
+                    <!--<exclusion>-->
+                        <!--<artifactId>org.osgi.core</artifactId>-->
+                        <!--<groupId>org.apache.felix</groupId>-->
+                    <!--</exclusion>-->
+                <!--</exclusions>-->
+            <!--</dependency>-->
 
             <!-- Configuration admin felix service -->
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.fileinstall</artifactId>
-                <version>3.4.0</version>
+                <version>3.6.4</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.configadmin</artifactId>
-                <version>1.8.0</version>
+                <version>1.8.16</version>
                 <optional>true</optional>
             </dependency>
 
@@ -708,14 +708,14 @@
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.eventadmin</artifactId>
-                <version>1.3.2</version>
+                <version>1.4.10</version>
                 <scope>provided</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.shell</artifactId>
-                <version>1.4.2</version>
+                <version>1.4.3</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -751,12 +751,12 @@
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.gogo.runtime</artifactId>
-                <version>0.10.0</version>
+                <version>1.0.8</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.gogo.shell</artifactId>
-                <version>0.10.0</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>edu.gemini.external.osgi.com.jcraft</groupId>
@@ -792,11 +792,13 @@
 
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>osgi.cmpn</artifactId>
+            <artifactId>org.osgi.enterprise</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
