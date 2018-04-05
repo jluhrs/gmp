@@ -74,10 +74,6 @@
             <artifactId>giapi-jms-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.util.osgi</groupId>
             <artifactId>osgi</artifactId>
         </dependency>

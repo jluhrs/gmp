@@ -485,11 +485,6 @@
                 <artifactId>gds-web-ui</artifactId>
                 <version>0.3.10-SNAPSHOT</version>
             </dependency>
-            <dependency>
-                <groupId>edu.gemini.aspen.gmp</groupId>
-                <artifactId>gmp-tui</artifactId>
-                <version>0.5.27-SNAPSHOT</version>
-            </dependency>
 
             <!-- EProperties -->
             <dependency>
@@ -961,7 +956,6 @@
         <module>gmp-webconsole-branding</module>
         <module>gmp-webconsole-docs</module>
         <module>epics-heartbeat</module>
-        <module>gmp-tui</module>
         <module>gmp-top</module>
         <module>gmp-epics-to-status</module>
         <module>gds-api</module>
