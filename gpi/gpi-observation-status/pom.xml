@@ -24,10 +24,10 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>edu.gemini.aspen.gds</groupId>
-            <artifactId>gds-api</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>edu.gemini.aspen.gds</groupId>-->
+            <!--<artifactId>gds-api</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi</artifactId>

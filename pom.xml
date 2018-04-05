@@ -888,8 +888,8 @@
         <!--<module>gds-health</module>-->
         <!--<module>gds-observation-state-publisher</module>-->
         <!--<module>gds-fits-checker</module>-->
-        <module>gpi</module>
-        <module>integration-tests</module>
+        <!--<module>gpi</module>-->
+        <!--<module>integration-tests</module>-->
         <module>distribution</module>
     </modules>
 

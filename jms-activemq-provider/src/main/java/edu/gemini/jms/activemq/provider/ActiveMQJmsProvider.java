@@ -71,21 +71,17 @@ public final class ActiveMQJmsProvider implements JmsProvider {
 
     public void startConnection() {
         // Start the connection in the background
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    ActiveMQConnection connection = (ActiveMQConnection) _factory.createConnection();
-                    connection.start();
-                    LOG.info("Base connection established to " + brokerUrl);
-                    Connection previousConnection = baseConnection.getAndSet(connection);
-                    if (previousConnection != null) {
-                        previousConnection.close();
-                    }
-                } catch (JMSException e) {
-                    LOG.log(Level.SEVERE, "Failure while creating the connection to " + brokerUrl, e);
+        new Thread(() -> {
+            try {
+                ActiveMQConnection connection = (ActiveMQConnection) _factory.createConnection();
+                connection.start();
+                LOG.info("Base connection established to " + brokerUrl);
+                Connection previousConnection = baseConnection.getAndSet(connection);
+                if (previousConnection != null) {
+                    previousConnection.close();
                 }
+            } catch (JMSException e) {
+                LOG.log(Level.SEVERE, "Failure while creating the connection to " + brokerUrl, e);
             }
         }).start();
     }
