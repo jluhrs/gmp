@@ -31,7 +31,7 @@ class PostProcessingPolicyTest {
     val ep = new CompositePostProcessingPolicyImpl()
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
 
-    ep.bindPolicy(new DefaultPostProcessingPolicy)
+    ep.addPolicy(new DefaultPostProcessingPolicy)
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
   }
 
@@ -40,8 +40,8 @@ class PostProcessingPolicyTest {
     val ep = new CompositePostProcessingPolicyImpl()
     val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
 
-    ep.bindPolicy(new DefaultPostProcessingPolicy)
-    ep.bindPolicy(new DefaultPostProcessingPolicy)
+    ep.addPolicy(new DefaultPostProcessingPolicy)
+    ep.addPolicy(new DefaultPostProcessingPolicy)
     assertEquals(collectedValues, ep.applyPolicy(dataLabel, collectedValues))
   }
 
@@ -54,8 +54,8 @@ class PostProcessingPolicyTest {
     when(errPol2.priority).thenReturn(6)
 
     val ep = new CompositePostProcessingPolicyImpl()
-    ep.bindPolicy(errPol1)
-    ep.bindPolicy(errPol2)
+    ep.addPolicy(errPol1)
+    ep.addPolicy(errPol2)
     ep.applyPolicy(dataLabel, Nil)
 
     val order = inOrder(errPol1, errPol2)

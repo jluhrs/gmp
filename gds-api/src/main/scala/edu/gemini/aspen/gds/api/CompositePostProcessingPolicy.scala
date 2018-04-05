@@ -1,6 +1,5 @@
 package edu.gemini.aspen.gds.api
 
-import org.apache.felix.ipojo.annotations._
 import edu.gemini.aspen.giapi.data.DataLabel
 import scala.collection._
 import java.io.File
@@ -13,9 +12,6 @@ trait CompositePostProcessingPolicy extends PostProcessingPolicy
 /**
  * OSGi service implementing the CompositePostProcessingPolicy that can use delegates
  */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[CompositePostProcessingPolicy]))
 class CompositePostProcessingPolicyImpl extends DefaultPostProcessingPolicy with CompositePostProcessingPolicy {
   @volatile var policies = immutable.List[PostProcessingPolicy]()
 
@@ -41,13 +37,13 @@ class CompositePostProcessingPolicyImpl extends DefaultPostProcessingPolicy with
     } yield p.fileReady(originalFile, processedFile)
   }
 
-  @Bind(optional = true, aggregate = true)
-  def bindPolicy(ep: PostProcessingPolicy) {
+  def addPolicy(ep: PostProcessingPolicy) {
+    println("Add " + ep)
     policies = ep :: policies
   }
 
-  @Validate
-  def validate() {
-    // Required for iPojo
+  def removePolicy(ep: PostProcessingPolicy) {
+    policies = policies.filter(_ != ep)
   }
+
 }

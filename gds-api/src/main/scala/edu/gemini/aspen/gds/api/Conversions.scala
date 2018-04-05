@@ -34,9 +34,9 @@ object Conversions {
     implicit val intToArrayIndex = (value: Int) => new ArrayIndex(value)
 
     implicit val stringToFormat = (value: String) => if(value.isEmpty){
-      new Format(None)
+      Format(None)
     }else{
-      new Format(Some(value))
+      Format(Some(value))
     }
 
     implicit val stringToFitsComment = (value: String) => new FitsComment(value)
