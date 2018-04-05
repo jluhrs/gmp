@@ -52,10 +52,6 @@
             <groupId>edu.gemini.util.osgi</groupId>
             <artifactId>osgi</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.scalaz</groupId>
-            <artifactId>scalaz-core_2.10</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

@@ -110,13 +110,11 @@ public final class ActiveMQJmsProvider implements JmsProvider {
         return _factory;
     }
 
-    //@Bind(aggregate = true, optional = true)
     public void bindJmsStatusListener(JmsProviderStatusListener providerStatusListenerListener) {
         _statusListenerHandlers.add(providerStatusListenerListener);
         LOG.info("JMS Status Listener Registered: " + providerStatusListenerListener);
     }
 
-    //@Unbind
     public void unbindJmsStatusListener(JmsProviderStatusListener providerStatusListenerListener) {
         _statusListenerHandlers.remove(providerStatusListenerListener);
         LOG.info("Removed JMS Status Listener: " + providerStatusListenerListener);

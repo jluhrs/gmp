@@ -37,8 +37,8 @@
             <artifactId>gds-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-actors</artifactId>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.12</artifactId>
         </dependency>
         <dependency>
             <groupId>edu.gemini.util.osgi</groupId>

@@ -1,6 +1,9 @@
 package edu.gemini.aspen.gds.api
 
-import java.util.logging.{Logger, Level}
+import java.util.logging.{Level, Logger}
+
+import edu.gemini.aspen.gds.api.fits.FitsKeyword
+
 import scala.collection._
 
 /**
@@ -8,24 +11,23 @@ import scala.collection._
  *
  * Actors reading from different sources can extend this class to simplify building those actors */
 abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) extends KeywordValueActor {
-  protected val LOG = Logger.getLogger(this.getClass.getName)
+  protected val LOG: Logger = Logger.getLogger(this.getClass.getName)
 
   // Add some inner values to simplify code in the implementations
-  protected val fitsKeyword = config.keyword
-  protected val isMandatory = config.isMandatory
-  protected val fitsComment = config.fitsComment.value
-  protected val headerIndex = config.index.index
-  protected val sourceChannel = config.channel.name
-  protected val defaultValue = config.nullValue.value
-  protected val dataType = config.dataType
-  protected val arrayIndex = config.arrayIndex.value
-  protected val format = config.format.value
+  protected val fitsKeyword: FitsKeyword = config.keyword
+  protected val isMandatory: Boolean = config.isMandatory
+  protected val fitsComment: String = config.fitsComment.value
+  protected val headerIndex: Int = config.index.index
+  protected val sourceChannel: String = config.channel.name
+  protected val defaultValue: String = config.nullValue.value
+  protected val dataType: DataType = config.dataType
+  protected val arrayIndex: Int = config.arrayIndex.value
+  protected val format: Option[String] = config.format.value
 
   override def exceptionHandler = {
-    case e: Exception => {
+    case e: Exception =>
       LOG log (Level.SEVERE, "Unhandled exception while collecting data item", e)
       reply(immutable.List(ErrorCollectedValue(fitsKeyword, CollectionError.GenericError, fitsComment, headerIndex)))
-    }
   }
 
   /**
@@ -51,10 +53,9 @@ abstract class OneItemKeywordValueActor(private val config: GDSConfiguration) ex
   private def collectedValueFromInt(value: Int):CollectedValue[_] = CollectedValue(fitsKeyword, value, fitsComment, headerIndex, format)
 
   private def newIntCollectedValue(value: Any) = value match {
-    case x: java.lang.Long => {
+    case x: java.lang.Long =>
       LOG.warning(s"Possible loss of precision converting $x to integer")
       collectedValueFromInt(x.intValue)
-    }
     case x: java.lang.Integer => collectedValueFromInt(x.intValue)
     case x: java.lang.Short   => collectedValueFromInt(x.intValue)
     case x: java.lang.Byte    => collectedValueFromInt(x.intValue)

@@ -16,10 +16,9 @@ import org.ops4j.pax.exam.options.WrappedUrlProvisionOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import javax.inject.Inject;
+import java.util.Hashtable;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
@@ -28,9 +27,6 @@ import static org.ops4j.pax.exam.CoreOptions.*;
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 public class StatusSetterIT extends FelixContainerConfigurationBase {
-
-    @Inject
-    private BundleContext context;
 
     @Configuration
     public Option[] withStatusDbAndJMSProviderConfig() {
@@ -47,15 +43,13 @@ public class StatusSetterIT extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("kahadb").groupId("org.apache.activemq").versionAsInProject(),
                 mavenBundle().artifactId("geronimo-annotation_1.0_spec").groupId("org.apache.geronimo.specs").versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
-                mavenBundle().artifactId("joda-time").groupId("joda-time").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-dispatcher").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 mavenBundle().artifactId("gmp-status-gateway").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
                 mavenBundle().artifactId("gmp-heartbeat").groupId("edu.gemini.aspen.gmp").update().versionAsInProject(),
                 mavenBundle().artifactId("giapi-status-setter").groupId("edu.gemini.aspen.giapi").update().versionAsInProject(),
                 mavenBundle().artifactId("gmp-heartbeat-distributor-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 wrappedBundle(maven().artifactId("giapi-test-support").groupId("edu.gemini.aspen").versionAsInProject()).overwriteManifest(WrappedUrlProvisionOption.OverwriteMode.FULL),
-                wrappedBundle(maven().artifactId("integration-tests").groupId("edu.gemini.aspen").versionAsInProject()).overwriteManifest(WrappedUrlProvisionOption.OverwriteMode.FULL),
-                mavenBundle().artifactId("gmp-top").groupId("edu.gemini.gmp").update().versionAsInProject()
+                wrappedBundle(maven().artifactId("integration-tests").groupId("edu.gemini.aspen").versionAsInProject()).overwriteManifest(WrappedUrlProvisionOption.OverwriteMode.FULL)
         ));
     }
 
@@ -64,7 +58,7 @@ public class StatusSetterIT extends FelixContainerConfigurationBase {
         return "/src/test/resources/conf/services";
     }
 
-    @Test
+//    @Test
     public void bundleExistence() {
         assertNotNull(getStatusDispatcherBundle());
         assertTrue(isStatusDispatcherRunning());
@@ -72,7 +66,6 @@ public class StatusSetterIT extends FelixContainerConfigurationBase {
 
     private Bundle getStatusDispatcherBundle() {
         for (Bundle b : context.getBundles()) {
-            System.out.println(b.getSymbolicName());
             if ("edu.gemini.aspen.giapi-status-dispatcher".equals(b.getSymbolicName())) {
                 return b;
             }
@@ -83,15 +76,16 @@ public class StatusSetterIT extends FelixContainerConfigurationBase {
 
     private boolean isStatusDispatcherRunning() {
         Bundle statusDispatcherBundle = getStatusDispatcherBundle();
+        assert statusDispatcherBundle != null;
         for (ServiceReference s : statusDispatcherBundle.getRegisteredServices()) {
-            if (StatusDispatcher.class.getName().equals(s.getProperty("service.pid"))) {
+            if (s.isAssignableTo(statusDispatcherBundle, StatusDispatcher.class.getName())) {
                 return true;
             }
         }
         return false;
     }
 
-//    @Test
+    @Test
     public void checkSending() throws Exception {
         //register handlers
         TestHandler testHandler1 = new TestHandler();
@@ -99,6 +93,7 @@ public class StatusSetterIT extends FelixContainerConfigurationBase {
         StatusSetter setter = (StatusSetter) context.getService(context.getServiceReference(StatusSetter.class.getName()));
         assertNotNull(setter);
         assertNotNull(context.getService(context.getServiceReference(StatusHandlerAggregate.class.getName())));
+        assertNotNull(context.getService(context.getServiceReference(StatusHandler.class.getName())));
 
         // Wait a bit for the services to be registered before sending the status update
         TimeUnit.MILLISECONDS.sleep(1200);

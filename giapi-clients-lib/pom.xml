@@ -37,17 +37,13 @@
             <artifactId>jsch</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.external.osgi.com.jcraft</groupId>
             <artifactId>jzlib</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_2.10</artifactId>
-            <version>2.2.1</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
 </project>

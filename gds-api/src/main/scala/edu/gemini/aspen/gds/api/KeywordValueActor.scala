@@ -1,6 +1,7 @@
 package edu.gemini.aspen.gds.api
 
-import actors.Actor
+import akka.actor.{Actor, ActorDSL}
+
 import scala.collection._
 
 /**
@@ -13,8 +14,8 @@ case object Collect
  *
  * It is expected that the reply will be a List[CollectedValues]
  */
-trait KeywordValueActor extends Actor {
-  start()
+trait KeywordValueActor extends ActWithStash {
+  ActorDSL.actor(this)
 
   override def act() {
     react {

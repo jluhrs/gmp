@@ -46,7 +46,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
     }
 
     @Configuration
-    public Option[] gdsBundles() {
+    Option[] gdsBundles() {
         return concatenate(super.baseContainerConfig(), options(
                 systemProperty("org.osgi.service.http.port").value("9999"),
                 mavenBundle().artifactId("giapi").groupId("edu.gemini.aspen").versionAsInProject(),
@@ -61,12 +61,12 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("gds-performance-monitoring").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-actors-composer").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-fits-updater").groupId("edu.gemini.aspen.gds").versionAsInProject(),
-                mavenBundle().artifactId("joda-time").groupId("joda-time").versionAsInProject(),
                 mavenBundle().artifactId("gds-observation-state-publisher").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("gds-obsevent-handler").groupId("edu.gemini.aspen.gds").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-jetty-bundle").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-extender-whiteboard").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-spi").groupId("org.ops4j.pax.web").versionAsInProject(),
+                mavenBundle().artifactId("pax-web-descriptor").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("pax-web-api").groupId("org.ops4j.pax.web").versionAsInProject(),
                 mavenBundle().artifactId("xbean-finder").groupId("org.apache.xbean").versionAsInProject(),
                 mavenBundle().artifactId("xbean-bundleutils").groupId("org.apache.xbean").versionAsInProject(),
@@ -83,22 +83,22 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         return "/src/test/resources/conf/services";
     }
 
-    protected void removeTestFile(String fileName) {
+    private void removeTestFile(String fileName) {
         File finalFile = new File(fileName);
         if (finalFile.exists()) {
             finalFile.delete();
         }
     }
 
-    protected void copyInitialFile() throws IOException, URISyntaxException {
+    void copyInitialFile() throws IOException {
         copyInitialFile(INITIAL_FITS_FILE, INITIAL_FITS_DIR + INITIAL_FITS_FILE);
     }
 
-    protected void copyInitialFile(String src, String dest) throws IOException, URISyntaxException {
+    private void copyInitialFile(String src, String dest) throws IOException {
         ByteStreams.copy(getClass().getResourceAsStream(src), new FileOutputStream(dest));
     }
 
-    protected void sendObservationEvents(ObservationEventHandler eventHandler, DataLabel dataLabel) throws InterruptedException {
+    void sendObservationEvents(ObservationEventHandler eventHandler, DataLabel dataLabel) throws InterruptedException {
         eventHandler.onObservationEvent(ObservationEvent.OBS_PREP, dataLabel);
 
         TimeUnit.MILLISECONDS.sleep(200);
@@ -122,13 +122,13 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         TimeUnit.MILLISECONDS.sleep(300);
     }
 
-    protected Set<String> readFinalKeywords() throws IOException, InterruptedException {
+    Set<String> readFinalKeywords() {
         return readKeywords(FINAL_FITS_DIR + FINAL_FITS_FILE, 0);
     }
 
-    protected Set<String> readKeywords(String fileName, int header) throws IOException, InterruptedException {
+    private Set<String> readKeywords(String fileName, int header) {
         FitsReader reader = new FitsReader(new File(fileName));
-        List<HeaderItem<?>> keyList = (List<HeaderItem<?>>)seqAsJavaList(reader.header(header).get().keywords());
+        List<HeaderItem<?>> keyList = seqAsJavaList(reader.header(header).get().keywords());
         Set<String> set = Sets.newTreeSet();
         for (HeaderItem<?> h:keyList) {
             set.add(h.keywordName().key());
@@ -136,7 +136,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         return set;
     }
 
-    protected List<Set<String>> readAllExtensionsKeywords(String fileName, int headersCount) throws IOException, InterruptedException {
+    protected List<Set<String>> readAllExtensionsKeywords(String fileName, int headersCount) {
         List<Set<String>> extensions = Lists.newArrayList();
         for (int i=0;i<headersCount;i++) {
             extensions.add(readKeywords(fileName, i));
@@ -144,17 +144,7 @@ public class GDSIntegrationBase extends FelixContainerConfigurationBase {
         return extensions;
     }
 
-    /*protected Header readFinalPrimary() throws IOException, InterruptedException {
-        return readPrimary(FINAL_FITS_DIR + FINAL_FITS_FILE);
-
-    }
-
-    protected Header readPrimary(String fileName) throws IOException, InterruptedException {
-        Hedit hEdit = new Hedit(new File(fileName));
-        return hEdit.readPrimary();
-    }*/
-
-    protected Set<String> readOriginalKeywords() throws IOException, InterruptedException {
+    Set<String> readOriginalKeywords() {
         return readKeywords(INITIAL_FITS_DIR + INITIAL_FITS_FILE, 0);
     }
 }

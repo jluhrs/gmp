@@ -1,14 +1,13 @@
 package edu.gemini.giapi.clients.lib
 
-import java.io.{InputStream, ByteArrayOutputStream}
+import java.io.{ByteArrayOutputStream, InputStream}
 
+import com.jcraft.jsch._
 import edu.gemini.aspen.giapi.commands.HandlerResponse.Response
 import edu.gemini.giapi.clients.lib.commands._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Promise, Future}
-import com.jcraft.jsch._
-
+import scala.concurrent.{Future, Promise}
 import scala.io.Source
 import scala.util.{Failure, Success}
 
@@ -45,10 +44,11 @@ package object sshexec {
           }
       }
     }
-    r.onFailure{
-      case f =>
+    r.onComplete {
+      case Failure(f) =>
         listener.newErrorLine(f.getMessage)
         p.complete(Success(Error(Response.ERROR, s"Error executing command $command: ${f.getMessage}")))
+      case Success(_) =>
     }
     r.map(_ => Accepted(Some(command), Response.ACCEPTED, p.future))
   }

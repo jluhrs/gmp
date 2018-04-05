@@ -6,70 +6,65 @@ import java.util.logging.Logger
 import edu.gemini.aspen.giapi.commands.{CommandSender, CommandUpdater}
 import edu.gemini.aspen.giapi.status.setter.StatusSetter
 import edu.gemini.aspen.gmp.commands.handlers.CommandHandlers
-import edu.gemini.aspen.gmp.commands.model.{ActionSender, Action, ActionMessageBuilder}
-import edu.gemini.aspen.gmp.commands.model.executors.{SequenceCommandExecutorStrategy, SequenceCommandExecutor}
-import edu.gemini.aspen.gmp.commands.model.impl.{CommandSenderImpl, ActionManager, ActionManagerImpl, CommandUpdaterImpl}
+import edu.gemini.aspen.gmp.commands.model.executors.{SequenceCommandExecutor, SequenceCommandExecutorStrategy}
+import edu.gemini.aspen.gmp.commands.model.impl.{ActionManager, ActionManagerImpl, CommandSenderImpl, CommandUpdaterImpl}
+import edu.gemini.aspen.gmp.commands.model.{ActionMessageBuilder, ActionSender}
 import edu.gemini.gmp.top.Top
-import org.osgi.framework.BundleActivator
-import org.osgi.framework.BundleContext
-import org.osgi.framework.ServiceRegistration
-
 import edu.gemini.util.osgi.Tracker._
+import org.osgi.framework.{BundleActivator, BundleContext, ServiceRegistration}
 import org.osgi.service.cm.ManagedServiceFactory
 import org.osgi.util.tracker.ServiceTracker
 
 import scala.collection.mutable
-import scalaz._
-import Scalaz._
 
 class Activator extends BundleActivator {
 
-  var amRegistration: Option[ServiceRegistration[ActionManager]] = none
-  var cuRegistration: Option[ServiceRegistration[CommandUpdater]] = none
-  var csRegistration: Option[ServiceRegistration[CommandSender]] = none
-  var factoryTracker: Option[ServiceTracker[ActionMessageBuilder, _]] = none
-  var senderTracker: Option[ServiceTracker[ActionSender, _]] = none
-  var actionManager: Option[ActionManagerImpl] = none
+  var amRegistration: Option[ServiceRegistration[ActionManager]] = None
+  var cuRegistration: Option[ServiceRegistration[CommandUpdater]] = None
+  var csRegistration: Option[ServiceRegistration[CommandSender]] = None
+  var factoryTracker: Option[ServiceTracker[ActionMessageBuilder, _]] = None
+  var senderTracker: Option[ServiceTracker[ActionSender, _]] = None
+  var actionManager: Option[ActionManagerImpl] = None
 
   def start(context: BundleContext) {
     val am = new ActionManagerImpl
     am.start()
-    actionManager = am.some
-    amRegistration = context.registerService(classOf[ActionManager], am, new java.util.Hashtable[String, String]).some
+    actionManager = Some(am)
+    amRegistration = Some(context.registerService(classOf[ActionManager], am, new java.util.Hashtable[String, String]))
     val commandUpdater = new CommandUpdaterImpl(am)
-    cuRegistration = context.registerService(classOf[CommandUpdater], commandUpdater, new java.util.Hashtable[String, String]).some
+    cuRegistration = Some(context.registerService(classOf[CommandUpdater], commandUpdater, new java.util.Hashtable[String, String]))
 
-    factoryTracker = track[ActionMessageBuilder, CommandHandlers, StatusSetter, Top, SequenceCommandExecutorFactory](context) { (b, ch, ss, t) =>
+    factoryTracker = Some(track[ActionMessageBuilder, CommandHandlers, StatusSetter, Top, SequenceCommandExecutorFactory](context) { (b, ch, ss, t) =>
         val f = SequenceCommandExecutorFactory(b, am, ch, ss, t, context)
         val props = new java.util.Hashtable[String, String]()
         props.put("service.pid", classOf[SequenceCommandExecutorStrategy].getName)
-        context.registerService(classOf[ManagedServiceFactory], f, props).some
+        context.registerService(classOf[ManagedServiceFactory], f, props)
         f
       } { s =>
-      }.some
+      })
     factoryTracker.foreach(_.open())
 
-    senderTracker = track[ActionSender, SequenceCommandExecutor, CommandSender](context) { (s, e) =>
+    senderTracker = Some(track[ActionSender, SequenceCommandExecutor, CommandSender](context) { (s, e) =>
         val f = new CommandSenderImpl(am, s, e)
-        csRegistration = context.registerService(classOf[CommandSender], f, new java.util.Hashtable[String, String]).some
+        csRegistration = Some(context.registerService(classOf[CommandSender], f, new java.util.Hashtable[String, String]))
         f
       } { s =>
         csRegistration.foreach(_.unregister())
-        csRegistration = none
-      }.some
+        csRegistration = None
+      })
     senderTracker.foreach(_.open())
   }
 
   def stop(context: BundleContext) {
-    (cuRegistration :: amRegistration :: csRegistration :: Nil).foreach(_.map(_.unregister))
-    cuRegistration = none
-    amRegistration = none
-    csRegistration = none
-    (factoryTracker :: senderTracker :: Nil).foreach(_.map(_.close()))
-    factoryTracker = none
-    senderTracker = none
+    (cuRegistration :: amRegistration :: csRegistration :: Nil).foreach(_.foreach(_.unregister))
+    cuRegistration = None
+    amRegistration = None
+    csRegistration = None
+    (factoryTracker :: senderTracker :: Nil).foreach(_.foreach(_.close()))
+    factoryTracker = None
+    senderTracker = None
     actionManager.foreach(_.stop)
-    actionManager = none
+    actionManager = None
   }
 
 }
@@ -81,7 +76,7 @@ case class SequenceCommandExecutorFactory(builder: ActionMessageBuilder, manager
 
   def getName = "SequenceCommandExecutorFactory factory"
 
-  override def updated(pid: String, properties: Dictionary[String, _]) =
+  override def updated(pid: String, properties: Dictionary[String, _]): Unit =
     for {
       configName <- Option(properties.get(STARTUP_SCRIPT))
     } yield registerExecutor(pid, configName.toString)

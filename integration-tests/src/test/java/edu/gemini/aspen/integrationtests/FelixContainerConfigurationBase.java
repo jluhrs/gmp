@@ -58,7 +58,6 @@ abstract public class FelixContainerConfigurationBase {
                 mavenBundle().artifactId("jaxb-api").groupId("javax.xml.bind").version("2.3.0"),
                 mavenBundle().artifactId("osgi").groupId("edu.gemini.util.osgi").versionAsInProject(),
                 mavenBundle().artifactId("scala-library").groupId("org.scala-lang").versionAsInProject(),
-                mavenBundle().artifactId("scalaz-core_2.10").groupId("org.scalaz").versionAsInProject(),
                 mavenBundle().artifactId("javax.activation").groupId("org.glassfish").version("3.0-Prelude"),
                 mavenBundle().artifactId("gmp-top").groupId("edu.gemini.gmp").update().versionAsInProject()
         );

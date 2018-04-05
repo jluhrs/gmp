@@ -22,7 +22,7 @@ public class StatusHandlerAggregate implements StatusHandler, HandlerAggregate {
     private static final Logger LOG = Logger.getLogger(StatusHandlerAggregate.class.getName());
     private static final String STATUS_HANDLER_NAME = "Status Handler Manager";
 
-    private final List<StatusHandler> _statusHandlers = new CopyOnWriteArrayList<StatusHandler>();
+    private final List<StatusHandler> _statusHandlers = new CopyOnWriteArrayList<>();
 
     @Override
     public String getName() {
