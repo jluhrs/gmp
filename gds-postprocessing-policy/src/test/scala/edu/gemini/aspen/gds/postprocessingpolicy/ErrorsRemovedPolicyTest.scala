@@ -31,7 +31,7 @@ class ErrorsRemovedPolicyTest {
         val ep = new CompositePostProcessingPolicyImpl()
         val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
         val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: Nil
-        ep.bindPolicy(new ErrorsRemovedPolicy)
+        ep.addPolicy(new ErrorsRemovedPolicy)
 
         assertEquals(filteredValues, ep.applyPolicy(dataLabel, collectedValues))
     }
@@ -42,8 +42,8 @@ class ErrorsRemovedPolicyTest {
         val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
         val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: Nil
 
-        ep.bindPolicy(new DefaultPostProcessingPolicy)
-        ep.bindPolicy(new ErrorsRemovedPolicy)
+        ep.addPolicy(new DefaultPostProcessingPolicy)
+        ep.addPolicy(new ErrorsRemovedPolicy)
 
         assertEquals(filteredValues, ep.applyPolicy(dataLabel, collectedValues))
     }
@@ -54,8 +54,8 @@ class ErrorsRemovedPolicyTest {
         val collectedValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: ErrorCollectedValue("KEY2", CollectionError.GenericError, "comment", 0) :: Nil
         val filteredValues = CollectedValue[Double]("KEY1", 1.0, "comment", 0, None) :: Nil
 
-        ep.bindPolicy(new ErrorsRemovedPolicy)
-        ep.bindPolicy(new DefaultPostProcessingPolicy)
+        ep.addPolicy(new ErrorsRemovedPolicy)
+        ep.addPolicy(new DefaultPostProcessingPolicy)
 
         assertEquals(filteredValues, ep.applyPolicy(dataLabel, collectedValues))
     }

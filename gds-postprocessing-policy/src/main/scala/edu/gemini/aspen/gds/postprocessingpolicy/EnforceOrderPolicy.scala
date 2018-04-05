@@ -1,18 +1,14 @@
 package edu.gemini.aspen.gds.postprocessingpolicy
 
-import edu.gemini.aspen.giapi.data.DataLabel
-import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{GDSConfiguration, PostProcessingPolicy, CollectedValue, DefaultPostProcessingPolicy}
 import edu.gemini.aspen.gds.api.fits.FitsKeyword
+import edu.gemini.aspen.gds.api.{CollectedValue, DefaultPostProcessingPolicy, GDSConfiguration}
+import edu.gemini.aspen.giapi.data.DataLabel
 
 /**
  * This policy ensures the CollectedValues are in the same order they appear in the config file.
  */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
-class EnforceOrderPolicy(@Requires configService: GDSConfigurationService) extends DefaultPostProcessingPolicy {
+class EnforceOrderPolicy(configService: GDSConfigurationService) extends DefaultPostProcessingPolicy {
   override val priority = 8
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
@@ -36,5 +32,5 @@ class EnforceOrderPolicy(@Requires configService: GDSConfigurationService) exten
     }
   }
 
-  override def toString = this.getClass.getSimpleName
+  override def toString: String = this.getClass.getSimpleName
 }

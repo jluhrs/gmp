@@ -1,19 +1,15 @@
 package edu.gemini.aspen.gds.postprocessingpolicy
 
-import edu.gemini.aspen.giapi.data.DataLabel
-import org.apache.felix.ipojo.annotations.{Requires, Instantiate, Provides, Component}
 import edu.gemini.aspen.gds.api.configuration.GDSConfigurationService
-import edu.gemini.aspen.gds.api.{Subsystem, KeywordSource, GDSConfiguration, PostProcessingPolicy, CollectionError, ErrorCollectedValue, CollectedValue, DefaultPostProcessingPolicy}
+import edu.gemini.aspen.gds.api._
+import edu.gemini.aspen.giapi.data.DataLabel
 
 /**
  * This policy adds missing items(i.e. that are in the configuration but not among the CollectedValues) and then
  * transforms ErrorCollectedValues that have a CollectionError.MandatoryRequired cause, to a
  * CollectedValue with an empty string as a value, so that it gets written to the file.
  */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
-class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) extends DefaultPostProcessingPolicy {
+class EnforceMandatoryPolicy(configService: GDSConfigurationService) extends DefaultPostProcessingPolicy {
   override val priority = 2
 
   override def applyPolicy(dataLabel: DataLabel, headers: List[CollectedValue[_]]): List[CollectedValue[_]] = {
@@ -37,5 +33,5 @@ class EnforceMandatoryPolicy(@Requires configService: GDSConfigurationService) e
     case config if config.isMandatory => new ErrorCollectedValue(config.keyword, CollectionError.MandatoryRequired, config.fitsComment.value, config.index.index)
   }
 
-  override def toString = this.getClass.getSimpleName
+  override def toString: String = this.getClass.getSimpleName
 }

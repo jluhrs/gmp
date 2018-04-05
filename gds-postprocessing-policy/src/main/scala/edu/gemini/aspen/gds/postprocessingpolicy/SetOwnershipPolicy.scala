@@ -1,17 +1,17 @@
 package edu.gemini.aspen.gds.postprocessingpolicy
 
-import edu.gemini.aspen.gds.api.{PostProcessingPolicy, DefaultPostProcessingPolicy}
-import org.apache.felix.ipojo.annotations.{Property, Provides, Component}
 import java.io.File
-import sys.process._
+import java.util.logging.Logger
+
+import edu.gemini.aspen.gds.api.DefaultPostProcessingPolicy
+
+import scala.sys.process._
 
 /**
  * Post Processing Policy to set the owner on the file to fit archiving requirements
  */
-@Component
-@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
-class SetOwnershipPolicy(@Property (name = "owner", value = "gpi", mandatory = true) owner: String, @Property (name = "useSudo", value = "true", mandatory = true) sudo: String) extends DefaultPostProcessingPolicy {
-  val useSudo = sudo.equalsIgnoreCase("true")
+class SetOwnershipPolicy(owner: String, sudo: String) extends DefaultPostProcessingPolicy {
+  val useSudo: Boolean = sudo.equalsIgnoreCase("true")
 
   override val priority = 13
 
@@ -26,4 +26,12 @@ class SetOwnershipPolicy(@Property (name = "owner", value = "gpi", mandatory = t
       LOG.severe(s"Failed command $cmd")
     }
   }
+
+  override def toString: String = this.getClass.getSimpleName
+}
+
+object SetOwnershipPolicy {
+  val Log: Logger = Logger.getLogger(this.getClass.getName)
+  val Owner: String = "owner"
+  val UseSudo: String = "useSudo"
 }

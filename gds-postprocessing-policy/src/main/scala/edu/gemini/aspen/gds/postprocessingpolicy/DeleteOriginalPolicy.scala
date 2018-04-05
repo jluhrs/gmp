@@ -1,15 +1,12 @@
 package edu.gemini.aspen.gds.postprocessingpolicy
 
-import edu.gemini.aspen.gds.api.{PostProcessingPolicy, DefaultPostProcessingPolicy}
-import org.apache.felix.ipojo.annotations.{Provides, Component}
 import java.io.File
-import com.google.common.io.Files
+
+import edu.gemini.aspen.gds.api.DefaultPostProcessingPolicy
 
 /**
  * This policy removes ErrorCollectedValues. It should probably be the last policy applied.
  */
-@Component
-@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
 class DeleteOriginalPolicy extends DefaultPostProcessingPolicy {
 
   override val priority = 12

@@ -1,15 +1,11 @@
 package edu.gemini.aspen.gds.postprocessingpolicy
 
+import edu.gemini.aspen.gds.api.{CollectedValue, DefaultPostProcessingPolicy, ErrorCollectedValue}
 import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.api.{PostProcessingPolicy, ErrorCollectedValue, CollectedValue, DefaultPostProcessingPolicy}
-import org.apache.felix.ipojo.annotations.{Instantiate, Provides, Component}
 
 /**
  * This policy removes ErrorCollectedValues. It should probably be the last policy applied.
  */
-@Component
-//@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[PostProcessingPolicy]))
 class ErrorsRemovedPolicy extends DefaultPostProcessingPolicy {
   override val priority = 10
 
