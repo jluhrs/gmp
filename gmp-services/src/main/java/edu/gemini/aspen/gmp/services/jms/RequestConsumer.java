@@ -86,7 +86,7 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
     }
 
     @Override
-    public void startJms(JmsProvider provider) throws JMSException {
+    public void startJms(JmsProvider provider) {
         ConnectionFactory factory = provider.getConnectionFactory();
         try {
             _connection = factory.createConnection();

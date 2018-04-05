@@ -14,17 +14,15 @@ import org.apache.felix.ipojo.annotations.*;
 import javax.jms.*;
 import java.util.logging.Logger;
 
-@Component
-@Instantiate
-@Provides(specifications = {Service.class, JmsArtifact.class})
 public class PropertyService extends JmsService {
     private static final Logger LOG = Logger.getLogger(PropertyService.class.getName());
 
     private PropertyHolder _properties;
 
-    public PropertyService(@Requires PropertyHolder holder) {
+    public PropertyService(PropertyHolder holder) {
         _properties = holder;
         LOG.info("Properties service started with properties: " + _properties);
+        System.out.println("Properties service started with properties: " + _properties);
     }
 
     public void process(JmsServiceRequest jmsRequest) throws ServiceException {
@@ -56,8 +54,4 @@ public class PropertyService extends JmsService {
         return ServiceType.PROPERTY_SERVICE;
     }
 
-    @Validate
-    public void startComponent() {
-        // Required by iPojo
-    }
 }
