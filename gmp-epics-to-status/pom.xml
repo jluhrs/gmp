@@ -58,7 +58,6 @@
         <dependency>
             <groupId>edu.gemini.util.osgi</groupId>
             <artifactId>osgi</artifactId>
-            <version>0.0.1</version>
         </dependency>
     </dependencies>
 

@@ -5,7 +5,6 @@ import edu.gemini.aspen.giapi.util.jms.JmsKeys;
 import edu.gemini.jms.api.JmsArtifact;
 import edu.gemini.jms.api.JmsProvider;
 import edu.gemini.aspen.gmp.services.core.*;
-import org.apache.felix.ipojo.annotations.*;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -14,9 +13,6 @@ import java.util.logging.Level;
 /**
  * A JMS consumer of service requests.
  */
-@Component
-@Instantiate
-@Provides(specifications = JmsArtifact.class)
 public class RequestConsumer implements MessageListener, ExceptionListener, JmsArtifact {
 
     private static final Logger LOG = Logger.getLogger(RequestConsumer.class.getName());
@@ -27,20 +23,10 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
 
     private final ServiceProcessor _serviceProcessor;
 
-    public RequestConsumer() {
+    public RequestConsumer(Service service) {
         _serviceProcessor = new ServiceProcessorImpl();
-    }
-
-    /**
-     * Register services to handle specific requests
-     *
-     * @param service A service to register
-     */
-    @Bind
-    public void bindService(Service service) {
         _serviceProcessor.registerService(service);
     }
-
 
     public void close() {
         try {
@@ -110,11 +96,6 @@ public class RequestConsumer implements MessageListener, ExceptionListener, JmsA
     @Override
     public void stopJms() {
         close();
-    }
-
-    @Validate
-    public void startComponent() {
-        // Required by iPojo
     }
 
     @Override
