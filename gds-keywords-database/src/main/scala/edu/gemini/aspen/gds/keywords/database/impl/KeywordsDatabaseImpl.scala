@@ -1,24 +1,22 @@
 package edu.gemini.aspen.gds.keywords.database.impl
 
-import org.apache.felix.ipojo.annotations._
-import edu.gemini.aspen.giapi.data.DataLabel
-import edu.gemini.aspen.gds.api.CollectedValue
-import java.util.logging.Logger
-import edu.gemini.aspen.gds.keywords.database._
 import java.util.concurrent.TimeUnit._
-import collection.concurrent
-import scala.collection.JavaConversions._
+import java.util.logging.Logger
+
 import com.google.common.cache.CacheBuilder
+import edu.gemini.aspen.gds.api.CollectedValue
+import edu.gemini.aspen.gds.keywords.database._
+import edu.gemini.aspen.giapi.data.DataLabel
+
+import scala.collection.JavaConversions._
+import scala.collection.concurrent
 
 /**
  * Component to store CollectedValue as HeaderItem, associated to DataLabel */
-@Component
-@Instantiate
-@Provides(specifications = Array[Class[_]](classOf[KeywordsDatabase]))
 class KeywordsDatabaseImpl extends KeywordsDatabase {
   private val LOG = Logger.getLogger(this.getClass.getName)
   // expiration of 1 day by default but tests can override it
-  def expirationMillis = 24 * 60 * 60 * 1000
+  def expirationMillis: Int = 24 * 60 * 60 * 1000
 
   start()
 
@@ -81,13 +79,4 @@ class KeywordsDatabaseImpl extends KeywordsDatabase {
     map.remove(dataLabel)
   }
 
-  @Validate
-  def validate() {
-    LOG.info("Validating KeywordsDatabase")
-  }
-
-  @Invalidate
-  def invalidate() {
-    LOG.info("Invalidating KeywordsDatabase")
-  }
 }

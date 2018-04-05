@@ -49,9 +49,7 @@ class InstrumentKeywordsChecker(@Requires configService: GDSConfigurationService
     configKeywords foreach {
       case (index: Int, value: Set[_]) => {
         val keysInFile = readerOpt.map(_.keys(index)).getOrElse(List.empty)
-        val keysInConfig = value map {
-          case c:GDSConfiguration => c.keyword
-        }
+        val keysInConfig = value.map(_.keyword)
         val missingKeywords:Traversable[FitsKeyword] = keysInConfig &~ keysInFile.toSet
 
         if (missingKeywords.nonEmpty) {
