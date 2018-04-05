@@ -80,6 +80,12 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
@@ -89,6 +95,12 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>kahadb</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -120,6 +132,10 @@
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-status-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.gmp</groupId>
+            <artifactId>gmp-top</artifactId>
         </dependency>
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -255,32 +271,50 @@
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam</artifactId>
+            <artifactId>pax-exam-container-native</artifactId>
             <version>${pax-exam.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam-junit</artifactId>
+            <artifactId>pax-exam-junit4</artifactId>
             <version>${pax-exam.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam-junit-extender</artifactId>
+            <artifactId>pax-exam-link-mvn</artifactId>
             <version>${pax-exam.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam-junit-extender-impl</artifactId>
-            <version>${pax-exam.version}</version>
+            <groupId>org.ops4j.pax.url</groupId>
+            <artifactId>pax-url-aether</artifactId>
+            <version>1.6.0</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam-container-default</artifactId>
-            <version>${pax-exam.version}</version>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.framework</artifactId>
+            <version>${felix.framework.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>0.9.20</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>0.9.20</version>
             <scope>test</scope>
         </dependency>
 

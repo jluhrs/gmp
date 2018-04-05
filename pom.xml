@@ -993,12 +993,12 @@
         <repository>
             <id>edu.gemini.releases</id>
             <name>sbfosxdev01.cl.gemini.edu-releases</name>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+            <url>http://sbfswgosxdev-mp1.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
         </repository>
         <snapshotRepository>
             <id>edu.gemini.releases</id>
             <name>sbfosxdev01.cl.gemini.edu-snapshots</name>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+            <url>http://sbfswgosxdev-mp1.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -1006,7 +1006,7 @@
         <repository>
             <!-- Maven central mirror -->
             <id>edu.gemini.mirror</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/repository</url>
+            <url>http://sbfosxdev01-mp1.cl.gemini.edu:8081/artifactory/repository</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -1014,12 +1014,12 @@
         <repository>
             <!-- Repository of other local dependencies stored locally -->
             <id>edu.gemini.ext-releases-local</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
+            <url>http://sbfosxdev01-mp1.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
         </repository>
         <repository>
             <!-- Repository of other local dependencies stored locally -->
             <id>edu.gemini.libs-releases-local</id>
-            <url>http://build.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+            <url>http://sbfosxdev01-mp1.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
         </repository>
     </repositories>
 

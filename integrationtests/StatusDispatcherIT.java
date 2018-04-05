@@ -51,7 +51,7 @@ public class StatusDispatcherIT extends FelixContainerConfigurationBase {
                 mavenBundle().artifactId("gmp-heartbeat-distributor-service").groupId("edu.gemini.aspen").update().versionAsInProject(),
                 wrappedBundle(maven().artifactId("giapi-test-support").groupId("edu.gemini.aspen").versionAsInProject()).overwriteManifest(WrappedUrlProvisionOption.OverwriteMode.FULL),
                 wrappedBundle(maven().artifactId("integration-tests").groupId("edu.gemini.aspen").versionAsInProject()).overwriteManifest(WrappedUrlProvisionOption.OverwriteMode.FULL),
-                mavenBundle().artifactId("gmp-top").groupId("edu.gemini.aspen.gmp").update().versionAsInProject()
+                mavenBundle().artifactId("gmp-top").groupId("edu.gemini.gmp").update().versionAsInProject()
         );
     }
 
