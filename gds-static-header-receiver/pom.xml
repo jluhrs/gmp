@@ -5,7 +5,8 @@
         <relativePath>../poms/scala/</relativePath>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>scala-compiled-bundle-settings</artifactId>
-        <version>14.4.7-SNAPSHOT</version>
+        <version>15.0.1-SNAPSHOT</version>
+
     </parent>
 
     <properties>
@@ -67,6 +68,10 @@
         <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-runtime</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.xbean</groupId>

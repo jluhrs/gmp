@@ -151,7 +151,7 @@
             <artifactId>pax-logging-service</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-jetty-bundle</artifactId>
             <scope>provided</scope>
@@ -167,10 +167,14 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.gemini.external.osgi.org.eclipse.jdt.core.compiler</groupId>
             <artifactId>ecj</artifactId>
             <scope>provided</scope>
-        </dependency>
+        </dependency-->
 
         <!-- Configuration admin felix service -->
         <dependency>

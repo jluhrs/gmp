@@ -5,7 +5,8 @@
         <relativePath>../../poms/scala/</relativePath>
         <groupId>edu.gemini.aspen.giapi-osgi.build</groupId>
         <artifactId>scala-compiled-bundle-settings</artifactId>
-        <version>14.4.7-SNAPSHOT</version>
+        <version>15.0.1-SNAPSHOT</version>
+
     </parent>
 
     <properties>
