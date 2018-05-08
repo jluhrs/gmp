@@ -32,7 +32,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class EpicsObserverImplTest {
-    private static final ImmutableList<String> CHANNELS_TO_READ = ImmutableList.of("tst:tst");
+    private static final ImmutableList<String> CHANNELS_TO_READ = ImmutableList.of("tst:tst2");
     private EpicsObserverImpl epicsObserver;
     private JCAContextController contextController;
     private CAJContext jcaContext;
@@ -69,7 +69,7 @@ public class EpicsObserverImplTest {
 
     private void verifyChannelsAreRegisteredToClient(EpicsClientMock epicsClient) throws CAException {
         assertTrue(epicsClient.wasConnectedCalled());
-        verify(jcaContext).createChannel(eq("tst:tst"), Matchers.<ConnectionListener>anyObject());
+        verify(jcaContext).createChannel(eq("tst:tst2"), Matchers.<ConnectionListener>anyObject());
     }
 
     @Test
@@ -83,6 +83,7 @@ public class EpicsObserverImplTest {
         getListener.getCompleted(getEvent);
 
         assertEquals(1, epicsClient.getUpdatesCount());
+        epicsObserver.unregisterEpicsClient(epicsClient);
     }
 
     private GetListener captureGetListener() throws CAException {
@@ -91,7 +92,7 @@ public class EpicsObserverImplTest {
         ArgumentCaptor<GetListener> getListenerCaptor = ArgumentCaptor.forClass(GetListener.class);
 
         // Simulate connection established
-        verify(jcaContext).createChannel(eq("tst:tst"), connectionListenerCaptor.capture());
+        verify(jcaContext).createChannel(eq("tst:tst2"), connectionListenerCaptor.capture());
         ConnectionEvent connectionEvent = new ConnectionEvent(channel, true);
         connectionListenerCaptor.getValue().connectionChanged(connectionEvent);
 

@@ -2,7 +2,6 @@ package edu.gemini.epics.impl;
 
 import com.cosylab.epics.caj.CAJContext;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import edu.gemini.epics.EpicsObserver;
 import edu.gemini.epics.EpicsService;
 import edu.gemini.epics.api.EpicsClient;

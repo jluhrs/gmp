@@ -82,11 +82,4 @@ public class DbrUtil {
         }
     }
 
-    public static <T extends Enum<T>> List<T> mapEnum(List<String> inValues, Class<T> enumClass) {
-        List<T> values = new ArrayList<T>();
-
-
-        return values;
-    }
-
 }

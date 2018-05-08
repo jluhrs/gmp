@@ -17,10 +17,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
-/**
- * Created by jluhrs on 10/23/14.
- */
 public class ReadOnlyClientEpicsChannelTest {
 
     private static String CHANNEL_NAME="dummy:test";
@@ -41,7 +37,7 @@ public class ReadOnlyClientEpicsChannelTest {
     @After
     public void tearDown() throws Exception {
         epicsService.stopService();
-        epicsService = null;
+		epicsService = null;
 
         Thread.sleep(20);//can't start and stop immediately, and our tests are too short
         giapicas.stop();
@@ -50,7 +46,7 @@ public class ReadOnlyClientEpicsChannelTest {
     @Test
     public void testReadInteger() throws CAException, TimeoutException {
         int testValue = 1;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, testValue);
+        giapicas.createChannel(CHANNEL_NAME, testValue);
 
         ReadOnlyClientEpicsChannel<Integer> roChannel = epicsReader.getIntegerChannel(CHANNEL_NAME);
 
@@ -76,7 +72,7 @@ public class ReadOnlyClientEpicsChannelTest {
     @Test
     public void testReadDouble() throws CAException, TimeoutException {
         double testValue = 2.0;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, testValue);
+        giapicas.createChannel(CHANNEL_NAME, testValue);
 
         ReadOnlyClientEpicsChannel<Double> roChannel = epicsReader.getDoubleChannel(CHANNEL_NAME);
 
@@ -88,7 +84,7 @@ public class ReadOnlyClientEpicsChannelTest {
     @Test
     public void testReadFloat() throws CAException, TimeoutException {
         float testValue = 3.0f;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, testValue);
+        giapicas.createChannel(CHANNEL_NAME, testValue);
 
         ReadOnlyClientEpicsChannel<Float> roChannel = epicsReader.getFloatChannel(CHANNEL_NAME);
 
@@ -100,7 +96,7 @@ public class ReadOnlyClientEpicsChannelTest {
     @Test
     public void testReadString() throws CAException, TimeoutException {
         String testValue = "dummy string";
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, testValue);
+        giapicas.createChannel(CHANNEL_NAME, testValue);
 
         ReadOnlyClientEpicsChannel<String> roChannel = epicsReader.getStringChannel(CHANNEL_NAME);
 
@@ -116,7 +112,7 @@ public class ReadOnlyClientEpicsChannelTest {
     @Test
     public void testReadEnum() throws CAException, TimeoutException {
         DummyEnum testValue = DummyEnum.VAL2;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, testValue);
+        giapicas.createChannel(CHANNEL_NAME, testValue);
 
         ReadOnlyClientEpicsChannel<DummyEnum> roChannel = epicsReader.getEnumChannel(CHANNEL_NAME, DummyEnum.class);
 

@@ -44,10 +44,10 @@ public class ReadWriteClientEpicsChannelTest {
     @Test
     public void testWriteInteger() throws CAException, TimeoutException {
         int testValue = 1;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, 0);
-        
+        giapicas.createChannel(CHANNEL_NAME, 0);
+
         ReadWriteClientEpicsChannel<Integer> rwChannel = epicsWriter.getIntegerChannel(CHANNEL_NAME);
-        
+
         rwChannel.setValue(testValue);
 
         int readValue = rwChannel.getFirst();
@@ -74,7 +74,7 @@ public class ReadWriteClientEpicsChannelTest {
     @Test
     public void testWriteDouble() throws CAException, TimeoutException {
         double testValue = 2.0;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, 0.0);
+        giapicas.createChannel(CHANNEL_NAME, 0.0);
 
         ReadWriteClientEpicsChannel<Double> rwChannel = epicsWriter.getDoubleChannel(CHANNEL_NAME);
 
@@ -88,7 +88,7 @@ public class ReadWriteClientEpicsChannelTest {
     @Test
     public void testWriteFloat() throws CAException, TimeoutException {
         float testValue = 3.0f;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, 0.0f);
+        giapicas.createChannel(CHANNEL_NAME, 0.0f);
 
         ReadWriteClientEpicsChannel<Float> rwChannel = epicsWriter.getFloatChannel(CHANNEL_NAME);
 
@@ -102,7 +102,7 @@ public class ReadWriteClientEpicsChannelTest {
     @Test
     public void testWriteString() throws CAException, TimeoutException {
         String testValue = "dummy string";
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, "");
+        giapicas.createChannel(CHANNEL_NAME, "");
 
         ReadWriteClientEpicsChannel<String> rwChannel = epicsWriter.getStringChannel(CHANNEL_NAME);
 
@@ -120,7 +120,7 @@ public class ReadWriteClientEpicsChannelTest {
     @Test
     public void testWriteEnum() throws CAException, TimeoutException {
         DummyEnum testValue = DummyEnum.VAL2;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, DummyEnum.VAL1);
+        giapicas.createChannel(CHANNEL_NAME, DummyEnum.VAL1);
 
         ReadWriteClientEpicsChannel<DummyEnum> rwChannel = epicsWriter.getEnumChannel(CHANNEL_NAME, DummyEnum.class);
 

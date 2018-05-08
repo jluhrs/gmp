@@ -5,6 +5,10 @@ import gov.aps.jca.Context;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
