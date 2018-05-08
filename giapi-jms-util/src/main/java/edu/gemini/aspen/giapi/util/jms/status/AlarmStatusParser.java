@@ -37,7 +37,7 @@ public abstract class AlarmStatusParser<T> extends StatusParserBase<T> {
 
     StatusItem<T> buildStatusItem(String name, T value, Date timestamp, BytesMessage bm) throws JMSException {
         AlarmState alarmState = parseAlarmState(bm);
-        return new AlarmStatus<T>(name, value, timestamp, alarmState);
+        return new AlarmStatus<>(name, value, timestamp, alarmState);
     }
 
     abstract public T getValue(BytesMessage bm) throws JMSException;

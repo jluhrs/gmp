@@ -42,7 +42,7 @@ public final class MessageBuilder {
         return "Invalid Message type to build HandlerResponse object";
     }
 
-    static String InvalidResponseTypeMessage(String key) {
+    private static String InvalidResponseTypeMessage(String key) {
         return format("Invalid response type contained in the reply", key);
     }
 
@@ -50,11 +50,11 @@ public final class MessageBuilder {
         return InvalidResponseTypeMessage(null);
     }
 
-    static String InvalidCompletionInformationMessage() {
+    private static String InvalidCompletionInformationMessage() {
         return "Invalid Message to construct Completion Information";
     }
 
-    static String InvalidSequenceCommandMessage(String key) {
+    private static String InvalidSequenceCommandMessage(String key) {
         return format("Invalid sequence command ", key);
     }
 

@@ -36,7 +36,7 @@ class EpicsChannelFactory {
 //    private final ReferenceQueue<ReadWriteEpicsChannelImpl<?>> refQueue = new ReferenceQueue<ReadWriteEpicsChannelImpl<?>>();
 //    private final IdentityHashMap<PhantomReference<ReadWriteEpicsChannelImpl<?>>, CAJChannel> ch2Ref = new IdentityHashMap<PhantomReference<ReadWriteEpicsChannelImpl<?>>, CAJChannel>();
 
-    protected EpicsChannelFactory(JCAContextController epicsService) {
+    EpicsChannelFactory(JCAContextController epicsService) {
         Preconditions.checkArgument(epicsService != null, "Passed JCAContextController cannot be null");
         Preconditions.checkArgument(epicsService.getJCAContext() != null, "Passed JCA Context cannot be null");
         this._ctx = epicsService.getJCAContext();

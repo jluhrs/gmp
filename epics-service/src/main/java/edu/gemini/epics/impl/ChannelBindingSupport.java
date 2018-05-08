@@ -13,8 +13,6 @@ import gov.aps.jca.event.ConnectionEvent;
 import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.ContextExceptionEvent;
 import gov.aps.jca.event.ContextExceptionListener;
-import gov.aps.jca.event.ContextMessageEvent;
-import gov.aps.jca.event.ContextMessageListener;
 import gov.aps.jca.event.ContextVirtualCircuitExceptionEvent;
 import gov.aps.jca.event.GetEvent;
 import gov.aps.jca.event.GetListener;
@@ -89,14 +87,12 @@ public class ChannelBindingSupport {
         }
     };
 
-    private final MonitorListener monitorListener = new MonitorListener() {
-        public void monitorChanged(MonitorEvent me) {
-            Channel ch = (Channel) me.getSource();
-            try {
-                distributeChannelValue(ch);
-            } catch (Exception e) {
-                LOG.log(Level.SEVERE, "Could not request value for " + ch.getName(), e);
-            }
+    private final MonitorListener monitorListener = me -> {
+        Channel ch = (Channel) me.getSource();
+        try {
+            distributeChannelValue(ch);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Could not request value for " + ch.getName(), e);
         }
     };
 
@@ -153,11 +149,7 @@ public class ChannelBindingSupport {
                 LOG.log(Level.WARNING, "Trouble in JCA Context: " + cvce);
             }
         });
-        _ctx.addContextMessageListener(new ContextMessageListener() {
-            public void contextMessage(ContextMessageEvent cme) {
-                LOG.info(cme.getMessage());
-            }
-        });
+        _ctx.addContextMessageListener(cme -> LOG.info(cme.getMessage()));
     }
 
     public void bindChannel(String channel) throws EpicsException {
@@ -175,8 +167,10 @@ public class ChannelBindingSupport {
             try {
                 channel.destroy();
             } catch (IllegalStateException ise) {
+                ise.printStackTrace();
                 // Ok; channel already destroyed.
             } catch (CAException e) {
+                e.printStackTrace();
                 // Ok; channel already destroyed.
             }
         }

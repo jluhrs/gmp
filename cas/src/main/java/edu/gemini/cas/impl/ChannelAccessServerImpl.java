@@ -44,21 +44,19 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
      */
     public void start() throws CAException {
         executor = Executors.newSingleThreadExecutor();
-        channels = new HashMap<String, edu.gemini.epics.api.Channel<?>>();
+        channels = new HashMap<>();
         server = new DefaultServerImpl();
         if (serverContext != null) {
             throw new IllegalStateException("Tried to start the ChannelAccessServerImpl more than once");
         }
         serverContext = jca.createServerContext(JCALibrary.CHANNEL_ACCESS_SERVER_JAVA, server);
-        executor.execute(new Runnable() {
-            public void run() {
-                try {
-                    serverContext.run(0);
-                } catch (IllegalStateException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                } catch (CAException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                }
+        executor.execute(() -> {
+            try {
+                serverContext.run(0);
+            } catch (IllegalStateException ex) {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            } catch (CAException ex) {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
         });
     }
@@ -99,7 +97,7 @@ public class ChannelAccessServerImpl implements ChannelAccessServer {
         if (values == null || values.isEmpty()) {
             throw new IllegalArgumentException("At least one value must be passed");
         }
-        ServerChannel ch = null;
+        ServerChannel ch;
         if (values.get(0) instanceof Integer) {
             ch = createIntegerChannel(name, values.size());
         } else if (values.get(0) instanceof Short) {

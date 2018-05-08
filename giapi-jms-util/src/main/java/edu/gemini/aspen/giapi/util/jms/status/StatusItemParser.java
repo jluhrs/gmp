@@ -79,7 +79,7 @@ public enum StatusItemParser {
     private StatusParser _parser;
 
 
-    private static Map<Integer, StatusItemParser> _types = new HashMap<Integer, StatusItemParser>();
+    private static Map<Integer, StatusItemParser> _types = new HashMap<>();
 
     static {
         for (StatusItemParser itemParser : StatusItemParser.values()) {
