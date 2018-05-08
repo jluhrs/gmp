@@ -20,7 +20,7 @@ public class StatusGetter extends BaseMessageProducer {
         super(clientName, new DestinationData(JmsKeys.GW_STATUS_REQUEST_DESTINATION, DestinationType.TOPIC));
     }
 
-    public StatusItem getStatusItem(String statusName) throws JMSException {
+    public <T> StatusItem<T> getStatusItem(String statusName) throws JMSException {
         //request the value
         TextMessage m = _session.createTextMessage();
         m.setStringProperty(JmsKeys.GW_STATUS_REQUEST_TYPE_PROPERTY, JmsKeys.GW_STATUS_REQUEST_TYPE_ITEM);

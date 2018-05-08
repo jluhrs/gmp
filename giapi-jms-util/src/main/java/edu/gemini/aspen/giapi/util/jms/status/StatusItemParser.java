@@ -66,7 +66,7 @@ public enum StatusItemParser {
     HEALTH(20, new HealthStatusParser());
 
 
-    StatusItem parseStatus(BytesMessage bm) throws JMSException {
+    <T> StatusItem<T> parseStatus(BytesMessage bm) throws JMSException {
         return _parser.parse(bm);
     }
 
@@ -99,7 +99,7 @@ public enum StatusItemParser {
      * @throws JMSException             if there is a problem reading information from the
      *                                  BytesMessage
      */
-    public static StatusItem parse(BytesMessage bm) throws IllegalArgumentException, JMSException {
+    public static <T> StatusItem<T> parse(BytesMessage bm) throws IllegalArgumentException, JMSException {
         if (bm.getBodyLength() < 1) return null; // no content
         int code = bm.readByte();
         StatusItemParser itemParser = _types.get(code);

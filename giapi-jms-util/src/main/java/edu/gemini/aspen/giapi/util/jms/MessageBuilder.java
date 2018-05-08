@@ -172,7 +172,7 @@ public final class MessageBuilder {
         return ImmutableSortedSet.copyOf(names);
     }
 
-    public static StatusItem buildStatusItem(Message m) throws JMSException {
+    public static <T> StatusItem<T> buildStatusItem(Message m) throws JMSException {
         if (!(m instanceof BytesMessage)) {
             return null;
         }
