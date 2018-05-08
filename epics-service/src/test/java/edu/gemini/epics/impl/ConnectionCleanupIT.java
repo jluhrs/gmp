@@ -42,7 +42,7 @@ public class ConnectionCleanupIT {
     }
 
     @Test
-    public void testChannelCleanup() throws InterruptedException, CAException {
+    public void testChannelCleanup() throws InterruptedException {
         TimeUpdatesClient timeUpdatesClient = new TimeUpdatesClient();
 
         EpicsService epicsService = new EpicsService(context);

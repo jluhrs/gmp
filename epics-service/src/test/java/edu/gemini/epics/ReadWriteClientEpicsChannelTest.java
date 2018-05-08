@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class ReadWriteClientEpicsChannelTest {
 
-    private static String CHANNEL_NAME="dummy:test";
+    private static String CHANNEL_NAME = "dummy:test";
     private ChannelAccessServerImpl giapicas;
     private EpicsService epicsService;
     private EpicsWriter epicsWriter;
@@ -37,31 +37,32 @@ public class ReadWriteClientEpicsChannelTest {
         epicsService.stopService();
         epicsService = null;
 
-        Thread.sleep(20);//can't start and stop immediately, and our tests are too short
+        Thread.sleep(200);//can't start and stop immediately, and our tests are too short
         giapicas.stop();
     }
 
     @Test
     public void testWriteInteger() throws CAException, TimeoutException {
         int testValue = 1;
-        giapicas.createChannel(CHANNEL_NAME, 0);
+        Channel ch = giapicas.createChannel(CHANNEL_NAME + "_i", 0);
 
-        ReadWriteClientEpicsChannel<Integer> rwChannel = epicsWriter.getIntegerChannel(CHANNEL_NAME);
+        ReadWriteClientEpicsChannel<Integer> rwChannel = epicsWriter.getIntegerChannel(CHANNEL_NAME + "_i");
 
         rwChannel.setValue(testValue);
 
         int readValue = rwChannel.getFirst();
 
         assertTrue("Failed to write Integer channel.", readValue==testValue);
+        giapicas.destroyChannel(ch);
 
     }
 
     @Test
     public void testWriteShort() throws CAException, TimeoutException {
         short testValue = 1;
-        Channel ch = giapicas.createChannel(CHANNEL_NAME, (short)0);
+        Channel ch = giapicas.createChannel(CHANNEL_NAME + "_s", (short)0);
         
-        ReadWriteClientEpicsChannel<Short> rwChannel = epicsWriter.getShortChannel(CHANNEL_NAME);
+        ReadWriteClientEpicsChannel<Short> rwChannel = epicsWriter.getShortChannel(CHANNEL_NAME + "_s");
         
         rwChannel.setValue(testValue);
 
@@ -69,48 +70,53 @@ public class ReadWriteClientEpicsChannelTest {
 
         assertTrue("Failed to write Short channel.", readValue==testValue);
 
+        giapicas.destroyChannel(ch);
+
     }
 
     @Test
     public void testWriteDouble() throws CAException, TimeoutException {
         double testValue = 2.0;
-        giapicas.createChannel(CHANNEL_NAME, 0.0);
+        Channel ch = giapicas.createChannel(CHANNEL_NAME + "_d", 0.0);
 
-        ReadWriteClientEpicsChannel<Double> rwChannel = epicsWriter.getDoubleChannel(CHANNEL_NAME);
+        ReadWriteClientEpicsChannel<Double> rwChannel = epicsWriter.getDoubleChannel(CHANNEL_NAME + "_d");
 
         rwChannel.setValue(testValue);
 
         double readValue = rwChannel.getFirst();
 
         assertTrue("Failed to write Double channel.", readValue==testValue);
+        giapicas.destroyChannel(ch);
     }
 
     @Test
     public void testWriteFloat() throws CAException, TimeoutException {
         float testValue = 3.0f;
-        giapicas.createChannel(CHANNEL_NAME, 0.0f);
+        Channel ch = giapicas.createChannel(CHANNEL_NAME +"_f", 0.0f);
 
-        ReadWriteClientEpicsChannel<Float> rwChannel = epicsWriter.getFloatChannel(CHANNEL_NAME);
+        ReadWriteClientEpicsChannel<Float> rwChannel = epicsWriter.getFloatChannel(CHANNEL_NAME + "_f");
 
         rwChannel.setValue(testValue);
 
         float readValue = rwChannel.getFirst();
 
         assertTrue("Failed to write Float channel.", readValue==testValue);
+        giapicas.destroyChannel(ch);
     }
 
     @Test
     public void testWriteString() throws CAException, TimeoutException {
         String testValue = "dummy string";
-        giapicas.createChannel(CHANNEL_NAME, "");
+        Channel ch = giapicas.createChannel(CHANNEL_NAME + "_s", "");
 
-        ReadWriteClientEpicsChannel<String> rwChannel = epicsWriter.getStringChannel(CHANNEL_NAME);
+        ReadWriteClientEpicsChannel<String> rwChannel = epicsWriter.getStringChannel(CHANNEL_NAME + "_s");
 
         rwChannel.setValue(testValue);
 
         String readValue = rwChannel.getFirst();
 
         assertEquals("Failed to write String channel.", readValue, testValue);
+        giapicas.destroyChannel(ch);
     }
 
     enum DummyEnum {
@@ -120,15 +126,16 @@ public class ReadWriteClientEpicsChannelTest {
     @Test
     public void testWriteEnum() throws CAException, TimeoutException {
         DummyEnum testValue = DummyEnum.VAL2;
-        giapicas.createChannel(CHANNEL_NAME, DummyEnum.VAL1);
+        Channel ch = giapicas.createChannel(CHANNEL_NAME  +"_s", DummyEnum.VAL1);
 
-        ReadWriteClientEpicsChannel<DummyEnum> rwChannel = epicsWriter.getEnumChannel(CHANNEL_NAME, DummyEnum.class);
+        ReadWriteClientEpicsChannel<DummyEnum> rwChannel = epicsWriter.getEnumChannel(CHANNEL_NAME + "_s", DummyEnum.class);
 
         rwChannel.setValue(testValue);
 
         DummyEnum readValue = rwChannel.getFirst();
 
         assertEquals("Failed to write Enum channel.", readValue, testValue);
+        giapicas.destroyChannel(ch);
     }
 
 }

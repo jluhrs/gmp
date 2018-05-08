@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableList;
 import edu.gemini.cas.impl.ChannelAccessServerImpl;
 import edu.gemini.epics.api.Channel;
 import edu.gemini.epics.api.ChannelListener;
-import edu.gemini.epics.api.EpicsClient;
-import edu.gemini.epics.impl.EpicsObserverImpl;
 import edu.gemini.epics.impl.EpicsReaderImpl;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
@@ -15,7 +13,8 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ReadOnlyClientEpicsChannelTest {
 
@@ -37,7 +36,7 @@ public class ReadOnlyClientEpicsChannelTest {
     @After
     public void tearDown() throws Exception {
         epicsService.stopService();
-		epicsService = null;
+        epicsService = null;
 
         Thread.sleep(20);//can't start and stop immediately, and our tests are too short
         giapicas.stop();
