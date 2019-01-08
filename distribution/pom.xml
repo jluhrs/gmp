@@ -5,11 +5,11 @@
     <parent>
         <groupId>edu.gemini.aspen</groupId>
         <artifactId>giapi-osgi</artifactId>
-        <version>15.0.3-SNAPSHOT</version>
+        <version>14.4.7-SNAPSHOT</version>
     </parent>
 
     <artifactId>gmp-server</artifactId>
-    <version>15.0.3-SNAPSHOT</version>
+    <version>14.4.7-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -32,6 +32,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>edu.gemini.aspen.gmp</groupId>
+            <artifactId>gmp-tui</artifactId>
+        </dependency>
         <dependency>
             <groupId>edu.gemini.aspen</groupId>
             <artifactId>giapi-fileevents</artifactId>
@@ -119,7 +123,7 @@
         </dependency>
 
         <!-- GDS health imports all the GDS bundles -->
-        <!--dependency>
+        <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-health</artifactId>
         </dependency>
@@ -138,7 +142,24 @@
         <dependency>
             <groupId>edu.gemini.aspen.gds</groupId>
             <artifactId>gds-fits-checker</artifactId>
-        </dependency-->
+        </dependency>
+
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-configuration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-keywords</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-logs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.gemini.aspen.gds.web.ui</groupId>
+            <artifactId>gds-web-ui-status</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>edu.gemini.aspen.gmp</groupId>
@@ -151,7 +172,7 @@
             <artifactId>pax-logging-service</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>org.ops4j.pax.web</groupId>
             <artifactId>pax-web-jetty-bundle</artifactId>
             <scope>provided</scope>
@@ -167,14 +188,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.gemini.external.osgi.org.eclipse.jdt.core.compiler</groupId>
             <artifactId>ecj</artifactId>
             <scope>provided</scope>
-        </dependency-->
+        </dependency>
 
         <!-- Configuration admin felix service -->
         <dependency>
@@ -271,6 +288,8 @@
                             </includes>
                             <sourceDir>../</sourceDir>
                             <excludes>
+                                <exclude>gmp-web-ui-console/**/*.scala</exclude>
+                                <exclude>gpi-ao-plot/**/*.scala</exclude>
                                 <exclude>**/src/test/**/*.scala</exclude>
                             </excludes>
                             <jvmArgs>
@@ -321,7 +340,7 @@
                 <dependency>
                     <groupId>org.ops4j.pax.runner</groupId>
                     <artifactId>pax-runner</artifactId>
-                    <version>1.8.6</version>
+                    <version>${pax-runner.version}</version>
                 </dependency>
                 <!-- Felix Shell and GOGO -->
                 <dependency>
@@ -354,6 +373,10 @@
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.eventadmin</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.ipojo.handler.eventadmin</artifactId>
                 </dependency>
             </dependencies>
             <build>
