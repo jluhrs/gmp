@@ -32,6 +32,7 @@ public class ReadWriteEpicsEnumChannel<T extends Enum<T>> extends ReadOnlyEpicsE
         synchronized (channel.getContext()) {
             channel.put(arr);
 
+            channel.getContext().flushIO();
             channel.getContext().pendIO(timeout);
         }
     }

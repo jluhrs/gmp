@@ -62,6 +62,7 @@ public class ReadWriteEpicsChannelImpl<T> extends ReadOnlyEpicsChannelImpl<T> im
                 throw new UnsupportedOperationException("Only EPICS channels of types Integer, Float, Double and String are supported at this time.");
             }
 
+            channel.getContext().flushIO();
             channel.getContext().pendIO(timeout);
         }
     }

@@ -39,6 +39,7 @@ public class ReadOnlyEpicsChannelImpl<T> implements ReadOnlyClientEpicsChannel<T
         DBR dbr;
         synchronized (channel.getContext()) {
             dbr = channel.get();
+            channel.getContext().flushIO();
             channel.getContext().pendIO(timeout);
         }
         return dbr;

@@ -1,11 +1,14 @@
 package edu.gemini.aspen.gds.fits
 
 import edu.gemini.aspen.gds.api.fits.Header
+
 import scala.collection.JavaConversions._
 import edu.gemini.aspen.gds.api.Conversions._
 import com.google.common.base.Stopwatch
 import nom.tam.util.BufferedFile
 import java.io.File
+import java.util.Locale
+
 import annotation.tailrec
 import nom.tam.fits.{BasicHDU, HeaderCard}
 import com.google.common.io.Files
@@ -75,7 +78,7 @@ class FitsWriter(file: File) extends FitsReader(file) {
           case d: Double =>
             val card = new HeaderCard(k.keywordName, d, k.comment)
             try {
-              val value = String.format(k.format.get, d.underlying())
+              val value = String.format(Locale.US, k.format.get, d.underlying())
               validateValue(value)
               card.setValue(value)
             } catch {
