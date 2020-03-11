@@ -63,7 +63,6 @@ public class ReadWriteEpicsChannelImpl<T> extends ReadOnlyEpicsChannelImpl<T> im
             }
 
             channel.getContext().flushIO();
-            channel.getContext().pendIO(timeout);
         }
     }
 }

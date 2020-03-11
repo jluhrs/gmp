@@ -201,7 +201,6 @@ class EpicsChannelFactory {
             try {
                 synchronized (_ctx) {
                     labels = (DBR_LABELS_Enum) cajChannel.get(DBRType.LABELS_ENUM, 1);
-                    _ctx.flushIO();
                     _ctx.pendIO(timeout);
                 }
             } catch (CAException e) {
@@ -284,7 +283,6 @@ class EpicsChannelFactory {
         } else {
             synchronized (_ctx) {
                 epicsChannel = (CAJChannel) _ctx.createChannel(channelName);
-                _ctx.flushIO();
                 _ctx.pendIO(timeout);
             }
             if (epicsChannel.getConnectionState() != Channel.ConnectionState.CONNECTED) {
