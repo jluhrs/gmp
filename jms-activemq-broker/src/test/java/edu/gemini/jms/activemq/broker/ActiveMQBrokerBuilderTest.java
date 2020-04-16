@@ -9,6 +9,7 @@ import java.util.Set;
 import static edu.gemini.jms.activemq.broker.ActiveMQBroker.activemq;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import org.junit.Ignore;
 
 /**
  * Test on how to build the ActiveMQBroker
@@ -34,6 +35,7 @@ public class ActiveMQBrokerBuilderTest {
     }
 
     @Test
+    @Ignore
     public void testWithoutJMX() {       ActiveMQBroker broker = activemq().useJmx(false).url(connectionUrl).build();
         broker.start();
         // No MBean for the broker should be available
@@ -44,6 +46,7 @@ public class ActiveMQBrokerBuilderTest {
     }
 
     @Test
+    @Ignore
     public void testBuilder() throws InstanceNotFoundException, AttributeNotFoundException, ReflectionException, MBeanException, IntrospectionException {
         ActiveMQBroker broker = startBuildingBroker().build();
         assertNotNull(broker);
