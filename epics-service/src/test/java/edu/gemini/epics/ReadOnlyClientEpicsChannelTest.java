@@ -10,6 +10,7 @@ import gov.aps.jca.TimeoutException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class ReadOnlyClientEpicsChannelTest {
     }
 
     @Test
+    @Ignore
     public void testReadInteger() throws CAException, TimeoutException {
         int testValue = 1;
         giapicas.createChannel(CHANNEL_NAME, testValue);
@@ -56,6 +58,7 @@ public class ReadOnlyClientEpicsChannelTest {
     }
 
     @Test
+    @Ignore
     public void testReadShort() throws CAException, TimeoutException {
         short testValue = 1;
         Channel ch = giapicas.createChannel(CHANNEL_NAME, testValue);
@@ -69,6 +72,7 @@ public class ReadOnlyClientEpicsChannelTest {
     }
 
     @Test
+    @Ignore
     public void testReadDouble() throws CAException, TimeoutException {
         double testValue = 2.0;
         giapicas.createChannel(CHANNEL_NAME, testValue);
@@ -81,6 +85,7 @@ public class ReadOnlyClientEpicsChannelTest {
     }
 
     @Test
+    @Ignore
     public void testReadFloat() throws CAException, TimeoutException {
         float testValue = 3.0f;
         giapicas.createChannel(CHANNEL_NAME, testValue);
@@ -93,6 +98,7 @@ public class ReadOnlyClientEpicsChannelTest {
     }
 
     @Test
+    @Ignore
     public void testReadString() throws CAException, TimeoutException {
         String testValue = "dummy string";
         giapicas.createChannel(CHANNEL_NAME, testValue);
@@ -109,6 +115,7 @@ public class ReadOnlyClientEpicsChannelTest {
     }
 
     @Test
+    @Ignore
     public void testReadEnum() throws CAException, TimeoutException {
         DummyEnum testValue = DummyEnum.VAL2;
         giapicas.createChannel(CHANNEL_NAME, testValue);
@@ -123,6 +130,7 @@ public class ReadOnlyClientEpicsChannelTest {
     private boolean updated = false;
 
     @Test
+    @Ignore
     public void testMonitor() throws CAException, TimeoutException {
         Channel ch = giapicas.createChannel(CHANNEL_NAME, 1);
 

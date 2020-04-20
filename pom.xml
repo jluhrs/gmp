@@ -987,22 +987,8 @@
 
     <repositories>
         <repository>
-            <!-- Maven central mirror -->
-            <id>edu.gemini.mirror</id>
-            <url>http://sbfswgosxdev-mp1.cl.gemini.edu:8081/artifactory/repository</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <!-- Repository of other local dependencies stored locally -->
-            <id>edu.gemini.ext-releases-local</id>
-            <url>http://sbfswgosxdev-mp1.cl.gemini.edu:8081/artifactory/ext-releases-local</url>
-        </repository>
-        <repository>
-            <!-- Repository of other local dependencies stored locally -->
-            <id>edu.gemini.libs-releases-local</id>
-            <url>http://sbfswgosxdev-mp1.cl.gemini.edu:8081/artifactory/libs-releases-local</url>
+            <id>Gemini Development</id>
+            <url>https://github.com/gemini-hlsw/maven-repo/raw/master/releases</url>
         </repository>
     </repositories>
 

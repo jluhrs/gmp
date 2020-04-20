@@ -27,7 +27,7 @@ public class ReadWriteClientEpicsChannelTest {
         giapicas = new ChannelAccessServerImpl();
         giapicas.start();
 
-        epicsService = new EpicsService("127.0.0.1", 1.0);
+        epicsService = new EpicsService("127.0.0.1", 10.0);
         epicsService.startService();
         epicsWriter = new EpicsWriterImpl(epicsService);
     }
