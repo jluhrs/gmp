@@ -21,6 +21,7 @@ public enum SequenceCommand {
     PAUSE("pause"),
     CONTINUE("continue"),
     STOP("stop"),
+    STOP_CYCLE("stopCycle"),
     ABORT("abort"),
     ENGINEERING("engineering");
 
