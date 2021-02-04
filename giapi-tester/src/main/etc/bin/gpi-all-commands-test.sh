@@ -3,7 +3,8 @@
 DEFAULT_TIMEOUT=50000
 
 function giapi-tester {
-   java -jar giapi-tester-0.1.0-jar-with-dependencies.jar $@
+   java -jar /home/software/gmp/giapi-tester/target/giapi-tester.jar $@
+   #java -jar giapi-tester.jar $@
    RETVAL=$?
    [ $RETVAL -eq 0 ] && echo "Command $2 OK"   
    [ $RETVAL -ne 0 ] && echo "Command $2 ERROR" && exit 1 
